@@ -120,13 +120,7 @@ default_menubar:
       - title: Show Program Bounds
         action: settings.backplot.show-program-bounds
 
-      - title: Show Program Labels
-        action: settings.backplot.show-program-labels
-
-      - title: Show Program Ticks
-        action: settings.backplot.show-program-ticks
-
-      - title: Use Colors per Tool
+      - title: Use Colors for Motion type
         action: settings.backplot.multitool-colors
 
       - separator
