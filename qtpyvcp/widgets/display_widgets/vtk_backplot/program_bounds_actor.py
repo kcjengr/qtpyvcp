@@ -34,11 +34,17 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor2D):
         x_min, x_max, y_min, y_max, z_min, z_max = self.path_actor.GetBounds()
         
         self.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
+        
         self.SetUseRanges(1)
+        
         self.SetRanges(0, x_max - x_min, 0, y_max - y_min, 0, z_max - z_min)
 
-        self.SetLabelFormat("%6.3f mm")
+        self.SetLabelFormat("%6.3f")
+        
         self.SetFlyModeToOuterEdges()
+        self.SetScaling(False)
+        self.SetCornerOffset(0)
+
 
         if not IN_DESIGNER:
             bounds = getSetting('backplot.show-program-bounds')
