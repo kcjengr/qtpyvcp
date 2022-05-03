@@ -43,7 +43,7 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor2D):
         
         self.SetFlyModeToOuterEdges()
         self.SetScaling(False)
-        self.SetCornerOffset(0)
+        self.SetCornerOffset(0.1)
 
 
         if not IN_DESIGNER:
