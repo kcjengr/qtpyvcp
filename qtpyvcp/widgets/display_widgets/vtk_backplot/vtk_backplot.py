@@ -178,8 +178,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # view settings
             connectSetting('backplot.show-grid', self.showGrid)
             connectSetting('backplot.show-program-bounds', self.showProgramBounds)
-            connectSetting('backplot.show-program-labels', self.showProgramLabels)
-            connectSetting('backplot.show-program-ticks', self.showProgramTicks)
+            # connectSetting('backplot.show-program-labels', self.showProgramLabels)
+            # connectSetting('backplot.show-program-ticks', self.showProgramTicks)
             connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
             connectSetting('backplot.show-machine-labels', self.showMachineLabels)
             connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
@@ -925,36 +925,37 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         for wcs_index, actor in list(self.path_actors.items()):
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             self.showProgramBounds(not program_bounds_actor.GetXAxisVisibility())
-
-    @Slot(bool)
-    @Slot(object)
-    def showProgramTicks(self, ticks):
-        for wcs_index, actor in list(self.path_actors.items()):
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
-            if program_bounds_actor is not None:
-                program_bounds_actor.showProgramTicks(ticks)
-        self.renderer_window.Render()
-
-    @Slot()
-    def toggleProgramTicks(self):
-        for wcs_index, actor in list(self.path_actors.items()):
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
-            self.showProgramTicks(not program_bounds_actor.GetXAxisTickVisibility())
-
-    @Slot(bool)
-    @Slot(object)
-    def showProgramLabels(self, labels):
-        for wcs_index, actor in list(self.path_actors.items()):
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
-            if program_bounds_actor is not None:
-                program_bounds_actor.showProgramLabels(labels)
-        self.renderer_window.Render()
-
-    @Slot()
-    def toggleProgramLabels(self):
-        for wcs_index, actor in list(self.path_actors.items()):
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
-            self.showProgramLabels(not program_bounds_actor.GetXAxisLabelVisibility())
+            
+    #
+    # @Slot(bool)
+    # @Slot(object)
+    # def showProgramTicks(self, ticks):
+    #     for wcs_index, actor in list(self.path_actors.items()):
+    #         program_bounds_actor = self.program_bounds_actors[wcs_index]
+    #         if program_bounds_actor is not None:
+    #             program_bounds_actor.showProgramTicks(ticks)
+    #     self.renderer_window.Render()
+    #
+    # @Slot()
+    # def toggleProgramTicks(self):
+    #     for wcs_index, actor in list(self.path_actors.items()):
+    #         program_bounds_actor = self.program_bounds_actors[wcs_index]
+    #         self.showProgramTicks(not program_bounds_actor.GetXAxisTickVisibility())
+    #
+    # @Slot(bool)
+    # @Slot(object)
+    # def showProgramLabels(self, labels):
+    #     for wcs_index, actor in list(self.path_actors.items()):
+    #         program_bounds_actor = self.program_bounds_actors[wcs_index]
+    #         if program_bounds_actor is not None:
+    #             program_bounds_actor.showProgramLabels(labels)
+    #     self.renderer_window.Render()
+    #
+    # @Slot()
+    # def toggleProgramLabels(self):
+    #     for wcs_index, actor in list(self.path_actors.items()):
+    #         program_bounds_actor = self.program_bounds_actors[wcs_index]
+    #         self.showProgramLabels(not program_bounds_actor.GetXAxisLabelVisibility())
 
     @Slot(bool)
     @Slot(object)

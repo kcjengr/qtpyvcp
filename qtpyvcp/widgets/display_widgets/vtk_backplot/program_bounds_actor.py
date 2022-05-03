@@ -52,9 +52,13 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor2D):
 
     def showProgramBounds(self, bounds):
         if bounds:
-            self.SetShowActualBounds(True)
+            self.XAxisVisibilityOn()
+            self.YAxisVisibilityOn()
+            self.ZAxisVisibilityOn()
         else:
-            self.SetShowActualBounds(False)
+            self.XAxisVisibilityOff()
+            self.YAxisVisibilityOff()
+            self.ZAxisVisibilityOff()
 
     def toggleProgramBounds(self):
         self.showProgramBounds(not self.GetShowActualBounds())
