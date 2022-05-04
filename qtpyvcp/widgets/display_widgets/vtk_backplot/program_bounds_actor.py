@@ -28,12 +28,18 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor2D):
         LOG.debug('enableProgramTicks {}'.format(testit))
         """
         
+        
+        
         self.SetCamera(camera)
+        
         self.SetNumberOfLabels(3)
         
         x_min, x_max, y_min, y_max, z_min, z_max = self.path_actor.GetBounds()
         
         self.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
+        
+        corner_offset = 0.0
+        self.SetCornerOffset(corner_offset)
         
         self.SetUseRanges(1)
         
@@ -42,15 +48,31 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor2D):
         self.SetLabelFormat("%6.3f")
         
         self.SetFlyModeToOuterEdges()
+        
         self.SetScaling(False)
-        self.SetCornerOffset(0.1)
+        self.SetShowActualBounds(1)
+        
+        x_actor = self.GetXAxisActor2D()
+        y_actor = self.GetYAxisActor2D()
+        z_actor = self.GetZAxisActor2D()
+        
+        x_actor.SetLabelFactor(5)
+        y_actor.SetLabelFactor(5)
+        z_actor.SetLabelFactor(5)
 
+        label_properties = self.GetAxisLabelTextProperty()
+
+        label_properties.SetOrientation(30)
+        label_properties.SetLineOffset(5)
+        
+        self.SetAxisLabelTextProperty(label_properties)
 
         if not IN_DESIGNER:
             bounds = getSetting('backplot.show-program-bounds')
             self.showProgramBounds(bounds and bounds.value)
 
     def showProgramBounds(self, bounds):
+
         if bounds:
             self.XAxisVisibilityOn()
             self.YAxisVisibilityOn()
@@ -62,4 +84,3 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor2D):
 
     def toggleProgramBounds(self):
         self.showProgramBounds(not self.GetShowActualBounds())
-
