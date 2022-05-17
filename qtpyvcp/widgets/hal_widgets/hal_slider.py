@@ -3,7 +3,9 @@ from qtpy.QtWidgets import QSlider
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
+from qtpyvcp.utilities.logger import getLogger
 
+LOG = getLogger(__name__)
 
 class HalSlider(QSlider, HALWidget):
     """HAL Slider
@@ -35,6 +37,9 @@ class HalSlider(QSlider, HALWidget):
         if self._s32_value_pin is not None:
             self._s32_value_pin.value = val
             self._float_value_pin.value = val / 100.0
+
+    def mouseDoubleClickEvent(self, event):
+        self.setValue(100)
 
     def initialize(self):
         comp = hal.getComponent()

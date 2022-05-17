@@ -631,7 +631,21 @@ class Status(DataPlugin):
         """
         if anum is None:
             return STAT.homed
-        return bool(STAT.homed[int(anum)])
+        if int(anum) > len(INFO.AXIS_LETTER_LIST)-1:
+            # looking for a ui element axis that machine does not have
+            LOG.warning(f'Homed axis anum={anum} will be outside INFO.AXIS_LETTER_LIST index range: 0 to {len(INFO.AXIS_LETTER_LIST)-1}')
+            return False
+        axis_ltr = INFO.AXIS_LETTER_LIST[int(anum)]
+        is_homed = []
+        for ax in INFO.ALETTER_JNUM_DICT:
+            if axis_ltr == ax[0]:
+                axis_num = INFO.ALETTER_JNUM_DICT[ax]
+                is_homed.append(STAT.homed[axis_num])
+        if 0 in is_homed:
+            return False
+        else:
+            return True
+        #return bool(STAT.homed[int(anum)])
 
     @DataChannel
     def all_axes_homed(self, chan):

@@ -503,8 +503,11 @@ FILTER_TEMP = None
 
 def openFilterProgram(infile, prog_name):
     temp_dir = _mktemp()
-    outfile = os.path.join(temp_dir, os.path.basename(infile) + ".ngc")
-    FilterProgram(prog_name, infile, outfile, lambda r: r or _loadFilterResult(outfile))
+    outfile = os.path.join(temp_dir, os.path.basename(infile))
+    #FilterProgram(prog_name, infile, outfile, lambda r: r or _loadFilterResult(outfile))
+    FilterProgram(prog_name, infile, outfile, None)
+    CMD.program_open(outfile)
+    LOG.debug('Linuxcnc Command - program_open')
 
 def _loadFilterResult(fname):
     if fname:
@@ -529,19 +532,20 @@ class FilterProgram:
 
         env = dict(os.environ)
         env['AXIS_PROGRESS_BAR'] = '1'
-        self.p = subprocess.Popen(["sh", "-c", "%s '%s'" % (prog_name, infile)],
+        self.p = subprocess.run(["sh", "-c", "%s '%s'" % (prog_name, infile)],
                                   stdin=subprocess.PIPE,
                                   stdout=outfile,
                                   stderr=subprocess.PIPE,
-                                  env=env)
+                                  env=env,
+                                  text=True)
 
-        self.p.stdin.close()  # No input for you
         self.stderr_text = []
         self.program_filter = prog_name
         self.callback = callback
-        # self.gid = STATUS.onValueChanged('periodic', self.update)
+        #self.gid = STATUS.onValueChanged('periodic', self.update)
         #progress = Progress(1, 100)
         #progress.set_text(_("Filtering..."))
+        # force file load until know what to do about update/finish
 
     def update(self, w):
         if self.p.poll() is not None:
