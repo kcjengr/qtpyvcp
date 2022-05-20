@@ -40,7 +40,8 @@ class SpindleActor(vtk.vtkActor):
         start_point = [-tool.xoffset, -tool.yoffset, -tool.zoffset]
         end_point = [0, 0, 0]
         
-        filename = os.path.join(os.path.dirname(__file__), "models/GDZ80X73-1.stl")
+        filename = self._datasource._inifile.find("DISPLAY", "SPINDLE")
+        # filename = os.path.join(os.path.dirname(__file__), "models/laser.stl")
 
         source = vtk.vtkSTLReader()
         source.SetFileName(filename)
