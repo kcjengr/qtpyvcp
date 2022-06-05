@@ -17,10 +17,10 @@ ToDo:
 """
 import os
 
-from PySide6.QtCore import Qt, Slot, Property, QTimer
-from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QListWidget
-from PySide6.QtWidgets import QListWidgetItem
+from qtpy.QtCore import Qt, Slot, Property, QTimer
+from qtpy.QtGui import QIcon
+from qtpy.QtWidgets import QListWidget
+from qtpy.QtWidgets import QListWidgetItem
 
 import qtpyvcp
 from qtpyvcp.plugins import getPlugin

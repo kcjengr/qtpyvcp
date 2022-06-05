@@ -48,7 +48,7 @@
 ##
 ############################################################################
 
-from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
+from qtpy.QtDesigner import QPyDesignerCustomWidgetCollection
 from wigglywidget import WigglyWidget
 
 # Set PYSIDE_DESIGNER_PLUGINS to point to this directory and load the plugin

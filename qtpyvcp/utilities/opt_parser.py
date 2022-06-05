@@ -64,8 +64,8 @@ sys.path.insert(0, os.path.join(BASE, "lib", "python"))
 from linuxcnc import ini
 from docopt import docopt
 
-import PySide6
-import PySide6.QtCore
+import qtpy
+import qtpy.QtCore
 
 from qtpyvcp import __version__ as QTPYVCP_VERSION
 from qtpyvcp.lib.types import DotDict
@@ -180,8 +180,8 @@ def apply_opts(opts):
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
         from qtpyvcp.vcp_chooser import VCPChooser
-        import PySide6
-        from PySide6.QtWidgets import QApplication
+        import qtpy
+        from qtpy.QtWidgets import QApplication
         app = QApplication([])
         result = VCPChooser(opts).exec_()
         if result == VCPChooser.Rejected:
@@ -211,9 +211,9 @@ def apply_opts(opts):
 
     if LOG.getEffectiveLevel() == logger.logLevelFromName("DEBUG"):
         import qtpy
-        LOG.debug("Qt Version: %s", PySide6.QtCore.__version__)
-        LOG.debug("Qt API: %s", PySide6.__version_info__)
-        LOG.debug("QtPy Version: %s", PySide6.__version__)
+        LOG.debug("Qt Version: %s", qtpy.QtCore.__version__)
+        LOG.debug("Qt API: %s", qtpy.__version_info__)
+        LOG.debug("QtPy Version: %s", qtpy.__version__)
 
 
         LOG.debug("Command line options:\n%s",
@@ -277,9 +277,9 @@ def printSystemInfo():
         lcnc_version=linuxcnc.version,
 
         # qt info
-        qt_version=PySide6.QtCore.__version__,
-        qt_api=PySide6.__version_info__,
-        api_version=PySide6.__version__,
+        qt_version=qtpy.QtCore.__version__,
+        qt_api=qtpy.__version_info__,
+        api_version=qtpy.__version__,
 
         # system info
         dist=subprocess.check_output(['lsb_release', '-d']).decode("utf-8").split('\t')[1],

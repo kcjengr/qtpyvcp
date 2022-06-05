@@ -1,8 +1,8 @@
 """Homing Menu Provider"""
 
 import linuxcnc
-from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QMenu
+from qtpy.QtGui import QAction
+from qtpy.QtWidgets import QMenu
 
 from qtpyvcp import actions
 from qtpyvcp.plugins import getPlugin

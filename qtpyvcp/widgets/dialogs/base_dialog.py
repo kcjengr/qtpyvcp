@@ -2,10 +2,10 @@
 
 import os
 
-from PySide6.QtUiTools import QUiLoader
+from qtpy.QtUiTools import QUiLoader
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QDialog
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QDialog
 
 from qtpyvcp.utilities.logger import getLogger
 

@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QPushButton
-from PySide6.QtCore import Qt, Slot, Property, Signal, QSize
-from PySide6.QtGui import QColor
+from qtpy.QtWidgets import QPushButton
+from qtpy.QtCore import Qt, Slot, Property, Signal, QSize
+from qtpy.QtGui import QColor
 
 from qtpyvcp.utilities.obj_status import HALStatus
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget

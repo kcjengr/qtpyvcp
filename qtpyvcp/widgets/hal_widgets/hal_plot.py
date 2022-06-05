@@ -1,9 +1,9 @@
 
 import os
 
-from PySide6.QtGui import QColor
-from PySide6.QtWidgets import *
-from PySide6.QtCore import Property, Signal, Slot, QTime, QTimer, Qt
+from qtpy.QtGui import QColor
+from qtpy.QtWidgets import *
+from qtpy.QtCore import Property, Signal, Slot, QTime, QTimer, Qt
 from collections import deque
 
 import pyqtgraph as pg

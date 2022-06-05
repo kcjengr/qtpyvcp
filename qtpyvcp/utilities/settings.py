@@ -1,4 +1,4 @@
-from PySide6.QtCore import QObject, Signal
+from qtpy.QtCore import QObject, Signal
 from qtpyvcp import SETTINGS
 
 

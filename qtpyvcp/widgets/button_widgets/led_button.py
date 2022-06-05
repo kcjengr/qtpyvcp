@@ -1,5 +1,5 @@
-from PySide6.QtGui import QColor
-from PySide6.QtCore import Qt, Slot, Property, QSize
+from qtpy.QtGui import QColor
+from qtpy.QtCore import Qt, Slot, Property, QSize
 
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
 from qtpyvcp.widgets.button_widgets.action_button import ActionButton

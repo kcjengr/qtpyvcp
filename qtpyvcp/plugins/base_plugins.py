@@ -1,6 +1,6 @@
 import inspect
 
-from PySide6.QtCore import QObject, Signal
+from qtpy.QtCore import QObject, Signal
 from qtpyvcp.utilities.logger import getLogger, logLevelFromName
 
 LOG = getLogger(__name__)

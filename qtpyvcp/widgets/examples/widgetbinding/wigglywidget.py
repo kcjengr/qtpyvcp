@@ -48,9 +48,9 @@
 ##
 ############################################################################
 
-from PySide6.QtCore import QBasicTimer, Property
-from PySide6.QtGui import QColor, QFontMetrics, QPainter, QPalette
-from PySide6.QtWidgets import QWidget
+from qtpy.QtCore import QBasicTimer, Property
+from qtpy.QtGui import QColor, QFontMetrics, QPainter, QPalette
+from qtpy.QtWidgets import QWidget
 
 
 class WigglyWidget(QWidget):

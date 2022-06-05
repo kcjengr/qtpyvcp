@@ -4,8 +4,8 @@ DROLabel
 
 """
 
-from PySide6.QtWidgets import QLabel
-from PySide6.QtCore import Slot, Property
+from qtpy.QtWidgets import QLabel
+from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.widgets.base_widgets.dro_base_widget import DROBaseWidget
 

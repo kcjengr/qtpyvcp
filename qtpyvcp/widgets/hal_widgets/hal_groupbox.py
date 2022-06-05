@@ -1,5 +1,5 @@
 
-from PySide6.QtWidgets import QGroupBox
+from qtpy.QtWidgets import QGroupBox
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget

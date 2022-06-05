@@ -1,5 +1,5 @@
 
-from PySide6.QtWidgets import (QLineEdit, QHBoxLayout,
+from qtpy.QtWidgets import (QLineEdit, QHBoxLayout,
                             QVBoxLayout, QLabel, QPushButton, QCheckBox)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog

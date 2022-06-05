@@ -22,7 +22,7 @@ Supports evaluating arbitrary python expressions placed in gcode DEBUG statement
 import time
 import linuxcnc
 
-from PySide6.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin

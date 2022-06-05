@@ -1,6 +1,6 @@
-from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
-from PySide6.QtGui import QStandardItemModel, QColor, QBrush
-from PySide6.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
+from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
+from qtpy.QtGui import QStandardItemModel, QColor, QBrush
+from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
 
 from qtpyvcp.actions.machine_actions import issue_mdi

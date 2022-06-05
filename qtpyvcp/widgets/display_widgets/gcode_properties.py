@@ -3,7 +3,7 @@
 import os
 
 from qtpy import uic
-from PySide6.QtWidgets import QWidget
+from qtpy.QtWidgets import QWidget
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger

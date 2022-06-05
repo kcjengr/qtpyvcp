@@ -1,6 +1,6 @@
 
-from PySide6.QtCore import Property, QTimer
-from PySide6.QtWidgets import QPushButton
+from qtpy.QtCore import Property, QTimer
+from qtpy.QtWidgets import QPushButton
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget

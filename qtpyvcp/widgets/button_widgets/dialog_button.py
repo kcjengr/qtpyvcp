@@ -1,4 +1,4 @@
-from PySide6.QtCore import Property, Slot
+from qtpy.QtCore import Property, Slot
 
 from qtpyvcp.widgets import VCPButton
 from qtpyvcp.widgets.dialogs import showDialog

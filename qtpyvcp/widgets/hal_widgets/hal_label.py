@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QLabel
-from PySide6.QtCore import Property, Q_ENUMS
+from qtpy.QtWidgets import QLabel
+from qtpy.QtCore import Property, Q_ENUMS
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget

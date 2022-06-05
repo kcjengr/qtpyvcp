@@ -39,15 +39,15 @@
 ##
 #############################################################################
 
-"""PySide6 Multimedia Camera Example"""
+"""qtpy Multimedia Camera Example"""
 
 import os
 import sys
-import PySide6
-from PySide6.QtCore import QDate, QDir, QStandardPaths, Qt, QUrl, Slot
-from PySide6.QtGui import QGuiApplication, QDesktopServices, QIcon
-from PySide6.QtGui import QImage, QPixmap, QAction
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel,
+import qtpy
+from qtpy.QtCore import QDate, QDir, QStandardPaths, Qt, QUrl, Slot
+from qtpy.QtGui import QGuiApplication, QDesktopServices, QIcon
+from qtpy.QtGui import QImage, QPixmap, QAction
+from qtpy.QtWidgets import (QApplication, QHBoxLayout, QLabel,
     QMainWindow, QPushButton, QTabWidget, QToolBar, QVBoxLayout, QWidget)
 
 
@@ -126,14 +126,14 @@ class MainWindow(QMainWindow):
 
         if self._camera and self._camera.error() == QCamera.NoError:
             name = self._camera_info.description()
-            self.setWindowTitle(f"PySide6 Camera Example ({name})")
+            self.setWindowTitle(f"qtpy Camera Example ({name})")
             self.show_status_message(f"Starting: '{name}'")
             self._capture_session.setVideoOutput(self._camera_viewfinder)
             self._take_picture_action.setEnabled(self._image_capture.isReadyForCapture())
             self._image_capture.readyForCaptureChanged.connect(self._take_picture_action.setEnabled)
             self._camera.start()
         else:
-            self.setWindowTitle("PySide6 Camera Example")
+            self.setWindowTitle("qtpy Camera Example")
             self._take_picture_action.setEnabled(False)
             self.show_status_message("Camera unavailable")
 

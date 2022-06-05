@@ -8,14 +8,14 @@ QPlainTextEdit based G-code editor with syntax highlighting.
 import os
 import oyaml as yaml
 
-from PySide6.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
+from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
                          Property)
 
-from PySide6.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
+from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
                         QTextCharFormat, QTextCursor)
 
-from PySide6.QtWidgets import (QApplication, QTextEdit, QLineEdit,
+from qtpy.QtWidgets import (QApplication, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
                             QPlainTextDocumentLayout)
 

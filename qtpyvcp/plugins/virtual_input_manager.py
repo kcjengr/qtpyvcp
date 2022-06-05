@@ -1,6 +1,6 @@
 
 
-from PySide6.QtWidgets import QApplication, QSpinBox, QDoubleSpinBox, QAbstractButton
+from qtpy.QtWidgets import QApplication, QSpinBox, QDoubleSpinBox, QAbstractButton
 
 from qtpyvcp.app.launcher import _initialize_object_from_dict
 from qtpyvcp.utilities.settings import setting

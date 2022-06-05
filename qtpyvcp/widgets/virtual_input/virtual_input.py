@@ -1,10 +1,10 @@
 import os
 
 import linuxcnc
-from PySide6 import QtWidgets
-from PySide6.QtCore import Slot, Qt, QEvent, QPoint
-from PySide6.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
-from PySide6.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
+from qtpy import QtWidgets
+from qtpy.QtCore import Slot, Qt, QEvent, QPoint
+from qtpy.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
+from qtpy.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
 
 
 from qtpyvcp.widgets.virtual_input.keyboard_ui import Ui_Form

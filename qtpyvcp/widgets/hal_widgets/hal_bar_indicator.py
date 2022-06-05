@@ -65,7 +65,7 @@ class HalBarIndicator(BarIndicatorBase, HALWidget):
 # testing
 if __name__ == "__main__":
     import sys
-    from PySide6.QtWidgets import QApplication
+    from qtpy.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = HalBarIndicator()
     w.setObjectName('hal-bar')

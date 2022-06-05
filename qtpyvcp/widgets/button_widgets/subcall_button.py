@@ -1,8 +1,8 @@
 import os
 import re
 
-import PySide6
-from PySide6.QtCore import Property
+import qtpy
+from qtpy.QtCore import Property
 
 from qtpyvcp.utilities.info import Info
 INFO = Info()
@@ -127,7 +127,7 @@ class SubCallButton(VCPButton):
 
 if __name__ == "__main__":
     import sys
-    from PySide6.QtWidgets import QApplication
+    from qtpy.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = SubCallButton()
     w.show()

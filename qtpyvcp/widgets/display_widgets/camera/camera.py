@@ -45,9 +45,9 @@ import os
 
 from qtpy import uic
 
-from PySide6.QtCore import QByteArray, Qt, QTimer
-from PySide6.QtGui import QPalette, QPixmap, QAction, QActionGroup
-from PySide6.QtWidgets import (QApplication, QWidget, QMessageBox)
+from qtpy.QtCore import QByteArray, Qt, QTimer
+from qtpy.QtGui import QPalette, QPixmap, QAction, QActionGroup
+from qtpy.QtWidgets import (QApplication, QWidget, QMessageBox)
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -55,11 +55,11 @@ LOG = logger.getLogger(__name__)
 
 multimedia_available = True
 try:
-    from PySide6.QtMultimedia import (QAudioEncoderSettings, QCamera,
+    from qtpy.QtMultimedia import (QAudioEncoderSettings, QCamera,
                                     QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
                                     QMediaRecorder, QVideoEncoderSettings)
 
-    # FixMe: PySide6 is missing QMediaMetaData bingings.
+    # FixMe: qtpy is missing QMediaMetaData bingings.
     #        https://wiki.qt.io/Qt_for_Python_Missing_Bindings
 
     from .settings import Settings

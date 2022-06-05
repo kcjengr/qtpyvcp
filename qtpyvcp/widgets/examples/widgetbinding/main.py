@@ -50,7 +50,7 @@
 
 import sys
 
-from PySide6.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication
 
 from dialog import Dialog
 

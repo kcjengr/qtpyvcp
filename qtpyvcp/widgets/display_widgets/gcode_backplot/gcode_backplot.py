@@ -22,10 +22,10 @@ import os
 import gcode
 import time
 
-from PySide6.QtWidgets import QApplication, QProgressBar, QPushButton, QHBoxLayout, QVBoxLayout
+from qtpy.QtWidgets import QApplication, QProgressBar, QPushButton, QHBoxLayout, QVBoxLayout
 
-from PySide6.QtCore import Property, Signal, Slot, QTimer
-from PySide6.QtGui import QColor
+from qtpy.QtCore import Property, Signal, Slot, QTimer
+from qtpy.QtGui import QColor
 
 from qtpyvcp.widgets.display_widgets.gcode_backplot.qbackplot import QBackPlot
 

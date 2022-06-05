@@ -1,7 +1,7 @@
 
 
-from PySide6.QtWidgets import QDoubleSpinBox
-from PySide6.QtCore import QEvent
+from qtpy.QtWidgets import QDoubleSpinBox
+from qtpy.QtCore import QEvent
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget

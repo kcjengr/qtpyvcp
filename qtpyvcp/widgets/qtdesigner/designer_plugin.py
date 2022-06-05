@@ -1,5 +1,5 @@
-from PySide6.QtGui import QIcon
-from PySide6.QtDesigner import QDesignerCustomWidgetInterface
+from qtpy.QtGui import QIcon
+from qtpy.QtDesigner import QDesignerCustomWidgetInterface
 
 
 from .plugin_extension import ExtensionFactory, Q_TYPEID

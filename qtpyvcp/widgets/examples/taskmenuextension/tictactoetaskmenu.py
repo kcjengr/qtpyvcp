@@ -50,10 +50,10 @@
 
 from tictactoe import TicTacToe
 
-from PySide6.QtCore import QObject, Slot
-from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout
-from PySide6.QtDesigner import (QExtensionFactory, QPyDesignerTaskMenuExtension)
+from qtpy.QtCore import QObject, Slot
+from qtpy.QtGui import QAction
+from qtpy.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout
+from qtpy.QtDesigner import (QExtensionFactory, QPyDesignerTaskMenuExtension)
 
 
 class TicTacToeDialog(QDialog):

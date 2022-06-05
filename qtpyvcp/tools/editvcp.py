@@ -47,7 +47,7 @@ from subprocess import Popen, PIPE, STDOUT
 from pkg_resources import iter_entry_points
 
 from docopt import docopt
-from PySide6.QtWidgets import QApplication, QFileDialog
+from qtpy.QtWidgets import QApplication, QFileDialog
 
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.logger import initBaseLogger

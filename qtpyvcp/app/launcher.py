@@ -4,8 +4,8 @@ import time
 import importlib
 from pkg_resources import iter_entry_points
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QApplication
 
 import qtpyvcp
 from qtpyvcp import hal

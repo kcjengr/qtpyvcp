@@ -38,9 +38,9 @@
 ##
 #############################################################################
 
-from PySide6.QtCore import Qt, QPoint, QRect, QSize, Property, Slot
-from PySide6.QtGui import QMouseEvent, QPainter, QPen
-from PySide6.QtWidgets import QWidget
+from qtpy.QtCore import Qt, QPoint, QRect, QSize, Property, Slot
+from qtpy.QtGui import QMouseEvent, QPainter, QPen
+from qtpy.QtWidgets import QWidget
 
 
 EMPTY = '-'

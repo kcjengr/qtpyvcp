@@ -1,7 +1,7 @@
 
 import inspect
 
-from PySide6.QtWidgets import QWidget
+from qtpy.QtWidgets import QWidget
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)

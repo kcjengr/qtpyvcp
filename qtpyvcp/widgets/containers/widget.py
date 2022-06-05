@@ -1,6 +1,6 @@
 
 
-from PySide6.QtWidgets import QWidget
+from qtpy.QtWidgets import QWidget
 from qtpyvcp.widgets.base_widgets import VCPWidget
 
 

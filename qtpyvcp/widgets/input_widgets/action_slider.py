@@ -1,6 +1,6 @@
 import linuxcnc
-from PySide6.QtWidgets import QSlider
-from PySide6.QtCore import Slot, Property
+from qtpy.QtWidgets import QSlider
+from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.actions import bindWidget
 

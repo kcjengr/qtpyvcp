@@ -1,5 +1,5 @@
 import linuxcnc
-from PySide6.QtWidgets import QComboBox
+from qtpy.QtWidgets import QComboBox
 
 from qtpyvcp.utilities.settings import setting
 

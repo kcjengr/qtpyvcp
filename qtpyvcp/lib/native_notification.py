@@ -22,10 +22,10 @@ import sys
 
 from datetime import datetime
 
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QIcon, QScreen
+from qtpy.QtCore import Qt, Signal
+from qtpy.QtGui import QIcon, QScreen
 
-from PySide6.QtWidgets import (QWidget, QGridLayout, QLabel, QPushButton,
+from qtpy.QtWidgets import (QWidget, QGridLayout, QLabel, QPushButton,
                             QVBoxLayout, QApplication,
                             QDialog, QScrollArea)
 

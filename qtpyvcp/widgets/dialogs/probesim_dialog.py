@@ -18,8 +18,8 @@
 
 import subprocess
 
-from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import QPushButton, QVBoxLayout, QCheckBox
+from qtpy.QtCore import QTimer
+from qtpy.QtWidgets import QPushButton, QVBoxLayout, QCheckBox
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 

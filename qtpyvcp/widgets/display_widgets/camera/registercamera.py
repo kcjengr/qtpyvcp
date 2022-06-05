@@ -51,7 +51,7 @@
 from camera import Camera
 from cameraplugin import CameraPlugin
 
-from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
+from qtpy.QtDesigner import QPyDesignerCustomWidgetCollection
 
 # Set PYSIDE_DESIGNER_PLUGINS to point to this directory and load the plugin
 

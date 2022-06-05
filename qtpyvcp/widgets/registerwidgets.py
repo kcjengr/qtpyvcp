@@ -1,6 +1,6 @@
 import os
 
-from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
+from qtpy.QtDesigner import QPyDesignerCustomWidgetCollection
 
 os.environ['DESIGNER'] = 'true'
 

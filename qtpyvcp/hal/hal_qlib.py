@@ -4,7 +4,7 @@ import signal
 import _hal
 import hal
 
-from PySide6.QtCore import QObject, Signal, QTimer
+from qtpy.QtCore import QObject, Signal, QTimer
 
 from qtpyvcp.utilities.logger import getLogger
 
@@ -117,7 +117,7 @@ class QComponent(QObject):
 # testing
 
 def main():
-    from PySide6.QtWidgets import QApplication
+    from qtpy.QtWidgets import QApplication
 
     app = QApplication([])
 

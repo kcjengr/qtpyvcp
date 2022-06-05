@@ -38,7 +38,7 @@ import os
 
 import linuxcnc
 
-from PySide6.QtCore import QFileSystemWatcher, QTimer, Signal
+from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger

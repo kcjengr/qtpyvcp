@@ -2,8 +2,8 @@ import os
 from traceback import format_exception
 
 from qtpy import uic
-from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QDialog, QApplication
+from qtpy.QtCore import Slot
+from qtpy.QtWidgets import QDialog, QApplication
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
@@ -64,9 +64,9 @@ class ErrorDialog(BaseDialog):
         issue_title = "{}: {}".format(self.exc_typ, self.exc_msg)
         issue_body = ISSUE_TEMPLATE.format(
             tracback=self.exc_tb.strip(),
-            qt_version=PySide6.QT_VERSION,
-            qt_api=PySide6.API_NAME,
-            api_version=PySide6.PYQT_VERSION or PySide6.PYSIDE_VERSION,
+            qt_version=qtpy.QT_VERSION,
+            qt_api=qtpy.API_NAME,
+            api_version=qtpy.PYQT_VERSION or qtpy.PYSIDE_VERSION,
             dist=subprocess.check_output(['lsb_release', '-d']).strip(),
             kernel=subprocess.check_output(['uname', '-r']).strip(),
             lcnc_version=linuxcnc.version,
