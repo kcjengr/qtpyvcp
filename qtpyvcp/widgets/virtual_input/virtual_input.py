@@ -1,11 +1,13 @@
 import os
 
 import linuxcnc
-from qtpy import uic, QtWidgets
+from qtpy import QtWidgets
 from qtpy.QtCore import Slot, Qt, QEvent, QPoint
 from qtpy.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
 from qtpy.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
 
+
+from qtpyvcp.widgets.virtual_input.keyboard_ui import Ui_Form
 
 class VirtualInput(QWidget):
     """VirtualInput
@@ -25,7 +27,10 @@ class VirtualInput(QWidget):
         self.caps_on = False
         self.focus_object = None
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.BypassWindowManagerHint)
-        uic.loadUi(ui_file, self)
+        
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+        # uic.loadUi(ui_file, self)
 
     @Slot(QAbstractButton)
     def on_buttonGroup_buttonPressed(self, btn):

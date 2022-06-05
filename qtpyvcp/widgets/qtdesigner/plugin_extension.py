@@ -9,7 +9,7 @@
 #   PyDM Project: https://github.com/slaclab/pydm
 #   PyDM Licence: https://github.com/slaclab/pydm/blob/master/LICENSE.md
 
-from qtpy.QtWidgets import QAction
+from qtpy.QtGui import QAction
 from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 
 Q_TYPEID = {

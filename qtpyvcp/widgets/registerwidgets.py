@@ -1,11 +1,6 @@
 import os
-import sys
-import qtpy
 
-if qtpy.API != 'pyqt5':
-    print("ERROR: You must use the PyQt5 bindings in order to use the custom \n"
-          "widgets in QtDesigner.")
-    sys.exit()
+from qtpy.QtDesigner import QPyDesignerCustomWidgetCollection
 
 os.environ['DESIGNER'] = 'true'
 
@@ -34,3 +29,16 @@ from qtpyvcp.widgets.hal_widgets.designer_plugins import *
 from qtpyvcp.widgets.containers.designer_plugins import *
 
 from qtpyvcp.widgets.external_widgets import *
+
+# Set PYSIDE_DESIGNER_PLUGINS to point to this directory and load the plugin
+
+
+if __name__ == '__main__':
+    QPyDesignerCustomWidgetCollection.addCustomWidget(ProbePlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(ActionButtonPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(ActionCheckBoxPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(ActionSpinBoxPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(MacroButtonPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(LedButtonPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(MDIButtonPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(DialogButtonPlugin())

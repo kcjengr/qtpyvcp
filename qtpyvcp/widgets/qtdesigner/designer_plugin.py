@@ -1,12 +1,13 @@
 from qtpy.QtGui import QIcon
-from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
+from qtpy.QtDesigner import QDesignerCustomWidgetInterface
+
 
 from .plugin_extension import ExtensionFactory, Q_TYPEID
 from .designer_hooks import DesignerHooks
 
 from .rules_editor import RulesEditorExtension
 
-class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
+class _DesignerPlugin(QDesignerCustomWidgetInterface):
 
     group_name = None
 
@@ -88,6 +89,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
         return self.initialized
 
     def createWidget(self, parent):
+        LOG.debug(parent)
         w = self.pluginClass()(parent)
         w.extensions = self.designerExtensions()
         return w

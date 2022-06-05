@@ -1,6 +1,7 @@
 import os
 import re
-from qtpy.QtWidgets import qApp
+
+import qtpy
 from qtpy.QtCore import Property
 
 from qtpyvcp.utilities.info import Info

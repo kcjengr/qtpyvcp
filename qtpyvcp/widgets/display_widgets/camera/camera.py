@@ -46,9 +46,8 @@ import os
 from qtpy import uic
 
 from qtpy.QtCore import QByteArray, Qt, QTimer
-from qtpy.QtGui import QPalette, QPixmap
-from qtpy.QtWidgets import (QAction, QActionGroup, QApplication,
-                             QWidget, QMessageBox)
+from qtpy.QtGui import QPalette, QPixmap, QAction, QActionGroup
+from qtpy.QtWidgets import (QApplication, QWidget, QMessageBox)
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -60,7 +59,7 @@ try:
                                     QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
                                     QMediaRecorder, QVideoEncoderSettings)
 
-    # FixMe: PySide2 is missing QMediaMetaData bingings.
+    # FixMe: qtpy is missing QMediaMetaData bingings.
     #        https://wiki.qt.io/Qt_for_Python_Missing_Bindings
 
     from .settings import Settings

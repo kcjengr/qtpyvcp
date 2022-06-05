@@ -73,10 +73,9 @@ See the [documentation](https://qtpyvcp.com/).
 
 ## Dependencies
 
-* LinuxCNC 2.9-pre^
+* LinuxCNC 2.9^ or master
 * Python 3.9^
-* Qt 5.12^
-* PyQt5 or PySide2
+* PySide6
 
 QtPyVCP is developed and tested using the Debian 11 x64 (bullseye).
 It should run on any system that can have PyQt5 installed, but Debian 11 x64 is the only OS

@@ -125,7 +125,7 @@ def launch_designer(opts=DotDict()) -> None:
             LOG.error(INSTALLED_ERROR_MSG)
             sys.exit(1)
 
-    cmd = ['designer']
+    cmd = ['pyside6-designer']
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
 
@@ -185,8 +185,9 @@ def launch_designer(opts=DotDict()) -> None:
     sys.path.insert(0, base)
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
-    os.environ['QT_SELECT'] = 'qt5'
-    os.environ['PYQTDESIGNERPATH'] = os.path.join(base, '../widgets')
+    os.environ['QT_SELECT'] = 'qt6'
+    # os.environ['QT_PLUGIN_PATH'] = "/home/turboss/Proyectos/pyside-setup/pyside3_install/py3.9-qt6.2.2-64bit-release/plugins"
+    os.environ['PYSIDE_DESIGNER_PLUGINS'] = os.path.join(base, '/home/turboss/Proyectos/qtpyvcp/qtpyvcp/widgets')
 
     LOG.info("Starting QtDesigner ...")
 

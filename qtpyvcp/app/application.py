@@ -8,7 +8,7 @@ import imp
 import inspect
 from pkg_resources import iter_entry_points
 
-from qtpy import API
+# from qtpy import API
 from qtpy.QtGui import QFontDatabase
 from qtpy.QtCore import QTimer, Slot, Qt
 from qtpy.QtWidgets import QApplication, QStyleFactory
@@ -25,13 +25,13 @@ from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 # this will initialise a base logger with default log level of DEBUG
 LOG = initBaseLogger('qtpyvcp')
 
-# Needed to silence this PySide2 warning:
+# Needed to silence this qtpy warning:
 #    Qt WebEngine seems to be initialized from a plugin. Please set
 #    Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute
 #    before constructing QGuiApplication.
-if API == 'pyside2':
-    from qtpy.QtCore import Qt
-    QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
+# if API == 'pyside2':
+from qtpy.QtCore import Qt
+QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
 
 class VCPApplication(QApplication):

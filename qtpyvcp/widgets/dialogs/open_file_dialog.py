@@ -52,8 +52,8 @@ class OpenFileDialog(QFileDialog, VCPPrimitiveWidget):
             self.setSidebarUrls([QUrl(url) for url in urls])
 
     def initialize(self):
-        self.setViewMode(self.dm.getData('app.openFileDialog.viewMode',
-                                         OpenFileDialog.Detail))
+        self.setViewMode(QFileDialog.ViewMode(self.dm.getData('app.openFileDialog.viewMode',
+                                         OpenFileDialog.Detail)))
 
         urls = self.dm.getData('app.openFileDialog.sidebarUrls')
         self.setSidebarUrlsFromStringList(urls)
