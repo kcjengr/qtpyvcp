@@ -1,4 +1,4 @@
-from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
+from qtpy.QtCore import Qt, Slot, Signal, Property, QModelIndex, QSortFilterProxyModel
 from qtpy.QtGui import QStandardItemModel, QColor, QBrush
 from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
@@ -215,8 +215,12 @@ class ToolModel(QStandardItemModel):
 
 
 class ToolTable(QTableView):
+    toolSelected = Signal(int)
+
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
+        
+        self.clicked.connect(self.onClick)
 
         self.tool_model = ToolModel(self)
 
@@ -328,7 +332,14 @@ class ToolTable(QTableView):
 
     def selectedRow(self):
         """Returns the row number of the currently selected row, or 0"""
-        return self.selectionModel().currentIndex().row()
+        tool_no = self.selectionModel().currentIndex().row()
+        return tool_no
+    
+    def onClick(self, index):
+        row = index.row()
+        tnum = self.tool_model.toolDataFromRow(row)['T']
+        
+        self.toolSelected.emit(tnum)
 
     def confirmAction(self, message):
         if not self._confirm_actions:
@@ -339,6 +350,7 @@ class ToolTable(QTableView):
                                    message,
                                    QMessageBox.Yes,
                                    QMessageBox.No)
+        
         if box == QMessageBox.Yes:
             return True
         else:

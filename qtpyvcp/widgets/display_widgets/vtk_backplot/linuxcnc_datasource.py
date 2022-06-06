@@ -157,9 +157,13 @@ class LinuxCncDataSource(QObject):
 
     def __getRotationOfActiveWcs(self):
         if not IN_DESIGNER:
-            current_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-            LOG.debug("-----current_wcs index: {}".format(current_wcs))
-            return current_wcs[9]
+            try:
+                current_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+                LOG.debug("-----current_wcs index: {}".format(current_wcs))
+                return current_wcs[9]
+            except KeyError:
+                LOG.warn('-----KeyError: Likely means no program loaded.')
+                return 0
         else:
             return 0
 
