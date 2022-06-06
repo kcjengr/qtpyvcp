@@ -20,12 +20,13 @@ from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
-from qtpyvcp.utilities.settings import connectSetting
+from qtpyvcp.utilities.settings import connectSetting, getSetting
+from qtpyvcp.plugins import iterPlugins, getPlugin
 
 from .base_backplot import BaseBackPlot
 from .axes_actor import AxesActor
 from .machine_actor import MachineActor
-from .tool_actor import ToolActor
+from .tool_actor import ToolActor, ToolOffsetActor, SpindleActor
 from .path_cache_actor import PathCacheActor
 from .program_bounds_actor import ProgramBoundsActor
 from .vtk_canon import VTKCanon
@@ -141,7 +142,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.axes_actor.SetUserTransform(transform)
 
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
+            
+            self.spindle_actor = SpindleActor(self._datasource)
             self.tool_actor = ToolActor(self._datasource)
+            self.tool_offset_actor = ToolOffsetActor(self._datasource)
 
             self.offset_axes = OrderedDict()
             self.program_bounds_actors = OrderedDict()
@@ -176,6 +180,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # self.status.g5x_index.notify(self.update_g5x_index)
 
             # view settings
+            connectSetting('backplot.show-spindle', self.showSpindle)
             connectSetting('backplot.show-grid', self.showGrid)
             connectSetting('backplot.show-program-bounds', self.showProgramBounds)
             # connectSetting('backplot.show-program-labels', self.showProgramLabels)
@@ -228,7 +233,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
 
+            self.renderer.AddActor(self.spindle_actor)
             self.renderer.AddActor(self.tool_actor)
+            self.renderer.AddActor(self.tool_offset_actor)
             self.renderer.AddActor(self.machine_actor)
             self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
@@ -490,7 +497,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         tool_transform.RotateY(-self.spindle_rotation[1])
         tool_transform.RotateZ(-self.spindle_rotation[2])
 
+        self.spindle_actor.SetUserTransform(tool_transform)
         self.tool_actor.SetUserTransform(tool_transform)
+        self.tool_offset_actor.SetUserTransform(tool_transform)
 
         tlo = self._datasource.getToolOffset()
         self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
@@ -598,8 +607,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("update_tool")
 
         self.renderer.RemoveActor(self.tool_actor)
+        self.renderer.RemoveActor(self.tool_offset_actor)
 
         self.tool_actor = ToolActor(self._datasource)
+        self.tool_offset_actor = ToolOffsetActor(self._datasource)
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
@@ -608,8 +619,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         tool_transform.RotateZ(-self.spindle_rotation[2])
 
         self.tool_actor.SetUserTransform(tool_transform)
+        self.tool_offset_actor.SetUserTransform(tool_transform)
 
         self.renderer.AddActor(self.tool_actor)
+        self.renderer.AddActor(self.tool_offset_actor)
 
         self.renderer_window.Render()
 
@@ -621,6 +634,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         else:
             self.setViewOrtho()
 
+    @Slot(bool)
+    @Slot(object)
+    def showSpindle(self, value):
+    
+        self.spindle_actor.SetVisibility(value)
+            
+        # self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
+        
     @Slot()
     def setViewOrtho(self):
         self.camera.ParallelProjectionOn()
