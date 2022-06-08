@@ -24,7 +24,7 @@ LOG = logger.getLogger(__name__)
 
 
 class SpindleActor(vtk.vtkActor):
-    def __init__(self, linuxcncDataSource):
+    def __init__(self, linuxcncDataSource, model_path):
         super(SpindleActor, self).__init__()
         
         self._datasource = linuxcncDataSource
@@ -40,7 +40,7 @@ class SpindleActor(vtk.vtkActor):
         start_point = [-tool.xoffset, -tool.yoffset, -tool.zoffset]
         end_point = [0, 0, 0]
         
-        filename = self._datasource._inifile.find("DISPLAY", "SPINDLE")
+        filename = model_path
         # filename = os.path.join(os.path.dirname(__file__), "models/laser.stl")
 
         source = vtk.vtkSTLReader()

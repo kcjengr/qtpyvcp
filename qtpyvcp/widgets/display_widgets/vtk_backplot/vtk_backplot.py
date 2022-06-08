@@ -143,7 +143,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
             
-            self.spindle_actor = SpindleActor(self._datasource)
+            self.spindle_model = self._datasource._inifile.find("DISPLAY", "SPINDLE")
+            
+            if self.spindle_model is not None:
+                self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
+                
             self.tool_actor = ToolActor(self._datasource)
             self.tool_offset_actor = ToolOffsetActor(self._datasource)
 
@@ -232,8 +236,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
-
-            self.renderer.AddActor(self.spindle_actor)
+            
+            if self.spindle_model is not None:
+                self.renderer.AddActor(self.spindle_actor)
+            
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_offset_actor)
             self.renderer.AddActor(self.machine_actor)
