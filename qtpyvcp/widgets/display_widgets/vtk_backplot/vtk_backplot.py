@@ -503,7 +503,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         tool_transform.RotateY(-self.spindle_rotation[1])
         tool_transform.RotateZ(-self.spindle_rotation[2])
 
-        self.spindle_actor.SetUserTransform(tool_transform)
+        if self.spindle_model is not None:
+            self.spindle_actor.SetUserTransform(tool_transform)
+
         self.tool_actor.SetUserTransform(tool_transform)
         self.tool_offset_actor.SetUserTransform(tool_transform)
 
