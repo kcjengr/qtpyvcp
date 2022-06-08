@@ -171,6 +171,18 @@ class Notifications(DataPlugin):
 
         if self.persistent:
             self.messages = self.data_manager.getData('messages', [])
+        
+        # Enable notifications before there is a main window, captureMessage wins postGuiInitialise.
+        # Initalice later with a main window set as parent in postGuiInitilise ( FIXME )
+
+        if self.enabled:
+            if self.mode == "native":
+                self.notification_dispatcher = NativeNotification()
+                self.notification_dispatcher.maxMessages = self.max_messages
+            elif self.mode == "dbus":
+                self.notification_dispatcher = DBusNotification("qtpyvcp")
+            else:
+                raise Exception("error notification mode {}".format(self.mode))
 
         self.startTimer(200)
 
