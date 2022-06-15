@@ -22,7 +22,7 @@ INFO = Info()
 
 class Axis(IntEnum):
     ALL = -1
-    X, Y, Z, A, B, C, U, V, W = list(range(9))
+    X, Y, Z, A, B, C, U, V, W = range(9)
 
 
 class Units(IntEnum):
@@ -68,6 +68,7 @@ class DROBaseWidget(VCPWidget):
         self.mm_fmt_setting = None
         self.deg_fmt_setting = None
         self.lathe_mode_setting = None
+        self.wrapped_rotary_setting = None
 
         self._angular_axis = False
 
@@ -76,6 +77,10 @@ class DROBaseWidget(VCPWidget):
         self._g7_active = False
         self._lathe_mode = LatheMode.Auto  # latheDiameterMode
 
+        # wrapped rotary
+        self._is_wrapped_rotary = False
+        
+        
         self._fmt = self._in_fmt
         self._input_type = 'number:float'
 
@@ -146,8 +151,15 @@ class DROBaseWidget(VCPWidget):
             else:
                 self.setText(self._fmt % pos[self._anum])
 
+        elif self._is_wrapped_rotary :
+            temp_pos = pos[self._anum]
+            while temp_pos > 360 :
+                temp_pos = temp_pos - 360
+            while temp_pos < 0:
+                temp_pos = temp_pos + 360
+            self.setText(self._fmt % temp_pos) 
         else:
-            self.setText(self._fmt % pos[self._anum])
+            self.setText(self._fmt % pos[self._anum] )
 
     @Property(int)
     def referenceType(self):
@@ -262,6 +274,15 @@ class DROBaseWidget(VCPWidget):
         self._lathe_mode = LatheMode(mode)
         self.updateValue()
 
+    @Property(bool)
+    def wrappedRotaryMode (self):
+        return self._is_wrapped_rotary
+
+    @wrappedRotaryMode.setter
+    def wrappedRotaryMode(self, mode):
+        self._is_wrapped_rotary = mode
+        self.updateValue()
+        
     @Property(str)
     def inputType(self):
         return self._input_type
