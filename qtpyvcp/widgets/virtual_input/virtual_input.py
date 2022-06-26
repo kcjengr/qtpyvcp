@@ -34,7 +34,7 @@ class VirtualInput(QWidget):
         
         ui_file_path = os.path.join(path, "keyboard.ui")
                 
-        ui_file = QFile(ui_file_name)
+        ui_file = QFile(ui_file_path)
         if not ui_file.open(QIODevice.ReadOnly):
             print(f"Cannot open {ui_file_name}: {ui_file.errorString()}")
             

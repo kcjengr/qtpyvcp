@@ -1,5 +1,5 @@
-from qtpy.QtGui import QIcon
-from qtpy.QtDesigner import QDesignerCustomWidgetInterface
+from PySide6.QtGui import QIcon
+from PySide6.QtDesigner import QDesignerCustomWidgetInterface
 
 
 from .plugin_extension import ExtensionFactory, Q_TYPEID
@@ -12,7 +12,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
     group_name = None
 
     def __init__(self, parent=None):
-        super(_DesignerPlugin, self).__init__(parent=parent)
+        super().__init__()
         self.initialized = False
         self.manager = None
 
@@ -89,7 +89,6 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
         return self.initialized
 
     def createWidget(self, parent):
-        LOG.debug(parent)
         w = self.pluginClass()(parent)
         w.extensions = self.designerExtensions()
         return w

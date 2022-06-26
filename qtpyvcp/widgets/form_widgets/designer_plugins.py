@@ -29,6 +29,7 @@ from qtpyvcp.widgets.form_widgets.probe_widget.probe import SubCaller
 
 
 class ProbePlugin(_DesignerPlugin):
+    
     def pluginClass(self):
         return SubCaller
 
@@ -37,3 +38,8 @@ class ProbePlugin(_DesignerPlugin):
 
     def isContainer(self):
         return True
+    
+    def createWidget(self, parent):
+        t = SubCaller(parent)
+        return t
+

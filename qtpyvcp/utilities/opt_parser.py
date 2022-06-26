@@ -188,7 +188,7 @@ def apply_opts(opts):
             sys.exit()
 
         # destroy the evidence
-        qApp.deleteLater()
+        app.deleteLater()
         del app
 
     # normalize log file path
