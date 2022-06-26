@@ -1,13 +1,15 @@
 import os
 
 import linuxcnc
+
+from PySide6.QtUiTools import QUiLoader
+
 from qtpy import QtWidgets
-from qtpy.QtCore import Slot, Qt, QEvent, QPoint
+from qtpy.QtCore import Slot, Qt, QEvent, QFile, QIODevice
 from qtpy.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
 from qtpy.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
 
 
-from qtpyvcp.widgets.virtual_input.keyboard_ui import Ui_Form
 
 class VirtualInput(QWidget):
     """VirtualInput
@@ -22,14 +24,32 @@ class VirtualInput(QWidget):
     """
 
     def __init__(self, ui_file, parent=None):
-        super(VirtualInput, self).__init__(parent)
+        super(VirtualInput, self).__init__()
 
         self.caps_on = False
         self.focus_object = None
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.BypassWindowManagerHint)
         
-        self.ui = Ui_Form()
-        self.ui.setupUi(self)
+        path = os.path.dirname(os.path.abspath(__file__))
+        
+        ui_file_path = os.path.join(path, "keyboard.ui")
+                
+        ui_file = QFile(ui_file_name)
+        if not ui_file.open(QIODevice.ReadOnly):
+            print(f"Cannot open {ui_file_name}: {ui_file.errorString()}")
+            
+        loader = QUiLoader()
+        window = loader.load(ui_file_path)
+        ui_file.close()
+        
+        if not window:
+            print(loader.errorString())
+            sys.exit(-1)
+            
+        window.show()
+        
+        # self.ui = Ui_Form()
+        # self.ui.setupUi(self)
         # uic.loadUi(ui_file, self)
 
     @Slot(QAbstractButton)

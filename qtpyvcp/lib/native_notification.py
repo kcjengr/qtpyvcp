@@ -73,7 +73,7 @@ class NativeNotification(BaseDialog):
 
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowSystemMenuHint)
 
-        resolution = QScreen().screenGeometry(-1)
+        resolution = QScreen().geometry()
         screenWidth = resolution.width()
         screenHeight = resolution.height()
 

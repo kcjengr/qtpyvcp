@@ -212,7 +212,7 @@ def apply_opts(opts):
     if LOG.getEffectiveLevel() == logger.logLevelFromName("DEBUG"):
         import qtpy
         LOG.debug("Qt Version: %s", qtpy.QtCore.__version__)
-        LOG.debug("Qt API: %s", qtpy.__version_info__)
+        # LOG.debug("Qt API: %s", qtpy.QtCore.__version_info__)
         LOG.debug("QtPy Version: %s", qtpy.__version__)
 
 
@@ -278,7 +278,7 @@ def printSystemInfo():
 
         # qt info
         qt_version=qtpy.QtCore.__version__,
-        qt_api=qtpy.__version_info__,
+        qt_api=qtpy.QtCore.__version_info__,
         api_version=qtpy.__version__,
 
         # system info

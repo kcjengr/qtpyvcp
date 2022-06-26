@@ -20,7 +20,7 @@
 import linuxcnc
 import os
 
-from qtpy.QtUiTools import QUiLoader
+from PySide6.QtUiTools import QUiLoader
 from qtpy.QtWidgets import QDialog
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog

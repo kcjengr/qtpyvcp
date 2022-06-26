@@ -187,7 +187,7 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
     os.environ['QT_SELECT'] = 'qt6'
     # os.environ['QT_PLUGIN_PATH'] = "/home/turboss/Proyectos/pyside-setup/pyside3_install/py3.9-qt6.2.2-64bit-release/plugins"
-    os.environ['PYSIDE_DESIGNER_PLUGINS'] = os.path.join(base, '/home/turboss/Proyectos/qtpyvcp/qtpyvcp/widgets')
+    os.environ['PYSIDE_DESIGNER_PLUGINS'] = os.path.join(base, '/home/turboss/Projects/qtpyvcp/qtpyvcp/widgets')
 
     LOG.info("Starting QtDesigner ...")
 

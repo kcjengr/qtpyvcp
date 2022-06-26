@@ -1,6 +1,6 @@
 import os
 
-from qtpy.QtDesigner import QPyDesignerCustomWidgetCollection
+from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
 
 os.environ['DESIGNER'] = 'true'
 
@@ -22,12 +22,12 @@ from qtpyvcp.app.launcher import loadPlugins
 loadPlugins(CONFIG['data_plugins'])
 
 from qtpyvcp.widgets.form_widgets.designer_plugins import *
-from qtpyvcp.widgets.button_widgets.designer_plugins import *
-from qtpyvcp.widgets.display_widgets.designer_plugins import *
-from qtpyvcp.widgets.input_widgets.designer_plugins import *
-from qtpyvcp.widgets.hal_widgets.designer_plugins import *
-from qtpyvcp.widgets.containers.designer_plugins import *
-from qtpyvcp.widgets.db_widgets.designer_plugins import *
+# from qtpyvcp.widgets.button_widgets.designer_plugins import *
+# from qtpyvcp.widgets.display_widgets.designer_plugins import *
+# from qtpyvcp.widgets.input_widgets.designer_plugins import *
+# from qtpyvcp.widgets.hal_widgets.designer_plugins import *
+# from qtpyvcp.widgets.containers.designer_plugins import *
+# from qtpyvcp.widgets.db_widgets.designer_plugins import *
 
 from qtpyvcp.widgets.external_widgets import *
 

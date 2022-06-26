@@ -1,9 +1,9 @@
 import os
 import sys
 
-from qtpy.QtUiTools import QUiLoader
-from qtpy.QtGui import QKeySequence, QAction, QActionGroup, QShortcut
-from qtpy.QtCore import Qt, Slot, QTimer
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtGui import QKeySequence, QShortcut, QAction, QActionGroup
+from PySide6.QtCore import Qt, Slot, QTimer
 from qtpy.QtWidgets import QMainWindow, QApplication, QMessageBox, \
     QMenu, QMenuBar, QLineEdit
 
@@ -16,8 +16,6 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
-
-from mini_ui import Ui_Form
 
 LOG = logger.getLogger(__name__)
 INFO = Info()
@@ -37,17 +35,33 @@ class VCPMainWindow(QMainWindow):
 
         self.app = QApplication.instance()
 
-        self.confirm_exit = confirm_exit if opts.confirm_exit is None else opts.confirm_exit
-
+        self.confirm_exit = confirm_exit if opts.confirm_exit is None else opts.confirm_exitç
+        
+        print(ui_file)
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
-            # self.loader = QUiLoader()
-
-            # self.loadUi(ui_file)
-            # self.initUi()
-            self.ui = Ui_Form()
-            self.ui.setupUi(self)
+            
+            loader = QUiLoader()
+            window = loader.load(ui_file)
+            ui_file.close()
+            
+            if not window:
+                print(loader.errorString())
+                sys.exit(-1)
+            
+            self.setCentralWidget(window)
+            
+            window.show()
+            
+            
+            #
+            # from mini_ui import Ui_Form # Fixme pyside6 issues
+            #
+            # # self.loadUi(ui_file)
+            # # self.initUi()
+            # self.ui = Ui_Form()
+            # self.ui.setupUi(self)
 
         if menu is not None:
             try:

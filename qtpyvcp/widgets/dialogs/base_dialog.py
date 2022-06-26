@@ -2,7 +2,7 @@
 
 import os
 
-from qtpy.QtUiTools import QUiLoader
+from PySide6.QtUiTools import QUiLoader
 
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QDialog

@@ -1,7 +1,9 @@
 import os
 import sys
-from qtpy.QtGui import QAction
-from qtpy.QtWidgets import QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox, QDial
+
+
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox, QDial
 
 from . import machine_actions as machine
 from . import program_actions as program

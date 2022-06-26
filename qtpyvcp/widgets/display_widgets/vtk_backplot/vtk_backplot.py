@@ -1034,12 +1034,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.SetBackground(color.getRgbF()[:3])
         self.renderer_window.Render()
 
-    @backgroundColor.reset
-    def backgroundColor(self):
-        self._background_color = QColor(0, 0, 0)
-
-        self.renderer.GradientBackgroundOff()
-        self.renderer_window.Render()
+    # @backgroundColor.reset
+    # def backgroundColor(self):
+    #     self._background_color = QColor(0, 0, 0)
+    #
+    #     self.renderer.GradientBackgroundOff()
+    #     self.renderer_window.Render()
 
 
     @Property(QColor)
@@ -1054,12 +1054,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.SetBackground2(color2.getRgbF()[:3])
         self.renderer_window.Render()
 
-    @backgroundColor2.reset
-    def backgroundColor2(self):
-        self._background_color2 = QColor(0, 0, 0)
-
-        self.renderer.GradientBackgroundOff()
-        self.renderer_window.Render()
+    # @backgroundColor2.reset
+    # def backgroundColor2(self):
+    #     self._background_color2 = QColor(0, 0, 0)
+    #
+    #     self.renderer.GradientBackgroundOff()
+    #     self.renderer_window.Render()
 
     @Property(bool)
     def enableProgramTicks(self):
@@ -1079,9 +1079,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def traverseColor(self, color):
         self._traverse_color = color
 
-    @traverseColor.reset
-    def traverseColor(self):
-        self._traverse_color = self._default_traverse_color
+    # @traverseColor.reset
+    # def traverseColor(self):
+    #     self._traverse_color = self._default_traverse_color
 
     # Arcfeed color property
 
@@ -1093,9 +1093,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def arcfeedColor(self, color):
         self._arcfeed_color = color
 
-    @arcfeedColor.reset
-    def arcfeedColor(self):
-        self._arcfeed_color = self._default_arcfeed_color
+    # @arcfeedColor.reset
+    # def arcfeedColor(self):
+    #     self._arcfeed_color = self._default_arcfeed_color
 
     # Feed color property
 
@@ -1107,9 +1107,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def feedColor(self, color):
         self._feed_color = color
 
-    @feedColor.reset
-    def feedColor(self):
-        self._feed_color = self._default_feed_color
+    # @feedColor.reset
+    # def feedColor(self):
+    #     self._feed_color = self._default_feed_color
 
     # Dwell color property
 
@@ -1121,9 +1121,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def dwellColor(self, color):
         self._dwel_color = color
 
-    @dwellColor.reset
-    def dwellColor(self):
-        self._dwel_color = self._default_dwell_color
+    # @dwellColor.reset
+    # def dwellColor(self):
+    #     self._dwel_color = self._default_dwell_color
 
     # User color property
 
@@ -1135,6 +1135,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def userColor(self, color):
         self._user_color = color
 
-    @userColor.reset
-    def userColor(self):
-        self._user_color = self._default_user_color
+    # @userColor.reset
+    # def userColor(self):
+    #     self._user_color = self._default_user_color

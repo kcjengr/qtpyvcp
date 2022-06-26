@@ -59,16 +59,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="CodeEditor" name="codeEditor">
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="About this editor" stdset="0">
-          <string>The code editor widget displays a syntax highlighted gcode file.</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="StatusLabel" name="statuslabel_2">
          <property name="rules" stdset="0">
@@ -611,11 +601,6 @@
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
   <customwidget>
-   <class>CodeEditor</class>
-   <extends>QPlainTextEdit</extends>
-   <header>codeeditor.h</header>
-  </customwidget>
-  <customwidget>
    <class>LEDWidget</class>
    <extends>QWidget</extends>
    <header>ledwidget</header>
@@ -687,6 +672,7 @@
    <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
   </customwidget>
  </customwidgets>
+ <resources/>
  <connections/>
  <designerdata>
   <property name="gridDeltaX">
