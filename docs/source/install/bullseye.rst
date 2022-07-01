@@ -90,15 +90,9 @@ Then install the dependencies::
 Create the working directories to hold LinuxCNC source and QtPyVCP source::
 
     cd ~
-    mkdir dev
-    cd dev
-    mkdir linuxcnc
-    cd linuxcnc
+    mkdir -p dev/linuxcnc
+    cd dev/linuxcnc
     git clone https://github.com/LinuxCNC/linuxcnc.git rip
-    cd rip/src
-    ./autogen.sh
-    ./configure --with-realtime=uspace
-    make -j4
 
 To build the Debian packages::
 
