@@ -143,7 +143,7 @@ Confirm that QtPyVCP installed correctly and is available by running::
     qtpyvcp -i
 
 Setting up Qt Designer
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 To install the Qt Designer plugins::
 
