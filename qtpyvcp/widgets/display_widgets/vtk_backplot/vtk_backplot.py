@@ -167,6 +167,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.interactor.AddObserver("MouseWheelForwardEvent", self.mouse_scroll_forward)
             self.interactor.AddObserver("MouseWheelBackwardEvent", self.mouse_scroll_backward)
 
+            self.picker = vtk.vtkCellPicker()
+            self.picker.AddObserver("EndPickEvent", self.pick_event)
+            self.interactor.SetPicker(self.picker)
+
             self.interactor.Initialize()
             self.renderer_window.Render()
             self.interactor.Start()
@@ -206,7 +210,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                        }
 
         if not IN_DESIGNER:
-
+            
+            self.selected_mapper = vtk.vtkDataSetMapper()
+            self.selected_actor = vtk.vtkActor()
+            
             self.canon = VTKCanon(colors=self.path_colors)
             self.path_actors = self.canon.get_path_actors()
 
@@ -248,23 +255,30 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.renderer.ResetCamera()
 
+    def pick_event(self, obj, event):
+        # Get the location of the click (in window coordinates)
+        LOG.debug("PICK EVENT")
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
         LOG.debug("button event {}".format(event))
 
         if event == "LeftButtonPressEvent":
+            
             if self.pan_mode is True:
                 self.panning = 1
             else:
                 self.rotating = 1
 
         elif event == "LeftButtonReleaseEvent":
+            
             if self.pan_mode is True:
                 self.panning = 0
             else:
                 self.rotating = 0
 
+            self.pick_obj()
+            
         elif event == "MiddleButtonPressEvent":
             if self.pan_mode is True:
                 self.rotating = 1
@@ -281,7 +295,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.zooming = 1
         elif event == "RightButtonReleaseEvent":
             self.zooming = 0
-
+            
+        self.renderer_window.Render()
+        # self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
+        
     def mouse_scroll_backward(self, obj, event):
         self.zoomOut()
 
@@ -394,7 +412,67 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             renderer.ResetCameraClippingRange()
 
         self.renderer_window.Render()
+        
+    def pick_obj(self):
+        
+        if len(self.path_actors) > 0:
+            colors = vtk.vtkNamedColors()
 
+            pos = self.interactor.GetEventPosition()
+
+            picker = vtk.vtkCellPicker()
+            picker.SetTolerance(0.005)
+
+            # Pick from this location.
+            picker.Pick(pos[0], pos[1], 0, self.renderer)
+            world_position = picker.GetPickPosition()
+            print(f'Cell id is: {picker.GetCellId()}')
+            
+            if picker.GetCellId() != -1:
+                print(f'Pick position is: ({world_position[0]:.6g}, {world_position[1]:.6g}, {world_position[2]:.6g})')
+    
+                ids = vtk.vtkIdTypeArray()
+                ids.SetNumberOfComponents(1)
+                ids.InsertNextValue(picker.GetCellId())
+    
+                selection_node = vtk.vtkSelectionNode()
+                selection_node.SetFieldType(vtk.vtkSelectionNode.CELL)
+                selection_node.SetContentType(vtk.vtkSelectionNode.INDICES)
+                selection_node.SetSelectionList(ids)
+    
+                selection = vtk.vtkSelection()
+                selection.AddNode(selection_node)
+                
+                print(selection)
+    
+                extract_selection = vtk.vtkExtractSelection()
+                extract_selection.SetInputData(0, self.path_actors[0].poly_data)
+                extract_selection.SetInputData(1, selection)
+                extract_selection.Update()
+    
+                # In selection
+                selected = vtk.vtkUnstructuredGrid()
+                selected.ShallowCopy(extract_selection.GetOutput())
+    
+                print(f'Number of points in the selection: {selected.GetNumberOfPoints()}')
+                print(f'Number of cells in the selection : {selected.GetNumberOfCells()}')
+    
+                self.selected_mapper.SetInputData(selected)
+                self.selected_actor.SetMapper(self.selected_mapper)
+                self.selected_actor.GetProperty().EdgeVisibilityOn()
+                self.selected_actor.GetProperty().SetColor(colors.GetColor3d('alizarin_crimson'))
+    
+                self.selected_actor.GetProperty().SetLineWidth(3)
+    
+                self.renderer.AddActor(self.selected_actor)
+    
+            else:
+                self.renderer.RemoveActor(self.selected_actor)
+
+            
+        self.renderer_window.Render()
+        self.interactor.ReInitialize()
+        
     # Surface sets the representation of all actors to surface or wireframe.
     def _setRepresentation(self, keyPressed):
         actors = self.renderer.GetActors()
