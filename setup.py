@@ -83,19 +83,8 @@ setup(
     data_files=data_files,
     include_package_data=True,
     install_requires=[
-        'six',
-        'docopt',
-        'qtpy',
-        'pyudev',
-        'psutil',
         'HiYaPyCo',
-        'MarkupSafe==2.0.1',
-        'pyopengl',
-        'vtk',
-        'pyqtgraph',
         'oyaml',
-        'simpleeval',
-        'sqlalchemy',
     ],
     entry_points={
         'console_scripts': [
