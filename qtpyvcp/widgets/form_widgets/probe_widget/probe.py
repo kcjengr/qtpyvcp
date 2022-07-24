@@ -16,11 +16,13 @@
 import os  # For file path manipulation
 import linuxcnc  # For commanding linuxcnc
 
-from qtpyvcp.plugins.notifications import Notifications
 
 from qtpy import uic, QtWidgets
-from qtpyvcp.utilities.info import Info
 
+from qtpyvcp.utilities.info import Info
+from qtpyvcp.plugins import getPlugin
+
+NOTIFICATIONS = getPlugin('notifications')
 PARENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 INFO = Info()
@@ -44,7 +46,7 @@ class SubCaller(QtWidgets.QWidget):
 
         self.ui = uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
 
-        self.notification = Notifications()
+        self.notification = NOTIFICATIONS
 
         for filename in os.listdir(SUBROUTINE_PATH):
             filename_and_ext = os.path.splitext(filename)
