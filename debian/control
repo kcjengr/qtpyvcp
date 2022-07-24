@@ -1,12 +1,29 @@
 Source: qtpyvcp
+Section: unknown
+Priority: optional
 Maintainer: TurBoss <j.l.toledano.l@gmail.com>
-Build-Depends: debhelper (>= 8.0.0)
-Standards-Version: 3.9.3
-Section: utils
-Priority: optional
+Build-Depends: debhelper-compat (= 13), dh-python, python3-setuptools, python3-all
+Standards-Version: 4.5.1
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/qtpyvcp
+#Vcs-Git: https://salsa.debian.org/debian/qtpyvcp.git
+#Testsuite: autopkgtest-pkg-python
+Rules-Requires-Root: no
 
-Package: qtpyvcp
-Priority: optional
-Architecture: any
-Depends: python3-pyqt5 python3-dbus.mainloop.pyqt5 python3-pyqt5.qtopengl python3-pyqt5.qsci python3-pyqt5.qtmultimedia   python3-pyqt5.qtquick qml-module-qtquick-controls gstreamer1.0-plugins-bad libqt5multimedia5-plugins pyqt5-dev-tools python3-dev   python3-setuptools python3-wheel python3-pip python3-six python3-docopt python3-qtpy python3-pyudev python3-psutil python3-markupsafe  python3-opengl python3-vtk9 python3-pyqtgraph python3-simpleeval python3-jinja2 python3-deepdiff python3-sqlalchemy git
-Description: QtPyVCP is a Qt and Python based framework for building virtual control panels for the LinuxCNC machine control.
+Package: python3-qtpyvcp
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Suggests: python-qtpyvcp-doc
+Description: <insert up to 60 chars description> (Python 3)
+ <insert long description, indented with spaces>
+ .
+ This package installs the library for Python 3.
+
+Package: python-qtpyvcp-doc
+Architecture: all
+Section: doc
+Depends: ${sphinxdoc:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description> (common documentation)
+ <insert long description, indented with spaces>
+ .
+ This is the common documentation package.
