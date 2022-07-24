@@ -45,3 +45,5 @@ qtpyvcp/.project
 .vscode/
 
 docs/source/_build/
+
+.pybuild/
