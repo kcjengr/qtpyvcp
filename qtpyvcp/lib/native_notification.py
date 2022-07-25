@@ -67,15 +67,17 @@ class NativeNotification(BaseDialog):
 
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowSystemMenuHint)
 
-        resolution = QDesktopWidget().screenGeometry(-1)
-        screenWidth = resolution.width()
-        screenHeight = resolution.height()
+        self.resolution = QDesktopWidget().screenGeometry(-1)
+        self.screenWidth = self.resolution.width()
+        self.screenHeight = self.resolution.height()
 
         self.maxMessages = 5
         self.nMessages = 0
         self.activeMessages = list()
         self.mainLayout = QVBoxLayout(self)
-        self.move(screenWidth, 0)
+        
+        w_size = self.frameSize()
+        self.move(self.screenWidth - w_size.width(), 0)
 
     def setNotify(self, title, message):
         m = Message(title, message, self)
