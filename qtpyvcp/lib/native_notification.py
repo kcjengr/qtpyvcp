@@ -90,6 +90,9 @@ class NativeNotification(BaseDialog):
             self.nMessages -= 1
 
         self.activeMessages.append(m)
+        
+        w_size = self.frameSize()
+        self.move(self.screenWidth - w_size.width(), 0)
 
         self.show()
         self.raise_()
