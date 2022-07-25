@@ -25,9 +25,9 @@ from datetime import datetime
 from qtpy.QtCore import Qt, Signal
 from qtpy.QtGui import QIcon
 
-from qtpy.QtWidgets import (QWidget, QGridLayout, QLabel, QPushButton,
+from qtpy.QtWidgets import (QWidget, QHBoxLayout, QLabel, QPushButton,
                             QDesktopWidget, QVBoxLayout, QApplication,
-                            QDialog,QScrollArea)
+                            QDialog, QScrollArea, QPlainTextEdit, QSizePolicy)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
@@ -35,7 +35,19 @@ from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 class Message(QWidget):
     def __init__(self, title, message, parent=None):
         super(Message, self).__init__(parent)
-        self.setLayout(QGridLayout())
+        
+        self.mainLayout = QHBoxLayout()
+        
+        
+        
+        self.setLayout(self.mainLayout)
+        
+        self.setMaximumWidth(600)
+        self.setMaximumHeight(400)
+        self.setMinimumWidth(300)
+        
+        self.messageLayout = QVBoxLayout()
+        
         self.titleLabel = QLabel(title, self)
         self.titleLabel.setStyleSheet(
             """
@@ -43,7 +55,9 @@ class Message(QWidget):
             font-size: 14px; font-weight: bold;
             padding: 0;
             """)
-        self.messageLabel = QLabel(message, self)
+        
+        self.messageLabel = QPlainTextEdit(message, self)
+        self.messageLabel.setReadOnly(True)
         self.messageLabel.setStyleSheet(
             """
             font-family: 'Roboto', sans-serif;
@@ -51,15 +65,19 @@ class Message(QWidget):
             font-weight: normal;
             padding: 0;
             """)
+        
         self.messageArea = QScrollArea()
         self.messageArea.setWidget(self.messageLabel)
+        
         self.buttonClose = QPushButton(self)
         self.buttonClose.setIcon(QIcon.fromTheme("window-close"))
-        self.buttonClose.setFixedSize(32, 32)
+        self.buttonClose.setFixedSize(48, 48)
 
-        self.layout().addWidget(self.titleLabel, 0, 0)
-        self.layout().addWidget(self.messageArea, 1, 0)
-        self.layout().addWidget(self.buttonClose, 0, 1, 2, 1)
+        self.messageLayout.addWidget(self.titleLabel)
+        self.messageLayout.addWidget(self.messageArea)
+        
+        self.layout().addLayout(self.messageLayout)
+        self.layout().addWidget(self.buttonClose)
 
 
 class NativeNotification(BaseDialog):
@@ -73,19 +91,25 @@ class NativeNotification(BaseDialog):
 
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowSystemMenuHint)
 
-        resolution = QDesktopWidget().screenGeometry(-1)
-        screenWidth = resolution.width()
-        screenHeight = resolution.height()
+        self.resolution = QApplication.primaryScreen()
+        self.screenWidth = self.resolution.size().width()
+        self.screenHeight = self.resolution.size().height()
 
+
+        w_size = self.frameSize()
+        self.move(self.screenWidth - w_size.width(), 0)
+        
         self.maxMessages = 5
         self.nMessages = 0
         self.activeMessages = list()
         self.mainLayout = QVBoxLayout(self)
-        self.move(screenWidth, 0)
 
     def setNotify(self, title, message):
+                
         m = Message(title, message, self)
         self.mainLayout.insertWidget(0, m)
+        self.mainLayout.setAlignment(Qt.AlignRight)
+        
         m.buttonClose.clicked.connect(self.onClicked)
         self.nMessages += 1
 
@@ -96,19 +120,33 @@ class NativeNotification(BaseDialog):
             self.nMessages -= 1
 
         self.activeMessages.append(m)
+        
+        self.setMinimumSize(self.sizeHint())
+        self.adjustSize()
+        self.setMinimumSize(self.minimumSizeHint())
 
+        w_size = self.frameSize()
+        self.move(self.screenWidth - w_size.width(), 0)
+        
         self.show()
         self.raise_()
 
     def onClicked(self):
         m = self.sender().parent()
+        
         self.mainLayout.removeWidget(m)
         self.activeMessages.remove(m)
+        
         m.deleteLater()
+        
         self.nMessages -= 1
+        
+        self.setMinimumSize(self.sizeHint())
         self.adjustSize()
+        self.setMinimumSize(self.minimumSizeHint())
+        
         if self.nMessages == 0:
-            self.close()
+            self.hide()
 
     def popNotify(self):
         """Removes the last notification in the list"""

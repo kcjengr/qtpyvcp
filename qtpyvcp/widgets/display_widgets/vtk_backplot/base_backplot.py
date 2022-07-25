@@ -3,14 +3,14 @@ import linuxcnc
 import os
 import shutil
 
-from qtpyvcp.lib.native_notification import NativeNotification
+from qtpyvcp.plugins import getPlugin
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
-
+NOTIFICATIONS = getPlugin('notifications')
 
 class BaseBackPlot(object):
     def __init__(self, inifile=None):
-        self.notification = NativeNotification()
+        self.notification = NOTIFICATIONS
 
         inifile = inifile or os.getenv("INI_FILE_NAME")
         if inifile is None or not os.path.isfile(inifile) and not IN_DESIGNER:
