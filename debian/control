@@ -8,7 +8,6 @@ Homepage: https://qtpyvcp.com
 Vcs-Git: https://github.com/kcjengr/qtpyvcp.git
 #Testsuite: autopkgtest-pkg-python
 Rules-Requires-Root: no
-
 Package: python3-qtpyvcp
 Architecture: all
 Depends: ${python3:Depends}, ${misc:Depends}
