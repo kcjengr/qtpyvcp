@@ -26,7 +26,9 @@ from qtpyvcp.plugins import iterPlugins, getPlugin
 from .base_backplot import BaseBackPlot
 from .axes_actor import AxesActor
 from .machine_actor import MachineActor
-from .tool_actor import ToolActor, ToolOffsetActor, SpindleActor
+from .tool_actor import ToolActor, ToolOffsetActor
+from .spindle_actor import SpindleActor
+from .robot_actor import RobotActor
 from .path_cache_actor import PathCacheActor
 from .program_bounds_actor import ProgramBoundsActor
 from .vtk_canon import VTKCanon
@@ -148,6 +150,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if self.spindle_model is not None:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
                 
+            self.robot = self._datasource._inifile.find("DISPLAY", "ROBOT")
+            if self.robot is not None:
+                self.robot_actor = RobotActor()
+                
             self.tool_actor = ToolActor(self._datasource)
             self.tool_offset_actor = ToolOffsetActor(self._datasource)
 
@@ -236,6 +242,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
+            
+            if self.robot is not None:
+                self.renderer.AddActor(self.robot_actor)
             
             if self.spindle_model is not None:
                 self.renderer.AddActor(self.spindle_actor)
