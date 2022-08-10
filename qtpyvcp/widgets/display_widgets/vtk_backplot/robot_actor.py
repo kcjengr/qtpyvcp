@@ -1,3 +1,4 @@
+import yaml
 
 import vtk.qt
 import math
@@ -10,25 +11,20 @@ from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
 
 class RobotActor(vtk.vtkAssembly):
-    def __init__(self):
+    def __init__(self, parts):
         super(RobotActor, self).__init__()
         
-        self.filenames = {
-            "joint0": ["models/meca500/base.stl", [0,0,0], [0,0,0]],
-            "joint1": ["models/meca500/link1.stl", [0,0,-135], [0,0,135]],
-            "joint2": ["models/meca500/link2.stl", [0,0,-135], [0,0,135]],
-            "joint3": ["models/meca500/link3.stl", [-61.5,0,-135], [61.5,0,135]],
-            "joint4": ["models/meca500/link4.stl", [-119.5,0,-135], [119.5,0,135]],
-            "joint5": ["models/meca500/link5.stl", [-189,0,-135], [189,0,135]],
-            "joint6": ["models/meca500/link6.stl", [-189,0,-135], [189,0,135]],
-        }
-
+        self.filenames = parts
+        
         self.parts = list()
         
-        for id, data in enumerate(self.filenames.items()):
-            
+        with open(self.filenames) as file:
+            parts_data = yaml.load(file, Loader=yaml.FullLoader)
+        
+        for id, data in enumerate(parts_data):
+            print(data)
             source = vtk.vtkSTLReader()
-            source.SetFileName(data[1][0])
+            source.SetFileName(data[0]["model"])
         
             mapper = vtk.vtkPolyDataMapper()
             mapper.SetInputConnection(source.GetOutputPort())
@@ -36,8 +32,8 @@ class RobotActor(vtk.vtkAssembly):
             partActor = vtk.vtkActor()
             
             partActor.SetMapper(mapper)
-            partActor.SetOrigin(data[1][1])
-            partActor.SetPosition(data[1][2])
+            partActor.SetOrigin(data[1]["position"][0])
+            partActor.SetPosition(data[1]["position"][1])
             
             partActor.GetProperty().SetColor(1, 0, 1)
             partActor.GetProperty().SetDiffuseColor(0.9, 0.9, 0.9)

@@ -152,7 +152,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 
             self.robot = self._datasource._inifile.find("DISPLAY", "ROBOT")
             if self.robot:
-                self.robot_actor = RobotActor()
+                self.robot_actor = RobotActor(self.robot)
                 
             self.tool_actor = ToolActor(self._datasource)
             self.tool_offset_actor = ToolOffsetActor(self._datasource)
