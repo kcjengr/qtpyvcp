@@ -31,7 +31,7 @@ class RobotActor(vtk.vtkAssembly):
             
             partActor.SetMapper(mapper)
             partActor.SetOrigin(data[1]["position"][0])
-            partActor.SetPosition(data[1]["position"][1])
+            # partActor.SetPosition(data[1]["position"][1])
             
             partActor.GetProperty().SetColor(1, 0, 1)
             partActor.GetProperty().SetDiffuseColor(0.9, 0.9, 0.9)

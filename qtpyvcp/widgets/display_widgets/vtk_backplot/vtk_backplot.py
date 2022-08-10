@@ -509,6 +509,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.spindle_position = position[:3]
         self.spindle_rotation = position[3:6]
+        self.joints_position = position
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
@@ -518,6 +519,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
+            
+        
+        if self.robot:
+            i = 1 # skip base
+            for part in self.robot_actor.GetParts():
+                part.SetOrientation(0, self.joints_position[i], 0)
+                i += 1
+            
 
         self.tool_actor.SetUserTransform(tool_transform)
         self.tool_offset_actor.SetUserTransform(tool_transform)
