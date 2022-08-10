@@ -142,6 +142,9 @@ class LinuxCncDataSource(QObject):
     def isModeAuto(self):
         return str(self._status.task_mode) == "Auto"
 
+    def isHomed(self):
+        return bool(self._status.homed)
+
     def getActiveWcsIndex(self):
         # in the stat, the first one the list is G53 (Machine Coordinates)
         # therefore to get the correct index of the G54 we need to do a -1

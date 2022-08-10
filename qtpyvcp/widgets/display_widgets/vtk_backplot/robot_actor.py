@@ -9,7 +9,7 @@ from vtkmodules.vtkFiltersSources import vtkCylinderSource
 from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
 
-class RobotActor(vtk.vtkActor):
+class RobotActor(vtk.vtkAssembly):
     def __init__(self):
         super(RobotActor, self).__init__()
         
@@ -23,8 +23,6 @@ class RobotActor(vtk.vtkActor):
             "joint6": ["models/meca500/link6.stl", [0,0,0], [0,0,0]],
         }
 
-        self.assembly = vtk.vtkAssembly
-
         self.parts = list()
         
         for id, data in enumerate(self.filenames.items()):
@@ -36,11 +34,12 @@ class RobotActor(vtk.vtkActor):
             mapper.SetInputConnection(source.GetOutputPort())
             
             partActor = vtk.vtkActor()
+            
             partActor.SetMapper(mapper)
             partActor.SetOrigin(data[1][1])
             partActor.SetPosition(data[1][2])
-            partActor.GetProperty().SetColor(1, 0, 1)
             
+            partActor.GetProperty().SetColor(1, 0, 1)
             partActor.GetProperty().SetDiffuseColor(0.9, 0.9, 0.9)
             partActor.GetProperty().SetDiffuse(.8)
             partActor.GetProperty().SetSpecular(.5)
@@ -48,7 +47,6 @@ class RobotActor(vtk.vtkActor):
             partActor.GetProperty().SetSpecularPower(30.0)
             
             self.parts.append(partActor)
-            
-
-    
+            self.AddPart(partActor)
+        
     

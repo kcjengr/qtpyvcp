@@ -151,7 +151,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
                 
             self.robot = self._datasource._inifile.find("DISPLAY", "ROBOT")
-            if self.robot is not None:
+            if self.robot:
                 self.robot_actor = RobotActor()
                 
             self.tool_actor = ToolActor(self._datasource)
@@ -243,7 +243,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
             
-            if self.robot is not None:
+            if self.robot:
                 self.renderer.AddActor(self.robot_actor)
             
             if self.spindle_model is not None:
@@ -255,7 +255,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
 
-            self.renderer.ResetCamera()
+            self.interactor.ReInitialize()
+            self.renderer_window.Render()
+            
+            # self.setViewP()
+            # self.renderer.ResetCamera()
 
 
     # Handle the mouse button events.
@@ -528,6 +532,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def on_offset_table_changed(self, table):
         LOG.debug("on_offset_table_changed")
+        
         self.wcs_offsets = table
 
     def update_g5x_offset(self, offset):
