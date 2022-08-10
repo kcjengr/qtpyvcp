@@ -16,13 +16,11 @@ class RobotActor(vtk.vtkAssembly):
         
         self.filenames = parts
         
-        self.parts = list()
         
         with open(self.filenames) as file:
             parts_data = yaml.load(file, Loader=yaml.FullLoader)
         
         for id, data in enumerate(parts_data):
-            print(data)
             source = vtk.vtkSTLReader()
             source.SetFileName(data[0]["model"])
         
@@ -42,7 +40,6 @@ class RobotActor(vtk.vtkAssembly):
             partActor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
             partActor.GetProperty().SetSpecularPower(30.0)
             
-            self.parts.append(partActor)
             self.AddPart(partActor)
         
     
