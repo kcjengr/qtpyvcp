@@ -539,20 +539,26 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_joints(self, joints):            
         
         if self.robot:
-            i = 0
-            for part in self.robot_actor.GetParts():
-                joint = self.robot_data[i].get("joint")
-
-                if joint:
-                    rotation = joints[joint].input.value
-                    
-                    if self.robot_data[i].get("rotation") == "x":
-                        part.SetOrientation(rotation, 0, 0)
-                    elif self.robot_data[i].get("rotation") == "y":
-                        part.SetOrientation(0, rotation, 0)
-                    elif self.robot_data[i].get("rotation") == "z":
-                        part.SetOrientation(0, 0, rotation)
-                i += 1
+            parts = self.robot_actor.get_parts()
+            for data in self.robot_data:
+                joint = data.get("joint")
+                
+                if joint is not False:
+                    rotation = joints[int(joint)].input.value
+                        
+                    if data.get("rotation") == "x":
+                        parts[int(joint)].SetOrientation(rotation, 0, 0)
+                    elif data.get("rotation") == "y":
+                        parts[int(joint)].SetOrientation(0, rotation, 0)
+                    elif data.get("rotation") == "z":
+                        parts[int(joint)].SetOrientation(0, 0, rotation)
+                    elif data.get("rotation") == "-x":
+                        parts[int(joint)].SetOrientation(-rotation, 0, 0)
+                    elif data.get("rotation") == "-y":
+                        parts[int(joint)].SetOrientation(0, -rotation, 0)
+                    elif data.get("rotation") == "-z":
+                        parts[int(joint)].SetOrientation(0, 0, -rotation)
+                
             self.renderer_window.Render()
 
     def on_offset_table_changed(self, table):
