@@ -20,6 +20,7 @@ mocked for testing the VTK outside of a linuxcnc context.
 class LinuxCncDataSource(QObject):
     programLoaded = Signal(str)
     positionChanged = Signal(tuple)
+    jointsChanged = Signal(tuple)
     motionTypeChanged = Signal(int)
     g5xOffsetChanged = Signal(tuple)
     g92OffsetChanged = Signal(tuple)
@@ -61,7 +62,9 @@ class LinuxCncDataSource(QObject):
     def __handlePositionChanged(self, position):
         #LOG.debug("__handlePositionChanged: {}".format(type(position)))
         self.positionChanged.emit(position)
-
+        joints = self._status.joint
+        self.jointsChanged.emit(joints)
+        
     def __handleMotionTypeChanged(self, motion_type):
         #LOG.debug("__handleMotionTypeChanged: {}".format(motion_type))
         self.motionTypeChanged.emit(motion_type)
