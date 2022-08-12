@@ -103,7 +103,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_position = (0.0, 0.0, 0.0)
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
-
+        self.joints = self._datasource._status.joint
+        
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
@@ -184,7 +185,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # Add the observers to watch for particular events. These invoke Python functions.
             self._datasource.programLoaded.connect(self.load_program)
             self._datasource.positionChanged.connect(self.update_position)
-            self._datasource.jointsChanged.connect(self.update_joints)
             self._datasource.motionTypeChanged.connect(self.motion_type)
             self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
@@ -524,27 +524,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
             
-        self.tool_actor.SetUserTransform(tool_transform)
-        self.tool_offset_actor.SetUserTransform(tool_transform)
-
-        tlo = self._datasource.getToolOffset()
-        self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
-
-        # self.spindle_actor.SetPosition(self.spindle_position)
-        # self.tool_actor.SetPosition(self.spindle_position)
-        self.path_cache_actor.add_line_point(self.tooltip_position)
-        self.renderer_window.Render()
-
-    
-    def update_joints(self, joints):            
-        
         if self.robot:
             parts = self.robot_actor.get_parts()
             for data in self.robot_data:
                 joint = data.get("joint")
                 
                 if joint is not False:
-                    rotation = joints[int(joint)].input.value
+                    rotation = self.joints[int(joint)].input.value
                         
                     if data.get("rotation") == "x":
                         parts[int(joint)].SetOrientation(rotation, 0, 0)
@@ -558,9 +544,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                         parts[int(joint)].SetOrientation(0, -rotation, 0)
                     elif data.get("rotation") == "-z":
                         parts[int(joint)].SetOrientation(0, 0, -rotation)
-                
-            self.renderer_window.Render()
 
+        self.tool_actor.SetUserTransform(tool_transform)
+        self.tool_offset_actor.SetUserTransform(tool_transform)
+
+        tlo = self._datasource.getToolOffset()
+        self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
+
+        # self.spindle_actor.SetPosition(self.spindle_position)
+        # self.tool_actor.SetPosition(self.spindle_position)
+        self.path_cache_actor.add_line_point(self.tooltip_position)
+        self.renderer_window.Render()
+
+    
+    def update_joints(self, joints): 
+        self.joints = joints
     def on_offset_table_changed(self, table):
         LOG.debug("on_offset_table_changed")
         
