@@ -29,6 +29,7 @@ from .base_backplot import BaseBackPlot
 from .axes_actor import AxesActor
 from .machine_actor import MachineActor
 from .tool_actor import ToolActor, ToolOffsetActor
+from .table_actor import TableActor
 from .spindle_actor import SpindleActor
 from .robot_actor import RobotActor
 from .path_cache_actor import PathCacheActor
@@ -148,11 +149,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
             
+            
+            self.table_model = self._datasource._inifile.find("DISPLAY", "TABLE")
+            if self.table_model is not None:
+                self.table_actor = TableActor(self.table_model)
+                
+            
+            
             self.spindle_model = self._datasource._inifile.find("DISPLAY", "SPINDLE")
             
             if self.spindle_model is not None:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
-                
+            
             self.robot = self._datasource._inifile.find("DISPLAY", "ROBOT")
             if self.robot:
                 with open(self.robot) as f:
@@ -251,6 +259,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if self.robot:
                 self.renderer.AddActor(self.robot_actor)
             
+            if self.table_model is not None:
+                self.renderer.AddActor(self.table_actor)
+                
             if self.spindle_model is not None:
                 self.renderer.AddActor(self.spindle_actor)
             
