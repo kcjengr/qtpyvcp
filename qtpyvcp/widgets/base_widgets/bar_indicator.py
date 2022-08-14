@@ -17,7 +17,9 @@ class BarIndicatorBase(QWidget):
         self._minimum = 0.0
         self._maximum = 100.0
         self._value_at_100_percent = 100.0
-        self._format = '$value %'
+        self._format = ".2f"
+        self._prefix = ""
+        self._sufix = ""
 
         self._text_color = QColor(0, 0, 0)
         self._border_color = Qt.gray
@@ -208,6 +210,24 @@ class BarIndicatorBase(QWidget):
         self.update()
 
     @Property(str)
+    def prefix(self):
+        return self._prefix
+
+    @prefix.setter
+    def prefix(self, prefix):
+        self._prefix = prefix
+        self.update()
+        
+    @Property(str)
+    def sufix(self):
+        return self._sufix
+
+    @sufix.setter
+    def sufix(self, sufix):
+        self._sufix = sufix
+        self.update()
+
+    @Property(str)
     def format(self):
         return self._format
 
@@ -239,12 +259,11 @@ class BarIndicatorBase(QWidget):
         self.update()
 
     def text(self):
-        values = {'v': self._value,
-                  'p': int((self._value * 100 / self._value_at_100_percent) + .5)}
         try:
-            return Template(self._format).substitute(value=values['p'])
-        except:
-            return self.format
+            return f"{self.prefix} {self.value:{self._format}} {self.sufix}"
+        except Exception as e:
+             # self.setText(f"ERR: {self._fmt}")
+             LOG.error(f"Invalid format specified {self._format}")
 
     # ToDo: Make this a QLinearGradient
     @Property('QStringList')
