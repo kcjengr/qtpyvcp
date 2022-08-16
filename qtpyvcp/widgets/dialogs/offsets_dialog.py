@@ -61,7 +61,7 @@ class OffsetsDialog(BaseDialog):
                          "P5": "P5 G58",
                          "P6": "P6 G59",
                          "P7": "P7 G59.1",
-                         "P8": "P8 G59.1",
+                         "P8": "P8 G59.2",
                          "P9": "P9 G59.3"
                          }
 
