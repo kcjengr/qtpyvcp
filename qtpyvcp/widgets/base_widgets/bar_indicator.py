@@ -264,6 +264,7 @@ class BarIndicatorBase(QWidget):
         except Exception as e:
              # self.setText(f"ERR: {self._fmt}")
              LOG.error(f"Invalid format specified {self._format}")
+             return "FORMAT ERROR"
 
     # ToDo: Make this a QLinearGradient
     @Property('QStringList')
