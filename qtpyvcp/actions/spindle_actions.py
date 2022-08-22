@@ -310,7 +310,7 @@ def _or_bindOk(value=100, spindle=0, widget=None):
         try:
             widget.setSliderPosition(100)
             STATUS.spindle[spindle].override.onValueChanged(
-                lambda v: widget.setSliderPosition(v * 100))
+                lambda v: widget.setSliderPosition(int(v) * 100))
 
         except AttributeError:
             widget.setValue(100)
