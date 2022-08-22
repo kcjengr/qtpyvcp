@@ -697,7 +697,9 @@ class Status(DataPlugin):
         data structure so as to not "break" things.
         """
         # TODO: add to this list as needed. Possible to externalise via yaml?
-        self.old['axes'] = None
+        pass
+        # axes not in stat chanel
+        # self.old['axes'] = None
 
     def initialise(self):
         """Start the periodic update timer."""
