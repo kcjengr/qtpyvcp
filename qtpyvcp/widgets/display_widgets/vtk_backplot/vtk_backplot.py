@@ -54,7 +54,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.parent = parent
         self.ploter_enabled = True
-        self.touch_enabled = False
+        self.touch_enabled = True
         self.program_view_when_loading_program = False
         self.program_view_when_loading_program_view = 'p'
         self.pan_mode = False
