@@ -3,7 +3,7 @@ import sys
 
 from qtpy import uic
 from qtpy.QtGui import QKeySequence
-from qtpy.QtCore import Qt, Slot, QTimer
+from qtpy.QtCore import Qt, Slot, QTimer, QEvent
 from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
     QMenu, QMenuBar, QLineEdit, QShortcut, QActionGroup
 
@@ -323,6 +323,15 @@ class VCPMainWindow(QMainWindow):
             #print("QLineEdit got focus: ", new_w)
             QTimer.singleShot(0, new_w.selectAll)
 
+    def event(self, event):
+        """ Disable gesture event handler """
+
+        LOG.debug('DEBUG: event type {}'.format(event.type()))
+        if event.type() in (QEvent.Gesture, QEvent.GestureOverride):
+            event.accept()
+            return True
+        else:
+            return super(VCPMainWindow, self).event(event)
 # ==============================================================================
 #  menu action slots
 # ==============================================================================
