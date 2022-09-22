@@ -88,7 +88,7 @@ setup(
         'qtpy',
         'pyudev',
         'psutil',
-        'HiYaPyCo',
+        'HiYaPyCo==0.5.0',
         'pyopengl',
         'vtk',
         'pyqtgraph',
