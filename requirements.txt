@@ -1,0 +1,14 @@
+six
+docopt
+qtpy
+pyudev
+psutil
+HiYaPyCo
+MarkupSafe
+pyopengl
+vtk
+pyqtgraph
+oyaml
+simpleeval
+sqlalchemy
+python-dateutil
