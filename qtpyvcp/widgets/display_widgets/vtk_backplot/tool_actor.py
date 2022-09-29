@@ -400,9 +400,10 @@ class ToolActor(vtk.vtkActor):
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
         self.GetProperty().SetBackfaceCulling(1)
 
-class ToolOffsetActor(vtk.vtkActor):
+
+class ToolBitActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
-        super(ToolOffsetActor, self).__init__()
+        super(ToolBitActor, self).__init__()
         
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
@@ -414,18 +415,24 @@ class ToolOffsetActor(vtk.vtkActor):
         else:
             self.height = 2.0
             
-        start_point = [-tool.xoffset, -tool.yoffset, -tool.zoffset]
+        start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
         end_point = [0, 0, 0]
         
         source = vtkCylinderSource()
         transform = vtk.vtkTransform()
 
-        source.SetHeight(tool.zoffset)
-        source.SetCenter(-tool.xoffset, -tool.zoffset/2, -tool.yoffset)
+        # source.SetHeight(tool.zoffset)
+        source.SetHeight(10)
+        source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
         source.SetRadius(tool.diameter / 2)
         source.SetResolution(64)
+        
         transform.RotateWXYZ(90, 1, 0, 0)
-
+        
+        transform.RotateX(tool.aoffset)
+        transform.RotateY(tool.boffset)
+        transform.RotateZ(tool.coffset)
+        
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
         transform_filter.SetInputConnection(source.GetOutputPort())
