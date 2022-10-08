@@ -48,7 +48,7 @@ class BaseBackPlot(object):
 
         if filename is None or not os.path.isfile(filename):
             self.canon = None
-            self.notification.setNotify("3D plot", "Can't load backplot, invalid file: {}".format(filename))
+            self.notification.notification_dispatcher.setNotify("3D plot", "Can't load backplot, invalid file: {}".format(filename))
             # raise ValueError("Can't load backplot, invalid file: {}".format(filename))
 
         self.last_filename = filename
@@ -72,7 +72,7 @@ class BaseBackPlot(object):
             if result > gcode.MIN_ERROR:
                 msg = gcode.strerror(result)
                 fname = os.path.basename(filename)
-                self.notification.setNotify("3D plot", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
+                self.notification.notification_dispatcher.setNotify("3D plot", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
                 # raise SyntaxError("Error in %s line %i: %s" % (fname, seq - 1, msg))
 
         except KeyboardInterrupt:

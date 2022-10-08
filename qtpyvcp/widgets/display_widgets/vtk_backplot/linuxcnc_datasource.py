@@ -61,7 +61,7 @@ class LinuxCncDataSource(QObject):
     def __handlePositionChanged(self, position):
         #LOG.debug("__handlePositionChanged: {}".format(type(position)))
         self.positionChanged.emit(position)
-
+        
     def __handleMotionTypeChanged(self, motion_type):
         #LOG.debug("__handleMotionTypeChanged: {}".format(motion_type))
         self.motionTypeChanged.emit(motion_type)
@@ -141,6 +141,9 @@ class LinuxCncDataSource(QObject):
 
     def isModeAuto(self):
         return str(self._status.task_mode) == "Auto"
+
+    def isHomed(self):
+        return bool(self._status.homed)
 
     def getActiveWcsIndex(self):
         # in the stat, the first one the list is G53 (Machine Coordinates)
