@@ -31,7 +31,8 @@ class ToolActor(vtk.vtkActor):
         self.session = Session()
 
         tool = self._tool_table[0]
-
+        colors = vtkNamedColors()
+        
         if self._datasource.isMachineMetric():
             self.height = 25.4 * 2.0
         else:
@@ -341,6 +342,28 @@ class ToolActor(vtk.vtkActor):
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputConnection(transform_filter.GetOutputPort())
 
+        elif self._datasource.isMachineFoam():
+            
+            transform = vtk.vtkTransform()
+
+            source = vtk.vtkConeSource()
+            source.SetHeight(self.height / 2)
+            #source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
+            source.SetCenter(-self.height / 4, 0, 0)
+            source.SetRadius(self.height / 4)
+            source.SetResolution(64)
+            transform.RotateWXYZ(-90, 0, 1, 0)
+            transform_filter = vtk.vtkTransformPolyDataFilter()
+            transform_filter.SetTransform(transform)
+            transform_filter.SetInputConnection(source.GetOutputPort())
+            transform_filter.Update()
+
+            # Create a mapper
+            mapper = vtk.vtkPolyDataMapper()
+            mapper.SetInputConnection(transform_filter.GetOutputPort())
+            
+            self.GetProperty().SetColor(colors.GetColor3d('Red'))
+            
         else:
             if tool.id == 0 or tool.diameter < .05:
                 transform = vtk.vtkTransform()
@@ -408,6 +431,7 @@ class ToolBitActor(vtk.vtkActor):
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
         
+        
         tool = self._tool_table[0]
         
         if self._datasource.isMachineMetric():
@@ -415,23 +439,47 @@ class ToolBitActor(vtk.vtkActor):
         else:
             self.height = 2.0
             
-        start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
-        end_point = [0, 0, 0]
-        
-        source = vtkCylinderSource()
-        transform = vtk.vtkTransform()
-
-        # source.SetHeight(tool.zoffset)
-        source.SetHeight(10)
-        source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
-        source.SetRadius(tool.diameter / 2)
-        source.SetResolution(64)
-        
-        transform.RotateWXYZ(90, 1, 0, 0)
-        
-        transform.RotateX(tool.aoffset)
-        transform.RotateY(tool.boffset)
-        transform.RotateZ(tool.coffset)
+        if self._datasource.isMachineFoam():
+            self.foam_z, self.foam_w = self._datasource.getFoamOffsets()
+            
+            start_point = [tool.xoffset, tool.yoffset, tool.zoffset + self.foam_z]
+            end_point = [tool.uoffset, tool.voffset, tool.woffset + self.foam_w]
+            
+            source = vtkLineSource()
+            source.SetPoint1(start_point)
+            source.SetPoint2(end_point)
+            
+            transform = vtk.vtkTransform()
+    
+            # # source.SetHeight(tool.zoffset)
+            # source.SetHeight(10)
+            # source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
+            # source.SetRadius(tool.diameter / 2)
+            # source.SetResolution(64)
+            
+            transform.RotateWXYZ(0, 1, 0, 0)
+            
+            transform.RotateX(tool.aoffset)
+            transform.RotateY(tool.boffset)
+            transform.RotateZ(tool.coffset)
+        else:
+            start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
+            end_point = [0, 0, 0]
+            
+            source = vtkCylinderSource()
+            transform = vtk.vtkTransform()
+    
+            # source.SetHeight(tool.zoffset)
+            source.SetHeight(10)
+            source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
+            source.SetRadius(tool.diameter / 2)
+            source.SetResolution(64)
+            
+            transform.RotateWXYZ(90, 1, 0, 0)
+            
+            transform.RotateX(tool.aoffset)
+            transform.RotateY(tool.boffset)
+            transform.RotateZ(tool.coffset)
         
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)

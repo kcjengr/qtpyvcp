@@ -396,12 +396,12 @@ def _feed_override_bindOk(value=100, widget=None):
         try:
             widget.setSliderPosition(100)
             STATUS.feedrate.onValueChanged(
-                lambda v: widget.setSliderPosition(v * 100))
+                lambda v: widget.setSliderPosition(int(v * 100)))
 
         except AttributeError:
             widget.setValue(100)
             STATUS.feedrate.onValueChanged(
-                lambda v: widget.setValue(v * 100))
+                lambda v: widget.setValue(int(v * 100)))
 
         feed_override.set(100)
 

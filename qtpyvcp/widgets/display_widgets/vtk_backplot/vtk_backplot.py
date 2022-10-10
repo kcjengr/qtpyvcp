@@ -106,6 +106,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tooltip_position = (0.0, 0.0, 0.0)
         self.joints = self._datasource._status.joint
         
+        
+        self.foam_z = 0.0
+        self.foam_w = 1.5
+        
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
@@ -480,6 +484,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         LOG.debug("-------Draw time %s seconds ---" % (time.time() - start_time))
         self.path_actors = self.canon.get_path_actors()
+        
+        if self._datasource.isMachineFoam():
+            self._datasource.foam_z, self._datasource.foam_w = self.canon.get_foam()
 
         for wcs_index, actor in list(self.path_actors.items()):
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
@@ -557,13 +564,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                         parts[int(joint)].SetOrientation(0, 0, -rotation)
 
         self.tool_actor.SetUserTransform(tool_transform)
-        self.tool_bit_actor.SetUserTransform(tool_transform)
+        if self._datasource.isMachineFoam():
+            self.renderer.RemoveActor(self.tool_bit_actor)
+            self.tool_bit_actor = ToolBitActor(self._datasource)
+        else:
+            self.tool_bit_actor.SetUserTransform(tool_transform)
 
         tlo = self._datasource.getToolOffset()
         self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
 
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
+        
         self.path_cache_actor.add_line_point(self.tooltip_position)
         self.renderer_window.Render()
 
@@ -681,7 +693,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         tool_transform.RotateZ(-self.spindle_rotation[2])
 
         self.tool_actor.SetUserTransform(tool_transform)
-        self.tool_bit_actor.SetUserTransform(tool_transform)
+        
+        if self._datasource.isMachineFoam():
+            self.renderer.RemoveActor(self.tool_bit_actor)
+            self.tool_bit_actor = ToolBitActor(self._datasource)
+            self.tool_bit_actor.SetUserTransform(tool_transform)
+        else:
+            self.tool_bit_actor.SetUserTransform(tool_transform)
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.tool_bit_actor)
