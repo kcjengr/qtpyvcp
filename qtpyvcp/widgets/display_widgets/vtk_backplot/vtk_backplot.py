@@ -564,9 +564,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                         parts[int(joint)].SetOrientation(0, 0, -rotation)
 
         self.tool_actor.SetUserTransform(tool_transform)
+        
         if self._datasource.isMachineFoam():
-            self.renderer.RemoveActor(self.tool_bit_actor)
-            self.tool_bit_actor = ToolBitActor(self._datasource)
+            self.tool_bit_actor.set_position(position)
         else:
             self.tool_bit_actor.SetUserTransform(tool_transform)
 

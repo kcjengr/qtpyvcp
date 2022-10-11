@@ -442,12 +442,12 @@ class ToolBitActor(vtk.vtkActor):
         if self._datasource.isMachineFoam():
             self.foam_z, self.foam_w = self._datasource.getFoamOffsets()
             
-            start_point = [tool.xoffset, tool.yoffset, tool.zoffset + self.foam_z]
-            end_point = [tool.uoffset, tool.voffset, tool.woffset + self.foam_w]
+            self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset + self.foam_z]
+            self.end_point = [tool.uoffset, tool.voffset, tool.woffset + self.foam_w]
             
-            source = vtkLineSource()
-            source.SetPoint1(start_point)
-            source.SetPoint2(end_point)
+            self.source = vtkLineSource()
+            self.source.SetPoint1(self.start_point)
+            self.source.SetPoint2(self.end_point)
             
             transform = vtk.vtkTransform()
     
@@ -463,17 +463,17 @@ class ToolBitActor(vtk.vtkActor):
             transform.RotateY(tool.boffset)
             transform.RotateZ(tool.coffset)
         else:
-            start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
-            end_point = [0, 0, 0]
+            self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
+            self.end_point = [0, 0, 0]
             
-            source = vtkCylinderSource()
+            self.source = vtkCylinderSource()
             transform = vtk.vtkTransform()
     
             # source.SetHeight(tool.zoffset)
-            source.SetHeight(10)
-            source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
-            source.SetRadius(tool.diameter / 2)
-            source.SetResolution(64)
+            self.source.SetHeight(10)
+            self.source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
+            self.source.SetRadius(tool.diameter / 2)
+            self.source.SetResolution(64)
             
             transform.RotateWXYZ(90, 1, 0, 0)
             
@@ -483,7 +483,7 @@ class ToolBitActor(vtk.vtkActor):
         
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
-        transform_filter.SetInputConnection(source.GetOutputPort())
+        transform_filter.SetInputConnection(self.source.GetOutputPort())
         transform_filter.Update()
         
         colors = vtkNamedColors()
@@ -499,4 +499,17 @@ class ToolBitActor(vtk.vtkActor):
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
         self.GetProperty().SetBackfaceCulling(1)
 
+    def set_position(self, position):
+        x, y, z = position[:3]
+        u, v, w = position[6:9]
+        zo, wo = self._datasource.getFoamOffsets()
+        
+        z += zo
+        w += wo
+        
+        self.source.SetPoint1(x, y ,z)
+        self.source.SetPoint2(u, v, w)
+          
+        
+        
                     
