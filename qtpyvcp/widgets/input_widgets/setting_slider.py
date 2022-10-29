@@ -102,9 +102,9 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
     def textFormat(self, text_fmt):
         if self._setting_name != "":
             setting = SETTINGS.get(self._setting_name)
-            try:
+            if setting:
                 str = text_fmt.format(setting.getValue())
-            except ValueError:
+            else:
                 return
 
         self._text_format = text_fmt
@@ -197,7 +197,7 @@ class VCPSettingsDoubleSpinBox(QDoubleSpinBox, VCPAbstractSettingsWidget):
         self.blockSignals(True)
         self.setValue(value)
         self.blockSignals(False)
-        
+
     def editingEnded(self):
         self._setting.setValue(self.value())
 
