@@ -8,6 +8,7 @@ import vtk.qt
 
 from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkFiltersSources import vtkLineSource
+from vtkmodules.vtkFiltersCore import vtkTubeFilter
 from vtkmodules.vtkFiltersSources import vtkCylinderSource
 from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
@@ -363,35 +364,35 @@ class ToolActor(vtk.vtkActor):
             else:
                 plugins = dict(iterPlugins())
                 tool_table_plugin = plugins["tooltable"]
-                
+
                 transform = vtk.vtkTransform()
                 # Create a mapper
                 mapper = vtk.vtkPolyDataMapper()
-                
+
                 if isinstance(tool_table_plugin, DBToolTable):
                     tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool.id).first()
-        
+
                     if tool_data:
-                        
+
                         filename = tool_data.model
-                        
+
                         source = vtk.vtkSTLReader()
                         source.SetFileName(filename)
-                        
+
                         # source = vtk.vtkCylinderSource()
                         # source.SetHeight(self.height / 2)
                         # #source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
                         # source.SetCenter(0, self.height / 4, 0)
                         # source.SetRadius(tool.diameter / 2)
                         # source.SetResolution(64)
-                        
+
                         # transform.RotateWXYZ(180, 1, 0, 0)
-        
+
                         transform_filter = vtk.vtkTransformPolyDataFilter()
                         transform_filter.SetTransform(transform)
                         transform_filter.SetInputConnection(source.GetOutputPort())
                         transform_filter.Update()
-        
+
                         mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         self.SetMapper(mapper)
@@ -404,51 +405,56 @@ class ToolActor(vtk.vtkActor):
 class ToolBitActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
         super(ToolBitActor, self).__init__()
-        
+
+        colors = vtkNamedColors()
+
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
-        
+
         tool = self._tool_table[0]
-        
+
         if self._datasource.isMachineMetric():
             self.height = 25.4 * 2.0
         else:
             self.height = 2.0
-            
-        start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
-        end_point = [0, 0, 0]
-        
-        source = vtkCylinderSource()
+
+        lineSource = vtkLineSource()
+        lineSource.SetPoint1(-tool.xoffset, -tool.yoffset, -tool.zoffset)
+        lineSource.SetPoint2(-tool.xoffset, -tool.yoffset, -tool.zoffset + self.height)
+
+        # Setup actor and mapper
+        lineMapper = vtkPolyDataMapper()
+        lineMapper.SetInputConnection(lineSource.GetOutputPort())
+
         transform = vtk.vtkTransform()
 
-        # source.SetHeight(tool.zoffset)
-        source.SetHeight(10)
-        source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
-        source.SetRadius(tool.diameter / 2)
-        source.SetResolution(64)
-        
-        transform.RotateWXYZ(90, 1, 0, 0)
-        
-        transform.RotateX(tool.aoffset)
-        transform.RotateY(tool.boffset)
-        transform.RotateZ(tool.coffset)
-        
+        transform.RotateX(-tool.aoffset)
+        transform.RotateY(-tool.boffset)
+        transform.RotateZ(-tool.coffset)
+
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
-        transform_filter.SetInputConnection(source.GetOutputPort())
+        transform_filter.SetInputConnection(lineSource.GetOutputPort())
         transform_filter.Update()
-        
-        colors = vtkNamedColors()
-        
-        # Create a mapper and actor for the arrow
-        mapper = vtkPolyDataMapper()
-        mapper.SetInputConnection(transform_filter.GetOutputPort())
-            
-            
-        self.SetMapper(mapper)
-        
+
+        # # Create a mapper and actor for the arrow
+        # mapper = vtkPolyDataMapper()
+        # mapper.SetInputConnection(transform_filter.GetOutputPort())
+
+        # Create tube filter
+        tubeFilter = vtkTubeFilter()
+        tubeFilter.SetInputConnection(transform_filter.GetOutputPort())
+        tubeFilter.SetRadius(tool.diameter)
+        tubeFilter.SetNumberOfSides(64)
+        tubeFilter.Update()
+
+        # Setup actor and mapper
+        tubeMapper = vtkPolyDataMapper()
+        tubeMapper.SetInputConnection(tubeFilter.GetOutputPort())
+
+        self.SetMapper(tubeMapper)
+
         # Avoid visible backfaces on Linux with some video cards like intel
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
-        self.GetProperty().SetBackfaceCulling(1)
+        # self.GetProperty().SetBackfaceCulling(1)
 
-                    
