@@ -522,12 +522,12 @@ def _max_velocity_bindOk(value=100, widget=None):
         try:
             widget.setSliderPosition(int(INFO.maxVelocity()))
             STATUS.max_velocity.onValueChanged(
-                lambda v: widget.setSliderPosition(v * 60))
+                lambda v: widget.setSliderPosition(int(v * 60)))
 
         except AttributeError:
             widget.setValue(INFO.maxVelocity())
             STATUS.max_velocity.onValueChanged(
-                lambda v: widget.setValue(v * 60))
+                lambda v: widget.setValue(int(v * 60)))
 
     except AttributeError:
         pass
