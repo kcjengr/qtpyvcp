@@ -34,7 +34,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
     def __init__(self, parent):
         super(VCPSettingsLineEdit, self).__init__(parent=parent)
         self._setting_name = ''
-        self._text_format = '{:4f}'
+        self._text_format = ''
         self._tmp_value = None
 
         self.returnPressed.connect(self.onReturnPressed)
