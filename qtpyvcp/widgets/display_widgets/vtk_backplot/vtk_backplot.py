@@ -564,12 +564,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._datasource.isMachineLathe() != True:
             self.tool_bit_actor.SetUserTransform(tool_transform)
 
-            tlo = self._datasource.getToolOffset()
-            self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
+        tlo = self._datasource.getToolOffset()
+        self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
 
-            # self.spindle_actor.SetPosition(self.spindle_position)
-            # self.tool_actor.SetPosition(self.spindle_position)
-            self.path_cache_actor.add_line_point(self.tooltip_position)
+        # self.spindle_actor.SetPosition(self.spindle_position)
+        # self.tool_actor.SetPosition(self.spindle_position)
+        self.path_cache_actor.add_line_point(self.tooltip_position)
 
         self.renderer_window.Render()
 
