@@ -419,8 +419,8 @@ class ToolBitActor(vtk.vtkActor):
             self.height = 2.0
 
         lineSource = vtkLineSource()
-        lineSource.SetPoint1(-tool.xoffset, -tool.yoffset, -tool.zoffset)
-        lineSource.SetPoint2(-tool.xoffset, -tool.yoffset, -tool.zoffset + self.height)
+        lineSource.SetPoint1(-tool.xoffset, -tool.yoffset, 0)
+        lineSource.SetPoint2(-tool.xoffset, -tool.yoffset, tool.zoffset)
 
         # Setup actor and mapper
         lineMapper = vtkPolyDataMapper()
