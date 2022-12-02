@@ -67,11 +67,9 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
+                    quad = vtk.vtkPolygon()
+                    for i in rage(4):
+                        quad.GetPointIds().SetId(i, idx[i])
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -97,11 +95,10 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
+                    quad = vtk.vtkPolygon()
+                    for i in rage(4):
+                        quad.GetPointIds().SetId(i, idx[i])
+
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -127,11 +124,9 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
+                    quad = vtk.vtkPolygon()
+                    for i in rage(4):
+                        quad.GetPointIds().SetId(i, idx[i])
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -157,11 +152,9 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
+                    quad = vtk.vtkPolygon()
+                    for i in rage(4):
+                        quad.GetPointIds().SetId(i, idx[i])
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -189,11 +182,9 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
+                    quad = vtk.vtkPolygon()
+                    for i in rage(4):
+                        quad.GetPointIds().SetId(i, idx[i])
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -316,10 +307,14 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     polygon = vtk.vtkPolygon()
-                    polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
+                    polygon.GetPointIds().SetNumberOfIds(6)  # make a quad
                     polygon.GetPointIds().SetId(0, 0)
                     polygon.GetPointIds().SetId(1, 1)
                     polygon.GetPointIds().SetId(2, 2)
+
+                    polygon.GetPointIds().SetId(3, 2)
+                    polygon.GetPointIds().SetId(4, 1)
+                    polygon.GetPointIds().SetId(5, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -341,6 +336,9 @@ class ToolActor(vtk.vtkActor):
                     # Create a mapper
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputConnection(transform_filter.GetOutputPort())
+
+
+
 
         else:
             if tool.id == 0 or tool.diameter < .05:
