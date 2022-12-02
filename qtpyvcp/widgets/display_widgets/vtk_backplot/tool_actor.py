@@ -68,8 +68,18 @@ class ToolActor(vtk.vtkActor):
                     # Create the polygon
                     # Create a quad on the four points
                     quad = vtk.vtkPolygon()
-                    for i in rage(4):
-                        quad.GetPointIds().SetId(i, idx[i])
+                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
+
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    quad.GetPointIds().SetId(4, 3)
+                    quad.GetPointIds().SetId(5, 2)
+                    quad.GetPointIds().SetId(6, 1)
+                    quad.GetPointIds().SetId(7, 0)
+
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -96,8 +106,17 @@ class ToolActor(vtk.vtkActor):
                     # Create the polygon
                     # Create a quad on the four points
                     quad = vtk.vtkPolygon()
-                    for i in rage(4):
-                        quad.GetPointIds().SetId(i, idx[i])
+                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
+
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    quad.GetPointIds().SetId(4, 3)
+                    quad.GetPointIds().SetId(5, 2)
+                    quad.GetPointIds().SetId(6, 1)
+                    quad.GetPointIds().SetId(7, 0)
 
 
                     # Add the polygon to a list of polygons
@@ -125,8 +144,17 @@ class ToolActor(vtk.vtkActor):
                     # Create the polygon
                     # Create a quad on the four points
                     quad = vtk.vtkPolygon()
-                    for i in rage(4):
-                        quad.GetPointIds().SetId(i, idx[i])
+                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
+
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    quad.GetPointIds().SetId(4, 3)
+                    quad.GetPointIds().SetId(5, 2)
+                    quad.GetPointIds().SetId(6, 1)
+                    quad.GetPointIds().SetId(7, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -153,8 +181,17 @@ class ToolActor(vtk.vtkActor):
                     # Create the polygon
                     # Create a quad on the four points
                     quad = vtk.vtkPolygon()
-                    for i in rage(4):
-                        quad.GetPointIds().SetId(i, idx[i])
+                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
+
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    quad.GetPointIds().SetId(4, 3)
+                    quad.GetPointIds().SetId(5, 2)
+                    quad.GetPointIds().SetId(6, 1)
+                    quad.GetPointIds().SetId(7, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -183,8 +220,17 @@ class ToolActor(vtk.vtkActor):
                     # Create the polygon
                     # Create a quad on the four points
                     quad = vtk.vtkPolygon()
-                    for i in rage(4):
-                        quad.GetPointIds().SetId(i, idx[i])
+                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
+
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    quad.GetPointIds().SetId(4, 3)
+                    quad.GetPointIds().SetId(5, 2)
+                    quad.GetPointIds().SetId(6, 1)
+                    quad.GetPointIds().SetId(7, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
