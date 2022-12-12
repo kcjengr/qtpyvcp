@@ -31,7 +31,7 @@ Command line tool to set up and launch QtDesigner for editing VCPs::
 
 import os
 import sys
-
+import distro
 # enable remote debug on kernel
 # ➜  ~ sudo echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
@@ -125,7 +125,12 @@ def launch_designer(opts=DotDict()) -> None:
             LOG.error(INSTALLED_ERROR_MSG)
             sys.exit(1)
 
-    cmd = ['designer']
+    
+    if distro.id() == 'gentoo':
+        cmd = ['designer5']
+    else:
+        cmd = ['designer']
+    
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
 
