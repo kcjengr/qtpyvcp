@@ -127,7 +127,7 @@ def launch_designer(opts=DotDict()) -> None:
 
     
     if distro.id() == 'gentoo':
-        cmd = ['Designer5']
+        cmd = ['designer5']
     else:
         cmd = ['designer']
     
