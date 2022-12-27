@@ -142,9 +142,9 @@ class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
             if self._setting.max_value is not None:
-                self.setMaximum(self._setting.max_value)
+                self.setMaximum(int(self._setting.max_value))
             if self._setting.min_value is not None:
-                self.setMinimum(self._setting.min_value)
+                self.setMinimum(int(self._setting.min_value))
 
             self.setDisplayValue(self._setting.getValue())
             self._setting.notify(self.setDisplayValue)
@@ -172,9 +172,9 @@ class VCPSettingsSpinBox(QSpinBox, VCPAbstractSettingsWidget):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
             if self._setting.max_value is not None:
-                self.setMaximum(self._setting.max_value)
+                self.setMaximum(int(self._setting.max_value))
             if self._setting.min_value is not None:
-                self.setMinimum(self._setting.min_value)
+                self.setMinimum(int(self._setting.min_value)
 
             self.setDisplayValue(self._setting.getValue())
             self._setting.notify(self.setDisplayValue)
