@@ -54,7 +54,7 @@ You may need a linuxcnc 2.9.0~pre or latter
 detailed packages requiered for `runtime` or `develop` are described here:
 https://www.qtpyvcp.com/install/prerequisites.html
 
-See the [documentation](https://qtpyvcp.com/).
+See the [documentation](https://www.qtpyvcp.com/).
 
 
 ## Development
