@@ -174,7 +174,7 @@ class VCPSettingsSpinBox(QSpinBox, VCPAbstractSettingsWidget):
             if self._setting.max_value is not None:
                 self.setMaximum(int(self._setting.max_value))
             if self._setting.min_value is not None:
-                self.setMinimum(int(self._setting.min_value)
+                self.setMinimum(int(self._setting.min_value))
 
             self.setDisplayValue(self._setting.getValue())
             self._setting.notify(self.setDisplayValue)
