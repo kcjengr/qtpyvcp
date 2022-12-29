@@ -131,7 +131,7 @@ class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
 
     def setDisplayValue(self, value):
         self.blockSignals(True)
-        self.setValue(value)
+        self.setValue(int(value))
         self.blockSignals(False)
 
     def mouseDoubleClickEvent(self, event):
