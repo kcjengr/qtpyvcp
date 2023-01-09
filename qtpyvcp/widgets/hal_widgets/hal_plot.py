@@ -22,7 +22,7 @@ class TimeAxisItem(pg.AxisItem):
 
     def tickStrings(self, values, scale, spacing):
         """Function overloading the weak default version to provide timestamp"""
-        return [QTime().currentTime().addMSecs(value).toString('mm:ss') for value in values]
+        return [QTime().currentTime().addMSecs(int(value)).toString('mm:ss') for value in values]
 
 
 class HalPlot(QWidget, HALWidget):
