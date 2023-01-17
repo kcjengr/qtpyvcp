@@ -399,6 +399,10 @@ class GCodeProperties(DataPlugin):
 
     def _file_event(self, file_path):
         """" This function gets notified about files begin loaded """
+
+        if not os.path.exists(file_path):
+            return
+
         self.loaded_file = file_path
 
         self.canon = PropertiesCanon()
