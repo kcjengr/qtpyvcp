@@ -135,13 +135,6 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="0">
-      <widget class="QLabel" name="label_12">
-       <property name="text">
-        <string>Offsets</string>
-       </property>
-      </widget>
-     </item>
      <item row="9" column="1">
       <widget class="StatusLabel" name="statuslabel_20">
        <property name="rules" stdset="0">
@@ -153,6 +146,27 @@
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Name</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Offsets</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>Used Tools</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="StatusLabel" name="statuslabel_21">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;offset_changes&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:tools&quot;, &quot;trigger&quot;: true}]}]</string>
        </property>
       </widget>
      </item>

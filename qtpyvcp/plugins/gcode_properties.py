@@ -43,6 +43,7 @@ MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
 
 class GCodeProperties(DataPlugin):
     """GCodeProperties Plugin"""
+
     def __init__(self):
         super(GCodeProperties, self).__init__()
 
@@ -54,7 +55,7 @@ class GCodeProperties(DataPlugin):
         self.canon = None
         self.stat.file.notify(self._file_event)
         self.loaded_file = None
-        
+
         temp = self.ini.find("RS274NGC", "PARAMETER_FILE") or "linuxcnc.var"
         self.parameter_file = os.path.join(self.config_dir, temp)
         self.temp_parameter_file = os.path.join(self.parameter_file + '.temp')
@@ -110,6 +111,31 @@ class GCodeProperties(DataPlugin):
         return chan.value
 
     @DataChannel
+    def tools(self, chan):
+        """The total tools used by a program.
+
+        Args:
+            None
+
+        Returns:
+            The total tools used
+
+        Channel syntax::
+
+            gcode_properties:tools
+
+        """
+
+        if not self.loaded_file:
+            chan.value = 0
+
+        return chan.value
+
+    @tools.tostring
+    def tools(self, chan):
+        return chan.value
+
+    @DataChannel
     def file_size(self, chan):
         """The current file size.
 
@@ -133,7 +159,7 @@ class GCodeProperties(DataPlugin):
     @file_size.tostring
     def file_size(self, chan):
         return chan.value
-    
+
     @DataChannel
     def file_rapids(self, chan):
         """The current file rapis distance.
@@ -158,7 +184,7 @@ class GCodeProperties(DataPlugin):
             units = "mm"
             fmt = "%.3f"
         else:
-            conv = 1/25.4
+            conv = 1 / 25.4
             units = "in"
             fmt = "%.4f"
 
@@ -192,8 +218,7 @@ class GCodeProperties(DataPlugin):
     @file_lines.tostring
     def file_lines(self, chan):
         return chan.value
-    
-    
+
     @DataChannel
     def file_time(self, chan):
         """The current file run time.
@@ -245,7 +270,7 @@ class GCodeProperties(DataPlugin):
     @file_rapid_distance.tostring
     def file_rapid_distance(self, chan):
         return chan.value
-    
+
     @DataChannel
     def file_feed_distance(self, chan):
         """The full distance done in feed velocity of the path.
@@ -288,13 +313,13 @@ class GCodeProperties(DataPlugin):
 
         if not self.loaded_file:
             chan.value = []
-        
+
         return chan.value
 
     @file_work_planes.tostring
     def file_work_planes(self, chan):
         return chan.value
-    
+
     @DataChannel
     def file_rigid_taps(self, chan):
         """The rigid taps found in file.
@@ -313,13 +338,13 @@ class GCodeProperties(DataPlugin):
 
         if not self.loaded_file:
             chan.value = []
-        
+
         return chan.value
 
     @file_rigid_taps.tostring
     def file_rigid_taps(self, chan):
         return chan.value
-    
+
     @DataChannel
     def file_offsets(self, chan):
         """The offsets found in file.
@@ -338,13 +363,13 @@ class GCodeProperties(DataPlugin):
 
         if not self.loaded_file:
             chan.value = dict()
-        
+
         return chan.value
 
     @file_offsets.tostring
     def file_offsets(self, chan):
         return chan.value
-    
+
     @DataChannel
     def file_feed(self, chan):
         """The current file run distance.
@@ -398,7 +423,7 @@ class GCodeProperties(DataPlugin):
                 LOG.debug(f"Error in {self.loaded_file} line {seq - 1}\n{msg}")
         except Exception as e:
             LOG.debug(f"Error {e}")
-        
+
         # clean up temp var file and the backup
         os.unlink(self.temp_parameter_file)
         os.unlink(self.temp_parameter_file + '.bak')
@@ -406,22 +431,23 @@ class GCodeProperties(DataPlugin):
         file_name = self.loaded_file
         file_size = os.stat(self.loaded_file).st_size
         file_lines = self.canon.num_lines
-        
+        tools = self.canon.tools
         tool_calls = self.canon.tool_calls
-        
+
         g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
         g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
             sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
-        
+
         self.file_name.setValue(file_name)
         self.file_size.setValue(file_size)
         self.file_lines.setValue(file_lines)
-        
+
+        self.tools.setValue(tools)
         self.tool_calls_num.setValue(tool_calls)
-        
+
         self.file_rapid_distance.setValue(g0)
         self.file_feed_distance.setValue(g1)
-        
+
         self.file_work_planes.setValue(self.canon.work_planes)
         self.file_rigid_taps.setValue(self.canon.rigid_taps)
         self.file_offsets.setValue(self.canon.g5x_offset_dict)
@@ -429,20 +455,19 @@ class GCodeProperties(DataPlugin):
     def calc_distance(self):
 
         mf = 100.0
-        
+
         g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
-        
+
         g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
             sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
-        
-        
+
         # gt = (sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0]) for l in self.canon.feed) +
         #     sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0])  for l in self.canon.arcfeed) +
         #     sum(self.dist(l[0][:3], l[1][:3])/mf  for l in self.canon.traverse) +
         #     self.canon.dwell_time
         #     )
         #
-        # LOG.debug(f"path time {gt} secconds")        
+        # LOG.debug(f"path time {gt} secconds")
         #
         # min_extents = self.from_internal_units(self.canon.min_extents, conv)
         # max_extents = self.from_internal_units(self.canon.max_extents, conv)
@@ -456,46 +481,46 @@ class GCodeProperties(DataPlugin):
         # pprint.pprint(props)
 
     def dist(self, xxx, xxx_1):
-        (x,y,z) = xxx  # todo changeme
-        (p,q,r) = xxx_1  # todo changeme
-        return ((x-p)**2 + (y-q)**2 + (z-r)**2) ** .5
-    
+        (x, y, z) = xxx  # todo changeme
+        (p, q, r) = xxx_1  # todo changeme
+        return ((x - p) ** 2 + (y - q) ** 2 + (z - r) ** 2) ** .5
+
     def from_internal_units(self, pos, unit=None):
         if unit is None:
             unit = s.linear_units
         lu = (unit or 1) * 25.4
-    
+
         lus = [lu, lu, lu, 1, 1, 1, lu, lu, lu]
-        return [a*b for a, b in zip(pos, lus)]
-    
+        return [a * b for a, b in zip(pos, lus)]
+
     def from_internal_linear_unit(self, v, unit=None):
         if unit is None:
             unit = s.linear_units
         lu = (unit or 1) * 25.4
-        return v*lu
+        return v * lu
+
 
 class PropertiesCanon(BaseCanon):
 
     def __init__(self):
         self.num_lines = 0
         self.tool_calls = 0
-        
+
         # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
         self.traverse = []
-        
+
         # feed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
         self.feed = []
-        
+
         # arcfeed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
         self.arcfeed = []
-        
+
         # dwell list - [line number, color, pos x, pos y, pos z, plane]
         self.dwells = []
-                
-        self.work_planes = []    
-                    
+
+        self.work_planes = []
+
         self.rigid_taps = []
-            
 
         self.feedrate = 1
         self.dwell_time = 0
@@ -508,7 +533,7 @@ class PropertiesCanon(BaseCanon):
         self.suppress = 0
 
         self.plane = 1
-        
+
         self.arcdivision = 64
 
         # extents
@@ -527,7 +552,7 @@ class PropertiesCanon(BaseCanon):
         self.tlo_u = 0.0
         self.tlo_v = 0.0
         self.tlo_w = 0.0
-
+        self.tools = list()
         self.tool_offsets = (0.0,) * 9
 
         # G92/G52 offsets
@@ -558,7 +583,7 @@ class PropertiesCanon(BaseCanon):
         self.rotation_xy = 0
         self.rotation_cos = 1
         self.rotation_sin = 0
-    
+
     def set_g5x_offset(self, offset, x, y, z, a, b, c, u, v, w):
         try:
             self.g5x_offset_dict[str(offset)] = (x, y, z, a, b, c, u, v, w)
@@ -566,7 +591,7 @@ class PropertiesCanon(BaseCanon):
             LOG.debug(f"straight_traverse: {e}")
 
     def set_g92_offset(self, x, y, z, a, b, c, u, v, w):
-        
+
         self.g92_offset_x = x
         self.g92_offset_y = y
         self.g92_offset_z = z
@@ -592,11 +617,11 @@ class PropertiesCanon(BaseCanon):
         try:
             if self.suppress > 0:
                  return
-        
+
             pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
             if not self.first_move:
                 self.traverse.append([self.last_pos, pos])
-    
+
             self.last_pos = pos
         except Exception as e:
             LOG.debug(f"straight_traverse: {e}")
@@ -605,10 +630,10 @@ class PropertiesCanon(BaseCanon):
         try:
             if self.suppress > 0:
                 return
-    
+
             self.first_move = False
             pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
-    
+
             self.feed.append([self.last_pos, pos])
             self.last_pos = pos
         except Exception as e:
@@ -624,7 +649,7 @@ class PropertiesCanon(BaseCanon):
         try:
             if self.suppress > 0:
                 return
-    
+
             self.first_move = False
             self.in_arc = True
             try:
@@ -640,31 +665,31 @@ class PropertiesCanon(BaseCanon):
 
     def get_axis_mask(self):
         return 7  # XYZ
-    
+
     def rigid_tap(self, x, y, z):
         try:
             if self.suppress > 0:
                 return
-            
+
             self.rigid_taps.append((x, y, z))
-            
+
             self.first_move = False
             pos = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
             pos += self.last_pos[3:]
-        
+
             self.feed.append([self.last_pos, pos])
-            
+
         except Exception as e:
             LOG.debug(f"straight_feed: {e}")
 
-    def change_tool(self, pocket):
-        if pocket != -1:
+    def change_tool(self, tool):
+        if tool != -1:
             self.tool_calls += 1
-        # print(("pocket", pocket))
+            self.tools.append(tool)
 
     def next_line(self, st):
         self.num_lines += 1
-        
+
         # state attributes
         # 'block', 'cutter_side', 'distance_mode', 'feed_mode', 'feed_rate',
         # 'flood', 'gcodes', 'mcodes', 'mist', 'motion_mode', 'origin', 'units',
