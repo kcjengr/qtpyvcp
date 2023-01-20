@@ -17,5 +17,5 @@ Description: QtPyVCP is a Qt and Python based framework for building virtual con
 Package: python-qtpyvcp-doc
 Architecture: all
 Section: doc
-Depends: ${sphinxdoc:Depends}, ${misc:Depends}
+Depends: ${sphinxdoc:Depends}, ${misc:Depends}, postinst
 Description: QtPyVCP is a Qt and Python based framework for building virtual control panels for the LinuxCNC machine control.
