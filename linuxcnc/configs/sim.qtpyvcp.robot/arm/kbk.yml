@@ -1,31 +1,25 @@
 # https://www.thingiverse.com/thing:2006972/files
 
-- model: "arm/link1.stl"
+- model: "arm/link2.stl"
   position: [0, 0, 0]
   origin: [0, 0, 0]
   rotation : "z"
   joint: 0
 
-- model: "arm/link2.stl"
-  position: [0, 0, 0]
-  origin: [0, 0, 0]
-  rotation : "z"
-  joint: 1
-
 - model: "arm/link3.stl"
   position: [0, 0, 0]
   origin: [0, 0, 93]
   rotation : "x"
-  joint: 2
+  joint: 1
 
 - model: "arm/link4.stl"
   position: [0, 0, 0]
   origin: [0, 0, 164]
   rotation : "x"
-  joint: 3
+  joint: 2
 
 - model: "arm/link5.stl"
   position: [0, 0, 0]
   origin: [0, 0, 233]
   rotation : "x"
-  joint: 4
+  joint: 3

@@ -13,6 +13,7 @@ loadrt hypot names=vel_xy,vel_xyz
 # add motion controller functions to servo thread
 addf motion-command-handler servo-thread
 addf motion-controller servo-thread
+
 # link the differentiator functions into the code
 addf ddt_x servo-thread
 addf ddt_xv servo-thread
@@ -34,6 +35,16 @@ net Bpos joint.4.motor-pos-cmd => joint.4.motor-pos-fb
 #net Upos joint.6.motor-pos-cmd => joint.6.motor-pos-fb
 #net Vpos joint.7.motor-pos-cmd => joint.7.motor-pos-fb
 #net Wpos joint.8.motor-pos-cmd => joint.8.motor-pos-fb
+
+
+
+
+
+
+
+
+
+
 
 # send the position commands thru differentiators to
 # generate velocity and accel signals
