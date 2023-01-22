@@ -63,8 +63,8 @@ data_plugins:
         NC Files: ~/linuxcnc/nc_files
       network_locations:
 
-    exportedhal:
-        provider: qtpyvcp.plugins.exported_hal:ExportedHal
+  exportedhal:
+    provider: qtpyvcp.plugins.exported_hal:ExportedHal
 
   virtual_input:
     provider: qtpyvcp.plugins.virtual_input_manager:VirtualInputManager
