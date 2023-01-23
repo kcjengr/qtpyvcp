@@ -593,7 +593,7 @@ class NumberMargin(QWidget):
 
     def getWidth(self):
         blocks = self.parent.blockCount()
-        return self.parent.fontMetrics().width(str(blocks)) + 12
+        return self.parent.fontMetrics().width(str(blocks)) + 5
 
     def updateWidth(self):  # check the number column width and adjust
         width = self.getWidth()
