@@ -27,7 +27,7 @@ class TimeAxisItem(pg.AxisItem):
 
 class HalPlot(QWidget, HALWidget):
     """HAL Plot
-    
+
     Plots HAL pin values over time, similar to HAL scope.
     Up to four HAL pin values can be plotted.
 
@@ -38,7 +38,7 @@ class HalPlot(QWidget, HALWidget):
         ================================== =========== =========
         qtpyvcp.pinBaseName.seriesXname.in float          in
         ================================== =========== =========
-    
+
     both pinBaseName and seriesXname can be set in the property editor in QtDesigner.
     """
 
@@ -169,16 +169,16 @@ class HalPlot(QWidget, HALWidget):
         self.now = self.timestamp.elapsed()
         self.x_data = deque(np.linspace(self.now-self._timeWindowMS, self.now, self._bufsize),self._bufsize)
 
-        self.s1 = np.zeros(self._bufsize, dtype=np.float)
+        self.s1 = np.zeros(self._bufsize, dtype=float)
         self.s1_data = deque([0.0] * self._bufsize, self._bufsize)
 
-        self.s2 = np.zeros(self._bufsize, dtype=np.float)
+        self.s2 = np.zeros(self._bufsize, dtype=float)
         self.s2_data = deque([0.0] * self._bufsize, self._bufsize)
 
-        self.s3 = np.zeros(self._bufsize, dtype=np.float)
+        self.s3 = np.zeros(self._bufsize, dtype=float)
         self.s3_data = deque([0.0] * self._bufsize, self._bufsize)
 
-        self.s4 = np.zeros(self._bufsize, dtype=np.float)
+        self.s4 = np.zeros(self._bufsize, dtype=float)
         self.s4_data = deque([0.0] * self._bufsize, self._bufsize)
 
     def updateplot(self):
