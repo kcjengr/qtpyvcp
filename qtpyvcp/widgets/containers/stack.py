@@ -34,10 +34,15 @@ class VCPStackedWidget(QStackedWidget, VCPAbstractStackedWidget):
         'currentIndex': ['setIndexValue', int],
     })
 
-    def __init__(self, parent):
-        super(VCPStackedWidget, self).__init__(parent=parent)
+    def __init__(self, parent=None):
+        super(VCPStackedWidget, self).__init__(parent)
+        self._local_index = -1
 
     def setIndexValue(self, value):
         self.blockSignals(True)
         self.setCurrentIndex(value)
+        self._local_index = value
         self.blockSignals(False)
+
+    def initialize(self):
+        self.setCurrentIndex(self._local_index)
