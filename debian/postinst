@@ -1,1 +1,4 @@
+#!/bin/bash
+
+# TODO: run qcompile here
 whereis qcompile
