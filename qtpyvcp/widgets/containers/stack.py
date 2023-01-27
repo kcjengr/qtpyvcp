@@ -34,8 +34,8 @@ class VCPStackedWidget(QStackedWidget, VCPAbstractStackedWidget):
         'currentIndex': ['setIndexValue', int],
     })
 
-    def __init__(self, parnet):
-        super(VCPStackedWidget, self).__init__(parent=parnet)
+    def __init__(self, parent):
+        super(VCPStackedWidget, self).__init__(parent=parent)
 
     def setIndexValue(self, value):
         self.blockSignals(True)

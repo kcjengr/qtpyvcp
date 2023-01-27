@@ -13,7 +13,7 @@ class VCPFrame(QFrame, VCPWidget):
 
     DEFAULT_RULE_PROPERTY = 'Enable'
 
-    def __init__(self, parnet):
-        super(VCPFrame, self).__init__(parent=parnet)
+    def __init__(self, parent):
+        super(VCPFrame, self).__init__(parent=parent)
 
 

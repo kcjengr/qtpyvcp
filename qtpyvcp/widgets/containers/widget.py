@@ -13,6 +13,6 @@ class VCPWidget(QWidget, VCPWidget):
     """
     DEFAULT_RULE_PROPERTY = 'Enable'
 
-    def __init__(self, parnet):
-        super(VCPWidget, self).__init__(parent=parnet)
+    def __init__(self, parent):
+        super(VCPWidget, self).__init__(parent=parent)
 
