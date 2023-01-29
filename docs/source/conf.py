@@ -66,7 +66,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'QtPyVCP'
-copyright = '2018-2021, Kurt Jacobson.'
+copyright = '2018-2023, Kurt Jacobson.'
 author = 'Kurt Jacobson'
 
 # The version info for the project you're documenting, acts as replacement for
