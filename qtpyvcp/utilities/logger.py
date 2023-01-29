@@ -16,11 +16,15 @@
 
 
 import os
+
 import logging
+from logging.handlers import SocketHandler
+
 from linuxcnc import ini
 
 # Our custom colorizing formatter for the terminal handler
 from qtpyvcp.lib.colored_formatter import ColoredFormatter
+from qtpyvcp.lib.logger import TTYHandler
 from qtpyvcp.utilities.misc import normalizePath
 
 # Global name of the base logger
@@ -32,6 +36,7 @@ DEFAULT_LOG_FILE = os.path.expanduser('~/qtpyvcp.log')
 # Define the log message formats
 TERM_FORMAT = '[%(name)s][%(levelname)s]  %(message)s (%(filename)s:%(lineno)d)'
 FILE_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+TTY_FORMAT = '\033[1;37;40m%(levelname)-5s\033[0m %(name)-8s %(message)s\r\n'
 
 # Get logger for module based on module.__name__
 def getLogger(name):
@@ -91,6 +96,21 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
     ff = logging.Formatter(FILE_FORMAT)
     fh.setFormatter(ff)
     base_log.addHandler(fh)
+
+    # Add socket handler
+    sh = SocketHandler('127.0.0.1', 19996)
+    sh.setLevel(logging.DEBUG)
+    sf = logging.Formatter(FILE_FORMAT)
+    sh.setFormatter(sf)
+    base_log.addHandler(sh)
+
+    # Add tty handler
+    th = TTYHandler(port='/dev/ttyUSB0')
+    th.setLevel(logging.DEBUG)
+    tf = logging.Formatter(TTY_FORMAT)
+    th.setFormatter(tf)
+    base_log.addHandler(th)
+
 
     # Get logger for logger
     log = getLogger(__name__)
