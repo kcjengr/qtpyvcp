@@ -41,7 +41,7 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
         for rule in rule_list:
             if rule.get("property") == "Enable":
 
-                channels = rule_list[0].get("channels")
+                channels = rule.get("channels")
                 expression = channels[0].get("url")
 
                 plugin_name, data_channel_name = expression.split(':')
@@ -58,7 +58,7 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
                 else:
                     ch.append(function())
 
-                ok = eval(rule_list[0].get("expression"))
+                ok = eval(rule.get("expression"))
 
             else:
                 ok = True
