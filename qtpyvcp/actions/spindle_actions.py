@@ -45,7 +45,13 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
                 expression = channels[0].get("url")
 
                 plugin_name, data_channel_name = expression.split(':')
-                data_channel, channel_name = data_channel_name.split('?')
+
+                channel_name = None
+
+                if '?' in data_channel_name:
+                    data_channel, channel_name = data_channel_name.split('?')
+                else:
+                    data_channel = data_channel_name
 
                 plugin = getPlugin(plugin_name)
 
@@ -53,7 +59,7 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
 
                 ch = list()
 
-                if channel_name:
+                if channel_name is not None:
                     ch.append(function(channel_name))
                 else:
                     ch.append(function())
