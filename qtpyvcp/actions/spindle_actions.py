@@ -1,5 +1,5 @@
 import linuxcnc
-
+import json
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -25,15 +25,44 @@ def _spindle_exists(spindle):
     return False
 
 def _spindle_ok(speed=None, spindle=0, widget=None):
+    msg = None
     if spindle not in SPINDLES:
-            ok = False
-            msg = "No spindle No. {}".format(spindle)
+        ok = False
+        msg = "No spindle No. {}".format(spindle)
     elif STAT.task_state != linuxcnc.STATE_ON:
         ok = False
         msg = "Power must be ON"
     elif STAT.task_mode == linuxcnc.MODE_AUTO:
         ok = False
         msg = "Mode must be MAN or MDI"
+    elif len(widget.rules) > 2:  # check if widget has enable rules
+
+        rule_list = json.loads(widget.rules)
+        for rule in rule_list:
+            if rule.get("property") == "Enable":
+
+                channels = rule_list[0].get("channels")
+                expression = channels[0].get("url")
+
+                plugin_name, data_channel_name = expression.split(':')
+                data_channel, channel_name = data_channel_name.split('?')
+
+                plugin = getPlugin(plugin_name)
+
+                function = getattr(plugin, data_channel)
+
+                ch = list()
+
+                if channel_name:
+                    ch.append(function(channel_name))
+                else:
+                    ch.append(function())
+
+                ok = eval(rule_list[0].get("expression"))
+
+            else:
+                ok = True
+                msh = ""
     else:
         ok = True
         msg = ""
