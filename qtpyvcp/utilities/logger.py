@@ -98,18 +98,18 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
     base_log.addHandler(fh)
 
     # Add socket handler
-    sh = SocketHandler('127.0.0.1', 19996)
-    sh.setLevel(logging.DEBUG)
-    sf = logging.Formatter(FILE_FORMAT)
-    sh.setFormatter(sf)
-    base_log.addHandler(sh)
+    # sh = SocketHandler('127.0.0.1', 19996)
+    # sh.setLevel(logging.DEBUG)
+    # sf = logging.Formatter(FILE_FORMAT)
+    # sh.setFormatter(sf)
+    # base_log.addHandler(sh)
 
     # Add tty handler
-    th = TTYHandler(port='/dev/ttyUSB0')
-    th.setLevel(logging.DEBUG)
-    tf = logging.Formatter(TTY_FORMAT)
-    th.setFormatter(tf)
-    base_log.addHandler(th)
+    # th = TTYHandler(port='/dev/ttyUSB0')
+    # th.setLevel(logging.DEBUG)
+    # tf = logging.Formatter(TTY_FORMAT)
+    # th.setFormatter(tf)
+    # base_log.addHandler(th)
 
 
     # Get logger for logger
