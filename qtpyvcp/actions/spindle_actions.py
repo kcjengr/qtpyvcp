@@ -36,9 +36,10 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
         ok = False
         msg = "Mode must be MAN or MDI"
     elif len(widget.rules) > 2:  # check if widget has enable rules
-
+        print(widget)
         rule_list = json.loads(widget.rules)
         for rule in rule_list:
+            print(rule)
             if rule.get("property") == "Enable":
 
                 channels = rule.get("channels")
@@ -55,16 +56,20 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
 
                 plugin = getPlugin(plugin_name)
 
-                function = getattr(plugin, data_channel)
+                if hasattr(plugin, data_channel):
+                    function = getattr(plugin, data_channel)
 
-                ch = list()
+                    ch = list()
 
-                if channel_name is not None:
-                    ch.append(function(channel_name))
+                    if channel_name is not None:
+                        ch.append(function(channel_name))
+                    else:
+                        ch.append(function())
+
+                    ok = eval(rule.get("expression"))
                 else:
-                    ch.append(function())
-
-                ok = eval(rule.get("expression"))
+                    ok = True
+                    msh = ""
 
             else:
                 ok = True
