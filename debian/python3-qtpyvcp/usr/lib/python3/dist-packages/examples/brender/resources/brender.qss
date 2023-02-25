@@ -1,0 +1,205 @@
+QsciScintilla {
+    qproperty-backgroundcolor: #ffbb0e;
+    qproperty-marginbackgroundcolor: #5c5c5c;
+}
+
+QMainWindow, QDialog, VCPMainWindow {
+    background: #707070
+    /*border-image: url(:/images/dark_background.jpg);*/
+    /*background-image: url(:/images/dark_background.jpg);*/
+/*    background-image: url(:/images/pp_border.png);*/
+}
+
+QPushButton, QComboBox[editable="false"],
+QComboBox[editable="true"]::drop-down {
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 4px;
+    border-width: 2px;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #b6b6b6, stop: 1.0 #626262);
+}
+
+QPushButton:disabled,
+QComboBox:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error="true"] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #5C5959, stop: 1.0 #A19E9E)
+}
+
+QPushButton:checked[styleClass="option"] {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd)
+}
+
+QPushButton:checked {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #599428, stop: 1.0 #8acd4a)
+}
+
+/*E-Stop button*/
+ActionButton[actionName="machine.estop.toggle"]:checked {
+    border-radius: 50px;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #C40100, stop: 1.0 #F22E2D)
+}
+
+QLineEdit {
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    border-radius: 5px;
+    color: #ffbb0e;
+    background: black;
+}
+
+QLineEdit:focus {
+    border-color: #4a6aa7;
+}
+
+.QFrame {
+    padding: 0px;
+    border-width: 1px;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: #8A8484;
+}
+
+DROWidget {
+    color: #ffbb0e;
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+    background-color: black;
+}
+
+QGroupBox {
+    /*background-color: #6B6B6B;*/
+    border: 1px solid #8A8484;
+    border-radius: 5px;
+    margin-top: 1ex;
+    font-family: Roboto;
+    font-style: normal;
+    font-size: 12pt;
+/*    font-weight: bold;*/
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 0 3px;
+    color: black;
+}
+
+GcodeEditor {
+    background-color: white;
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+GcodeBackplot {
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: black;
+    margin: 10px;
+}
+
+/*===========================================================================*/
+/*                            Tabbed Widget                                  */
+/*===========================================================================*/
+
+QTabWidget {
+    background: #707070;
+}
+
+QTabWidget::pane {
+    background: transparent;
+}
+
+QTabWidget::tab-bar {
+    left: 5px; /* move to the right by 5px */
+}
+
+/* Style the tab using the tab sub-control. Note that it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: 10ex;
+    min-height: 3ex;
+    padding: 2px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QTabBar::tab:selected {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+}
+
+QTabBar::tab:first {
+    border-left-width: 2px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+QTabBar::tab:last {
+    border-right-width: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+QTabBar::tab:only-one {
+    border-width: 2px;
+    border-radius: 4px;
+}
+
+
+QWidget[styleClass="buttonBox"] QPushButton {
+    border-radius: 0px;
+    border-left-width: 1px;
+    border-right-width: 0px;
+}
+
+QWidget[styleClass="buttonBox"] QPushButton[position='first'] {
+    border-left-width: 2px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+QWidget[styleClass="buttonBox"] QPushButton[position='last'] {
+    border-right-width: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}

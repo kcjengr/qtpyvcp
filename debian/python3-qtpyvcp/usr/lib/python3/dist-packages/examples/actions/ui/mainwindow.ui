@@ -1,0 +1,1448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>800</width>
+    <height>640</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="VTKBackPlot" name="vtkbackplot"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <family>DejaVu Serif</family>
+           <pointsize>10</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string>QtPyVCP Actions Examples
+
+Status Buttons:
+Double Click to show the Rules used.
+
+Action Buttons:
+Double Click to show the Rules used.
+Single Click then look in the Property Editor
+you can see the actionName syntax.
+
+Release the E Stop, turn the Power on
+both will be Green then Home All
+
+Jog X Y and Z then press Set XYZ</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Machine</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="groupBox_18">
+          <property name="title">
+           <string>Mode</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_23">
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_55">
+             <property name="text">
+              <string>MDI</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] == 3 else ''&quot;, &quot;name&quot;: &quot;Mode&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.mdi</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_56">
+             <property name="text">
+              <string>Auto</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] == 2 else ''&quot;, &quot;name&quot;: &quot;Mode&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.auto</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="StatusLabel" name="statuslabel_11">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="ActionButton" name="actionbutton_57">
+             <property name="text">
+              <string>Manual</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] == 1 else ''&quot;, &quot;name&quot;: &quot;Mode&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.manual</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>Homing/Unhoming</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_7">
+             <property name="text">
+              <string>Home X</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:x</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_9">
+             <property name="text">
+              <string>Home All</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.home.all</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="ActionButton" name="actionbutton_11">
+             <property name="text">
+              <string>Unhome Y</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.unhome.axis:y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="ActionButton" name="actionbutton_8">
+             <property name="text">
+              <string>Unhome X</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.unhome.axis:x</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="ActionButton" name="actionbutton_12">
+             <property name="text">
+              <string>Unhome Z</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.unhome.axis:z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_13">
+             <property name="text">
+              <string>Home Y</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="ActionButton" name="actionbutton_10">
+             <property name="text">
+              <string>Unhome All</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.unhome.all</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="ActionButton" name="actionbutton_14">
+             <property name="text">
+              <string>Home Z</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="StatusLabel" name="statuslabel_3">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:all_axes_homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'All Homed' if ch[0] else 'Not Homed'&quot;, &quot;name&quot;: &quot;New Rule&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:all_axes_homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] else 'background-color: rgb(239, 41, 41);'&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="StatusLabel" name="statuslabel_4">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:homed?0&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'X Homed' if ch[0] else 'X Unhomed'&quot;, &quot;name&quot;: &quot;New Rule&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:homed?0&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] else 'background-color: rgb(239, 41, 41);'&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="StatusLabel" name="statuslabel_5">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:homed?1&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'Y Homed' if ch[0] else 'Y Unhomed'&quot;, &quot;name&quot;: &quot;New Rule&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:homed?1&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] else 'background-color: rgb(239, 41, 41);'&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="StatusLabel" name="statuslabel_6">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:homed?2&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'Z Homed' if ch[0] else 'Z Unhomed'&quot;, &quot;name&quot;: &quot;New Rule&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:homed?2&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] else 'background-color: rgb(239, 41, 41);'&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>E-Stop</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_3">
+             <property name="text">
+              <string>Toggle</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.estop.toggle</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton">
+             <property name="text">
+              <string>Activate</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:estop&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;False if ch[0] else True&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.estop.activate</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_2">
+             <property name="text">
+              <string>Reset</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:estop&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;True if ch[0] else False&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.estop.reset</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="StatusLabel" name="statuslabel">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(138, 226, 52);</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:estop&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'Enabled' if ch[0] else 'Disabled'&quot;, &quot;name&quot;: &quot;estop&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:estop&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(239, 41, 41);' if ch[0] else 'background-color: rgb(138, 226, 52);'&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>Power</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_4">
+             <property name="text">
+              <string>Off</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:on&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.power.off</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_5">
+             <property name="text">
+              <string>On</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:on&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;not ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.power.on</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_6">
+             <property name="text">
+              <string>Toggle</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.power.toggle</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="StatusLabel" name="statuslabel_2">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:on&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'On' if ch[0] else 'Off'&quot;, &quot;name&quot;: &quot;New Rule&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:on&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] else 'background-color: rgb(186, 189, 182);'&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_7">
+       <attribute name="title">
+        <string>Jogging</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_24">
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>Jogging</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="1" column="1">
+            <widget class="ActionButton" name="actionbutton_19">
+             <property name="text">
+              <string>Jog Y -</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.jog.axis:y,neg</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_17">
+             <property name="text">
+              <string>Jog Z +</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.jog.axis:z,pos</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_16">
+             <property name="text">
+              <string>Jog Y +</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.jog.axis:y,pos</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_15">
+             <property name="text">
+              <string>Jog X +</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.jog.axis:x,pos</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="ActionButton" name="actionbutton_20">
+             <property name="text">
+              <string>Jog Z -</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.jog.axis:z,neg</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="ActionButton" name="actionbutton_18">
+             <property name="text">
+              <string>Jog X -</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.jog.axis:x,neg</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="StatusLabel" name="statuslabel_7">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;settings:machine.jog.linear-speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="VCPSettingsSlider" name="settings_slider">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="settingName" stdset="0">
+              <string>machine.jog.linear-speed</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="MDIButton" name="mdibutton">
+             <property name="text">
+              <string>Set XYZ</string>
+             </property>
+             <property name="MDICommand" stdset="0">
+              <string>G10L20P0X0Y0Z0</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Program</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="title">
+           <string>Program</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_7">
+           <item row="0" column="1">
+            <widget class="ActionButton" name="actionbutton_25">
+             <property name="text">
+              <string>Pause</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.pause</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="ActionButton" name="actionbutton_23">
+             <property name="text">
+              <string>Step</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.step</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="ActionButton" name="actionbutton_22">
+             <property name="text">
+              <string>Resume</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.resume</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_21">
+             <property name="text">
+              <string>Run</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.run</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_24">
+             <property name="text">
+              <string>Abort</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.abort</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="ActionButton" name="actionbutton_29">
+             <property name="text">
+              <string>Clear</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.clear</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="ActionButton" name="actionbutton_33">
+             <property name="text">
+              <string>Reload</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.reload</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_34">
+             <property name="text">
+              <string>Run from Line</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.run:#&lt;runFromLine&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" colspan="2">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>&lt;- Run From this Line</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLineEdit" name="runFromLine">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="title">
+           <string>Optional Stop</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_26">
+             <property name="text">
+              <string>Off</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.option-stop.off</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_27">
+             <property name="text">
+              <string>On</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.optional-stop.on</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_28">
+             <property name="text">
+              <string>Toggle</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.optional-stop.toggle</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" rowspan="3">
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>When Stop
+is On the
+program
+stops at
+M1</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="groupBox_7">
+          <property name="title">
+           <string>Block Delete</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_9">
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_30">
+             <property name="text">
+              <string>Off</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.block-delete.off</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_31">
+             <property name="text">
+              <string>On</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.block-delete.on</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_32">
+             <property name="text">
+              <string>Toggle</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.block-delete.toggle</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" rowspan="3">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>When Block
+Delete is On
+ignore lines
+that start
+with /</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Spindle</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_10">
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="groupBox_8">
+          <property name="title">
+           <string>Spindle Run</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_11">
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_35">
+             <property name="text">
+              <string>Forward</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.forward</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_36">
+             <property name="text">
+              <string>Reverse</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.reverse</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_37">
+             <property name="text">
+              <string>Stop</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.off</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_9">
+          <property name="title">
+           <string>Spindle</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_12">
+           <item row="0" column="0">
+            <widget class="StatusLabel" name="statuslabel_8">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'{} RPM'.format(str(ch[0]))&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="StatusLED" name="statusled">
+             <property name="color">
+              <color>
+               <red>138</red>
+               <green>226</green>
+               <blue>52</blue>
+              </color>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.brake&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;On&quot;, &quot;expression&quot;: &quot;True if ch[0] &gt; 0 else False&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Brake</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="groupBox_10">
+          <property name="title">
+           <string>Brake</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_13">
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_38">
+             <property name="text">
+              <string>On</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.brake&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;False if ch[0] &gt; 0 else True&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.brake.on</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_39">
+             <property name="text">
+              <string>Off</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.brake&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;True if ch[0] &gt; 0 else False&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.brake.toggle</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_40">
+             <property name="text">
+              <string>Toggle</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.brake.toggle</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QGroupBox" name="groupBox_11">
+          <property name="title">
+           <string>Speed</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_14">
+           <item row="0" column="0">
+            <widget class="ActionButton" name="actionbutton_41">
+             <property name="text">
+              <string>Faster</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;True if ch[0] != 0 else False&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.faster</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_42">
+             <property name="text">
+              <string>Slower</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;True if ch[0] != 0 else False&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.slower</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_43">
+             <property name="text">
+              <string>Fwd 1800</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>spindle.forward:1800</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>Coolant</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_15">
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_12">
+          <property name="title">
+           <string>Flood</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_16">
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_45">
+             <property name="text">
+              <string>Off</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:flood&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;False if ch[0] == 0 else True&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>coolant.flood.off</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_44">
+             <property name="text">
+              <string>On</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:flood&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;True if ch[0] == 0 else False&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>coolant.flood.on</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="ActionButton" name="actionbutton_46">
+             <property name="text">
+              <string>Toggle</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>coolant.flood.toggle</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="StatusLabel" name="statuslabel_9">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:flood&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'On' if ch[0] &gt; 0 else 'Off'&quot;, &quot;name&quot;: &quot;New Rule&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:flood&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] &gt; 0 else 'background-color: rgb(186, 189, 182);'&quot;, &quot;name&quot;: &quot;Background Color&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="groupBox_13">
+          <property name="title">
+           <string>Mist</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_17">
+           <item row="2" column="0">
+            <widget class="ActionButton" name="actionbutton_47">
+             <property name="text">
+              <string>Off</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:mist&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;False if ch[0] == 0 else True&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>coolant.mist.off</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_48">
+             <property name="text">
+              <string>On</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:mist&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;True if ch[0] == 0 else False&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>coolant.mist.on</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="ActionButton" name="actionbutton_49">
+             <property name="text">
+              <string>Toggle</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>coolant.mist.toggle</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="StatusLabel" name="statuslabel_10">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:mist&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'On' if ch[0] &gt; 0 else 'Off'&quot;, &quot;name&quot;: &quot;New Rule&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:mist&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Sheet&quot;, &quot;expression&quot;: &quot;'background-color: rgb(138, 226, 52);' if ch[0] &gt; 0 else 'background-color: rgb(186, 189, 182);'&quot;, &quot;name&quot;: &quot;Background Color&quot;}]</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>Tool</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_18">
+        <item row="0" column="4">
+         <widget class="QGroupBox" name="groupBox_17">
+          <property name="title">
+           <string>Probe Sim</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_22">
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_54">
+             <property name="text">
+              <string>Launch</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>tool_actions.simulate_probe</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_14">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="text">
+              <string>Simulated
+Probe
+Input</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="7">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0">
+         <widget class="QGroupBox" name="groupBox_14">
+          <property name="title">
+           <string>Calibration</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_19">
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_50">
+             <property name="text">
+              <string>Launch</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>tool_actions.calibration</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="text">
+              <string>Test PID,
+Scale,
+Acceleration
+&amp; Velocity.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QGroupBox" name="groupBox_16">
+          <property name="title">
+           <string>HAL Show</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_21">
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_53">
+             <property name="text">
+              <string>Launch</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>tool_actions.halshow</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_13">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="text">
+              <string>View HAL
+Pins,
+Signals
+&amp; Watch
+Window</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <widget class="QGroupBox" name="groupBox_35">
+          <property name="title">
+           <string>Status</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_45">
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_109">
+             <property name="text">
+              <string>Launch</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>tool_actions.status</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_15">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="text">
+              <string>LinuxCNC
+Status of
+all items</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGroupBox" name="groupBox_15">
+          <property name="title">
+           <string>HAL Meter</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_20">
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_51">
+             <property name="text">
+              <string>Launch</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>tool_actions.halmeter</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="text">
+              <string>Display the
+current
+value of a
+single pin</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QGroupBox" name="groupBox_36">
+          <property name="title">
+           <string>HAL Scope</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_47">
+           <item row="1" column="0">
+            <widget class="ActionButton" name="actionbutton_52">
+             <property name="text">
+              <string>Lanuch</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>tool_actions.halscope</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="text">
+              <string>HAL
+oscilloscope</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionOPEN">
+   <property name="text">
+    <string>oPEN</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+  <customwidget>
+   <class>StatusLED</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_led</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
+  </customwidget>
+  <customwidget>
+   <class>VTKBackPlot</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_button</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

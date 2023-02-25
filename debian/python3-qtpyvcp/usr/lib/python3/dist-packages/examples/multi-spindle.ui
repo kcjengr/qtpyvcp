@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="VCPMainWindow" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>370</width>
+    <height>443</height>
+   </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string>QtPyVCP Demo - Multi Spindle</string>
+  </property>
+  <property name="toolTipDuration">
+   <number>-1</number>
+  </property>
+  <property name="promptAtExit" stdset="0">
+   <bool>false</bool>
+  </property>
+  <property name="promot_on_exit" stdset="0">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="title">
+       <string>Spindle No. 0</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="2" column="0" colspan="3">
+          <widget class="ActionSlider" name="actionslider_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.0.override</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="ActionButton" name="actionbutton_36">
+           <property name="text">
+            <string>FWD</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.0.forward</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="ActionButton" name="actionbutton_37">
+           <property name="text">
+            <string>OFF</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.0.off</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="ActionButton" name="actionbutton_35">
+           <property name="text">
+            <string>REV</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.0.reverse</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="ActionCheckBox" name="actioncheckbox_6">
+           <property name="text">
+            <string>Brake</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.0.brake.toggle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="StatusLabel" name="statuslabelnew_4">
+           <property name="rules" stdset="0">
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
+           </property>
+           <property name="format" stdset="0">
+            <string>{:3.0%}</string>
+           </property>
+           <property name="factor" stdset="0">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="statusItem" stdset="0">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="StatusLabel" name="statuslabelnew_6">
+           <property name="text">
+            <string>      0 rpm</string>
+           </property>
+           <property name="rules" stdset="0">
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].speed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:spindle[0].override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:7.0f} rpm\&quot;.format(ch[0] * ch[1])&quot;, &quot;name&quot;: &quot;rpm&quot;}]</string>
+           </property>
+           <property name="factor" stdset="0">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="statusItem" stdset="0">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2" colspan="2">
+          <widget class="ActionCheckBox" name="actioncheckbox_8">
+           <property name="text">
+            <string>OR enable</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.0.override.toggle-enable</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="title">
+       <string>Spindle No. 1</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="2" column="0" colspan="3">
+          <widget class="ActionSlider" name="actionslider_7">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.1.override</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="ActionButton" name="actionbutton_38">
+           <property name="text">
+            <string>FWD</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.1.forward</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="ActionButton" name="actionbutton_39">
+           <property name="text">
+            <string>OFF</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.1.off</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="ActionButton" name="actionbutton_40">
+           <property name="text">
+            <string>REV</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.1.reverse</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="ActionCheckBox" name="actioncheckbox_7">
+           <property name="text">
+            <string>Brake</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.1.brake.toggle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2" colspan="2">
+          <widget class="ActionCheckBox" name="actioncheckbox_9">
+           <property name="text">
+            <string>OR enable</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.1.override.toggle-enable</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="StatusLabel" name="statuslabelnew_5">
+           <property name="rules" stdset="0">
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
+           </property>
+           <property name="format" stdset="0">
+            <string>{:3.0%}</string>
+           </property>
+           <property name="factor" stdset="0">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="statusItem" stdset="0">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="StatusLabel" name="statuslabelnew_7">
+           <property name="text">
+            <string>      0 rpm</string>
+           </property>
+           <property name="rules" stdset="0">
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:7.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;rpm&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindles&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] &gt; 1&quot;, &quot;name&quot;: &quot;enable&quot;}]</string>
+           </property>
+           <property name="factor" stdset="0">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="statusItem" stdset="0">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_5">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="title">
+       <string>Spindle No. 2</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="2" column="0" colspan="3">
+          <widget class="ActionSlider" name="actionslider_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.2.override</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="ActionButton" name="actionbutton_41">
+           <property name="text">
+            <string>FWD</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.2.forward</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="ActionButton" name="actionbutton_42">
+           <property name="text">
+            <string>OFF</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.2.off</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="ActionButton" name="actionbutton_43">
+           <property name="text">
+            <string>REV</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.2.reverse</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="ActionCheckBox" name="actioncheckbox_10">
+           <property name="text">
+            <string>Brake</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.2.brake.toggle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2" colspan="2">
+          <widget class="ActionCheckBox" name="actioncheckbox_11">
+           <property name="text">
+            <string>OR enable</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.2.override.toggle-enable</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="StatusLabel" name="statuslabelnew_8">
+           <property name="rules" stdset="0">
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
+           </property>
+           <property name="format" stdset="0">
+            <string>{:3.0%}</string>
+           </property>
+           <property name="factor" stdset="0">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="statusItem" stdset="0">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="StatusLabel" name="statuslabelnew_9">
+           <property name="text">
+            <string>      0 rpm</string>
+           </property>
+           <property name="rules" stdset="0">
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:7.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;rpm&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindles&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] &gt; 2&quot;, &quot;name&quot;: &quot;enable&quot;}]</string>
+           </property>
+           <property name="factor" stdset="0">
+            <double>0.000000000000000</double>
+           </property>
+           <property name="statusItem" stdset="0">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>370</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuExit">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuRecentFiles">
+     <property name="title">
+      <string>Recent &amp;Files</string>
+     </property>
+     <addaction name="actionFile1"/>
+    </widget>
+    <addaction name="actionOpen"/>
+    <addaction name="menuRecentFiles"/>
+    <addaction name="actionReload"/>
+    <addaction name="actionClose"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuMachine">
+    <property name="title">
+     <string>Machine</string>
+    </property>
+    <widget class="QMenu" name="menuHoming">
+     <property name="title">
+      <string>Homing</string>
+     </property>
+     <addaction name="actionHome_All"/>
+     <addaction name="actionHome_X"/>
+     <addaction name="actionHome_Y"/>
+     <addaction name="actionHome_Z"/>
+    </widget>
+    <widget class="QMenu" name="menuCooling">
+     <property name="title">
+      <string>Cooling</string>
+     </property>
+     <addaction name="action_Mist_toggle"/>
+     <addaction name="action_Flood_toggle"/>
+    </widget>
+    <addaction name="action_EmergencyStop_toggle"/>
+    <addaction name="action_MachinePower_toggle"/>
+    <addaction name="separator"/>
+    <addaction name="actionRun_Program"/>
+    <addaction name="actionRun_From_Line"/>
+    <addaction name="actionStep"/>
+    <addaction name="actionPause"/>
+    <addaction name="actionResume"/>
+    <addaction name="actionStop"/>
+    <addaction name="actionPause_at_M1"/>
+    <addaction name="actionSkip_lines_with"/>
+    <addaction name="separator"/>
+    <addaction name="menuHoming"/>
+    <addaction name="menuCooling"/>
+    <addaction name="separator"/>
+    <addaction name="actionOverride_Limits"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionHalmeter"/>
+    <addaction name="actionHalshow"/>
+    <addaction name="actionHAL_Scope"/>
+    <addaction name="actionCalibration"/>
+   </widget>
+   <addaction name="menuExit"/>
+   <addaction name="menuMachine"/>
+   <addaction name="menuTools"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>&amp;Open ...</string>
+   </property>
+   <property name="shortcut">
+    <string>O</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.open</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionReload">
+   <property name="text">
+    <string>&amp;Reload</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As ...</string>
+   </property>
+  </action>
+  <action name="actionHome_X">
+   <property name="text">
+    <string>Home &amp;X</string>
+   </property>
+  </action>
+  <action name="actionHome_Y">
+   <property name="text">
+    <string>Home &amp;Y</string>
+   </property>
+  </action>
+  <action name="actionHome_Z">
+   <property name="text">
+    <string>Home &amp;Z</string>
+   </property>
+  </action>
+  <action name="action_EmergencyStop_toggle">
+   <property name="text">
+    <string>Toggle E-stop</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.estop.toggle</string>
+   </property>
+  </action>
+  <action name="action_MachinePower_toggle">
+   <property name="text">
+    <string>Machine Power</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.power.toggle</string>
+   </property>
+  </action>
+  <action name="actionHome_All">
+   <property name="text">
+    <string>Home All</string>
+   </property>
+  </action>
+  <action name="actionRun_Program">
+   <property name="text">
+    <string>Run Program</string>
+   </property>
+   <property name="shortcut">
+    <string>R</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.run</string>
+   </property>
+  </action>
+  <action name="actionFile1">
+   <property name="text">
+    <string>File1</string>
+   </property>
+  </action>
+  <action name="actionReport_Actual_Position">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Report Actual Position</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test</string>
+   </property>
+  </action>
+  <action name="action_Mist_toggle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mist</string>
+   </property>
+   <property name="shortcut">
+    <string>F7</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>coolant.mist.toggle</string>
+   </property>
+  </action>
+  <action name="action_Flood_toggle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Flood</string>
+   </property>
+   <property name="shortcut">
+    <string>F8</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>coolant.flood.toggle</string>
+   </property>
+  </action>
+  <action name="action_program_run">
+   <property name="text">
+    <string>Run Program</string>
+   </property>
+  </action>
+  <action name="action_coolant_floodToggle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Flood</string>
+   </property>
+  </action>
+  <action name="actionHalshow">
+   <property name="text">
+    <string>HAL Show</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halshow</string>
+   </property>
+  </action>
+  <action name="actionHalmeter">
+   <property name="text">
+    <string>HAL Meter</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halmeter</string>
+   </property>
+  </action>
+  <action name="actionHAL_Scope">
+   <property name="text">
+    <string>HAL Scope</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halscope</string>
+   </property>
+  </action>
+  <action name="actionCalibration">
+   <property name="text">
+    <string>Calibration</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.calibration</string>
+   </property>
+  </action>
+  <action name="actionOverride_Limits">
+   <property name="text">
+    <string>Override Limits</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.override-limits</string>
+   </property>
+  </action>
+  <action name="actionOverride_Limits_2">
+   <property name="text">
+    <string>Override Limits</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.override-limits</string>
+   </property>
+  </action>
+  <action name="actionRun_From_Line">
+   <property name="text">
+    <string>Run From Line</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.run-from-line</string>
+   </property>
+  </action>
+  <action name="actionStep">
+   <property name="text">
+    <string>Step</string>
+   </property>
+   <property name="shortcut">
+    <string>T</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.step</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="text">
+    <string>Pause</string>
+   </property>
+   <property name="shortcut">
+    <string>P</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.pause</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="text">
+    <string>Stop</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.abort</string>
+   </property>
+  </action>
+  <action name="actionResume">
+   <property name="text">
+    <string>Resume</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.resume</string>
+   </property>
+  </action>
+  <action name="actionPause_at_M1">
+   <property name="text">
+    <string>Pause at 'M1'</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.optional-stop.toggle</string>
+   </property>
+  </action>
+  <action name="actionSkip_lines_with">
+   <property name="text">
+    <string>Skip lines with '/'</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.block-delete.toggle</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ActionCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_checkbox</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPMainWindow</class>
+   <extends>QMainWindow</extends>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_button</header>
+  </customwidget>
+  <customwidget>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="brender/resources/brender.qrc"/>
+ </resources>
+ <connections/>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>10</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
+</ui>

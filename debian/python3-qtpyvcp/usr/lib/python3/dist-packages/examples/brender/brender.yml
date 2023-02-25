@@ -1,0 +1,43 @@
+{% include "default_menubar.yml" %}
+
+qtdesigner:
+  ui_file: ( windows.mainwindow.kwargs.ui_file )
+  qss_file: ( windows.mainwindow.kwargs.stylesheet )
+
+vcp:
+  name: Brender
+  version: v0.0.1
+  author: Kurt Jacobson
+  description: |
+    Brender is minimal example VCP mostly used
+    for development and testing purposes.
+
+    Design and colors influenced by Brenda EM's LinuxCNC
+    GUI proposal.
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: 75
+
+windows:
+   mainwindow:
+     # Specify the class to use for the VCP's mainwindow
+     #   Format: package.module:class
+     provider: brender:MainWindow
+     
+     # Keyword arguments to pass when initializing the class.
+     kwargs:
+       # Specify the mainwindow menubar as the default.
+       menu: ( default_menubar )
+       # Specify the UI file to load the window layout from.
+       ui_file: {{ file.dir }}/ui/brender.ui
+       # Specify a stylesheet to use only for mainwindow.
+       stylesheet: {{ file.dir }}/resources/brender.qss
+       # Set the window title from from the date in the vcp section above.
+       title: ( vcp.name ) ( vcp.version)))))
+
+application:
+  kwargs:
+    # Specify the application wide stylesheet.
+    stylesheet: {{ file.dir }}/resources/brender.qss
