@@ -12,5 +12,5 @@ Rules-Requires-Root: no
 
 Package: python3-qtpyvcp
 Architecture: all
+Description: QtPyVCP is a Qt and Python based framework for building virtual control panels for the LinuxCNC machine control.
 Depends: ${python3:Depends}, ${misc:Depends}, python3-setuptools, python3-yaml, python3-pyqt5, python3-dbus.mainloop.pyqt5, python3-pyqt5.qtopengl, python3-pyqt5.qsci,
-
