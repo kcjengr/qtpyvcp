@@ -6,7 +6,7 @@ QPlainTextEdit based G-code editor with syntax highlighting.
 """
 
 import os
-import oyaml as yaml
+import yaml
 
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
                          Property, QFile, QTextStream)
@@ -287,9 +287,9 @@ class GcodeTextEdit(QPlainTextEdit):
             cursor.endEditBlock();
 
     def replaceAllText(self, search, replace):
-        
+
         flags = QTextDocument.FindFlag()
-        
+
         if self.find_case:
             flags |= QTextDocument.FindCaseSensitively
         if self.find_words:
@@ -306,7 +306,7 @@ class GcodeTextEdit(QPlainTextEdit):
                 cursor.endEditBlock();
             else:
                 searching = False
-    
+
     @Slot()
     def findAll(self):
 
@@ -376,7 +376,7 @@ class GcodeTextEdit(QPlainTextEdit):
         open_file = QFile(str(STATUS.file))
         if open_file == None:
             return
-        
+
         save_file = self.save_as_dialog(open_file.fileName())
         self.saveFile(save_file)
 
@@ -404,11 +404,11 @@ class GcodeTextEdit(QPlainTextEdit):
     def syntaxHighlightingOnOff(self, state):
         """Toggle syntax highlighting on/off"""
         pass
-    
+
     @Property(bool)
     def syntaxHighlighting(self):
         return self.syntax_highlighting
-    
+
     @syntaxHighlighting.setter
     def syntaxHighlighting(self, state):
         self.syntax_highlighting = state
@@ -426,7 +426,7 @@ class GcodeTextEdit(QPlainTextEdit):
         # start syntax highlighting
         if self.syntax_highlighting == True:
             self.gCodeHighlighter = GcodeSyntaxHighlighter(doc, self.font)
-        
+
         self.setDocument(doc)
         self.margin.updateWidth()
 
