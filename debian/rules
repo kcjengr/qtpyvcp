@@ -1,9 +1,4 @@
 #!/usr/bin/make -f
-# See debhelper(7) (uncomment to enable)
-# output every command that modifies files on the build system.
-#export DH_VERBOSE = 1
-
-export PYBUILD_NAME=qtpyvcp
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild

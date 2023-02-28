@@ -1,4 +1,3 @@
 #!/bin/bash
 
-# TODO: run qcompile here
-whereis qcompile
+/usr/bin/qcompile /usr/lib/python3/dist-packages/qtpyvcp

@@ -8,7 +8,6 @@ MarkupSafe
 pyopengl
 vtk
 pyqtgraph
-oyaml
 simpleeval
 sqlalchemy
 python-dateutil
