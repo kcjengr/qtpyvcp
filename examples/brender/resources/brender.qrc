@@ -1,7 +1,7 @@
 <RCC>
 <qresource prefix="/">
-    <file>images/brushed_metal.jpg</file>
-    <file>images/dark_background.jpg</file>
+    <file>images/brushed_metal.png</file>
+    <file>images/dark_background.png</file>
     <file>images/probe.png</file>
     <file>images/pagefold.png</file>
     <file>images/frame.png</file>
