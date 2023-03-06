@@ -3,7 +3,7 @@ import os
 import linuxcnc
 from qtpy import uic, QtWidgets
 from qtpy.QtCore import Slot, Qt, QEvent, QPoint
-from qtpy.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
+from qtpy.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent, QGuiApplication
 from qtpy.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
 
 
@@ -106,7 +106,7 @@ class VirtualInput(QWidget):
         self.show()
 
     def position_keyboard_to_object(self, obj):
-        screen = QtWidgets.QDesktopWidget().screenGeometry()
+        screen = QGuiApplication.primaryScreen().availableGeometry()
         pos = obj.mapToGlobal(QPoint(0, obj.height()))
 
         if pos.y() + self.height() > screen.height():
