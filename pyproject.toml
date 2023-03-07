@@ -1,0 +1,98 @@
+[build-system]
+requires = ["setuptools>=61.0", "versioneer[toml] @ @REPOROOT@"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qtpyvcp"
+authors = [
+  { name="Kurt Jacobson", email="kcjengr@gmail.com" },
+  { name="TurBoss", email="j.l.toledano.l@gmail.com" },
+  { name="Chris Polanski", email="lcvette1@gmail.com" },
+  { name="Joco", email="" },
+]
+description = "Qt and Python based Virtual Control Panel framework for LinuxCNC."
+readme = "README.md"
+requires-python = ">=3.7"
+dynamic = ["version"]
+
+[tool.setuptools]
+include-package-data = true
+packages = [
+	"debian",
+	"examples",
+	"examples.actions",
+	"examples.actions.ui",
+	"examples.brender",
+	"examples.brender.resources",
+	"examples.brender.resources.images",
+	"examples.brender.ui",
+	"examples.icons",
+	"examples.mini",
+	"pyqt5designer",
+	"qtpyvcp",
+	"qtpyvcp.actions",
+	"qtpyvcp.app",
+	"qtpyvcp.hal",
+	"qtpyvcp.lib",
+	"qtpyvcp.lib.db_tool",
+	"qtpyvcp.ops",
+	"qtpyvcp.plugins",
+	"qtpyvcp.tools",
+	"qtpyvcp.utilities",
+	"qtpyvcp.vcp_chooser",
+	"qtpyvcp.widgets",
+	"qtpyvcp.widgets.base_widgets",
+	"qtpyvcp.widgets.button_widgets",
+	"qtpyvcp.widgets.containers",
+	"qtpyvcp.widgets.db_widgets",
+	"qtpyvcp.widgets.dialogs",
+	"qtpyvcp.widgets.display_widgets",
+	"qtpyvcp.widgets.display_widgets.camera",
+	"qtpyvcp.widgets.display_widgets.vtk_backplot",
+	"qtpyvcp.widgets.display_widgets.vtk_backplot.models",
+	"qtpyvcp.widgets.form_widgets",
+	"qtpyvcp.widgets.form_widgets.probe_widget",
+	"qtpyvcp.widgets.hal_widgets",
+	"qtpyvcp.widgets.input_widgets",
+	"qtpyvcp.widgets.menus",
+	"qtpyvcp.widgets.qtdesigner",
+	"qtpyvcp.widgets.virtual_input",
+	"qtpyvcp.widgets.virtual_input.images",
+	"qtpyvcp.yaml_lib",
+	"scripts",
+	"video_tests",
+	"video_tests.qtpyvcp_test",
+]
+
+[project.console-scripts]
+qtpyvcp = "qtpyvcp.app:main"
+qcompile = "qtpyvcp.tools.qcompile:main"
+editvcp = "qtpyvcp.tools.editvcp:main"
+plasma_tooldbpipe = "qtpyvcp.tools.plasma_tooldbpipe:main"
+plasma_gcode_preprocessor = "qtpyvcp.tools.plasma_gcode_preprocessor:main"
+mini = "examples.mini:main"
+brender = "examples.brender:main"
+vtk_test = "video_tests.vtk_test:main"
+qtpyvcp_test = "video_tests.qtpyvcp_test:main"
+
+[project.gui-scripts]
+probe_basic = "probe_basic:main"
+probe_basic_lathe = "probe_basic_lathe:main"
+
+[project.entry-points."qtpyvcp.example_vcp"]
+mini = "examples.mini"
+brender = examples.brender"
+actions = "examples.actions"
+
+
+[project.entry-points."qtpyvcp.test_vcp"]
+vtk_test = "video_tests.vtk_test"
+qtpyvcp_test = "video_tests.qtpyvcp_test"
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "probe_basic/_version.py"
+versionfile_build = "probe_basic/_version.py"
+tag_prefix = ""
+parentdir_prefix = ""
