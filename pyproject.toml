@@ -65,24 +65,24 @@ packages = [
 ]
 
 [console_scripts]
-qtpyvcp = qtpyvcp.app:main
-qcompile = qtpyvcp.tools.qcompile:main
-editvcp = qtpyvcp.tools.editvcp:main
-plasma_tooldbpipe = qtpyvcp.tools.plasma_tooldbpipe:main
-plasma_gcode_preprocessor = qtpyvcp.tools.plasma_gcode_preprocessor:main
-mini = examples.mini:main
-brender = examples.brender:main
-vtk_test = video_tests.vtk_test:main
-qtpyvcp_test = video_tests.qtpyvcp_test:main
+qtpyvcp = "qtpyvcp.app:main"
+qcompile = "qtpyvcp.tools.qcompile:main"
+editvcp = "qtpyvcp.tools.editvcp:main"
+plasma_tooldbpipe = "qtpyvcp.tools.plasma_tooldbpipe:main"
+plasma_gcode_preprocessor = "qtpyvcp.tools.plasma_gcode_preprocessor:main"
+mini = "examples.mini:main"
+brender = "examples.brender:main"
+vtk_test = "video_tests.vtk_test:main"
+qtpyvcp_test = "video_tests.qtpyvcp_test:main"
 
-[project.entry-points.qtpyvcp.example_vcp]
-mini = examples.mini
-brender = examples.brender
-actions = examples.actions
+[project.entry-points."qtpyvcp.example_vcp"]
+mini = "examples.mini"
+brender = "examples.brender"
+actions = "examples.actions"
 
-[project.entry-points.qtpyvcp.test_vcp]
-vtk_test = video_tests.vtk_test
-qtpyvcp_test = video_tests.qtpyvcp_test
+[project.entry-points."qtpyvcp.test_vcp"]
+vtk_test = "video_tests.vtk_test"
+qtpyvcp_test = "video_tests.qtpyvcp_test"
 
 [tool.versioneer]
 VCS = "git"
