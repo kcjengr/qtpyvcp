@@ -1,5 +1,5 @@
-recursive-include examples *.yml *.yaml *.ui *.qss *qrc *.qml *.png
-recursive-include qtpyvcp *.yml *.yaml *.ui *.qss *qrc *.qml *.png
+recursive-include examples *.yml *.yaml *.ui *.qss *.qrc *.qml *.png
+recursive-include qtpyvcp *.yml *.yaml *.ui *.qss *.qrc *.qml *.png
 recursive-include video_tests
 recursive-include linuxcnc *.*
 
