@@ -81,7 +81,7 @@ probe_basic_lathe = "probe_basic_lathe:main"
 
 [project.entry-points."qtpyvcp.example_vcp"]
 mini = "examples.mini"
-brender = examples.brender"
+brender = "examples.brender"
 actions = "examples.actions"
 
 
