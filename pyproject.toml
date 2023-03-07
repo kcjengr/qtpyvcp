@@ -75,15 +75,10 @@ brender = "examples.brender:main"
 vtk_test = "video_tests.vtk_test:main"
 qtpyvcp_test = "video_tests.qtpyvcp_test:main"
 
-[project.gui-scripts]
-probe_basic = "probe_basic:main"
-probe_basic_lathe = "probe_basic_lathe:main"
-
 [project.entry-points."qtpyvcp.example_vcp"]
 mini = "examples.mini"
 brender = "examples.brender"
 actions = "examples.actions"
-
 
 [project.entry-points."qtpyvcp.test_vcp"]
 vtk_test = "video_tests.vtk_test"
