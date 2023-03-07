@@ -8,7 +8,7 @@ authors = [
   { name="Kurt Jacobson", email="kcjengr@gmail.com" },
   { name="TurBoss", email="j.l.toledano.l@gmail.com" },
   { name="Chris Polanski", email="lcvette1@gmail.com" },
-  { name="Joco", email="" },
+  { name="Joco", email="false.123@email.123" },
 ]
 description = "Qt and Python based Virtual Control Panel framework for LinuxCNC."
 readme = "README.md"
