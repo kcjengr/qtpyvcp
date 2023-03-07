@@ -64,7 +64,7 @@ packages = [
 	"video_tests.qtpyvcp_test",
 ]
 
-[project.console-scripts]
+[console-scripts]
 qtpyvcp = "qtpyvcp.app:main"
 qcompile = "qtpyvcp.tools.qcompile:main"
 editvcp = "qtpyvcp.tools.editvcp:main"
