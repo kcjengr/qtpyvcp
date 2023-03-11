@@ -31,7 +31,7 @@
 # update INI backups
 linuxcnc/configs/**/*.old
 
-# persistent data files 
+# persistent data files
 linuxcnc/configs/**/.*.json
 linuxcnc/configs/**/.*.pickle
 qtpyvcp/.settings/
@@ -47,3 +47,5 @@ qtpyvcp/.project
 docs/source/_build/
 
 .pybuild/
+
+.debian/changelog
