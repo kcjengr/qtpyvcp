@@ -23,6 +23,7 @@ from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, QMes
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.settings import connectSetting, getSetting
 
 STATUS = getPlugin('status')
 LOG = getLogger(__name__)
@@ -33,7 +34,7 @@ class ItemDelegate(QStyledItemDelegate):
     def __init__(self, columns):
         super(ItemDelegate, self).__init__()
 
-        self.settings = getPlugin('settings')
+
 
         self._columns = columns
         self._padding = ' ' * 2
@@ -60,8 +61,11 @@ class ItemDelegate(QStyledItemDelegate):
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
 
-            if self.settings.offset_table.min_range and self.settings.offset_table.max_range:
-                editor.setRange(self.settings.offset_table.min_range, self.settings.offset_table.max_range)
+            min_range = getSetting('offset_table.min_range')
+            max_range = getSetting('offset_table.max_range')
+
+            if min_range and max_range:
+                editor.setRange(min_range, max_range)
             else:
                 editor.setRange(-1000, 1000)
             return editor
