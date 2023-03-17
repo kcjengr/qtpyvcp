@@ -7,6 +7,7 @@ from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.settings import connectSetting, getSetting
 
 LOG = getLogger(__name__)
 
