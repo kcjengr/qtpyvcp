@@ -141,6 +141,12 @@ settings:
 
   dro.degree-format:
     default_value: '%9.2f'
+    
+  offset_table.min_range:
+    default_value: -1000
+    
+  offset_table.max_range:
+    default_value: 1000
 
   # VTK backplot view settings
 

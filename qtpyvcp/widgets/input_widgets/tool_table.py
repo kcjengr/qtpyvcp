@@ -16,6 +16,8 @@ class ItemDelegate(QStyledItemDelegate):
     def __init__(self, columns):
         super(ItemDelegate, self).__init__()
 
+        self.settings = getPlugin('settings')
+
         self._columns = columns
         self._padding = ' ' * 2
 
@@ -30,7 +32,7 @@ class ItemDelegate(QStyledItemDelegate):
             return f"{self._padding}{value}"
 
         return f"{self._padding}{value}"
-    
+
     def createEditor(self, parent, option, index):
         # ToDo: set dec placed for IN and MM machines
         col = self._columns[index.column()]
@@ -61,7 +63,12 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setDecimals(4)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
-            editor.setRange(-1000, 1000)
+
+            if self.settings.offset_table.min_range and self.settings.offset_table.max_range:
+                editor.setRange(self.settings.offset_table.min_range, self.settings.offset_table.max_range)
+            else
+                editor.setRange(-1000, 1000)
+
             return editor
 
         elif col in 'IJ':
@@ -219,7 +226,7 @@ class ToolTable(QTableView):
 
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
-        
+
         self.clicked.connect(self.onClick)
 
         self.tool_model = ToolModel(self)
@@ -334,11 +341,11 @@ class ToolTable(QTableView):
         """Returns the row number of the currently selected row, or 0"""
         tool_no = self.selectionModel().currentIndex().row()
         return tool_no
-    
+
     def onClick(self, index):
         row = index.row()
         tnum = self.tool_model.toolDataFromRow(row)['T']
-        
+
         self.toolSelected.emit(tnum)
 
     def confirmAction(self, message):
@@ -350,7 +357,7 @@ class ToolTable(QTableView):
                                    message,
                                    QMessageBox.Yes,
                                    QMessageBox.No)
-        
+
         if box == QMessageBox.Yes:
             return True
         else:

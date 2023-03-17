@@ -33,6 +33,8 @@ class ItemDelegate(QStyledItemDelegate):
     def __init__(self, columns):
         super(ItemDelegate, self).__init__()
 
+        self.settings = getPlugin('settings')
+
         self._columns = columns
         self._padding = ' ' * 2
 
@@ -57,7 +59,11 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setDecimals(4)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
-            editor.setRange(-1000, 1000)
+
+            if self.settings.offset_table.min_range and self.settings.offset_table.max_range:
+                editor.setRange(self.settings.offset_table.min_range, self.settings.offset_table.max_range)
+            else
+                editor.setRange(-1000, 1000)
             return editor
 
         return None
