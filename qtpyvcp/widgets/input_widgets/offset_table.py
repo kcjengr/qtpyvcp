@@ -61,8 +61,8 @@ class ItemDelegate(QStyledItemDelegate):
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
 
-            min_range = getSetting('offset_table.min_range')
-            max_range = getSetting('offset_table.max_range')
+            min_range = getSetting('offset_table.min_range').value
+            max_range = getSetting('offset_table.max_range').value
 
             if min_range and max_range:
                 editor.setRange(min_range, max_range)
