@@ -62,7 +62,7 @@ class ItemDelegate(QStyledItemDelegate):
 
             if self.settings.offset_table.min_range and self.settings.offset_table.max_range:
                 editor.setRange(self.settings.offset_table.min_range, self.settings.offset_table.max_range)
-            else
+            else:
                 editor.setRange(-1000, 1000)
             return editor
 
