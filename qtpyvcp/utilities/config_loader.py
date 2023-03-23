@@ -58,16 +58,16 @@ def load_config_files(*files):
 
 
 def process_templates(files):
-    env = Environment(loader=FileSystemLoader(searchpath=[os.path.dirname(file) for file in files]),
+    env = Environment(loader=FileSystemLoader(searchpath=[os.path.dirname(config_file) for config_file in files]),
                       undefined=LogUndefined,
                       )
 
     expanded_templates = []
-    for file in files:
-        try:
-            file_dir, file_name = os.path.split(os.path.realpath(file))
+    for config_file in files:
+        if os.path.exists(config_file):
+            file_dir, file_name = os.path.split(os.path.realpath(config_file))
             template = env.get_template(file_name)
-            result = template.render({'file': {'path': file, 'dir': file_dir, 'name': file_name},
+            result = template.render({'file': {'path': config_file, 'dir': file_dir, 'name': file_name},
                                       'env': os.environ,
                                       'ini': {'traj': {'coordinates': 'XYZ'},
                                               'machine': {'name': 'My Machine'},
@@ -75,8 +75,7 @@ def process_templates(files):
                                               },
                                       })
             expanded_templates.append(result)
-        except Exception as e:
-            LOG.warning("Entry point doesn't have a config.yml")
+
 
 
     return expanded_templates
