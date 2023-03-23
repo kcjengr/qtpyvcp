@@ -64,17 +64,20 @@ def process_templates(files):
 
     expanded_templates = []
     for file in files:
-        file_dir, file_name = os.path.split(os.path.realpath(file))
-        template = env.get_template(file_name)
-        result = template.render({'file': {'path': file, 'dir': file_dir, 'name': file_name},
-                                  'env': os.environ,
-                                  'ini': {'traj': {'coordinates': 'XYZ'},
-                                          'machine': {'name': 'My Machine'},
-                                          'display': {'cycle_time': 100},
-                                          },
-                                  })
+        try:
+            file_dir, file_name = os.path.split(os.path.realpath(file))
+            template = env.get_template(file_name)
+            result = template.render({'file': {'path': file, 'dir': file_dir, 'name': file_name},
+                                      'env': os.environ,
+                                      'ini': {'traj': {'coordinates': 'XYZ'},
+                                              'machine': {'name': 'My Machine'},
+                                              'display': {'cycle_time': 100},
+                                              },
+                                      })
+            expanded_templates.append(result)
+        except Exception as e:
+            LOG.warning("Entry point doesn't have a config.yml")
 
-        expanded_templates.append(result)
 
     return expanded_templates
 

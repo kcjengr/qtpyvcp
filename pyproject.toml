@@ -61,6 +61,7 @@ packages = [
 	"qtpyvcp.yaml_lib",
 	"scripts",
 	"video_tests",
+	"video_tests.vtk_test",
 	"video_tests.qtpyvcp_test",
 ]
 
