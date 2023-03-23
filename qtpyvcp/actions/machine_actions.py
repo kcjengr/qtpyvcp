@@ -396,7 +396,7 @@ def _feed_override_bindOk(value=100, widget=None):
         try:
             widget.setSliderPosition(100)
             STATUS.feedrate.onValueChanged(
-                lambda v: widget.setSliderPosition(v * 100))
+                lambda v: widget.setSliderPosition(int(v * 100)))
 
         except AttributeError:
             widget.setValue(100)
@@ -459,7 +459,7 @@ def _rapid_override_bindOk(value=100, widget=None):
         try:
             widget.setSliderPosition(100)
             STATUS.rapidrate.onValueChanged(
-                lambda v: widget.setSliderPosition(v * 100))
+                lambda v: widget.setSliderPosition(int(v * 100)))
 
         except AttributeError:
             STATUS.rapidrate.onValueChanged(
@@ -527,7 +527,7 @@ def _max_velocity_bindOk(value=100, widget=None):
         except AttributeError:
             widget.setValue(INFO.maxVelocity())
             STATUS.max_velocity.onValueChanged(
-                lambda v: widget.setValue(int(v * 60)))
+                lambda v: widget.setValue(v * 60))
 
     except AttributeError:
         pass
