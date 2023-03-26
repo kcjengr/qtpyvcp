@@ -355,7 +355,7 @@ def _or_bindOk(value=100, spindle=0, widget=None):
         except AttributeError:
             widget.setValue(100)
             STATUS.spindle[spindle].override.onValueChanged(
-                lambda v: widget.setValue(v * 100))
+                lambda v: widget.setValue(int(v * 100)))
 
         override(100)
 

@@ -8,7 +8,6 @@ import vtk.qt
 
 from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkFiltersSources import vtkLineSource
-from vtkmodules.vtkFiltersCore import vtkTubeFilter
 from vtkmodules.vtkFiltersSources import vtkCylinderSource
 from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
@@ -32,7 +31,8 @@ class ToolActor(vtk.vtkActor):
         self.session = Session()
 
         tool = self._tool_table[0]
-
+        colors = vtkNamedColors()
+        
         if self._datasource.isMachineMetric():
             self.height = 25.4 * 2.0
         else:
@@ -67,19 +67,11 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkPolygon()
-                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
-
+                    quad = vtk.vtkQuad()
                     quad.GetPointIds().SetId(0, 0)
                     quad.GetPointIds().SetId(1, 1)
                     quad.GetPointIds().SetId(2, 2)
                     quad.GetPointIds().SetId(3, 3)
-
-                    quad.GetPointIds().SetId(4, 3)
-                    quad.GetPointIds().SetId(5, 2)
-                    quad.GetPointIds().SetId(6, 1)
-                    quad.GetPointIds().SetId(7, 0)
-
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -105,19 +97,11 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkPolygon()
-                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
-
+                    quad = vtk.vtkQuad()
                     quad.GetPointIds().SetId(0, 0)
                     quad.GetPointIds().SetId(1, 1)
                     quad.GetPointIds().SetId(2, 2)
                     quad.GetPointIds().SetId(3, 3)
-
-                    quad.GetPointIds().SetId(4, 3)
-                    quad.GetPointIds().SetId(5, 2)
-                    quad.GetPointIds().SetId(6, 1)
-                    quad.GetPointIds().SetId(7, 0)
-
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -143,18 +127,11 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkPolygon()
-                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
-
+                    quad = vtk.vtkQuad()
                     quad.GetPointIds().SetId(0, 0)
                     quad.GetPointIds().SetId(1, 1)
                     quad.GetPointIds().SetId(2, 2)
                     quad.GetPointIds().SetId(3, 3)
-
-                    quad.GetPointIds().SetId(4, 3)
-                    quad.GetPointIds().SetId(5, 2)
-                    quad.GetPointIds().SetId(6, 1)
-                    quad.GetPointIds().SetId(7, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -180,18 +157,11 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkPolygon()
-                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
-
+                    quad = vtk.vtkQuad()
                     quad.GetPointIds().SetId(0, 0)
                     quad.GetPointIds().SetId(1, 1)
                     quad.GetPointIds().SetId(2, 2)
                     quad.GetPointIds().SetId(3, 3)
-
-                    quad.GetPointIds().SetId(4, 3)
-                    quad.GetPointIds().SetId(5, 2)
-                    quad.GetPointIds().SetId(6, 1)
-                    quad.GetPointIds().SetId(7, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -219,18 +189,11 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     # Create a quad on the four points
-                    quad = vtk.vtkPolygon()
-                    quad.GetPointIds().SetNumberOfIds(8)  # make a quad
-
+                    quad = vtk.vtkQuad()
                     quad.GetPointIds().SetId(0, 0)
                     quad.GetPointIds().SetId(1, 1)
                     quad.GetPointIds().SetId(2, 2)
                     quad.GetPointIds().SetId(3, 3)
-
-                    quad.GetPointIds().SetId(4, 3)
-                    quad.GetPointIds().SetId(5, 2)
-                    quad.GetPointIds().SetId(6, 1)
-                    quad.GetPointIds().SetId(7, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -353,14 +316,10 @@ class ToolActor(vtk.vtkActor):
 
                     # Create the polygon
                     polygon = vtk.vtkPolygon()
-                    polygon.GetPointIds().SetNumberOfIds(6)  # make a quad
+                    polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
                     polygon.GetPointIds().SetId(0, 0)
                     polygon.GetPointIds().SetId(1, 1)
                     polygon.GetPointIds().SetId(2, 2)
-
-                    polygon.GetPointIds().SetId(3, 2)
-                    polygon.GetPointIds().SetId(4, 1)
-                    polygon.GetPointIds().SetId(5, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
@@ -383,9 +342,28 @@ class ToolActor(vtk.vtkActor):
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputConnection(transform_filter.GetOutputPort())
 
+        elif self._datasource.isMachineFoam():
+            
+            transform = vtk.vtkTransform()
 
+            source = vtk.vtkConeSource()
+            source.SetHeight(self.height / 2)
+            #source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
+            source.SetCenter(-self.height / 4, 0, 0)
+            source.SetRadius(self.height / 4)
+            source.SetResolution(64)
+            transform.RotateWXYZ(-90, 0, 1, 0)
+            transform_filter = vtk.vtkTransformPolyDataFilter()
+            transform_filter.SetTransform(transform)
+            transform_filter.SetInputConnection(source.GetOutputPort())
+            transform_filter.Update()
 
-
+            # Create a mapper
+            mapper = vtk.vtkPolyDataMapper()
+            mapper.SetInputConnection(transform_filter.GetOutputPort())
+            
+            self.GetProperty().SetColor(colors.GetColor3d('Red'))
+            
         else:
             if tool.id == 0 or tool.diameter < .05:
                 transform = vtk.vtkTransform()
@@ -408,35 +386,35 @@ class ToolActor(vtk.vtkActor):
             else:
                 plugins = dict(iterPlugins())
                 tool_table_plugin = plugins["tooltable"]
-
+                
                 transform = vtk.vtkTransform()
                 # Create a mapper
                 mapper = vtk.vtkPolyDataMapper()
-
+                
                 if isinstance(tool_table_plugin, DBToolTable):
                     tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool.id).first()
-
+        
                     if tool_data:
-
+                        
                         filename = tool_data.model
-
+                        
                         source = vtk.vtkSTLReader()
                         source.SetFileName(filename)
-
+                        
                         # source = vtk.vtkCylinderSource()
                         # source.SetHeight(self.height / 2)
                         # #source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
                         # source.SetCenter(0, self.height / 4, 0)
                         # source.SetRadius(tool.diameter / 2)
                         # source.SetResolution(64)
-
+                        
                         # transform.RotateWXYZ(180, 1, 0, 0)
-
+        
                         transform_filter = vtk.vtkTransformPolyDataFilter()
                         transform_filter.SetTransform(transform)
                         transform_filter.SetInputConnection(source.GetOutputPort())
                         transform_filter.Update()
-
+        
                         mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         self.SetMapper(mapper)
@@ -449,56 +427,89 @@ class ToolActor(vtk.vtkActor):
 class ToolBitActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
         super(ToolBitActor, self).__init__()
-
-        colors = vtkNamedColors()
-
+        
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
-
+        
+        
         tool = self._tool_table[0]
-
+        
         if self._datasource.isMachineMetric():
             self.height = 25.4 * 2.0
         else:
             self.height = 2.0
-
-        lineSource = vtkLineSource()
-        lineSource.SetPoint1(-tool.xoffset, -tool.yoffset, 0)
-        lineSource.SetPoint2(-tool.xoffset, -tool.yoffset, -tool.zoffset)
-
-        # Setup actor and mapper
-        lineMapper = vtkPolyDataMapper()
-        lineMapper.SetInputConnection(lineSource.GetOutputPort())
-
-        transform = vtk.vtkTransform()
-
-        transform.RotateX(-tool.aoffset)
-        transform.RotateY(-tool.boffset)
-        transform.RotateZ(-tool.coffset)
-
+            
+        if self._datasource.isMachineFoam():
+            self.foam_z, self.foam_w = self._datasource.getFoamOffsets()
+            
+            self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset + self.foam_z]
+            self.end_point = [tool.uoffset, tool.voffset, tool.woffset + self.foam_w]
+            
+            self.source = vtkLineSource()
+            self.source.SetPoint1(self.start_point)
+            self.source.SetPoint2(self.end_point)
+            
+            transform = vtk.vtkTransform()
+    
+            # # source.SetHeight(tool.zoffset)
+            # source.SetHeight(10)
+            # source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
+            # source.SetRadius(tool.diameter / 2)
+            # source.SetResolution(64)
+            
+            transform.RotateWXYZ(0, 1, 0, 0)
+            
+            transform.RotateX(tool.aoffset)
+            transform.RotateY(tool.boffset)
+            transform.RotateZ(tool.coffset)
+        else:
+            self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
+            self.end_point = [0, 0, 0]
+            
+            self.source = vtkCylinderSource()
+            transform = vtk.vtkTransform()
+    
+            # source.SetHeight(tool.zoffset)
+            self.source.SetHeight(10)
+            self.source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
+            self.source.SetRadius(tool.diameter / 2)
+            self.source.SetResolution(64)
+            
+            transform.RotateWXYZ(90, 1, 0, 0)
+            
+            transform.RotateX(tool.aoffset)
+            transform.RotateY(tool.boffset)
+            transform.RotateZ(tool.coffset)
+        
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
-        transform_filter.SetInputConnection(lineSource.GetOutputPort())
+        transform_filter.SetInputConnection(self.source.GetOutputPort())
         transform_filter.Update()
-
-        # # Create a mapper and actor for the arrow
-        # mapper = vtkPolyDataMapper()
-        # mapper.SetInputConnection(transform_filter.GetOutputPort())
-
-        # Create tube filter
-        tubeFilter = vtkTubeFilter()
-        tubeFilter.SetInputConnection(transform_filter.GetOutputPort())
-        tubeFilter.SetRadius(tool.diameter)
-        tubeFilter.SetNumberOfSides(64)
-        tubeFilter.Update()
-
-        # Setup actor and mapper
-        tubeMapper = vtkPolyDataMapper()
-        tubeMapper.SetInputConnection(tubeFilter.GetOutputPort())
-
-        self.SetMapper(tubeMapper)
-
+        
+        colors = vtkNamedColors()
+        
+        # Create a mapper and actor for the arrow
+        mapper = vtkPolyDataMapper()
+        mapper.SetInputConnection(transform_filter.GetOutputPort())
+            
+            
+        self.SetMapper(mapper)
+        
         # Avoid visible backfaces on Linux with some video cards like intel
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
-        # self.GetProperty().SetBackfaceCulling(1)
+        self.GetProperty().SetBackfaceCulling(1)
 
+    def set_position(self, position):
+        x, y, z = position[:3]
+        u, v, w = position[6:9]
+        zo, wo = self._datasource.getFoamOffsets()
+        
+        z += zo
+        w += wo
+        
+        self.source.SetPoint1(x, y ,z)
+        self.source.SetPoint2(u, v, w)
+          
+        
+        
+                    

@@ -38,6 +38,10 @@ class LinuxCncDataSource(QObject):
         self._offsettable = getPlugin('offsettable')
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._is_lathe = bool(self._inifile.find("DISPLAY", "LATHE"))
+        self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
+        
+        self._foam_z = float(0.0)
+        self._foam_w = float(1.5)
 
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -135,6 +139,9 @@ class LinuxCncDataSource(QObject):
 
     def isMachineLathe(self):
         return self._is_lathe
+    
+    def isMachineFoam(self):
+        return self._is_foam
 
     def isModeMdi(self):
         return str(self._status.task_mode) == "MDI"
@@ -144,6 +151,9 @@ class LinuxCncDataSource(QObject):
 
     def isHomed(self):
         return bool(self._status.homed)
+    
+    def getFoamOffsets(self):
+        return (self._foam_z, self._foam_w)
 
     def getActiveWcsIndex(self):
         # in the stat, the first one the list is G53 (Machine Coordinates)
