@@ -418,10 +418,14 @@ class ToolBitActor(vtk.vtkActor):
 
                     # Create the polygon
                     polygon = vtk.vtkPolygon()
-                    polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
+                    polygon.GetPointIds().SetNumberOfIds(6)  # make a quad
                     polygon.GetPointIds().SetId(0, 0)
                     polygon.GetPointIds().SetId(1, 1)
                     polygon.GetPointIds().SetId(2, 2)
+
+                    polygon.GetPointIds().SetId(3, 2)
+                    polygon.GetPointIds().SetId(4, 1)
+                    polygon.GetPointIds().SetId(5, 0)
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
