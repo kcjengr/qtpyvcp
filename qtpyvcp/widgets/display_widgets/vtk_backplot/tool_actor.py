@@ -62,6 +62,8 @@ class ToolActor(vtk.vtkActor):
 
             self.GetProperty().SetColor(colors.GetColor3d('Red'))
 
+        elif self._datasource.isMachineLathe():
+            pass
         else:
             if tool.id == 0 or tool.diameter < .05:
                 transform = vtk.vtkTransform()
@@ -138,6 +140,7 @@ class ToolBitActor(vtk.vtkActor):
             self.height = 2.0
 
         if self._datasource.isMachineLathe():
+
             if tool.id == 0 or tool.id == -1:
                 source = vtk.vtkRegularPolygonSource()
                 source.SetNumberOfSides(64)
