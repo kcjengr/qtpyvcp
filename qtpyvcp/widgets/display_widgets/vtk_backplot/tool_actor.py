@@ -139,21 +139,21 @@ class ToolBitActor(vtk.vtkActor):
 
         if self._datasource.isMachineLathe():
             if tool.id == 0 or tool.id == -1:
-                polygonSource = vtk.vtkRegularPolygonSource()
-                polygonSource.SetNumberOfSides(64)
-                polygonSource.SetRadius(0.035)
-                polygonSource.SetCenter(0.0, 0.0, 0.0)
+                self.source = vtk.vtkRegularPolygonSource()
+                self.source.SetNumberOfSides(64)
+                self.source.SetRadius(0.035)
+                self.source.SetCenter(0.0, 0.0, 0.0)
 
                 transform = vtk.vtkTransform()
                 transform.RotateWXYZ(90, 1, 0, 0)
 
-                transform_filter = vtk.vtkTransformPolyDataFilter()
-                transform_filter.SetTransform(transform)
-                transform_filter.SetInputConnection(polygonSource.GetOutputPort())
-                transform_filter.Update()
+                # transform_filter = vtk.vtkTransformPolyDataFilter()
+                # transform_filter.SetTransform(transform)
+                # transform_filter.SetInputConnection(self.source.GetOutputPort())
+                # transform_filter.Update()
 
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputConnection(transform_filter.GetOutputPort())
+                # mapper = vtk.vtkPolyDataMapper()
+                # mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
                 if tool.orientation == 1 and tool.frontangle == 90 and tool.backangle == 90:
 
@@ -396,10 +396,10 @@ class ToolBitActor(vtk.vtkActor):
 
                     LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
-                    LOG.debug(
-                        "FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
-                    LOG.debug(
-                        "BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+                    LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}"
+                              .format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                    LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}"
+                              .format(float(tool.backangle), p2_x_pos, p2_z_pos))
 
                     # Setup three points
                     points = vtk.vtkPoints()
@@ -440,6 +440,7 @@ class ToolBitActor(vtk.vtkActor):
                     # Create a mapper
                     # mapper = vtk.vtkPolyDataMapper()
                     # mapper.SetInputConnection(transform_filter.GetOutputPort())
+            self.source = points
 
         elif self._datasource.isMachineFoam():
             self.foam_z, self.foam_w = self._datasource.getFoamOffsets()
