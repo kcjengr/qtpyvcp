@@ -63,7 +63,7 @@ class ToolActor(vtk.vtkActor):
             self.GetProperty().SetColor(colors.GetColor3d('Red'))
 
         elif self._datasource.isMachineLathe():
-            pass
+            mapper = vtk.vtkPolyDataMapper()
         else:
             if tool.id == 0 or tool.diameter < .05:
                 transform = vtk.vtkTransform()
@@ -152,7 +152,7 @@ class ToolBitActor(vtk.vtkActor):
 
                 transform_filter = vtk.vtkTransformPolyDataFilter()
                 transform_filter.SetTransform(transform)
-                transform_filter.SetInputConnection(self.source.GetOutputPort())
+                transform_filter.SetInputConnection(source.GetOutputPort())
                 transform_filter.Update()
 
                 # mapper = vtk.vtkPolyDataMapper()
