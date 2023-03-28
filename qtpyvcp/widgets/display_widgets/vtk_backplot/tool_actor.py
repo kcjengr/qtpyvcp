@@ -440,7 +440,7 @@ class ToolBitActor(vtk.vtkActor):
                     # Create a mapper
                     # mapper = vtk.vtkPolyDataMapper()
                     # mapper.SetInputConnection(transform_filter.GetOutputPort())
-            self.source = points
+                self.source = points
 
         elif self._datasource.isMachineFoam():
             self.foam_z, self.foam_w = self._datasource.getFoamOffsets()
