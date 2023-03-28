@@ -440,7 +440,6 @@ class ToolBitActor(vtk.vtkActor):
                     # Create a mapper
                     # mapper = vtk.vtkPolyDataMapper()
                     # mapper.SetInputConnection(transform_filter.GetOutputPort())
-                self.source = points
 
         elif self._datasource.isMachineFoam():
             self.foam_z, self.foam_w = self._datasource.getFoamOffsets()
@@ -466,6 +465,11 @@ class ToolBitActor(vtk.vtkActor):
             transform.RotateY(tool.boffset)
             transform.RotateZ(tool.coffset)
 
+            transform_filter = vtk.vtkTransformPolyDataFilter()
+            transform_filter.SetTransform(transform)
+            transform_filter.SetInputConnection(self.source.GetOutputPort())
+            transform_filter.Update()
+
         else:
             self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
             self.end_point = [0, 0, 0]
@@ -485,12 +489,12 @@ class ToolBitActor(vtk.vtkActor):
             transform.RotateY(tool.boffset)
             transform.RotateZ(tool.coffset)
 
-        transform_filter = vtk.vtkTransformPolyDataFilter()
-        transform_filter.SetTransform(transform)
-        transform_filter.SetInputConnection(self.source.GetOutputPort())
-        transform_filter.Update()
+            transform_filter = vtk.vtkTransformPolyDataFilter()
+            transform_filter.SetTransform(transform)
+            transform_filter.SetInputConnection(self.source.GetOutputPort())
+            transform_filter.Update()
 
-        colors = vtkNamedColors()
+        # colors = vtkNamedColors()
 
         # Create a mapper and actor for the arrow
         mapper = vtkPolyDataMapper()
