@@ -139,18 +139,18 @@ class ToolBitActor(vtk.vtkActor):
 
         if self._datasource.isMachineLathe():
             if tool.id == 0 or tool.id == -1:
-                self.source = vtk.vtkRegularPolygonSource()
-                self.source.SetNumberOfSides(64)
-                self.source.SetRadius(0.035)
-                self.source.SetCenter(0.0, 0.0, 0.0)
+                source = vtk.vtkRegularPolygonSource()
+                source.SetNumberOfSides(64)
+                source.SetRadius(0.035)
+                source.SetCenter(0.0, 0.0, 0.0)
 
                 transform = vtk.vtkTransform()
                 transform.RotateWXYZ(90, 1, 0, 0)
 
-                # transform_filter = vtk.vtkTransformPolyDataFilter()
-                # transform_filter.SetTransform(transform)
-                # transform_filter.SetInputConnection(self.source.GetOutputPort())
-                # transform_filter.Update()
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(self.source.GetOutputPort())
+                transform_filter.Update()
 
                 # mapper = vtk.vtkPolyDataMapper()
                 # mapper.SetInputConnection(transform_filter.GetOutputPort())
