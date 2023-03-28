@@ -32,7 +32,106 @@ class ToolActor(vtk.vtkActor):
 
         tool = self._tool_table[0]
         colors = vtkNamedColors()
-        
+
+        if self._datasource.isMachineMetric():
+            self.height = 25.4 * 2.0
+        else:
+            self.height = 2.0
+
+
+
+        if self._datasource.isMachineFoam():
+
+            transform = vtk.vtkTransform()
+
+            source = vtk.vtkConeSource()
+            source.SetHeight(self.height / 2)
+            #source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
+            source.SetCenter(-self.height / 4, 0, 0)
+            source.SetRadius(self.height / 4)
+            source.SetResolution(64)
+            transform.RotateWXYZ(-90, 0, 1, 0)
+            transform_filter = vtk.vtkTransformPolyDataFilter()
+            transform_filter.SetTransform(transform)
+            transform_filter.SetInputConnection(source.GetOutputPort())
+            transform_filter.Update()
+
+            # Create a mapper
+            mapper = vtk.vtkPolyDataMapper()
+            mapper.SetInputConnection(transform_filter.GetOutputPort())
+
+            self.GetProperty().SetColor(colors.GetColor3d('Red'))
+
+        else:
+            if tool.id == 0 or tool.diameter < .05:
+                transform = vtk.vtkTransform()
+
+                source = vtk.vtkConeSource()
+                source.SetHeight(self.height / 2)
+                #source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
+                source.SetCenter(-self.height / 4, 0, 0)
+                source.SetRadius(self.height / 4)
+                source.SetResolution(64)
+                transform.RotateWXYZ(90, 0, 1, 0)
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(source.GetOutputPort())
+                transform_filter.Update()
+
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
+            else:
+                plugins = dict(iterPlugins())
+                tool_table_plugin = plugins["tooltable"]
+
+                transform = vtk.vtkTransform()
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+
+                if isinstance(tool_table_plugin, DBToolTable):
+                    tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool.id).first()
+
+                    if tool_data:
+
+                        filename = tool_data.model
+
+                        source = vtk.vtkSTLReader()
+                        source.SetFileName(filename)
+
+                        # source = vtk.vtkCylinderSource()
+                        # source.SetHeight(self.height / 2)
+                        # #source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
+                        # source.SetCenter(0, self.height / 4, 0)
+                        # source.SetRadius(tool.diameter / 2)
+                        # source.SetResolution(64)
+
+                        # transform.RotateWXYZ(180, 1, 0, 0)
+
+                        transform_filter = vtk.vtkTransformPolyDataFilter()
+                        transform_filter.SetTransform(transform)
+                        transform_filter.SetInputConnection(source.GetOutputPort())
+                        transform_filter.Update()
+
+                        mapper.SetInputConnection(transform_filter.GetOutputPort())
+
+        self.SetMapper(mapper)
+
+        # Avoid visible backfaces on Linux with some video cards like intel
+        # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
+        self.GetProperty().SetBackfaceCulling(1)
+
+
+class ToolBitActor(vtk.vtkActor):
+    def __init__(self, linuxcncDataSource):
+        super(ToolBitActor, self).__init__()
+
+        self._datasource = linuxcncDataSource
+        self._tool_table = self._datasource.getToolTable()
+
+
+        tool = self._tool_table[0]
+
         if self._datasource.isMachineMetric():
             self.height = 25.4 * 2.0
         else:
@@ -339,162 +438,66 @@ class ToolActor(vtk.vtkActor):
                     transform_filter.Update()
 
                     # Create a mapper
-                    mapper = vtk.vtkPolyDataMapper()
-                    mapper.SetInputConnection(transform_filter.GetOutputPort())
+                    # mapper = vtk.vtkPolyDataMapper()
+                    # mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         elif self._datasource.isMachineFoam():
-            
-            transform = vtk.vtkTransform()
-
-            source = vtk.vtkConeSource()
-            source.SetHeight(self.height / 2)
-            #source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
-            source.SetCenter(-self.height / 4, 0, 0)
-            source.SetRadius(self.height / 4)
-            source.SetResolution(64)
-            transform.RotateWXYZ(-90, 0, 1, 0)
-            transform_filter = vtk.vtkTransformPolyDataFilter()
-            transform_filter.SetTransform(transform)
-            transform_filter.SetInputConnection(source.GetOutputPort())
-            transform_filter.Update()
-
-            # Create a mapper
-            mapper = vtk.vtkPolyDataMapper()
-            mapper.SetInputConnection(transform_filter.GetOutputPort())
-            
-            self.GetProperty().SetColor(colors.GetColor3d('Red'))
-            
-        else:
-            if tool.id == 0 or tool.diameter < .05:
-                transform = vtk.vtkTransform()
-
-                source = vtk.vtkConeSource()
-                source.SetHeight(self.height / 2)
-                #source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
-                source.SetCenter(-self.height / 4, 0, 0)
-                source.SetRadius(self.height / 4)
-                source.SetResolution(64)
-                transform.RotateWXYZ(90, 0, 1, 0)
-                transform_filter = vtk.vtkTransformPolyDataFilter()
-                transform_filter.SetTransform(transform)
-                transform_filter.SetInputConnection(source.GetOutputPort())
-                transform_filter.Update()
-
-                # Create a mapper
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputConnection(transform_filter.GetOutputPort())
-            else:
-                plugins = dict(iterPlugins())
-                tool_table_plugin = plugins["tooltable"]
-                
-                transform = vtk.vtkTransform()
-                # Create a mapper
-                mapper = vtk.vtkPolyDataMapper()
-                
-                if isinstance(tool_table_plugin, DBToolTable):
-                    tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool.id).first()
-        
-                    if tool_data:
-                        
-                        filename = tool_data.model
-                        
-                        source = vtk.vtkSTLReader()
-                        source.SetFileName(filename)
-                        
-                        # source = vtk.vtkCylinderSource()
-                        # source.SetHeight(self.height / 2)
-                        # #source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
-                        # source.SetCenter(0, self.height / 4, 0)
-                        # source.SetRadius(tool.diameter / 2)
-                        # source.SetResolution(64)
-                        
-                        # transform.RotateWXYZ(180, 1, 0, 0)
-        
-                        transform_filter = vtk.vtkTransformPolyDataFilter()
-                        transform_filter.SetTransform(transform)
-                        transform_filter.SetInputConnection(source.GetOutputPort())
-                        transform_filter.Update()
-        
-                        mapper.SetInputConnection(transform_filter.GetOutputPort())
-
-        self.SetMapper(mapper)
-
-        # Avoid visible backfaces on Linux with some video cards like intel
-        # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
-        self.GetProperty().SetBackfaceCulling(1)
-
-
-class ToolBitActor(vtk.vtkActor):
-    def __init__(self, linuxcncDataSource):
-        super(ToolBitActor, self).__init__()
-        
-        self._datasource = linuxcncDataSource
-        self._tool_table = self._datasource.getToolTable()
-        
-        
-        tool = self._tool_table[0]
-        
-        if self._datasource.isMachineMetric():
-            self.height = 25.4 * 2.0
-        else:
-            self.height = 2.0
-            
-        if self._datasource.isMachineFoam():
             self.foam_z, self.foam_w = self._datasource.getFoamOffsets()
-            
+
             self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset + self.foam_z]
             self.end_point = [tool.uoffset, tool.voffset, tool.woffset + self.foam_w]
-            
+
             self.source = vtkLineSource()
             self.source.SetPoint1(self.start_point)
             self.source.SetPoint2(self.end_point)
-            
+
             transform = vtk.vtkTransform()
-    
+
             # # source.SetHeight(tool.zoffset)
             # source.SetHeight(10)
             # source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
             # source.SetRadius(tool.diameter / 2)
             # source.SetResolution(64)
-            
+
             transform.RotateWXYZ(0, 1, 0, 0)
-            
+
             transform.RotateX(tool.aoffset)
             transform.RotateY(tool.boffset)
             transform.RotateZ(tool.coffset)
+
         else:
             self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
             self.end_point = [0, 0, 0]
-            
+
             self.source = vtkCylinderSource()
             transform = vtk.vtkTransform()
-    
+
             # source.SetHeight(tool.zoffset)
             self.source.SetHeight(10)
             self.source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
             self.source.SetRadius(tool.diameter / 2)
             self.source.SetResolution(64)
-            
+
             transform.RotateWXYZ(90, 1, 0, 0)
-            
+
             transform.RotateX(tool.aoffset)
             transform.RotateY(tool.boffset)
             transform.RotateZ(tool.coffset)
-        
+
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
         transform_filter.SetInputConnection(self.source.GetOutputPort())
         transform_filter.Update()
-        
+
         colors = vtkNamedColors()
-        
+
         # Create a mapper and actor for the arrow
         mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(transform_filter.GetOutputPort())
-            
-            
+
+
         self.SetMapper(mapper)
-        
+
         # Avoid visible backfaces on Linux with some video cards like intel
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
         self.GetProperty().SetBackfaceCulling(1)
@@ -503,13 +506,12 @@ class ToolBitActor(vtk.vtkActor):
         x, y, z = position[:3]
         u, v, w = position[6:9]
         zo, wo = self._datasource.getFoamOffsets()
-        
+
         z += zo
         w += wo
-        
+
         self.source.SetPoint1(x, y ,z)
         self.source.SetPoint2(u, v, w)
-          
-        
-        
-                    
+
+
+
