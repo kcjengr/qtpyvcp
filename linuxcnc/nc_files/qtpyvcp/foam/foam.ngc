@@ -1,7 +1,7 @@
 (test this with axis_9axis sim machine )
 G17 G21 G90 G61 G54
-(AXIS,XY_Z_POS,0)
-(AXIS,UV_Z_POS,40)
+(AXIS,XY_Z_POS,10)
+(AXIS,UV_Z_POS,50)
 (AXIS,GRID,5)
 
 G0 x0 y0 u0 v0

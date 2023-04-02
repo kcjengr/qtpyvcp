@@ -28,9 +28,9 @@ class VTKCanon(StatCanon):
         self.path_points = OrderedDict()
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
-        
+
         self.foam_z = 0.0
-        self.foam_w = 1.5
+        self.foam_w = 0.0
 
     def comment(self, comment):
         LOG.debug("G-code Comment: {}".format(comment))
@@ -44,22 +44,11 @@ class VTKCanon(StatCanon):
             elif cmd == 'stop':
                 LOG.info("Backplot generation aborted.")
                 raise KeyboardInterrupt
-            elif cmd == "XY_Z_POS":
-                if len(items) > 2 :
-                    try:
-                        self.foam_z = float(items[2])
-                        if self._datasource.isMachineMetric():
-                            self.foam_z = self.foam_z / 25.4
-                    except:
-                        self.foam_z = 5.0/25.4
-            elif cmd == "UV_Z_POS":
-                if len(items) > 2 :
-                    try:
-                        self.foam_w = float(items[2])
-                        if elf._datasource.isMachineMetric():
-                            self.foam_w = self.foam_w / 25.4
-                    except:
-                        self.foam_w = 30.0
+            elif cmd.startswith("xy_z_pos"):
+                self.foam_z = float(cmd.split(',')[1])
+
+            elif cmd.startswith("uv_z_pos"):
+                self.foam_w = float(cmd.split(',')[1])
 
     def message(self, msg):
         LOG.debug("G-code Message: {}".format(msg))
@@ -92,64 +81,65 @@ class VTKCanon(StatCanon):
                 for line_type, line_data in data:
                     start_point = line_data[0]
                     end_point = line_data[1]
-                    
+
                     if self._datasource.isMachineFoam():
-                        
+
                         path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
                                                           start_point[1] * multiplication_factor,
-                                                          (start_point[2] * multiplication_factor) + self.foam_z)
-    
+                                                          (start_point[8]+(self.foam_z/25.4)) * multiplication_factor)
+
                         path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
                                                           end_point[1] * multiplication_factor,
-                                                          (end_point[2] * multiplication_factor) + self.foam_z)
-        
-    
+                                                          (start_point[8]+(self.foam_z/25.4)) * multiplication_factor)
+
+
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
-    
+
                         line = vtk.vtkLine()
                         line.GetPointIds().SetId(0, index)
                         line.GetPointIds().SetId(1, index + 1)
-                        
-                        path_actor.lines.InsertNextCell(line)   
-                        
-                        
+
+                        path_actor.lines.InsertNextCell(line)
+
+
                         index += 2
-                        
+
+
                         path_actor.points.InsertNextPoint(start_point[6] * multiplication_factor,
                                                           start_point[7] * multiplication_factor,
-                                                          (start_point[8] * multiplication_factor) + self.foam_w)
+                                                          (start_point[8]+(self.foam_w/25.4)) * multiplication_factor)
 
                         path_actor.points.InsertNextPoint(end_point[6] * multiplication_factor,
                                                           end_point[7] * multiplication_factor,
-                                                          (end_point[8] * multiplication_factor) + self.foam_w)
-                        
+                                                          (start_point[8]+(self.foam_w/25.4)) * multiplication_factor)
+
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
 
                         line2 = vtk.vtkLine()
                         line2.GetPointIds().SetId(0, index)
                         line2.GetPointIds().SetId(1, index + 1)
-    
+
                         path_actor.lines.InsertNextCell(line2)
-                        
+
                         index += 2
 
                     else:
-                    
+
                         path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
                                                           start_point[1] * multiplication_factor,
                                                           start_point[2] * multiplication_factor)
-    
+
                         path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
                                                           end_point[1] * multiplication_factor,
                                                           end_point[2] * multiplication_factor)
-        
-    
+
+
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
-    
+
                         line = vtk.vtkLine()
                         line.GetPointIds().SetId(0, index)
                         line.GetPointIds().SetId(1, index + 1)
-    
+
                         path_actor.lines.InsertNextCell(line)
 
 
@@ -167,7 +157,6 @@ class VTKCanon(StatCanon):
 
     def get_path_actors(self):
         return self.path_actors
-    
+
     def get_foam(self):
-        return (self.foam_z, self.foam_w)
-    
+        return self.foam_z, self.foam_w

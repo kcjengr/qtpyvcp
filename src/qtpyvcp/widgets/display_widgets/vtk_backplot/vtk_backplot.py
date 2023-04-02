@@ -105,11 +105,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
         self.joints = self._datasource._status.joint
-        
-        
-        self.foam_z = 0.0
-        self.foam_w = 1.5
-        
+
+        self.foam_offset = [0.0, 0.0]
+
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
@@ -152,25 +150,25 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.axes_actor.SetUserTransform(transform)
 
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
-            
-            
+
+
             self.table_model = self._datasource._inifile.find("DISPLAY", "TABLE")
             if self.table_model is not None:
                 self.table_actor = TableActor(self.table_model)
-                
-            
-            
+
+
+
             self.spindle_model = self._datasource._inifile.find("DISPLAY", "SPINDLE")
-            
+
             if self.spindle_model is not None:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
-            
+
             self.robot = self._datasource._inifile.find("DISPLAY", "ROBOT")
             if self.robot:
                 with open(self.robot) as f:
                     self.robot_data = yaml.load(f, Loader=yaml.FullLoader)
                     self.robot_actor = RobotActor(self.robot_data)
-                
+
             self.tool_actor = ToolActor(self._datasource)
             self.tool_bit_actor = ToolBitActor(self._datasource)
 
@@ -259,16 +257,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
-            
+
             if self.robot:
                 self.renderer.AddActor(self.robot_actor)
-            
+
             if self.table_model is not None:
                 self.renderer.AddActor(self.table_actor)
-                
+
             if self.spindle_model is not None:
                 self.renderer.AddActor(self.spindle_actor)
-            
+
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
             self.renderer.AddActor(self.machine_actor)
@@ -277,7 +275,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.interactor.ReInitialize()
             self.renderer_window.Render()
-            
+
             # self.setViewP()
             # self.renderer.ResetCamera()
 
@@ -484,9 +482,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         LOG.debug("-------Draw time %s seconds ---" % (time.time() - start_time))
         self.path_actors = self.canon.get_path_actors()
-        
+
         if self._datasource.isMachineFoam():
-            self._datasource.foam_z, self._datasource.foam_w = self.canon.get_foam()
+
+            self.foam_offset = self.canon.get_foam()
+            LOG.warn(self.foam_offset)
+            z = self.foam_offset[0]
+            w = self.foam_offset[1]
+
+            self.tool_bit_actor.set_foam_offsets(z, w)
 
         for wcs_index, actor in list(self.path_actors.items()):
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
@@ -541,15 +545,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
-            
+
         if self.robot:
             parts = self.robot_actor.get_parts()
             for data in self.robot_data:
                 joint = data.get("joint")
-                
+
                 if joint is not False:
                     rotation = self.joints[int(joint)].input.value
-                        
+
                     if data.get("rotation") == "x":
                         parts[int(joint)].SetOrientation(rotation, 0, 0)
                     elif data.get("rotation") == "y":
@@ -564,7 +568,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                         parts[int(joint)].SetOrientation(0, 0, -rotation)
 
         self.tool_actor.SetUserTransform(tool_transform)
-        
+
         if self._datasource.isMachineFoam():
             self.tool_bit_actor.set_position(position)
         else:
@@ -575,16 +579,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
-        
+
         self.path_cache_actor.add_line_point(self.tooltip_position)
         self.renderer_window.Render()
 
-    
-    def update_joints(self, joints): 
+
+    def update_joints(self, joints):
         self.joints = joints
     def on_offset_table_changed(self, table):
         LOG.debug("on_offset_table_changed")
-        
+
         self.wcs_offsets = table
 
     def update_g5x_offset(self, offset):
@@ -693,7 +697,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         tool_transform.RotateZ(-self.spindle_rotation[2])
 
         self.tool_actor.SetUserTransform(tool_transform)
-        
+
         if self._datasource.isMachineFoam():
             self.renderer.RemoveActor(self.tool_bit_actor)
             self.tool_bit_actor = ToolBitActor(self._datasource)
@@ -717,12 +721,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showSpindle(self, value):
-    
+
         self.spindle_actor.SetVisibility(value)
-            
+
         # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
-        
+
     @Slot()
     def setViewOrtho(self):
         self.camera.ParallelProjectionOn()
@@ -905,7 +909,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             pc_y = -(program_center[1] + self.position_mult)
             pc_z = program_center[2] + self.position_mult
             z_up = 1
-            
+
         self.camera.SetPosition(pc_x, pc_y, pc_z)
 
         x_dist = abs(program_bounds[0] - program_bounds[1])
@@ -922,8 +926,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetViewUp(x_up, y_up, z_up)
         self.__doCommonSetViewWork()
         self.clearLivePlot()
-        
-        
+
+
 
     @Slot()
     def setViewPath(self):
@@ -1031,7 +1035,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         for wcs_index, actor in list(self.path_actors.items()):
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             self.showProgramBounds(not program_bounds_actor.GetXAxisVisibility())
-            
+
     #
     # @Slot(bool)
     # @Slot(object)

@@ -131,6 +131,9 @@ class ToolBitActor(vtk.vtkActor):
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
 
+        self.position = []
+        self.foam_z = 0.0
+        self.foam_w = 0.0
 
         tool = self._tool_table[0]
 
@@ -449,10 +452,15 @@ class ToolBitActor(vtk.vtkActor):
                     # mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         elif self._datasource.isMachineFoam():
-            self.foam_z, self.foam_w = self._datasource.getFoamOffsets()
 
-            self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset + self.foam_z]
-            self.end_point = [tool.uoffset, tool.voffset, tool.woffset + self.foam_w]
+            # if self._datasource.isMachineMetric:
+            #       self.foam_z *= 254
+            #       self.foam_w *= 254
+            #
+
+
+            self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset+self.foam_z]
+            self.end_point = [tool.uoffset, tool.voffset, tool.woffset+self.foam_z]
 
             self.source = vtkLineSource()
             self.source.SetPoint1(self.start_point)
@@ -486,7 +494,7 @@ class ToolBitActor(vtk.vtkActor):
 
             # source.SetHeight(tool.zoffset)
             self.source.SetHeight(10)
-            self.source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
+            self.source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset)
             self.source.SetRadius(tool.diameter / 2)
             self.source.SetResolution(64)
 
@@ -514,16 +522,19 @@ class ToolBitActor(vtk.vtkActor):
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
         self.GetProperty().SetBackfaceCulling(1)
 
+    def set_foam_offsets(self, zo, wo):
+
+        self.foam_z = zo
+        self.foam_w = wo
+
     def set_position(self, position):
+        self.position = position
+
         x, y, z = position[:3]
         u, v, w = position[6:9]
-        zo, wo = self._datasource.getFoamOffsets()
 
-        z += zo
-        w += wo
-
-        self.source.SetPoint1(x, y ,z)
-        self.source.SetPoint2(u, v, w)
+        self.source.SetPoint1(x, y ,z+self.foam_z)
+        self.source.SetPoint2(u, v, w+self.foam_w)
 
 
 
