@@ -49,3 +49,4 @@ docs/source/_build/
 .pybuild/
 
 .debian/changelog
+DEBIAN/
