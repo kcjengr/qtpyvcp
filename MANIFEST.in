@@ -1,6 +1,6 @@
-recursive-include examples *.yml *.yaml *.ui *.qss *.qrc *.qml *.png
-recursive-include qtpyvcp *.yml *.yaml *.ui *.qss *.qrc *.qml *.png
-recursive-include video_tests
+recursive-include src/examples *.yml *.yaml *.ui *.qss *.qrc *.qml *.png
+recursive-include src/qtpyvcp *.yml *.yaml *.ui *.qss *.qrc *.qml *.png
+recursive-include src/video_tests
 recursive-include linuxcnc *.*
 
 include versioneer.py

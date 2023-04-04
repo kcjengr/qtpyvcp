@@ -14,7 +14,11 @@ authors = [
 description = "Qt and Python based Virtual Control Panel framework for LinuxCNC."
 readme = "README.md"
 version = "0.0"
-
+packages = [
+    { include = "examples", from = "src" },
+    { include = "qtpyvcp", from = "src" },
+    { include = "video_tests", from = "src" },
+]
 [tool.poetry.dependencies]
 python = "^3.7"
 
@@ -40,6 +44,7 @@ actions = "examples.actions"
 [tool.poetry.plugins."qtpyvcp.test_vcp"]
 vtk_test = "video_tests.vtk_test"
 qtpyvcp_test = "video_tests.qtpyvcp_test"
+
 
 [tool.versioneer]
 VCS = "git"
