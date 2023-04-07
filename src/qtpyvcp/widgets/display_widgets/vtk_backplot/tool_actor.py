@@ -142,6 +142,8 @@ class ToolBitActor(vtk.vtkActor):
         else:
             self.height = 2.0
 
+        # FOAM TOOL
+
         if self._datasource.isMachineLathe():
 
             if tool.id == 0 or tool.id == -1:
@@ -451,6 +453,8 @@ class ToolBitActor(vtk.vtkActor):
                     # mapper = vtk.vtkPolyDataMapper()
                     # mapper.SetInputConnection(transform_filter.GetOutputPort())
 
+        # LATHE TOOL
+
         elif self._datasource.isMachineFoam():
 
             # if self._datasource.isMachineMetric:
@@ -485,16 +489,18 @@ class ToolBitActor(vtk.vtkActor):
             transform_filter.SetInputConnection(self.source.GetOutputPort())
             transform_filter.Update()
 
+        # CNC TOOL
+
         else:
-            self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset]
-            self.end_point = [0, 0, 0]
 
             self.source = vtkCylinderSource()
             transform = vtk.vtkTransform()
 
             # source.SetHeight(tool.zoffset)
-            self.source.SetHeight(10)
-            self.source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset)
+            tool_height = tool.zoffset
+
+            self.source.SetHeight(tool_height)
+            self.source.SetCenter(tool.xoffset, -tool_height/2, tool.yoffset)
             self.source.SetRadius(tool.diameter / 2)
             self.source.SetResolution(64)
 
