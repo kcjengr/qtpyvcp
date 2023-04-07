@@ -496,7 +496,6 @@ class ToolBitActor(vtk.vtkActor):
             self.source = vtkCylinderSource()
             transform = vtk.vtkTransform()
 
-            # source.SetHeight(tool.zoffset)
             tool_height = tool.zoffset
 
             self.source.SetHeight(tool_height)

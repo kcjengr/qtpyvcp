@@ -8,7 +8,7 @@ import time
 
 import vtk
 import vtk.qt
-from qtpy.QtCore import Property, Slot
+from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent
 from qtpy.QtGui import QColor
 
 # Fix poligons not drawing correctly on some GPU
@@ -20,6 +20,7 @@ vtk.qt.QVTKRWIBase = "QGLWidget"
 
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
+from qtpyvcp import actions
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.settings import connectSetting, getSetting
@@ -49,11 +50,56 @@ f = QGLFormat()
 f.setSampleBuffers(True)
 QGLFormat.setDefaultFormat(f)
 
+class InteractorEventFilter(QObject):
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.KeyPress:
+            if event.isAutoRepeat():
+                return super().eventFilter(obj, event)
+
+            speed = actions.machine.MAX_JOG_SPEED / 60.0 if event.modifiers() & Qt.ShiftModifier else None
+            if event.key() == Qt.Key_Up:
+                actions.machine.jog.axis('Y', 1, speed=speed)
+            elif event.key() == Qt.Key_Down:
+                actions.machine.jog.axis('Y', -1, speed=speed)
+            elif event.key() == Qt.Key_Left:
+                actions.machine.jog.axis('X', -1, speed=speed)
+            elif event.key() == Qt.Key_Right:
+                actions.machine.jog.axis('X', 1, speed=speed)
+            elif event.key() == Qt.Key_PageUp:
+                actions.machine.jog.axis('Z', 1, speed=speed)
+            elif event.key() == Qt.Key_PageDown:
+                actions.machine.jog.axis('Z', -1, speed=speed)
+            #else:
+                #print('Unhandled key press event')
+        elif event.type() == QEvent.KeyRelease:
+            if event.isAutoRepeat():
+                return super().eventFilter(obj, event)
+
+            if event.key() == Qt.Key_Up:
+                actions.machine.jog.axis('Y', 0)
+            elif event.key() == Qt.Key_Down:
+                actions.machine.jog.axis('Y', 0)
+            elif event.key() == Qt.Key_Left:
+                actions.machine.jog.axis('X', 0)
+            elif event.key() == Qt.Key_Right:
+                actions.machine.jog.axis('X', 0)
+            elif event.key() == Qt.Key_PageUp:
+                actions.machine.jog.axis('Z', 0)
+            elif event.key() == Qt.Key_PageDown:
+                actions.machine.jog.axis('Z', 0)
+            #else:
+            #print('Unhandled key release event')
+
+        return super().eventFilter(obj, event)
 
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
         LOG.debug("---------using refactored vtk code")
+
+        event_filter = InteractorEventFilter(self)
+
+        self.installEventFilter(event_filter)
 
         self._datasource = LinuxCncDataSource()
 
