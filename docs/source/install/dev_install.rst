@@ -57,6 +57,9 @@ Activate the virtual enviroment for the active shell, run only for once each she
 
 	source venv/bin/activate
 
+.. hint::
+	you can add this lines to the end of ~/.bashrc file
+
 
 For building documentation::
 
