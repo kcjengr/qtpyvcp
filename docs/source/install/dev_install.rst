@@ -33,7 +33,7 @@ run, without the need to manually update or reinstall anything.
 Getting the QtPyVCP Source Code
 +++++++++++++++++++++++++++++++
 
-If you intend to contribute to QtPyVCP you should clone the master branch from the
+If you intend to contribute to QtPyVCP you should clone the main branch from the
 `QtPyVCP repository <https://github.com/kcjengr/qtpyvcp>`_ with git::
 
   git clone https://github.com/kcjengr/qtpyvcp
@@ -43,14 +43,25 @@ Install Dev Dependencies
 
 Development dependencies (in addition to those listed on the :doc:`Prerequisites for python3 <prerequisites>`) page::
 
-  sudo apt install qttools5-dev qttools5-dev-tools python3-wheel
+  sudo apt install qttools5-dev qttools5-dev-tools python3-wheel python3-venv
 
+
+Virtual enviroment creation
++++++++++++++++++++++++++++
+
+Create a python3 virtual environment with the venv module::
+
+	python3 -m venv venv
+
+Activate the virtual enviroment for the active shell, run only for once each shell session::
+
+	source venv/bin/activate
 
 
 For building documentation::
 
-  python3 -m pip install sphinx sphinx_rtd_theme mock sphinx-notfound-page
-  python3 -m pip install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
+  pip install sphinx sphinx_rtd_theme mock sphinx-notfound-page
+  pip install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
 
 
 (From the docs dir run ``make html`` to build the HTML documentation.)
@@ -67,19 +78,19 @@ Install with pip3
 .. warning::
 
     If you previously installed QtPyVCP using the standard install method
-    you should first uninstall with ``python3 -m pip uninstall qtpyvcp``  ``pip3 uninstall qtpyvcp`` before proceeding
+    you should first uninstall with ``python3 -m pip uninstall qtpyvcp``  ``pip uninstall qtpyvcp`` before proceeding
     to avoid the possibility of multiple installations conflicting.
 
 From the qtpyvcp source directory install QtPyVCP by running::
 
-  python3 -m pip install --editable .
+  pip install --editable .
 
 This will create a setup.py development install and will add command line scripts to
 ``~/.local/bin/`` for launching QtPyVCP, the example VCPs and the command line tools.
 
 .. hint::
     If the pip install fails, try uninstalling before trying to install again.
-    ``pip3 uninstall qtpyvcp``
+    ``pip uninstall qtpyvcp``
 
 .. note::
     On Debian 9 and 10 (Stretch and Buster) ``~/.local/bin/`` is not on the PATH in bash.
@@ -107,6 +118,9 @@ successful.
 
 QtDesigner Plugins
 ^^^^^^^^^^^^^^^^^^
+
+The required `libpyqt5.so` comes with linuxcnc from debian 12 apt repositories,
+if you build linuxcnc from sources you may need the library too
 
 If you want to edit a VCP or create one from a template you need to have the
 QtDesigner plugins installed. To load, you must have the correct version of
