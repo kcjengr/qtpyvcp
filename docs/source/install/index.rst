@@ -10,15 +10,14 @@ Installation
    pypi_install
    dev_install
    bullseye
-
+   bookworm
 
 There are multiple ways to install QtPyVCP, either a development install, or a standard
 install from PyPi. Which one you choose depends on how you intend to use QtPyVCP.
 
 .. Warning::
 
-    QtPyVCP master branch is currently python3 only, there is no stable release for python3 yet
-    if you need a stable release please download 0.3.19 the latest with python2 support
+    QtPyVCP main branch is currently python3 only, there is no stable release for python3 yet
 
 
 .. Note::

@@ -13,10 +13,10 @@ System Requirements
 -------------------
 
 
-* Debian 11 (bullseye) 64 bit ( Debian 10 latest Qt is 5.11 )
+* Debian 11 (bullseye) or 12 (bookworm) 64 bit ( Debian 10 latest Qt is 5.11 )
 * Python 3.7
 * Qt 5.12 or more recent
-* LinuxCNC **2.9** branch master, installed as a Run In Place (RIP) built from source or debian buster buildbot packages
+* LinuxCNC **2.9** branch master, installed as a Run In Place (RIP) built from source, debian buster buildbot packages or debian bookworm packages
 * Graphics card that supports OpenGL 1.50 or later (for VTK backplot)
 
 .. Note::
@@ -31,7 +31,9 @@ http://buildbot.linuxcnc.org/
 
 .. Note::
     Debian 10 buster binaries work on Debian 11 bullseye
-    
+
+Also available from Debian 12 (bookworm) apt repository
+
 
 Software Dependencies
 ---------------------
@@ -45,5 +47,5 @@ These packages should be installed prior to attempting to install QtPyVCP.
   python3-setuptools python3-wheel python3-pip python3-six python3-docopt python3-qtpy python3-pyudev python3-psutil python3-markupsafe \
   python3-opengl python3-vtk9 python3-pyqtgraph python3-simpleeval python3-jinja2 python3-deepdiff python3-sqlalchemy git python3-distro
 
-  
-  
+
+
