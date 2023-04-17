@@ -28,7 +28,7 @@ can be added.*
     been crafted specifically with this in mind.
 
 
-Install Into a Clean Debian-11 Environment
+Install Into a Clean Debian-12 Environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. Note::

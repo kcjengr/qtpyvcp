@@ -1,6 +1,6 @@
-================================
-Development Install for python 3
-================================
+======================================================
+Development Install for Python 3 (virtual environment)
+======================================================
 
 This installation method should be used if you are interested in
 contributing to `QtPyVCP`, or want to have access to the source
