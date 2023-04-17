@@ -93,18 +93,14 @@ Install linuxCNC::
 	sudo apt install linuxcnc-uspace linuxcnc-uspace-dev
 
 
-Download QtPyVCP deb packages
+Download QtPyVCP deb package::
 
-https://repository.qtpyvcp.com/repo/qtpyvcp-dev/
+	wget |qtpyvcp deb link|
 
-found latest version at botom
 
 once downloaded navigate to the downloads direcoty and install::
 
-	cd ~/Downloads
-	sudo dpkg -i python3-qtpyvcp_0.4-774b6b07.dev_all.deb
-
-qtpyvcp_0.4-774b6b07 at the moment of writing this
+	sudo dpkg -i |qtpyvcp deb|
 
 
 Log out and log back in again. This is necessary to ensure .local/bin
