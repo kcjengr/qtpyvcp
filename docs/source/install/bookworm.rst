@@ -95,12 +95,12 @@ Install linuxCNC::
 
 Download QtPyVCP deb package::
 
-	wget |qtpyvcp deb link|
+	wget |qtpyvcp_deb_link|
 
 
 once downloaded navigate to the downloads direcoty and install::
 
-	sudo dpkg -i |qtpyvcp deb|
+	sudo dpkg -i |qtpyvcp_deb|
 
 
 Log out and log back in again. This is necessary to ensure .local/bin
