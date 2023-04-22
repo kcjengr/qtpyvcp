@@ -50,3 +50,5 @@ docs/source/_build/
 
 .debian/changelog
 DEBIAN/
+tmp/
+
