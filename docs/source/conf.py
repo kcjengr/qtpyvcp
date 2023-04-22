@@ -44,7 +44,6 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx_gitstamp',
     'notfound.extension',
-    'sphinx_substitution_extensions',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
