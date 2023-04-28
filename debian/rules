@@ -4,3 +4,7 @@
 	dh $@ --with python3 --buildsystem=pybuild
 
 override_dh_auto_test:
+
+override_dh_install:
+	dh_install
+	qcompile debian/python3-qtpyvcp
