@@ -97,9 +97,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         super(VTKBackPlot, self).__init__(parent)
         LOG.debug("---------using refactored vtk code")
 
-        event_filter = InteractorEventFilter(self)
+        #event_filter = InteractorEventFilter(self)
 
-        self.installEventFilter(event_filter)
+        # self.installEventFilter(event_filter)
 
         self._datasource = LinuxCncDataSource()
 
@@ -115,8 +115,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.panning = 0
         self.zooming = 0
 
-        # assume that we are standing upright and compute azimuth around that axis
-        self.natural_view_up = (0, 0, 1)
+        if self._datasource.isMachineFoam():
+            self.natural_view_up = (0, 1, 0)
+        else:  # assume that we are standing upright and compute azimuth around that axis
+            self.natural_view_up = (0, 0, 1)
 
         # properties
         self._background_color = QColor(0, 0, 0)
@@ -879,24 +881,50 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         machine_bounds = self.machine_actor.GetBounds()
         LOG.debug('-----machine_bounds: {}'.format(machine_bounds))
 
-        machine_center = ((machine_bounds[0] + machine_bounds[1]) / 2,
-                          (machine_bounds[2] + machine_bounds[3]) / 2,
-                          (machine_bounds[4] + machine_bounds[5]) / 2
-                          )
+        if self._datasource.isMachineFoam() == True:
 
-        LOG.debug('-----machine_center: {}'.format(machine_center))
+            LOG.debug("-----ViewFoamMode")
 
-        self.camera = self.renderer.GetActiveCamera()
+            machine_center = ((machine_bounds[0] + machine_bounds[1]) / 2,
+                              (machine_bounds[2] + machine_bounds[3]) / 2,
+                              (machine_bounds[4] + machine_bounds[5]) / 2
+                              )
 
-        self.camera.SetFocalPoint(machine_center[0],
-                                  machine_center[1],
-                                  machine_center[2])
+            LOG.debug('-----machine_center: {}'.format(machine_center))
 
-        self.camera.SetPosition(machine_center[0] + self.position_mult,
-                                -(machine_center[1] + self.position_mult),
-                                machine_center[2] + self.position_mult)
+            self.camera = self.renderer.GetActiveCamera()
 
-        self.camera.SetViewUp(0, 0, 1)
+            self.camera.SetFocalPoint(machine_center[0],
+                                      machine_center[1],
+                                      machine_center[2])
+
+
+            self.camera.SetPosition(-(machine_center[0] + self.position_mult),
+                                    (machine_center[1] + self.position_mult),
+                                    -(machine_center[2] + self.position_mult)
+                                    )
+
+            self.camera.SetViewUp(0, 1, 0)
+        else:
+            machine_center = ((machine_bounds[0] + machine_bounds[1]) / 2,
+                              (machine_bounds[2] + machine_bounds[3]) / 2,
+                              (machine_bounds[4] + machine_bounds[5]) / 2
+                              )
+
+            LOG.debug('-----machine_center: {}'.format(machine_center))
+
+            self.camera = self.renderer.GetActiveCamera()
+
+            self.camera.SetFocalPoint(machine_center[0],
+                                      machine_center[1],
+                                      machine_center[2])
+
+            self.camera.SetPosition(machine_center[0] + self.position_mult,
+                                    -(machine_center[1] + self.position_mult),
+                                    machine_center[2] + self.position_mult)
+
+            self.camera.SetViewUp(0, 0, 1)
+
         self.__doCommonSetViewWork()
 
     @Slot()
