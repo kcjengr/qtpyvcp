@@ -11,9 +11,6 @@ cd /home/buildbot/debian/apt/dists/develop
 
 /home/buildbot/debian/generate-release.sh > Release
 
-#cat /home/buildbot/debian/apt/dists/develop/Release | gpg --default-key example -abs > /home/buildbot/debian/apt/dists/develop/Release.gpg
-#cat ~/example/apt-repo/dists/develop/Release | gpg --default-key example -abs --clearsign > /home/buildbot/debian/apt/dists/develop/InRelease
-
 export GPG_TTY=$(tty)
 export GNUPGHOME="/home/buildbot/debian/pgpkeys"
 

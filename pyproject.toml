@@ -5,20 +5,21 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 name = "qtpyvcp"
 authors = [
-  "Chris Polanski <lcvette1@gmail.com>",
   "Kurt Jacobson <kcjengr@gmail.com>",
   "TurBoss <j.l.toledano.l@gmail.com>",
   "Chris Polanski <lcvette1@gmail.com>",
-  "Joco <false.123@email.123>",
+  "Joco <james@snaggingpixels.com>",
 ]
 description = "Qt and Python based Virtual Control Panel framework for LinuxCNC."
 readme = "README.md"
 version = "0.0"
+
 packages = [
     { include = "examples", from = "src" },
     { include = "qtpyvcp", from = "src" },
     { include = "video_tests", from = "src" },
 ]
+
 [tool.poetry.dependencies]
 python = "^3.7"
 
