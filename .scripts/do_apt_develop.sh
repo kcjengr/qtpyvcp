@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Scan for new debian packages in apt repository
+
 cd /home/buildbot/debian/apt
 
 dpkg-scanpackages --arch amd64 pool/ > dists/develop/main/binary-amd64/Packages
