@@ -51,7 +51,7 @@ Virtual enviroment creation
 
 Create a python3 virtual environment with the venv module::
 
-	python3 -m venv venv
+	python3 -m venv venv --system-site-packages
 
 Activate the virtual enviroment for the active shell, run only for once each shell session::
 
