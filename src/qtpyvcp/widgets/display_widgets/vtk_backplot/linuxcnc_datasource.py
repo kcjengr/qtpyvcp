@@ -39,6 +39,7 @@ class LinuxCncDataSource(QObject):
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._is_lathe = bool(self._inifile.find("DISPLAY", "LATHE"))
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
+        self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
 
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -139,6 +140,9 @@ class LinuxCncDataSource(QObject):
 
     def isMachineFoam(self):
         return self._is_foam
+    
+    def isMachineJet(self):
+        return self._is_jet
 
     def isModeMdi(self):
         return str(self._status.task_mode) == "MDI"

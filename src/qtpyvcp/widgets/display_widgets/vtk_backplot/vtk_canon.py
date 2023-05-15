@@ -67,6 +67,7 @@ class VTKCanon(StatCanon):
         self.path_points.get(self.active_wcs_index).append((line_type, line))
 
     def draw_lines(self):
+        # Used to draw the lines of the loaded program
         LOG.debug("---------path points size: {}".format(sys.getsizeof(self.path_points)))
         LOG.debug("---------path points length: {}".format(len(self.path_points)))
 

@@ -1,3 +1,5 @@
+#import pydevd;pydevd.settrace()
+
 import yaml
 
 import linuxcnc
@@ -579,9 +581,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_tool()
 
     def update_position(self, position):  # the tool movement
-
+        # Plots the movement of the tool and leaves a trace line
+        active_wcs_offset = self._datasource.getWcsOffsets()[self._datasource.getActiveWcsIndex()]
+        if self._datasource.isMachineJet():
+            # update the position for JET machines so spindle/tool is
+            # aligned to active WCS
+            list_pos = list(position)
+            list_pos[2] = active_wcs_offset[2]
+            position = tuple(list_pos)
         self.spindle_position = position[:3]
         self.spindle_rotation = position[3:6]
+        
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
@@ -623,9 +633,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         tlo = self._datasource.getToolOffset()
         self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
 
+        if self._datasource.isMachineJet():
+            # if a jet based machine (plasma, water jet, laser) suppress
+            # plotting the Z movements
+            self.tooltip_position = self.spindle_position
+        else:
+            self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
+            
+
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
 
+        #print(f"Update tool tip position {time.time()}")
         self.path_cache_actor.add_line_point(self.tooltip_position)
         self.renderer_window.Render()
 
