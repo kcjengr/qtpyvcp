@@ -188,6 +188,7 @@ class CodeLine:
         # token mapping for line commands
         tokens = {
             'G0':(Commands.MOVE_LINEAR, self.parse_linear),
+            'G10':(Commands.PASSTHROUGH, self.parse_passthrough),
             'G1':(Commands.MOVE_LINEAR, self.parse_linear),
             'G20':(Commands.UNITS, self.set_inches),
             'G21':(Commands.UNITS, self.set_mms),
@@ -257,7 +258,7 @@ class CodeLine:
         # [3] Mark line for pass through
         multi_codes = re.findall(r"G\d+|T\s*\d+|M\d+", line.upper().strip())
         if len(multi_codes) > 1:
-            LOG.debug('Codeline: Multi codes on line detected')
+            LOG.debug(f'Codeline: Multi codes on line detected: {line}')
             # we have multiple codes on the line
             self.type = Commands.PASSTHROUGH
             # scan for possible 'bad' codes
@@ -279,7 +280,7 @@ class CodeLine:
         else:
             # not a multi code on single line situation so process line
             # to set line type
-            LOG.debug('Codeline: Non-Multi code: Scan tokens on line.')
+            LOG.debug(f'Codeline: Non-Multi code: Scan tokens on line. {line}')
             for k in tokens:
                 # do regex searches to find exact matches of the token patterns
                 pattern = r"^"+k + r"{1}"
@@ -635,7 +636,7 @@ class HoleBuilder:
         arc3_feed = feed_rate * hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
         leadin_feed = feed_rate * hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
 
-        # is G40 oavtive or not
+        # is G40 active or not
         if line.active_g_modal_groups[7] == 'G40':
             g40 = True
         else:
@@ -1303,7 +1304,7 @@ class PreProcessor:
     def set_ui_hal_cutchart_pin(self):
         if self.active_cutchart is not None:
             rtn = hal.set_p("qtpyvcp.cutchart-id", f"{self.active_cutchart}")
-            LOG.debug('Set hal cutchart-id pin')
+            LOG.debug(f'Set hal cutchart-id pin: {self.active_cutchart}')
         else:
             LOG.debug('No active cutchart')
 
@@ -1323,9 +1324,9 @@ def main():
         print(__doc__)
         return
 
-    LOG.debug('Log custom config yaml file')
     custom_config_yaml_file_name = normalizePath(path='custom_config.yml', base=os.getenv('CONFIG_DIR', '~/'))
     cfg_dic = load_config_files(custom_config_yaml_file_name)
+    LOG.debug(f'Log custom config yaml file: {custom_config_yaml_file_name}')
     
     # we assume that things are sqlite unless we find custom_config.yml
     # pointing to different type of DB
@@ -1333,7 +1334,7 @@ def main():
         db_connect_str = cfg_dic['data_plugins']['plasmaprocesses']['kwargs']['connect_string']
         # if no error then we found a db connection string. Use it.
         PLASMADB = PlasmaProcesses(connect_string=db_connect_str)
-        LOG.debug('Connected to NON SQLite DB')
+        LOG.debug(f'Connected to NON SQLite DB: {db_connect_str}')
     except:
         # no connect string found OR can't connect so assume sqlite on local machine
         PLASMADB = PlasmaProcesses(db_type='sqlite')
