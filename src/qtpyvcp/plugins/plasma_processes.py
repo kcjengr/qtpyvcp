@@ -20,6 +20,7 @@ import os
 import csv
 
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.plugins import Plugin
 
@@ -32,7 +33,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.session import sessionmaker
 from requests.sessions import session
 
+#import pydevd;pydevd.settrace()
+
 LOG = getLogger(__name__)
+INFO = Info()
 BASE = declarative_base()
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -255,6 +259,7 @@ class Cutchart(crudMixin,BASE):
     gas = relationship('Gas')
     quality = relationship('Quality')
     # values for this combination of foreign keys
+    tool_number = Column(Integer, nullable=False)
     name = Column(String(100))
     pierce_height = Column(Float)
     pierce_delay = Column(Float)
@@ -289,18 +294,33 @@ class Cutchart(crudMixin,BASE):
 
     @classmethod
     def tool_list_for_lcnc(cls, session, machine, pressure, measurement):
-        
+        LOG.debug(f"class method for tool_list_for_lcnc")
         measurementid = LinearSystem.get_by_key(session, 'name', measurement)[0].id
-        machineid = Machine.get_by_key(session, 'name', machine)[0].id
+        LOG.debug(f"measurementid = {measurementid}")
         pressureid = PressureSystem.get_by_key(session, 'name', pressure)[0].id
+        LOG.debug(f"pressureid = {pressureid}")
+        machineid = Machine.get_by_key(session, 'name', machine)[0].id
+        LOG.debug(f"machineid = {machineid}")
         result_set = session.query(cls) \
             .filter(and_( \
                           cls.linearsystemid == measurementid, \
                           cls.machineid == machineid, \
                           cls.pressuresystemid == pressureid \
                         )).order_by(cls.id).all()
+        LOG.debug(f"Got filtered result set of tools. List length = {len(result_set)}")
         return result_set
     
+    @classmethod
+    def tool_id(cls, session, machineid, pressureid, measurementid, tool_num):
+        result_set = session.query(cls) \
+            .filter(and_( \
+                          cls.linearsystemid == measurementid, \
+                          cls.machineid == machineid, \
+                          cls.pressuresystemid == pressureid, \
+                          cls.tool_number == tool_num
+                        )).order_by(cls.id).all()
+        LOG.debug(f"Got filtered result set of tool_id. List length = {len(result_set)}")
+        return result_set
 
 class PlasmaProcesses(Plugin):
     def __init__(self, **kwargs):
@@ -310,7 +330,7 @@ class PlasmaProcesses(Plugin):
         # stop data load processing if in designer
         if IN_DESIGNER:
             return
-        
+
         # open DB and expose the DB type and if relevant the
         # connection string to the environment.  This makes for a simple
         # measn to unform the tool DB prog and the filter prog.
@@ -318,16 +338,26 @@ class PlasmaProcesses(Plugin):
             self._engine = create_engine(kwargs["connect_string"], echo=False)
         else:
             self._persistence_file = normalizePath(path='plasma_table.db',
-                                              base=os.getenv('CONFIG_DIR', '~/'))
+                                              base=os.getenv('CONFIG_DIR', './'))
             self._engine = create_engine('sqlite:///'+self._persistence_file, echo=False)
             os.environ['PLASMA_DB'] = 'sqlite'
-
 
         # create the database for anything not already in place
         BASE.metadata.create_all(self._engine)
         # create and hold session for use of transactions
         self._session_maker = sessionmaker(bind=self._engine)
         self._session = self._session_maker()
+        # Build base filter items, get the IDs and store for later use
+        if INFO.getIsMachineMetric():
+            linear_setting = 'mm'
+        else:
+            linear_setting = 'inch'
+        pressure_setting = INFO.ini.find('PLASMAC', 'PRESSURE')
+        machine = INFO.ini.find('PLASMAC', 'MACHINE')
+        self._measurementid = LinearSystem.get_by_key(self._session, 'name', linear_setting)[0].id
+        self._pressureid = PressureSystem.get_by_key(self._session, 'name', pressure_setting)[0].id
+        self._machineid = Machine.get_by_key(self._session, 'name', machine)[0].id
+    
     
     def drop_all(self):
         BASE.metadata.drop_all(self._engine)
@@ -455,12 +485,16 @@ class PlasmaProcesses(Plugin):
         #     LOG.debug('Find specific cut id is: None')
         return data
 
-
-    def tool_list_for_lcnc(self, machine, pressure, measurement):
-        data = Cutchart.tool_list_for_lcnc(self._session, machine, pressure, measurement)
-        #LOG.debug(f'lcnc tool list for filters machine={machine}, pressure={pressure}, measurement={measurement}')
+    # Cut but Tool Number
+    def tool_id(self, tool_num):
+        data = Cutchart.tool_id(self._session, self._machineid, self._pressureid, self._measurementid, tool_num)
+        LOG.debug(f'tool_id = {data[0].id}')
         return data
 
+    def tool_list_for_lcnc(self, machine, pressure, measurement):
+        LOG.debug(f'lcnc tool list for filters machine={machine}, pressure={pressure}, measurement={measurement}')
+        data = Cutchart.tool_list_for_lcnc(self._session, machine, pressure, measurement)
+        return data
 
     def cut(self, arglst):
         # Order of params sent in.  Order matters for mapping to
@@ -490,10 +524,11 @@ class PlasmaProcesses(Plugin):
                         machineid = args['machines'], \
                         consumableid = args['consumables'], \
                         materialid = args['materials'], \
-                        thickenssid = args['thicknesses'], \
+                        thicknessid = args['thicknesses'], \
                         operationid = args['operations'], \
                         gasid = args['gases'], \
                         qualityid = args['qualities'], \
+                        tool_number = args['tool_number'], \
                         name = args['name'], \
                         pierce_height = args['pierce_height'], \
                         pierce_delay = args['pierce_delay'], \
@@ -649,6 +684,7 @@ class PlasmaProcesses(Plugin):
                 if q.name == 'Production':
                     qual_id = q.id
     
+            tool_number = r['tool_number']
             name = r['name']
             pierce_height = r['pierce_height']
             pierce_delay = r['pierce_delay']
@@ -672,6 +708,7 @@ class PlasmaProcesses(Plugin):
                  operations=ops_id, \
                  gases=gases_id, \
                  qualities=qual_id,\
+                 tool_number=int(tool_number),\
                  name=name,\
                  pierce_height=float(pierce_height), \
                  pierce_delay=float(pierce_delay), \
@@ -699,8 +736,10 @@ class PlasmaProcesses(Plugin):
 if __name__ == "__main__":
     import sys
     # command line usage is:  <file> <user> <password>
-    con_str = f'mysql+pymysql://{sys.argv[2]}:{sys.argv[3]}@localhost/plasma_table'
-    p = PlasmaProcesses(db_type='mysql', connect_string=con_str)
+    #con_str = f'mysql+pymysql://{sys.argv[2]}:{sys.argv[3]}@localhost/plasma_table'
+    con_str = 'sqlite://' + os.path.expanduser('~/plasma_table.db')
+    #p = PlasmaProcesses(db_type='mysql', connect_string=con_str)
+    p = PlasmaProcesses(db_type='sqlite')
     p.initialise()
     p.seed_data_base(sys.argv[1])
     p.terminate()

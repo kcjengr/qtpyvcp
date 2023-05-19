@@ -418,8 +418,10 @@ class CodeLine:
     def parse_toolchange(self, combo=False):
         # A tool change is deemed a process change.
         # The Tool Number is to be the unique ID of a Process combination from
-        # the CustChart table. This will need to be supported by the
-        # CAM having a loading of tools where the tool #  is the ID from this table
+        # the CutChart table. This will need to be supported by the
+        # CAM having a loading of tools where the tool #  is the
+        # tool_number from this table but filtered by machine/units/pressure
+        # so that tool_number is unique
         # Param: combo - if True then line has both Tx and M6
         line = self.strip_inline_comment(self.raw)
         if combo:
@@ -432,7 +434,7 @@ class CodeLine:
             self.command = ('T',tool)
             self.type = Commands.TOOLCHANGE
         # test if this process ID is known about
-        cut_process = PLASMADB.cut_by_id(tool)
+        cut_process = PLASMADB.tool_id(tool)
         if len(cut_process) == 0:
             # rewrite the raw line as an error comment
             self.raw = f"; ERROR: Invalid Cutchart ID in Tx. Check CAM Tools: {self.raw}"

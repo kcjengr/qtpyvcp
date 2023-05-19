@@ -60,7 +60,8 @@ def build_tool_list():
     TOOLS = {}
     pocket = 1
     for t in PLASMADB.tool_list_for_lcnc( MACHINE, PRESSURE, UNITS):
-        TOOLS[t.id] = [pocket, t.kerf_width, t.name]
+        # use tool number from DB but also keep the ID
+        TOOLS[t.tool_number] = [pocket, t.kerf_width, t.name, t.id]
         pocket += 1
 
 def get_tool(toolno):
