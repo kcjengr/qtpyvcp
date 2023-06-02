@@ -18,12 +18,12 @@ Use nano or vim to edit `/etc/apt/sources.list.d/kcjengr.list`.
    $ sudo vim /etc/apt/sources.list.d/kcjengr.list
 
 
-Add this line and save and exit `ESC :wq` for vim
+Donload the resource list file
 
 
 .. code::
 
-   $ sudo vim /etc/apt/sources.list.d/kcjengr.list
+   $ echo 'deb [arch=amd64] https://repository.qtpyvcp.com/apt develop main' | sudo tee /etc/apt/sources.list.d/kcjengr.list
 
 
 Get the apt keys
@@ -32,7 +32,8 @@ Get the apt keys
 .. code:: sh
 
 	$ curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/kcjengr.gpg
-	
+	$ gpg --keyserver keys.openpgp.org --recv-key 2DEC041F290DF85A
+
 
 Update the repositories
 
