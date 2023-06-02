@@ -1,6 +1,6 @@
-=========
-Mill VCPs
-=========
+===========
+Plasma VCPs
+===========
 
 Examples of plasma VCPs made using QtPyVCP
 
