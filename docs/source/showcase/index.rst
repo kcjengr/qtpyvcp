@@ -9,3 +9,4 @@ Showcase of VCPs made using QtPyVCP
 
    mill_vcps
    lathe_vcps
+   plasma_vcps

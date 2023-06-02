@@ -48,8 +48,8 @@ Jauria CNC
 .. image:: images/jcnc.png
    :align: center
 
-| **Project URL:** https://github.com/TurBoss/JauriaCNC
-| **Install Command:** ``pip install git+https://github.com/TurBoss/JauriaCNC.git``
+| **Project URL:** https://github.com/kcjengr/turbonc
+| **Install Command:** ``pip install git+https://github.com/kcjengr/turbonc.git``
 
 
 QControl
@@ -62,3 +62,11 @@ QControl
 | **Install Command:** ``pip install git+https://github.com/KurtJacobson/qcontrol.git``
 
 
+Monokrom
+--------
+
+.. image:: images/monokrom.png
+   :align: center
+
+| **Project URL:** https://github.com/kcjengr/monokrom
+| **Install Command:** ``pip install git+https://github.com/kcjengr/monokrom.git``
