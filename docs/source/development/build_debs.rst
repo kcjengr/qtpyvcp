@@ -38,6 +38,7 @@ Create a changelog file
 
 
 .. code:: sh
+
    $ cd qtpyvcp
    $ dch --create --distribution unstable --package qtpyvcp --newversion 0.1-2 Experimental Release version."
 
@@ -51,3 +52,12 @@ Build the deb file
 
 
 If all went ok deb should be in the parent directory
+
+
+Install debs
+
+
+.. code:: sh
+
+   $ sudo dpkg -i python3-qtpyvcp-0.1-2.deb
+
