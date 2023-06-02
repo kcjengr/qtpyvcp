@@ -7,21 +7,20 @@ Install from apt repository
 This only works for amd64.
 
 
-Add kcjengr repository to debian 12
 
-
-Use nano or vim to edit `/etc/apt/sources.list.d/kcjengr.list`.
+Upgrade the system
 
 
 .. code:: sh
 
-   $ sudo vim /etc/apt/sources.list.d/kcjengr.list
+	$ sudo apt update
+	$ sudo apt upgrade
 
 
-Donload the resource list file
+Add kcjengr repository to debian 12
 
 
-.. code::
+.. code:: sh
 
    $ echo 'deb [arch=amd64] https://repository.qtpyvcp.com/apt develop main' | sudo tee /etc/apt/sources.list.d/kcjengr.list
 
