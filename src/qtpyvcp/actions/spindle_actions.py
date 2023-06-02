@@ -36,10 +36,10 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
         ok = False
         msg = "Mode must be MAN or MDI"
     elif len(widget.rules) > 2:  # check if widget has enable rules
-        print(widget)
+        # print(widget)
         rule_list = json.loads(widget.rules)
         for rule in rule_list:
-            print(rule)
+            # print(rule)
             if rule.get("property") == "Enable":
 
                 channels = rule.get("channels")
