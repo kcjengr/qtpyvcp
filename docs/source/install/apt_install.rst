@@ -8,7 +8,6 @@ This only works for amd64.
 
 
 Add kcjengr repository to debian 12
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 Use nano or vim to edit `/etc/apt/sources.list.d/kcjengr.list`.
@@ -24,13 +23,14 @@ Add this line and save and exit `ESC :wq` for vim
 
 .. code::
 
-   sudo vim /etc/apt/sources.list.d/kcjengr.list
+   $ sudo vim /etc/apt/sources.list.d/kcjengr.list
 
 
 Get the apt keys
 
 
 .. code:: sh
+
 	$ curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/kcjengr.gpg
 	
 

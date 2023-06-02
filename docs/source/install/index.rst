@@ -6,6 +6,7 @@ Installation
    :maxdepth: 1
    :titlesonly:
 
+   apt_install
    prerequisites
    pypi_install
    dev_install
