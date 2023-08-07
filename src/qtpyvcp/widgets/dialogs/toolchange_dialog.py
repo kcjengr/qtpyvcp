@@ -48,14 +48,22 @@ class ToolChangeDialog(BaseDialog):
 
         comp = hal.getComponent("qtpyvcp_manualtoolchange")
         comp.addPin('number', 's32', 'in')
-        comp.addPin('change', 'bit', 'in')
+        self.change_pin = comp.addPin('change', 'bit', 'in')
         self.changed_pin = comp.addPin('changed', 'bit', 'out')
         comp.addPin('change_button', 'bit', 'in')
 
         comp.addListener('number', self.prepare_tool)
         comp.addListener('change', self.on_change)
         comp.addListener('change_button', self.on_change_button)
+        self.startTimer(100) # Poll 10 times per second
         self.hide()
+
+    def timerEvent(self, timer):
+        if not self.change_pin.value:
+            # Ensure that the changed pin is de-asserted when the change request pin is low
+            self.changed_pin.value = False
+            if self.isVisible():
+                self.hide()
 
     def prepare_tool(self, tool_no):
         if self.tool_number == tool_no: return  # Already prepared this tool
@@ -68,8 +76,6 @@ class ToolChangeDialog(BaseDialog):
     def on_change(self, value=True):
         if value:
             self.show()
-        else:
-            self.changed_pin.value = False
 
     def on_change_button(self, value=True):
         if value:
@@ -80,4 +86,3 @@ class ToolChangeDialog(BaseDialog):
 
     def accept(self):
         self.changed_pin.value = True
-        self.hide()
