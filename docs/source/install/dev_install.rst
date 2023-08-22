@@ -57,6 +57,11 @@ Activate the virtual enviroment for the active shell, run only for once each she
 
 	source venv/bin/activate
 
+Install hiyapyco::
+
+	pip install hiyapyco
+
+
 .. Note::
 	If you don't want to type source command each session, you can add this lines to the end of ~/.bashrc file
 	`source venv/bin/activate`
