@@ -81,7 +81,7 @@ can be added.*
 
 
 Install with pip3
-+++++++++++++++++++++
++++++++++++++++++
 
 .. warning::
 
@@ -127,8 +127,10 @@ successful.
 QtDesigner Plugins
 ^^^^^^^^^^^^^^^^^^
 
-The required `libpyqt5.so` comes with linuxcnc from debian 12 apt repositories,
-if you build linuxcnc from sources you may need the library too
+.. note::
+	The required `libpyqt5.so` comes with linuxcnc from debian 12 apt repositorie but
+	if you build linuxcnc from sources you may need to install the library
+
 
 If you want to edit a VCP or create one from a template you need to have the
 QtDesigner plugins installed. To load, you must have the correct version of
