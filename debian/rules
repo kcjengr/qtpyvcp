@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+export PYTHONPATH=$PYTHONPATH:debian/python3-qtpyvcp/usr/lib/python3.11/dist-packages
+
 %:
 	dh $@ --with python3 --buildsystem=pybuild
 
@@ -7,4 +9,4 @@ override_dh_auto_test:
 
 override_dh_install:
 	dh_install
-	qcompile debian/python3-qtpyvcp
+	debian/python3-qtpyvcp/usr/bin/qcompile debian/python3-qtpyvcp
