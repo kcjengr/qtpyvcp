@@ -518,22 +518,45 @@ class GcodeTextEdit(QPlainTextEdit):
 
     @Slot(str)
     @Slot(object)
-    def loadProgramFile(self, fname=None):
+    def loadProgramFile(self, fname=None, chunk_size=256):
         if fname:
+            
             encodings = allEncodings()
-            enc = None
+            file_enc = None
+            file_encode = None
+            chunk_count = 0
+            
+            doc = QTextDocument()
+            scrollbar = self.verticalScrollBar()
+            gCodeHighlighter = GcodeSyntaxHighlighter(doc, self.font)
+            cursor = QTextCursor(doc)
+            
+            self.setPlainText("")
+            
+            LOG.info(f"LOADING file in chunks")
             for enc in encodings:
                 try:
-                    with open(fname,  'r', encoding=enc) as f:
-                        gcode = f.read()
+                    with open(fname,  'r', encoding=file_enc) as f:
+                        LOG.info(f"File encoding: {file_enc}")
+                        while True:
+                            file_chunk = f.read(chunk_size)
+                            if not file_chunk:
+                                break  # Stop when the chunk is empty (end of file)
+                            
+                            chunk_count += 1
+                            LOG.debug(f"LOADED CHUNK: No {chunk_count}")
+        
+                            self.appendPlainText(file_chunk)
+                     
+                        
+                        cursor.setPosition(0)  # Set the cursor position to the start of the document
+                        self.centerCursor()
                         break
                 except Exception as e:
                     # LOG.debug(e)
-                    LOG.info(f"File encoding doesn't match {enc}, trying others")
-            LOG.info(f"File encoding: {enc}")
-            # set the syntax highlighter
-            self.setPlainText(gcode)
-            # self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
+                    LOG.DEBUG(f"File encoding doesn't match {file_enc}, trying others")
+            
+
 
     @Slot(int)
     @Slot(object)
