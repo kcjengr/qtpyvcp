@@ -13,46 +13,7 @@ The goal is to provide a no-code, drag-and-drop system for making simple VCPs,
 as well as a straightforward, flexible and extensible framework to aid in
 building complex VCPs.
 
-## Warning Python2.7
-
-QtPyVCP master branch is now python 3 only
-
-Requires debian 11
-
-Do I need to install master branch?
-
-Only if you want to use linuxcnc 2.9.0~pre or help porting qtpyvcp to python3
-
-Master branch is our develop channel, we offer stable releases but none yet for Python3,
-latest python2 release is 0.3.19
-
-a maintenance branch for python2.7 is keept until linuxcnc 2.9 is released
-
-to install it you need to run as user
-
-```
-python2.7 -m pip install -U git+https://github.com/kcjengr/qtpyvcp@python2_maintenance
-```
-
-
-
-How does affect your VCP?
-  You only need to run `2to3.py` in your VCP root directory
-
-In runtime mode how does affect my configs?
-
-Nothing it should be transparent
-
-I have python component
-run `2to3.py`in yor component directory
-
-
 ## Installation and Usage
-
-What I need to install?
-You may need a linuxcnc 2.9.0~pre or latter
-detailed packages requiered for `runtime` or `develop` are described here:
-https://www.qtpyvcp.com/install/prerequisites.html
 
 See the [documentation](https://www.qtpyvcp.com/).
 
@@ -68,14 +29,14 @@ See the [documentation](https://www.qtpyvcp.com/).
 * [LinuxCNC Forum](https://forum.linuxcnc.org/qtpyvcp)
 * [libera.chat IRC](http://web.libera.chat/) (#qtpyvcp)
 * [The Matrix](https://app.element.io/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
-* [Discord](https://discord.gg/463hMhd)
+* [Discord](https://discord.gg/NTKeR5GDuD) (#qtpyvcp)
 
 
 ## Dependencies
 
-* LinuxCNC 2.9-pre^
-* Python 3.9^
-* Qt 5.12^
+* LinuxCNC 2.9 or 2.10-pre^
+* Python 3.11^
+* Qt 5.15^
 * PyQt5 or PySide2
 
 QtPyVCP is developed and tested using the Debian 11 x64 (bullseye).
