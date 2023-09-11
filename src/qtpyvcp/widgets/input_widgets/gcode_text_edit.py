@@ -518,20 +518,21 @@ class GcodeTextEdit(QPlainTextEdit):
 
     @Slot(str)
     @Slot(object)
-    def loadProgramFile(self, fname=None, chunk_size=256):
+    def loadProgramFile(self, fname=None, chunk_size=4096):
         if fname:
-            
+            self.clear()
+            gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
+                        
             encodings = allEncodings()
             file_enc = None
             file_encode = None
+            chunk_data  = list()
             chunk_count = 0
             
-            doc = QTextDocument()
-            scrollbar = self.verticalScrollBar()
-            gCodeHighlighter = GcodeSyntaxHighlighter(doc, self.font)
-            cursor = QTextCursor(doc)
+            # doc = self.document()
+            # scrollbar = self.verticalScrollBar()
+            # cursor = QTextCursor(doc)
             
-            self.setPlainText("")
             
             LOG.info(f"LOADING file in chunks")
             for enc in encodings:
@@ -539,24 +540,22 @@ class GcodeTextEdit(QPlainTextEdit):
                     with open(fname,  'r', encoding=file_enc) as f:
                         LOG.info(f"File encoding: {file_enc}")
                         while True:
-                            file_chunk = f.read(chunk_size)
+                            file_chunk = f.readlines(chunk_size)
                             if not file_chunk:
                                 break  # Stop when the chunk is empty (end of file)
                             
                             chunk_count += 1
-                            LOG.debug(f"LOADED CHUNK: No {chunk_count}")
-        
-                            self.appendPlainText(file_chunk)
-                     
+                            # LOG.debug(f"CHUNK loaded: No {chunk_count}")
+                            # chunk_data.append(file_chunk)
+                            self.insertPlainText(''.join(file_chunk))                    
                         
-                        cursor.setPosition(0)  # Set the cursor position to the start of the document
-                        self.centerCursor()
+                        
                         break
                 except Exception as e:
                     # LOG.debug(e)
                     LOG.DEBUG(f"File encoding doesn't match {file_enc}, trying others")
-            
-
+                    
+                    
 
     @Slot(int)
     @Slot(object)
