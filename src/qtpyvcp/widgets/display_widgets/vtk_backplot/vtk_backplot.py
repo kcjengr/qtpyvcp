@@ -34,7 +34,7 @@ from .machine_actor import MachineActor
 from .tool_actor import ToolActor, ToolBitActor
 from .table_actor import TableActor
 from .spindle_actor import SpindleActor
-from .robot_actor import RobotActor
+from .machine_actor import MachinePartsActor
 from .path_cache_actor import PathCacheActor
 from .program_bounds_actor import ProgramBoundsActor
 from .vtk_canon import VTKCanon
@@ -211,11 +211,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if self.spindle_model is not None:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
 
-            self.robot = self._datasource._inifile.find("DISPLAY", "ROBOT")
-            if self.robot:
-                with open(self.robot) as f:
-                    self.robot_data = yaml.load(f, Loader=yaml.FullLoader)
-                    self.robot_actor = RobotActor(self.robot_data)
+            self.machine_parts = self._datasource._inifile.find("DISPLAY", "MACHINE_PARTS")
+            
+            if self.machine_parts:
+                with open(self.machine_parts) as f:
+                    self.machine_parts_data = yaml.load(f, Loader=yaml.FullLoader)
+                    self.machine_parts_actor = MachinePartsActor(self.machine_parts_data)
 
             self.tool_actor = ToolActor(self._datasource)
             self.tool_bit_actor = ToolBitActor(self._datasource)
@@ -306,8 +307,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
 
-            if self.robot:
-                self.renderer.AddActor(self.robot_actor)
+            if self.machine_parts:
+                self.renderer.AddActor(self.machine_parts_actor)
 
             if self.table_model is not None:
                 self.renderer.AddActor(self.table_actor)
@@ -602,9 +603,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
 
-        if self.robot:
-            parts = self.robot_actor.get_parts()
-            for data in self.robot_data:
+        if self.machine_parts:
+            parts = self.machine_parts_actor.get_parts()
+            for data in self.machine_parts_data:
                 joint = data.get("joint")
 
                 if joint is not False:
