@@ -10,6 +10,7 @@ import time
 
 import vtk
 import vtk.qt
+
 from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent
 from qtpy.QtGui import QColor
 
@@ -30,11 +31,10 @@ from qtpyvcp.plugins import iterPlugins, getPlugin
 
 from .base_backplot import BaseBackPlot
 from .axes_actor import AxesActor
-from .machine_actor import MachineActor
 from .tool_actor import ToolActor, ToolBitActor
 from .table_actor import TableActor
 from .spindle_actor import SpindleActor
-from .machine_actor import MachinePartsActor
+from .machine_actor import MachineActor, MachinePartsASM
 from .path_cache_actor import PathCacheActor
 from .program_bounds_actor import ProgramBoundsActor
 from .vtk_canon import VTKCanon
@@ -200,23 +200,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
 
 
-            self.table_model = self._datasource._inifile.find("DISPLAY", "TABLE")
+            self.table_model = self._datasource._inifile.find("VTK", "TABLE")
             if self.table_model is not None:
                 self.table_actor = TableActor(self.table_model)
 
 
 
-            self.spindle_model = self._datasource._inifile.find("DISPLAY", "SPINDLE")
+            self.spindle_model = self._datasource._inifile.find("VTK", "SPINDLE")
 
             if self.spindle_model is not None:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
 
-            self.machine_parts = self._datasource._inifile.find("DISPLAY", "MACHINE_PARTS")
+            self.machine_parts = self._datasource._inifile.find("VTK", "MACHINE_PARTS")
             
             if self.machine_parts:
-                with open(self.machine_parts) as f:
+                with open(self.machine_parts, 'r') as f:
                     self.machine_parts_data = yaml.load(f, Loader=yaml.FullLoader)
-                    self.machine_parts_actor = MachinePartsActor(self.machine_parts_data)
+                    self.machine_parts_actor = MachinePartsASM(self.machine_parts_data)
 
             self.tool_actor = ToolActor(self._datasource)
             self.tool_bit_actor = ToolBitActor(self._datasource)
@@ -604,25 +604,47 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.spindle_actor.SetUserTransform(tool_transform)
 
         if self.machine_parts:
-            parts = self.machine_parts_actor.get_parts()
-            for data in self.machine_parts_data:
-                joint = data.get("joint")
+            machine_parts = self.machine_parts_actor.get_parts()
 
-                if joint is not False:
-                    rotation = self.joints[int(joint)].input.value
-
-                    if data.get("rotation") == "x":
-                        parts[int(joint)].SetOrientation(rotation, 0, 0)
-                    elif data.get("rotation") == "y":
-                        parts[int(joint)].SetOrientation(0, rotation, 0)
-                    elif data.get("rotation") == "z":
-                        parts[int(joint)].SetOrientation(0, 0, rotation)
-                    elif data.get("rotation") == "-x":
-                        parts[int(joint)].SetOrientation(-rotation, 0, 0)
-                    elif data.get("rotation") == "-y":
-                        parts[int(joint)].SetOrientation(0, -rotation, 0)
-                    elif data.get("rotation") == "-z":
-                        parts[int(joint)].SetOrientation(0, 0, -rotation)
+            for part_data in self.machine_parts_data:
+                
+                part_joint = part_data.get("joint")
+                part_id = part_data.get("id")
+                part_axis = part_data.get("axis")
+                part_type = part_data.get("type")
+                
+                if part_joint is not False:
+                    if part_type == "linear":
+                        position = self.joints[part_joint].input.value
+                        
+                        if part_axis == "x":
+                            machine_parts[part_id].SetPosition(position, 0, 0)
+                        elif part_axis == "y":
+                            machine_parts[part_id].SetPosition(0, position, 0)
+                        elif part_axis == "z":
+                            machine_parts[part_id].SetPosition(0, 0, position)
+                        elif part_axis == "-x":
+                            machine_parts[part_id].SetPosition(-position, 0, 0)
+                        elif part_axis == "-y":
+                            machine_parts[part_id].SetPosition(0, -position, 0)
+                        elif part_axis == "-z":
+                            machine_parts[part_id].SetPosition(0, 0, -position)
+                        
+                    elif part_type == "angular":
+                        position = self.joints[part_joint].input.value
+    
+                        if part_axis == "x":
+                            machine_parts[part_id].SetOrientation(position, 0, 0)
+                        elif part_axis== "y":
+                            machine_parts[part_id].SetOrientation(0, position, 0)
+                        elif part_axis == "z":
+                            machine_parts[part_id].SetOrientation(0, 0, position)
+                        elif part_axis == "-x":
+                            machine_parts[part_id].SetOrientation(-position, 0, 0)
+                        elif part_axis == "-y":
+                            machine_parts[part_id].SetOrientation(0, -position, 0)
+                        elif part_axis == "-z":
+                            machine_parts[part_id].SetOrientation(0, 0, -position)
 
         self.tool_actor.SetUserTransform(tool_transform)
 

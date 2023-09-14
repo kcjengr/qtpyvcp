@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import vtk.qt
 import math
 from vtk.util.colors import *
@@ -100,17 +102,25 @@ class MachineActor(vtk.vtkCubeAxesActor):
 
 
 
-class MachinePartsActor(vtk.vtkAssembly):
+class MachinePartsASM(vtk.vtkAssembly):
     
     def __init__(self, parts):
-        super(MachinePartsActor, self).__init__()
+        super(MachinePartsASM, self).__init__()
         
-        self.parts_list = list()
+        self.parts = dict()
+        pprint(parts)
         
-        for id, data in enumerate(parts):
+        for data in parts:
+            # print(f"KEY {id} VAL {data}")
+            
+            part_id = data.get("id")
+            part_root = data.get("root")
+            part_position = data.get("position")
+            part_origin = data.get("origin")
+            part_model = data.get("model")
             
             source = vtk.vtkSTLReader()
-            source.SetFileName(data["model"])
+            source.SetFileName(part_model)
         
             mapper = vtk.vtkPolyDataMapper()
             mapper.SetInputConnection(source.GetOutputPort())
@@ -127,16 +137,22 @@ class MachinePartsActor(vtk.vtkAssembly):
             partActor.GetProperty().SetSpecularPower(30.0)
             
             tmp_assembly = vtk.vtkAssembly()
-            tmp_assembly.SetPosition(data["position"])
-            tmp_assembly.SetOrigin(data["origin"])
+            tmp_assembly.AddPart(partActor)
+            tmp_assembly.SetPosition(part_position)
+            tmp_assembly.SetOrigin(part_origin)
             
-            self.parts_list.append(tmp_assembly)
-            self.parts_list[id].AddPart(partActor)
             
-            if(id > 0):
-                self.parts_list[id-1].AddPart(tmp_assembly)
-            
-        self.AddPart(self.parts_list[0])
+            self.parts[part_id] = tmp_assembly
+            if part_root is None:
+                LOG.info(f"Joint id {part_id} is ROOT part")
+                
+                self.AddPart(self.parts[part_id])
+            else:
+                LOG.info(f"Joint id {part_id} LINKED to Joint {part_root}")
+                
+                self.parts[part_root].AddPart(self.parts[part_id])
+        
+                  
         
     def get_parts(self):
-        return self.parts_list
+        return self.parts
