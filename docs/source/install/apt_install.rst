@@ -22,7 +22,7 @@ Add kcjengr repository to debian 12
 
 .. code:: sh
 
-	$ echo 'deb [arch=amd64] https://repository.qtpyvcp.com/apt develop main' | sudo tee /etc/apt/sources.list.d/kcjengr.list
+	$ echo 'deb [signed-by=/usr/share/keyrings/kcjengr.gpg] https://repository.qtpyvcp.com/apt develop main' | sudo tee /etc/apt/sources.list.d/kcjengr.list
 
 
 Get the apt keys
@@ -31,7 +31,7 @@ Get the apt keys
 .. code:: sh
 
     $ sudo apt install curl
-	$ curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/kcjengr.gpg
+	$ curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /usr/share/keyrings/kcjengr.gpg 2>&1 > /dev/nullsu
 
 
 
