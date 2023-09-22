@@ -31,7 +31,7 @@ Get the apt keys
 .. code:: sh
 
     $ sudo apt install curl
-	$ curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /usr/share/keyrings/kcjengr.gpg 2>&1 > /dev/nullsu
+	$ curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /usr/share/keyrings/kcjengr.gpg 2>&1 > /dev/null
 
 
 
