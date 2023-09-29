@@ -105,6 +105,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._datasource = LinuxCncDataSource()
 
+        self.current_time = round(time.time() * 1000)
+        self.plot_interval = 1000/30  # 1 second / 30 fps
+        self.prev_plot_time = 0
+        
         self.parent = parent
         self.ploter_enabled = True
         self.touch_enabled = False
@@ -581,6 +585,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_tool()
 
     def update_position(self, position):  # the tool movement
+        
+        self.current_time = round(time.time() * 1000)
+        
+        if self.current_time - self.prev_plot_time >= self.plot_interval:
+            self.prev_plot_time  = self.current_time;
+        else:
+            return
+        
+        
         # Plots the movement of the tool and leaves a trace line
         active_wcs_offset = self._datasource.getWcsOffsets()[self._datasource.getActiveWcsIndex()]
         if self._datasource.isMachineJet():
