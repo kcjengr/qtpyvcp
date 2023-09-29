@@ -138,7 +138,7 @@ class MachinePartsASM(vtk.vtkAssembly):
             
             tmp_assembly = vtk.vtkAssembly()
             tmp_assembly.AddPart(partActor)
-            tmp_assembly.SetPosition(part_position)
+            tmp_assembly.SetPosition(part_position[0], part_position[1], part_position[2])
             tmp_assembly.SetOrigin(part_origin)
             
             

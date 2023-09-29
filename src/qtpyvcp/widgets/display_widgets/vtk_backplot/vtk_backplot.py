@@ -96,8 +96,10 @@ class InteractorEventFilter(QObject):
 
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
+
         super(VTKBackPlot, self).__init__(parent)
-        LOG.debug("---------using refactored vtk code")
+        
+        # LOG.debug("---------using refactored vtk code")
 
         event_filter = InteractorEventFilter(self)
 
@@ -116,13 +118,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.rotating = 0
         self.panning = 0
         self.zooming = 0
-
+        
+        self.machine_parts = None
+        self.machine_parts_data = None
+        
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
 
-        # properties
+        self._plot_machine = True
+        
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
+        self._enableProgramTicks = True
         self._enableProgramTicks = True
 
         self._default_traverse_color = QColor(200, 35, 35, 255)
@@ -152,6 +159,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_position = (0.0, 0.0, 0.0)
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
+        
         self.joints = self._datasource._status.joint
 
         self.foam_offset = [0.0, 0.0]
@@ -184,6 +192,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         if not IN_DESIGNER:
 
+
             self.machine_actor = MachineActor(self._datasource)
             self.machine_actor.SetCamera(self.camera)
 
@@ -210,17 +219,44 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if self.spindle_model is not None:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
-
-            self.machine_parts = self._datasource._inifile.find("VTK", "MACHINE_PARTS")
             
-            if self.machine_parts:
-                with open(self.machine_parts, 'r') as f:
-                    self.machine_parts_data = yaml.load(f, Loader=yaml.FullLoader)
-                    self.machine_parts_actor = MachinePartsASM(self.machine_parts_data)
-
+            
+            if self.plotMachine == True:
+                
+                self.machine_parts = self._datasource._inifile.find("VTK", "MACHINE_PARTS")
+            
+                if self.machine_parts:
+                    with open(self.machine_parts, 'r') as f:
+                        self.machine_parts_data = yaml.load(f, Loader=yaml.FullLoader)
+                        self.machine_parts_actor = MachinePartsASM(self.machine_parts_data)
+            
             self.tool_actor = ToolActor(self._datasource)
             self.tool_bit_actor = ToolBitActor(self._datasource)
 
+
+            # view settings
+            connectSetting('backplot.show-spindle', self.showSpindle)
+            connectSetting('backplot.show-grid', self.showGrid)
+            connectSetting('backplot.show-program-bounds', self.showProgramBounds)
+            # connectSetting('backplot.show-program-labels', self.showProgramLabels)
+            # connectSetting('backplot.show-program-ticks', self.showProgramTicks)
+            connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
+            connectSetting('backplot.show-machine-labels', self.showMachineLabels)
+            connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
+            connectSetting('backplot.perspective-view', self.viewPerspective)
+            connectSetting('backplot.view', self.setView)
+            connectSetting('backplot.multitool-colors', self.showMultiColorPath)
+
+
+    def initialize(self):
+        self.path_colors = {'traverse': self._traverse_color,
+                       'arcfeed': self._arcfeed_color,
+                       'feed': self._feed_color,
+                       'dwell': QColor(0, 0, 255, 255),
+                       'user': QColor(0, 100, 255, 255)
+                       }
+
+        if not IN_DESIGNER:
             self.offset_axes = OrderedDict()
             self.program_bounds_actors = OrderedDict()
             self.show_program_bounds = bool()
@@ -252,31 +288,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
             # self.status.g5x_index.notify(self.update_g5x_index)
-
-            # view settings
-            connectSetting('backplot.show-spindle', self.showSpindle)
-            connectSetting('backplot.show-grid', self.showGrid)
-            connectSetting('backplot.show-program-bounds', self.showProgramBounds)
-            # connectSetting('backplot.show-program-labels', self.showProgramLabels)
-            # connectSetting('backplot.show-program-ticks', self.showProgramTicks)
-            connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
-            connectSetting('backplot.show-machine-labels', self.showMachineLabels)
-            connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
-            connectSetting('backplot.perspective-view', self.viewPerspective)
-            connectSetting('backplot.view', self.setView)
-            connectSetting('backplot.multitool-colors', self.showMultiColorPath)
-
-
-    def initialize(self):
-        self.path_colors = {'traverse': self._traverse_color,
-                       'arcfeed': self._arcfeed_color,
-                       'feed': self._feed_color,
-                       'dwell': QColor(0, 0, 255, 255),
-                       'user': QColor(0, 100, 255, 255)
-                       }
-
-        if not IN_DESIGNER:
-
             self.canon = VTKCanon(colors=self.path_colors)
             self.path_actors = self.canon.get_path_actors()
 
@@ -306,12 +317,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
-
-            if self.machine_parts:
-                self.renderer.AddActor(self.machine_parts_actor)
-
-            if self.table_model is not None:
-                self.renderer.AddActor(self.table_actor)
+                
+            if self.plotMachine == True:
+                if self.machine_parts:
+                    self.renderer.AddActor(self.machine_parts_actor)
+                
+                if self.table_model is not None:
+                    self.renderer.AddActor(self.table_actor)
 
             if self.spindle_model is not None:
                 self.renderer.AddActor(self.spindle_actor)
@@ -603,48 +615,49 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
 
-        if self.machine_parts:
-            machine_parts = self.machine_parts_actor.get_parts()
-
-            for part_data in self.machine_parts_data:
-                
-                part_joint = part_data.get("joint")
-                part_id = part_data.get("id")
-                part_axis = part_data.get("axis")
-                part_type = part_data.get("type")
-                
-                if part_joint is not False:
-                    if part_type == "linear":
-                        position = self.joints[part_joint].input.value
+            if self.plotMachine == True:
+                if self.machine_parts:
+                    machine_parts = self.machine_parts_actor.get_parts()
+        
+                    for part_data in self.machine_parts_data:
                         
-                        if part_axis == "x":
-                            machine_parts[part_id].SetPosition(position, 0, 0)
-                        elif part_axis == "y":
-                            machine_parts[part_id].SetPosition(0, position, 0)
-                        elif part_axis == "z":
-                            machine_parts[part_id].SetPosition(0, 0, position)
-                        elif part_axis == "-x":
-                            machine_parts[part_id].SetPosition(-position, 0, 0)
-                        elif part_axis == "-y":
-                            machine_parts[part_id].SetPosition(0, -position, 0)
-                        elif part_axis == "-z":
-                            machine_parts[part_id].SetPosition(0, 0, -position)
+                        part_joint = part_data.get("joint")
+                        part_id = part_data.get("id")
+                        part_axis = part_data.get("axis")
+                        part_type = part_data.get("type")
                         
-                    elif part_type == "angular":
-                        position = self.joints[part_joint].input.value
-    
-                        if part_axis == "x":
-                            machine_parts[part_id].SetOrientation(position, 0, 0)
-                        elif part_axis== "y":
-                            machine_parts[part_id].SetOrientation(0, position, 0)
-                        elif part_axis == "z":
-                            machine_parts[part_id].SetOrientation(0, 0, position)
-                        elif part_axis == "-x":
-                            machine_parts[part_id].SetOrientation(-position, 0, 0)
-                        elif part_axis == "-y":
-                            machine_parts[part_id].SetOrientation(0, -position, 0)
-                        elif part_axis == "-z":
-                            machine_parts[part_id].SetOrientation(0, 0, -position)
+                        if part_joint is not False:
+                            if part_type == "linear":
+                                position = self.joints[part_joint].input.value
+                                
+                                if part_axis == "x":
+                                    machine_parts[part_id].SetPosition(position, 0, 0)
+                                elif part_axis == "y":
+                                    machine_parts[part_id].SetPosition(0, position, 0)
+                                elif part_axis == "z":
+                                    machine_parts[part_id].SetPosition(0, 0, position)
+                                elif part_axis == "-x":
+                                    machine_parts[part_id].SetPosition(-position, 0, 0)
+                                elif part_axis == "-y":
+                                    machine_parts[part_id].SetPosition(0, -position, 0)
+                                elif part_axis == "-z":
+                                    machine_parts[part_id].SetPosition(0, 0, -position)
+                                
+                            elif part_type == "angular":
+                                position = self.joints[part_joint].input.value
+            
+                                if part_axis == "x":
+                                    machine_parts[part_id].SetOrientation(position, 0, 0)
+                                elif part_axis== "y":
+                                    machine_parts[part_id].SetOrientation(0, position, 0)
+                                elif part_axis == "z":
+                                    machine_parts[part_id].SetOrientation(0, 0, position)
+                                elif part_axis == "-x":
+                                    machine_parts[part_id].SetOrientation(-position, 0, 0)
+                                elif part_axis == "-y":
+                                    machine_parts[part_id].SetOrientation(0, -position, 0)
+                                elif part_axis == "-z":
+                                    machine_parts[part_id].SetOrientation(0, 0, -position)
 
         self.tool_actor.SetUserTransform(tool_transform)
 
@@ -1193,6 +1206,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def toggleMultiColorPath(self):
         pass
+    
+    
+    @Property(bool)
+    def plotMachine(self):
+        return self._plot_machine
+
+    @plotMachine.setter
+    def plotMachine(self, value):
+        self._plot_machine = value
+
+    @plotMachine.reset
+    def plotMachine(self):
+        self.plotMachine = false
+
 
     @Property(QColor)
     def backgroundColor(self):
