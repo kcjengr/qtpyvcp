@@ -578,7 +578,7 @@ class PlasmaProcesses(Plugin):
         machines = {}
         for r in file:
             if r['machine_name'] not in machines.keys():
-                machines[r['machine_name']] = r['service_height']
+                machines[r['machine_name']] = r['machine_name']
         
         for k in machines:
             self.add_machine(k, machines[k])
@@ -627,6 +627,8 @@ class PlasmaProcesses(Plugin):
         # add pressure system
         self.add_pressuresystems('psi', 1)
         self.add_pressuresystems('bar', 0.0689476)
+        self.add_pressuresystems('kPa', 6.8947573)
+        
         
         # add operations
         self.add_operations('Cut')
@@ -738,8 +740,9 @@ if __name__ == "__main__":
     # command line usage is:  <file> <user> <password>
     #con_str = f'mysql+pymysql://{sys.argv[2]}:{sys.argv[3]}@localhost/plasma_table'
     con_str = 'sqlite://' + os.path.expanduser('~/plasma_table.db')
-    #p = PlasmaProcesses(db_type='mysql', connect_string=con_str)
-    p = PlasmaProcesses(db_type='sqlite')
+    LOG.debug(f"Opening con_str = {con_str}")
+    p = PlasmaProcesses(db_type='mysql', connect_string=con_str)
+    #p = PlasmaProcesses(db_type='sqlite')
     p.initialise()
     p.seed_data_base(sys.argv[1])
     p.terminate()
