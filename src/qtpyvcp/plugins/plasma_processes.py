@@ -628,7 +628,8 @@ class PlasmaProcesses(Plugin):
         self.add_pressuresystems('psi', 1)
         self.add_pressuresystems('bar', 0.0689476)
         self.add_pressuresystems('kPa', 6.8947573)
-        
+        self.add_pressuresystems('MPa', 0.0068948)
+        self.add_pressuresystems('kgf/cm.sq', 0.070306958)
         
         # add operations
         self.add_operations('Cut')
@@ -662,7 +663,7 @@ class PlasmaProcesses(Plugin):
                 if unit.name == r['thickness_unit']:
                     linearsys_id = unit.id
             for unit in pressuresys:
-                if unit.name == 'psi':
+                if unit.name == r['pressuresys']:
                     pressuresys_id = unit.id
             for machine in machines:
                 if machine.name == r['machine_name']:
