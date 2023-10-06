@@ -244,9 +244,9 @@ class CodeLine:
             '#<pierce-only>':(Commands.PIERCE_MODE, self.placeholder),
             #'#<keep-z-motion>':Commands.KEEP_Z,
             ';':(Commands.COMMENT, self.parse_comment),
+            '(o=':(Commands.MAGIC_MATERIAL, self.parse_material),
             '(':(Commands.COMMENT, self.parse_comment),
             'T':(Commands.TOOLCHANGE, self.parse_toolchange)
-            #'(o=':Commands.MAGIC_MATERIAL
             }
 
         # a line could have multiple Gcodes on it. This is typical of the
@@ -283,11 +283,19 @@ class CodeLine:
             LOG.debug(f'Codeline: Non-Multi code: Scan tokens on line. {line}')
             for k in tokens:
                 # do regex searches to find exact matches of the token patterns
-                pattern = r"^"+k + r"{1}"
+                magic = False
                 if k == '(':
                     # deal with escaping the '(' which is special char in regex
                     pattern = r"^\({1}"
-                r = re.search(pattern, line.upper())
+                    r = re.search(pattern, line.upper())
+                elif k == '(o=':
+                    pattern = r"^\(o={1}"
+                    magic = True
+                    r = re.search(pattern, line.lower())
+                else:
+                    pattern = r"^"+k + r"{1}"
+                    r = re.search(pattern, line.upper())
+                
                 if r != None:
                     # since r is NOT None we must have found something
                     self.type = tokens[k][0]
@@ -295,7 +303,7 @@ class CodeLine:
                     # call the parser method bound to this key
                     tokens[k][1]()
                     # check for an inline comment if the entire line is not a comment
-                    if self.type is not Commands.COMMENT:
+                    if self.type not in [Commands.COMMENT, Commands.MAGIC_MATERIAL]:
                         self.parse_inline_comment()
                     # break out of the loop, we found a match
                     break
@@ -413,6 +421,55 @@ class CodeLine:
         elif len(params) == 0:
             # no spindle reference found so assume $-1
             self.params['$'] = int(-1)
+
+    def parse_material(self):
+        # Using the same magic material format as qtplasmac we support
+        # the dynamic creation of a cut material/process.
+        # At this point only dynamic materials are supported with the
+        # intention that a tool like SheetCam can hold all the material
+        # data and thus not require syncing of data back to the plasma
+        # processes database. Only valid for o=0 at the moment.
+        # Used params:
+        # o=0,
+        # na=the material name/description
+        # ph=pierce height
+        # pd=pierce delay
+        # ch=cut height
+        # fr=feed rate
+        # kw=kerf width
+        # th=thc on (1) or off (0) 
+        # ca=cut amps
+        # cv=cut voltage
+        # pe=pause at end
+        # jh=puddle jump height
+        # jd=puddle jump delay
+        # mt=material thickness
+        LOG.debug("Magic comment material parsing")
+        line = self.raw.strip(" ()")
+        # clean the line for processing.  It needs to be very specific
+        line = re.sub(r",\s*", ",", line)
+        parts = dict(item.split("=") for item in line.split(","))
+        if int(parts['o']) != 0:
+            self.type = Commands.PASSTHROUGH
+        else:
+            # mandatory
+            self._parent.pierce_height = float(parts['ph'])
+            self._parent.pierce_delay = float(parts['pd'])
+            self._parent.cut_height  = float(parts['ch'])
+            self._parent.active_feedrate = self._parent.cut_speed = float(parts['fr'])
+            # optional
+            self._parent.active_thickness = float(parts.get('mt', 8/UNITS_PER_MM))
+            self._parent.process_name = parts.get('na', 'Automatic Process')
+            self._parent.thc = int(parts.get('th', 0))
+            self._parent.volts = float(parts.get('cv', 99))
+            self._parent.kerf_width = float(parts.get('kw', 1.5/UNITS_PER_MM))
+            self._parent.plunge_rate = 100
+            self._parent.puddle_height = float(parts.get('jh', 0))
+            self._parent.puddle_delay = float(parts.get('jd', 0))
+            self._parent.amps = int(parts.get('ca', 40))
+            self._parent.pressure = 90
+            self._parent.pause_at_end = float(parts.get('pe', 0))
+            self._parent.active_cutchart = 99999
 
 
     def parse_toolchange(self, combo=False):
@@ -958,7 +1015,22 @@ class PreProcessor:
         self.active_machineid = None
         self.active_thicknessid = None
         self.active_materialid = None
-        
+        # used for Magic material/process system
+        self.process_name = None
+        self.pierce_height = None
+        self.pierce_delay = None
+        self.cut_height  = None
+        self.cut_speed = None
+        self.volts = None
+        self.kerf_width = None
+        self.plunge_rate = None
+        self.puddle_height = None
+        self.puddle_delay = None
+        self.amps = None
+        self.pressure = None
+        self.pause_at_end = None
+        self.thc = None
+
 
         openfile= open(inCode, 'r')
         self._orig_gcode = openfile.readlines()
@@ -981,6 +1053,7 @@ class PreProcessor:
 
 
     def flag_holes(self):
+        LOG.debug("Start Gather info from HAL pins")
         # connect to HAL and collect the data we need to determine what holes
         # should be processes and what are too large
         thickness_ratio = hal.get_value('qtpyvcp.plasma-hole-thickness-ratio.out')
@@ -1008,10 +1081,11 @@ class PreProcessor:
             
         marking_voltage = hal.get_value('qtpyvcp.spot-threshold.out')
         marking_delay = hal.get_value('qtpyvcp.spot-delay.out')
-        
+        LOG.debug("Got all info from HAL pins")
         
         # old school loop so we can easily peek forward or back of the current
         # record being processed.
+        LOG.debug("Start scanning loop")
         i = 0
         while i < len(self._parsed):
             line = self._parsed[i]
@@ -1047,6 +1121,7 @@ class PreProcessor:
                     # with "smart" holes IF it is within the upper params of a
                     # hole definition.  Nomally <= 5 * thickness
                     if line.is_hole:
+                        LOG.debug("Found a Hole. Start HoleBuilder")
                         line.hole_builder = HoleBuilder()
                         arc_i = line.params['I']
                         arc_j = line.params['J']
@@ -1057,9 +1132,12 @@ class PreProcessor:
                         circumferance = diameter * math.pi
                         
                         # see if can find hidef data for this hole scenario
+                        LOG.debug("Look for HiDef data on this material/machine/thickness")
                         hidef_data = PLASMADB.hidef_holes(self.active_machineid, self.active_materialid, self.active_thicknessid)
                         hidef = False
+                        LOG.debug(f"Finished hidef data look. Found {len(hidef_data)}")
                         if len(hidef_data) > 0:
+                            LOG.debug("Building up hidef hole defintion")
                             # leadinradius
                             # kerf
                             # cutheight
@@ -1082,9 +1160,11 @@ class PreProcessor:
                                             hidef_speed2, hidef_speed2dist, \
                                             hidef_offdistance, hidef_overcut):
                                 hidef = True
+                            LOG.debug("HiDef status is {hidef}")
                         
                         if diameter < small_hole_size and small_hole_detect:
                             # removde the hole and replace with a pulse
+                            LOG.debug("Hole diamter smaller the small-hole.  Remove hole and replace with pulse")
                             line.hole_builder.\
                                 plasma_mark(line, centre_x, centre_y, marking_delay)
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
@@ -1116,6 +1196,7 @@ class PreProcessor:
                                     next.type = Commands.REMOVE
                                     break
                         elif hidef:
+                            LOG.debug("Build a hole using hidef data")
                             arc1_distance = circumferance - hidef_speed2dist - hidef_offdistance
                             arc2_from_zero = arc1_distance + hidef_speed2dist
                             arc3_from_zero = arc2_from_zero + hidef_overcut - circumferance
@@ -1157,6 +1238,7 @@ class PreProcessor:
                             
                         elif (diameter <= self.active_thickness * thickness_ratio) or \
                            (diameter <= max_hole_size):
+                            LOG.debug("Build a normal hole using UI params")
                             # Only build the hole of within a certain size of
                             # Params:
                             # x:              Hole Centre X position
@@ -1304,9 +1386,50 @@ class PreProcessor:
             sys.stdout.flush()
 
     def set_ui_hal_cutchart_pin(self):
-        if self.active_cutchart is not None:
+        if self.active_cutchart is not None and self.active_cutchart != 99999:
             rtn = hal.set_p("qtpyvcp.cutchart-id", f"{self.active_cutchart}")
             LOG.debug(f'Set hal cutchart-id pin: {self.active_cutchart}')
+        elif self.active_cutchart == 99999:
+            # custom material type has been set via magic comment, configure
+            # the DB entry and save, then update the cutchard ID pin to activate
+            LOG.debug("Process for magic process tool 99999")
+            q = PLASMADB.tool_id(99999)
+            if q != None:
+                LOG.debug("Magic tool 99999 found. Updating")
+                # def updateCut(self, q, **args):
+                #     Cutchart.update(self._session, q, \
+                #             pierce_height = args['pierce_height'], \
+                #             pierce_delay = args['pierce_delay'], \
+                #             cut_height = args['cut_height'], 
+                #             cut_speed = args['cut_speed'], \
+                #             volts = args['volts'], \
+                #             kerf_width = args['kerf_width'], \
+                #             plunge_rate = args['plunge_rate'], \
+                #             puddle_height = args['puddle_height'], \
+                #             puddle_delay = args['puddle_delay'], \
+                #             amps = args['amps'], \
+                #             pressure = args['pressure'], \
+                #             pause_at_end = args['pause_at_end'])
+                PLASMADB.updateCut(q,
+                                   pierce_height=self.pierce_height,
+                                   pierce_delay=self.pierce_delay,
+                                   cut_height=self.cut_height,
+                                   cut_speed=self.cut_speed,
+                                   volts=self.volts,
+                                   kerf_width=self.kerf_width,
+                                   plunge_rate=self.plunge_rate,
+                                   puddle_height=self.puddle_height,
+                                   puddle_delay=self.puddle_delay,
+                                   amps=self.amps,
+                                   pressure=self.pressure,
+                                   pause_at_end=self.pause_at_end)
+                LOG.debug("Magic tool 99999 Updated.")
+            else:
+                # query for tool was empty so we need to create the magic
+                LOG.debug("ISSUE: The Magic tool 99999 does not exist!")
+            
+            rtn = hal.set_p("qtpyvcp.cutchart-id", f"99999")
+            LOG.debug(f'Set hal cutchart-id pin: 99999')
         else:
             LOG.debug('No active cutchart')
 
