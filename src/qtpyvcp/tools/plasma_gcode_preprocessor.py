@@ -444,6 +444,7 @@ class CodeLine:
         # jh=puddle jump height
         # jd=puddle jump delay
         # mt=material thickness
+        self.comment = self.raw
         LOG.debug("Magic comment material parsing")
         line = self.raw.strip(" ()")
         # clean the line for processing.  It needs to be very specific
@@ -1359,7 +1360,7 @@ class PreProcessor:
                 print('(---- Pierce ----)')
                 l.pierce_builder.generate_pierce_gcode(l)
                 continue
-            if l.type is Commands.COMMENT:
+            if l.type in [Commands.COMMENT, Commands.MAGIC_MATERIAL]:
                 out = l.comment
             elif l.type is Commands.OTHER:
                 # Other at the moment means not recognised
