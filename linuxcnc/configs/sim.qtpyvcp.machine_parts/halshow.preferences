@@ -1,0 +1,18 @@
+# Halshow settings
+# This file is generated automatically.
+wm geometry . 964x577+852+229
+placeFrames 0.3
+set ::ratio 0.3
+set ::old_w_leftf 160
+set ::watchlist {
+    pin+qtpyvcp.x-rot-offset.out
+    pin+qtpyvcp.x-rot-offset.enable
+    pin+qtpyvcp.x-rot-offset.in
+}
+set ::workmode watchhal
+set ::watchInterval 100
+set ::col1_width 100
+set ::ffmts 
+set ::ifmts 
+set ::alwaysOnTop 0
+set ::autoSaveWatchlist 1

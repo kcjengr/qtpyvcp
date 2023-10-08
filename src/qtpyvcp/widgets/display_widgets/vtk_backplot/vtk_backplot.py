@@ -615,49 +615,49 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
 
-            if self.plotMachine == True:
-                if self.machine_parts:
-                    machine_parts = self.machine_parts_actor.get_parts()
+        if self.plotMachine == True:
+            if self.machine_parts:
+                machine_parts = self.machine_parts_actor.get_parts()
+    
+                for part_data in self.machine_parts_data:
+                    
+                    part_joint = part_data.get("joint")
+                    part_id = part_data.get("id")
+                    part_axis = part_data.get("axis")
+                    part_type = part_data.get("type")
+                    
+                    if part_joint is not False:
+                        if part_type == "linear":
+                            position = self.joints[part_joint].input.value
+                            
+                            if part_axis == "x":
+                                machine_parts[part_id].SetPosition(position, 0, 0)
+                            elif part_axis == "y":
+                                machine_parts[part_id].SetPosition(0, position, 0)
+                            elif part_axis == "z":
+                                machine_parts[part_id].SetPosition(0, 0, position)
+                            elif part_axis == "-x":
+                                machine_parts[part_id].SetPosition(-position, 0, 0)
+                            elif part_axis == "-y":
+                                machine_parts[part_id].SetPosition(0, -position, 0)
+                            elif part_axis == "-z":
+                                machine_parts[part_id].SetPosition(0, 0, -position)
+                            
+                        elif part_type == "angular":
+                            position = self.joints[part_joint].input.value
         
-                    for part_data in self.machine_parts_data:
-                        
-                        part_joint = part_data.get("joint")
-                        part_id = part_data.get("id")
-                        part_axis = part_data.get("axis")
-                        part_type = part_data.get("type")
-                        
-                        if part_joint is not False:
-                            if part_type == "linear":
-                                position = self.joints[part_joint].input.value
-                                
-                                if part_axis == "x":
-                                    machine_parts[part_id].SetPosition(position, 0, 0)
-                                elif part_axis == "y":
-                                    machine_parts[part_id].SetPosition(0, position, 0)
-                                elif part_axis == "z":
-                                    machine_parts[part_id].SetPosition(0, 0, position)
-                                elif part_axis == "-x":
-                                    machine_parts[part_id].SetPosition(-position, 0, 0)
-                                elif part_axis == "-y":
-                                    machine_parts[part_id].SetPosition(0, -position, 0)
-                                elif part_axis == "-z":
-                                    machine_parts[part_id].SetPosition(0, 0, -position)
-                                
-                            elif part_type == "angular":
-                                position = self.joints[part_joint].input.value
-            
-                                if part_axis == "x":
-                                    machine_parts[part_id].SetOrientation(position, 0, 0)
-                                elif part_axis== "y":
-                                    machine_parts[part_id].SetOrientation(0, position, 0)
-                                elif part_axis == "z":
-                                    machine_parts[part_id].SetOrientation(0, 0, position)
-                                elif part_axis == "-x":
-                                    machine_parts[part_id].SetOrientation(-position, 0, 0)
-                                elif part_axis == "-y":
-                                    machine_parts[part_id].SetOrientation(0, -position, 0)
-                                elif part_axis == "-z":
-                                    machine_parts[part_id].SetOrientation(0, 0, -position)
+                            if part_axis == "x":
+                                machine_parts[part_id].SetOrientation(position, 0, 0)
+                            elif part_axis== "y":
+                                machine_parts[part_id].SetOrientation(0, position, 0)
+                            elif part_axis == "z":
+                                machine_parts[part_id].SetOrientation(0, 0, position)
+                            elif part_axis == "-x":
+                                machine_parts[part_id].SetOrientation(-position, 0, 0)
+                            elif part_axis == "-y":
+                                machine_parts[part_id].SetOrientation(0, -position, 0)
+                            elif part_axis == "-z":
+                                machine_parts[part_id].SetOrientation(0, 0, -position)
 
         self.tool_actor.SetUserTransform(tool_transform)
 
