@@ -143,6 +143,7 @@ class MachinePartsASM(vtk.vtkAssembly):
             
             
             self.parts[part_id] = tmp_assembly
+            
             if part_root is None:
                 LOG.info(f"Joint id {part_id} is ROOT part")
                 

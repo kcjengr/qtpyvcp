@@ -626,25 +626,47 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     part_axis = part_data.get("axis")
                     part_type = part_data.get("type")
                     
+        
+
+                    part_transform = vtk.vtkTransform()
+
                     if part_joint is not False:
                         if part_type == "linear":
-                            position = self.joints[part_joint].input.value
                             
+                            # part_position = self.joints[part_joint].input.value
                             if part_axis == "x":
-                                machine_parts[part_id].SetPosition(position, 0, 0)
+                                # machine_parts[part_id].SetPosition(position, 0, 0)
+                                part_transform.Translate(self.spindle_position[0], 0, 0)
+                                machine_parts[part_id].SetUserTransform(part_transform)
+                                
                             elif part_axis == "y":
-                                machine_parts[part_id].SetPosition(0, position, 0)
+                                # machine_parts[part_id].SetPosition(0, position, 0)
+                                part_transform.Translate(0, self.spindle_position[1], 0)
+                                machine_parts[part_id].SetUserTransform(part_transform)
                             elif part_axis == "z":
-                                machine_parts[part_id].SetPosition(0, 0, position)
+                                # machine_parts[part_id].SetPosition(0, 0, position)
+                                part_transform.Translate(0, 0, self.spindle_position[2])
+                                machine_parts[part_id].SetUserTransform(part_transform)
                             elif part_axis == "-x":
-                                machine_parts[part_id].SetPosition(-position, 0, 0)
+                                # machine_parts[part_id].SetPosition(-position, 0, 0)
+                                part_transform.Translate(-self.spindle_position[0], 0, 0)
+                                machine_parts[part_id].SetUserTransform(part_transform)
                             elif part_axis == "-y":
-                                machine_parts[part_id].SetPosition(0, -position, 0)
+                                # machine_parts[part_id].SetPosition(0, -position, 0)
+                                part_transform.Translate(0, -self.spindle_position[1], 0)
+                                machine_parts[part_id].SetUserTransform(part_transform)
                             elif part_axis == "-z":
-                                machine_parts[part_id].SetPosition(0, 0, -position)
+                                # machine_parts[part_id].SetPosition(0, 0, -position)
+                                part_transform.Translate(0, 0, -self.spindle_position[2])
+                                machine_parts[part_id].SetUserTransform(part_transform)
+                            
                             
                         elif part_type == "angular":
                             position = self.joints[part_joint].input.value
+                            
+                            part_transform.RotateX(-self.spindle_rotation[0])
+                            part_transform.RotateY(-self.spindle_rotation[1])
+                            part_transform.RotateZ(-self.spindle_rotation[2])
         
                             if part_axis == "x":
                                 machine_parts[part_id].SetOrientation(position, 0, 0)
