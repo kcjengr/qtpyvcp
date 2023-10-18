@@ -1,53 +1,50 @@
-- model: "parts/Base.stl"
-  id: "base"
-  root: null
-  type: "table"
-  position: [0, 0, 0, 0, 0, 0]
-  origin: [0, 0, 0]
-  axis : null
-  joint: null
-  
-- model: "parts/Xaxis.stl"
-  id: "x-axis"
-  root: base
-  type: "linear"
-  position: [0, 0, 0, 0, 0, 0]
-  origin: [0, 0, 0]
-  axis : "x"
-  joint: 0
-  
-- model: "parts/Yaxis.stl"
-  id: "y-axis"
-  root: "x-axis"
-  type: "linear"
-  position: [0, 0, 0, 0, 0, 0]
-  origin: [0, 0, 0]
-  axis : "y"
-  joint: 1
-  
-- model: "parts/Zaxis.stl"
-  id: "z-axis"
-  root: "y-axis"
-  type: "linear"
-  position: [0, 0, 0, 0, 0, 0]
-  origin: [0, 0, 0]
-  axis : "z"
-  joint: 2
+ root:
+    id: "base"
+    model: "parts/Base.stl"
+    type: "table"
+    position: [0, 75, 0, 0, 0, 0]
+    origin: [0, 0, 0]
+    axis: null
+    joint: null
+    child_linear:
+        id: "x_axis"
+        model: "parts/Xaxis.stl"
+        type: "linear"
+        position: [0, 45, 0, 0, 0, 0]
+        origin: [0, 0, 0]
+        axis: "x"
+        joint: 0
+        child:
+            id: "y_axis"
+            model: "parts/Yaxis.stl"
+            type: "linear"
+            position: [0, -20, 35, 0, 0, 0]
+            origin: [0, 0, 0]
+            axis: "y"
+            joint: 1   
+            child: 
+                id: "z_axis"
+                model: "parts/Zaxis.stl"
+                type: "linear"
+                position: [0, -45, 0, 0, 0, 0]
+                origin: [0, 0, 0]
+                axis: "z"
+                joint: 2
 
-- model: "parts/Caxis.stl"
-  id: "c-axis"
-  root: base
-  type: "angular"
-  position: [0, 0, 0, 0, 0, 0]
-  origin: [0, 0, 0]
-  axis : "c"
-  joint: 3
-  
-- model: "parts/Baxis.stl"
-  id: "b-axis"
-  root: "c-axis"
-  type: "angular"
-  position: [0, 0, 0, 0, 0, 0]
-  origin: [0, 0, 0]
-  axis : "b"
-  joint: 4
+    child_rotative:
+        id: "b_axis"
+        model: "parts/Baxis.stl"
+        type: "angular"
+        position: [0, 0, -40, 0, 0, 0]
+        origin: [0, 0, 0]
+        axis: "b"
+        joint: 3
+
+        child:
+            id: "c_axis"
+            model: "parts/Caxis.stl"
+            type: "angular"
+            position: [0, 0, -50, 0, 0, 0]
+            origin: [0, 0, 0]
+            axis  : "c"
+            joint: 4
