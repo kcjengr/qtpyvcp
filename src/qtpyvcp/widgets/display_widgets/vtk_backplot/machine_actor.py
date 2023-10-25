@@ -13,7 +13,7 @@ from vtkmodules.vtkFiltersSources import vtkCylinderSource
 from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
 from qtpyvcp.utilities import logger
-from pyqtgraph.examples.colorMapsLinearized import previous
+from collections import OrderedDict
 
 LOG = logger.getLogger(__name__)
 
@@ -107,13 +107,14 @@ class MachineActor(vtk.vtkCubeAxesActor):
             self.DrawZGridlinesOff()
 
 
-class MachinePart(vtk.vtkActor):
+class MachinePart(vtk.vtkAssembly):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
         self.part_axis = None
         self.part_type = None
+
     def SetPartAxis(self, attr):
         self.part_axis = attr
         
@@ -132,120 +133,79 @@ class MachinePartsASM(vtk.vtkAssembly):
     def __init__(self, parts):
         super(MachinePartsASM, self).__init__()
         
-        # self.parts = dict()
-        #
-        # machine_parts = dict()
-
-        # pprint(parts)
-       
-        # root_id = parts.get("id")
-        # root_model = parts.get("model")
-        # root_position = parts.get("position")
-        # root_origin = parts.get("origin")
-        # root_type = parts.get("type")
-        # root_child = parts.get("child")
-        #
-        #
-        #
-        # print(root_id)
-        # print(root_model)
-        # print(root_position)
-        # print(root_origin)
-        # print(root_type)
-        # print(root_child)
-        #
-        # print("######")
-        #
-        # machine_parts = dict()
-        
         print("########")
+        print("NEW Machine")
         
-        # part_transform = vtk.vtkTransform()
+        # print(f"{parts}")
+        previous_asm = None
         
-        # part_transform.Translate(part_position[0], part_position[1], part_position[2])
-         
-        # machine_assembly = vtk.vtkAssembly()
-        #
-        # tmp_assembly.AddPart(partActor)
-    
-    
-        path = vtk.vtkAssemblyPath()
+        parts_dict = OrderedDict()
+        previous_depth = 0
+        branch_num = 0
         
-        previous_part = None
-        for part_root, part_data in self.items_recursive(parts):
+        # for depth, part_root, part_data in self.items_recursive(parts):
+        for part in self.items_recursive(parts, self):
+            print(f"{part}")
             
-            print("NEW PART")
-            
-            part_id = part_data.get("id")
-            part_model = part_data.get("model")
-            part_type = part_data.get("type")
-            part_position = part_data.get("position")
-            part_origin = part_data.get("origin")
-            part_axis = part_data.get("axis")
-            part_joint = part_data.get("joint")
-            part_child = part_data.get("child")
-            
-            print(part_root)
-            print()
-            print(part_id)
-            print(part_model)
-            print(part_type)
-            print(part_position)
-            print(part_origin)
-            print(part_axis)
-            print(part_joint)
-        
-            part_source = vtk.vtkSTLReader()
-            part_source.SetFileName(part_model)
-            
-            part_mapper = vtk.vtkPolyDataMapper()
-            part_mapper.SetInputConnection(part_source.GetOutputPort())
-            
-            part_actor = MachinePart()
-            
-            part_actor.SetMapper(part_mapper)
-            
-            part_actor.GetProperty().SetColor(1, 0, 1)
-            part_actor.GetProperty().SetDiffuseColor(0.9, 0.9, 0.9)
-            part_actor.GetProperty().SetDiffuse(.8)
-            part_actor.GetProperty().SetSpecular(.5)
-            part_actor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
-            part_actor.GetProperty().SetSpecularPower(30.0)
-            
-            part_actor.SetPosition(part_position[0], part_position[1], part_position[2])
-            part_actor.SetOrigin(part_origin[0], part_origin[1], part_origin[2])
-            
-            part_actor.SetPartAxis(part_axis)
-            part_actor.SetPartType(part_type)
+        print(f"vtkAssembly: {self}")
 
-            
-            tmp_assembly = vtk.vtkAssembly()
-            tmp_assembly.AddPart(part_actor)
 
-            
-            if previous_part == None:
-                 path.AddNode(self, vtk.vtkMatrix4x4())
-                 previous_part = self
-                 self.AddPart(part_actor)
-                 
-            else:
-                 path.AddNode(part_actor, vtk.vtkMatrix4x4())
-                 previous_part = part_actor
-            
-            
-            print("########")
-            
-
-    def items_recursive(self, d):
+    def create_part(self, data):
         
-        for k, v in d.items():
-            
+        part_id = data.get("id")
+        part_model = data.get("model")
+        part_type = data.get("type")
+        part_position = data.get("position")
+        part_origin = data.get("origin")
+        part_axis = data.get("axis")
+        part_joint = data.get("joint")
+        
+        print(f"part_id:\t\t{part_id}")
+        print(f"part_model:\t\t{part_model}")
+        print(f"part_type:\t\t{part_type}")
+        print(f"part_position:\t\t{part_position}")
+        print(f"part_origin:\t\t{part_origin}")
+        print(f"part_axis:\t\t{part_axis}")
+        print(f"part_joint:\t\t{part_joint}")
+        
+        part_source = vtk.vtkSTLReader()
+        part_source.SetFileName(part_model)
+        part_source.Update()
+        
+        part_mapper = vtk.vtkPolyDataMapper()
+        part_mapper.SetInputConnection(part_source.GetOutputPort())
+        
+        part_actor = vtk.vtkActor()
+        
+        part_actor.SetMapper(part_mapper)
+        
+        part_actor.GetProperty().SetColor(1, 0, 1)
+        part_actor.GetProperty().SetDiffuseColor(0.9, 0.9, 0.9)
+        part_actor.GetProperty().SetDiffuse(.8)
+        part_actor.GetProperty().SetSpecular(.5)
+        part_actor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
+        part_actor.GetProperty().SetSpecularPower(30.0)
+        
+        part_actor.SetPosition(part_position[0], part_position[1], part_position[2])
+        part_actor.SetOrigin(part_origin[0], part_origin[1], part_origin[2])
+        
+        tmp_assembly = MachinePart()
+        tmp_assembly.SetPartAxis(part_axis)
+        tmp_assembly.SetPartType(part_type)
+        
+        tmp_assembly.AddPart(part_actor)
+        
+        return tmp_assembly
+
+    def items_recursive(self, d, parent):
+        
+        for _, v in d.items():
             if isinstance(v, dict):
+                tmp_part = self.create_part(v)
+                parent.AddPart(tmp_part)
+                yield tmp_part
+                for p in self.items_recursive(v, tmp_part):
+                    parent.AddPart(tmp_part)
+                    yield tmp_part
+        
                 
-                yield k, v
-                
-                for k1, v1 in self.items_recursive(v):
-                    
-                    yield k1, v1   
-            else:
-                pass
