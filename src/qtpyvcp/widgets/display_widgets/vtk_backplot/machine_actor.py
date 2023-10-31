@@ -46,25 +46,41 @@ class MachineActor(vtk.vtkCubeAxesActor2D):
                                    
     def showMachineTicks(self, ticks):
         if ticks:
-            self.AxisTickVisibilityOn()
+            self.XAxisTickVisibilityOn()
+            self.YAxisTickVisibilityOn()
+            self.ZAxisTickVisibilityOn()
         else:
-            self.AxisTickVisibilityOff()
+            self.XAxisTickVisibilityOff()
+            self.YAxisTickVisibilityOff()
+            self.ZAxisTickVisibilityOff()
 
     def showMachineBounds(self, bounds):
         if bounds:
-            self.AxisVisibilityOn()
+            self.XAxisVisibilityOn()
+            self.YAxisVisibilityOn()
+            self.ZAxisVisibilityOn()
         else:
-            self.AxisVisibilityOff()
+            self.XAxisVisibilityOff()
+            self.YAxisVisibilityOff()
+            self.ZAxisVisibilityOff()
+
 
     def showMachineLabels(self, labels):
         if labels:
-            self.AxisLabelVisibilityOn()
+            self.XAxisLabelVisibilityOn()
+            self.YAxisLabelVisibilityOn()
+            self.ZAxisLabelVisibilityOn()
         else:
-            self.AxisLabelVisibilityOff()
+            self.XAxisLabelVisibilityOff()
+            self.YAxisLabelVisibilityOff()
+            self.ZAxisLabelVisibilityOff()
 
     def showGridlines(self, grid):
         if grid:
-            self.DrawGridlinesOn()
+            self.DrawXGridlinesOn()
+            self.DrawYGridlinesOn()
+            self.DrawZGridlinesOn()
         else:
-            self.DrawGridlinesOff()
-            
+            self.DrawXGridlinesOff()
+            self.DrawYGridlinesOff()
+            self.DrawZGridlinesOff()
