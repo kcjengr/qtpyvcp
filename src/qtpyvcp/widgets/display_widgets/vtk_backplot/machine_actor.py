@@ -1,12 +1,20 @@
+import os
+
 import vtk.qt
 from qtpyvcp.utilities import logger
 
-LOG = logger.getLogger(__name__)
+from qtpyvcp.utilities.settings import getSetting
 
-class MachineActor(vtk.vtkCubeAxesActor):
+LOG = logger.getLogger(__name__)
+IN_DESIGNER = os.getenv('DESIGNER', False)
+
+
+class MachineActor(vtk.vtkCubeAxesActor2D):
     def __init__(self, linuxcncDataSource):
         super(MachineActor, self).__init__()
+        
         self._datasource = linuxcncDataSource
+        
         axis = self._datasource.getAxis()
         units = self._datasource.getProgramUnits()
 
@@ -21,71 +29,42 @@ class MachineActor(vtk.vtkCubeAxesActor):
 
         self.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
 
-        self.SetXLabelFormat("%6.3f")
-        self.SetYLabelFormat("%6.3f")
-        self.SetZLabelFormat("%6.3f")
 
-        self.SetFlyModeToStaticEdges()
-
-        self.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
-        self.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
-
-        self.GetTitleTextProperty(1).SetColor(0.0, 1.0, 0.0)
-        self.GetLabelTextProperty(1).SetColor(0.0, 1.0, 0.0)
-
-        self.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
-        self.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
-
-        self.SetXUnits(units)
-        self.SetYUnits(units)
-        self.SetZUnits(units)
-
-        self.DrawXGridlinesOn()
-        self.DrawYGridlinesOn()
-        self.DrawZGridlinesOn()
-
-        self.SetGridLineLocation(self.VTK_GRID_LINES_FURTHEST)
-
-        self.GetXAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
-        self.GetYAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
-        self.GetZAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
-
+        self.SetLabelFormat("%6.3f")
+        
+        self.SetFlyModeToOuterEdges()
+        
+        label_properties = self.GetAxisLabelTextProperty()
+        label_properties.SetOrientation(30)
+        label_properties.SetLineOffset(5)
+        
+        self.SetAxisLabelTextProperty(label_properties)
+        
+        if not IN_DESIGNER:
+            bounds = getSetting('backplot.show-machine-bounds')
+            self.showMachineBounds(bounds and bounds.value)
+                                   
     def showMachineTicks(self, ticks):
         if ticks:
-            self.XAxisTickVisibilityOn()
-            self.YAxisTickVisibilityOn()
-            self.ZAxisTickVisibilityOn()
+            self.AxisTickVisibilityOn()
         else:
-            self.XAxisTickVisibilityOff()
-            self.YAxisTickVisibilityOff()
-            self.ZAxisTickVisibilityOff()
+            self.AxisTickVisibilityOff()
 
     def showMachineBounds(self, bounds):
         if bounds:
-            self.XAxisVisibilityOn()
-            self.YAxisVisibilityOn()
-            self.ZAxisVisibilityOn()
+            self.AxisVisibilityOn()
         else:
-            self.XAxisVisibilityOff()
-            self.YAxisVisibilityOff()
-            self.ZAxisVisibilityOff()
+            self.AxisVisibilityOff()
 
     def showMachineLabels(self, labels):
         if labels:
-            self.XAxisLabelVisibilityOn()
-            self.YAxisLabelVisibilityOn()
-            self.ZAxisLabelVisibilityOn()
+            self.AxisLabelVisibilityOn()
         else:
-            self.XAxisLabelVisibilityOff()
-            self.YAxisLabelVisibilityOff()
-            self.ZAxisLabelVisibilityOff()
+            self.AxisLabelVisibilityOff()
 
     def showGridlines(self, grid):
         if grid:
-            self.DrawXGridlinesOn()
-            self.DrawYGridlinesOn()
-            self.DrawZGridlinesOn()
+            self.DrawGridlinesOn()
         else:
-            self.DrawXGridlinesOff()
-            self.DrawYGridlinesOff()
-            self.DrawZGridlinesOff()
+            self.DrawGridlinesOff()
+            
