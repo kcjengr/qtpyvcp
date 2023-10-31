@@ -29,7 +29,14 @@ class MachineActor(vtk.vtkCubeAxesActor2D):
 
         self.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
 
-
+        x_actor = self.GetXAxisActor2D()
+        y_actor = self.GetYAxisActor2D()
+        z_actor = self.GetZAxisActor2D()
+        
+        x_actor.SetLabelFactor(8)
+        y_actor.SetLabelFactor(8)
+        z_actor.SetLabelFactor(8)
+        
         self.SetLabelFormat("%6.3f")
         
         self.SetFlyModeToOuterEdges()
