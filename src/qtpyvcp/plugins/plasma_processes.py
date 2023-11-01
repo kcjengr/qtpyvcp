@@ -669,7 +669,7 @@ class PlasmaProcesses(Plugin):
                 if machine.name == r['machine_name']:
                     machines_id = machine.id
             for con in cons:
-                if con.name == 'Shielded':
+                if con.name == r['consumable']:
                     cons_id = con.id
             for m in mats:
                 if m.name == r['material']:
