@@ -157,6 +157,9 @@ class Commands(Enum):
     SPINDLE_OFF                 = auto()
     PROGRAM_END                 = auto()
     DIGITAL_IN                  = auto()
+    DIGITAL_OUT                 = auto()
+    ANALOG_IN                   = auto()
+    ANALOG_OUT                  = auto()
     REMOVE                      = auto()
 
 
@@ -222,7 +225,7 @@ class CodeLine:
             'G42':(Commands.CUTTER_COMP_RIGHT, self.cutter_comp_error),
             'G41.1':(Commands.CUTTER_COMP_LEFT, self.cutter_comp_error),
             'G42.1':(Commands.CUTTER_COMP_RIGHT, self.cutter_comp_error),
-            'G40':(Commands.CUTTER_COMP_OFF, self.placeholder),
+            'G40':(Commands.CUTTER_COMP_OFF, self.parse_passthrough),
             'G64':(Commands.PATH_BLENDING, self.parse_passthrough),
             'M52':(Commands.ADAPTIVE_FEED, self.parse_passthrough),
             'M2':(Commands.PROGRAM_END, self.parse_passthrough),
@@ -230,7 +233,13 @@ class CodeLine:
             'M3':(Commands.SPINDLE_ON, self.parse_spindle_on),
             'M5':(Commands.SPINDLE_OFF, self.parse_spindle_off),
             'M190':(Commands.MATERIAL_CHANGE, self.parse_passthrough),
-            'M66':(Commands.DIGITAL_IN, self.parse_passthrough),
+            'M62':(Commands.DIGITAL_OUT, self.parse_passthrough),
+            'M63':(Commands.DIGITAL_OUT, self.parse_passthrough),
+            'M64':(Commands.DIGITAL_OUT, self.parse_passthrough),
+            'M65':(Commands.DIGITAL_OUT, self.parse_passthrough),
+            'M66':(Commands.WAIT_PROCESS, self.parse_passthrough),
+            'M67':(Commands.ANALOG_OUT, self.parse_passthrough),
+            'M68':(Commands.ANALOG_OUT, self.parse_passthrough),
             'G90':(Commands.ABSOLUTE, self.parse_passthrough),
             'G91':(Commands.RELATIVE, self.parse_passthrough),
             'G91.1':(Commands.ARC_RELATIVE, self.parse_passthrough),
@@ -375,7 +384,7 @@ class CodeLine:
 
 
     def parse_XY_line(self):
-        line = self.raw.upper().strip()
+        line = self.strip_inline_comment(self.raw.upper().strip())
         tokens = re.finditer(r"X[\d\+\.-]*|Y[\d\+\.-]*", line)
         for token in tokens:
             params = re.findall(r"X|Y|[\d\+\.-]+", token.group())
@@ -403,12 +412,17 @@ class CodeLine:
         self.command = ('M', int(self.token[1:]))
         # split the raw line at the token
         line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
-        params = re.findall('\$\d+', line)
-        if len(params) == 1:
+        params = re.findall('\$\d+|S\d+', line)
+        if len(params) == 2:
             self.params['$'] = int(params[0][1:])
+            self.params['S'] = int(params[1][1:])
+        elif len(params) == 1:
+            self.params['$'] = int(params[0][1:])
+            self.params['S'] = int(1)
         elif len(params) == 0:
             # no spindle reference found so assume $0
             self.params['$'] = int(0)
+            self.params['S'] = int(1)
     
     def parse_spindle_off(self):
         self.type = Commands.SPINDLE_OFF
