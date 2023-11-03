@@ -938,7 +938,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if len(self.program_bounds_actors) == 0:
             LOG.debug('-----setViewProgram skiped, no program loaded')
             return
-
+        
+        program_bounds = self.program_bounds_actors[self.active_wcs_index].GetBounds()
+        
         LOG.debug('-----program_bounds: {}'.format(program_bounds))
 
         program_center = ((program_bounds[0] + program_bounds[1]) / 2,
