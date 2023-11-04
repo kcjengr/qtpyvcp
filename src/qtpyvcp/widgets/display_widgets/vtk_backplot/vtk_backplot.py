@@ -140,7 +140,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._feed_color = self._default_feed_color
         self._dwel_color = self._default_dwell_color
         self._user_color = self._default_user_color
-        
+
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.wcs_offsets = self._datasource.getWcsOffsets()
         self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
@@ -199,7 +199,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             transform = vtk.vtkTransform()
             transform.Translate(*self.active_wcs_offset[:3])
             transform.RotateZ(self.active_wcs_offset[9])
-            
             self.axes_actor.SetUserTransform(transform)
 
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
@@ -553,17 +552,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
             actor_transform = vtk.vtkTransform()
-            
-            
-            ##################################################
-            
             actor_transform.Translate(*current_offsets[:3])
-            # actor_transform.RotateZ(current_offsets[9])
+            actor_transform.RotateZ(current_offsets[9])
 
             actor.SetUserTransform(actor_transform)
-            
-            ##################################################
-            
             #actor.SetPosition(path_position[:3])
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
@@ -610,7 +602,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             list_pos = list(position)
             list_pos[2] = active_wcs_offset[2]
             position = tuple(list_pos)
-            
         self.spindle_position = position[:3]
         self.spindle_rotation = position[3:6]
         
@@ -699,18 +690,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if wcs_index == self.active_wcs_index:
                 path_transform = vtk.vtkTransform()
-                
-                
-                actor_positiom_x = offset[0]
-                actor_positiom_y = offset[1]
-                actor_positiom_z = offset[2]
-                
-                actor_orientation = path_actor.GetOrientation()[2]  # Z
-                actor_rotation = -actor_orientation+offset[9]
-                
-                
-                path_transform.Translate(actor_positiom_x, actor_positiom_y, actor_positiom_z)
-                path_transform.RotateZ(actor_rotation)
+                path_transform.Translate(*offset[:3])
+                path_transform.RotateZ(offset[9])
 
                 axes.SetUserTransform(path_transform)
                 path_actor.SetUserTransform(path_transform)
