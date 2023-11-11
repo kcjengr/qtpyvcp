@@ -930,6 +930,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         machine_bounds = self.machine_actor.GetBounds()
         LOG.debug('-----machine_bounds: {}'.format(machine_bounds))
 
+        machine_bounds = self.machine_actor.GetBounds()
         machine_center = ((machine_bounds[0] + machine_bounds[1]) / 2,
                           (machine_bounds[2] + machine_bounds[3]) / 2,
                           (machine_bounds[4] + machine_bounds[5]) / 2
@@ -946,6 +947,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetPosition(machine_center[0] + self.position_mult,
                                 -(machine_center[1] + self.position_mult),
                                 machine_center[2] + self.position_mult)
+        
+        x_dist = abs(machine_bounds[0] - machine_bounds[1])
+        y_dist = abs(machine_bounds[2] - machine_bounds[3])
+        z_dist = abs(machine_bounds[4] - machine_bounds[5])
+
+        LOG.debug('-----x_dist: {}'.format(x_dist))
+        LOG.debug('-----y_dist: {}'.format(y_dist))
+        LOG.debug('-----z_dist: {}'.format(z_dist))
+
+        scale = max(x_dist, y_dist, z_dist)
+
+        self.camera.SetParallelScale(scale)
 
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()
