@@ -673,6 +673,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_joints(self, joints):
         self.joints = joints
+        
     def on_offset_table_changed(self, table):
         LOG.debug("on_offset_table_changed")
 
@@ -957,10 +958,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug('-----z_dist: {}'.format(z_dist))
 
         scale = max(x_dist, y_dist, z_dist)
-
-        self.camera.SetParallelScale(scale)
-
+        new_scale = scale * 0.65
+        
+        self.camera.SetParallelScale(new_scale)
         self.camera.SetViewUp(0, 0, 1)
+        
         self.__doCommonSetViewWork()
 
     @Slot()
