@@ -85,6 +85,9 @@ dialogs:
   about_qtpyvcp:
     provider: qtpyvcp.widgets.dialogs.about_dialog:AboutDialog
 
+  toolchange:
+    provider: qtpyvcp.widgets.dialogs.toolchange_dialog:ToolChangeDialog
+
 virtual_input_providers:
   number:
     provider: qtpyvcp.widgets.virtual_input.virtual_input:VirtualInput

@@ -3,7 +3,7 @@ Build debian packages
 =====================
 
 
-In this example we are gona show how to build debian packages for qtpyvcp, it uses poetry to configure the build and installation and debian config files
+In this example we are going show how to build debian packages for qtpyvcp, it uses poetry to configure the build and installation and debian config files
 
 
 
