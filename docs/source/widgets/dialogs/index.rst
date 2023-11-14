@@ -19,5 +19,5 @@ Dialogs
 .. automodule:: qtpyvcp.widgets.dialogs.probesim_dialog
     :members:
 
-.. automodule:: qtpyvcp.widgets.dialogs.toolcahnge_dialog
+.. automodule:: qtpyvcp.widgets.dialogs.toolchange_dialog
     :members:
