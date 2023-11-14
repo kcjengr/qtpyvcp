@@ -33,6 +33,28 @@ class ToolChangeDialog(BaseDialog):
     This is a qtpyvcp replacement of axis' `hal_manualtoolchange`. It
     uses the same pin names in the same way, but the HAL component they
     are under is called `qtpyvcp_manualtoolchange` instead.
+
+    Example:
+        Remove any references in .hal to ``hal_manualtoolchange``
+        and remove ``net tool-change-loop`` if you have it.
+
+        To your main `.hal` add::
+
+            #  ---manual tool change signals---
+            net tool-change-request    <= iocontrol.0.tool-change
+            net tool-change-confirmed  => iocontrol.0.tool-changed
+            net tool-number            <= iocontrol.0.tool-prep-number
+
+            #  ---ignore tool prepare requests---
+            net tool-prepare-loopback   iocontrol.0.tool-prepare      =>  iocontrol.0.tool-prepared
+
+        and to you `*postgui.hal` add::
+
+            #  ---manual tool change signals---
+            net tool-change-request     =>  qtpyvcp_manualtoolchange.change
+            net tool-change-confirmed   <=  qtpyvcp_manualtoolchange.changed
+            net tool-number             =>  qtpyvcp_manualtoolchange.number
+
     """
     def __init__(self, *args, **kwargs):
         super(ToolChangeDialog, self).__init__(stay_on_top=True)
