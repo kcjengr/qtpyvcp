@@ -16,7 +16,7 @@ fpm -t deb \
     --license "GPLv2" \
     --vendor "KCJ Engineering" \
     --maintainer "'Kurt Jacobson <kcjengr@gmail.com>'" \
-    --url "https://qtpyvcp.kcjengr.com" \
+    --url "https://www.qtpyvcp.com" \
     --description "QtPyVCP - Qt and Python based Virtual Control Panel framework for LinuxCNC." \
     -d python-pip \
     -d python-pyqt5 \
