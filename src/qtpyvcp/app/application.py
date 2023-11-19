@@ -19,6 +19,7 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.plugins import initialisePlugins, terminatePlugins, getPlugin
 from qtpyvcp.widgets.base_widgets.base_widget import VCPPrimitiveWidget
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
+from qtpyvcp.widgets.dialogs import getDialog
 
 # initialize logging. If a base logger was already initialized in a startup
 # script (e.g. vcp_launcher.py), then that logger will be returned, otherwise
@@ -226,7 +227,22 @@ class VCPApplication(QApplication):
                 return getattr(obj, name)
 
         raise AttributeError("Could not find widget with name: %s" % name)
+    
+    def dialog(self, name):
+        """get a dialog from the application dialogs.
 
+        Args:
+            name (str) : ObjectName of the widget.
+
+        Returns: QWidget
+        """
+        
+        try:
+            return getDialog(name)
+            
+        except Exception as e:
+            raise AttributeError("Could not find dialog with name: %s" % name)
+    
     @Slot()
     def logPerformance(self):
         """Logs total CPU usage (in percent), as well as per-thread usage.
