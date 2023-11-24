@@ -251,6 +251,7 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
     DEFAULT_RULE_PROPERTY = 'Enable'
     RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
     RULE_PROPERTIES.update({
+        'Text': ['setText', str],
         'Checked': ['setChecked', bool],
     })
 
