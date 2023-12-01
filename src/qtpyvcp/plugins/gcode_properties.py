@@ -127,7 +127,7 @@ class GCodeProperties(DataPlugin):
         """
 
         if not self.loaded_file:
-            chan.value = 0
+            chan.value = []
 
         return chan.value
 
@@ -435,6 +435,7 @@ class GCodeProperties(DataPlugin):
         file_name = self.loaded_file
         file_size = os.stat(self.loaded_file).st_size
         file_lines = self.canon.num_lines
+        
         tools = self.canon.tools
         tool_calls = self.canon.tool_calls
 
@@ -556,7 +557,7 @@ class PropertiesCanon(BaseCanon):
         self.tlo_u = 0.0
         self.tlo_v = 0.0
         self.tlo_w = 0.0
-        self.tools = list()
+        self.tools = []
         self.tool_offsets = (0.0,) * 9
 
         # G92/G52 offsets
