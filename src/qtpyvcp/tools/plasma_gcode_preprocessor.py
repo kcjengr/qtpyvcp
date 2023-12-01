@@ -1519,4 +1519,15 @@ def main():
 
 
 if __name__ == '__main__':
+    # to run from command line for debug purposes
+    # must [1] start up an insitance of monokrom plasma
+    # [2] set following env variables from the command line
+    # where you plan to run the parse from:
+    # export CONFIG_DIR=
+    # export INIFILE_NAME=
+    #
+    # The easy way if using the monokrom sim is to cd to
+    # the ~/linuxcnc/configs/sim.monokrom/plasmac/ and perform
+    # export CONFIG_DIR=`pwd`
+    # export INI_FILE_NAME=`pwd`/xyz.ini
     main()
