@@ -112,13 +112,13 @@ class GCodeProperties(DataPlugin):
 
     @DataChannel
     def tools(self, chan):
-        """The total tools used by a program.
+        """The list of tool calls by a program, as tooldata indexes not T numbers.
 
         Args:
             None
 
         Returns:
-            The total tools used
+            The list of all tools called (Tx M6), as tooldata indexes not T numbers.
 
         Channel syntax::
 
