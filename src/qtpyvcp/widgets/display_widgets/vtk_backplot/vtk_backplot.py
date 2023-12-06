@@ -559,9 +559,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             matrix = vtk.vtkMatrix4x4()
             
             vtk.vtkMatrix4x4.MatrixFromRotation(0, 0, 0, 1, matrix)
-            vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
+            vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation, 0, 0, 1], matrix)
             
-            actor_transform.Concatenate(matrix)
+            # actor_transform.Concatenate(matrix)
 
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
@@ -573,7 +573,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.offset_axes[wcs_index] = axes
             self.program_bounds_actors[wcs_index] = program_bounds_actor
-
+            
+            actor.SetUserTransform(actor_transform)
             axes.SetUserTransform(actor_transform) #TODO: not sure if this is needed
 
             self.renderer.AddActor(axes)
@@ -608,6 +609,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             list_pos = list(position)
             list_pos[2] = active_wcs_offset[2]
             position = tuple(list_pos)
+            
         self.spindle_position = position[:3]
         self.spindle_rotation = position[3:6]
         
@@ -689,6 +691,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
         vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
         
+
+        transform.Concatenate(matrix)
         self.axes_actor.SetUserTransform(transform)
 
         for wcs_index, path_actor in list(self.path_actors.items()):
@@ -700,19 +704,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
 
-            if wcs_index == self.active_wcs_index:
-                path_transform = vtk.vtkTransform()
-                
-                xyz = offset    [:3]
-                rotation = offset[9]
-        
-                matrix = vtk.vtkMatrix4x4()
-                
-                vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
-                vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
-        
-                axes.SetUserTransform(path_transform)
-                path_actor.SetUserTransform(path_transform)
+            
+            path_transform = vtk.vtkTransform()
+            
+            xyz = offset    [:3]
+            rotation = offset[9]
+    
+            matrix = vtk.vtkMatrix4x4()
+            
+            vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
+            vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
+    
+            path_transform.Concatenate(matrix)
+            axes.SetUserTransform(path_transform)
+            path_actor.SetUserTransform(path_transform)
 
             program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
             program_bounds_actor.showProgramBounds(self.show_program_bounds)
@@ -746,6 +751,31 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.axes_actor.SetUserTransform(transform)
 
+        for wcs_index, path_actor in list(self.path_actors.items()):
+           
+            path_transform = vtk.vtkTransform()
+            
+            xyz = offset    [:3]
+            rotation = offset[9]
+    
+            matrix = vtk.vtkMatrix4x4()
+            
+            vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
+            vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
+    
+            axes.SetUserTransform(path_transform)
+            path_actor.SetUserTransform(path_transform)
+
+            path_transform.Concatenate(matrix)
+            
+            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+            program_bounds_actor.showProgramBounds(self.show_program_bounds)
+
+            self.renderer.AddActor(program_bounds_actor)
+
+            self.program_bounds_actors[wcs_index] = program_bounds_actor
+
+            
         self.interactor.ReInitialize()
         self.renderer_window.Render()
 
