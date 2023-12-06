@@ -551,11 +551,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             current_offsets = self.wcs_offsets[wcs_index]
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
-            actor_transform = vtk.vtkTransform()
-            actor_transform.Translate(*current_offsets[:3])
-            actor_transform.RotateZ(current_offsets[9])
-
-            actor.SetUserTransform(actor_transform)
+            # actor_transform = vtk.vtkTransform()
+            # actor_transform.Translate(*current_offsets[:3])
+            # actor_transform.RotateZ(current_offsets[9])
+            #
+            # actor.SetUserTransform(actor_transform)
             #actor.SetPosition(path_position[:3])
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
@@ -568,7 +568,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.offset_axes[wcs_index] = axes
             self.program_bounds_actors[wcs_index] = program_bounds_actor
 
-            axes.SetUserTransform(actor_transform) #TODO: not sure if this is needed
+            # axes.SetUserTransform(actor_transform) #TODO: not sure if this is needed
 
             self.renderer.AddActor(axes)
             self.renderer.AddActor(program_bounds_actor)
