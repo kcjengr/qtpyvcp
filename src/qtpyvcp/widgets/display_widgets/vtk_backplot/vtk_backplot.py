@@ -551,12 +551,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             current_offsets = self.wcs_offsets[wcs_index]
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
-            # actor_transform = vtk.vtkTransform()
-            # actor_transform.Translate(*current_offsets[:3])
-            # actor_transform.RotateZ(current_offsets[9])
-            #
-            # actor.SetUserTransform(actor_transform)
-            #actor.SetPosition(path_position[:3])
+            actor_transform = vtk.vtkTransform()
+            
+            xyz = current_offsets[:3]
+            rotation = current_offsets[9]
+
+            matrix = vtk.vtkMatrix4x4()
+            
+            vtk.vtkMatrix4x4.MatrixFromRotation(0, 0, 0, 1, matrix)
+            vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
+            
+            actor_transform.Concatenate(matrix)
+
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
@@ -568,7 +574,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.offset_axes[wcs_index] = axes
             self.program_bounds_actors[wcs_index] = program_bounds_actor
 
-            # axes.SetUserTransform(actor_transform) #TODO: not sure if this is needed
+            axes.SetUserTransform(actor_transform) #TODO: not sure if this is needed
 
             self.renderer.AddActor(axes)
             self.renderer.AddActor(program_bounds_actor)
@@ -674,9 +680,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("--------update_g5x_offset {}".format(offset))
 
         transform = vtk.vtkTransform()
-        transform.Translate(*offset[:3])
-        transform.RotateZ(offset[9])
+        
+        xyz = offset[:3]
+        rotation = offset[9]
 
+        matrix = vtk.vtkMatrix4x4()
+        
+        vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
+        vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
+        
         self.axes_actor.SetUserTransform(transform)
 
         for wcs_index, path_actor in list(self.path_actors.items()):
@@ -690,9 +702,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if wcs_index == self.active_wcs_index:
                 path_transform = vtk.vtkTransform()
-                path_transform.Translate(*offset[:3])
-                path_transform.RotateZ(offset[9])
-
+                
+                xyz = offset    [:3]
+                rotation = offset[9]
+        
+                matrix = vtk.vtkMatrix4x4()
+                
+                vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
+                vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
+        
                 axes.SetUserTransform(path_transform)
                 path_actor.SetUserTransform(path_transform)
 
@@ -715,9 +733,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("--------position: {}".format(position))
 
         transform = vtk.vtkTransform()
-        transform.Translate(*position[:3])
-        transform.RotateZ(position[9])
+        
+        xyz = position[:3]
+        rotation = position[9]
 
+        matrix = vtk.vtkMatrix4x4()
+        
+        vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
+        vtk.vtkMatrix4x4.PoseToMatrix(xyz, [0,0,0,0], matrix)
+        
+        transform.Concatenate(matrix)
+        
         self.axes_actor.SetUserTransform(transform)
 
         self.interactor.ReInitialize()
@@ -743,8 +769,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 axes = actor.get_axes_actor()
 
                 path_transform = vtk.vtkTransform()
-                path_transform.Translate(*new_path_position[:3])
-
+                
+                xyz = new_path_position[:3]
+                rotation = new_path_position[9]
+                
+                matrix = vtk.vtkMatrix4x4()
+                
+                vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
+                vtk.vtkMatrix4x4.PoseToMatrix(xyz, [0,0,0,0], matrix)
+                
+                path_transform.Concatenate(matrix)
+                
                 self.axes_actor.SetUserTransform(path_transform)
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
