@@ -7,9 +7,11 @@ import os
 from collections import OrderedDict
 from operator import add
 import time
-
+import numpy as np
 import vtk
 import vtk.qt
+from vtk.util import numpy_support
+
 from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent
 from qtpy.QtGui import QColor
 
@@ -551,18 +553,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             current_offsets = self.wcs_offsets[wcs_index]
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
-            actor_transform = vtk.vtkTransform()
+            transform = vtk.vtkTransform()
             
-            xyz = current_offsets[:3]
-            rotation = current_offsets[9]
-
-            matrix = vtk.vtkMatrix4x4()
+            xyz = np.array(current_offsets[:3])
+            rotation = np.array(current_offsets[9])
             
-            vtk.vtkMatrix4x4.MatrixFromRotation(0, 0, 0, 1, matrix)
-            vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation, 0, 0, 1], matrix)
-            
-            # actor_transform.Concatenate(matrix)
-
+            transform.Translate(xyz)
+            # transform.RotateZ(rotation)
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
@@ -574,8 +571,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.offset_axes[wcs_index] = axes
             self.program_bounds_actors[wcs_index] = program_bounds_actor
             
-            actor.SetUserTransform(actor_transform)
-            axes.SetUserTransform(actor_transform) #TODO: not sure if this is needed
+            actor.SetUserTransform(transform)
+            # axes.SetUserTransform(transform) #TODO: not sure if this is needed
 
             self.renderer.AddActor(axes)
             self.renderer.AddActor(program_bounds_actor)
@@ -682,17 +679,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("--------update_g5x_offset {}".format(offset))
 
         transform = vtk.vtkTransform()
+            
+        xyz = np.array(offset[:3])
+        rotation = np.array(offset[9])
         
-        xyz = offset[:3]
-        rotation = offset[9]
-
-        matrix = vtk.vtkMatrix4x4()
+        transform.Translate(xyz)
+        transform.RotateZ(rotation)
         
-        vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
-        vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
-        
-
-        transform.Concatenate(matrix)
         self.axes_actor.SetUserTransform(transform)
 
         for wcs_index, path_actor in list(self.path_actors.items()):
@@ -705,19 +698,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
 
             
-            path_transform = vtk.vtkTransform()
+            transform = vtk.vtkTransform()
+                
+            xyz = np.array(offset[:3])
+            rotation = np.array(offset[9])
             
-            xyz = offset    [:3]
-            rotation = offset[9]
-    
-            matrix = vtk.vtkMatrix4x4()
+            transform.Translate(xyz)
+            transform.RotateZ(rotation)
             
-            vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
-            vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
-    
-            path_transform.Concatenate(matrix)
-            axes.SetUserTransform(path_transform)
-            path_actor.SetUserTransform(path_transform)
+            
+            axes.SetUserTransform(transform)
+            
+            path_actor.SetUserTransform(transform)
 
             program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
             program_bounds_actor.showProgramBounds(self.show_program_bounds)
@@ -738,36 +730,26 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("--------position: {}".format(position))
 
         transform = vtk.vtkTransform()
+            
+        xyz = np.array(position[:3])
+        rotation = np.array(position[9])
         
-        xyz = position[:3]
-        rotation = position[9]
-
-        matrix = vtk.vtkMatrix4x4()
-        
-        vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
-        vtk.vtkMatrix4x4.PoseToMatrix(xyz, [0,0,0,0], matrix)
-        
-        transform.Concatenate(matrix)
+        transform.Translate(xyz)
+        transform.RotateZ(rotation)
         
         self.axes_actor.SetUserTransform(transform)
 
         for wcs_index, path_actor in list(self.path_actors.items()):
            
-            path_transform = vtk.vtkTransform()
+            transform = vtk.vtkTransform()
+                
+            xyz = np.array(position[:3])
+            rotation = np.array(position[9])
             
-            xyz = offset    [:3]
-            rotation = offset[9]
-    
-            matrix = vtk.vtkMatrix4x4()
+            transform.Translate(xyz)
+            transform.RotateZ(rotation)
             
-            vtk.vtkMatrix4x4.MatrixFromRotation(rotation, 0, 0, 1, matrix)
-            vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
-    
-            axes.SetUserTransform(path_transform)
-            path_actor.SetUserTransform(path_transform)
-
-            path_transform.Concatenate(matrix)
-            
+            path_actor.SetUserTransform(transform)
             program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
             program_bounds_actor.showProgramBounds(self.show_program_bounds)
 
