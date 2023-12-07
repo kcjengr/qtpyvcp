@@ -92,9 +92,11 @@ class LinuxCncDataSource(QObject):
 
     def __handleRotationChangeXY(self, value):
         LOG.debug("__handleRotationChangeXY: {}".format(value))
-        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        #active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        active_wcs = list(self._status.g5x_offset())
         LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
-        active_wcs[9] = value
+        #active_wcs[9] = value
+        active_wcs.append(value)
         LOG.debug("--------active new wcs: {} {}".format(type(active_wcs), active_wcs))
         self.g5xOffsetChanged.emit(tuple(active_wcs))
 
