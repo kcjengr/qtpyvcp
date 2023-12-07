@@ -7,10 +7,12 @@ import os
 from collections import OrderedDict
 from operator import add
 import time
+
 import numpy as np
+
 import vtk
 import vtk.qt
-from vtk.util import numpy_support
+
 
 from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent
 from qtpy.QtGui import QColor
@@ -559,6 +561,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             rotation = np.array(current_offsets[9])
             
             transform.Translate(xyz)
+            transform.RotateZ(0)
             # transform.RotateZ(rotation)
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
@@ -704,6 +707,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             rotation = np.array(offset[9])
             
             transform.Translate(xyz)
+            transform.RotateZ(0)
             transform.RotateZ(rotation)
             
             
@@ -740,22 +744,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.axes_actor.SetUserTransform(transform)
 
         for wcs_index, path_actor in list(self.path_actors.items()):
-           
-            transform = vtk.vtkTransform()
+            if wcs_index == self.active_wcs_index:
+                transform = vtk.vtkTransform()
+                    
+                xyz = np.array(position[:3])
+                rotation = np.array(position[9])
                 
-            xyz = np.array(position[:3])
-            rotation = np.array(position[9])
-            
-            transform.Translate(xyz)
-            transform.RotateZ(rotation)
-            
-            path_actor.SetUserTransform(transform)
-            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
-            program_bounds_actor.showProgramBounds(self.show_program_bounds)
-
-            self.renderer.AddActor(program_bounds_actor)
-
-            self.program_bounds_actors[wcs_index] = program_bounds_actor
+                transform.Translate(xyz)
+                transform.RotateZ(0)
+                transform.RotateZ(rotation)
+                
+                path_actor.SetUserTransform(transform)
+                program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+                program_bounds_actor.showProgramBounds(self.show_program_bounds)
+    
+                self.renderer.AddActor(program_bounds_actor)
+    
+                self.program_bounds_actors[wcs_index] = program_bounds_actor
 
             
         self.interactor.ReInitialize()
