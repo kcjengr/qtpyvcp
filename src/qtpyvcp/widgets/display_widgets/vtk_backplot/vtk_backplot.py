@@ -758,6 +758,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
                 program_bounds_actor.showProgramBounds(self.show_program_bounds)
     
+                self.renderer.AddActor(path_actor)
                 self.renderer.AddActor(program_bounds_actor)
     
                 self.program_bounds_actors[wcs_index] = program_bounds_actor
