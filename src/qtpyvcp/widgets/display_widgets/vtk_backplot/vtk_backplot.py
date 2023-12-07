@@ -954,7 +954,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             LOG.debug('-----setViewProgram skiped, no program loaded')
             return
         
-        program_bounds = self.program_bounds_actors[self.active_wcs_index].GetBounds()
+        try:
+            program_bounds = self.program_bounds_actors[self.active_wcs_index].GetBounds()
+        except KeyError:
+            LOG.warn('-----setViewProgram skiped, no active wcs')
+            return
         
         LOG.debug('-----program_bounds: {}'.format(program_bounds))
 
