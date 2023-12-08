@@ -553,8 +553,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             actor_transform = vtk.vtkTransform()
             actor_transform.Translate(*current_offsets[:3])
-            # If rotation is in place then applying again is additive and causes display issues.
-            #actor_transform.RotateZ(current_offsets[9])
+            actor_transform.RotateZ(current_offsets[9])
 
             actor.SetUserTransform(actor_transform)
             #actor.SetPosition(path_position[:3])
