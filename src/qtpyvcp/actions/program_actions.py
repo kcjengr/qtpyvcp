@@ -26,6 +26,10 @@ def load(fname, add_to_recents=True):
         # load a blank file. Maybe should load [DISPLAY] OPEN_FILE
         clear()
 
+    # reset Z rotation
+    setTaskMode(linuxcnc.MODE_MDI)
+    CMD.mdi("G10 L2 P0 R0")
+    CMD.wait_complete()
     setTaskMode(linuxcnc.MODE_AUTO)
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:
@@ -38,7 +42,7 @@ def load(fname, add_to_recents=True):
 
     if add_to_recents:
         addToRecents(fname)
-
+   
 load.ok = lambda *args, **kwargs: True
 load.bindOk = lambda *args, **kwargs: True
 
