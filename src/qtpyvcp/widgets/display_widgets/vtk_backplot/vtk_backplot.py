@@ -199,7 +199,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             transform = vtk.vtkTransform()
             transform.Translate(*self.active_wcs_offset[:3])
-            transform.RotateZ(self.active_wcs_offset[9])
+            transform.RotateZ(self.active_rotation())
+            
             self.axes_actor.SetUserTransform(transform)
 
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
@@ -696,7 +697,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if wcs_index == self.active_wcs_index:
                 path_transform = vtk.vtkTransform()
                 path_transform.Translate(*offset[:3])
-                path_transform.RotateZ(offset[9])
+                path_transform.RotateZ(self.active_rotation)
 
                 axes.SetUserTransform(path_transform)
                 path_actor.SetUserTransform(path_transform)
