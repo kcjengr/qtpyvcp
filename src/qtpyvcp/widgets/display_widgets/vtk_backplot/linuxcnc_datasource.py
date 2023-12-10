@@ -77,7 +77,7 @@ class LinuxCncDataSource(QObject):
         LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
         LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
 
-        emitted_offset.append(self.__getRotationOfActiveWcs())
+        # emitted_offset.append(self.__getRotationOfActiveWcs())
         LOG.debug("--------correct_offset: {}".format(emitted_offset))
         result = tuple(emitted_offset)
         LOG.debug("--------result: {} {}".format(type(result), result))
