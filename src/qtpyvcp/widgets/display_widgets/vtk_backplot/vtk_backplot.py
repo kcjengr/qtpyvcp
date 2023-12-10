@@ -145,6 +145,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.wcs_offsets = self._datasource.getWcsOffsets()
         self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
         self.g92_offset = self._datasource.getG92_offset()
+        self.active_rotation = self._datasource.getRotationOfActiveWcs()
 
         LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
         LOG.debug("---------active_wcs_offset {}".format(self.active_wcs_offset))
@@ -249,6 +250,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.positionChanged.connect(self.update_position)
             self._datasource.motionTypeChanged.connect(self.motion_type)
             self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
+            self._datasource.rotationXYChanged.connect(self.update_rotation_xy)
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
             self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
             self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
@@ -670,12 +672,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.wcs_offsets = table
 
+    def update_rotation_xy(self, rot):
+        self.active_rotation = rot
+
     def update_g5x_offset(self, offset):
         LOG.debug("--------update_g5x_offset {}".format(offset))
 
         transform = vtk.vtkTransform()
         transform.Translate(*offset[:3])
-        transform.RotateZ(offset[9])
+        transform.RotateZ(self.active_rotation)
 
         self.axes_actor.SetUserTransform(transform)
 

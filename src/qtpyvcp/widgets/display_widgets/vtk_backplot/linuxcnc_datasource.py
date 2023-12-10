@@ -165,23 +165,16 @@ class LinuxCncDataSource(QObject):
 
     def getActiveWcsOffsets(self):
         # g5x_offset does not contain the rotation information
-        xx = self._status.stat.g5x_offset
-        LOG.debug("self._status.stat.g5x_offset: {}".format(type(xx)))
-        xy = list(xx)
-        xy.append(self.__getRotationOfActiveWcs())
-        return tuple(xy)
+        return self._status.stat.g5x_offset
 
-    def __getRotationOfActiveWcs(self):
-        if not IN_DESIGNER:
-            try:
-                current_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-                LOG.debug("-----current_wcs index: {}".format(current_wcs))
-                return current_wcs[9]
-            except KeyError:
-                LOG.warn('-----KeyError: Likely means no program loaded.')
-                return 0
-        else:
-            return 0
+        # xx = self._status.stat.g5x_offset
+        # LOG.debug("self._status.stat.g5x_offset: {}".format(type(xx)))
+        # xy = list(xx)
+        # xy.append(self.__getRotationOfActiveWcs())
+        # return tuple(xy)
+
+    def getRotationOfActiveWcs(self):
+        return self._status.rotation_xy
 
     def getG92_offset(self):
         return self._status.stat.g92_offset
