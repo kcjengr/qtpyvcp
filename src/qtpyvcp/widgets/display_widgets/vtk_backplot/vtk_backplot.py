@@ -145,7 +145,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.wcs_offsets = self._datasource.getWcsOffsets()
         self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
         self.g92_offset = self._datasource.getG92_offset()
-        self.active_rotation = self._datasource.getRotationOfActiveWcs()
+        self.active_rotation = 0.0
 
         LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
         LOG.debug("---------active_wcs_offset {}".format(self.active_wcs_offset))
@@ -199,7 +199,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             transform = vtk.vtkTransform()
             transform.Translate(*self.active_wcs_offset[:3])
-            transform.RotateZ(self.active_rotation())
+            transform.RotateZ(self.active_rotation)
             
             self.axes_actor.SetUserTransform(transform)
 
@@ -681,7 +681,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         transform = vtk.vtkTransform()
         transform.Translate(*offset[:3])
-        transform.RotateZ(self.active_rotation())
+        transform.RotateZ(self.active_rotation)
 
         self.axes_actor.SetUserTransform(transform)
 
@@ -697,7 +697,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if wcs_index == self.active_wcs_index:
                 path_transform = vtk.vtkTransform()
                 path_transform.Translate(*offset[:3])
-                path_transform.RotateZ(self.active_rotation())
+                path_transform.RotateZ(self.active_rotation)
 
                 axes.SetUserTransform(path_transform)
                 path_actor.SetUserTransform(path_transform)
