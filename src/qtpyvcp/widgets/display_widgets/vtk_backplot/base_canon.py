@@ -111,30 +111,30 @@ class BaseCanon(object):
         self.max_extents_notool = gcode.calc_extents(self.arcfeed, self.feed, self.traverse)
 
     def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
-        x += self.g92_offset_x
-        y += self.g92_offset_y
-        z += self.g92_offset_z
-        a += self.g92_offset_a
-        b += self.g92_offset_b
-        c += self.g92_offset_c
-        u += self.g92_offset_u
-        v += self.g92_offset_v
-        w += self.g92_offset_w
-
-        if self.rotation_xy:
-            rotx = x * self.rotation_cos - y * self.rotation_sin
-            roty = x * self.rotation_sin + y * self.rotation_cos
-            x, y = rotx, roty
-
-        x += self.g5x_offset_x
-        y += self.g5x_offset_y
-        z += self.g5x_offset_z
-        a += self.g5x_offset_a
-        b += self.g5x_offset_b
-        c += self.g5x_offset_c
-        u += self.g5x_offset_u
-        v += self.g5x_offset_v
-        w += self.g5x_offset_w
+        # x += self.g92_offset_x
+        # y += self.g92_offset_y
+        # z += self.g92_offset_z
+        # a += self.g92_offset_a
+        # b += self.g92_offset_b
+        # c += self.g92_offset_c
+        # u += self.g92_offset_u
+        # v += self.g92_offset_v
+        # w += self.g92_offset_w
+        #
+        # if self.rotation_xy:
+        #     rotx = x * self.rotation_cos - y * self.rotation_sin
+        #     roty = x * self.rotation_sin + y * self.rotation_cos
+        #     x, y = rotx, roty
+        #
+        # x += self.g5x_offset_x
+        # y += self.g5x_offset_y
+        # z += self.g5x_offset_z
+        # a += self.g5x_offset_a
+        # b += self.g5x_offset_b
+        # c += self.g5x_offset_c
+        # u += self.g5x_offset_u
+        # v += self.g5x_offset_v
+        # w += self.g5x_offset_w
 
         return [x, y, z, a, b, c, u, v, w]
 

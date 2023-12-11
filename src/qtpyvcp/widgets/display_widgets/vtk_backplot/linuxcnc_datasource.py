@@ -71,17 +71,17 @@ class LinuxCncDataSource(QObject):
 
     def __handleG5xOffsetChange(self, offset):
         # the received parameter, its missing the rotation of the current wcs
-        emitted_offset = list(offset)
-        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-
-        LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
-        LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
-
-        # emitted_offset.append(self.__getRotationOfActiveWcs())
-        LOG.debug("--------correct_offset: {}".format(emitted_offset))
-        result = tuple(emitted_offset)
-        LOG.debug("--------result: {} {}".format(type(result), result))
-        self.g5xOffsetChanged.emit(result)
+        # emitted_offset = list(offset)
+        # active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        #
+        # LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
+        # LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
+        #
+        # # emitted_offset.append(self.__getRotationOfActiveWcs())
+        # LOG.debug("--------correct_offset: {}".format(emitted_offset))
+        # result = tuple(emitted_offset)
+        # LOG.debug("--------result: {} {}".format(type(result), result))
+        self.g5xOffsetChanged.emit(offset)
 
     def __handleG92OffsetChange(self, offset):
         #LOG.debug("__handleG92OffsetChange: {}".format(type(offset)))
@@ -93,10 +93,10 @@ class LinuxCncDataSource(QObject):
 
     def __handleRotationChangeXY(self, value):
         LOG.debug("__handleRotationChangeXY: {}".format(value))
-        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-        LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
-        active_wcs[9] = value
-        LOG.debug("--------active new wcs: {} {}".format(type(active_wcs), active_wcs))
+        # active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        # LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
+        # active_wcs[9] = value
+        # LOG.debug("--------active new wcs: {} {}".format(type(active_wcs), active_wcs))
         
         self.rotationXYChanged.emit(value)
 
@@ -174,7 +174,7 @@ class LinuxCncDataSource(QObject):
         # return tuple(xy)
 
     def getRotationOfActiveWcs(self):
-        return self._status.rotation_xy
+        return self._status.stat.rotation_xy
 
     def getG92_offset(self):
         return self._status.stat.g92_offset
