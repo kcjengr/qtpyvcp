@@ -1,7 +1,7 @@
-This is a smal instruction to include macros in gmoccapy.
+This is a small instruction to include macros in gmoccapy.
 
 In your INI File you need to introduce a section called [MACROS]
-and for every macro you wan't to include one line like so:
+and for every macro you want to include one line like so:
 
 MACRO = jog_around
 or 
