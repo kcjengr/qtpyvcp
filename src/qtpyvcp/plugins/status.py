@@ -595,7 +595,6 @@ class Status(DataPlugin):
 
         | syntax ``status:rotation_xy`` returns float
         """
-        STAT.poll()
         return STAT.rotation_xy
     
     @g5x_index.tostring
