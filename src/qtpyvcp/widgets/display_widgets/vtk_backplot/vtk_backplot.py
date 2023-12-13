@@ -577,6 +577,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.tool_bit_actor.set_foam_offsets(z, w)
 
+        axes_transform = vtk.vtkTransform()
+        
+        
+        
         for wcs_index, actor in list(self.path_actors.items()):
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
             LOG.debug("---------wcs_index: {}".format(wcs_index))
@@ -589,8 +593,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             rotation = self.active_rotation
             
             actor_transform = vtk.vtkTransform()
+            axes_transform = vtk.vtkTransform()
                 
             actor_transform.Translate(*xyz)
+            actor_transform.RotateZ(rotation)
+            
+            axes_transform.Translate(*xyz)
+            axes_transform.RotateZ(rotation)
 
                 
             actor.SetUserTransform(actor_transform)
@@ -606,7 +615,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.offset_axes[wcs_index] = axes
             self.program_bounds_actors[wcs_index] = program_bounds_actor
 
-            axes.SetUserTransform(actor_transform) #TODO: not sure if this is needed
+            axes.SetUserTransform(axes_transform) #TODO: not sure if this is needed
 
             self.renderer.AddActor(axes)
             self.renderer.AddActor(program_bounds_actor)
@@ -731,7 +740,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def rotate_and_translate(self):
         
         # self.axes_actor.SetUserTransform(transform)
-
         for wcs_index, path_actor in list(self.path_actors.items()):
             if wcs_index == self.active_wcs_index:
                 
@@ -744,13 +752,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
 
                 actor_transform = vtk.vtkTransform()
+                axes_transform = vtk.vtkTransform()
+        
                 xyz = self.active_wcs_offset[:3]
                 rotation = self.active_rotation
                 
                 if vtk_version_ok(9, 1):
                 
                     actor_transform.Translate(xyz)
-                    actor_transform.SetOrientation(rotation)
+                    actor_transform.RotateZ(rotation)
+                    
+                    axes_transform.Translate(xyz)
+                    axes_transform.RotateZ(rotation)
                 
                 else:
                     
@@ -762,7 +775,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     actor_transform.Concatenate(matrix)
                 
                 
-                axes.SetUserTransform(actor_transform)
+                axes.SetUserTransform(axes_transform)
                 path_actor.SetUserTransform(actor_transform)
 
                 program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)

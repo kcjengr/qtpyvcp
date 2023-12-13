@@ -1,6 +1,8 @@
 import sys
 from collections import OrderedDict
+
 import math
+
 import vtk
 import vtk.qt
 from .linuxcnc_datasource import LinuxCncDataSource
@@ -21,65 +23,6 @@ COLOR_MAP = {
 class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
-        
-        self.feedrate = 1
-        self.dwell_time = 0
-
-        self.seq_num = -1
-        self.last_pos = (0,) * 9
-
-        self.first_move = True
-        self.in_arc = False
-        self.suppress = 0
-
-        self.plane = 1
-        self.arcdivision = 64
-
-        # extents
-        self.min_extents = [9e99, 9e99, 9e99]
-        self.max_extents = [-9e99, -9e99, -9e99]
-        self.min_extents_notool = [9e99, 9e99, 9e99]
-        self.max_extents_notool = [-9e99, -9e99, -9e99]
-
-        # tool length offsets
-        self.tlo_x = 0.0
-        self.tlo_y = 0.0
-        self.tlo_z = 0.0
-        self.tlo_a = 0.0
-        self.tlo_b = 0.0
-        self.tlo_c = 0.0
-        self.tlo_u = 0.0
-        self.tlo_v = 0.0
-        self.tlo_w = 0.0
-
-        self.tool_offsets = (0.0,) * 9
-
-        # G92/G52 offsets
-        self.g92_offset_x = 0.0
-        self.g92_offset_y = 0.0
-        self.g92_offset_z = 0.0
-        self.g92_offset_a = 0.0
-        self.g92_offset_b = 0.0
-        self.g92_offset_c = 0.0
-        self.g92_offset_u = 0.0
-        self.g92_offset_v = 0.0
-        self.g92_offset_w = 0.0
-
-        # g5x offsets
-        self.g5x_offset_x = 0.0
-        self.g5x_offset_y = 0.0
-        self.g5x_offset_z = 0.0
-        self.g5x_offset_a = 0.0
-        self.g5x_offset_b = 0.0
-        self.g5x_offset_c = 0.0
-        self.g5x_offset_u = 0.0
-        self.g5x_offset_v = 0.0
-        self.g5x_offset_w = 0.0
-
-        # XY rotation (degrees)
-        self.rotation_xy = 0
-        self.rotation_cos = 1
-        self.rotation_sin = 0
         
         self._datasource = LinuxCncDataSource()
 
@@ -125,11 +68,11 @@ class VTKCanon(StatCanon):
 
         self.active_wcs_index = new_wcs
 
-    # def set_xy_rotation(self, rotation):
-    #     self.rotation_xy = rotation
-    #     theta = math.radians(rotation)
-    #     self.rotation_cos = math.cos(theta)
-    #     self.rotation_sin = math.sin(theta)
+    def set_xy_rotation(self, rotation):
+        self.rotation_xy = 0.0
+        theta = math.radians(0.0)
+        self.rotation_cos = math.cos(theta)
+        self.rotation_sin = math.sin(theta)
 
 
     def add_path_point(self, line_type, start_point, end_point):
@@ -227,65 +170,6 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
 
-    def translate(self, x, y, z, a, b, c, u, v, w):
-        
-        x += self.g92_offset_x
-        y += self.g92_offset_y
-        z += self.g92_offset_z
-        a += self.g92_offset_a
-        b += self.g92_offset_b
-        c += self.g92_offset_c
-        u += self.g92_offset_u
-        v += self.g92_offset_v
-        w += self.g92_offset_w
-        
-        x += self.g5x_offset_x
-        y += self.g5x_offset_y
-        z += self.g5x_offset_z
-        a += self.g5x_offset_a
-        b += self.g5x_offset_b
-        c += self.g5x_offset_c
-        u += self.g5x_offset_u
-        v += self.g5x_offset_v
-        w += self.g5x_offset_w
-
-        return [x, y, z, a, b, c, u, v, w]      
-    
-    def straight_feed(self, x, y, z, a, b, c, u, v, w):
-        if self.suppress > 0:
-            return
-
-        self.first_move = False
-        
-        pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
-
-        self.add_path_point('feed', self.last_pos, pos)
-        self.last_pos = pos
-        
-    straight_probe = straight_feed
-    
-    def straight_traverse(self, x, y, z, a, b, c, u, v, w):
-        if self.suppress > 0:
-            return
-
-        pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
-        
-        if not self.first_move:
-            self.add_path_point('traverse', self.last_pos, pos)
-
-        self.last_pos = pos
-
-    def rigid_tap(self, x, y, z):
-        if self.suppress > 0:
-            return
-
-        self.first_move = False
-        pos = self.translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
-        pos += self.last_pos[3:]
-
-        self.add_path_point('feed', self.last_pos, pos)
-        
-    
     def get_path_actors(self):
         return self.path_actors
 
