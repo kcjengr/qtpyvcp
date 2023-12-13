@@ -578,12 +578,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(program_bounds_actor)
             self.renderer.AddActor(actor)
         
+        # restore rotation from the program action load
+        c = linuxcnc.command()
+        c.mode(linuxcnc.MODE_MDI)
+        c.mdi(f"G10L2P0R{self._datasource._status.saved_rotation_xy}")
+        c.wait_complete()
+        c.mode(linuxcnc.MODE_AUTO)
         
         
         self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
         if self.program_view_when_loading_program:
             self.setViewProgram(self.program_view_when_loading_program_view)
+
+        
 
     def motion_type(self, value):
         LOG.debug("-----motion_type is: {}".format(value))

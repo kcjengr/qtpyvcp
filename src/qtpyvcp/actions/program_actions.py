@@ -26,6 +26,13 @@ def load(fname, add_to_recents=True):
         # load a blank file. Maybe should load [DISPLAY] OPEN_FILE
         clear()
 
+    # Due to issues with quirks with displaying pre rotated files we need
+    # to reset Rotation back to zero before any load starts
+    if STAT.homed:
+        STATUS.save_rotation_xy()
+        setTaskMode(linuxcnc.MODE_MDI)
+        CMD.mdi("G10L2P0R0")
+        CMD.wait_complete()
     setTaskMode(linuxcnc.MODE_AUTO)
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:

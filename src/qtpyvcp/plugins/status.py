@@ -29,6 +29,9 @@ class Status(DataPlugin):
 
         self.file_watcher = None
 
+        # hold rotation status during file load
+        self.saved_rotation_xy = 0.0
+        
         # recent files
         self.max_recent_files = 10
         with RuntimeConfig('~/.axis_preferences') as rc:
@@ -115,6 +118,9 @@ class Status(DataPlugin):
             cmds.reverse()
             for cmd in cmds:
                 fh.write(cmd + '\n')
+
+    def save_rotation_xy(self):
+        self.saved_rotation_xy = self.stat.rotation_xy
 
     @DataChannel
     def axis_mask(self, chan, format='int'):
