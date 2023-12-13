@@ -51,8 +51,8 @@ class LinuxCncDataSource(QObject):
         self._status.g5x_index.notify(self.__handleG5xIndexChange)
         self._status.rotation_xy.notify(self.__handleRotationChangeXY)
 
-        self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
-        self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
+        # self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
+        # self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
 
         self._status.tool_offset.notify(self.__handleToolOffsetChanged)
         self._status.tool_table.notify(self.__handleToolTableChanged)
@@ -104,9 +104,9 @@ class LinuxCncDataSource(QObject):
         #LOG.debug("__handleOffsetTableChanged: {}".format(type(offset_table)))
         self.offsetTableChanged.emit(offset_table)
         
-        offset = offset_table[self.getActiveWcsIndex()]
-        
-        self.g5xOffsetChanged.emit(tuple(offset))
+        # offset = offset_table[self.getActiveWcsIndex()]
+        #
+        # self.g5xOffsetChanged.emit(tuple(offset))
 
     def __handleActiveOffsetChanged(self, active_offset_index):
         # the first one is g53 - machine coordinates, we're not interested in that one

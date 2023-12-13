@@ -28,7 +28,13 @@ class VTKCanon(StatCanon):
         self.path_points = OrderedDict()
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
-
+        self.active_rotation = self._datasource.getRotationOfActiveWcs()
+                
+        # XY rotation (degrees)
+        self.rotation_xy = 0
+        self.rotation_cos = 1
+        self.rotation_sin = 0
+        
         self.foam_z = 0.0
         self.foam_w = 0.0
 
@@ -80,6 +86,7 @@ class VTKCanon(StatCanon):
             path_actor = self.path_actors.get(wcs_index)
             if path_actor is not None:
                 for line_type, line_data in data:
+                    
                     start_point = line_data[0]
                     end_point = line_data[1]
 
@@ -155,6 +162,50 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.SetInputData(path_actor.poly_data)
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
+
+    def translate(self, x, y, z, a, b, c, u, v, w):
+        x += self.g92_offset_x
+        y += self.g92_offset_y
+        z += self.g92_offset_z
+        a += self.g92_offset_a
+        b += self.g92_offset_b
+        c += self.g92_offset_c
+        u += self.g92_offset_u
+        v += self.g92_offset_v
+        w += self.g92_offset_w
+        
+        x += self.g5x_offset_x
+        y += self.g5x_offset_y
+        z += self.g5x_offset_z
+        a += self.g5x_offset_a
+        b += self.g5x_offset_b
+        c += self.g5x_offset_c
+        u += self.g5x_offset_u
+        v += self.g5x_offset_v
+        w += self.g5x_offset_w
+
+        return [x, y, z, a, b, c, u, v, w]      
+    
+    # def straight_feed(self, x, y, z, a, b, c, u, v, w):
+    #     if self.suppress > 0:
+    #         return
+    #
+    #     self.first_move = False
+    #     pos = self.translate(x, y, z, a, b, c, u, v, w)
+    #
+    #     self.add_path_point('feed', self.last_pos, pos)
+    #     self.last_pos = pos 
+        
+    def straight_traverse(self, x, y, z, a, b, c, u, v, w):
+        if self.suppress > 0:
+            return
+
+        pos = self.translate(x, y, z, a, b, c, u, v, w)
+        if not self.first_move:
+            self.add_path_point('traverse', self.last_pos, pos)
+
+        self.last_pos = pos
+
 
     def get_path_actors(self):
         return self.path_actors

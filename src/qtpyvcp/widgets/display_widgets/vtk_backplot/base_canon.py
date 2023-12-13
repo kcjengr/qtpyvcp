@@ -19,10 +19,12 @@ import gcode
 import linuxcnc
 import math
 
+from qtpy.QtCore import Signal, QObject
+
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-class BaseCanon(object):
+class BaseCanon(QObject):
     def __init__(self):
 
         self.feedrate = 1
