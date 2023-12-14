@@ -33,7 +33,7 @@ from qtpyvcp.utilities.settings import connectSetting, getSetting
 
 
 from .base_backplot import BaseBackPlot
-from .axes_actor import AxesActor
+# from .axes_actor import AxesActor
 from .machine_actor import MachineActor
 from .tool_actor import ToolActor, ToolBitActor
 from .table_actor import TableActor
@@ -221,7 +221,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor = MachineActor(self._datasource)
             self.machine_actor.SetCamera(self.camera)
 
-            self.axes_actor = AxesActor(self._datasource)
+            # self.axes_actor = AxesActor(self._datasource)
 
             LOG.debug("---------translate: {}".format(self.active_wcs_offset[:3]))
             LOG.debug("---------active_wcs_offset: {}".format(self.active_wcs_offset))
@@ -356,7 +356,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
             self.renderer.AddActor(self.machine_actor)
-            self.renderer.AddActor(self.axes_actor)
+            # self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
 
             self.interactor.ReInitialize()
@@ -544,9 +544,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes_actor = actor.get_axes_actor()
             program_bounds_actor = self.program_bounds_actors[wcs_index]
 
-            if wcs_index == self.active_wcs_index:
-                
-                self.renderer.RemoveActor(axes_actor)
+            # if wcs_index == self.active_wcs_index:
+
+            self.renderer.RemoveActor(axes_actor)
             
             self.renderer.RemoveActor(actor)
             self.renderer.RemoveActor(program_bounds_actor)
@@ -627,7 +627,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         
         
-        self.renderer.AddActor(self.axes_actor)
+        # self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
         if self.program_view_when_loading_program:
             self.setViewProgram(self.program_view_when_loading_program_view)
@@ -748,9 +748,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if wcs_index == self.active_wcs_index:
                 
                 
-                old_program_bounds_actor = self.program_bounds_actors[wcs_index]
-                self.renderer.RemoveActor(old_program_bounds_actor)
-    
+                
+     
                 axes = path_actor.get_axes_actor()
     
                 LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
@@ -801,41 +800,41 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("--------update_g5x_index {}".format(index))
         self.active_wcs_index = index
         
-        self.rotate_and_translate()
-        
-        transform = vtk.vtkTransform()
-        transform.Translate(self.active_wcs_offset[:3])
-        transform.RotateZ(self.active_rotation)
-    
-        # self.axes_actor.SetUserTransform(transform)
-    
-        for wcs_index, path_actor in list(self.path_actors.items()):
-    
-            #old_program_bounds_actor = self.program_bounds_actors[wcs_index]
-            #self.renderer.RemoveActor(old_program_bounds_actor)
-    
-            axes = path_actor.get_axes_actor()
-    
-            LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
-    
-            axes.SetUserTransform(transform)
-            
-            # if wcs_index == self.active_wcs_index:
-            #     path_transform = vtk.vtkTransform()
-            #     path_transform.Translate(*offset[:3])
-            #     path_transform.RotateZ(self.active_rotation)
-            #
-            #     path_actor.SetUserTransform(transform)
-    
-            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
-            program_bounds_actor.showProgramBounds(self.show_program_bounds)
-    
-            # self.renderer.AddActor(program_bounds_actor)
-    
-            # self.program_bounds_actors[wcs_index] = program_bounds_actor
-    
-        self.interactor.ReInitialize()
-        self.renderer_window.Render()
+        # self.rotate_and_translate()
+        #
+        # transform = vtk.vtkTransform()
+        # transform.Translate(self.active_wcs_offset[:3])
+        # transform.RotateZ(self.active_rotation)
+        #
+        # # self.axes_actor.SetUserTransform(transform)
+        #
+        # for wcs_index, path_actor in list(self.path_actors.items()):
+        #
+        #     #old_program_bounds_actor = self.program_bounds_actors[wcs_index]
+        #     #self.renderer.RemoveActor(old_program_bounds_actor)
+        #
+        #     axes = path_actor.get_axes_actor()
+        #
+        #     LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
+        #
+        #     axes.SetUserTransform(transform)
+        #
+        #     # if wcs_index == self.active_wcs_index:
+        #     #     path_transform = vtk.vtkTransform()
+        #     #     path_transform.Translate(*offset[:3])
+        #     #     path_transform.RotateZ(self.active_rotation)
+        #     #
+        #     #     path_actor.SetUserTransform(transform)
+        #
+        #     program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+        #     program_bounds_actor.showProgramBounds(self.show_program_bounds)
+        #
+        #     # self.renderer.AddActor(program_bounds_actor)
+        #
+        #     # self.program_bounds_actors[wcs_index] = program_bounds_actor
+        #
+        # self.interactor.ReInitialize()
+        # self.renderer_window.Render()
     
     def update_active_wcs(self, wcs_index):
         self.active_wcs_index = wcs_index
@@ -886,7 +885,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 path_transform = vtk.vtkTransform()
                 path_transform.Translate(*new_path_position[:3])
 
-                self.axes_actor.SetUserTransform(path_transform)
+                # self.axes_actor.SetUserTransform(path_transform)
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
 
