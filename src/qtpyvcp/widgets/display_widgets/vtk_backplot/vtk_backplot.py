@@ -173,7 +173,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
         self.g92_offset = self._datasource.getG92_offset()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
-
+        
+        self.rotation_xy_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
         LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
         LOG.debug("---------active_wcs_offset {}".format(self.active_wcs_offset))
@@ -543,7 +544,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes_actor = actor.get_axes_actor()
             program_bounds_actor = self.program_bounds_actors[wcs_index]
 
-            self.renderer.RemoveActor(axes_actor)
+            if wcs_index == self.active_wcs_index:
+                
+                self.renderer.RemoveActor(axes_actor)
+            
             self.renderer.RemoveActor(actor)
             self.renderer.RemoveActor(program_bounds_actor)
 
@@ -577,20 +581,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.tool_bit_actor.set_foam_offsets(z, w)
 
-        axes_transform = vtk.vtkTransform()
-        
-        
         
         for wcs_index, actor in list(self.path_actors.items()):
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
             LOG.debug("---------wcs_index: {}".format(wcs_index))
 
             current_offsets = self.wcs_offsets[wcs_index]
-            rotation = self._datasource.getRotationOfActiveWcs()
+            # rotation = self._datasource.getRotationOfActiveWcs()
             LOG.debug("---------current_offsets: {}".format(current_offsets))
-
+            
+            
             xyz = current_offsets[:3]
+            
             rotation = self.active_rotation
+            
+            self.rotation_xy_table.insert(wcs_index-1, rotation)
             
             actor_transform = vtk.vtkTransform()
             axes_transform = vtk.vtkTransform()
@@ -599,11 +604,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             actor_transform.RotateZ(rotation)
             
             axes_transform.Translate(*xyz)
-            axes_transform.RotateZ(rotation)
+            axes_transform.RotateZ(self.rotation_xy_table[wcs_index])
 
                 
             actor.SetUserTransform(actor_transform)
-            #actor.SetPosition(path_position[:3])
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
@@ -743,6 +747,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         for wcs_index, path_actor in list(self.path_actors.items()):
             if wcs_index == self.active_wcs_index:
                 
+                
                 old_program_bounds_actor = self.program_bounds_actors[wcs_index]
                 self.renderer.RemoveActor(old_program_bounds_actor)
     
@@ -752,6 +757,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
 
                 actor_transform = vtk.vtkTransform()
+                axes_transform = vtk.vtkTransform()
         
                 xyz = self.active_wcs_offset[:3]
                 rotation = self.active_rotation
@@ -760,6 +766,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 
                     actor_transform.Translate(xyz)
                     actor_transform.RotateZ(rotation)
+                    
+                    axes_transform.Translate(xyz)
+                    axes_transform.RotateZ(self.rotation_xy_table[wcs_index-1])
                 
                 else:
                     
