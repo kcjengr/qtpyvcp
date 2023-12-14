@@ -231,7 +231,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             transform.RotateZ(self._datasource.getRotationOfActiveWcs())
             
             # self.axes_actor.SetUserTransform(transform)
-
+            self.path_actors = OrderedDict()
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
 
 
@@ -745,12 +745,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         # self.axes_actor.SetUserTransform(transform)
         for wcs_index, path_actor in list(self.path_actors.items()):
+            
+            program_bounds_actor = self.program_bounds_actors[wcs_index]
+            axes_actor = path_actor.get_axes_actor()
+            self.renderer.RemoveActor(axes_actor)
+            
             if wcs_index == self.active_wcs_index:
                 
-                
-                
-     
-                axes = path_actor.get_axes_actor()
+                axes_actor = path_actor.get_axes_actor()
     
                 LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
 
@@ -779,13 +781,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     actor_transform.Concatenate(matrix)
                 
                 
-                axes.SetUserTransform(actor_transform)
+                axes_actor.SetUserTransform(actor_transform)
                 path_actor.SetUserTransform(actor_transform)
 
                 program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
                 program_bounds_actor.showProgramBounds(self.show_program_bounds)
     
-                self.renderer.AddActor(axes)
+                self.renderer.AddActor(axes_actor)
                 self.renderer.AddActor(program_bounds_actor)
     
                 self.program_bounds_actors[wcs_index] = program_bounds_actor
@@ -794,10 +796,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer_window.Render()
         
     def update_g5x_index(self, index):
+        
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         LOG.debug("@@@@@@@@@ OFFSET INDEX SIGNAL @@@@@@@@")
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        
         LOG.debug("--------update_g5x_index {}".format(index))
+        
         self.active_wcs_index = index
         
         # self.rotate_and_translate()
@@ -837,7 +842,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # self.renderer_window.Render()
     
     def update_active_wcs(self, wcs_index):
+        
         self.active_wcs_index = wcs_index
+        
         LOG.debug("--------update_active_wcs index: {}".format(wcs_index))
         LOG.debug("--------self.wcs_offsets: {}".format(self.wcs_offsets))
     
