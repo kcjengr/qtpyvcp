@@ -752,7 +752,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
 
                 actor_transform = vtk.vtkTransform()
-                axes_transform = vtk.vtkTransform()
         
                 xyz = self.active_wcs_offset[:3]
                 rotation = self.active_rotation
@@ -761,26 +760,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 
                     actor_transform.Translate(xyz)
                     actor_transform.RotateZ(rotation)
-                    
-                    axes_transform.Translate(xyz)
-                    axes_transform.RotateZ(rotation)
                 
                 else:
                     
                     matrix = vtk.vtkMatrix4x4()
                 
-                    vtk.vtkMatrix4x4.MatrixFromRotation(0, 0, 0, 1, matrix)
+                    # vtk.vtkMatrix4x4.MatrixFromRotation(0, 0, 0, 1, matrix)
                     vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
                     
                     actor_transform.Concatenate(matrix)
                 
                 
-                axes.SetUserTransform(axes_transform)
+                axes.SetUserTransform(actor_transform)
                 path_actor.SetUserTransform(actor_transform)
 
                 program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
                 program_bounds_actor.showProgramBounds(self.show_program_bounds)
     
+                self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
     
                 self.program_bounds_actors[wcs_index] = program_bounds_actor
@@ -789,57 +786,71 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer_window.Render()
         
     def update_g5x_index(self, index):
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        LOG.debug("@@@@@@@@@ OFFSET INDEX SIGNAL @@@@@@@@")
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         LOG.debug("--------update_g5x_index {}".format(index))
         self.active_wcs_index = index
         
         self.rotate_and_translate()
         
-    #     transform = vtk.vtkTransform()
-    #     transform.Translate(self.active_wcs_offset[:3])
-    #     transform.RotateWXYZ(self.active_rotation, 0, 0, 1)
-    #
-    #     self.axes_actor.SetUserTransform(transform)
-    #
-    #     for wcs_index, path_actor in list(self.path_actors.items()):
-    #
-    #         old_program_bounds_actor = self.program_bounds_actors[wcs_index]
-    #         self.renderer.RemoveActor(old_program_bounds_actor)
-    #
-    #         axes = path_actor.get_axes_actor()
-    #
-    #         LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
-    #
-    #         if wcs_index == self.active_wcs_index:
-    #             # path_transform = vtk.vtkTransform()
-    #             # path_transform.Translate(*offset[:3])
-    #             # path_transform.RotateZ(self.active_rotation)
-    #
-    #             axes.SetUserTransform(transform)
-    #             path_actor.SetUserTransform(transform)
-    #
-    #         program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
-    #         program_bounds_actor.showProgramBounds(self.show_program_bounds)
-    #
-    #         self.renderer.AddActor(program_bounds_actor)
-    #
-    #         self.program_bounds_actors[wcs_index] = program_bounds_actor
-    #
-    #     self.interactor.ReInitialize()
-    #     self.renderer_window.Render()
-    #
+        transform = vtk.vtkTransform()
+        transform.Translate(self.active_wcs_offset[:3])
+        transform.RotateZ(self.active_rotation)
+    
+        # self.axes_actor.SetUserTransform(transform)
+    
+        for wcs_index, path_actor in list(self.path_actors.items()):
+    
+            #old_program_bounds_actor = self.program_bounds_actors[wcs_index]
+            #self.renderer.RemoveActor(old_program_bounds_actor)
+    
+            axes = path_actor.get_axes_actor()
+    
+            LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
+    
+            axes.SetUserTransform(transform)
+            
+            # if wcs_index == self.active_wcs_index:
+            #     path_transform = vtk.vtkTransform()
+            #     path_transform.Translate(*offset[:3])
+            #     path_transform.RotateZ(self.active_rotation)
+            #
+            #     path_actor.SetUserTransform(transform)
+    
+            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+            program_bounds_actor.showProgramBounds(self.show_program_bounds)
+    
+            # self.renderer.AddActor(program_bounds_actor)
+    
+            # self.program_bounds_actors[wcs_index] = program_bounds_actor
+    
+        self.interactor.ReInitialize()
+        self.renderer_window.Render()
+    
     def update_active_wcs(self, wcs_index):
         self.active_wcs_index = wcs_index
         LOG.debug("--------update_active_wcs index: {}".format(wcs_index))
         LOG.debug("--------self.wcs_offsets: {}".format(self.wcs_offsets))
     
         position = self.wcs_offsets[wcs_index]
+        rotation = self.active_rotation
+        
         LOG.debug("--------position: {}".format(position))
+        LOG.debug("--------rotation: {}".format(rotation))
     
         transform = vtk.vtkTransform()
+        
         transform.Translate(*position[:3])
-        transform.RotateZ(self._datasource.getRotationOfActiveWcs())
+        transform.RotateZ(rotation)
+        
+        for wcs_index, path_actor in list(self.path_actors.items()):
+            LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
+            
+            if wcs_index == self.active_wcs_index:
+                axes = path_actor.get_axes_actor()
+                axes.SetUserTransform(transform)
     
-        self.axes_actor.SetUserTransform(transform)
     
         self.interactor.ReInitialize()
         self.renderer_window.Render()
