@@ -617,7 +617,7 @@ class HoleBuilder:
         
     def create_debug_comment(self, txt):
         return {
-            "code": f"{txt}" if DEBUG_COMMENTS else None
+            "code": f"({txt})" if DEBUG_COMMENTS else None
         }
 
     def create_dwell(self, t):
@@ -710,6 +710,8 @@ class HoleBuilder:
         arc3_feed = feed_rate * hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
         leadin_feed = feed_rate * hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
 
+        straight_leadin = hal.get_value('qtpyvcp.plasma-force-straight-leadin.checked')
+
         # is G40 active or not
         if line.active_g_modal_groups[7] == 'G40':
             g40 = True
@@ -766,7 +768,7 @@ class HoleBuilder:
             self.elements.append(self.create_comment('---- HiDef Hole ----'))
         self.elements.append(self.create_debug_comment(f'Hole Center x={x} y={y} r={r} leadin_r={leadin_radius}'))
         self.elements.append(self.create_debug_comment(f'First point on hole: x={arc_x0} y={arc_y0}'))
-        self.elements.append(self.create_debug_comment('Leadin...'))
+        self.elements.append(self.create_debug_comment(f'Leadin... Forced Straight = {straight_leadin}'))
 
         centre_to_leadin_diam_gap = math.fabs(arc_y0 - (2 * leadin_radius) - y)
         
@@ -777,8 +779,11 @@ class HoleBuilder:
 
         # leadin radius too small or greater (or equal) than r.
         # --> use straight leadin from the hole center.
-        if leadin_radius < 0 or leadin_radius >= r-kc:
-            self.elements.append(self.create_debug_comment('too small'))
+        if leadin_radius < 0 or leadin_radius >= r-kc or straight_leadin:
+            if straight_leadin:
+                self.elements.append(self.create_debug_comment('forced straight leadin'))
+            else:
+                self.elements.append(self.create_debug_comment('too small'))
             self.elements.append(self.create_line_gcode(x, y, True))
             self.elements.append(self.create_kerf_off_gcode())
             # TORCH ON
@@ -1088,7 +1093,7 @@ class PreProcessor:
         kerf_width = hal.get_value('qtpyvcp.param-kirfwidth.out')
 
         torch_off_distance_before_zero = hal.get_value('qtpyvcp.plasma-torch-off-distance.out')
-        
+                
         small_hole_size = 0
         small_hole_detect = hal.get_value('qtpyvcp.plasma-small-hole-detect.checked')
         if small_hole_detect:
