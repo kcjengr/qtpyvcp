@@ -192,7 +192,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
-
+        
+        self.path_actors = OrderedDict()
+        
         if self._datasource.isMachineMetric():
             self.position_mult = 1000 #500 here works for me
             self.clipping_range_near = 0.01
@@ -604,7 +606,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             actor_transform.RotateZ(rotation)
             
             axes_transform.Translate(*xyz)
-            axes_transform.RotateZ(self.rotation_xy_table[wcs_index])
+            axes_transform.RotateZ(rotation)
 
                 
             actor.SetUserTransform(actor_transform)
@@ -763,23 +765,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 xyz = self.active_wcs_offset[:3]
                 rotation = self.active_rotation
                 
-                if vtk_version_ok(9, 1):
+                # if vtk_version_ok(9, 1):
                 
-                    actor_transform.Translate(xyz)
-                    actor_transform.RotateZ(rotation)
-                    
-                    axes_transform.Translate(xyz)
-                    axes_transform.RotateZ(self.rotation_xy_table[wcs_index-1])
+                actor_transform.Translate(xyz)
+                actor_transform.RotateZ(rotation)
                 
-                else:
-                    
-                    matrix = vtk.vtkMatrix4x4()
+                axes_transform.Translate(xyz)
+                axes_transform.RotateZ(self.rotation_xy_table[wcs_index-1])
                 
-                    # vtk.vtkMatrix4x4.MatrixFromRotation(0, 0, 0, 1, matrix)
-                    vtk.vtkMatrix4x4.PoseToMatrix(xyz, [rotation,0,0,1], matrix)
-                    
-                    actor_transform.Concatenate(matrix)
-                
+
                 
                 axes_actor.SetUserTransform(actor_transform)
                 path_actor.SetUserTransform(actor_transform)
