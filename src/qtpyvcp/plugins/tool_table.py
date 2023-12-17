@@ -36,7 +36,6 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
-from builtins import None
 
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
@@ -141,7 +140,7 @@ class ToolTable(DataPlugin):
         self.setCurrentToolNumber(0)
 
         self.tool_table_file = INFO.getToolTableFile()
-        if not os.path.exists(self.tool_table_file):
+        if not os.path.exists(self.tool_table_file) and self.db_prog is None:
             return
 
         self.loadToolTable()
@@ -200,9 +199,12 @@ class ToolTable(DataPlugin):
         return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
 
     def initialise(self):
-        self.fs_watcher = QFileSystemWatcher()
-        self.fs_watcher.addPath(self.tool_table_file)
-        self.fs_watcher.fileChanged.connect(self.onToolTableFileChanged)
+        if self.db_prog is None:
+            self.fs_watcher = QFileSystemWatcher()
+            self.fs_watcher.addPath(self.tool_table_file)
+            self.fs_watcher.fileChanged.connect(self.onToolTableFileChanged)
+        else:
+            self.fs_watcher = None
 
     def terminate(self):
         self.data_manager.setData('tool-in-spindle', STAT.tool_in_spindle)
@@ -246,7 +248,7 @@ class ToolTable(DataPlugin):
 
     def reloadToolTable(self):
         # rewatch the file if it stop being watched because it was deleted
-        if self.tool_table_file not in self.fs_watcher.files():
+        if self.tool_table_file not in self.fs_watcher.files() and self.db_prog is None:
             self.fs_watcher.addPath(self.tool_table_file)
 
         # reload with the new data
@@ -273,56 +275,82 @@ class ToolTable(DataPlugin):
             LOG.critical("Tool table file does not exist: {}".format(tool_file))
             return {}
 
-        with io.open(tool_file, 'r') as fh:
-            lines = [line.strip() for line in fh.readlines()]
+        if self.db_prog is None:
+            with io.open(tool_file, 'r') as fh:
+                lines = [line.strip() for line in fh.readlines()]
 
-        # find opening colon, and get header data so it can be restored
-        for rlnum, line in enumerate(reversed(lines)):
-            if line.startswith(';'):
-                lnum = len(lines) - rlnum
-                raw_header = lines[:lnum]
-                lines = lines[lnum:]
+            # find opening colon, and get header data so it can be restored
+            for rlnum, line in enumerate(reversed(lines)):
+                if line.startswith(';'):
+                    lnum = len(lines) - rlnum
+                    raw_header = lines[:lnum]
+                    lines = lines[lnum:]
+    
+                    self.orig_header_lines = list(takewhile(lambda l:
+                                            not l.strip() == '---' and
+                                            not l.startswith(';Tool'), raw_header))
+                    break
 
-                self.orig_header_lines = list(takewhile(lambda l:
-                                        not l.strip() == '---' and
-                                        not l.startswith(';Tool'), raw_header))
-                break
+            table = {0: NO_TOOL,}
+            for line in lines:
+    
+                data, sep, comment = line.partition(';')
+                items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
+    
+                tool = DEFAULT_TOOL.copy()
+                for item in items:
+                    descriptor = item[0]
+                    if descriptor in 'TPXYZABCUVWDIJQR':
+                        value = item[1:]
+                        if descriptor in ('T', 'P', 'Q'):
+    
+                            try:
+                                tool[descriptor] = int(value)
+                            except:
+                                LOG.error('Error converting value to int: {}'.format(value))
+                                break
+                        else:
+                            try:
+                                tool[descriptor] = float(value)
+                            except:
+                                LOG.error('Error converting value to float: {}'.format(value))
+                                break
+    
+                tool['R'] = comment.strip()
+    
+                tnum = tool['T']
+                if tnum == -1:
+                    continue
+    
+                # add the tool to the table
+                table[tnum] = tool
+        else:
+            # build tool table from linxcnc status object
+            table = {0: NO_TOOL,}
+            lcnc_tools = STAT.tool_table
+            for tool in lcnc_tools:
+                if int(tool.id) != -1:
+                    newtool = DEFAULT_TOOL.copy()
+                    # build up new tool
+                    newtool['T'] = int(tool.id)
+                    newtool['P'] = int(lcnc_tools.index(tool))
+                    newtool['X'] = float(tool.xoffset)
+                    newtool['Y'] = float(tool.yoffset)
+                    newtool['Z'] = float(tool.zoffset)
+                    newtool['A'] = float(tool.aoffset)
+                    newtool['B'] = float(tool.boffset)
+                    newtool['C'] = float(tool.coffset)
+                    newtool['U'] = float(tool.uoffset)
+                    newtool['V'] = float(tool.voffset)
+                    newtool['W'] = float(tool.woffset)
+                    newtool['D'] = float(tool.diameter)
+                    newtool['I'] = float(tool.frontangle)
+                    newtool['J'] = float(tool.backangle)
+                    newtool['Q'] = int(tool.orientation)
+                    newtool['R'] = 'Database tool'
+                    table[int(tool.id)] = newtool
 
-        table = {0: NO_TOOL,}
-        for line in lines:
-
-            data, sep, comment = line.partition(';')
-            items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
-
-            tool = DEFAULT_TOOL.copy()
-            for item in items:
-                descriptor = item[0]
-                if descriptor in 'TPXYZABCUVWDIJQR':
-                    value = item[1:]
-                    if descriptor in ('T', 'P', 'Q'):
-
-                        try:
-                            tool[descriptor] = int(value)
-                        except:
-                            LOG.error('Error converting value to int: {}'.format(value))
-                            break
-                    else:
-                        try:
-                            tool[descriptor] = float(value)
-                        except:
-                            LOG.error('Error converting value to float: {}'.format(value))
-                            break
-
-            tool['R'] = comment.strip()
-
-            tnum = tool['T']
-            if tnum == -1:
-                continue
-
-            # add the tool to the table
-            table[tnum] = tool
-
-        # update tooltable
+        # update tooltablec
         self.__class__.TOOL_TABLE = table
 
         self.current_tool.setValue(self.TOOL_TABLE[STATUS.tool_in_spindle.getValue()])
@@ -347,6 +375,10 @@ class ToolTable(DataPlugin):
             tool_file (str) : Path to write the tooltable too.
                 Defaults to ``self.tool_table_file``.
         """
+
+        if self.db_prog is not None:
+            LOG.warn("Tool Table Plugin trying to write to DB Data Storage - ignoring request.")
+            return
 
         columns = self.validateColumns(columns) or self.columns
 
