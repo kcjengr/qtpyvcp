@@ -33,7 +33,7 @@ from qtpyvcp.utilities.settings import connectSetting, getSetting
 
 
 from .base_backplot import BaseBackPlot
-# from .axes_actor import AxesActor
+from .axes_actor import AxesActor
 from .machine_actor import MachineActor
 from .tool_actor import ToolActor, ToolBitActor
 from .table_actor import TableActor
@@ -223,7 +223,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor = MachineActor(self._datasource)
             self.machine_actor.SetCamera(self.camera)
 
-            # self.axes_actor = AxesActor(self._datasource)
+            self.axes_actor = AxesActor(self._datasource)
 
             LOG.debug("---------translate: {}".format(self.active_wcs_offset[:3]))
             LOG.debug("---------active_wcs_offset: {}".format(self.active_wcs_offset))
@@ -232,6 +232,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             transform.Translate(*self.active_wcs_offset[:3])
             transform.RotateZ(self._datasource.getRotationOfActiveWcs())
             
+            
+            # FIXME: need machine coords
             # self.axes_actor.SetUserTransform(transform)
             self.path_actors = OrderedDict()
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
@@ -358,7 +360,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
             self.renderer.AddActor(self.machine_actor)
-            # self.renderer.AddActor(self.axes_actor)
+            self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
 
             self.interactor.ReInitialize()
