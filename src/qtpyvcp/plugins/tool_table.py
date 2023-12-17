@@ -36,6 +36,7 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
+from builtins import None
 
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
@@ -128,6 +129,7 @@ class ToolTable(DataPlugin):
                  remember_tool_in_spindle=True):
         super(ToolTable, self).__init__()
 
+        self.db_prog = INFO.ini.find('EMCIO','DB_PROGRAM')
         self.fs_watcher = None
         self.orig_header_lines = []
         self.file_header_template = file_header_template or ''
@@ -263,7 +265,7 @@ class ToolTable(DataPlugin):
         if tool_file is None:
             tool_file = self.tool_table_file
 
-        if not os.path.exists(tool_file):
+        if not os.path.exists(tool_file) and self.db_prog is None:
             if IN_DESIGNER:
                 lorum_tooltable = makeLorumIpsumToolTable()
                 self.current_tool.setValue(lorum_tooltable)
