@@ -351,7 +351,7 @@ class VCPMainWindow(QMainWindow):
         #print(splash_code)
         if splash_code is not None and os.path.isfile(splash_code):
             # Load after startup to not cause hang and 'Can't set mode while machine is running' error
-            QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False))
+            QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False, switch_to_mode_auto=False))
 
 
 if __name__ == '__main__':
