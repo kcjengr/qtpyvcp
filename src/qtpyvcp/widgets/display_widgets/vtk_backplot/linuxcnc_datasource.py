@@ -22,6 +22,7 @@ class LinuxCncDataSource(QObject):
     positionChanged = Signal(tuple)
     motionTypeChanged = Signal(int)
     g5xOffsetChanged = Signal(tuple)
+    rotationXYChanged = Signal(float)
     g92OffsetChanged = Signal(tuple)
     g5xIndexChanged = Signal(int)
     offsetTableChanged = Signal(dict)
@@ -50,8 +51,8 @@ class LinuxCncDataSource(QObject):
         self._status.g5x_index.notify(self.__handleG5xIndexChange)
         self._status.rotation_xy.notify(self.__handleRotationChangeXY)
 
-        self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
-        self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
+        # self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
+        # self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
 
         self._status.tool_offset.notify(self.__handleToolOffsetChanged)
         self._status.tool_table.notify(self.__handleToolTableChanged)
@@ -70,17 +71,17 @@ class LinuxCncDataSource(QObject):
 
     def __handleG5xOffsetChange(self, offset):
         # the received parameter, its missing the rotation of the current wcs
-        emitted_offset = list(offset)
-        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-
-        LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
-        LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
-
-        emitted_offset.append(self.__getRotationOfActiveWcs())
-        LOG.debug("--------correct_offset: {}".format(emitted_offset))
-        result = tuple(emitted_offset)
-        LOG.debug("--------result: {} {}".format(type(result), result))
-        self.g5xOffsetChanged.emit(result)
+        # emitted_offset = list(offset)
+        # active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        #
+        # LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
+        # LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
+        #
+        # # emitted_offset.append(self.__getRotationOfActiveWcs())
+        # LOG.debug("--------correct_offset: {}".format(emitted_offset))
+        # result = tuple(emitted_offset)
+        # LOG.debug("--------result: {} {}".format(type(result), result))
+        self.g5xOffsetChanged.emit(offset)
 
     def __handleG92OffsetChange(self, offset):
         #LOG.debug("__handleG92OffsetChange: {}".format(type(offset)))
@@ -92,18 +93,20 @@ class LinuxCncDataSource(QObject):
 
     def __handleRotationChangeXY(self, value):
         LOG.debug("__handleRotationChangeXY: {}".format(value))
-        #active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-        active_wcs = list(self._status.g5x_offset())
-        LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
-        #active_wcs[9] = value
-        active_wcs.append(value)
-        LOG.debug("--------active new wcs: {} {}".format(type(active_wcs), active_wcs))
-        self.g5xOffsetChanged.emit(tuple(active_wcs))
+        # active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        # LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
+        # active_wcs[9] = value
+        # LOG.debug("--------active new wcs: {} {}".format(type(active_wcs), active_wcs))
+        
+        self.rotationXYChanged.emit(value)
 
     def __handleOffsetTableChanged(self, offset_table):
         #LOG.debug("__handleOffsetTableChanged: {}".format(type(offset_table)))
         self.offsetTableChanged.emit(offset_table)
-        #self.g5xOffsetChanged.emit(self.getActiveWcsOffsets())
+        
+        # offset = offset_table[self.getActiveWcsIndex()]
+        #
+        # self.g5xOffsetChanged.emit(tuple(offset))
 
     def __handleActiveOffsetChanged(self, active_offset_index):
         # the first one is g53 - machine coordinates, we're not interested in that one
@@ -162,23 +165,16 @@ class LinuxCncDataSource(QObject):
 
     def getActiveWcsOffsets(self):
         # g5x_offset does not contain the rotation information
-        xx = self._status.stat.g5x_offset
-        LOG.debug("self._status.stat.g5x_offset: {}".format(type(xx)))
-        xy = list(xx)
-        xy.append(self.__getRotationOfActiveWcs())
-        return tuple(xy)
+        return self._status.stat.g5x_offset
 
-    def __getRotationOfActiveWcs(self):
-        if not IN_DESIGNER:
-            try:
-                current_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-                LOG.debug("-----current_wcs index: {}".format(current_wcs))
-                return current_wcs[9]
-            except KeyError:
-                LOG.warn('-----KeyError: Likely means no program loaded.')
-                return 0
-        else:
-            return 0
+        # xx = self._status.stat.g5x_offset
+        # LOG.debug("self._status.stat.g5x_offset: {}".format(type(xx)))
+        # xy = list(xx)
+        # xy.append(self.__getRotationOfActiveWcs())
+        # return tuple(xy)
+
+    def getRotationOfActiveWcs(self):
+        return self._status.stat.rotation_xy
 
     def getG92_offset(self):
         return self._status.stat.g92_offset

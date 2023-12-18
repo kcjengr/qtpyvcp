@@ -1,6 +1,8 @@
 import sys
 from collections import OrderedDict
 
+import math
+
 import vtk
 import vtk.qt
 from .linuxcnc_datasource import LinuxCncDataSource
@@ -21,6 +23,7 @@ COLOR_MAP = {
 class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
+        
         self._datasource = LinuxCncDataSource()
 
         self.path_colors = colors
@@ -28,7 +31,9 @@ class VTKCanon(StatCanon):
         self.path_points = OrderedDict()
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
-
+        self.active_rotation = self._datasource.getRotationOfActiveWcs()
+        
+        
         self.foam_z = 0.0
         self.foam_w = 0.0
 
@@ -52,7 +57,8 @@ class VTKCanon(StatCanon):
 
     def message(self, msg):
         LOG.debug("G-code Message: {}".format(msg))
-
+        
+    
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
         new_wcs = index - 1  # this index counts also G53 so we need to do -1
         LOG.debug("---------received wcs change: {}".format(new_wcs))
@@ -61,6 +67,13 @@ class VTKCanon(StatCanon):
             self.path_points[new_wcs] = list()
 
         self.active_wcs_index = new_wcs
+
+    def set_xy_rotation(self, rotation):
+        self.rotation_xy = 0.0
+        theta = math.radians(0.0)
+        self.rotation_cos = math.cos(theta)
+        self.rotation_sin = math.sin(theta)
+
 
     def add_path_point(self, line_type, start_point, end_point):
         line = [start_point, end_point]
@@ -80,6 +93,7 @@ class VTKCanon(StatCanon):
             path_actor = self.path_actors.get(wcs_index)
             if path_actor is not None:
                 for line_type, line_data in data:
+                    
                     start_point = line_data[0]
                     end_point = line_data[1]
 
