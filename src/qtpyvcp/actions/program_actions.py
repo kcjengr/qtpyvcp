@@ -21,12 +21,13 @@ from qtpyvcp.actions.base_actions import setTaskMode
 # Program actions
 #==============================================================================
 
-def load(fname, add_to_recents=True):
+def load(fname, add_to_recents=True, switch_to_mode_auto=True):
     if not fname:
         # load a blank file. Maybe should load [DISPLAY] OPEN_FILE
         clear()
 
-    setTaskMode(linuxcnc.MODE_AUTO)
+    if (switch_to_mode_auto):
+        setTaskMode(linuxcnc.MODE_AUTO)
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:
         LOG.debug('Loading NC program: %s', fname)
