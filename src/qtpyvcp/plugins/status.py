@@ -1,7 +1,8 @@
 import os
 import linuxcnc
 
-from qtpy.QtCore import QTimer, QFileSystemWatcher
+from qtpy.QtCore import QTimer, QFileSystemWatcher, Qt
+from qtpy.QtWidgets import QApplication
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.app.runtime_config import RuntimeConfig
@@ -104,13 +105,15 @@ class Status(DataPlugin):
 
     def addLock(self):
         self.locking_count += 1
-        print(f"Add lock. Total = {self.locking_count}")
+        QApplication.setOverrideCursor(Qt.BusyCursor)
+        LOG.debug(f"Add lock. Total = {self.locking_count}")
     
     def removeLock(self):
         self.locking_count -= 1
-        if self.locking_count < 0:
+        if self.locking_count <= 0:
             self.locking_count = 0
-        print(f"Remove lock. Total = {self.locking_count}")
+            QApplication.restoreOverrideCursor()
+        LOG.debug(f"Remove lock. Total = {self.locking_count}")
 
     def loadMdiHistory(self, fname):
         """Load MDI history from file."""

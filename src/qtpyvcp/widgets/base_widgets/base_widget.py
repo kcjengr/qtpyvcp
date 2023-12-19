@@ -274,7 +274,6 @@ class VCPButton(QPushButton, CMDWidget):
         self.status = getPlugin('status')
 
     def mousePressEvent(self, event):
-        #print('Button press')
         # Test for UI LOCK and consume event but do nothing if LOCK in place
         if self.status.isLocked():
             LOG.debug('Accept mouse Press Event')

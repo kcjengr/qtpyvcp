@@ -1199,7 +1199,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         fp = self.camera.GetFocalPoint()
         LOG.debug('focal point {}'.format(fp))
         p = self.camera.GetPosition()
-        print(('position {}'.format(p)))
+        LOG.debug(('position {}'.format(p)))
         # dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
         # print(dist)
         # self.camera.SetPosition(10, -40, -1)
@@ -1208,7 +1208,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         vu = self.camera.GetViewUp()
         LOG.debug('view up {}'.format(vu))
         d = self.camera.GetDistance()
-        print(('distance {}'.format(d)))
+        LOG.debug(('distance {}'.format(d)))
         # self.interactor.ReInitialize()
 
     @Slot()
