@@ -2,6 +2,7 @@ import sys
 import linuxcnc
 import tempfile
 
+from qtpy.QtCore import Qt
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -21,12 +22,15 @@ from qtpyvcp.actions.base_actions import setTaskMode
 # Program actions
 #==============================================================================
 
-def load(fname, add_to_recents=True):
+def load(fname, add_to_recents=True, isreload=False):
     if not fname:
         # load a blank file. Maybe should load [DISPLAY] OPEN_FILE
         clear()
 
-    setTaskMode(linuxcnc.MODE_AUTO)
+    #setTaskMode(linuxcnc.MODE_AUTO)
+    if not isreload:
+        STATUS.addLock()
+    
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:
         LOG.debug('Loading NC program: %s', fname)
@@ -53,7 +57,7 @@ def reload():
     stat.poll()
     fname = stat.file
     if os.path.exists(fname):
-        load(stat.file, add_to_recents=False)
+        load(stat.file, add_to_recents=False, isreload=True)
 
 reload.ok = lambda *args, **kwargs: True
 reload.bindOk = lambda *args, **kwargs: True

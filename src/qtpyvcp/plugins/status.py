@@ -94,7 +94,23 @@ class Status(DataPlugin):
         self.task_state.notify(lambda ts:
                                self.on.setValue(ts == linuxcnc.STATE_ON))
 
+        # Set default UI locking counter
+        self.locking_count = 0
+
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
+
+    def isLocked(self):
+        return True if self.locking_count > 0 else False
+
+    def addLock(self):
+        self.locking_count += 1
+        print(f"Add lock. Total = {self.locking_count}")
+    
+    def removeLock(self):
+        self.locking_count -= 1
+        if self.locking_count < 0:
+            self.locking_count = 0
+        print(f"Remove lock. Total = {self.locking_count}")
 
     def loadMdiHistory(self, fname):
         """Load MDI history from file."""

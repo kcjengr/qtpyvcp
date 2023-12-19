@@ -9,6 +9,8 @@ from .linuxcnc_datasource import LinuxCncDataSource
 from .path_actor import PathActor
 from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
+from qtpy.QtWidgets import QApplication
+
 
 LOG = logger.getLogger(__name__)
 
@@ -157,11 +159,11 @@ class VTKCanon(StatCanon):
 
                         path_actor.lines.InsertNextCell(line)
 
-
                         index += 2
-
+                    
                 # free up memory, lots of it for big files
                 self.path_points[wcs_index] = list()
+                QApplication.processEvents()
 
                 path_actor.poly_data.SetPoints(path_actor.points)
                 path_actor.poly_data.SetLines(path_actor.lines)

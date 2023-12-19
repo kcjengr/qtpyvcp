@@ -18,7 +18,7 @@ from qtpyvcp.app.launcher import _initialize_object_from_dict
 
 LOG = logger.getLogger(__name__)
 INFO = Info()
-
+STATUS = getPlugin('status')
 
 class VCPMainWindow(QMainWindow):
 
@@ -274,6 +274,7 @@ class VCPMainWindow(QMainWindow):
 
     def keyPressEvent(self, event):
         # super(VCPMainWindow, self).keyPressEvent(event)
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
         if event.isAutoRepeat():
             return
 
@@ -294,6 +295,7 @@ class VCPMainWindow(QMainWindow):
             #print('Unhandled key press event')
 
     def keyReleaseEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
         if event.isAutoRepeat():
             return
 
@@ -314,9 +316,21 @@ class VCPMainWindow(QMainWindow):
 
     def mousePressEvent(self, event):
         #print('Button press')
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.locking_count > 0:
+            LOG.debug('Accept mouse Press Event')
+            event.accept()
+            return 
         focused_widget = self.focusWidget()
         if focused_widget is not None:
             focused_widget.clearFocus()
+
+    def mouseReleaseEvent(self, event):
+        if STATUS.locking_count > 0:
+            LOG.debug('Accept mouse Release Event')
+            event.accept()
+            return 
+        super().mouseReleaseEvent(event)
 
     def focusChangedEvent(self, old_w, new_w):
         if issubclass(new_w.__class__, QLineEdit):

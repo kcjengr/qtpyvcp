@@ -110,6 +110,8 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         """
 
         QApplication.processEvents()
+        LOG.debug(f'Highlight light block:  {tex}')
+
 
         for regex, fmt in self.rules:
 
@@ -419,6 +421,7 @@ class GcodeTextEdit(QPlainTextEdit):
         # seg fault if the document is discarded while still being highlighted.
         self.old_docs.append(self.document())
 
+        LOG.debug('setPlanText')
         doc = QTextDocument()
         doc.setDocumentLayout(QPlainTextDocumentLayout(doc))
         doc.setPlainText(p_str)
@@ -426,9 +429,11 @@ class GcodeTextEdit(QPlainTextEdit):
         # start syntax highlighting
         if self.syntax_highlighting == True:
             self.gCodeHighlighter = GcodeSyntaxHighlighter(doc, self.font)
+            LOG.debug('Syntax highlighting enabled.')
 
         self.setDocument(doc)
         self.margin.updateWidth()
+        LOG.debug('Document set with text.')
 
         # start syntax highlighting
         # self.gCodeHighlighter = GcodeSyntaxHighlighter(self)

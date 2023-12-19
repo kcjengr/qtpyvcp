@@ -14,7 +14,8 @@ from vtkmodules.vtkCommonCore import (
     VTK_VERSION_NUMBER,
     vtkVersion
 )
-from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent
+from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
+from qtpy.QtWidgets import QApplication
 from qtpy.QtGui import QColor
 
 # Fix poligons not drawing correctly on some GPU
@@ -628,13 +629,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(axes)
             self.renderer.AddActor(program_bounds_actor)
             self.renderer.AddActor(actor)
-        
+            QApplication.processEvents()
+
         
         
         # self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
         if self.program_view_when_loading_program:
             self.setViewProgram(self.program_view_when_loading_program_view)
+
+        QTimer.singleShot(300, self._datasource._status.removeLock)
+
 
     def motion_type(self, value):
         LOG.debug("-----motion_type is: {}".format(value))
