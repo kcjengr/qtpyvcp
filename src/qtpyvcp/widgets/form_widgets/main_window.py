@@ -275,6 +275,11 @@ class VCPMainWindow(QMainWindow):
     def keyPressEvent(self, event):
         # super(VCPMainWindow, self).keyPressEvent(event)
         # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept keyPressEvent Event')
+            event.accept()
+            return 
+
         if event.isAutoRepeat():
             return
 
@@ -296,6 +301,11 @@ class VCPMainWindow(QMainWindow):
 
     def keyReleaseEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept keyReleaseEvent Event')
+            event.accept()
+            return 
+        
         if event.isAutoRepeat():
             return
 
@@ -317,7 +327,7 @@ class VCPMainWindow(QMainWindow):
     def mousePressEvent(self, event):
         #print('Button press')
         # Test for UI LOCK and consume event but do nothing if LOCK in place
-        if STATUS.locking_count > 0:
+        if STATUS.isLocked():
             LOG.debug('Accept mouse Press Event')
             event.accept()
             return 
@@ -326,7 +336,7 @@ class VCPMainWindow(QMainWindow):
             focused_widget.clearFocus()
 
     def mouseReleaseEvent(self, event):
-        if STATUS.locking_count > 0:
+        if STATUS.isLocked():
             LOG.debug('Accept mouse Release Event')
             event.accept()
             return 
