@@ -5,6 +5,13 @@ from qtpy.QtWidgets import QPushButton
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
 
+from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.plugins import getPlugin
+
+
+LOG = getLogger(__name__)
+STATUS = getPlugin('status')
+
 
 class HalButton(QPushButton, HALWidget):
     """HAL Button
@@ -45,6 +52,38 @@ class HalButton(QPushButton, HALWidget):
         self.released.connect(self.onRelease)
         self.toggled.connect(self.onCheckedStateChanged)
 
+    def mousePressEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept mouse Press Event')
+            event.accept()
+            return 
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if STATUS.isLocked():
+            LOG.debug('Accept mouse Release Event')
+            event.accept()
+            return 
+        super().mouseReleaseEvent(event)
+
+    def keyPressEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept keyPressEvent Event')
+            event.accept()
+            return 
+        super().keyPressEvent(event)
+
+    def keyReleaseEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept keyReleaseEvent Event')
+            event.accept()
+            return 
+        super().keyReleaseEvent(event)
+
+
     def onPress(self):
         if self._pressed_pin is not None:
             self._pressed_pin.value = True
@@ -60,6 +99,9 @@ class HalButton(QPushButton, HALWidget):
             self._activated_pin.value = False
 
     def onCheckedStateChanged(self, checked):
+        if STATUS.isLocked():
+            LOG.debug('Skip HAL onCheckedStateChanged')
+            return 
         if self._checked_pin is not None:
             self._checked_pin.value = checked
 

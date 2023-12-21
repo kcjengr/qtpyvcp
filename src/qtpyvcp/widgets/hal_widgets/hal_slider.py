@@ -3,9 +3,12 @@ from qtpy.QtWidgets import QSlider
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
+
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.plugins import getPlugin
 
 LOG = getLogger(__name__)
+STATUS = getPlugin('status')
 
 class HalSlider(QSlider, HALWidget):
     """HAL Slider
@@ -33,12 +36,46 @@ class HalSlider(QSlider, HALWidget):
 
         self.valueChanged.connect(self.onValueChanged)
 
+    def mousePressEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept mouse Press Event')
+            event.accept()
+            return 
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if STATUS.isLocked():
+            LOG.debug('Accept mouse Release Event')
+            event.accept()
+            return 
+        super().mouseReleaseEvent(event)
+
+    def keyPressEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept keyPressEvent Event')
+            event.accept()
+            return 
+        super().keyPressEvent(event)
+
+    def keyReleaseEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept keyReleaseEvent Event')
+            event.accept()
+            return 
+        super().keyReleaseEvent(event)
+
     def onValueChanged(self, val):
         if self._s32_value_pin is not None:
             self._s32_value_pin.value = val
             self._float_value_pin.value = val / 100.0
 
     def mouseDoubleClickEvent(self, event):
+        if STATUS.isLocked():
+            LOG.debug('Skip HAL mouseDoubleClickEvent')
+            return 
         self.setValue(100)
 
     def initialize(self):

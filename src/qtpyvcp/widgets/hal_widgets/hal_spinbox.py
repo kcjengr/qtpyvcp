@@ -5,6 +5,11 @@ from qtpy.QtCore import QEvent
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
 
+from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.plugins import getPlugin
+
+LOG = getLogger(__name__)
+STATUS = getPlugin('status')
 
 class HalQSpinBox(QSpinBox, HALWidget):
     """HAL SpinBox
@@ -36,12 +41,46 @@ class HalQSpinBox(QSpinBox, HALWidget):
 
         self.valueChanged.connect(self.onCheckedStateChanged)
 
+    def mousePressEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept mouse Press Event')
+            event.accept()
+            return 
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if STATUS.isLocked():
+            LOG.debug('Accept mouse Release Event')
+            event.accept()
+            return 
+        super().mouseReleaseEvent(event)
+
+    def keyPressEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept keyPressEvent Event')
+            event.accept()
+            return 
+        super().keyPressEvent(event)
+
+    def keyReleaseEvent(self, event):
+        # Test for UI LOCK and consume event but do nothing if LOCK in place
+        if STATUS.isLocked():
+            LOG.debug('Accept keyReleaseEvent Event')
+            event.accept()
+            return 
+        super().keyReleaseEvent(event)
+
     def changeEvent(self, event):
         super(HalQSpinBox, self).changeEvent(event)
         if event == QEvent.EnabledChange and self._enabled_pin is not None:
             self._enabled_pin.value = self.isEnabled()
 
     def onCheckedStateChanged(self, checked):
+        if STATUS.isLocked():
+            LOG.debug('Skip HAL onCheckedStateChanged')
+            return 
         if self._value_pin is not None:
             self._value_pin.value = checked
 
