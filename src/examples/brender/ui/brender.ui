@@ -1156,6 +1156,116 @@
          </attribute>
          <layout class="QGridLayout" name="gridLayout"/>
         </widget>
+        <widget class="QWidget" name="tab_7">
+         <attribute name="title">
+          <string>HAL</string>
+         </attribute>
+         <widget class="HalCheckBox" name="halcheckbox">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>20</y>
+            <width>14</width>
+            <height>15</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_4">
+          <property name="geometry">
+           <rect>
+            <x>50</x>
+            <y>20</y>
+            <width>58</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>HAL Checkbox</string>
+          </property>
+         </widget>
+         <widget class="HalQSpinBox" name="halqspinbox">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>50</y>
+            <width>81</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="HalDoubleSpinBox" name="haldoublespinbox">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>90</y>
+            <width>81</width>
+            <height>27</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="HalSlider" name="halslider">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>160</y>
+            <width>251</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+         <widget class="HalButton" name="halbutton">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>220</y>
+            <width>111</width>
+            <height>26</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_5">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>50</y>
+            <width>101</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>HAL Spinbox</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_6">
+          <property name="geometry">
+           <rect>
+            <x>110</x>
+            <y>90</y>
+            <width>151</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>HAL Double Spinbox</string>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_7">
+          <property name="geometry">
+           <rect>
+            <x>100</x>
+            <y>140</y>
+            <width>111</width>
+            <height>18</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>HAL SLider</string>
+          </property>
+         </widget>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -3027,6 +3137,31 @@
    <class>ActionComboBox</class>
    <extends>QComboBox</extends>
    <header>qtpyvcp.widgets.input_widgets.action_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_checkbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalQSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>HalButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_button</header>
   </customwidget>
  </customwidgets>
  <resources>
