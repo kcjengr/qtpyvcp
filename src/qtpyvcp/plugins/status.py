@@ -104,8 +104,9 @@ class Status(DataPlugin):
         return True if self.locking_count > 0 else False
 
     def addLock(self):
+        if self.locking_count == 0:
+            QApplication.setOverrideCursor(Qt.BusyCursor)
         self.locking_count += 1
-        QApplication.setOverrideCursor(Qt.BusyCursor)
         LOG.debug(f"Add lock. Total = {self.locking_count}")
     
     def removeLock(self):
@@ -113,6 +114,7 @@ class Status(DataPlugin):
         if self.locking_count <= 0:
             self.locking_count = 0
             QApplication.restoreOverrideCursor()
+            LOG.debug(f"---- Remove lock: restoreOverrideCursor")
         LOG.debug(f"Remove lock. Total = {self.locking_count}")
 
     def loadMdiHistory(self, fname):

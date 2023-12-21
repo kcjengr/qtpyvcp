@@ -542,6 +542,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
         LOG.debug("-------load_program")
+        self._datasource._status.addLock()
 
         # Cleanup the scene, remove any previous actors if any
         for wcs_index, actor in list(self.path_actors.items()):
