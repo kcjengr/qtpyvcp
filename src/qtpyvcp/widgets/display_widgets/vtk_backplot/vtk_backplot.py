@@ -639,7 +639,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.program_view_when_loading_program:
             self.setViewProgram(self.program_view_when_loading_program_view)
 
-        QTimer.singleShot(300, self._datasource._status.removeLock)
+        QTimer.singleShot(2000, self._datasource._status.removeLock)
 
 
     def motion_type(self, value):
