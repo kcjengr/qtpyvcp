@@ -4,15 +4,8 @@ import linuxcnc
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.plugins import getPlugin
-
-STATUS = getPlugin('status')
-STAT = STATUS.stat
-
-CMD = linuxcnc.command()
-
 #==============================================================================
-# Coolent actions
+# Power actions
 #==============================================================================
 
 class power:
