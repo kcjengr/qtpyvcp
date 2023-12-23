@@ -8,31 +8,28 @@ LOG = logger.getLogger(__name__)
 # Power actions
 #==============================================================================
 
-class power:
-    @staticmethod
-    def shut_system_down_prompt():
-        import subprocess
+def shut_system_down_prompt():
+    import subprocess
+    try:
         try:
+            subprocess.check_call('xfce4-session-logout', shell=True)
+        except:
             try:
-                subprocess.call('xfce4-session-logout', shell=True)
+                subprocess.check_call('systemctl poweroff', shell=True)
             except:
-                try:
-                    subprocess.call('systemctl poweroff', shell=True)
-                except:
-                    raise
-        except Exception as e:
-            LOG.warning("Couldn't shut system down: {}".format(e))
+                raise
+    except Exception as e:
+        LOG.warning("Couldn't shut system down: {}".format(e))
 
-    @staticmethod
-    def shut_system_down_now():
-        import subprocess
+def shut_system_down_now():
+    import subprocess
+    try:
         try:
+            subprocess.check_call('xfce4-session-logout -h', shell=True)
+        except:
             try:
-                subprocess.call('xfce4-session-logout -h', shell=True)
+                subprocess.check_call('systemctl poweroff', shell=True)
             except:
-                try:
-                    subprocess.call('systemctl poweroff', shell=True)
-                except:
-                    raise
-        except Exception as e:
-            LOG.warning("Couldn't shut system down: {}".format(e))
+                raise
+    except Exception as e:
+        LOG.warning("Couldn't shut system down: {}".format(e))

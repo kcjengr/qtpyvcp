@@ -120,7 +120,7 @@
           <bool>false</bool>
          </property>
          <property name="actionName" stdset="0">
-          <string>power.power.shut_system_down_now</string>
+          <string>power.shut_system_down_now</string>
          </property>
         </widget>
        </item>
