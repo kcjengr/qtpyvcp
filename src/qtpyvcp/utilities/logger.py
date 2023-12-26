@@ -18,6 +18,10 @@
 import os
 
 import logging
+import logging.config
+
+import yaml
+
 from logging.handlers import SocketHandler
 
 from linuxcnc import ini
@@ -67,6 +71,12 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
     if BASE_LOGGER_NAME is not None:
         return getLogger(name)
 
+        
+    with open('/home/turboss/Projects/qtpyvcp/src/qtpyvcp/yaml_lib/log_config.yml', 'r') as stream:
+        config = yaml.load(stream, Loader=yaml.FullLoader)
+    
+    logging.config.dictConfig(config)
+    
     BASE_LOGGER_NAME = name
 
     log_file = normalizePath(log_file, CONFIG_DIR or os.getenv('HOME')) or DEFAULT_LOG_FILE
@@ -83,19 +93,19 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
     except KeyError:
         raise ValueError("Log level '{}' is not valid.".format(log_level))
 
-    # Add console handler
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    cf = ColoredFormatter(TERM_FORMAT)
-    ch.setFormatter(cf)
-    base_log.addHandler(ch)
-
-    # Add file handler
-    fh = logging.FileHandler(log_file)
-    fh.setLevel(logging.DEBUG)
-    ff = logging.Formatter(FILE_FORMAT)
-    fh.setFormatter(ff)
-    base_log.addHandler(fh)
+    # # Add console handler
+    # ch = logging.StreamHandler()
+    # ch.setLevel(logging.DEBUG)
+    # cf = ColoredFormatter(TERM_FORMAT)
+    # ch.setFormatter(cf)
+    # base_log.addHandler(ch)
+    #
+    # # Add file handler
+    # fh = logging.FileHandler(log_file)
+    # fh.setLevel(logging.DEBUG)
+    # ff = logging.Formatter(FILE_FORMAT)
+    # fh.setFormatter(ff)
+    # base_log.addHandler(fh)
 
     # Add socket handler
     # sh = SocketHandler('127.0.0.1', 19996)
