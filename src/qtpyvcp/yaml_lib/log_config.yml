@@ -1,9 +1,13 @@
 
 version: 1
-disable_existing_loggers: true
+disable_existing_loggers: false
+
 formatters:
     precise:
         format: "[%(asctime)s] [%(name)s][%(levelname)s]  %(message)s (%(filename)s:%(lineno)d)"
+    colored:
+        format: "[%(asctime)s] [%(name)s][%(levelname)s]  %(message)s (%(filename)s:%(lineno)d)"
+        class: qtpyvcp.lib.colored_formatter.ColoredFormatter
 handlers:
     file:
         class: logging.handlers.RotatingFileHandler
@@ -13,7 +17,7 @@ handlers:
         backupCount: 10
     console:
         class: logging.StreamHandler
-        formatter: precise
+        formatter: colored
 loggers:
     opcua:
         level: WARN

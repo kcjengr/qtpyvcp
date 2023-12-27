@@ -68,8 +68,8 @@ RE = re.compile(r'(\w+)<([^>]+)>')
 
 class ColoredFormatter(Formatter):
 
-    def __init__(self, patern):
-        Formatter.__init__(self, patern)
+    def __init__(self, fmt=None, datefmt=None, style='%', validate=True, defaults=None):
+        Formatter.__init__(self, fmt=None, datefmt=None, style='%', validate=True, defaults=None)
 
     # Override the Formatter's format method to add ASCII colors
     # to the levelname and any marked words in the log message.
