@@ -88,6 +88,9 @@ dialogs:
   toolchange:
     provider: qtpyvcp.widgets.dialogs.toolchange_dialog:ToolChangeDialog
 
+  shutdown:
+    provider: qtpyvcp.widgets.dialogs.shutdown_dialog:ShutDownDialog
+
 virtual_input_providers:
   number:
     provider: qtpyvcp.widgets.virtual_input.virtual_input:VirtualInput

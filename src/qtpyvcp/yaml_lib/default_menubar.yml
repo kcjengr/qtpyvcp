@@ -31,6 +31,10 @@ default_menubar:
       action: app.exit # or win.close
       shortcut: ctrl+q
 
+    - title: Shutdown
+      action: win.showDialog
+      args: [shutdown]
+
   # Machine Menu
   - title: Machine
     items:

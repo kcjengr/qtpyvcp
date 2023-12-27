@@ -7,6 +7,7 @@ from . import program_actions as program
 from . import spindle_actions as spindle
 from . import coolant_actions as coolant
 from . import tool_actions as tool
+from . import power_actions as power
 
 # Set up logging
 from qtpyvcp.utilities import logger
