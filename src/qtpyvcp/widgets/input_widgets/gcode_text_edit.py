@@ -110,7 +110,7 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         """
 
         QApplication.processEvents()
-        LOG.debug(f'Highlight light block:  {tex}')
+        LOG.debug(f'Highlight light block:  {text}')
 
 
         for regex, fmt in self.rules:
