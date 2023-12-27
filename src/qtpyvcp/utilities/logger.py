@@ -26,6 +26,8 @@ from logging.handlers import SocketHandler
 
 from linuxcnc import ini
 
+from qtpyvcp import QTPYVCP_DIR
+
 # Our custom colorizing formatter for the terminal handler
 from qtpyvcp.lib.colored_formatter import ColoredFormatter
 from qtpyvcp.lib.logger import TTYHandler
@@ -36,6 +38,8 @@ BASE_LOGGER_NAME = None
 
 CONFIG_DIR = os.getenv('CONFIG_DIR')
 DEFAULT_LOG_FILE = os.path.expanduser('~/qtpyvcp.log')
+
+DEFAULT_CONFIG_FILE = os.path.join(QTPYVCP_DIR, 'yaml_lib/log_config.yml')
 
 # Define the log message formats
 TERM_FORMAT = '[%(name)s][%(levelname)s]  %(message)s (%(filename)s:%(lineno)d)'
