@@ -1,5 +1,5 @@
-# import sys;sys.path.append(r'~/.p2/pool/plugins/org.python.pydev.core_10.1.3.202301231743/pysrc')
-# import pydevd;pydevd.settrace()
+# import sys;sys.path.append(r'~/.p2/pool/plugins/org.python.pydev.core_10.2.1.202307021217/pysrc')
+# import pydevd; pydevd.settrace()
 
 import os
 
