@@ -160,8 +160,8 @@ class ToolBitActor(vtk.vtkActor):
                 transform_filter.SetInputConnection(source.GetOutputPort())
                 transform_filter.Update()
 
-                # mapper = vtk.vtkPolyDataMapper()
-                # mapper.SetInputConnection(transform_filter.GetOutputPort())
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
                 if tool.orientation == 1 and tool.frontangle == 90 and tool.backangle == 90:
 
@@ -450,8 +450,8 @@ class ToolBitActor(vtk.vtkActor):
                     transform_filter.Update()
 
                     # Create a mapper
-                    # mapper = vtk.vtkPolyDataMapper()
-                    # mapper.SetInputConnection(transform_filter.GetOutputPort())
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         # LATHE TOOL
 
@@ -488,6 +488,9 @@ class ToolBitActor(vtk.vtkActor):
             transform_filter.SetTransform(transform)
             transform_filter.SetInputConnection(self.source.GetOutputPort())
             transform_filter.Update()
+            
+            mapper = vtkPolyDataMapper()
+            mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         # CNC TOOL
 
@@ -513,14 +516,17 @@ class ToolBitActor(vtk.vtkActor):
             transform_filter.SetTransform(transform)
             transform_filter.SetInputConnection(self.source.GetOutputPort())
             transform_filter.Update()
+            
+            mapper = vtkPolyDataMapper()
+            mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         # colors = vtkNamedColors()
 
         # Create a mapper and actor for the arrow
-        mapper = vtkPolyDataMapper()
-        mapper.SetInputConnection(transform_filter.GetOutputPort())
-
-
+        # mapper = vtkPolyDataMapper()
+        # mapper.SetInputConnection(transform_filter.GetOutputPort())
+        #
+        #
         self.SetMapper(mapper)
 
         # Avoid visible backfaces on Linux with some video cards like intel
