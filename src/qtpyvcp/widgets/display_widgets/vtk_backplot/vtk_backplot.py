@@ -2,6 +2,7 @@
 
 import yaml
 
+from pprint import pprint
 import linuxcnc
 import os
 from collections import OrderedDict
@@ -17,6 +18,8 @@ from vtkmodules.vtkCommonCore import (
 from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
 from qtpy.QtWidgets import QApplication
 from qtpy.QtGui import QColor
+
+
 
 # Fix poligons not drawing correctly on some GPU
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
@@ -35,11 +38,10 @@ from qtpyvcp.utilities.settings import connectSetting, getSetting
 
 from .base_backplot import BaseBackPlot
 from .axes_actor import AxesActor
-from .machine_actor import MachineActor
 from .tool_actor import ToolActor, ToolBitActor
 from .table_actor import TableActor
 from .spindle_actor import SpindleActor
-from .robot_actor import RobotActor
+from .machine_actor import MachineActor, MachinePartsASM
 from .path_cache_actor import PathCacheActor
 from .program_bounds_actor import ProgramBoundsActor
 from .vtk_canon import VTKCanon
@@ -124,8 +126,10 @@ class InteractorEventFilter(QObject):
 
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
+
         super(VTKBackPlot, self).__init__(parent)
-        LOG.debug("---------using refactored vtk code")
+        
+        # LOG.debug("---------using refactored vtk code")
 
         event_filter = InteractorEventFilter(self)
 
@@ -148,13 +152,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.rotating = 0
         self.panning = 0
         self.zooming = 0
-
+        
+        self.machine_parts = None
+        self.machine_parts_data = None
+        
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
 
-        # properties
+        self._plot_machine = True
+        
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
+        self._enableProgramTicks = True
         self._enableProgramTicks = True
 
         self._default_traverse_color = QColor(200, 35, 35, 255)
@@ -187,6 +196,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_position = (0.0, 0.0, 0.0)
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
+        
         self.joints = self._datasource._status.joint
 
         self.foam_offset = [0.0, 0.0]
@@ -221,6 +231,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         if not IN_DESIGNER:
 
+
             self.machine_actor = MachineActor(self._datasource)
             self.machine_actor.SetCamera(self.camera)
 
@@ -240,24 +251,55 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
 
 
-            self.table_model = self._datasource._inifile.find("DISPLAY", "TABLE")
+            self.table_model = self._datasource._inifile.find("VTK", "TABLE")
             if self.table_model is not None:
                 self.table_actor = TableActor(self.table_model)
 
-            self.spindle_model = self._datasource._inifile.find("DISPLAY", "SPINDLE")
+
+
+            self.spindle_model = self._datasource._inifile.find("VTK", "SPINDLE")
 
             if self.spindle_model is not None:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
-
-            self.robot = self._datasource._inifile.find("DISPLAY", "ROBOT")
-            if self.robot:
-                with open(self.robot) as f:
-                    self.robot_data = yaml.load(f, Loader=yaml.FullLoader)
-                    self.robot_actor = RobotActor(self.robot_data)
-
+            
+            
+            if self.plotMachine == True:
+                
+                self.machine_parts = self._datasource._inifile.find("VTK", "MACHINE_PARTS")
+            
+                if self.machine_parts:
+                    with open(self.machine_parts, 'r') as f:
+                        self.machine_parts_data = yaml.load(f, Loader=yaml.SafeLoader)
+                        
+                        self.machine_parts_actor = MachinePartsASM(self.machine_parts_data)
+            
             self.tool_actor = ToolActor(self._datasource)
             self.tool_bit_actor = ToolBitActor(self._datasource)
 
+
+            # view settings
+            connectSetting('backplot.show-spindle', self.showSpindle)
+            connectSetting('backplot.show-grid', self.showGrid)
+            connectSetting('backplot.show-program-bounds', self.showProgramBounds)
+            # connectSetting('backplot.show-program-labels', self.showProgramLabels)
+            # connectSetting('backplot.show-program-ticks', self.showProgramTicks)
+            connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
+            connectSetting('backplot.show-machine-labels', self.showMachineLabels)
+            connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
+            connectSetting('backplot.perspective-view', self.viewPerspective)
+            connectSetting('backplot.view', self.setView)
+            connectSetting('backplot.multitool-colors', self.showMultiColorPath)
+
+
+    def initialize(self):
+        self.path_colors = {'traverse': self._traverse_color,
+                       'arcfeed': self._arcfeed_color,
+                       'feed': self._feed_color,
+                       'dwell': QColor(0, 0, 255, 255),
+                       'user': QColor(0, 100, 255, 255)
+                       }
+
+        if not IN_DESIGNER:
             self.offset_axes = OrderedDict()
             self.program_bounds_actors = OrderedDict()
             self.show_program_bounds = bool()
@@ -294,69 +336,47 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
-
-            # view settings
-            connectSetting('backplot.show-spindle', self.showSpindle)
-            connectSetting('backplot.show-grid', self.showGrid)
-            connectSetting('backplot.show-program-bounds', self.showProgramBounds)
-            # connectSetting('backplot.show-program-labels', self.showProgramLabels)
-            # connectSetting('backplot.show-program-ticks', self.showProgramTicks)
-            connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
-            connectSetting('backplot.show-machine-labels', self.showMachineLabels)
-            connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
-            connectSetting('backplot.perspective-view', self.viewPerspective)
-            connectSetting('backplot.view', self.setView)
-            connectSetting('backplot.multitool-colors', self.showMultiColorPath)
-
-
-    def initialize(self):
-        self.path_colors = {'traverse': self._traverse_color,
-                       'arcfeed': self._arcfeed_color,
-                       'feed': self._feed_color,
-                       'dwell': QColor(0, 0, 255, 255),
-                       'user': QColor(0, 100, 255, 255)
-                       }
-
-        if not IN_DESIGNER:
-
+            # self.status.g5x_index.notify(self.update_g5x_index)
             self.canon = VTKCanon(colors=self.path_colors)
             self.path_actors = self.canon.get_path_actors()
 
-            # for wcs_index, path_actor in list(self.path_actors.items()):
-            #     current_offsets = self.wcs_offsets[wcs_index]
-            #
-            #     LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
-            #     LOG.debug("---------wcs_index: {}".format(wcs_index))
-            #     LOG.debug("---------current_offsets: {}".format(current_offsets))
-            #
-            #     actor_transform = vtk.vtkTransform()
-            #     actor_transform.Translate(*current_offsets[:3])
-            #     # actor_transform.RotateZ(current_offsets[9])
-            #
-            #     path_actor.SetUserTransform(actor_transform)
-            #     # path_actor.SetPosition(*current_offsets[:3])
-            #
-            #     LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
-            #
-            #     program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
-            #
-            #     axes = path_actor.get_axes_actor()
-            #
-            #     self.offset_axes[wcs_index] = axes
-            #     self.program_bounds_actors[wcs_index] = program_bounds_actor
-            #
-            #     self.renderer.AddActor(axes)
-            #     self.renderer.AddActor(program_bounds_actor)
-            #     self.renderer.AddActor(path_actor)
+            for wcs_index, path_actor in list(self.path_actors.items()):
+                current_offsets = self.wcs_offsets[wcs_index]
 
-            if self.robot:
-                self.renderer.AddActor(self.robot_actor)
+                LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
+                LOG.debug("---------wcs_index: {}".format(wcs_index))
+                LOG.debug("---------current_offsets: {}".format(current_offsets))
 
-            if self.table_model is not None:
-                self.renderer.AddActor(self.table_actor)
+                actor_transform = vtk.vtkTransform()
+                actor_transform.Translate(*current_offsets[:3])
+                actor_transform.RotateZ(current_offsets[9])
+
+                path_actor.SetUserTransform(actor_transform)
+                path_actor.SetPosition(*current_offsets[:3])
+
+                LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
+
+                program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+
+                axes = path_actor.get_axes_actor()
+
+                self.offset_axes[wcs_index] = axes
+                self.program_bounds_actors[wcs_index] = program_bounds_actor
+
+                self.renderer.AddActor(axes)
+                self.renderer.AddActor(program_bounds_actor)
+                self.renderer.AddActor(path_actor)
+                
+            if self.plotMachine == True:
+                if self.machine_parts:
+                    self.renderer.AddActor(self.machine_parts_actor)
+                
+                if self.table_model is not None:
+                    self.renderer.AddActor(self.table_actor)
 
             if self.spindle_model is not None:
                 self.renderer.AddActor(self.spindle_actor)
+
 
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
@@ -647,6 +667,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
 
+   
+    def get_asm_parts(self, parts):
+        # helper function to iterate over machine parts tree
+        for part in parts.GetParts():
+            # yield part
+            if isinstance(part, vtk.vtkAssembly):
+                yield part
+                for p in self.get_asm_parts(part):
+                    if isinstance(p, vtk.vtkAssembly):
+                        yield p
+                    # if isinstance(p, vtk.vtkActor):
+                    #     yield p
+            # elif isinstance(part, vtk.vtkActor):
+            #     yield part
+                    
     def update_position(self, position):  # the tool movement
         
         self.current_time = round(time.time() * 1000)
@@ -658,6 +693,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         
         # Plots the movement of the tool and leaves a trace line
+        
         active_wcs_offset = self._datasource.getWcsOffsets()[self._datasource.getActiveWcsIndex()]
         if self._datasource.isMachineJet():
             # update the position for JET machines so spindle/tool is
@@ -665,6 +701,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             list_pos = list(position)
             list_pos[2] = active_wcs_offset[2]
             position = tuple(list_pos)
+            
         self.spindle_position = position[:3]
         self.spindle_rotation = position[3:6]
         
@@ -678,26 +715,32 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
 
-        if self.robot:
-            parts = self.robot_actor.get_parts()
-            for data in self.robot_data:
-                joint = data.get("joint")
+        if self.plotMachine == True:
+            if self.machine_parts:
 
-                if joint is not False:
-                    rotation = self.joints[int(joint)].input.value
+                print(f"Machine : {self.machine_parts_actor}")
 
-                    if data.get("rotation") == "x":
-                        parts[int(joint)].SetOrientation(rotation, 0, 0)
-                    elif data.get("rotation") == "y":
-                        parts[int(joint)].SetOrientation(0, rotation, 0)
-                    elif data.get("rotation") == "z":
-                        parts[int(joint)].SetOrientation(0, 0, rotation)
-                    elif data.get("rotation") == "-x":
-                        parts[int(joint)].SetOrientation(-rotation, 0, 0)
-                    elif data.get("rotation") == "-y":
-                        parts[int(joint)].SetOrientation(0, -rotation, 0)
-                    elif data.get("rotation") == "-z":
-                        parts[int(joint)].SetOrientation(0, 0, -rotation)
+                # self.machine_parts_actor.InitPathTraversal()
+                # parts = self.machine_parts_actor.GetParts()
+                
+                self.machine_parts_actor.InitPathTraversal()
+                for part in self.get_asm_parts(self.machine_parts_actor):
+                    print(f"PATH: {part}")
+                    # part_prop = path.GetViewProp()
+                    # if isinstance(part, vtk.vtkActor):
+                    #    print(f"Actor FOUND: ")
+                    #    self.move_part(part)
+                    if isinstance(part, vtk.vtkAssembly):
+                        print(f"ASM FOUND: ")
+                        self.move_part(part)
+                    #
+
+                        # for p in part.GetParts():
+                        #     if isinstance(p, vtk.vtkActor):
+                        #         print(f"Actor FOUND: ")
+                        #         self.move_part(p)
+                        #     # if isinstance(p, vtk.vtkAssembly):
+                            #     self.move_part(p)
 
         self.tool_actor.SetUserTransform(tool_transform)
 
@@ -723,7 +766,80 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         #print(f"Update tool tip position {time.time()}")
         self.path_cache_actor.add_line_point(self.tooltip_position)
         self.renderer_window.Render()
+        
+    def move_part(self, part):
+                   
+        part_axis = part.GetPartAxis()
+        part_type = part.GetPartType()
 
+        print(part_axis)
+        print(part_type)
+
+        part_transform = vtk.vtkTransform()  
+        
+        if part_type == "linear":
+
+            #part_position = self.joints[part_joint].input.value
+            
+            if part_axis == "x":
+                part.SetPosition(self.spindle_position[0], 0, 0)
+            elif part_axis == "y":
+                part.SetPosition(0, self.spindle_position[1], 0)
+            elif part_axis == "z":
+                part.SetPosition(0, 0, self.spindle_position[2])
+            elif part_axis == "-x":
+                part.SetPosition(-self.spindle_position[0], 0, 0)
+            elif part_axis == "-y":
+                part.SetPosition(0, -self.spindle_position[1], 0)
+            elif part_axis == "-z":
+                part.SetPosition(0, 0, -self.spindle_position[2])
+                
+            # if part_axis == "x":
+            #     part_transform.Translate(self.spindle_position[0], 0, 0)
+            # elif part_axis == "y":
+            #     part_transform.Translate(0, self.spindle_position[1], 0)
+            # elif part_axis == "z":
+            #     part_transform.Translate(0, 0, self.spindle_position[2])
+            # elif part_axis == "-x":
+            #     part_transform.Translate(-self.spindle_position[0], 0, 0)
+            # elif part_axis == "-y":
+            #     part_transform.Translate(0, -self.spindle_position[1], 0)
+            # elif part_axis == "-z":
+            #     part_transform.Translate(0, 0, -self.spindle_position[2])
+            #
+            # part.SetUserTransform(part_transform)
+
+        elif part_type == "angular":
+            # part_position = self.joints[part_joint].input.value
+            
+            if part_axis == "a":
+                part.SetOrientation(self.spindle_rotation[0], 0, 0)
+            elif part_axis== "b":
+                part.SetOrientation(0, self.spindle_rotation[1], 0)
+            elif part_axis == "c":
+                part.SetOrientation(0, 0, self.spindle_rotation[2])
+            elif part_axis == "-a":
+                part.SetOrientation(-self.spindle_rotation[0], 0, 0)
+            elif part_axis == "-b":
+                part.SetOrientation(0, -self.spindle_rotation[1], 0)
+            elif part_axis == "-c":
+                part.SetOrientation(0, 0, -self.spindle_rotation[2])
+ 
+            # if part_axis == "a":
+            #     part_transform.RotateX(-self.spindle_rotation[0])
+            # elif part_axis== "b":
+            #     part_transform.RotateY(-self.spindle_rotation[1])
+            # elif part_axis == "c":
+            #     part_transform.RotateZ(-self.spindle_rotation[2])
+            # elif part_axis == "-a":
+            #     part_transform.RotateX(self.spindle_rotation[0])
+            # elif part_axis == "-b":
+            #     part_transform.RotateY(self.spindle_rotation[1])
+            # elif part_axis == "-c":
+            #     part_transform.RotateZ(self.spindle_rotation[2])  
+            #
+            # part.SetUserTransform(part_transform)
+        
 
     def update_joints(self, joints):
         self.joints = joints
@@ -1353,6 +1469,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def toggleMultiColorPath(self):
         pass
+    
+    
+    @Property(bool)
+    def plotMachine(self):
+        return self._plot_machine
+
+    @plotMachine.setter
+    def plotMachine(self, value):
+        self._plot_machine = value
+
+    @plotMachine.reset
+    def plotMachine(self):
+        self.plotMachine = false
+
 
     @Property(QColor)
     def backgroundColor(self):

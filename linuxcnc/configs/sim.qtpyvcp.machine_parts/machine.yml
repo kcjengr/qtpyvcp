@@ -1,0 +1,49 @@
+ root:
+    id: "base"
+    model: "parts/Base.stl"
+    type: "table"
+    position: [0, 75, 0, 0, 0, 0]
+    origin: [0, 0, 0]
+    axis: null
+    joint: null
+    child_linear:
+        id: "x_axis"
+        model: "parts/Xaxis.stl"
+        type: "linear"
+        position: [0, 110, 0, 0, 0, 0]
+        origin: [0, 0, 0]
+        axis: "x"
+        joint: 0
+        child_1a:
+            id: "y_axis"
+            model: "parts/Yaxis.stl"
+            type: "linear"
+            position: [0, 45, 35, 0, 0, 0]
+            origin: [0, 0, 0]
+            axis: "y"
+            joint: 1   
+            child_2a: 
+                id: "z_axis"
+                model: "parts/Zaxis.stl"
+                type: "linear"
+                position: [0, 35, 0, 0, 0, 0]
+                origin: [0, 0, 0]
+                axis: "z"
+                joint: 2
+
+    child_rotative:
+        id: "b_axis"
+        model: "parts/Baxis.stl"
+        type: "angular"
+        position: [0, 50, -50, 0, 0, 0]
+        origin: [0, 0, 0]
+        axis: "b"
+        joint: 3
+        child_1b:
+            id: "c_axis"
+            model: "parts/Caxis.stl"
+            type: "angular"
+            position: [0,10, -62, 0, 0, 0]
+            origin: [0, 10, 0]
+            axis  : "c"
+            joint: 4
