@@ -875,6 +875,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             axes_actor = path_actor.get_axes_actor()
             self.renderer.RemoveActor(axes_actor)
+            self.renderer.RemoveActor(program_bounds_actor)
             
             if wcs_index == self.active_wcs_index:
                 
