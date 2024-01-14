@@ -589,6 +589,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.canon = VTKCanon(colors=self.path_colors)
             self.load(fname)
         else:
+            self._datasource._status.removeLock()
             return
 
         LOG.debug("-------Load time %s seconds ---" % (time.time() - start_time))
