@@ -64,14 +64,15 @@ class MachineActor(vtk.vtkCubeAxesActor2D):
             self.showMachineBounds(bounds and bounds.value)
                                    
     def showMachineTicks(self, ticks):
-        if ticks:
-            self.XAxisTickVisibilityOn()
-            self.YAxisTickVisibilityOn()
-            self.ZAxisTickVisibilityOn()
-        else:
-            self.XAxisTickVisibilityOff()
-            self.YAxisTickVisibilityOff()
-            self.ZAxisTickVisibilityOff()
+        pass
+        # if ticks:
+        #     self.XAxisTickVisibilityOn()
+        #     self.YAxisTickVisibilityOn()
+        #     self.ZAxisTickVisibilityOn()
+        # else:
+        #     self.XAxisTickVisibilityOff()
+        #     self.YAxisTickVisibilityOff()
+        #     self.ZAxisTickVisibilityOff()
 
     def showMachineBounds(self, bounds):
         if bounds:
@@ -85,24 +86,26 @@ class MachineActor(vtk.vtkCubeAxesActor2D):
 
 
     def showMachineLabels(self, labels):
-        if labels:
-            self.XAxisLabelVisibilityOn()
-            self.YAxisLabelVisibilityOn()
-            self.ZAxisLabelVisibilityOn()
-        else:
-            self.XAxisLabelVisibilityOff()
-            self.YAxisLabelVisibilityOff()
-            self.ZAxisLabelVisibilityOff()
+        pass
+        # if labels:
+        #     self.XAxisLabelVisibilityOn()
+        #     self.YAxisLabelVisibilityOn()
+        #     self.ZAxisLabelVisibilityOn()
+        # else:
+        #     self.XAxisLabelVisibilityOff()
+        #     self.YAxisLabelVisibilityOff()
+        #     self.ZAxisLabelVisibilityOff()
 
     def showGridlines(self, grid):
-        if grid:
-            self.DrawXGridlinesOn()
-            self.DrawYGridlinesOn()
-            self.DrawZGridlinesOn()
-        else:
-            self.DrawXGridlinesOff()
-            self.DrawYGridlinesOff()
-            self.DrawZGridlinesOff()
+        pass
+        # if grid:
+        #     self.DrawXGridlinesOn()
+        #     self.DrawYGridlinesOn()
+        #     self.DrawZGridlinesOn()
+        # else:
+        #     self.DrawXGridlinesOff()
+        #     self.DrawYGridlinesOff()
+        #     self.DrawZGridlinesOff()
 
 
 class MachinePart(vtk.vtkAssembly):
