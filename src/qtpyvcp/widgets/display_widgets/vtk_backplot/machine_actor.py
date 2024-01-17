@@ -45,6 +45,20 @@ class MachineCubeActor(vtk.vtkCubeAxesActor):
         
         self.SetGridLineLocation(self.VTK_GRID_LINES_FURTHEST);
 
+        grid_color = vtk.vtkProperty()
+        grid_color.SetColor(0.05, 0.05, 0.05)
+        
+        self.SetXAxesGridlinesProperty(grid_color)
+        self.SetYAxesGridlinesProperty(grid_color)
+        self.SetZAxesGridlinesProperty(grid_color)
+        
+        edjes_color = vtk.vtkProperty()
+        edjes_color.SetColor(0.45, 0.45, 0.45)
+        
+        self.SetXAxesLinesProperty(edjes_color)
+        self.SetYAxesLinesProperty(edjes_color)
+        self.SetZAxesLinesProperty(edjes_color)
+
         # x_actor = self.GetXAxisActor()
         # y_actor = self.GetYAxisActor()
         # z_actor = self.GetZAxisActor()
