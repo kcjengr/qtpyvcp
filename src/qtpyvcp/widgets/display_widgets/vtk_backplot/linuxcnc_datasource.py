@@ -41,6 +41,7 @@ class LinuxCncDataSource(QObject):
         self._is_lathe = bool(self._inifile.find("DISPLAY", "LATHE"))
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
         self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
+        self._machine_bounds = str(self._inifile.find("VTK", "BOUNDARIES"))
 
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -157,6 +158,9 @@ class LinuxCncDataSource(QObject):
 
     def isHomed(self):
         return bool(self._status.homed)
+    
+    def getMachineBounds(self):
+        return self._machine_bounds
 
     def getActiveWcsIndex(self):
         # in the stat, the first one the list is G53 (Machine Coordinates)

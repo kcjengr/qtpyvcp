@@ -2,7 +2,7 @@
 
 import yaml
 
-from pprint import pprint
+# from pprint import pprint
 import linuxcnc
 import os
 from collections import OrderedDict
@@ -41,7 +41,7 @@ from .axes_actor import AxesActor
 from .tool_actor import ToolActor, ToolBitActor
 from .table_actor import TableActor
 from .spindle_actor import SpindleActor
-from .machine_actor import MachineActor, MachinePartsASM
+from .machine_actor import MachineCubeActor, MachineLineActor, MachinePartsASM
 from .path_cache_actor import PathCacheActor
 from .program_bounds_actor import ProgramBoundsActor
 from .vtk_canon import VTKCanon
@@ -230,9 +230,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.SetRenderWindow(self.renderer_window)
 
         if not IN_DESIGNER:
-
-
-            self.machine_actor = MachineActor(self._datasource)
+            
+            bounds_type = self._datasource.getMachineBounds()
+            if bounds_type == "line":
+                self.machine_actor = MachineLineActor(self._datasource)
+            else:
+                self.machine_actor = MachineCubeActor(self._datasource)
+            
             self.machine_actor.SetCamera(self.camera)
 
             self.axes_actor = AxesActor(self._datasource)
@@ -664,7 +668,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
 
     def motion_type(self, value):
+        
         LOG.debug("-----motion_type is: {}".format(value))
+        
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
 
@@ -867,6 +873,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_wcs_offset = offset
         
         self.rotate_and_translate()
+        
+        # TODO implement rapid recalculation
         
     def rotate_and_translate(self):
         
