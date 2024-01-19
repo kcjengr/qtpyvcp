@@ -72,6 +72,12 @@ class MachineCubeActor(vtk.vtkCubeAxesActor):
         
         # self.SetFlyModeToOuterEdges()
         
+        self.SetFlyModeToStaticEdges()
+        
+        # self.SetFlyModeToClosestTriad()
+        # self.SetFlyModeToStaticTriad()
+        
+        
         # label_properties = self.GetAxisLabelTextProperty()
         # label_properties.SetOrientation(30)
         # label_properties.SetLineOffset(5)
@@ -159,8 +165,15 @@ class MachineLineActor(vtk.vtkCubeAxesActor2D):
         
         self.SetLabelFormat("%6.3f")
         
-        self.SetFlyModeToOuterEdges()
+        if self._datasource.isMachineJet():
+            self.SetFlyModeToNone()
+        else:
+            self.SetFlyModeToOuterEdges()
         
+        if self._datasource.isMachineJet():
+            self.ZAxisVisibilityOff()
+            # self.YAxisVisibilityOff()
+            
         label_properties = self.GetAxisLabelTextProperty()
         label_properties.SetOrientation(30)
         label_properties.SetLineOffset(5)
@@ -184,13 +197,21 @@ class MachineLineActor(vtk.vtkCubeAxesActor2D):
 
     def showMachineBounds(self, bounds):
         if bounds:
-            self.XAxisVisibilityOn()
-            self.YAxisVisibilityOn()
-            self.ZAxisVisibilityOn()
+            if self._datasource.isMachineJet():
+                self.XAxisVisibilityOn()
+                self.YAxisVisibilityOn()
+            else:  
+                self.XAxisVisibilityOn()
+                self.YAxisVisibilityOn()
+                self.ZAxisVisibilityOn()
         else:
-            self.XAxisVisibilityOff()
-            self.YAxisVisibilityOff()
-            self.ZAxisVisibilityOff()
+            if self._datasource.isMachineJet():
+                self.XAxisVisibilityOff()
+                self.YAxisVisibilityOff()
+            else:
+                self.XAxisVisibilityOff()
+                self.YAxisVisibilityOff()
+                self.ZAxisVisibilityOff()
 
 
     def showMachineLabels(self, labels):
