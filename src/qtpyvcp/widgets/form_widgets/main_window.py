@@ -1,5 +1,6 @@
 import os
 import sys
+import linuxcnc
 
 from qtpy import uic
 from qtpy.QtGui import QKeySequence
