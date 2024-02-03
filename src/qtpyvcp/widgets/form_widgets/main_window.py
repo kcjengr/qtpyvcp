@@ -33,7 +33,7 @@ class VCPMainWindow(QMainWindow):
             opts = qtpyvcp.OPTIONS
 
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
-        self._keyboard_jog = bool(self._inifile.find("DISPLAY", "KEYBOARD_JOG"))
+        self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG")
         
         self.setWindowTitle(title)
 
@@ -283,8 +283,8 @@ class VCPMainWindow(QMainWindow):
             LOG.debug('Accept keyPressEvent Event')
             event.accept()
             return
-
-        if self._keyboard_jog is False:
+        
+        if self._keyboard_jog.lower() in ['false', '0', 'f', 'n', 'no']:
             event.accept()
             return
           
@@ -314,7 +314,7 @@ class VCPMainWindow(QMainWindow):
             event.accept()
             return
 
-        if not self._keyboard_jog:
+        if self._keyboard_jog.lower() in ['false', '0', 'f', 'n', 'no']:
             event.accept()
             return
         

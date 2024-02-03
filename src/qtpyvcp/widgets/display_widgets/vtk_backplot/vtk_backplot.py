@@ -133,7 +133,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._datasource = LinuxCncDataSource()
         
-        if self._datasource.getKeyboardJog is True:
+        print(self._datasource.getKeyboardJog())
+        
+        if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
             event_filter = InteractorEventFilter(self)
             self.installEventFilter(event_filter)
 
