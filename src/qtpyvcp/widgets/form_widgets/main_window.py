@@ -31,6 +31,9 @@ class VCPMainWindow(QMainWindow):
         if opts is None:
             opts = qtpyvcp.OPTIONS
 
+        self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
+        self._keyboard_jog = bool(self._inifile.find("DISPLAY", "KEYBOARD_JOG"))
+        
         self.setWindowTitle(title)
 
         self.app = QApplication.instance()
@@ -278,8 +281,12 @@ class VCPMainWindow(QMainWindow):
         if STATUS.isLocked():
             LOG.debug('Accept keyPressEvent Event')
             event.accept()
-            return 
+            return
 
+        if self._keyboard_jog is False:
+            event.accept()
+            return
+          
         if event.isAutoRepeat():
             return
 
@@ -304,7 +311,11 @@ class VCPMainWindow(QMainWindow):
         if STATUS.isLocked():
             LOG.debug('Accept keyReleaseEvent Event')
             event.accept()
-            return 
+            return
+
+        if not self._keyboard_jog:
+            event.accept()
+            return
         
         if event.isAutoRepeat():
             return

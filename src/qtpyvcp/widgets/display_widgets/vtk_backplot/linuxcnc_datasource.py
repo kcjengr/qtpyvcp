@@ -38,6 +38,7 @@ class LinuxCncDataSource(QObject):
         self._tooltable = getPlugin('tooltable')
         self._offsettable = getPlugin('offsettable')
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
+        self._keyboard_jog = bool(self._inifile.find("DISPLAY", "KEYBOARD_JOG"))
         self._is_lathe = bool(self._inifile.find("DISPLAY", "LATHE"))
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
         self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
@@ -158,6 +159,9 @@ class LinuxCncDataSource(QObject):
 
     def isHomed(self):
         return bool(self._status.homed)
+    
+    def getKeyboardJog(self):
+        return self._keyboard_jog
     
     def getMachineBounds(self):
         return self._machine_bounds

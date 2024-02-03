@@ -131,11 +131,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         # LOG.debug("---------using refactored vtk code")
 
-        event_filter = InteractorEventFilter(self)
-
-        self.installEventFilter(event_filter)
-
         self._datasource = LinuxCncDataSource()
+        
+        if self._datasource.getKeyboardJog is True:
+            event_filter = InteractorEventFilter(self)
+            self.installEventFilter(event_filter)
 
         self.current_time = round(time.time() * 1000)
         self.plot_interval = 1000/30  # 1 second / 30 fps
