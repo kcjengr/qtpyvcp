@@ -33,7 +33,7 @@ class VCPMainWindow(QMainWindow):
             opts = qtpyvcp.OPTIONS
 
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
-        self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG")
+        self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
         
         self.setWindowTitle(title)
 
