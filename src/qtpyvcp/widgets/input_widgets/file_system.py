@@ -269,9 +269,9 @@ class FileSystemTable(QTableView, TableType):
             self.rootChanged.emit(absolute_path)
 
         elif file_info.isFile():
-            if file_info.completeSuffix() not in self.nc_file_exts:
-                LOG.warn("Unsuported NC program type with extention .%s",
-                         file_info.completeSuffix())
+            # if file_info.completeSuffix() not in self.nc_file_exts:
+            #     LOG.warn("Unsuported NC program type with extention .%s",
+            #              file_info.completeSuffix())
             loadProgram(absolute_path)
 
     @Slot()
