@@ -1,0 +1,2 @@
+.. automodule:: qtpyvcp.hal
+    :members:

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build debian packages &mdash; QtPyVCP 4.0</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basic Usage" href="basic_usage.html" />
+    <link rel="prev" title="Debian 12 (Bookworm) install for Python 3" href="bookworm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+              <div class="version">
+                4.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="apt_install.html">Install from apt repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prerequisites.html">Prerequisites for python3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypi_install.html">Standard Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_install.html">Development Install for Python 3 (virtual environment)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bullseye.html">Debian 11 (Bullseye) install for Python 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bookworm.html">Debian 12 (Bookworm) install for Python 3</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Build debian packages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Installation</a></li>
+      <li class="breadcrumb-item active">Build debian packages</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/install/build_debs.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="build-debian-packages">
+<h1>Build debian packages<a class="headerlink" href="#build-debian-packages" title="Permalink to this heading"></a></h1>
+<p>In this example we are going show how to build debian packages for qtpyvcp, it uses poetry to configure the build and installation and debian config files</p>
+<p>Upgrade the system</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>upgrade
+</pre></div>
+</div>
+<p>Requirements</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-poetry<span class="w"> </span>pybuild-plugin-pyproject<span class="w"> </span>git<span class="w"> </span>debhelper<span class="w"> </span>dh-python<span class="w"> </span>libudev-dev<span class="w"> </span>tcl8.6-dev<span class="w"> </span>tk8.6-dev<span class="w"> </span>bwidget<span class="w"> </span>tclx8.4<span class="w"> </span>libeditreadline-dev<span class="w"> </span>asciidoc<span class="w"> </span>dblatex<span class="w"> </span>docbook-xsl<span class="w"> </span>dvipng<span class="w"> </span>ghostscript<span class="w"> </span>graphviz<span class="w"> </span>groff<span class="w"> </span>imagemagick<span class="w"> </span>inkscape<span class="w"> </span>python3-lxml<span class="w"> </span>source-highlight<span class="w"> </span>w3c-linkchecker<span class="w"> </span>xsltproc<span class="w"> </span>texlive-extra-utils<span class="w"> </span>texlive-font-utils<span class="w"> </span>texlive-fonts-recommended<span class="w"> </span>texlive-lang-cyrillic<span class="w"> </span>texlive-lang-french<span class="w"> </span>texlive-lang-german<span class="w"> </span>texlive-lang-polish<span class="w"> </span>texlive-lang-spanish<span class="w"> </span>texlive-latex-recommended<span class="w"> </span>asciidoc-dblatex<span class="w"> </span>python3-tk<span class="w"> </span>libxmu-dev<span class="w"> </span>libglu1-mesa-dev<span class="w"> </span>libgl1-mesa-dev<span class="w"> </span>libgtk2.0-dev<span class="w"> </span>libgtk-3-dev<span class="w"> </span>gettext<span class="w"> </span>intltool<span class="w"> </span>autoconf<span class="w"> </span>libboost-python-dev<span class="w"> </span>libmodbus-dev<span class="w"> </span>libusb-1.0-0-dev<span class="w"> </span>psmisc<span class="w"> </span>yapps2<span class="w"> </span>libepoxy-dev<span class="w"> </span>python3-xlib<span class="w"> </span>python3-pyqt5<span class="w"> </span>python3-dbus.mainloop.pyqt5<span class="w"> </span>python3-pyqt5.qtopengl<span class="w"> </span>python3-pyqt5.qsci<span class="w"> </span>python3-pyqt5.qtmultimedia<span class="w"> </span>python3-pyqt5.qtquick<span class="w"> </span>qml-module-qtquick-controls<span class="w"> </span>gstreamer1.0-plugins-bad<span class="w">  </span>libqt5multimedia5-plugins<span class="w"> </span>pyqt5-dev-tools<span class="w"> </span>python3-dev<span class="w"> </span>python3-setuptools<span class="w"> </span>python3-wheel<span class="w"> </span>python3-pip<span class="w"> </span>python3-yapps<span class="w"> </span>dpkg-dev<span class="w"> </span>python3-serial<span class="w"> </span>libtk-img<span class="w"> </span>qttools5-dev<span class="w"> </span>qttools5-dev-tools<span class="w"> </span>espeak<span class="w"> </span>espeak-data<span class="w"> </span>espeak-ng<span class="w"> </span>freeglut3<span class="w"> </span>gdal-data<span class="w"> </span>gstreamer1.0-tools<span class="w"> </span>libaec0<span class="w"> </span>libarmadillo10<span class="w"> </span>libarpack2<span class="w"> </span>libcfitsio9<span class="w"> </span>libcharls2<span class="w"> </span>libdap27<span class="w"> </span>libdapclient6v5<span class="w"> </span>libespeak1<span class="w"> </span>libfreexl1<span class="w"> </span>libfyba0<span class="w"> </span>libgdcm3.0<span class="w"> </span>libgeos-c1v5<span class="w"> </span>libgeotiff5<span class="w"> </span>libgif7<span class="w"> </span>libgtksourceview-3.0-dev<span class="w"> </span>libhdf4-0-alt<span class="w"> </span>libhdf5-103-1<span class="w"> </span>libhdf5-hl-100<span class="w"> </span>libimagequant0<span class="w"> </span>libkmlbase1<span class="w"> </span>libkmldom1<span class="w"> </span>libkmlengine1<span class="w"> </span>liblept5<span class="w"> </span>libmariadb3<span class="w"> </span>libminizip1<span class="w"> </span>libodbc1<span class="w"> </span>libogdi4.1<span class="w"> </span>libportaudio2<span class="w"> </span>libpq5<span class="w"> </span>libprotobuf23<span class="w"> </span>libqhull8.0<span class="w"> </span>librttopo1<span class="w"> </span>libsocket++1<span class="w"> </span>libspatialite7<span class="w"> </span>libsuperlu5<span class="w"> </span>libsz2<span class="w"> </span>libtbbmalloc2<span class="w"> </span>libtesseract4<span class="w"> </span>liburiparser1<span class="w"> </span>libxerces-c3.2<span class="w"> </span>libxml2-dev<span class="w"> </span>mariadb-common<span class="w"> </span>mesa-utils<span class="w"> </span>mysql-common<span class="w"> </span>odbcinst<span class="w"> </span>odbcinst1debian2<span class="w"> </span>proj-bin<span class="w"> </span>proj-data<span class="w"> </span>python3-configobj<span class="w"> </span>python3-espeak<span class="w"> </span>python3-gi-cairo<span class="w"> </span>python3-olefile<span class="w"> </span>python3-opencv<span class="w"> </span>python3-opengl<span class="w"> </span>python3-pil<span class="w"> </span>python3-pil.imagetk<span class="w"> </span>python3-pyqt5.qtsvg<span class="w"> </span>python3-pyqt5.qtwebkit<span class="w"> </span>tcl-tclreadline<span class="w"> </span>geotiff-bin<span class="w"> </span>gdal-bin<span class="w"> </span>glew-utils<span class="w"> </span>libgtksourceview-3.0-doc<span class="w"> </span>libhdf4-doc<span class="w"> </span>libhdf4-alt-dev<span class="w"> </span>hdf4-tools<span class="w"> </span>odbc-postgresql<span class="w"> </span>tdsodbc<span class="w"> </span>ogdi-bin<span class="w"> </span>python-configobj-doc<span class="w"> </span>libgle3<span class="w"> </span>python-pil-doc<span class="w"> </span>python3-sqlalchemy
+</pre></div>
+</div>
+<p>Download qtpyvcp sources</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/kcjengr/qtpyvcp/
+$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/kcjengr/monokrom/
+</pre></div>
+</div>
+<p>Create a changelog file</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>qtpyvcp
+$<span class="w"> </span>dch<span class="w"> </span>--create<span class="w"> </span>--distribution<span class="w"> </span>unstable<span class="w"> </span>--package<span class="w"> </span>qtpyvcp<span class="w"> </span>--newversion<span class="w"> </span><span class="m">0</span>.1-2<span class="w"> </span>Experimental<span class="w"> </span>Release<span class="w"> </span>version.<span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Build the deb file</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>dpkg-buildpackage<span class="s2">&quot;, &quot;</span>-b<span class="s2">&quot;, &quot;</span>-uc
+</pre></div>
+</div>
+<p>If all went ok deb should be in the parent directory</p>
+<p>Install debs</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>python3-qtpyvcp-0.1-2.deb
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="basic_usage.html" class="btn btn-neutral float-right" title="Basic Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bookworm.html" class="btn btn-neutral float-left" title="Debian 12 (Bookworm) install for Python 3" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
