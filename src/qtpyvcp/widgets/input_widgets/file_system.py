@@ -335,6 +335,7 @@ class FileSystemTable(QTableView, TableType):
 
         new_file = QFile(new_file_path)
         new_file.open(QIODevice.ReadWrite)
+        new_file.write("(New Program)\n\n\nM30".encode("utf8"))
 
     @Slot()
     def newFolder(self):
