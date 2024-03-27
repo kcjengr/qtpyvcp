@@ -35,6 +35,13 @@ class BaseGenerator(object):
             gcode.append('M7')
         elif self.coolant.lower() == 'flood':
             gcode.append('M8')
+        elif self.coolant.lower() == 'air blast':
+            gcode.append('M7')
+        elif self.coolant.lower() == 'vacuum':
+            gcode.append('M8')
+        elif self.coolant.lower() == 'both':
+            gcode.append('M7')
+            gcode.append('M8')
 
         return gcode
 
