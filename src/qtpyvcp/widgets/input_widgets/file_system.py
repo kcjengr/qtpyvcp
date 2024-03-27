@@ -249,14 +249,30 @@ class FileSystemTable(QTableView, TableType):
         return False
 
     @Slot()
-    def loadSelectedFile(self):
-        """Loads the selected file into LinuxCNC."""
-        selection = self.getSelection()
-        if selection is not None:
-            path = self.model.filePath(selection[0])
-            loadProgram(path)
-            return True
-        return False
+    def loadSelectedFile(self, index=None):
+        """If ngc file, opens in LinuxCNC, if dir displays dir."""
+        if index is None:
+            selection = self.getSelection()
+            if selection is None:
+                return
+            index = selection[0]
+
+        path = self.model.filePath(self.rootIndex())
+        name = self.model.filePath(index)
+
+        absolute_path = os.path.join(path, name)
+
+        file_info = QFileInfo(absolute_path)
+        if file_info.isDir():
+            self.model.setRootPath(absolute_path)
+            self.setRootIndex(self.model.index(absolute_path))
+            self.rootChanged.emit(absolute_path)
+
+        elif file_info.isFile():
+            # if file_info.completeSuffix() not in self.nc_file_exts:
+            #     LOG.warn("Unsuported NC program type with extention .%s",
+            #              file_info.completeSuffix())
+            loadProgram(absolute_path)
 
     @Slot()
     def selectPrevious(self):
