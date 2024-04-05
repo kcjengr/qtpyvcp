@@ -13,6 +13,7 @@ from qtpyvcp.plugins import getPlugin
 
 STATUS = getPlugin('status')
 STAT = STATUS.stat
+JOINT = STAT.joint
 
 from qtpyvcp.utilities.info import Info
 INFO = Info()
@@ -259,12 +260,15 @@ def _set_work_coord_bindOk(coord='', widget=None):
         widget.setChecked(STATUS.g5x_index.getString() == coord)
         STATUS.g5x_index.notify(lambda g5x: widget.setChecked(g5x == coord), 'string')
 
+
 set_work_coord.ok = _issue_mdi_ok
 set_work_coord.bindOk = _set_work_coord_bindOk
 
 # -------------------------------------------------------------------------
 # FEED HOLD action
 # -------------------------------------------------------------------------
+
+
 class feedhold:
     """Feed Hold action Group"""
 
@@ -299,12 +303,14 @@ def _feed_hold_bindOk(widget):
     STATUS.task_state.notify(lambda s: widget.setEnabled(s == linuxcnc.STATE_ON))
     STATUS.feed_hold_enabled.notify(widget.setChecked)
 
+
 feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle.ok = _feed_hold_ok
 feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle.bindOk = _feed_hold_bindOk
 
 # -------------------------------------------------------------------------
 # FEED OVERRIDE actions
 # -------------------------------------------------------------------------
+
 
 class feed_override:
     """Feed Override Group"""
@@ -409,6 +415,7 @@ def _feed_override_bindOk(value=100, widget=None):
         pass
     except:
         LOG.exception('Error in feed_override bindOk')
+
 
 feed_override.set.ok = feed_override.reset.ok = _feed_override_ok
 feed_override.set.bindOk = feed_override.reset.bindOk = _feed_override_bindOk
@@ -812,9 +819,71 @@ def getAxisNumber(axis):
 # -------------------------------------------------------------------------
 # OVERRIDE LIMITS action
 # -------------------------------------------------------------------------
-def override_limits():
-    LOG.info("Setting override limits")
-    CMD.override_limits()
+
+
+class override_limits:
+    """Override Limits Group"""
+    @staticmethod
+    def enable():
+        """Override Limits Enable"""
+        print("ENABLE LIMITS OVERRIDE")
+        CMD.override_limits()
+
+    @staticmethod
+    def disable():
+        """Override Limits Disable"""
+        print("DISABLE LIMITS OVERRIDE")
+        CMD.override_limits()
+
+    @staticmethod
+    def toggle_enable():
+        """Override Limits Enable Toggle"""
+        for j in JOINT:
+            if j.get("override_limits"):
+                override_limits.disable()
+            else:
+                override_limits.enable()
+
+    @staticmethod
+    def set(value):
+        """Feed Override Set Value"""
+        CMD.override_limits(bool(value))
+
+    @staticmethod
+    def reset():
+        """Override Limits Reset"""
+        CMD.override_limits(False)
+
+
+# def _override_limits():
+#     LOG.info("Setting override limits")
+#     CMD.override_limits()
+
+
+def _override_limits_enable_ok(widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON \
+            and STAT.interp_state == linuxcnc.INTERP_IDLE:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Axis must be on limit to override"
+
+    _override_limits_enable_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+
+def _override_limits_enable_bindOk(widget):
+    STATUS.task_state.onValueChanged(lambda: _override_limits_enable_ok(widget))
+    STATUS.interp_state.onValueChanged(lambda: _override_limits_enable_ok(widget))
+    STATUS.limit.onValueChanged(widget.setChecked)
+
 
 def _override_limits_ok(widget=None):
     ok = False
@@ -838,11 +907,15 @@ def _override_limits_ok(widget=None):
 
     return ok
 
+
 def _override_limits_bindOk(widget):
     STATUS.limit.onValueChanged(lambda: _override_limits_ok(widget))
 
-override_limits.ok = _override_limits_ok
-override_limits.bindOk = _override_limits_bindOk
+
+override_limits.set.ok = override_limits.reset.ok = _override_limits_ok
+override_limits.set.bindOk = override_limits.reset.ok = _override_limits_bindOk
+override_limits.enable.ok = override_limits.disable.ok = override_limits.toggle_enable.ok = _override_limits_enable_ok
+override_limits.enable.bindOk = override_limits.disable.bindOk = override_limits.toggle_enable.bindOk = _override_limits_enable_bindOk
 
 # -------------------------------------------------------------------------
 # JOG actions
@@ -853,6 +926,7 @@ MAX_JOG_SPEED = INFO.getMaxJogVelocity()
 DEFAULT_JOG_ANGULAR_SPEED = INFO.getJogAngularVelocity()
 MAX_JOG_ANGULAR_SPEED = INFO.getMaxJogAngularVelocity()
 
+
 @setting('machine.jog.linear-speed',
          default_value=DEFAULT_JOG_SPEED,
          min_value=0,
@@ -860,6 +934,7 @@ MAX_JOG_ANGULAR_SPEED = INFO.getMaxJogAngularVelocity()
          persistent=True)
 def jog_linear_speed(obj):
     return obj.value
+
 
 @jog_linear_speed.setter
 def jog_linear_speed(obj, value):
