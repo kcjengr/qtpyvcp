@@ -5,6 +5,8 @@ from qtpy.QtGui import QIntValidator, QDoubleValidator
 from qtpyvcp import SETTINGS
 from qtpyvcp.widgets import VCPWidget
 
+from qtpyvcp.utilities import logger
+LOG = logger.getLogger(__name__)
 
 class VCPAbstractSettingsWidget(VCPWidget):
     def __init__(self):
@@ -103,7 +105,10 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         if self._setting_name != "":
             setting = SETTINGS.get(self._setting_name)
             if setting:
-                str = text_fmt.format(setting.getValue())
+                try:
+                    str = text_fmt.format(setting.getValue())
+                except Exception as e:
+                    LOG.warning(e)
             else:
                 return
 
