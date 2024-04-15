@@ -194,7 +194,7 @@ class OffsetTable(DataPlugin):
         LOG.debug('Params file changed: {}'.format(path))
         # ToolEdit deletes the file and then rewrites it, so wait
         # a bit to ensure the new data has been writen out.
-        QTimer.singleShot(50, self.reloadOffsetTable)
+        QTimer.singleShot(200, self.reloadOffsetTable)
 
     def setCurrentOffsetNumber(self, offset_num):
         self.current_offset.setValue(offset_num)

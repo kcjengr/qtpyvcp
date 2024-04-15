@@ -241,7 +241,7 @@ class ToolTable(DataPlugin):
         LOG.debug('Tool Table file changed: {}'.format(path))
         # ToolEdit deletes the file and then rewrites it, so wait
         # a bit to ensure the new data has been writen out.
-        QTimer.singleShot(50, self.reloadToolTable)
+        QTimer.singleShot(200, self.reloadToolTable)
 
     def setCurrentToolNumber(self, tool_num):
         self.current_tool.setValue(self.TOOL_TABLE[tool_num])
