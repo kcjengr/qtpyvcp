@@ -7,7 +7,7 @@ from qtpyvcp import WINDOWS
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 
-# Helper function
+# Helper functions
 
 def getWidget(name):
     """Searches for a widget by name in the application windows.
@@ -17,6 +17,7 @@ def getWidget(name):
 
     Returns: QWidget
     """
+
     for win_name, obj in list(WINDOWS.items()):
         if hasattr(obj, name):
             return getattr(obj, name)
@@ -28,26 +29,28 @@ def getWidget(name):
 
 class ApiServer(threading.Thread):
     def __init__(self):
-        super().__init__()
+        super(ApiServer, self).__init__()
 
     def run(self):
-        app = Flask(__name__)
+        app = Flask('QtPyVcpAPI')
 
         api = Api(app)
+
+        # params example
+        # api.add_resource(UserAPI, '/<userId>', '/<userId>/<username>', endpoint='user')
+
         api.add_resource(Tools, '/tool_table')
         api.add_resource(Tool, '/tool/<tool_no>')
         api.add_resource(ToolData, '/tool_data/<tool_no>/<element>')
-        api.add_resource(AtcRotate, '/atc/rotate/<steps>/<direction>')
-        api.add_resource(AtcMessage, '/atc/msg/<msg>')
-        api.add_resource(AtcStore, '/atc/store/<pocket>/<tool>')
+        api.add_resource(Atc, '/atc')
 
-        app.run(host="127.0.0.1", port=5002, debug=False, use_reloader=False)
+        app.run(host="127.0.0.1", port=5002, threaded=True, debug=False, use_reloader=False)
 
 
-# Server
+# API Server
 
 class RestApi(DataPlugin):
-    """GCodeProperties Plugin"""
+    """RestApi Plugin"""
 
     def __init__(self):
         super(RestApi, self).__init__()
@@ -63,27 +66,31 @@ class RestApi(DataPlugin):
 #
 ########################################################################################################################
 
-class AtcRotate(Resource):
+class Atc(Resource):
 
-    def get(self, steps, direction):
+    def get(self):
+
         atc_widget = getWidget("dynatc")
-        atc_widget.rotate(steps, direction)
-        return 200
 
+        mode = request.args["mode"]
 
-class AtcMessage(Resource):
+        if mode == "spin":  # Rotate ATC
+            # curl http://127.0.0.1:5002/atc\?mode\=spin\&steps\=5\&direction\=cw
+            steps = request.args["steps"]
+            direction = request.args["direction"]
+            atc_widget.rotate(steps, direction)
+        elif mode == "message":  # Message
+            # curl http://127.0.0.1:5002/atc\?mode\=message\&message\=hola
+            message = request.args["message"]
+            atc_widget.atc_message(message)
+        elif mode == "store":  # Store tool in pocket
+            # curl http://127.0.0.1:5002/atc\?mode\=store\&pocket\=5\&tool\=7
+            pocket = request.args["pocket"]
+            tool = request.args["tool"]
+            atc_widget.store_tool(int(pocket), int(tool))
+        else:
+            return 400
 
-    def get(self, msg):
-        atc_widget = getWidget("dynatc")
-        atc_widget.atc_message(msg)
-        return 200
-
-
-class AtcStore(Resource):
-
-    def get(self, pocket, tool):
-        atc_widget = getWidget("dynatc")
-        atc_widget.store_tool(int(pocket), int(tool))
         return 200
 
 
@@ -123,3 +130,9 @@ class ToolData(Resource):
 
         return {f"tool {tool_no}": data}
 
+
+########################################################################################################################
+#
+#  Offset Table
+#
+########################################################################################################################
