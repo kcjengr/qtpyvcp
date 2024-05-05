@@ -12,6 +12,7 @@ import json
 from qtpy.QtCore import Property, Slot, Qt
 from qtpy.QtWidgets import QPushButton
 
+from qtpyvcp import hal as qhal
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
 
@@ -68,6 +69,15 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._style = ''
         self._data_channels = []
         self._security_level = 0
+        self._hal_param_enable = False
+        self._hal_param_name = None
+        self._hal_param_type = "s32"
+        self._hal_param_access = "rw"
+
+    def initialize(self):
+        if self.enableHalParams:
+            comp = qhal.getComponent()
+            comp.addParam(self.halParamName, self.halParamType, self.halParamAccess)
 
     #
     # Security implementation
@@ -102,8 +112,58 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._security_level = security
 
     #
+    # Pparameter implementation
+    #
+
+    @Property(bool)
+    def enableHalParams(self):
+        return self._hal_param_enable
+
+    @enableHalParams.setter
+    def enableHalParams(self, enabled):
+        self._hal_param_enable = enabled
+
+    ###
+
+    @Property(str)
+    def halParamName(self):
+        if self._hal_param_name is None:
+            return str(self.objectName()).replace('-', '_')
+        return self._hal_param_name
+
+    @halParamName.setter
+    def halParamName(self, name):
+        self._hal_param_name = name
+
+    ###
+
+    @Property(str)
+    def halParamType(self):
+        return self._hal_param_type
+
+    @halParamType.setter
+    def halParamType(self, param_type):
+        self._hal_param_type = param_type
+
+    ###
+
+    @Property(str)
+    def halParamAccess(self):
+        return self._hal_param_access
+
+    @halParamAccess.setter
+    def halParamAccess(self, param_access):
+        self._hal_param_access = param_access
+    
+    def action_event(self, instance, value):
+        print(instance)
+        print(value)
+        super().action_event(instance, value)
+    
+    #
     # Style Rules implementation
     #
+
     def setStyleClass(self, style_class):
         """Set the QSS style class for the widget"""
         self.setProperty('style', style_class)
@@ -216,6 +276,7 @@ class VCPWidget(VCPBaseWidget):
         # widgets that DO expect user interaction. So below would be a
         # breaking change until some cleaning is done. Test it?
         self.setFocusPolicy(Qt.NoFocus)
+
 
 class CMDWidget(VCPBaseWidget):
     """Command Widget
