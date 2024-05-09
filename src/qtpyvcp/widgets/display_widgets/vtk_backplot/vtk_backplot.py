@@ -1,4 +1,5 @@
 # import pydevd;pydevd.settrace()
+from pprint import pprint
 
 import yaml
 
@@ -19,7 +20,7 @@ from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
 from qtpy.QtWidgets import QApplication
 from qtpy.QtGui import QColor
 
-
+from .path_actor import OffsetRapidsActor
 
 # Fix poligons not drawing correctly on some GPU
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
@@ -58,6 +59,7 @@ from qtpy.QtOpenGL import QGLFormat
 f = QGLFormat()
 f.setSampleBuffers(True)
 QGLFormat.setDefaultFormat(f)
+
 
 def vtk_version_ok(major, minor):
     """
@@ -207,15 +209,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.ParallelProjectionOn()
         
         self.path_actors = OrderedDict()
+        self.path_offset_rapids_actors = OrderedDict()
         
         if self._datasource.isMachineMetric():
-            self.position_mult = 1000 #500 here works for me
+            self.position_mult = 1000  # 500 here works for me
             self.clipping_range_near = 0.01
-            self.clipping_range_far = 10000.0 #TODO: check this value
+            self.clipping_range_far = 10000.0  # TODO: check this value
         else:
             self.position_mult = 100
             self.clipping_range_near = 0.001
-            self.clipping_range_far = 1000.0 #TODO: check this value
+            self.clipping_range_far = 1000.0  # TODO: check this value
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self.renderer = vtk.vtkRenderer()
@@ -343,7 +346,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
             # self.status.g5x_index.notify(self.update_g5x_index)
+
             self.canon = VTKCanon(colors=self.path_colors)
+
             self.path_actors = self.canon.get_path_actors()
 
             for wcs_index, path_actor in list(self.path_actors.items()):
@@ -372,7 +377,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
-                
+
             if self.plotMachine == True:
                 if self.machine_parts:
                     self.renderer.AddActor(self.machine_parts_actor)
@@ -604,6 +609,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         LOG.debug("-------Draw time %s seconds ---" % (time.time() - start_time))
         self.path_actors = self.canon.get_path_actors()
+        self.path_offset_rapids_actors = self.canon.get_rapid_offset_actors()
+
 
         if self._datasource.isMachineFoam():
 
@@ -614,7 +621,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.tool_bit_actor.set_foam_offsets(z, w)
 
-        
         for wcs_index, actor in list(self.path_actors.items()):
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
             LOG.debug("---------wcs_index: {}".format(wcs_index))
@@ -652,22 +658,29 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.offset_axes[wcs_index] = axes
             self.program_bounds_actors[wcs_index] = program_bounds_actor
 
-            axes.SetUserTransform(axes_transform) #TODO: not sure if this is needed
+            axes.SetUserTransform(axes_transform)  # TODO: not sure if this is needed
 
             self.renderer.AddActor(axes)
+
             self.renderer.AddActor(program_bounds_actor)
+
+            # # print(f"CURRENT OFFSET = {wcs_index}")
+            # if wcs_index >= 1:
+            #     print(wcs_index)
+            #     print(self.path_offset_rapids_actors)
+            #     rapids_path_offset = self.path_offset_rapids_actors[wcs_index]
+            #     LOG.debug(f"{rapids_path_offset}")
+            #     self.renderer.AddActor(rapids_path_offset)
+
             self.renderer.AddActor(actor)
             QApplication.processEvents()
 
-        
-        
         # self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
         if self.program_view_when_loading_program:
             self.setViewProgram(self.program_view_when_loading_program_view)
 
         QTimer.singleShot(2000, self._datasource._status.removeLock)
-
 
     def motion_type(self, value):
         
@@ -676,7 +689,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
 
-   
     def get_asm_parts(self, parts):
         # helper function to iterate over machine parts tree
         for part in parts.GetParts():
@@ -696,11 +708,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.current_time = round(time.time() * 1000)
         
         if self.current_time - self.prev_plot_time >= self.plot_interval:
-            self.prev_plot_time  = self.current_time;
+            self.prev_plot_time = self.current_time
         else:
             return
-        
-        
+
         # Plots the movement of the tool and leaves a trace line
         
         active_wcs_offset = self._datasource.getWcsOffsets()[self._datasource.getActiveWcsIndex()]
@@ -713,7 +724,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
         self.spindle_position = position[:3]
         self.spindle_rotation = position[3:6]
-        
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
@@ -848,7 +858,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             #     part_transform.RotateZ(self.spindle_rotation[2])  
             #
             # part.SetUserTransform(part_transform)
-        
 
     def update_joints(self, joints):
         self.joints = joints
@@ -885,6 +894,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             axes_actor = path_actor.get_axes_actor()
+
             self.renderer.RemoveActor(axes_actor)
             self.renderer.RemoveActor(program_bounds_actor)
             
@@ -893,7 +903,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 axes_actor = path_actor.get_axes_actor()
     
                 LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
-
 
                 actor_transform = vtk.vtkTransform()
                 axes_transform = vtk.vtkTransform()
@@ -908,9 +917,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 
                 axes_transform.Translate(xyz)
                 axes_transform.RotateZ(self.rotation_xy_table[wcs_index-1])
-                
 
-                
                 axes_actor.SetUserTransform(actor_transform)
                 path_actor.SetUserTransform(actor_transform)
 
@@ -921,6 +928,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(program_bounds_actor)
     
                 self.program_bounds_actors[wcs_index] = program_bounds_actor
+
+            # print(f"CURRENT OFFSET = {wcs_index}")
+            #
+            # if wcs_index >= 1:
+            #
+            #     self.renderer.RemoveActor(self.path_offset_rapids_actors[wcs_index-1])
+            #     # rapids_path_offset = self.path_offset_rapids_actors[wcs_index]
+            #     # LOG.debug(f"{rapids_path_offset}")
+            #     # self.renderer.AddActor(rapids_path_offset)
 
         self.interactor.ReInitialize()
         self.renderer_window.Render()
