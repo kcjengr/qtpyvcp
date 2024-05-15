@@ -104,6 +104,7 @@ class VTKCanon(StatCanon):
 
         paths_count = 0
         prev_wcs_index = 0
+
         for wcs_index, data in self.path_points.items():
 
             path_actor = self.path_actors.get(wcs_index)

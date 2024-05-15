@@ -651,7 +651,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         prev_wcs_index = 0
         path_count = 0
         prev_transform = None
-
+        prev_position = None
         for wcs_index, actor in self.path_actors.items():
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
             LOG.debug("---------wcs_index: {}".format(wcs_index))
@@ -696,52 +696,100 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(actor)
             QApplication.processEvents()
 
-            if path_count == 0:
 
-                # Load the end point of the rapid from the first offset path
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputData(self.path_offset_end_point[prev_wcs_index])
+            # Load the end point of the rapid from the first offset path
+            actor_pos = actor.GetPosition()
 
-                actor = vtk.vtkActor()
-                actor.SetMapper(mapper)
-                actor.GetProperty().SetColor(self.path_colors.get("user").getRgb()[0:3])
-                actor.GetProperty().SetPointSize(5)
+            mapper = vtk.vtkPolyDataMapper()
+            mapper.SetInputData(self.path_offset_end_point[prev_wcs_index])
 
-                actor.SetUserTransform(actor_transform)
-                self.path_end_point[prev_wcs_index] = actor
-                point_1 = self.path_offset_end_points[prev_wcs_index]
-                self.renderer.AddActor(actor)
+            actor_p1_pos = [actor_pos[0] + xyz[0],
+                            actor_pos[1] + xyz[1],
+                            actor_pos[2] + xyz[2]]
+            line_p1 = self.path_offset_end_points[prev_wcs_index]
+
+            line_p1_pos = [actor_p1_pos[0] + line_p1[0],
+                           actor_p1_pos[1] + line_p1[1],
+                           actor_p1_pos[2] + line_p1[2]]
+            actor_point_1 = vtk.vtkActor()
+            actor_point_1.SetMapper(mapper)
+            actor_point_1.GetProperty().SetColor(self.path_colors.get("user").getRgb()[0:3])
+            actor_point_1.GetProperty().SetPointSize(5)
+            actor_point_1.SetPosition(*actor_p1_pos)
+
+            # self.path_end_point[wcs_index] = actor_point_1
+            self.renderer.AddActor(actor_point_1)
 
             if path_count > 0:
 
-                # Load the end point of the rapid from the next offset paths
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputData(self.path_offset_end_point[prev_wcs_index])
+                linesPolyData = vtk.vtkPolyData()
 
-                actor = vtk.vtkActor()
-                actor.SetMapper(mapper)
-                actor.GetProperty().SetColor(self.path_colors.get("user").getRgb()[0:3])
-                actor.GetProperty().SetPointSize(5)
-
-                actor.SetUserTransform(actor_transform)
-                self.path_end_point[prev_wcs_index] = actor
-                self.renderer.AddActor(actor)
-
+                point_2 = self.path_offset_start_point[wcs_index]
+                point_02_pos = self.path_offset_start_points[wcs_index]
                 # Load the start point of rapid from the next offset paths
                 mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputData(self.path_offset_start_point[wcs_index])
+                mapper.SetInputData(point_2)
 
-                actor = vtk.vtkActor()
-                actor.SetMapper(mapper)
-                actor.GetProperty().SetColor(self.path_colors.get("arcfeed").getRgb()[0:3])
-                actor.GetProperty().SetPointSize(5)
+                actor_point_2 = vtk.vtkActor()
+                actor_point_2.SetMapper(mapper)
+                actor_point_2.GetProperty().SetColor(self.path_colors.get("arcfeed").getRgb()[0:3])
+                actor_point_2.GetProperty().SetPointSize(5)
 
-                actor.SetUserTransform(actor_transform)
+                actor_point_2.SetUserTransform(actor_transform)
 
-                self.path_start_point[wcs_index] = actor
 
-                self.renderer.AddActor(actor)
+                self.path_start_point[wcs_index] = actor_point_2
+                self.renderer.AddActor(actor_point_2)
 
+                actor_p01_pos = prev_position[0:3]
+
+                actor_p02_pos = ([point_02_pos[0] + xyz[0],
+                                  point_02_pos[1] + xyz[1],
+                                  point_02_pos[2] + xyz[2],
+                                  ])
+
+                actor_p03_pos = [actor_p02_pos[0],
+                                 actor_p02_pos[1],
+                                 actor_p01_pos[2]]
+
+                pts = vtk.vtkPoints()
+                pts.InsertNextPoint([*actor_p01_pos])
+                pts.InsertNextPoint([*actor_p03_pos])
+                pts.InsertNextPoint([*actor_p02_pos])
+
+                linesPolyData.SetPoints(pts)
+
+                line0 = vtk.vtkLine()
+                line0.GetPointIds().SetId(0, 0)
+                line0.GetPointIds().SetId(1, 1)
+
+                line1 = vtk.vtkLine()
+                line1.GetPointIds().SetId(0, 1)
+                line1.GetPointIds().SetId(1, 2)
+
+                lines = vtk.vtkCellArray()
+                lines.InsertNextCell(line0)
+                lines.InsertNextCell(line1)
+
+                linesPolyData.SetLines(lines)
+
+                colors = vtk.vtkUnsignedCharArray()
+                colors.SetNumberOfComponents(3)
+                colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
+                colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
+
+                linesPolyData.GetCellData().SetScalars(colors)
+
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputData(linesPolyData)
+
+                actor_line = vtk.vtkActor()
+                actor_line.SetMapper(mapper)
+                actor_line.GetProperty().SetLineWidth(1)
+
+
+                self.renderer.AddActor(actor_line)
+            prev_position = line_p1_pos
 
             prev_wcs_index = wcs_index
             path_count += 1
@@ -1610,7 +1658,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @plotMachine.reset
     def plotMachine(self):
-        self.plotMachine = false
+        self.plotMachine = False
 
 
     @Property(QColor)
