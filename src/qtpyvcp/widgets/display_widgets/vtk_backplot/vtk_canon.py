@@ -160,30 +160,31 @@ class VTKCanon(StatCanon):
                         point_count += 2
 
                     else:
-                        # skip rapids from original path offsets
-                        if (paths_count > 0) and (point_count == 0) and (line_type == "traverse"):
-                            continue
+                        if len(self.path_actors) > 1:
+                            # skip rapids from original path offsets
+                            if (paths_count > 0) and (point_count == 0) and (line_type == "traverse"):
+                                continue
 
-                        if (paths_count > 0) and (point_count == 0):
+                            if (paths_count > 0) and (point_count == 0):
 
-                            # Store last point of the rapid from first valid point of the offset path
-                            points = vtk.vtkPoints()
-                            vertices = vtk.vtkCellArray()
+                                # Store last point of the rapid from first valid point of the offset path
+                                points = vtk.vtkPoints()
+                                vertices = vtk.vtkCellArray()
 
-                            position = [start_point[0] * multiplication_factor,
-                                        start_point[1] * multiplication_factor,
-                                        start_point[2] * multiplication_factor]
+                                position = [start_point[0] * multiplication_factor,
+                                            start_point[1] * multiplication_factor,
+                                            start_point[2] * multiplication_factor]
 
-                            point_id = [0]
-                            point_id[0] = points.InsertNextPoint(position)
-                            vertices.InsertNextCell(1, point_id)
+                                point_id = [0]
+                                point_id[0] = points.InsertNextPoint(position)
+                                vertices.InsertNextCell(1, point_id)
 
-                            point = vtk.vtkPolyData()
-                            point.SetPoints(points)
-                            point.SetVerts(vertices)
+                                point = vtk.vtkPolyData()
+                                point.SetPoints(points)
+                                point.SetVerts(vertices)
 
-                            self.paths_start_points[wcs_index] = position
-                            self.paths_start_point[wcs_index] = point
+                                self.paths_start_points[wcs_index] = position
+                                self.paths_start_point[wcs_index] = point
 
 
                         path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
@@ -206,27 +207,28 @@ class VTKCanon(StatCanon):
 
                     last_point = end_point
 
-                # Store the last point of the part as first point of the rapid line
-                points = vtk.vtkPoints()
-                vertices = vtk.vtkCellArray()
+                if len(self.path_actors) > 1:
+                    # Store the last point of the part as first point of the rapid line
+                    points = vtk.vtkPoints()
+                    vertices = vtk.vtkCellArray()
 
-                position = [last_point[0] * multiplication_factor,
-                            last_point[1] * multiplication_factor,
-                            last_point[2] * multiplication_factor]
+                    position = [last_point[0] * multiplication_factor,
+                                last_point[1] * multiplication_factor,
+                                last_point[2] * multiplication_factor]
 
-                point_id2 = [0]
-                point_id2[0] = points.InsertNextPoint(position)
+                    point_id2 = [0]
+                    point_id2[0] = points.InsertNextPoint(position)
 
-                vertices.InsertNextCell(1, point_id2)
+                    vertices.InsertNextCell(1, point_id2)
 
-                point = vtk.vtkPolyData()
-                point.SetPoints(points)
-                point.SetVerts(vertices)
+                    point = vtk.vtkPolyData()
+                    point.SetPoints(points)
+                    point.SetVerts(vertices)
 
-                self.paths_end_points[wcs_index] = position
-                self.paths_end_point[wcs_index] = point
+                    self.paths_end_points[wcs_index] = position
+                    self.paths_end_point[wcs_index] = point
 
-                paths_count += 1
+                    paths_count += 1
 
                 # free up memory, lots of it for big files
 

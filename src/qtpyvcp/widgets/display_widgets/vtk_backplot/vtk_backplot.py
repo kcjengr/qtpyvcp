@@ -222,8 +222,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_offset_angle_points = OrderedDict()
         self.path_offset_end_points = OrderedDict()
 
-        # self.path_offset_start_actors = None
-        # self.path_offset_end_actors = None
+        self.offset_change_start_actor = OrderedDict()
+        self.offset_change_end_actor = OrderedDict()
+        self.offset_change_line_actor = OrderedDict()
 
         self.path_offset_start_point = OrderedDict()
         self.path_offset_angle_point = OrderedDict
@@ -607,6 +608,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.RemoveActor(actor)
             self.renderer.RemoveActor(program_bounds_actor)
 
+            start_actor = self.offset_change_start_actor.get(wcs_index)
+            end_actor = self.offset_change_end_actor.get(wcs_index)
+            line_actor = self.offset_change_line_actor.get(wcs_index)
+
+            if start_actor:
+                self.renderer.RemoveActor(start_actor)
+
+            if end_actor:
+                self.renderer.RemoveActor(end_actor)
+            if line_actor:
+                self.renderer.RemoveActor(line_actor)
+
+
         self.path_actors.clear()
         self.offset_axes.clear()
         self.program_bounds_actors.clear()
@@ -696,103 +710,104 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(actor)
             QApplication.processEvents()
 
-
-            # Load the end point of the rapid from the first offset path
-            actor_pos = actor.GetPosition()
-
-            mapper = vtk.vtkPolyDataMapper()
-            mapper.SetInputData(self.path_offset_end_point[prev_wcs_index])
-
-            actor_p1_pos = [actor_pos[0] + xyz[0],
-                            actor_pos[1] + xyz[1],
-                            actor_pos[2] + xyz[2]]
-            line_p1 = self.path_offset_end_points[prev_wcs_index]
-
-            line_p1_pos = [actor_p1_pos[0] + line_p1[0],
-                           actor_p1_pos[1] + line_p1[1],
-                           actor_p1_pos[2] + line_p1[2]]
-            actor_point_1 = vtk.vtkActor()
-            actor_point_1.SetMapper(mapper)
-            actor_point_1.GetProperty().SetColor(self.path_colors.get("user").getRgb()[0:3])
-            actor_point_1.GetProperty().SetPointSize(5)
-            actor_point_1.SetPosition(*actor_p1_pos)
-
-            # self.path_end_point[wcs_index] = actor_point_1
-            self.renderer.AddActor(actor_point_1)
-
-            if path_count > 0:
-
-                linesPolyData = vtk.vtkPolyData()
-
-                point_2 = self.path_offset_start_point[wcs_index]
-                point_02_pos = self.path_offset_start_points[wcs_index]
-                # Load the start point of rapid from the next offset paths
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputData(point_2)
-
-                actor_point_2 = vtk.vtkActor()
-                actor_point_2.SetMapper(mapper)
-                actor_point_2.GetProperty().SetColor(self.path_colors.get("arcfeed").getRgb()[0:3])
-                actor_point_2.GetProperty().SetPointSize(5)
-
-                actor_point_2.SetUserTransform(actor_transform)
-
-
-                self.path_start_point[wcs_index] = actor_point_2
-                self.renderer.AddActor(actor_point_2)
-
-                actor_p01_pos = prev_position[0:3]
-
-                actor_p02_pos = ([point_02_pos[0] + xyz[0],
-                                  point_02_pos[1] + xyz[1],
-                                  point_02_pos[2] + xyz[2],
-                                  ])
-
-                actor_p03_pos = [actor_p02_pos[0],
-                                 actor_p02_pos[1],
-                                 actor_p01_pos[2]]
-
-                pts = vtk.vtkPoints()
-                pts.InsertNextPoint([*actor_p01_pos])
-                pts.InsertNextPoint([*actor_p03_pos])
-                pts.InsertNextPoint([*actor_p02_pos])
-
-                linesPolyData.SetPoints(pts)
-
-                line0 = vtk.vtkLine()
-                line0.GetPointIds().SetId(0, 0)
-                line0.GetPointIds().SetId(1, 1)
-
-                line1 = vtk.vtkLine()
-                line1.GetPointIds().SetId(0, 1)
-                line1.GetPointIds().SetId(1, 2)
-
-                lines = vtk.vtkCellArray()
-                lines.InsertNextCell(line0)
-                lines.InsertNextCell(line1)
-
-                linesPolyData.SetLines(lines)
-
-                colors = vtk.vtkUnsignedCharArray()
-                colors.SetNumberOfComponents(3)
-                colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
-                colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
-
-                linesPolyData.GetCellData().SetScalars(colors)
+            if len(self.path_actors) > 1:
+                # Load the end point of the rapid from the first offset path
+                actor_pos = actor.GetPosition()
 
                 mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputData(linesPolyData)
+                mapper.SetInputData(self.path_offset_end_point[prev_wcs_index])
 
-                actor_line = vtk.vtkActor()
-                actor_line.SetMapper(mapper)
-                actor_line.GetProperty().SetLineWidth(1)
+                actor_p1_pos = [actor_pos[0] + xyz[0],
+                                actor_pos[1] + xyz[1],
+                                actor_pos[2] + xyz[2]]
+                line_p1 = self.path_offset_end_points[prev_wcs_index]
 
+                line_p1_pos = [actor_p1_pos[0] + line_p1[0],
+                               actor_p1_pos[1] + line_p1[1],
+                               actor_p1_pos[2] + line_p1[2]]
+                actor_point_1 = vtk.vtkActor()
+                actor_point_1.SetMapper(mapper)
+                actor_point_1.GetProperty().SetColor(self.path_colors.get("user").getRgb()[0:3])
+                actor_point_1.GetProperty().SetPointSize(5)
+                actor_point_1.SetPosition(*actor_p1_pos)
 
-                self.renderer.AddActor(actor_line)
-            prev_position = line_p1_pos
+                self.offset_change_end_actor[wcs_index] = actor_point_1
+                self.renderer.AddActor(actor_point_1)
 
-            prev_wcs_index = wcs_index
-            path_count += 1
+                if path_count > 0:
+
+                    linesPolyData = vtk.vtkPolyData()
+
+                    point_2 = self.path_offset_start_point[wcs_index]
+                    point_02_pos = self.path_offset_start_points[wcs_index]
+                    # Load the start point of rapid from the next offset paths
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(point_2)
+
+                    actor_point_2 = vtk.vtkActor()
+                    actor_point_2.SetMapper(mapper)
+                    actor_point_2.GetProperty().SetColor(self.path_colors.get("arcfeed").getRgb()[0:3])
+                    actor_point_2.GetProperty().SetPointSize(5)
+
+                    actor_point_2.SetUserTransform(actor_transform)
+
+                    self.offset_change_start_actor[wcs_index] = actor_point_2
+
+                    self.renderer.AddActor(actor_point_2)
+
+                    actor_p01_pos = prev_position[0:3]
+
+                    actor_p02_pos = ([point_02_pos[0] + xyz[0],
+                                      point_02_pos[1] + xyz[1],
+                                      point_02_pos[2] + xyz[2],
+                                      ])
+
+                    actor_p03_pos = [actor_p02_pos[0],
+                                     actor_p02_pos[1],
+                                     actor_p01_pos[2]]
+
+                    pts = vtk.vtkPoints()
+                    pts.InsertNextPoint([*actor_p01_pos])
+                    pts.InsertNextPoint([*actor_p03_pos])
+                    pts.InsertNextPoint([*actor_p02_pos])
+
+                    linesPolyData.SetPoints(pts)
+
+                    line0 = vtk.vtkLine()
+                    line0.GetPointIds().SetId(0, 0)
+                    line0.GetPointIds().SetId(1, 1)
+
+                    line1 = vtk.vtkLine()
+                    line1.GetPointIds().SetId(0, 1)
+                    line1.GetPointIds().SetId(1, 2)
+
+                    lines = vtk.vtkCellArray()
+                    lines.InsertNextCell(line0)
+                    lines.InsertNextCell(line1)
+
+                    linesPolyData.SetLines(lines)
+
+                    colors = vtk.vtkUnsignedCharArray()
+                    colors.SetNumberOfComponents(3)
+                    colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
+                    colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
+
+                    linesPolyData.GetCellData().SetScalars(colors)
+
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(linesPolyData)
+
+                    actor_line = vtk.vtkActor()
+                    actor_line.SetMapper(mapper)
+                    actor_line.GetProperty().SetLineWidth(1)
+
+                    self.offset_change_line_actor[wcs_index] = actor_line
+
+                    self.renderer.AddActor(actor_line)
+                prev_position = line_p1_pos
+
+                prev_wcs_index = wcs_index
+                path_count += 1
 
         # self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
