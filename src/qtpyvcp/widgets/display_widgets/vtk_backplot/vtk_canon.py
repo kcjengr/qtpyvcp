@@ -8,7 +8,7 @@ import vtk
 
 
 from .linuxcnc_datasource import LinuxCncDataSource
-from .path_actor import PathActor, OffsetRapidsActor
+from .path_actor import PathActor
 
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QApplication
@@ -43,10 +43,9 @@ class VTKCanon(StatCanon):
         self.paths_angle_point = OrderedDict()
         self.paths_end_point = OrderedDict()
 
-        self.paths_start_points = OrderedDict()
+        self.path_start_point = OrderedDict()
         self.paths_angle_points = OrderedDict()
-        self.paths_end_points = OrderedDict()
-
+        self.path_end_point = OrderedDict()
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
@@ -91,8 +90,8 @@ class VTKCanon(StatCanon):
         self.rotation_sin = math.sin(theta)
 
     def add_path_point(self, line_type, start_point, end_point):
-        line = [start_point, end_point]
-        self.path_points[self.active_wcs_index].append((line_type, line))
+        line = start_point, end_point
+        self.path_points[self.active_wcs_index].append([line_type, line])
 
     def draw_lines(self):
         # Used to draw the lines of the loaded program
@@ -165,27 +164,12 @@ class VTKCanon(StatCanon):
                             if (paths_count > 0) and (point_count == 0) and (line_type == "traverse"):
                                 continue
 
-                            if (paths_count > 0) and (point_count == 0):
-
-                                # Store last point of the rapid from first valid point of the offset path
-                                points = vtk.vtkPoints()
-                                vertices = vtk.vtkCellArray()
-
+                            if point_count == 0:
                                 position = [start_point[0] * multiplication_factor,
                                             start_point[1] * multiplication_factor,
                                             start_point[2] * multiplication_factor]
 
-                                point_id = [0]
-                                point_id[0] = points.InsertNextPoint(position)
-                                vertices.InsertNextCell(1, point_id)
-
-                                point = vtk.vtkPolyData()
-                                point.SetPoints(points)
-                                point.SetVerts(vertices)
-
-                                self.paths_start_points[wcs_index] = position
-                                self.paths_start_point[wcs_index] = point
-
+                                self.path_start_point[prev_wcs_index] = position
 
                         path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
                                                           end_point[1] * multiplication_factor,
@@ -209,26 +193,12 @@ class VTKCanon(StatCanon):
 
                 if len(self.path_actors) > 1:
                     # Store the last point of the part as first point of the rapid line
-                    points = vtk.vtkPoints()
-                    vertices = vtk.vtkCellArray()
 
                     position = [last_point[0] * multiplication_factor,
                                 last_point[1] * multiplication_factor,
                                 last_point[2] * multiplication_factor]
 
-                    point_id2 = [0]
-                    point_id2[0] = points.InsertNextPoint(position)
-
-                    vertices.InsertNextCell(1, point_id2)
-
-                    point = vtk.vtkPolyData()
-                    point.SetPoints(points)
-                    point.SetVerts(vertices)
-
-                    self.paths_end_points[wcs_index] = position
-                    self.paths_end_point[wcs_index] = point
-
-                    paths_count += 1
+                    self.path_end_point[wcs_index] = position
 
                 # free up memory, lots of it for big files
 
@@ -242,22 +212,17 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
 
-                prev_wcs_index = wcs_index
+            paths_count += 1
 
+            prev_wcs_index = wcs_index
     def get_path_actors(self):
         return self.path_actors
 
-    def get_offsets_start_points(self):
-        return self.paths_start_points
-
-    def get_offsets_end_points(self):
-        return self.paths_end_points
-
     def get_offsets_start_point(self):
-        return self.paths_start_point
+        return self.path_start_point
 
     def get_offsets_end_point(self):
-        return self.paths_end_point
+        return self.path_end_point
 
     def get_foam(self):
         return self.foam_z, self.foam_w
