@@ -16,10 +16,9 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-
 from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
 from qtpy.QtGui import QStandardItemModel, QColor, QBrush
-from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
+from qtpy.QtWidgets import QTableView, QHeaderView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
@@ -33,8 +32,6 @@ class ItemDelegate(QStyledItemDelegate):
 
     def __init__(self, columns):
         super(ItemDelegate, self).__init__()
-
-
 
         self._columns = columns
         self._padding = ' ' * 2
@@ -89,7 +86,7 @@ class OffsetModel(QStandardItemModel):
 
         self._offset_table = self.ot.getOffsetTable()
 
-        self.setColumnCount(self.columnCount())
+        self.setColumnCount(len(self._columns))
         self.setRowCount(len(self._rows))  # (self.rowCount())
 
         self.ot.offset_table_changed.connect(self.updateModel)
@@ -223,6 +220,7 @@ class OffsetTable(QTableView):
         self.setSelectionMode(QTableView.SingleSelection)
         self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         STATUS.all_axes_homed.notify(self.handle_home_signal)
 
@@ -300,15 +298,15 @@ class OffsetTable(QTableView):
         else:
             return False
 
-    @Property(str)
-    def displayColumns(self):
-        return "".join(self._columns)
-
-    @displayColumns.setter
-    def displayColumns(self, columns):
-        self._columns = [col for col in columns.upper() if col in 'XYZABCUVWR']
-        self.offset_model.setColumns(self._columns)
-        self.itemDelegate().setColumns(self._columns)
+    # @Property(str)
+    # def displayColumns(self):
+    #     return "".join(self._columns)
+    #
+    # @displayColumns.setter
+    # def displayColumns(self, columns):
+    #     self._columns = [col for col in columns.upper() if col in 'XYZABCUVWR']
+    #     self.offset_model.setColumns(self._columns)
+    #     self.itemDelegate().setColumns(self._columns)
 
     @Property(bool)
     def confirmActions(self):
