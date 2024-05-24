@@ -1,6 +1,5 @@
 import yaml
 
-# from pprint import pprint
 import linuxcnc
 import os
 from collections import OrderedDict
@@ -353,7 +352,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
             
-            # self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
+            self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
             # self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
             
             self._datasource.toolTableChanged.connect(self.update_tool)
@@ -996,11 +995,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_joints(self, joints):
         self.joints = joints
         
-    def on_offset_table_changed(self, table):
+    def on_offset_table_changed(self):
         LOG.debug("on_offset_table_changed")
 
-        self.wcs_offsets = table
-
+        self.rotate_and_translate()
+        
     def update_rotation_xy(self, rot):
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         LOG.debug("@@@@@@@@@@  ROTATION SIGNAL  @@@@@@@@@")
@@ -1008,7 +1007,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.active_rotation = rot
         
-        self.rotate_and_translate()
+        #self.rotate_and_translate()
         
     def update_g5x_offset(self, offset):
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
@@ -1017,16 +1016,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.active_wcs_offset = offset
         
-        self.rotate_and_translate()
+        #self.rotate_and_translate()
         
         # TODO implement rapid recalculation
         
     def rotate_and_translate(self):
-
+        
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        LOG.debug("@@@@@@@@@ ROTATE & TRANSLATE @@@@@@@@@")
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        
         # self.axes_actor.SetUserTransform(transform)
 
         path_count = 0
         prev_wcs_index = 0
+        prev_offsets = None
 
         for wcs_index, path_actor in self.path_actors.items():
             program_bounds_actor = self.program_bounds_actors.get(wcs_index)
@@ -1071,29 +1075,26 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 self.program_bounds_actors[wcs_index] = program_bounds_actor
 
-                if len(self.path_actors) > 1:
-
-                    self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
-                    self.offset_change_end_actor[prev_wcs_index].SetUserTransform(actor_transform)
-                prev_wcs_index = wcs_index
-
-
-
-        if len(self.path_actors) > 1:
+                self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
+                self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
             
-            path_count = 0
-            prev_wcs_index = 0
-            prev_offsets = None
+
+            if len(self.path_actors) > 1:
             
-            for wcs_index, _ in self.path_actors.items():
-                current_offsets = self.wcs_offsets[prev_wcs_index][0:3]
-                
-                if path_count > 1:
+
+                current_offsets = self.wcs_offsets[wcs_index][0:3]
+                                
+                if path_count > 0:
+                    
                     point_01 = self.offset_change_end_actor.get(prev_wcs_index)
-                    point_01_pos = point_01.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
-    
                     point_02 = self.offset_change_start_actor.get(wcs_index)
+                    
+                    
+                    point_01_pos = point_01.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
                     point_02_pos = point_02.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
+    
+                    pprint(f"{point_01.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)}")
+                    pprint(f"{point_02.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)}")
     
                     actor_p01_pos = [point_01_pos[0] + prev_offsets[0],
                                      point_01_pos[1] + prev_offsets[1],
@@ -1153,9 +1154,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     
                     self.renderer.AddActor(actor_line)
 
-                path_count += 1
                 prev_wcs_index = wcs_index
                 prev_offsets = current_offsets
+                path_count += 1
 
         self.interactor.ReInitialize()
         self.renderer_window.Render()

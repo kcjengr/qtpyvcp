@@ -242,7 +242,7 @@ class OffsetTable(DataPlugin):
                     elif 5390 >= param >= 5381:
                         self.g5x_offset_table.get(8)[param - 5381] = data
 
-        self.offset_table_changed.emit(self.g5x_offset_table)
+        self.offset_table_changed.emit()
 
         return self.g5x_offset_table
 
