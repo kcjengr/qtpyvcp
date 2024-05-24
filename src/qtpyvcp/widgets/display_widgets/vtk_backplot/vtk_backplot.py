@@ -995,7 +995,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_joints(self, joints):
         self.joints = joints
         
-    def on_offset_table_changed(self):
+    def on_offset_table_changed(self, offset_table):
         LOG.debug("on_offset_table_changed")
 
         self.rotate_and_translate()
@@ -1092,10 +1092,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     
                     point_01_pos = point_01.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
                     point_02_pos = point_02.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
-    
-                    pprint(f"{point_01.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)}")
-                    pprint(f"{point_02.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)}")
-    
+                    
                     actor_p01_pos = [point_01_pos[0] + prev_offsets[0],
                                      point_01_pos[1] + prev_offsets[1],
                                      point_01_pos[2] + prev_offsets[2]]

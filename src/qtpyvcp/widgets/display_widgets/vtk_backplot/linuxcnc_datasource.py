@@ -25,7 +25,7 @@ class LinuxCncDataSource(QObject):
     rotationXYChanged = Signal(float)
     g92OffsetChanged = Signal(tuple)
     g5xIndexChanged = Signal(int)
-    offsetTableChanged = Signal()
+    offsetTableChanged = Signal(dict)
     activeOffsetChanged = Signal(int)
     toolTableChanged = Signal(tuple)
     toolOffsetChanged = Signal(tuple)
@@ -102,9 +102,9 @@ class LinuxCncDataSource(QObject):
         
         self.rotationXYChanged.emit(value)
 
-    def __handleOffsetTableChanged(self):
+    def __handleOffsetTableChanged(self, offset_table):
         #LOG.debug("__handleOffsetTableChanged: {}".format(type(offset_table)))
-        self.offsetTableChanged.emit()
+        self.offsetTableChanged.emit(offset_table)
         
         # offset = offset_table[self.getActiveWcsIndex()]
         #
