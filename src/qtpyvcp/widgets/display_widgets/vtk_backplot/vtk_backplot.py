@@ -353,7 +353,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
             
             self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
-            # self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
+            self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
             
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
@@ -1033,55 +1033,51 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         prev_offsets = None
 
         for wcs_index, path_actor in self.path_actors.items():
-            program_bounds_actor = self.program_bounds_actors.get(wcs_index)
-            # axes_actor = path_actor.get_axes_actor()
-
-            # self.renderer.RemoveActor(axes_actor)
+            
+            axes_actor = path_actor.get_axes_actor()
+            if axes_actor:
+                self.renderer.RemoveActor(axes_actor)
                 
             offset_change_actor = self.offset_change_line_actor.get(wcs_index)
-            
             if offset_change_actor:
                 self.renderer.RemoveActor(offset_change_actor)
+                
+            program_bounds_actor = self.program_bounds_actors.get(wcs_index)
             if program_bounds_actor:
                 self.renderer.RemoveActor(program_bounds_actor)
+        
 
-            xyz = self.active_wcs_offset[:3]
-            rotation = self.active_rotation
-
-            if wcs_index == self.active_wcs_index:
-                axes_actor = path_actor.get_axes_actor()
-
-                self.renderer.RemoveActor(axes_actor)
-
-                LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
-
-                actor_transform = vtk.vtkTransform()
-                axes_transform = vtk.vtkTransform()
-
-                actor_transform.Translate(*xyz)
-                actor_transform.RotateZ(rotation)
-
-                axes_transform.Translate(*xyz)
-                axes_transform.RotateZ(self.rotation_xy_table[wcs_index-1])
-
-                axes_actor.SetUserTransform(axes_transform)
-                path_actor.SetUserTransform(actor_transform)
-
-                program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
-                program_bounds_actor.showProgramBounds(self.show_program_bounds)
-
-                self.renderer.AddActor(axes_actor)
-                self.renderer.AddActor(program_bounds_actor)
-
-                self.program_bounds_actors[wcs_index] = program_bounds_actor
-
-                self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
-                self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
+            xyz = self.wcs_offsets[wcs_index][:3]
+            rotation = self.rotation_xy_table[wcs_index]
             
+            LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
+
+            actor_transform = vtk.vtkTransform()
+            axes_transform = vtk.vtkTransform()
+
+            actor_transform.Translate(*xyz)
+            actor_transform.RotateZ(rotation)
+
+            axes_transform.Translate(*xyz)
+            axes_transform.RotateZ(rotation)
+
+            axes_actor.SetUserTransform(axes_transform)
+            path_actor.SetUserTransform(actor_transform)
+
+            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+            program_bounds_actor.showProgramBounds(self.show_program_bounds)
+
+            self.renderer.AddActor(axes_actor)
+            self.renderer.AddActor(program_bounds_actor)
+
+            self.program_bounds_actors[wcs_index] = program_bounds_actor
+
+            self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
+            self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
+        
 
             if len(self.path_actors) > 1:
             
-
                 current_offsets = self.wcs_offsets[wcs_index][0:3]
                                 
                 if path_count > 0:
@@ -1136,16 +1132,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(line)
-    
-                    # line_transform = vtk.vtkTransform()
-                
-                    # line_transform.Translate(*xyz)
-                    # line_transform.RotateZ(rotation)
-                    
+                        
                     actor_line = vtk.vtkActor()
                     actor_line.SetMapper(mapper)
                     actor_line.GetProperty().SetLineWidth(1)
-                    #actor_line.SetUserTransform(line_transform)
     
                     self.offset_change_line_actor[wcs_index] = actor_line
     
@@ -1208,30 +1198,30 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.active_wcs_index = wcs_index
         
-        LOG.debug("--------update_active_wcs index: {}".format(wcs_index))
-        LOG.debug("--------self.wcs_offsets: {}".format(self.wcs_offsets))
-    
-        position = self.wcs_offsets[wcs_index]
-        rotation = self.active_rotation
-        
-        LOG.debug("--------position: {}".format(position))
-        LOG.debug("--------rotation: {}".format(rotation))
-    
-        transform = vtk.vtkTransform()
-        
-        transform.Translate(*position[:3])
-        transform.RotateZ(rotation)
-        
-        for wcs_index, path_actor in list(self.path_actors.items()):
-            LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
-            
-            if wcs_index == self.active_wcs_index:
-                axes = path_actor.get_axes_actor()
-                axes.SetUserTransform(transform)
-    
-    
-        self.interactor.ReInitialize()
-        self.renderer_window.Render()
+        # LOG.debug("--------update_active_wcs index: {}".format(wcs_index))
+        # LOG.debug("--------self.wcs_offsets: {}".format(self.wcs_offsets))
+        #
+        # position = self.wcs_offsets[wcs_index]
+        # rotation = self.active_rotation
+        #
+        # LOG.debug("--------position: {}".format(position))
+        # LOG.debug("--------rotation: {}".format(rotation))
+        #
+        # transform = vtk.vtkTransform()
+        #
+        # transform.Translate(*position[:3])
+        # transform.RotateZ(rotation)
+        #
+        # for wcs_index, path_actor in list(self.path_actors.items()):
+        #     LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
+        #
+        #     if wcs_index == self.active_wcs_index:
+        #         axes = path_actor.get_axes_actor()
+        #         axes.SetUserTransform(transform)
+        #
+        #
+        # self.interactor.ReInitialize()
+        # self.renderer_window.Render()
 
     def update_g92_offset(self, g92_offset):
         LOG.debug("---------update_g92_offset: {}".format(g92_offset))
