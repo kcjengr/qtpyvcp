@@ -347,7 +347,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.positionChanged.connect(self.update_position)
             self._datasource.motionTypeChanged.connect(self.motion_type)
             
-            self._datasource.rotationXYChanged.connect(self.update_rotation_xy)
+            # self._datasource.rotationXYChanged.connect(self.update_rotation_xy)
             self._datasource.g5xIndexChanged.connect(self.update_g5x_index)
             self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
@@ -650,7 +650,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         prev_wcs_index = 0
         path_count = 0
-        prev_position = [0.0, 0.0, 0.0]
+        prev_x_position = 0.0
+        prev_y_position = 0.0
+        prev_z_position = 0.0
 
         for wcs_index, actor in self.path_actors.items():
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
@@ -660,19 +662,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # rotation = self._datasource.getRotationOfActiveWcs()
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
-            xyz = current_offsets[:3]
+            x = current_offsets[self._datasource.getOffsetCoumns().get('X')]
+            y = current_offsets[self._datasource.getOffsetCoumns().get('Y')]
+            z = current_offsets[self._datasource.getOffsetCoumns().get('Z')]
             
-            rotation = self.active_rotation
+            rotation = current_offsets[self._datasource.getOffsetCoumns().get('R')]
             
             self.rotation_xy_table.insert(wcs_index-1, rotation)
             
             actor_transform = vtk.vtkTransform()
             axes_transform = vtk.vtkTransform()
                 
-            actor_transform.Translate(*xyz)
+            actor_transform.Translate(x, y, z)
             actor_transform.RotateZ(rotation)
             
-            axes_transform.Translate(*xyz)
+            axes_transform.Translate(x, y, z)
             axes_transform.RotateZ(rotation)
 
             actor.SetUserTransform(actor_transform)
@@ -751,17 +755,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(actor_point_2)
 
                 if path_count > 0:
-                    actor_p01_pos = [point_02_pos[0] + prev_position[0],
-                                     point_02_pos[1] + prev_position[1],
-                                     point_02_pos[2] + prev_position[2]]
+                    actor_p01_pos = [point_02_pos[0] + prev_x_position,
+                                     point_02_pos[1] + prev_y_position,
+                                     point_02_pos[2] + prev_z_position]
 
-                    actor_p02_pos = [point_01_pos[0] + xyz[0],
-                                     point_01_pos[1] + xyz[1],
-                                     point_01_pos[2] + xyz[2]]
+                    actor_p02_pos = [point_01_pos[0] + x,
+                                     point_01_pos[1] + y,
+                                     point_01_pos[2] + z]
 
-                    actor_p03_pos = [point_01_pos[0] + xyz[0],
-                                     point_01_pos[1] + xyz[1],
-                                     point_02_pos[2] + prev_position[2]]
+                    actor_p03_pos = [point_01_pos[0] + x,
+                                     point_01_pos[1] + y,
+                                     point_02_pos[2] + prev_z_position]
 
                     pts = vtk.vtkPoints()
                     pts.InsertNextPoint(*actor_p01_pos)
@@ -804,7 +808,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                     self.renderer.AddActor(actor_line)
 
-            prev_position = xyz
+            prev_x_position = x
+            prev_y_position = y
+            prev_y_position = z
+            
             path_count += 1
             prev_wcs_index = wcs_index
         # self.renderer.AddActor(self.axes_actor)
@@ -997,6 +1004,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
     def on_offset_table_changed(self, offset_table):
         LOG.debug("on_offset_table_changed")
+        
         self.wcs_offsets = offset_table
 
         self.rotate_and_translate()
@@ -1007,6 +1015,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         
         self.active_rotation = rot
+        self.rotation_xy_table[self.active_wcs_index] = rot
         
         self.rotate_and_translate()
         
@@ -1031,7 +1040,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         path_count = 0
         prev_wcs_index = 0
-        prev_offsets = None
+        prev_offset_x = 0.0
+        prev_offset_y = 0.0
+        prev_offset_z = 0.0
 
         for wcs_index, path_actor in self.path_actors.items():
             
@@ -1047,19 +1058,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if program_bounds_actor:
                 self.renderer.RemoveActor(program_bounds_actor)
         
+            
+            current_offsets = self.wcs_offsets[wcs_index]
 
-            xyz = self.wcs_offsets[wcs_index][:3]
-            rotation = self.rotation_xy_table[wcs_index]
+            x = current_offsets[self._datasource.getOffsetCoumns().get('X')]
+            y = current_offsets[self._datasource.getOffsetCoumns().get('Y')]
+            z = current_offsets[self._datasource.getOffsetCoumns().get('Z')]
+            
+            rotation = current_offsets[self._datasource.getOffsetCoumns().get('R')]
             
             LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
 
             actor_transform = vtk.vtkTransform()
             axes_transform = vtk.vtkTransform()
 
-            actor_transform.Translate(*xyz)
+            actor_transform.Translate(x, y, z)
             actor_transform.RotateZ(rotation)
 
-            axes_transform.Translate(*xyz)
+            axes_transform.Translate(x, y, z)
             axes_transform.RotateZ(rotation)
 
             axes_actor.SetUserTransform(axes_transform)
@@ -1079,8 +1095,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if len(self.path_actors) > 1:
             
-                current_offsets = self.wcs_offsets[wcs_index][0:3]
-                                
+                                                
                 if path_count > 0:
                     
                     point_01 = self.offset_change_end_actor.get(prev_wcs_index)
@@ -1090,17 +1105,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     point_01_pos = point_01.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
                     point_02_pos = point_02.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
                     
-                    actor_p01_pos = [point_01_pos[0] + prev_offsets[0],
-                                     point_01_pos[1] + prev_offsets[1],
-                                     point_01_pos[2] + prev_offsets[2]]
+                    actor_p01_pos = [point_01_pos[0] + prev_offset_z,
+                                     point_01_pos[1] + prev_offset_y,
+                                     point_01_pos[2] + prev_offset_z]
     
-                    actor_p02_pos = [point_02_pos[0] + current_offsets[0],
-                                     point_02_pos[1] + current_offsets[1],
-                                     point_02_pos[2] + current_offsets[2]]
+                    actor_p02_pos = [point_02_pos[0] + x,
+                                     point_02_pos[1] + y,
+                                     point_02_pos[2] + z]
     
-                    actor_p03_pos = [point_02_pos[0] + current_offsets[0],
-                                     point_02_pos[1] + current_offsets[1],
-                                     point_01_pos[2] + prev_offsets[2]]
+                    actor_p03_pos = [point_02_pos[0] + x,
+                                     point_02_pos[1] + y,
+                                     point_01_pos[2] + prev_offset_z]
     
                     pts = vtk.vtkPoints()
                     pts.InsertNextPoint(*actor_p01_pos)
@@ -1143,7 +1158,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     self.renderer.AddActor(actor_line)
 
                 prev_wcs_index = wcs_index
-                prev_offsets = current_offsets
+                
+                prev_offset_x = x
+                prev_offset_y = y
+                prev_offset_z = z
+                
                 path_count += 1
 
         self.interactor.ReInitialize()

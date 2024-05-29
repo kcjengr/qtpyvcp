@@ -132,26 +132,38 @@ class OffsetTable(DataPlugin):
         self.w_column = None
         self.r_column = None
 
+        self.column_labels = dict()
+
         if 'X' in self.columns:
             self.x_column = self.columns.index('X')
+            self.column_labels['X'] = self.x_column
         if 'Y' in self.columns:
             self.y_column = self.columns.index('Y')
+            self.column_labels['Y'] = self.y_column
         if 'Z' in self.columns:
             self.z_column = self.columns.index('Z')
+            self.column_labels['Z'] = self.z_column
         if 'A' in self.columns:
             self.a_column = self.columns.index('A')
+            self.column_labels['A'] = self.a_column
         if 'B' in self.columns:
             self.b_column = self.columns.index('B')
+            self.column_labels['B'] = self.b_column
         if 'C' in self.columns:
             self.c_column = self.columns.index('C')
+            self.column_labels['C'] = self.c_column
         if 'U' in self.columns:
             self.u_column = self.columns.index('U')
+            self.column_labels['U'] = self.u_column
         if 'V' in self.columns:
             self.v_column = self.columns.index('V')
+            self.column_labels['V'] = self.v_column
         if 'W' in self.columns:
             self.w_column = self.columns.index('W')
+            self.column_labels['W'] = self.w_column
         if 'R' in self.columns:
             self.r_column = self.columns.index('R')
+            self.column_labels['R'] = self.r_column
 
         # print(f"X: {self.x_column}\nY: {self.y_column}\nZ: {self.z_column}\nA: {self.a_column}\nB: {self.b_column}\nC: {self.c_column}\nU: {self.u_column}\nV: {self.v_column}\nW: {self.w_column}\nZ: {self.r_column}")
 
@@ -575,11 +587,13 @@ class OffsetTable(DataPlugin):
         """
 
         self.g5x_offset_table = offset_table
-
+        
+        mdi_commands = ""
+        
         for index in range(len(self.rows)):
             mdi_list = list()
             mdi_list.append("G10 L2")
-            mdi_list.append("P{}".format(index+1))
+            mdi_list.append("P{}".format(index + 1))
 
             for char in columns:
 
@@ -588,5 +602,8 @@ class OffsetTable(DataPlugin):
                 mdi_list.append("{}{}".format(char, self.g5x_offset_table[index][column_index]))
 
             mdi_command = " ".join(mdi_list)
+            
+            mdi_commands = f"{mdi_commands};{mdi_command}"
+            
+        issue_mdi(mdi_commands)
 
-            issue_mdi(mdi_command)
