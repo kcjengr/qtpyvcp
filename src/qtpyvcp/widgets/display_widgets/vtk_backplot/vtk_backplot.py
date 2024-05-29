@@ -997,6 +997,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
     def on_offset_table_changed(self, offset_table):
         LOG.debug("on_offset_table_changed")
+        self.wcs_offsets = offset_table
 
         self.rotate_and_translate()
         
@@ -1007,7 +1008,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.active_rotation = rot
         
-        #self.rotate_and_translate()
+        self.rotate_and_translate()
         
     def update_g5x_offset(self, offset):
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
@@ -1016,7 +1017,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.active_wcs_offset = offset
         
-        #self.rotate_and_translate()
+        self.rotate_and_translate()
         
         # TODO implement rapid recalculation
         
