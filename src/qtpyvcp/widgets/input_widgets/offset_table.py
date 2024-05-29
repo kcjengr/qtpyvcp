@@ -128,11 +128,13 @@ class OffsetModel(QStandardItemModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole or role == Qt.EditRole:
+            columns_index = index.column()
+            rows_index = index.row()
 
-            column_index = self._columns[index.column()]
-            index_column = self._column_labels.index(column_index)
+            # column_index = self._columns[index.column()]
+            # index_column = self._column_labels.index(column_index)
 
-            return self._offset_table[index.row()][index_column]
+            return self._offset_table[rows_index][columns_index]
 
         elif role == Qt.TextAlignmentRole:
             return Qt.AlignVCenter | Qt.AlignRight
@@ -155,18 +157,18 @@ class OffsetModel(QStandardItemModel):
         columns_index = index.column()
         rows_index = index.row()
 
-        column_index = self._columns[index.column()]
-        index_column = self._column_labels.index(column_index)
+        # column_index = self._columns[index.column()]
+        # index_column = self._column_labels.index(column_index)
 
-        self._offset_table[rows_index][index_column] = value
+        self._offset_table[rows_index][columns_index] = value
 
         return True
 
     def clearRow(self, row):
 
         for col in range(len(self._columns)):
-            index_column = self._column_labels.index(self._columns[col])
-            self._offset_table[row][index_column] = 0.0
+            # index_column = self._column_labels.index(self._columns[col])
+            self._offset_table[row][col] = 0.0
 
         self.refreshModel()
 
@@ -174,8 +176,8 @@ class OffsetModel(QStandardItemModel):
 
         for row in range(len(self._rows)):
             for col in range(len(self._columns)):
-                index_column = self._column_labels.index(self._columns[col])
-                self._offset_table[row][index_column] = 0.0
+                # index_column = self._column_labels.index(self._columns[col])
+                self._offset_table[row][col] = 0.0
 
         self.refreshModel()
 
@@ -300,15 +302,15 @@ class OffsetTable(QTableView):
         else:
             return False
 
-    @Property(str)
-    def displayColumns(self):
-        return "".join(self._columns)
-
-    @displayColumns.setter
-    def displayColumns(self, columns):
-        self._columns = [col for col in columns.upper() if col in 'XYZABCUVWR']
-        self.offset_model.setColumns(self._columns)
-        self.itemDelegate().setColumns(self._columns)
+    # @Property(str)
+    # def displayColumns(self):
+    #     return "".join(self._columns)
+    #
+    # @displayColumns.setter
+    # def displayColumns(self, columns):
+    #     self._columns = [col for col in columns.upper() if col in 'XYZABCUVWR']
+    #     self.offset_model.setColumns(self._columns)
+    #     self.itemDelegate().setColumns(self._columns)
 
     @Property(bool)
     def confirmActions(self):
