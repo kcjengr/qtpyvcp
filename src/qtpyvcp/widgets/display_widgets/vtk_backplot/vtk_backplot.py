@@ -740,7 +740,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 point = vtk.vtkPolyData()
                 point.SetPoints(points)
                 point.SetVerts(vertices)
-
+                
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputData(point)
 
@@ -755,17 +755,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(actor_point_2)
 
                 if path_count > 0:
-                    actor_p01_pos = [point_02_pos[0] + prev_x_position,
-                                     point_02_pos[1] + prev_y_position,
-                                     point_02_pos[2] + prev_z_position]
+                    
+                    p1_position = self.offset_change_end_actor[prev_wcs_index].GetCenter()
+                    # p1_rotation = self.offset_change_end_actor[prev_wcs_index].GetUserTransform().GetOrientation()[2]
+                    
+                    p2_position = self.offset_change_start_actor[wcs_index].GetCenter()
+                    # p2_rotation = self.offset_change_end_actor[wcs_index].GetUserTransform().GetOrientation()[2]
+                    
+                    # print(p1_position, p1_rotation)
+                    # print(p2_position, p2_rotation)
+                    
+                    
+                    actor_p01_pos = [*p1_position]
 
-                    actor_p02_pos = [point_01_pos[0] + x,
-                                     point_01_pos[1] + y,
-                                     point_01_pos[2] + z]
+                    actor_p02_pos = [*p2_position]
 
-                    actor_p03_pos = [point_01_pos[0] + x,
-                                     point_01_pos[1] + y,
-                                     point_02_pos[2] + prev_z_position]
+                    actor_p03_pos = [p2_position[0],
+                                     p2_position[1],
+                                     p1_position[2]]
 
                     pts = vtk.vtkPoints()
                     pts.InsertNextPoint(*actor_p01_pos)
@@ -1102,20 +1109,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     point_02 = self.offset_change_start_actor.get(wcs_index)
                     
                     
-                    point_01_pos = point_01.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
-                    point_02_pos = point_02.GetMapper().GetInput().GetPoints().GetData().GetTuple3(0)
+                    point_01_pos = point_01.GetCenter()
+                    point_02_pos = point_02.GetCenter()
                     
-                    actor_p01_pos = [point_01_pos[0] + prev_offset_z,
-                                     point_01_pos[1] + prev_offset_y,
-                                     point_01_pos[2] + prev_offset_z]
+                    actor_p01_pos = [point_01_pos[0],
+                                     point_01_pos[1],
+                                     point_01_pos[2]]
     
-                    actor_p02_pos = [point_02_pos[0] + x,
-                                     point_02_pos[1] + y,
-                                     point_02_pos[2] + z]
+                    actor_p02_pos = [point_02_pos[0],
+                                     point_02_pos[1],
+                                     point_02_pos[2]]
     
-                    actor_p03_pos = [point_02_pos[0] + x,
-                                     point_02_pos[1] + y,
-                                     point_01_pos[2] + prev_offset_z]
+                    actor_p03_pos = [point_02_pos[0],
+                                     point_02_pos[1],
+                                     point_01_pos[2]]
     
                     pts = vtk.vtkPoints()
                     pts.InsertNextPoint(*actor_p01_pos)
