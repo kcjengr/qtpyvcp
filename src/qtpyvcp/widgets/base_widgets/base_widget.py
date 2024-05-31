@@ -10,11 +10,12 @@ import os
 import json
 
 from qtpy.QtCore import Property, Slot
-from qtpy.QtWidgets import QPushButton
+from qtpy.QtWidgets import QPushButton, QWidget
 
 from qtpyvcp import hal as qhal
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
+
 
 LOG = getLogger(__name__)
 
@@ -68,17 +69,29 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._rules = '[]'
         self._style = ''
         self._data_channels = []
+        
         self._security_level = 0
-        self._hal_param_enable = False
+        
+        self._hal_param_enabled = None
         self._hal_param_name = None
-        self._hal_param_type = "s32"
-        self._hal_param_access = "rw"
-
+        self._hal_param_type = None
+        self._hal_param_access = None
+        
     def initialize(self):
-        if self.enableHalParams:
+        
+        
+        print(self.halParamEnabled)
+        print(self.halParamName)
+        print(self.halParamType)
+        print(self.halParamAccess)
+        
+        
+        if self.halParamEnabled:
+            LOG.info(f"Adding HAL param {self.halParamEnabled}")
+            
             comp = qhal.getComponent()
             comp.addParam(self.halParamName, self.halParamType, self.halParamAccess)
-
+            
     #
     # Security implementation
     #
@@ -112,28 +125,34 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._security_level = security
 
     #
-    # Pparameter implementation
+    # Named parameters implementation
     #
 
     @Property(bool)
-    def enableHalParams(self):
-        return self._hal_param_enable
+    def halParamEnabled(self):
+        return self._hal_param_enabled
 
-    @enableHalParams.setter
-    def enableHalParams(self, enabled):
-        self._hal_param_enable = enabled
+    @halParamEnabled.setter
+    def halParamEnabled(self, enabled):
+        self._hal_param_enabled = enabled
+        
+    @halParamEnabled.reset
+    def halParamEnabled(self):
+        self._hal_param_enabled = False
 
     ###
 
     @Property(str)
     def halParamName(self):
-        if self._hal_param_name is None:
-            return str(self.objectName()).replace('-', '_')
         return self._hal_param_name
 
     @halParamName.setter
     def halParamName(self, name):
         self._hal_param_name = name
+        
+    @halParamName.reset
+    def halParamName(self):
+        self._hal_param_name = str(self.objectName()).replace('-', '_')
 
     ###
 
@@ -144,6 +163,10 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     @halParamType.setter
     def halParamType(self, param_type):
         self._hal_param_type = param_type
+        
+    @halParamType.reset
+    def halParamType(self):
+        self._hal_param_type = "s32"
 
     ###
 
@@ -154,6 +177,10 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     @halParamAccess.setter
     def halParamAccess(self, param_access):
         self._hal_param_access = param_access
+        
+    @halParamAccess.reset
+    def halParamAccess(self):
+        self._hal_param_access = "rw"
     
     def action_event(self, instance, value):
         print(instance)
