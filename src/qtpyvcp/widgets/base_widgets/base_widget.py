@@ -10,7 +10,7 @@ import os
 import json
 
 from qtpy.QtCore import Property, Slot
-from qtpy.QtWidgets import QPushButton, QWidget
+from qtpy.QtWidgets import QPushButton
 
 from qtpyvcp import hal as qhal
 from qtpyvcp.plugins import getPlugin
@@ -65,33 +65,15 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     }
 
     def __init__(self, parent=None):
-        super(VCPBaseWidget, self).__init__()
+        super(VCPBaseWidget, self).__init__(parent)
         self._rules = '[]'
         self._style = ''
         self._data_channels = []
         
         self._security_level = 0
         
-        self._hal_param_enabled = None
-        self._hal_param_name = None
-        self._hal_param_type = None
-        self._hal_param_access = None
-        
     def initialize(self):
-        
-        
-        print(self.halParamEnabled)
-        print(self.halParamName)
-        print(self.halParamType)
-        print(self.halParamAccess)
-        
-        
-        if self.halParamEnabled:
-            LOG.info(f"Adding HAL param {self.halParamEnabled}")
-            
-            comp = qhal.getComponent()
-            comp.addParam(self.halParamName, self.halParamType, self.halParamAccess)
-            
+        pass            
     #
     # Security implementation
     #
@@ -123,64 +105,6 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     @security.setter
     def security(self, security):
         self._security_level = security
-
-    #
-    # Named parameters implementation
-    #
-
-    @Property(bool)
-    def halParamEnabled(self):
-        return self._hal_param_enabled
-
-    @halParamEnabled.setter
-    def halParamEnabled(self, enabled):
-        self._hal_param_enabled = enabled
-        
-    @halParamEnabled.reset
-    def halParamEnabled(self):
-        self._hal_param_enabled = False
-
-    ###
-
-    @Property(str)
-    def halParamName(self):
-        return self._hal_param_name
-
-    @halParamName.setter
-    def halParamName(self, name):
-        self._hal_param_name = name
-        
-    @halParamName.reset
-    def halParamName(self):
-        self._hal_param_name = str(self.objectName()).replace('-', '_')
-
-    ###
-
-    @Property(str)
-    def halParamType(self):
-        return self._hal_param_type
-
-    @halParamType.setter
-    def halParamType(self, param_type):
-        self._hal_param_type = param_type
-        
-    @halParamType.reset
-    def halParamType(self):
-        self._hal_param_type = "s32"
-
-    ###
-
-    @Property(str)
-    def halParamAccess(self):
-        return self._hal_param_access
-
-    @halParamAccess.setter
-    def halParamAccess(self, param_access):
-        self._hal_param_access = param_access
-        
-    @halParamAccess.reset
-    def halParamAccess(self):
-        self._hal_param_access = "rw"
     
     def action_event(self, instance, value):
         print(instance)

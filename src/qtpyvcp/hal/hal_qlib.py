@@ -79,14 +79,13 @@ class QParam(QObject):
 
     def __init__(self, comp, name, pin_type=hal.HAL_BIT, access_mode=hal.HAL_RW, cycle_time=100):
         super(QParam, self).__init__(MAIN_WINDOW)
-
         self._param = _hal.component.newparam(comp, name, pin_type, access_mode)
+        self._name = name
         self._val = self._param.get()
 
         self.startTimer(cycle_time)
 
     def timerEvent(self, timer):
-        print("PARAM EVENT")
         tmp = self._param.get()
         if tmp != self._val:
             self._val = tmp
@@ -101,6 +100,10 @@ class QParam(QObject):
         self._val = val
         self._param.set(val)
         self.valueChanged.emit(val)
+
+    @property
+    def name(self):
+        return self._name
 
 
 class QComponent(QObject):
@@ -158,6 +161,12 @@ class QComponent(QObject):
 
     def getParam(self, param_name):
         return self._params[param_name]
+    
+    def addParamsListener(self, name, *args):
+        self._params[name].valueChanged.connect(*args)
+
+    def removeParamsListener(self, name, *args):
+        self._params[name].valueChanged.disconnect(*args)
 
     def getPin(self, pin_name):
         return self._pins[pin_name]
