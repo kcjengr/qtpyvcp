@@ -602,6 +602,14 @@ class Status(DataPlugin):
         chan.signal.emit(chan.value)
 
     @DataChannel
+    def rotation_xy(self, chan):
+        """Current G5x Rotation
+
+        | syntax ``status:rotation_xy`` returns float
+        """
+        return STAT.rotation_xy
+    
+    @DataChannel
     def g5x_index(self, chan):
         """Current G5x work coord system
 
@@ -609,14 +617,6 @@ class Status(DataPlugin):
         | syntax ``status:g5x_index?string`` returns str
         """
         return STAT.g5x_index
-    
-    @DataChannel
-    def rotation_xy(self, chan):
-        """Current G5x Rotation
-
-        | syntax ``status:rotation_xy`` returns float
-        """
-        return STAT.rotation_xy
     
     @g5x_index.tostring
     def g5x_index(self, chan):
