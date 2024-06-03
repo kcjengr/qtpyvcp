@@ -312,7 +312,7 @@ class OffsetTable(DataPlugin):
                         self.g5x_offset_table.get(1)[self.x_column] = data
                     if (param == 5242) and (self.y_column is not None):
                         # Y
-                        self.g5x_offset_table.get(2)[self.y_column] = data
+                        self.g5x_offset_table.get(1)[self.y_column] = data
                     if (param == 5243) and (self.z_column is not None):
                         # Z
                         self.g5x_offset_table.get(1)[self.z_column] = data
