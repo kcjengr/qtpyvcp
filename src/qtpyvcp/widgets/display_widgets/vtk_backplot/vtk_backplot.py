@@ -1095,12 +1095,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(program_bounds_actor)
 
             self.program_bounds_actors[wcs_index] = program_bounds_actor
-
-            self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
-            self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
         
 
             if len(self.path_actors) > 1:
+
+                self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
+                self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
             
                                                 
                 if path_count > 0:
