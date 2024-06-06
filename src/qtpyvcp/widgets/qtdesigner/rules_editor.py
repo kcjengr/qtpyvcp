@@ -14,8 +14,9 @@ import json
 import functools
 import webbrowser
 
-from qtpy import uic
-from qtpy import QtWidgets, QtCore, QtDesigner
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from PySide6 import QtWidgets, QtCore, QtDesigner
 
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins
 from qtpyvcp.utilities.settings import Setting
@@ -49,7 +50,13 @@ class ChanInfoDialog(QtWidgets.QDialog):
         super(ChanInfoDialog, self).__init__(parent)
         ui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                "channel_info_dialog.ui")
-        uic.loadUi(ui_file, self)
+        file_path = os.path.join(os.path.dirname(__file__), ui_file)
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
+
+        loader = QUiLoader()
+        self.ui = loader.load(ui_file, self)
+        self.ui.show()
 
         ch_obj, ch_exp, ch_val, ch_doc = info
 

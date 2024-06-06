@@ -1,10 +1,12 @@
 
 import os
-from qtpy import uic
-from qtpy.QtCore import Slot
-from qtpy.QtWidgets import QDialog, QDialogButtonBox, QApplication
 
-from qtpy.QtDesigner import QDesignerFormWindowInterface
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QDialog, QDialogButtonBox, QApplication
+
+from PySide6.QtDesigner import QDesignerFormWindowInterface
 
 from qtpyvcp import SETTINGS
 
@@ -32,7 +34,13 @@ class SettingSelector(QDialog):
         self.widget = widget
         self.app = QApplication.instance()
 
-        uic.loadUi(UI_FILE, self)
+        file_path = os.path.join(os.path.dirname(__file__), UI_FILE)
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
+
+        loader = QUiLoader()
+        self.ui = loader.load(ui_file, self)
+        self.ui.show()
 
         for setting in sorted(SETTINGS):
             print(setting)

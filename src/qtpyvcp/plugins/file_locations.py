@@ -8,7 +8,7 @@ import os
 
 import psutil
 
-from pyudev.pyqt5 import MonitorObserver
+from pyudev.pyside6 import MonitorObserver
 from pyudev import Context, Monitor
 
 from qtpyvcp.widgets.dialogs import askQuestion

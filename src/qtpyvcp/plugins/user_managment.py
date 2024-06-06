@@ -1,6 +1,6 @@
 import os
 
-from qtpy.QtWidgets import qApp
+from PySide6.QtWidgets import qApp
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin

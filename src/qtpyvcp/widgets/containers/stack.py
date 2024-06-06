@@ -1,6 +1,6 @@
 
-from qtpy.QtCore import Property
-from qtpy.QtWidgets import QStackedWidget
+from PySide6.QtCore import Property
+from PySide6.QtWidgets import QStackedWidget
 
 from qtpyvcp import SETTINGS
 from qtpyvcp.widgets.base_widgets import VCPWidget

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from qtpy.QtCore import Slot
+from PySide6.QtCore import Slot
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # Setup logging

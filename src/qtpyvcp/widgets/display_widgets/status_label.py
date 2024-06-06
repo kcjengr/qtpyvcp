@@ -1,5 +1,6 @@
-from qtpy.QtWidgets import QLabel
-from qtpy.QtCore import Property, Slot
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtWidgets import QLabel
+from PySide6.QtCore import Property, Slot
 
 from qtpyvcp.widgets import VCPWidget
 
@@ -23,11 +24,13 @@ class StatusLabel(QLabel, VCPWidget):
     def __init__(self, parent=None):
         super(StatusLabel, self).__init__(parent)
 
+
         self._format = '{}'
         self._expression = 'val'
         self._compiled_exp = lambda val: val
 
         self.setText('Not Set')
+
 
     @Property(str)
     def format(self):

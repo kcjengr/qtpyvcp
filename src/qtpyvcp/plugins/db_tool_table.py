@@ -33,7 +33,7 @@ from deepdiff import DeepDiff
 
 from  linuxcnc import command
 
-from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
+from PySide6.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 
 import qtpyvcp
 

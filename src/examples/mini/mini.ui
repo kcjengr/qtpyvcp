@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="focusPolicy">
-   <enum>Qt::StrongFocus</enum>
+   <enum>Qt::FocusPolicy::StrongFocus</enum>
   </property>
   <property name="windowTitle">
    <string>QtPyVCP Demo - Mini VCP</string>
@@ -210,7 +210,7 @@
     <item>
      <widget class="QSpinBox" name="spinBox">
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::NoButtons</enum>
+       <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
       </property>
      </widget>
     </item>
@@ -221,12 +221,12 @@
      <widget class="HalDoubleSpinBox" name="spinbox_xeo_scale"/>
     </item>
     <item>
-     <widget class="JogIncrementWidget" name="jogincrement"/>
+     <widget class="JogIncrementWidget" name="jogincrement" native="true"/>
     </item>
     <item>
      <widget class="ActionSlider" name="actionslider">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Orientation::Horizontal</enum>
       </property>
       <property name="actionName" stdset="0">
        <string>machine.jog.set-linear-speed-percentage</string>
@@ -236,10 +236,10 @@
     <item>
      <widget class="VCPSettingsSlider" name="vcpsettingsslider">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Orientation::Horizontal</enum>
       </property>
       <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
+       <enum>QSlider::TickPosition::TicksAbove</enum>
       </property>
       <property name="settingName" stdset="0">
        <string>machine.jog.linear-speed-percentage</string>
@@ -262,10 +262,10 @@
     <item>
      <widget class="VCPSettingsDoubleSpinBox" name="settings_spinbox">
       <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::NoButtons</enum>
+       <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
       </property>
       <property name="correctionMode">
-       <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+       <enum>QAbstractSpinBox::CorrectionMode::CorrectToNearestValue</enum>
       </property>
       <property name="suffix">
        <string> in</string>
@@ -322,7 +322,7 @@
     <item>
      <widget class="MDIEntry" name="mdientry">
       <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
+       <enum>Qt::FocusPolicy::ClickFocus</enum>
       </property>
       <property name="rules" stdset="0">
        <string notr="true">[]</string>

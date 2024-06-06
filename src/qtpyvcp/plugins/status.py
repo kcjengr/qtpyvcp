@@ -1,8 +1,8 @@
 import os
 import linuxcnc
 
-from qtpy.QtCore import QTimer, QFileSystemWatcher, Qt
-from qtpy.QtWidgets import QApplication
+from PySide6.QtCore import QTimer, QFileSystemWatcher, Qt
+from PySide6.QtWidgets import QApplication
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.app.runtime_config import RuntimeConfig
@@ -52,8 +52,8 @@ class Status(DataPlugin):
             try:
                 STAT.poll()
             except Exception as e:
-                LOG.Error("Unable to poll status channel")
-                LOG.Debug(e)
+                LOG.error("Unable to poll status channel")
+                LOG.debug(e)
 
         excluded_items = ['axis', 'joint', 'spindle', 'poll']
 

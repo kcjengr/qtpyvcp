@@ -12,9 +12,9 @@ from vtkmodules.vtkCommonCore import (
     VTK_VERSION_NUMBER,
     vtkVersion
 )
-from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
-from qtpy.QtWidgets import QApplication
-from qtpy.QtGui import QColor
+from PySide6.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
+from PySide6.QtWidgets import QApplication
+from PySide6.QtGui import QColor
 
 # Fix poligons not drawing correctly on some GPU
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
@@ -47,12 +47,13 @@ LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 NUMBER_OF_WCS = 9
 
+# TODO: check this with PySide6
 
 # turn on antialiasing
-from qtpy.QtOpenGL import QGLFormat
-f = QGLFormat()
-f.setSampleBuffers(True)
-QGLFormat.setDefaultFormat(f)
+# from PySide6.QtOpenGL import Forma
+# f = QGLFormat()
+# f.setSampleBuffers(True)
+# QGLFormat.setDefaultFormat(f)
 
 
 def vtk_version_ok(major, minor):
@@ -1741,9 +1742,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def plotMachine(self, value):
         self._plot_machine = value
 
-    @plotMachine.reset
-    def plotMachine(self):
-        self.plotMachine = False
+    # @plotMachine.reset
+    # def plotMachine(self):
+    #     self.plotMachine = False
 
 
     @Property(QColor)
@@ -1757,12 +1758,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.SetBackground(color.getRgbF()[:3])
         self.renderer_window.Render()
 
-    @backgroundColor.reset
-    def backgroundColor(self):
-        self._background_color = QColor(0, 0, 0)
-
-        self.renderer.GradientBackgroundOff()
-        self.renderer_window.Render()
+    # @backgroundColor.reset
+    # def backgroundColor(self):
+    #     self._background_color = QColor(0, 0, 0)
+    #
+    #     self.renderer.GradientBackgroundOff()
+    #     self.renderer_window.Render()
 
 
     @Property(QColor)
@@ -1777,12 +1778,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.SetBackground2(color2.getRgbF()[:3])
         self.renderer_window.Render()
 
-    @backgroundColor2.reset
-    def backgroundColor2(self):
-        self._background_color2 = QColor(0, 0, 0)
-
-        self.renderer.GradientBackgroundOff()
-        self.renderer_window.Render()
+    # @backgroundColor2.reset
+    # def backgroundColor2(self):
+    #     self._background_color2 = QColor(0, 0, 0)
+    #
+    #     self.renderer.GradientBackgroundOff()
+    #     self.renderer_window.Render()
 
     @Property(bool)
     def enableProgramTicks(self):
@@ -1802,9 +1803,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def traverseColor(self, color):
         self._traverse_color = color
 
-    @traverseColor.reset
-    def traverseColor(self):
-        self._traverse_color = self._default_traverse_color
+    # @traverseColor.reset
+    # def traverseColor(self):
+    #     self._traverse_color = self._default_traverse_color
 
     # Arcfeed color property
 
@@ -1816,9 +1817,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def arcfeedColor(self, color):
         self._arcfeed_color = color
 
-    @arcfeedColor.reset
-    def arcfeedColor(self):
-        self._arcfeed_color = self._default_arcfeed_color
+    # @arcfeedColor.reset
+    # def arcfeedColor(self):
+    #     self._arcfeed_color = self._default_arcfeed_color
 
     # Feed color property
 
@@ -1830,9 +1831,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def feedColor(self, color):
         self._feed_color = color
 
-    @feedColor.reset
-    def feedColor(self):
-        self._feed_color = self._default_feed_color
+    # @feedColor.reset
+    # def feedColor(self):
+    #     self._feed_color = self._default_feed_color
 
     # Dwell color property
 
@@ -1844,9 +1845,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def dwellColor(self, color):
         self._dwel_color = color
 
-    @dwellColor.reset
-    def dwellColor(self):
-        self._dwel_color = self._default_dwell_color
+    # @dwellColor.reset
+    # def dwellColor(self):
+    #     self._dwel_color = self._default_dwell_color
 
     # User color property
 
@@ -1858,6 +1859,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def userColor(self, color):
         self._user_color = color
 
-    @userColor.reset
-    def userColor(self):
-        self._user_color = self._default_user_color
+    # @userColor.reset
+    # def userColor(self):
+    #     self._user_color = self._default_user_color

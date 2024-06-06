@@ -36,9 +36,8 @@ import distro
 # ➜  ~ sudo echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 # eclipse plugins
-# sys.path.append(r'/home/turboss/Apps/eclipse-cpp-2020-12-R-linux-gtk-x86_64/eclipse/plugins/org.python.pydev.core_8.3.0.202104101217/pysrc')
-# import pydevd
-# pydevd.settrace()
+# sys.path.append(r'~/.p2/pool/plugins/org.python.pydev.core_12.0.0.202402010911/pysrc')
+# import pydevd; pydevd.settrace()
 
 
 from io import TextIOWrapper
@@ -47,7 +46,7 @@ from subprocess import Popen, PIPE, STDOUT
 from pkg_resources import iter_entry_points
 
 from docopt import docopt
-from qtpy.QtWidgets import QApplication, QFileDialog
+from PySide6.QtWidgets import QApplication, QFileDialog
 
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.logger import initBaseLogger
@@ -125,11 +124,10 @@ def launch_designer(opts=DotDict()) -> None:
             LOG.error(INSTALLED_ERROR_MSG)
             sys.exit(1)
 
-    
     if distro.id() == 'gentoo':
-        cmd = ['designer5']
+        cmd = ['designer6']
     else:
-        cmd = ['designer']
+        cmd = ["pyside6-designer"]
     
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
@@ -190,8 +188,8 @@ def launch_designer(opts=DotDict()) -> None:
     sys.path.insert(0, base)
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
-    os.environ['QT_SELECT'] = 'qt5'
-    os.environ['PYQTDESIGNERPATH'] = os.path.join(base, '../widgets')
+    os.environ['QT_SELECT'] = 'qt6'
+    os.environ['PYSIDE_DESIGNER_PLUGINS'] = os.path.join(base, "..", 'widgets')
 
     LOG.info("Starting QtDesigner ...")
 

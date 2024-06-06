@@ -1,3 +1,6 @@
+from PySide6.QtCore import QEnum
+from enum import Enum
+
 TYPE_MAP = {
     0: 'bit',
     1: 'u32',
@@ -9,12 +12,13 @@ TYPE_MAP = {
     'float': 3,
     }
 
-class HalType(object):
+
+@QEnum
+class HalType(Enum):
     bit = 0
     u32 = 1
     s32 = 2
     float = 3
 
-    @classmethod
     def toString(self, typ):
         return TYPE_MAP[typ]

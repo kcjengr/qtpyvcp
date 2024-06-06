@@ -16,9 +16,9 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from qtpy.QtCore import Qt, QSortFilterProxyModel, QRegExp
-from qtpy.QtGui import QStandardItemModel, QStandardItem, QIcon
-from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
+from PySide6.QtCore import Qt, QSortFilterProxyModel, QRegularExpression
+from PySide6.QtGui import QStandardItemModel, QStandardItem, QIcon
+from PySide6.QtWidgets import QVBoxLayout, QStackedWidget, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin
@@ -172,8 +172,8 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(False)
 
         self.notification_name.setText("Information Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegExp("INFO", Qt.CaseSensitive,
-                                                          QRegExp.FixedString))
+        self.all_notification_model_proxy.setFilterRegExp(QRegularExpression("INFO", Qt.CaseSensitive,
+                                                          QRegularExpression.FixedString))
 
     def show_warn_notifications(self):
         self.all_button.setChecked(False)
@@ -183,8 +183,8 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(False)
 
         self.notification_name.setText("Warning Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegExp("WANRNING", Qt.CaseSensitive,
-                                                          QRegExp.FixedString))
+        self.all_notification_model_proxy.setFilterRegExp(QRegularExpression("WANRNING", Qt.CaseSensitive,
+                                                          QRegularExpression.FixedString))
 
     def show_error_notifications(self):
         self.all_button.setChecked(False)
@@ -194,8 +194,8 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(False)
 
         self.notification_name.setText("Error Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegExp("ERROR", Qt.CaseInsensitive,
-                                                          QRegExp.FixedString))
+        self.all_notification_model_proxy.setFilterRegExp(QRegularExpression("ERROR", Qt.CaseInsensitive,
+                                                          QRegularExpression.FixedString))
 
     def show_debug_notifications(self):
         self.all_button.setChecked(False)
@@ -205,8 +205,8 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(True)
 
         self.notification_name.setText("Debug Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegExp("DEBUG", Qt.CaseSensitive,
-                                                          QRegExp.FixedString))
+        self.all_notification_model_proxy.setFilterRegExp(QRegularExpression("DEBUG", Qt.CaseSensitive,
+                                                          QRegularExpression.FixedString))
 
     def clear_all_notifications(self):
         self.all_notification_model.clear()

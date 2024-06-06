@@ -1,26 +1,28 @@
-from qtpy.QtGui import QIcon
-from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
+from PySide6.QtGui import QIcon
+from PySide6.QtDesigner import QDesignerCustomWidgetInterface
 
 from .plugin_extension import ExtensionFactory, Q_TYPEID
 from .designer_hooks import DesignerHooks
 
 from .rules_editor import RulesEditorExtension
 
-class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
+
+class _DesignerPlugin(QDesignerCustomWidgetInterface):
 
     group_name = None
 
-    def __init__(self, parent=None):
-        super(_DesignerPlugin, self).__init__(parent=parent)
+    def __init__(self):
+        super().__init__()
         self.initialized = False
         self.manager = None
+        self._form_editor = None
 
     # This MUST be overridden to return the widget class
     def pluginClass(self):
         raise NotImplementedError()
 
     def designerExtensions(self):
-        if hasattr(self.pluginClass(), 'RULE_PROPERTIES'):
+        if hasattr(self.pluginClass, 'RULE_PROPERTIES'):
             return [RulesEditorExtension,]
         else:
             return []
@@ -52,7 +54,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
     def group(self):
         if self.group_name is None:
             try:
-                tmp = self.pluginClass().__module__.split('.')[2].split('_')[0].capitalize()
+                tmp = self.pluginClass.__module__.split('.')[2].split('_')[0].capitalize()
                 return "QtPyVCP - {}".format(tmp)
             except:
                 return "QtPyVCP - Undefined"
@@ -74,26 +76,26 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
         designer_hooks = DesignerHooks()
         designer_hooks.form_editor = form_editor
+        self._form_editor = form_editor
 
         self.manager = form_editor.extensionManager()
 
         if len(self.designerExtensions()) > 0 and self.manager:
-            factory = ExtensionFactory(parent=self.manager)
-            self.manager.registerExtensions(factory,
-                                            Q_TYPEID['QDesignerTaskMenuExtension'])
+            factory = ExtensionFactory(self.manager)
+            self.manager.registerExtensions(factory, Q_TYPEID['QDesignerTaskMenuExtension'])
 
         self.initialized = True
 
     def isInitialized(self):
-        return self.initialized
+        return self._form_editor is not None
 
     def createWidget(self, parent):
-        w = self.pluginClass()(parent)
+        w = self.pluginClass(parent)
         w.extensions = self.designerExtensions()
         return w
 
     def name(self):
-        return self.pluginClass().__name__
+        return self.pluginClass.__name__
 
     def includeFile(self):
-        return self.pluginClass().__module__
+        return self.pluginClass.__module__

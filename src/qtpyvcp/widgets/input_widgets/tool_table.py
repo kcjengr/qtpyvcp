@@ -1,6 +1,7 @@
-from qtpy.QtCore import Qt, Slot, Signal, Property, QModelIndex, QSortFilterProxyModel
-from qtpy.QtGui import QStandardItemModel, QColor, QBrush
-from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
+from PySide6.QtCore import Qt, Slot, Signal, Property, QModelIndex, QSortFilterProxyModel
+from PySide6.QtGui import QStandardItemModel, QColor, QBrush
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
 
 from qtpyvcp.actions.machine_actions import issue_mdi
@@ -230,7 +231,6 @@ class ToolTable(QTableView):
         super(ToolTable, self).__init__(parent)
 
         self.clicked.connect(self.onClick)
-
         self.tool_model = ToolModel(self)
 
         self.item_delegate = ItemDelegate(columns=self.tool_model._columns)

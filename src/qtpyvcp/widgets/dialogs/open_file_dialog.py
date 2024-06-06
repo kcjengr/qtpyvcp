@@ -1,5 +1,5 @@
-from qtpy.QtCore import QUrl, QFileInfo
-from qtpy.QtWidgets import QFileDialog
+from PySide6.QtCore import QUrl, QFileInfo
+from PySide6.QtWidgets import QFileDialog
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
@@ -26,7 +26,7 @@ class OpenFileDialog(QFileDialog, VCPPrimitiveWidget):
         self.setDirectory(nc_file_dir)
         self.setNameFilters(nc_file_types.split(';;'))
 
-        self.setOption(self.DontUseNativeDialog)
+        # self.setOption(self.DontUseNativeDialog)
         self.setModal(True)
 
         urls = self.sidebarUrls()

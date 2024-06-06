@@ -9,8 +9,8 @@
 #   PyDM Project: https://github.com/slaclab/pydm
 #   PyDM Licence: https://github.com/slaclab/pydm/blob/master/LICENSE.md
 
-from qtpy.QtWidgets import QAction
-from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
+from PySide6.QtGui import QAction
+from PySide6.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 
 Q_TYPEID = {
     'QDesignerTaskMenuExtension':      'org.qt-project.Qt.Designer.TaskMenu',
@@ -19,8 +19,8 @@ Q_TYPEID = {
 }
 
 class ExtensionFactory(QExtensionFactory):
-    def __init__(self, parent=None):
-        super(ExtensionFactory, self).__init__(parent)
+    def __init__(self, extension_manager):
+        super().__init__(extension_manager)
 
     def createExtension(self, obj, iid, parent):
         if iid == Q_TYPEID['QDesignerTaskMenuExtension']:
@@ -33,7 +33,7 @@ class ExtensionFactory(QExtensionFactory):
 
 class TaskMenuExtension(QPyDesignerTaskMenuExtension):
     def __init__(self, widget, parent):
-        super(TaskMenuExtension, self).__init__(parent)
+        super().__init__(parent)
 
         self.widget = widget
         self.__actions = None

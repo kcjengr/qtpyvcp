@@ -2,8 +2,9 @@
 
 import os
 
-from qtpy import uic
-from qtpy.QtWidgets import QWidget
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from PySide6.QtWidgets import QWidget
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
@@ -18,5 +19,10 @@ class GCodeProperties(QWidget):
     def __init__(self, parent=None, standalone=False):
         super(GCodeProperties, self).__init__(parent)
         if not IN_DESIGNER:
+            file_path = os.path.join(os.path.dirname(__file__), "gcode_properties.ui")
+            ui_file = QFile(file_path)
+            ui_file.open(QFile.ReadOnly)
 
-            self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "gcode_properties.ui"), self)
+            loader = QUiLoader()
+            self.ui = loader.load(ui_file, self)
+            self.ui.show()

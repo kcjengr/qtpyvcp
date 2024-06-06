@@ -1,10 +1,11 @@
 import os
 
 import linuxcnc
-from qtpy import uic, QtWidgets
-from qtpy.QtCore import Slot, Qt, QEvent, QPoint
-from qtpy.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
-from qtpy.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
+
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import Slot, Qt, QEvent, QPoint, QFile
+from PySide6.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
+from PySide6.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
 
 
 class VirtualInput(QWidget):
@@ -25,7 +26,14 @@ class VirtualInput(QWidget):
         self.caps_on = False
         self.focus_object = None
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.BypassWindowManagerHint)
-        uic.loadUi(ui_file, self)
+   
+        file_path = os.path.join(os.path.dirname(__file__), ui_file)
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
+        
+        loader = QUiLoader()
+        self.ui = loader.load(ui_file, self)
+        self.ui.show()
 
     @Slot(QAbstractButton)
     def on_buttonGroup_buttonPressed(self, btn):

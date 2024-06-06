@@ -2,9 +2,9 @@
 
 import os
 
-from qtpy import uic
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QDialog
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import Qt, QFile
+from PySide6.QtWidgets import QDialog
 
 from qtpyvcp.utilities.logger import getLogger
 
@@ -89,13 +89,14 @@ class BaseDialog(QDialog):
         Args:
             ui_file (str) : path to the .ui file to load.
         """
-        ui_file = os.path.realpath(ui_file)
-        if not os.path.isfile(ui_file):
-            LOG.error("Specified UI for dialog does not exist: %s", ui_file)
-            return
 
-        LOG.debug("Loading dialog from ui_file: %s", ui_file)
-        uic.loadUi(ui_file, self)
+        file_path = os.path.join(os.path.dirname(__file__), ui_file)
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
+        
+        loader = QUiLoader()
+        self.ui = loader.load(ui_file, self)
+        self.ui.show()
 
     def setWindowFlag(self, flag, on):
         """BackPort QWidget.setWindowFlag() implementation from Qt 5.9

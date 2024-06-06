@@ -9,8 +9,8 @@ all other QtPyVCP widgets are based.
 import os
 import json
 
-from qtpy.QtCore import Property, Slot
-from qtpy.QtWidgets import QPushButton
+from PySide6.QtCore import Property, Slot
+from PySide6.QtWidgets import QPushButton
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger

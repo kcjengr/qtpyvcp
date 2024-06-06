@@ -1,5 +1,6 @@
 import os
-from qtpy.QtWidgets import QMenu, QAction
+from PySide6.QtWidgets import QMenu
+from PySide6.QtGui import QAction
 
 from qtpyvcp import actions
 from qtpyvcp.plugins import getPlugin

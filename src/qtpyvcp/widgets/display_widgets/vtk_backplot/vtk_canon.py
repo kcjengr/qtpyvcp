@@ -10,8 +10,8 @@ import vtk
 from .linuxcnc_datasource import LinuxCncDataSource
 from .path_actor import PathActor
 
-from qtpy.QtGui import QColor
-from qtpy.QtWidgets import QApplication
+from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QApplication
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon

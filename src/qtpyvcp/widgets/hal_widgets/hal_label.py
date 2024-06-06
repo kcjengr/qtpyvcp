@@ -1,5 +1,5 @@
-from qtpy.QtWidgets import QLabel
-from qtpy.QtCore import Property, Q_ENUMS
+from PySide6.QtWidgets import QLabel
+from PySide6.QtCore import Property, QEnum
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
@@ -10,7 +10,7 @@ from . import HalType
 from qtpyvcp.utilities.logger import getLogger
 LOG = getLogger(__name__)
 
-class HalLabel(QLabel, HALWidget, HalType):
+class HalLabel(QLabel, HALWidget):
     """HAL Label
 
     Label for displaying HAL pin values.
@@ -30,7 +30,7 @@ class HalLabel(QLabel, HALWidget, HalType):
         qtpyvcp.label.in          selecatable in
         ========================= =========== =========
     """
-    Q_ENUMS(HalType)
+    QEnum(HalType)
 
     def __init__(self, parent=None):
         super(HalLabel, self).__init__(parent)

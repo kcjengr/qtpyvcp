@@ -29,7 +29,7 @@ from datetime import datetime
 
 import linuxcnc
 
-from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
+from PySide6.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 
 import qtpyvcp
 from qtpyvcp.utilities.info import Info

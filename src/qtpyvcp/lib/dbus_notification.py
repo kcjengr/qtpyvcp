@@ -29,7 +29,7 @@ log = logger.getLogger(__name__)
 
 DBusQtMainLoop = None
 try:
-    from dbus.mainloop.pyqt5 import DBusQtMainLoop
+    from PySide6.QtDBus import QDBusConnection
 except ImportError:
     log.warning("Could not import DBusQtMainLoop, is package 'python-dbus.mainloop.pyqt5' installed?")
 
@@ -58,10 +58,8 @@ def init(app_name):
     interface = "org.freedesktop.Notifications"
 
     mainloop = None
-    if DBusQtMainLoop is not None:
-        mainloop = DBusQtMainLoop(set_as_default=True)
-
-    bus = dbus.SessionBus(mainloop)
+    session_bus = QDBusConnection.sessionBus()
+    bus = dbus.SessionBus(session_bus)
     proxy = bus.get_object(name, path)
     DBUS_IFACE = dbus.Interface(proxy, interface)
 
@@ -268,7 +266,7 @@ def onClose(n):
 
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtCore import QCoreApplication
+    from PySide6.QtCore import QCoreApplication
 
     app = QCoreApplication(sys.argv)
 

@@ -1,5 +1,5 @@
-from qtpy.QtWidgets import QSpinBox
-from qtpy.QtCore import Property
+from PySide6.QtWidgets import QSpinBox
+from PySide6.QtCore import Property
 
 from qtpyvcp.widgets import CMDWidget
 from qtpyvcp.actions import bindWidget

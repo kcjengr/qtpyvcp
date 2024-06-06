@@ -1,5 +1,5 @@
-from qtpy.QtWidgets import QDial
-from qtpy.QtCore import Property
+from PySide6.QtWidgets import QDial
+from PySide6.QtCore import Property
 
 from qtpyvcp.actions import bindWidget
 from qtpyvcp.utilities.logger import getLogger

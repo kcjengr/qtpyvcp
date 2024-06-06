@@ -20,8 +20,9 @@
 import linuxcnc
 import os
 
-from qtpy import uic
-from qtpy.QtWidgets import QDialog
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from PySide6.QtWidgets import QDialog
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
@@ -41,4 +42,10 @@ class ToolEditDialog(BaseDialog):
         else:
             self.dialog_ui = self.mill_ui_dialog
 
-        uic.loadUi(os.path.join(os.path.dirname(__file__), self.dialog_ui), self)
+        file_path = os.path.join(os.path.dirname(__file__), self.dialog_ui)
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
+        
+        loader = QUiLoader()
+        self.ui = loader.load(ui_file, self)
+

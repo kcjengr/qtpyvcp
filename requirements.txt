@@ -1,0 +1,10 @@
+docopt
+pyserial
+pyside6
+hiyapyco
+dbus-python
+psutil
+pyudev
+distro
+python-dateutil
+simpleeval

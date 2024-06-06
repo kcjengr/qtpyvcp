@@ -1,7 +1,7 @@
 
-from qtpy.QtCore import Qt, Slot, Property, QStringListModel
-from qtpy.QtGui import QValidator
-from qtpy.QtWidgets import QLineEdit, QListWidgetItem, QCompleter
+from PySide6.QtCore import Qt, Slot, Property, QStringListModel
+from PySide6.QtGui import QValidator
+from PySide6.QtWidgets import QLineEdit, QListWidgetItem, QCompleter
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info

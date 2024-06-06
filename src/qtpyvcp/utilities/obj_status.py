@@ -19,7 +19,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import linuxcnc, time, threading, subprocess, os, json
-from qtpy.QtCore import QObject, QTimer, Signal
+from PySide6.QtCore import QObject, QTimer, Signal
 
 # Setup logging
 try:
@@ -407,8 +407,8 @@ class HALStatus(QObject):
 
 if __name__ == '__main__':
     import sys
-    from PyQt5.QtCore import Qt
-    from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QLineEdit, QCheckBox, QTextEdit, QApplication, QMainWindow, QVBoxLayout, QGridLayout
+    from PySide6.QtCore import Qt
+    from PySide6.QtWidgets import QWidget, QPushButton, QLabel, QLineEdit, QCheckBox, QTextEdit, QApplication, QMainWindow, QVBoxLayout, QGridLayout
 
     app = QApplication(sys.argv)
 

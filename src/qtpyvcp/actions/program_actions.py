@@ -2,7 +2,7 @@ import sys
 import linuxcnc
 import tempfile
 
-from qtpy.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)

@@ -1,6 +1,6 @@
-from qtpy.QtCore import Property
-from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
-from qtpy.QtGui import QIntValidator, QDoubleValidator
+from PySide6.QtCore import Property
+from PySide6.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
+from PySide6.QtGui import QIntValidator, QDoubleValidator
 
 from qtpyvcp import SETTINGS
 from qtpyvcp.widgets import VCPWidget

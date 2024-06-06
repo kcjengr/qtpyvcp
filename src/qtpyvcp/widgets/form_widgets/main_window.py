@@ -1,12 +1,14 @@
 import os
 import sys
+
+
 import linuxcnc
 
-from qtpy import uic
-from qtpy.QtGui import QKeySequence
-from qtpy.QtCore import Qt, Slot, QTimer
-from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QShortcut, QActionGroup
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
+from PySide6.QtCore import Qt, Slot, QTimer, QFile
+from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
+    QMenu, QMenuBar, QLineEdit, QVBoxLayout
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -103,7 +105,16 @@ class VCPMainWindow(QMainWindow):
             ui_file (str) : Path to a .ui file to load.
         """
         # TODO: Check for compiled *_ui.py files and load from that if exists
-        uic.loadUi(ui_file, self)
+        file_path = os.path.join(os.path.dirname(__file__), ui_file)
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
+
+        loader = QUiLoader()
+        loader.registerCustomWidget(VCPMainWindow)
+
+        self.ui = loader.load(ui_file, self)
+        self.setCentralWidget(self.ui)
+        self.ui.show()
 
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied

@@ -1,7 +1,7 @@
 
 
-from qtpy.QtWidgets import QCheckBox
-from qtpy.QtCore import Property, QEvent
+from PySide6.QtWidgets import QCheckBox
+from PySide6.QtCore import Property, QEvent
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
