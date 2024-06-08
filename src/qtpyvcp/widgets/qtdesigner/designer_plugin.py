@@ -90,7 +90,8 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
         return self._form_editor is not None
 
     def createWidget(self, parent):
-        w = self.pluginClass(parent)
+
+        w = self.pluginClass()(parent)
         w.extensions = self.designerExtensions()
         return w
 

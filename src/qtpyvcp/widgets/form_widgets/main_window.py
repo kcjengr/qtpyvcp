@@ -23,6 +23,7 @@ LOG = logger.getLogger(__name__)
 INFO = Info()
 STATUS = getPlugin('status')
 
+
 class VCPMainWindow(QMainWindow):
 
     def __init__(self, parent=None, opts=None, ui_file=None, stylesheet=None,
@@ -47,7 +48,7 @@ class VCPMainWindow(QMainWindow):
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
             self.loadUi(ui_file)
-            self.initUi()
+            # self.initUi()
 
         if menu is not None:
             try:
@@ -113,6 +114,7 @@ class VCPMainWindow(QMainWindow):
         loader.registerCustomWidget(VCPMainWindow)
 
         self.ui = loader.load(ui_file, self)
+        self.ui.initUi()
         self.setCentralWidget(self.ui)
         self.ui.show()
 

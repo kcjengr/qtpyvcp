@@ -18,6 +18,7 @@ Q_TYPEID = {
     'QDesignerPropertySheetExtension': 'org.qt-project.Qt.Designer.PropertySheet'
 }
 
+
 class ExtensionFactory(QExtensionFactory):
     def __init__(self, extension_manager):
         super().__init__(extension_manager)

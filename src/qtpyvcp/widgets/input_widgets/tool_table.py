@@ -230,6 +230,7 @@ class ToolTable(QTableView):
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
 
+
         self.clicked.connect(self.onClick)
         self.tool_model = ToolModel(self)
 
