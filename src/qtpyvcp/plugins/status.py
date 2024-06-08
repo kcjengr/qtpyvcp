@@ -18,13 +18,13 @@ CMD = linuxcnc.command()
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
+
 class Status(DataPlugin):
 
     stat = STAT
 
     def __init__(self, cycle_time=100):
         super(Status, self).__init__()
-
 
         self.no_force_homing = INFO.noForceHoming()
 

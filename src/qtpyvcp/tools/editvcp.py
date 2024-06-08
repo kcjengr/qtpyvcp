@@ -189,8 +189,15 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
     os.environ['QT_SELECT'] = 'qt6'
-    # os.environ['PYSIDE_DESIGNER_PLUGINS'] = os.path.join(base, "..", 'widgets')
-    os.environ['PYSIDE_DESIGNER_PLUGINS'] = "/home/turboss/Downloads/taskmenuextension"
+
+    widgets_path_list = (os.path.join(base, "..", "widgets"),
+                         os.path.join(base, "..", "widgets", "taskmenuextension"),
+                         os.path.join(base, "..", "widgets", "button_widgets"),
+                         os.path.join(base, "..", "widgets", "display_widgets"),
+                         os.path.join(base, "..", "widgets", "hal_widgets"))
+
+    os.environ['PYSIDE_DESIGNER_PLUGINS'] = ":".join(widgets_path_list)
+
 
     LOG.info("Starting QtDesigner ...")
 

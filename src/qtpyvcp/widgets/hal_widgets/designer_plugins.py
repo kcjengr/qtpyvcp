@@ -20,6 +20,11 @@ class HalLedIndicatorPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalLedIndicator
 
+from qtpyvcp.widgets.hal_widgets.hal_led_button import HALLEDButton
+class HalLedButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HALLEDButton
+
 from qtpyvcp.widgets.hal_widgets.hal_label import HalLabel
 class HalLabelPlugin(_DesignerPlugin):
     def pluginClass(self):

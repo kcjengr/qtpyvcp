@@ -96,7 +96,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
         return w
 
     def name(self):
-        return self.pluginClass.__name__
+        return self.pluginClass().__name__
 
     def includeFile(self):
-        return self.pluginClass.__module__
+        return self.pluginClass().__module__
