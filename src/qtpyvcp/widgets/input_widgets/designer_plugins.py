@@ -27,7 +27,7 @@ class MDIHistoryPlugin(_DesignerPlugin):
 #         return GcodeEditor
 
 from .gcode_text_edit import GcodeTextEdit
-class gCodeEditPlugin(_DesignerPlugin):
+class GCodeEditPlugin(_DesignerPlugin):
     def pluginClass(self):
         return GcodeTextEdit
 
@@ -157,7 +157,7 @@ class OffsetTablePlugin(_DesignerPlugin):
 
 from .dro_line_edit import DROLineEdit
 from qtpyvcp.widgets.qtdesigner.dro_editor import DroEditorExtension
-class DROLineEdit_Plugin(_DesignerPlugin):
+class DROLineEditPlugin(_DesignerPlugin):
     def pluginClass(self):
         return DROLineEdit
     def objectName(self):
