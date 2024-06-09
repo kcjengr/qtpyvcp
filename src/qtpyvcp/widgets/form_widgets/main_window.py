@@ -109,12 +109,11 @@ class VCPMainWindow(QMainWindow):
         file_path = os.path.join(os.path.dirname(__file__), ui_file)
         ui_file = QFile(file_path)
         ui_file.open(QFile.ReadOnly)
-
+        
         loader = QUiLoader()
-        loader.registerCustomWidget(VCPMainWindow)
-
         self.ui = loader.load(ui_file, self)
-        self.ui.initUi()
+        # self.ui.initUi()
+        
         self.setCentralWidget(self.ui)
         self.ui.show()
 

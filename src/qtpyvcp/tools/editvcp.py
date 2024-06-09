@@ -191,13 +191,14 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['QT_SELECT'] = 'qt6'
 
     widgets_path_list = (os.path.join(base, "..", "widgets"),
-                         os.path.join(base, "..", "widgets", "taskmenuextension"),
-                         os.path.join(base, "..", "widgets", "button_widgets"),
-                         os.path.join(base, "..", "widgets", "display_widgets"),
                          os.path.join(base, "..", "widgets", "hal_widgets"),
+                         os.path.join(base, "..", "widgets", "button_widgets"),
+                         os.path.join(base, "..", "widgets", "db_widgets"),
+                         os.path.join(base, "..", "widgets", "display_widgets"),
                          os.path.join(base, "..", "widgets", "input_widgets"))
 
     print(":".join(widgets_path_list))
+    
     os.environ['PYSIDE_DESIGNER_PLUGINS'] = ":".join(widgets_path_list)
 
 

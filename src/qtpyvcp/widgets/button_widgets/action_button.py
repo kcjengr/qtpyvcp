@@ -1,8 +1,8 @@
 from PySide6.QtCore import Property
-from PySide6.QtUiTools import QUiLoader
 
 from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions import bindWidget, InvalidAction
+
 
 class ActionButton(VCPButton):
     """General purpose button for triggering QtPyVCP actions.
@@ -14,7 +14,6 @@ class ActionButton(VCPButton):
 
     def __init__(self, parent=None, action=None):
         super(ActionButton, self).__init__(parent)
-
 
         self._action_name = ''
         if action is not None:

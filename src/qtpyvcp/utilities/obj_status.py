@@ -333,7 +333,8 @@ class HALPoller(QObject):
             if len(rawtuple[0]) <= 0:
                 time.sleep(self.cycle_time/1000.0)
                 continue
-            raw = rawtuple[0].split('\n')
+
+            raw = str(rawtuple[0]).split('\n')
 
             pins = [ [a for a in [x.strip() for x in line.split(' ')] if a != ''] for line in raw ]
 

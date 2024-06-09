@@ -22,7 +22,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
         raise NotImplementedError()
 
     def designerExtensions(self):
-        if hasattr(self.pluginClass, 'RULE_PROPERTIES'):
+        if hasattr(self.pluginClass(), 'RULE_PROPERTIES'):
             return [RulesEditorExtension,]
         else:
             return []
@@ -54,7 +54,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
     def group(self):
         if self.group_name is None:
             try:
-                tmp = self.pluginClass.__module__.split('.')[2].split('_')[0].capitalize()
+                tmp = self.pluginClass().__module__.split('.')[2].split('_')[0].capitalize()
                 return "QtPyVCP - {}".format(tmp)
             except:
                 return "QtPyVCP - Undefined"
