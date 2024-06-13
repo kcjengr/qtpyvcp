@@ -9,6 +9,8 @@ class PathActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
         super(PathActor, self).__init__()
         self._datasource = linuxcncDataSource
+        
+        self.is_empty = True
 
         self.origin_index = None
         self.origin_cords = None

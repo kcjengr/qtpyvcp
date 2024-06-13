@@ -218,10 +218,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.offset_change_start_actor = OrderedDict()
         self.offset_change_end_actor = OrderedDict()
         self.offset_change_line_actor = OrderedDict()
-
-        self.path_offset_start_point = OrderedDict()
-        self.path_offset_angle_point = OrderedDict
-        self.path_offset_end_point = OrderedDict()
         
         if self._datasource.isMachineMetric():
             self.position_mult = 1000  # 500 here works for me
@@ -363,7 +359,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.path_actors = self.canon.get_path_actors()
 
-            for wcs_index, path_actor in list(self.path_actors.items()):
+            for wcs_index, path_actor in self.path_actors.items():
+                
+                if path_actor.is_empty:
+                    continue
+                
                 current_offsets = self.wcs_offsets[wcs_index]
 
                 LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
@@ -585,11 +585,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
         LOG.debug("-------load_program")
+        print(fname)
 
         self._datasource._status.addLock()
 
         # Cleanup the scene, remove any previous actors if any
         for wcs_index, actor in self.path_actors.items():
+            
+            if actor.is_empty:
+                print("######################################################################## EMPTY PATH")
+                continue
             LOG.debug("-------load_program wcs_index: {}".format(wcs_index))
             axes_actor = actor.get_axes_actor()
             program_bounds_actor = self.program_bounds_actors[wcs_index]
@@ -655,6 +660,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         prev_z_position = 0.0
 
         for wcs_index, actor in self.path_actors.items():
+            
+            if actor.is_empty:
+                continue
+            
+            print(wcs_index)   
+            print(f"{actor}")
+            
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
             LOG.debug("---------wcs_index: {}".format(wcs_index))
 
@@ -700,7 +712,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(actor)
             QApplication.processEvents()
 
-            if len(self.path_actors) > 1:
+            if len(self.path_actors) > 1 and path_count != 0:
+
                 # Load the start point of rapid from the next offset paths
                 point_01_pos = self.path_offset_start_point[prev_wcs_index]
 
@@ -821,6 +834,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             path_count += 1
             prev_wcs_index = wcs_index
+            
         # self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
 
@@ -1052,6 +1066,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         prev_offset_z = 0.0
 
         for wcs_index, path_actor in self.path_actors.items():
+            if path_actor.is_empty:
+                print("######################################################################## EMPTY PATH")
+                continue
             
             axes_actor = path_actor.get_axes_actor()
             if axes_actor:

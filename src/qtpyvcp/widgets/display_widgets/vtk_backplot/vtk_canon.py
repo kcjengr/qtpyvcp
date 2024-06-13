@@ -33,7 +33,7 @@ class VTKCanon(StatCanon):
         super(VTKCanon, self).__init__(*args, **kwargs)
 
         self._datasource = LinuxCncDataSource()
-
+        self.empty_path = True
         self.path_colors = colors
 
         self.path_actors = OrderedDict()
@@ -77,7 +77,7 @@ class VTKCanon(StatCanon):
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
         new_wcs = index - 1  # this index counts also G53 so we need to do -1
         LOG.debug("---------received wcs change: {}".format(new_wcs))
-        if new_wcs not in list(self.path_actors.keys()):
+        if new_wcs not in self.path_actors.keys():
             self.path_actors[new_wcs] = PathActor(self._datasource)
             self.path_points[new_wcs] = list()
 
@@ -188,12 +188,12 @@ class VTKCanon(StatCanon):
                         path_actor.lines.InsertNextCell(line)
 
                         point_count += 2
+                        self.empty_path = False
 
                     last_point = end_point
 
-                if len(self.path_actors) > 1:
+                if len(self.path_actors) > 1 and point_count > 0:
                     # Store the last point of the part as first point of the rapid line
-
                     position = [last_point[0] * multiplication_factor,
                                 last_point[1] * multiplication_factor,
                                 last_point[2] * multiplication_factor]
@@ -211,10 +211,13 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.SetInputData(path_actor.poly_data)
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
+                
+                path_actor.is_empyt =  self.empty_path
 
             paths_count += 1
 
             prev_wcs_index = wcs_index
+            
     def get_path_actors(self):
         return self.path_actors
 
@@ -226,3 +229,4 @@ class VTKCanon(StatCanon):
 
     def get_foam(self):
         return self.foam_z, self.foam_w
+    
