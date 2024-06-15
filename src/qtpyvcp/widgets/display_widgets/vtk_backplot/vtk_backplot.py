@@ -662,11 +662,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # rotation = self._datasource.getRotationOfActiveWcs()
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
-            x = current_offsets[self._datasource.getOffsetCoumns().get('X')]
-            y = current_offsets[self._datasource.getOffsetCoumns().get('Y')]
-            z = current_offsets[self._datasource.getOffsetCoumns().get('Z')]
+            x = current_offsets[self._datasource.getOffsetColumns().get('X')]
+            y = current_offsets[self._datasource.getOffsetColumns().get('Y')]
+            z = current_offsets[self._datasource.getOffsetColumns().get('Z')]
             
-            rotation = current_offsets[self._datasource.getOffsetCoumns().get('R')]
+            rotation = current_offsets[self._datasource.getOffsetColumns().get('R')]
             
             self.rotation_xy_table.insert(wcs_index-1, rotation)
             
@@ -1068,11 +1068,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             current_offsets = self.wcs_offsets[wcs_index]
 
-            x = current_offsets[self._datasource.getOffsetCoumns().get('X')]
-            y = current_offsets[self._datasource.getOffsetCoumns().get('Y')]
-            z = current_offsets[self._datasource.getOffsetCoumns().get('Z')]
+            x = current_offsets[self._datasource.getOffsetColumns().get('X')]
+            y = current_offsets[self._datasource.getOffsetColumns().get('Y')]
+            z = current_offsets[self._datasource.getOffsetColumns().get('Z')]
             
-            rotation = current_offsets[self._datasource.getOffsetCoumns().get('R')]
+            rotation = current_offsets[self._datasource.getOffsetColumns().get('R')]
             
             LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
 

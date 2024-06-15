@@ -191,5 +191,5 @@ class LinuxCncDataSource(QObject):
         # returns a dictionary with the coordinate systems from 0 to 8 (g54 up to g59.3)
         return self._offsettable.getOffsetTable()
     
-    def getOffsetCoumns(self):
+    def getOffsetColumns(self):
         return self._offsettable.column_labels
