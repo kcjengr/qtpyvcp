@@ -51,9 +51,9 @@ class LinuxCncDataSource(QObject):
         self._status.g92_offset.notify(self.__handleG92OffsetChange)
 
         self._status.g5x_index.notify(self.__handleG5xIndexChange)
-        # self._status.rotation_xy.notify(self.__handleRotationChangeXY)
+        self._status.rotation_xy.notify(self.__handleRotationChangeXY)
 
-        self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
+        # self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
         # self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
 
         self._status.tool_offset.notify(self.__handleToolOffsetChanged)
