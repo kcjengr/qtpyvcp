@@ -52,7 +52,7 @@ class LinuxCncDataSource(QObject):
 
         self._status.g5x_index.notify(self.__handleG5xIndexChange)
         self._status.rotation_xy.notify(self.__handleRotationChangeXY)
-
+        
         # self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
         # self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
 
@@ -191,5 +191,5 @@ class LinuxCncDataSource(QObject):
         # returns a dictionary with the coordinate systems from 0 to 8 (g54 up to g59.3)
         return self._offsettable.getOffsetTable()
     
-    def getOffsetColumns(self):
-        return self._offsettable.column_labels
+    def getOffsetColumnsIndex(self):
+        return self._offsettable.getTableColumnsIndex()
