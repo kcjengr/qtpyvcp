@@ -11,6 +11,8 @@ import time
 
 import vtk
 import vtk.qt
+from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
+
 from vtkmodules.vtkCommonCore import (
     VTK_VERSION_NUMBER,
     vtkVersion
@@ -219,6 +221,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self.renderer = vtk.vtkRenderer()
+
         self.renderer.SetActiveCamera(self.camera)
 
         self.renderer_window = self.GetRenderWindow()
@@ -230,9 +233,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor = self.renderer_window.GetInteractor()
         self.interactor.SetInteractorStyle(self.nav_style)
         self.interactor.SetRenderWindow(self.renderer_window)
-
+        
         if not IN_DESIGNER:
-            
+            print(self._datasource.getNavHelper())
+            if self._datasource.getNavHelper() not in ['false', 0, False]:
+                self.orient_manipulator = vtkCameraOrientationWidget()
+                self.orient_manipulator.SetParentRenderer(self.renderer)
+                self.orient_manipulator.On()
+                
             bounds_type = self._datasource.getMachineBounds()
             if bounds_type == "line":
                 self.machine_actor = MachineLineActor(self._datasource)
