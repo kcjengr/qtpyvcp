@@ -148,7 +148,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._datasource = LinuxCncDataSource()
         
-        print(self._datasource.getKeyboardJog())
+        if self._datasource.getKeyboardJog():
+            LOG.info("keyboard JOG enabled")
+        else:
+            LOG.info("keyboard JOG disabled")
         
         if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
             event_filter = InteractorEventFilter(self)
@@ -161,6 +164,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.ploter_enabled = True
         self.touch_enabled = False
+        
+        view_default_setting = getSetting("backplot.view").default_value
+        view_options_setting = getSetting("backplot.view").enum_options
+        view_options = list()
+            
+        for option in view_options_setting:
+            view_options.append(option.split(':')[0])
+            
+        print(view_options_setting)
+        print(view_options)
+            
+        self.default_view = view_options[view_default_setting]
+
+        
         self.program_view_when_loading_program = False
         self.program_view_when_loading_program_view = 'p'
         self.pan_mode = False
@@ -408,6 +425,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(self.machine_actor)
             self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
+
+            self.setView(self.default_view)
 
             self.interactor.ReInitialize()
             self.renderer_window.Render()
@@ -1118,9 +1137,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(str)
     @Slot(object)
     def setView(self, view):
-        if isinstance(view, int):
+
+#       if isinstance(view, int):
+#           view = ['X', 'XZ', 'XZ2', 'Y', 'Z', 'Z2', 'P'][view]
+        
+        if isinstance(view, int):            
+            view_options_setting = getSetting("backplot.view").enum_options
+            view_options = list()
+            
+            for option in view_options_setting:
+                view_options.append(option.split(':')[0])
+            
+            print(view_options_setting)
+            print(view_options)
             print(view)
-            view = ['X', 'XZ', 'XZ2', 'Y', 'Z', 'Z2', 'P'][view]
+            
+            view = view_options[view]
 
 
         view = view.upper()
