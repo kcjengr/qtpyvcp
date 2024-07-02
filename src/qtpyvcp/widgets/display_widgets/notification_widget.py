@@ -183,7 +183,7 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(False)
 
         self.notification_name.setText("Warning Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegExp("WANRNING", Qt.CaseSensitive,
+        self.all_notification_model_proxy.setFilterRegExp(QRegExp("WARNING", Qt.CaseSensitive,
                                                           QRegExp.FixedString))
 
     def show_error_notifications(self):
