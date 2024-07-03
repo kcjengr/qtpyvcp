@@ -165,7 +165,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.ploter_enabled = True
         self.touch_enabled = False
         
-        view_default_setting = getSetting("backplot.view").default_value
+        view_default_setting = getSetting("backplot.view").value
         view_options_setting = getSetting("backplot.view").enum_options
         view_options = list()
             
