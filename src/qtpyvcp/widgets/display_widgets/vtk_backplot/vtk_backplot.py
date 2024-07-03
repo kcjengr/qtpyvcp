@@ -235,7 +235,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.SetRenderWindow(self.renderer_window)
         
         if not IN_DESIGNER:
+            
             print(self._datasource.getNavHelper())
+            
             if self._datasource.getNavHelper() not in ['false', 0, False]:
                 self.orient_manipulator = vtkCameraOrientationWidget()
                 self.orient_manipulator.SetParentRenderer(self.renderer)
