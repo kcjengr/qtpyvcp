@@ -1,12 +1,27 @@
-# import pydevd;pydevd.settrace()
+#   Copyright (c) 2018 Kurt Jacobson
+#      <kurtcjacobson@gmail.com>
+#
+#   This file is part of QtPyVCP.
+#
+#   QtPyVCP is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   QtPyVCP is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
 import yaml
 
-# from pprint import pprint
 import linuxcnc
 import os
 from collections import OrderedDict
-from operator import add
+
 import time
 
 import vtk
@@ -133,7 +148,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._datasource = LinuxCncDataSource()
         
-        print(self._datasource.getKeyboardJog())
+        if self._datasource.getKeyboardJog():
+            LOG.info("keyboard JOG enabled")
+        else:
+            LOG.info("keyboard JOG disabled")
         
         if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
             event_filter = InteractorEventFilter(self)
@@ -146,6 +164,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.ploter_enabled = True
         self.touch_enabled = False
+        
+        view_default_setting = getSetting("backplot.view").value
+        view_options_setting = getSetting("backplot.view").enum_options
+        view_options = list()
+            
+        for option in view_options_setting:
+            view_options.append(option.split(':')[0])
+            
+        print(view_options_setting)
+        print(view_options)
+            
+        self.default_view = view_options[view_default_setting]
+
+        
         self.program_view_when_loading_program = False
         self.program_view_when_loading_program_view = 'p'
         self.pan_mode = False
@@ -337,12 +369,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
             
+            
             # self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
             # self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
             
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
             # self.status.g5x_index.notify(self.update_g5x_index)
+            
+            self.offsetTableColumnsIndex = self._datasource.getOffsetColumnsIndex()
+            
             self.canon = VTKCanon(colors=self.path_colors)
             self.path_actors = self.canon.get_path_actors()
 
@@ -389,6 +425,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(self.machine_actor)
             self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
+
+            self.setView(self.default_view)
 
             self.interactor.ReInitialize()
             
@@ -1102,8 +1140,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(str)
     @Slot(object)
     def setView(self, view):
-        if isinstance(view, int):
-            view = ['X', 'XZ', 'XZ2', 'Y', 'Z', 'Z2', 'P'][view]
+
+#       if isinstance(view, int):
+#           view = ['X', 'XZ', 'XZ2', 'Y', 'Z', 'Z2', 'P'][view]
+        
+        if isinstance(view, int):            
+            view_options_setting = getSetting("backplot.view").enum_options
+            view_options = list()
+            
+            for option in view_options_setting:
+                view_options.append(option.split(':')[0])
+            
+            print(view_options_setting)
+            print(view_options)
+            print(view)
+            
+            view = view_options[view]
+
 
         view = view.upper()
         LOG.debug("Setting view to: %s", view)
@@ -1126,7 +1179,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewP(self):
         self.active_view = 'P'
+        
         position = self.wcs_offsets[self.active_wcs_index]
+        
         self.camera.SetPosition(self.position_mult, -self.position_mult, self.position_mult)
         self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
@@ -1135,54 +1190,193 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewX(self):
         self.active_view = 'X'
+        
         position = self.wcs_offsets[self.active_wcs_index]
-        self.camera.SetPosition(position[0], position[1] - self.position_mult, position[2])
-        self.camera.SetFocalPoint(position[:3])
+        ot_columns_index = self.offsetTableColumnsIndex
+        
+        column_x = ot_columns_index.get('X')
+        column_y = ot_columns_index.get('Y')
+        column_z = ot_columns_index.get('Z')
+        
+        
+        if column_x is not None:
+            position_x = position[column_x]
+        else:
+            position_x = 0.0
+            
+        if column_y is not None:
+            position_y = position[column_y]
+        else:
+            position_y = 0.0
+            
+        if column_z is not None:
+            position_z = position[column_z]
+        else:
+            position_z = 0.0
+        
+        
+        self.camera.SetPosition(position_x, position_y - self.position_mult, position_z)
+        self.camera.SetFocalPoint((position_x, position_y, position_z))
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewXZ(self):
         self.active_view = 'XZ'
+        
         position = self.wcs_offsets[self.active_wcs_index]
-        self.camera.SetPosition(position[0], position[1] + self.position_mult, position[2])
-        self.camera.SetFocalPoint(position[:3])
+        ot_columns_index = self.offsetTableColumnsIndex
+        
+        column_x = ot_columns_index.get('X')
+        column_y = ot_columns_index.get('Y')
+        column_z = ot_columns_index.get('Z')
+        
+        
+        if column_x is not None:
+            position_x = position[column_x]
+        else:
+            position_x = 0.0
+            
+        if column_y is not None:
+            position_y = position[column_y]
+        else:
+            position_y = 0.0
+            
+        if column_z is not None:
+            position_z = position[column_z]
+        else:
+            position_z = 0.0
+        
+        self.camera.SetPosition(position_x, position_y + self.position_mult, position_z)
+        self.camera.SetFocalPoint((position_x, position_y, position_z))
         self.camera.SetViewUp(1, 0, 0)
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewXZ2(self):
         self.active_view = 'XZ2'
+        
         position = self.wcs_offsets[self.active_wcs_index]
-        self.camera.SetPosition(position[0], position[1] - self.position_mult, position[2])
-        self.camera.SetFocalPoint(position[:3])
+        ot_columns_index = self.offsetTableColumnsIndex
+        
+        column_x = ot_columns_index.get('X')
+        column_y = ot_columns_index.get('Y')
+        column_z = ot_columns_index.get('Z')
+        
+        
+        if column_x is not None:
+            position_x = position[column_x]
+        else:
+            position_x = 0.0
+            
+        if column_y is not None:
+            position_y = position[column_y]
+        else:
+            position_y = 0.0
+            
+        if column_z is not None:
+            position_z = position[column_z]
+        else:
+            position_z = 0.0
+        
+        self.camera.SetPosition(position_x, position_y - self.position_mult, position_z)
+        self.camera.SetFocalPoint((position_x, position_y, position_z))
         self.camera.SetViewUp(-1, 0, 0)
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewY(self):
         self.active_view = 'Y'
+        
         position = self.wcs_offsets[self.active_wcs_index]
-        self.camera.SetPosition(position[0] + self.position_mult, position[1], position[2])
-        self.camera.SetFocalPoint(position[:3])
+        ot_columns_index = self.offsetTableColumnsIndex
+        
+        column_x = ot_columns_index.get('X')
+        column_y = ot_columns_index.get('Y')
+        column_z = ot_columns_index.get('Z')
+        
+        
+        if column_x is not None:
+            position_x = position[column_x]
+        else:
+            position_x = 0.0
+            
+        if column_y is not None:
+            position_y = position[column_y]
+        else:
+            position_y = 0.0
+            
+        if column_z is not None:
+            position_z = position[column_z]
+        else:
+            position_z = 0.0
+        
+        self.camera.SetPosition(position_x + self.position_mult, position_y, position_z)
+        self.camera.SetFocalPoint((position_x, position_y, position_z))
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ(self):
         self.active_view = 'Z'
+        
         position = self.wcs_offsets[self.active_wcs_index]
-        self.camera.SetPosition(position[0], position[1], position[2] + self.position_mult)
-        self.camera.SetFocalPoint(position[:3])
+        ot_columns_index = self.offsetTableColumnsIndex
+        
+        column_x = ot_columns_index.get('X')
+        column_y = ot_columns_index.get('Y')
+        column_z = ot_columns_index.get('Z')
+        
+        
+        if column_x is not None:
+            position_x = position[column_x]
+        else:
+            position_x = 0.0
+            
+        if column_y is not None:
+            position_y = position[column_y]
+        else:
+            position_y = 0.0
+            
+        if column_z is not None:
+            position_z = position[column_z]
+        else:
+            position_z = 0.0
+        
+        self.camera.SetPosition(position_x, position_y, position_z + self.position_mult)
+        self.camera.SetFocalPoint((position_x, position_y, position_z))
         self.camera.SetViewUp(0, 1, 0)
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ2(self):
         self.active_view = 'Z2'
+        
         position = self.wcs_offsets[self.active_wcs_index]
-        self.camera.SetPosition(position[0], position[1], position[2] + self.position_mult)
-        self.camera.SetFocalPoint(position[:3])
+        ot_columns_index = self.offsetTableColumnsIndex
+        
+        column_x = ot_columns_index.get('X')
+        column_y = ot_columns_index.get('Y')
+        column_z = ot_columns_index.get('Z')
+        
+        
+        if column_x is not None:
+            position_x = position[column_x]
+        else:
+            position_x = 0.0
+            
+        if column_y is not None:
+            position_y = position[column_y]
+        else:
+            position_y = 0.0
+            
+        if column_z is not None:
+            position_z = position[column_z]
+        else:
+            position_z = 0.0
+            
+        self.camera.SetPosition(position_x, position_y, position_z + self.position_mult)
+        self.camera.SetFocalPoint((position_x, position_y, position_z))
         self.camera.SetViewUp(1, 0, 0)
         self.__doCommonSetViewWork()
 

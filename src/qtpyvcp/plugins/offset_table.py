@@ -46,7 +46,6 @@ from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 from qtpyvcp.actions.machine_actions import issue_mdi
 
-
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
@@ -573,6 +572,9 @@ class OffsetTable(DataPlugin):
 
         return self.g5x_offset_table
 
+    def getTableColumnsIndex(self):
+        return self.column_labels
+        
     def getOffsetTable(self):
         return self.g5x_offset_table
 

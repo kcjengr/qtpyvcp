@@ -45,7 +45,7 @@ def load_config_files(*files):
                                            undefined=LogUndefined)
 
     cfg_dict = hiyapyco.load(expanded_files,
-                             method=hiyapyco.METHOD_MERGE,
+                             method=hiyapyco.METHOD_SUBSTITUTE,
                              interpolate=True,
                              failonmissingfiles=True)
 
@@ -59,8 +59,7 @@ def load_config_files(*files):
 
 def process_templates(files):
     env = Environment(loader=FileSystemLoader(searchpath=[os.path.dirname(config_file) for config_file in files]),
-                      undefined=LogUndefined,
-                      )
+                      undefined=Undefined)
 
     expanded_templates = []
     for config_file in files:
