@@ -42,8 +42,7 @@ class LinuxCncDataSource(QObject):
         self._is_lathe = bool(self._inifile.find("DISPLAY", "LATHE"))
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
         self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
-        self._machine_bounds = str(self._inifile.find("DISPLAY", "BOUNDARIES"))
-        self._nav_helper = bool(self._inifile.find("DISPLAY", "NAV")) or False
+        self._machine_bounds = str(self._inifile.find("VTK", "BOUNDARIES"))
 
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -52,9 +51,9 @@ class LinuxCncDataSource(QObject):
         self._status.g92_offset.notify(self.__handleG92OffsetChange)
 
         self._status.g5x_index.notify(self.__handleG5xIndexChange)
-        self._status.rotation_xy.notify(self.__handleRotationChangeXY)
-        
-        # self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
+        # self._status.rotation_xy.notify(self.__handleRotationChangeXY)
+
+        self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
         # self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
 
         self._status.tool_offset.notify(self.__handleToolOffsetChanged)
@@ -166,9 +165,6 @@ class LinuxCncDataSource(QObject):
     
     def getMachineBounds(self):
         return self._machine_bounds
-    
-    def getNavHelper(self):
-        return self._nav_helper
 
     def getActiveWcsIndex(self):
         # in the stat, the first one the list is G53 (Machine Coordinates)
@@ -195,5 +191,5 @@ class LinuxCncDataSource(QObject):
         # returns a dictionary with the coordinate systems from 0 to 8 (g54 up to g59.3)
         return self._offsettable.getOffsetTable()
     
-    def getOffsetColumnsIndex(self):
-        return self._offsettable.getTableColumnsIndex()
+    def getOffsetCoumns(self):
+        return self._offsettable.column_labels
