@@ -1175,11 +1175,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.setViewZ2()
         elif view == 'P':
             self.setViewP()
+       elif view == 'M':
+            self.setViewMachine()
 
     @Slot()
     def setViewP(self):
         self.active_view = 'P'
         
+        if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
+            self.active_wcs_index = 0
+
         position = self.wcs_offsets[self.active_wcs_index]
         
         self.camera.SetPosition(self.position_mult, -self.position_mult, self.position_mult)
@@ -1191,6 +1196,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewX(self):
         self.active_view = 'X'
         
+        if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
+            self.active_wcs_index = 0
+
         position = self.wcs_offsets[self.active_wcs_index]
         ot_columns_index = self.offsetTableColumnsIndex
         
@@ -1224,6 +1232,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewXZ(self):
         self.active_view = 'XZ'
         
+        if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
+            self.active_wcs_index = 0
+
         position = self.wcs_offsets[self.active_wcs_index]
         ot_columns_index = self.offsetTableColumnsIndex
         
@@ -1256,6 +1267,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewXZ2(self):
         self.active_view = 'XZ2'
         
+        if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
+            self.active_wcs_index = 0
+
         position = self.wcs_offsets[self.active_wcs_index]
         ot_columns_index = self.offsetTableColumnsIndex
         
@@ -1288,6 +1302,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewY(self):
         self.active_view = 'Y'
         
+        if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
+            self.active_wcs_index = 0
+
         position = self.wcs_offsets[self.active_wcs_index]
         ot_columns_index = self.offsetTableColumnsIndex
         
@@ -1320,6 +1337,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewZ(self):
         self.active_view = 'Z'
         
+        if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
+            self.active_wcs_index = 0
+
         position = self.wcs_offsets[self.active_wcs_index]
         ot_columns_index = self.offsetTableColumnsIndex
         
@@ -1352,6 +1372,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewZ2(self):
         self.active_view = 'Z2'
         
+        if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
+            self.active_wcs_index = 0
+
         position = self.wcs_offsets[self.active_wcs_index]
         ot_columns_index = self.offsetTableColumnsIndex
         
@@ -1382,6 +1405,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewMachine(self):
+        self.active_view = 'M'
+
         LOG.debug('-----setViewMachine')
         machine_bounds = self.machine_actor.GetBounds()
         LOG.debug('-----machine_bounds: {}'.format(machine_bounds))
