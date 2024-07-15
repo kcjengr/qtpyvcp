@@ -178,6 +178,9 @@ settings:
     default_value: 0
     options: ["X: Front View", "XZ: Lathe View", "XZ2: Lathe View", "Y: Front View", "Z: Top View", "Z2: Bottom View", "P: Isometric"]
 
+  backplot.machine-ext-scale:
+    default_value: 0.65
+
   backplot.multitool-colors:
     default_value: false
  
