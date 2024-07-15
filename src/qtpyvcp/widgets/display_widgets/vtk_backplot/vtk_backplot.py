@@ -1175,7 +1175,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.setViewZ2()
         elif view == 'P':
             self.setViewP()
-       elif view == 'M':
+        elif view == 'M':
             self.setViewMachine()
 
     @Slot()
