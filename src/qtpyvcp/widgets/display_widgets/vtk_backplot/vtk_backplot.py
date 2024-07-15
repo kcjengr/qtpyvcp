@@ -168,6 +168,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         view_default_setting = getSetting("backplot.view").value
         view_options_setting = getSetting("backplot.view").enum_options
         view_options = list()
+        self.machine_ext_scale = getSetting("backplot.machine-ext-scale").value
             
         for option in view_options_setting:
             view_options.append(option.split(':')[0])
@@ -1438,7 +1439,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug('-----z_dist: {}'.format(z_dist))
 
         scale = max(x_dist, y_dist, z_dist)
-        new_scale = scale * 0.65
+        new_scale = scale * self.machine_ext_scale
         
         self.camera.SetParallelScale(new_scale)
         self.camera.SetViewUp(0, 0, 1)
@@ -1530,6 +1531,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewPath(self):
         LOG.debug('-----setViewPath')
+
+        if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
+            self.active_wcs_index = 0
+
         position = self.wcs_offsets[self.active_wcs_index]
         self.camera.SetPosition(position[0] + self.position_mult,
                                 -(position[1] + self.position_mult),
