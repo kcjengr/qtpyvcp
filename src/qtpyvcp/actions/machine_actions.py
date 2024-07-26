@@ -655,7 +655,7 @@ class home:
         if axis.lower() == 'all':
             home.all()
             return
-        jnum = INFO.COORDINATES.index(axis)
+        jnum = STATUS.axis_mask.getValue(format='string').index(axis)
         LOG.info('Homing Axis: {}'.format(axis.upper()))
         _home_joint(jnum)
 
@@ -791,8 +791,11 @@ def getAxisLetter(axis):
     Returns:
         str : The axis letter, `all` for an input of -1.
     """
+    
     if isinstance(axis, int):
-        return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'][axis]
+        print(STATUS.axis_mask.getValue(format='string')[axis])
+        return STATUS.axis_mask.getValue(format='string')[axis]
+    
     return axis.lower()
 
 def getAxisNumber(axis):
@@ -804,8 +807,11 @@ def getAxisNumber(axis):
     Returns:
         int : The axis number, -1 for an input of `all`.
     """
+    
     if isinstance(axis, str):
-        return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'].index(axis.lower())
+        print(STATUS.axis_mask.getValue(format='string').index(axis.lower()))
+        return STATUS.axis_mask.getValue(format='string').index(axis.lower())
+    
     return axis
 
 
