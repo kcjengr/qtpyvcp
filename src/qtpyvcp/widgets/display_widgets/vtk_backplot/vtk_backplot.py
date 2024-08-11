@@ -330,15 +330,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             connectSetting('backplot.multitool-colors', self.showMultiColorPath)
 
 
-    def initialize(self):
-        self.path_colors = {'traverse': self._traverse_color,
-                       'arcfeed': self._arcfeed_color,
-                       'feed': self._feed_color,
-                       'dwell': QColor(0, 0, 255, 255),
-                       'user': QColor(0, 100, 255, 255)
+            self.path_colors = {'traverse': self._traverse_color,
+                           'arcfeed': self._arcfeed_color,
+                           'feed': self._feed_color,
+                           'dwell': QColor(0, 0, 255, 255),
+                           'user': QColor(0, 100, 255, 255)
                        }
 
-        if not IN_DESIGNER:
             self.offset_axes = OrderedDict()
             self.program_bounds_actors = OrderedDict()
             self.show_program_bounds = bool()
