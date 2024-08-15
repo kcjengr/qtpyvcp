@@ -328,6 +328,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             connectSetting('backplot.perspective-view', self.viewPerspective)
             connectSetting('backplot.view', self.setView)
             connectSetting('backplot.multitool-colors', self.showMultiColorPath)
+            connectSetting('backplot.show-machine-false', self.plotMachine)
 
 
             self.path_colors = {'traverse': self._traverse_color,
