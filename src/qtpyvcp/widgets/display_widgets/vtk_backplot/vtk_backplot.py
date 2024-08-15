@@ -377,7 +377,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.toolOffsetChanged.connect(self.update_tool)
             # self.status.g5x_index.notify(self.update_g5x_index)
             
-            self.offsetTableColumnsIndex = self._datasource.getOffsetColumnsIndex()
+            self.offsetTableColumnsIndex = self._datasource.getOffsetCoumns()
             
             self.canon = VTKCanon(colors=self.path_colors)
             self.path_actors = self.canon.get_path_actors()
@@ -1738,6 +1738,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showMachine(self, value):
+
+        if self.machine_parts is not True:
+            return
+
         if value:
             print("Showing machine parts")
             self.show_all_parts(self.machine_parts_actor)
