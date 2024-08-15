@@ -1,4 +1,4 @@
-import vtk.qt
+import vtk
 from .axes_actor import AxesActor
 from qtpyvcp.utilities import logger
 
@@ -14,9 +14,9 @@ class PathActor(vtk.vtkActor):
         self.origin_cords = None
 
         if self._datasource.isMachineMetric():
-            self.length = 25.4
+            self.length = 3
         else:
-            self.length = 2.54
+            self.length = 0.3
 
         self.axes_actor = AxesActor(self._datasource)
 
