@@ -302,7 +302,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
             
             
-            if self.plotMachine == True:
+            if self._plot_machine == True:
                 
                 self.machine_parts = self._datasource._inifile.find("VTK", "MACHINE_PARTS")
             
@@ -328,7 +328,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             connectSetting('backplot.perspective-view', self.viewPerspective)
             connectSetting('backplot.view', self.setView)
             connectSetting('backplot.multitool-colors', self.showMultiColorPath)
-            connectSetting('backplot.show-machine-model', self.plotMachine)
+            connectSetting('backplot.show-machine-model', self.showMachine)
 
 
             self.path_colors = {'traverse': self._traverse_color,
@@ -409,7 +409,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
                 
-            if self.plotMachine == True:
+            if self._plot_machine == True:
                 if self.machine_parts:
                     self.renderer.AddActor(self.machine_parts_actor)
                 
@@ -765,7 +765,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
 
-        if self.plotMachine == True:
+        if self._plot_machine == True:
             if self.machine_parts:
 
                 print(f"Machine : {self.machine_parts_actor}")
@@ -1707,19 +1707,45 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def toggleMultiColorPath(self):
         pass
-    
-    
-    @Property(bool)
-    def plotMachine(self):
-        return self._plot_machine
 
-    @plotMachine.setter
-    def plotMachine(self, value):
-        self._plot_machine = value
+    # Function to hide all parts of an assembly
+    def hide_all_parts(self, assembly):
+        parts = assembly.GetParts()
+        parts.InitTraversal()
+        part = parts.GetNextProp3D()
+        while part:
+            if isinstance(part, vtk.vtkActor):
+                print(f"Hiding actor: {part}")
+                part.VisibilityOff()
+            elif isinstance(part, vtk.vtkAssembly):
+                print(f"Hiding assembly: {part}")
+                self.hide_all_parts(part)
+            part = parts.GetNextProp3D()
 
-    @plotMachine.reset
-    def plotMachine(self):
-        self.plotMachine = false
+    def show_all_parts(self, assembly):
+        parts = assembly.GetParts()
+        parts.InitTraversal()
+        part = parts.GetNextProp3D()
+        while part:
+            if isinstance(part, vtk.vtkActor):
+                print(f"Showing actor: {part}")
+                part.VisibilityOn()
+            elif isinstance(part, vtk.vtkAssembly):
+                print(f"Showing assembly: {part}")
+                self.show_all_parts(part)
+            part = parts.GetNextProp3D()
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachine(self, value):
+        if value:
+            print("Showing machine parts")
+            self.show_all_parts(self.machine_parts_actor)
+        else:
+            print("Hiding machine parts")
+            self.hide_all_parts(self.machine_parts_actor)
+
+        self.renderer_window.Render()
 
 
     @Property(QColor)
