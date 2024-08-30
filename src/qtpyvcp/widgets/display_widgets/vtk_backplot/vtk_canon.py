@@ -7,6 +7,10 @@ import vtk
 import vtk.qt
 from .linuxcnc_datasource import LinuxCncDataSource
 from .path_actor import PathActor
+
+from qtpy.QtGui import QColor
+from qtpy.QtWidgets import QApplication
+
 from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
 from qtpy.QtWidgets import QApplication
@@ -15,11 +19,11 @@ from qtpy.QtWidgets import QApplication
 LOG = logger.getLogger(__name__)
 
 COLOR_MAP = {
-    'traverse': (200, 35, 35, 255),
-    'arcfeed': (110, 110, 255, 255),
-    'feed': (210, 210, 255, 255),
-    'dwell': (0, 0, 255, 255),
-    'user': (0, 100, 255, 255),
+    'traverse': QColor(200, 35, 35, 255),
+    'arcfeed': QColor(110, 110, 255, 255),
+    'feed': QColor(210, 210, 255, 255),
+    'dwell': QColor(0, 0, 255, 255),
+    'user': QColor(0, 100, 255, 255)
 }
 
 class VTKCanon(StatCanon):
@@ -31,6 +35,14 @@ class VTKCanon(StatCanon):
         self.path_colors = colors
         self.path_actors = OrderedDict()
         self.path_points = OrderedDict()
+
+        self.paths_start_point = OrderedDict()
+        self.paths_angle_point = OrderedDict()
+        self.paths_end_point = OrderedDict()
+
+        self.path_start_point = OrderedDict()
+        self.paths_angle_points = OrderedDict()
+        self.path_end_point = OrderedDict()
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
@@ -89,11 +101,20 @@ class VTKCanon(StatCanon):
         # TODO: for some reason, we need to multiply for metric, find out why!
         multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
 
-        for wcs_index, data in list(self.path_points.items()):
-            index = 0
+        paths_count = 0
+        prev_wcs_index = 0
+
+        for wcs_index, data in self.path_points.items():
 
             path_actor = self.path_actors.get(wcs_index)
+
             if path_actor is not None:
+
+                first_point = False
+                angle_point = None
+                last_point = None
+                point_count = 0
+
                 for line_type, line_data in data:
                     
                     start_point = line_data[0]
@@ -113,14 +134,12 @@ class VTKCanon(StatCanon):
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
 
                         line = vtk.vtkLine()
-                        line.GetPointIds().SetId(0, index)
-                        line.GetPointIds().SetId(1, index + 1)
+                        line.GetPointIds().SetId(0, point_count)
+                        line.GetPointIds().SetId(1, point_count + 1)
 
                         path_actor.lines.InsertNextCell(line)
 
-
-                        index += 2
-
+                        point_count += 2
 
                         path_actor.points.InsertNextPoint(start_point[6] * multiplication_factor,
                                                           start_point[7] * multiplication_factor,
@@ -133,36 +152,58 @@ class VTKCanon(StatCanon):
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
 
                         line2 = vtk.vtkLine()
-                        line2.GetPointIds().SetId(0, index)
-                        line2.GetPointIds().SetId(1, index + 1)
+                        line2.GetPointIds().SetId(0, point_count)
+                        line2.GetPointIds().SetId(1, point_count + 1)
 
                         path_actor.lines.InsertNextCell(line2)
 
-                        index += 2
+                        point_count += 2
 
                     else:
+                        if len(self.path_actors) > 1:
+                            # skip rapids from original path offsets
+                            if (paths_count > 0) and (point_count == 0) and (line_type == "traverse"):
+                                continue
 
-                        path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
-                                                          start_point[1] * multiplication_factor,
-                                                          start_point[2] * multiplication_factor)
+                            if point_count == 0:
+                                position = [start_point[0] * multiplication_factor,
+                                            start_point[1] * multiplication_factor,
+                                            start_point[2] * multiplication_factor]
+
+                                self.path_start_point[prev_wcs_index] = position
 
                         path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
                                                           end_point[1] * multiplication_factor,
                                                           end_point[2] * multiplication_factor)
 
+                        path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
+                                                          start_point[1] * multiplication_factor,
+                                                          start_point[2] * multiplication_factor)
 
-                        path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
+                        path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
 
                         line = vtk.vtkLine()
-                        line.GetPointIds().SetId(0, index)
-                        line.GetPointIds().SetId(1, index + 1)
+                        line.GetPointIds().SetId(0, point_count)
+                        line.GetPointIds().SetId(1, point_count + 1)
 
                         path_actor.lines.InsertNextCell(line)
 
-                        index += 2
-                    
+                        point_count += 2
+
+                    last_point = end_point
+
+                if len(self.path_actors) > 1:
+                    # Store the last point of the part as first point of the rapid line
+
+                    position = [last_point[0] * multiplication_factor,
+                                last_point[1] * multiplication_factor,
+                                last_point[2] * multiplication_factor]
+
+                    self.path_end_point[wcs_index] = position
+
                 # free up memory, lots of it for big files
-                self.path_points[wcs_index] = list()
+
+                self.path_points[wcs_index].clear()
                 QApplication.processEvents()
 
                 path_actor.poly_data.SetPoints(path_actor.points)
@@ -172,8 +213,17 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
 
+            paths_count += 1
+
+            prev_wcs_index = wcs_index
     def get_path_actors(self):
         return self.path_actors
+
+    def get_offsets_start_point(self):
+        return self.path_start_point
+
+    def get_offsets_end_point(self):
+        return self.path_end_point
 
     def get_foam(self):
         return self.foam_z, self.foam_w
