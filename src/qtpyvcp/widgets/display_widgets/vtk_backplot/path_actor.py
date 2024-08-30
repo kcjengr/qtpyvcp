@@ -14,9 +14,9 @@ class PathActor(vtk.vtkActor):
         self.origin_cords = None
 
         if self._datasource.isMachineMetric():
-            self.length = 25.4
+            self.length = 5
         else:
-            self.length = 2.54
+            self.length = 1
 
         self.axes_actor = AxesActor(self._datasource)
 
