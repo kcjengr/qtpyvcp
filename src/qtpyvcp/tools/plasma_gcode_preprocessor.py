@@ -474,6 +474,7 @@ class CodeLine:
             self._parent.active_feedrate = self._parent.cut_speed = float(parts['fr'])
             # optional
             self._parent.active_thickness = float(parts.get('mt', 8/UNITS_PER_MM))
+            LOG.debug(f"material parsing - thickness = {self._parent.active_thickness}")
             self._parent.process_name = parts.get('na', 'Automatic Process')
             self._parent.thc = int(parts.get('th', 0))
             self._parent.volts = float(parts.get('cv', 99))
@@ -507,6 +508,7 @@ class CodeLine:
             self.type = Commands.TOOLCHANGE
         # test if this process ID is known about
         cut_process = PLASMADB.tool_id(tool)
+        LOG.debug(f"parse toolchange - tool = {tool}")
         if len(cut_process) == 0:
             # rewrite the raw line as an error comment
             self.raw = f"; ERROR: Invalid Cutchart ID in Tx. Check CAM Tools: {self.raw}"
@@ -515,7 +517,9 @@ class CodeLine:
             self.cutchart_id = tool
             self._parent.active_cutchart = tool
             self._parent.active_feedrate = cut_process[0].cut_speed
-            self._parent.active_thickness = cut_process[0].thickness.thickness
+            if tool != 99999:
+                # only change tool if not magic tool as already set as part of magic comment
+                self._parent.active_thickness = cut_process[0].thickness.thickness
             self._parent.active_machineid = cut_process[0].machineid
             self._parent.active_thicknessid = cut_process[0].thicknessid
             self._parent.active_materialid = cut_process[0].materialid
@@ -1416,6 +1420,27 @@ class PreProcessor:
             q = PLASMADB.tool_id(99999)
             if q != None:
                 LOG.debug("Magic tool 99999 found. Updating")
+                # find the linera system ID
+                linear_systems = PLASMADB.linearsystems()
+                for lsys in linear_systems:
+                    if lsys.name == UNITS:
+                        linear_sys_id = lsys.id
+                        break
+                    else:
+                        linear_sys_id = None
+                LOG.debug(f"Linear System ID = {linear_sys_id}")
+                thicknesses_list = PLASMADB.thicknesses(measureid=linear_sys_id)
+                LOG.debug(f"active thickness = {self.active_thickness}")
+                for thick in thicknesses_list:
+                    LOG.debug(f"thick.name: {thick.name}   thick.thickness: {thick.thickness}")
+                    if thick.thickness == self.active_thickness:
+                        thickness_id = thick.id
+                        thickness_name = thick.name
+                        break
+                    else:
+                        thickness_id = None
+                        thickness_name = None
+                LOG.debug(f"Thickness ID = {thickness_id}")
                 # def updateCut(self, q, **args):
                 #     Cutchart.update(self._session, q, \
                 #             pierce_height = args['pierce_height'], \
@@ -1431,6 +1456,8 @@ class PreProcessor:
                 #             pressure = args['pressure'], \
                 #             pause_at_end = args['pause_at_end'])
                 PLASMADB.updateCut(q,
+                                   name=f'Auto Material {thickness_name}',
+                                   thicknessid=thickness_id,
                                    pierce_height=self.pierce_height,
                                    pierce_delay=self.pierce_delay,
                                    cut_height=self.cut_height,

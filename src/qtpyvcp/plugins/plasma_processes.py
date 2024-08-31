@@ -545,19 +545,22 @@ class PlasmaProcesses(Plugin):
         return id
     
     def updateCut(self, q, **args):
-        Cutchart.update(self._session, q, \
-                        pierce_height = args['pierce_height'], \
-                        pierce_delay = args['pierce_delay'], \
-                        cut_height = args['cut_height'], 
-                        cut_speed = args['cut_speed'], \
-                        volts = args['volts'], \
-                        kerf_width = args['kerf_width'], \
-                        plunge_rate = args['plunge_rate'], \
-                        puddle_height = args['puddle_height'], \
-                        puddle_delay = args['puddle_delay'], \
-                        amps = args['amps'], \
-                        pressure = args['pressure'], \
-                        pause_at_end = args['pause_at_end'])
+        LOG.debug(f"updateCut: args = {args}")
+        Cutchart.update(self._session, q, **args)
+        # Cutchart.update(self._session, q, \
+        #                 thicknessid = args['thicknessid'], \
+        #                 pierce_height = args['pierce_height'], \
+        #                 pierce_delay = args['pierce_delay'], \
+        #                 cut_height = args['cut_height'], 
+        #                 cut_speed = args['cut_speed'], \
+        #                 volts = args['volts'], \
+        #                 kerf_width = args['kerf_width'], \
+        #                 plunge_rate = args['plunge_rate'], \
+        #                 puddle_height = args['puddle_height'], \
+        #                 puddle_delay = args['puddle_delay'], \
+        #                 amps = args['amps'], \
+        #                 pressure = args['pressure'], \
+        #                 pause_at_end = args['pause_at_end'])
         LOG.debug(f"Update cutchart.")
 
     def seed_data_base(self, source_file, holes_file=None):
