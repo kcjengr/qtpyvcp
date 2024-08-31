@@ -770,9 +770,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 vertices = vtk.vtkCellArray()
 
                 point_02_pos = self.path_offset_end_point[prev_wcs_index]
-                point_02_id = [0]
-                point_02_id[0] = points.InsertNextPoint(point_02_pos)
-                vertices.InsertNextCell(1, point_02_id)
+                if point_02_pos is not None:
+                    point_02_id = [0]
+                    point_02_id[0] = points.InsertNextPoint(point_02_pos)
+                    vertices.InsertNextCell(1, point_02_id)
 
                 point = vtk.vtkPolyData()
                 point.SetPoints(points)

@@ -191,8 +191,11 @@ class VTKCanon(StatCanon):
                         point_count += 2
 
                     last_point = end_point
-
-                if len(self.path_actors) > 1:
+                
+                print(len(self.path_actors))
+                print(last_point)
+                
+                if (len(self.path_actors) > 1) and (last_point is not None):
                     # Store the last point of the part as first point of the rapid line
 
                     position = [last_point[0] * multiplication_factor,
@@ -200,7 +203,8 @@ class VTKCanon(StatCanon):
                                 last_point[2] * multiplication_factor]
 
                     self.path_end_point[wcs_index] = position
-
+                else:
+                    self.path_end_point[wcs_index] = None
                 # free up memory, lots of it for big files
 
                 self.path_points[wcs_index].clear()
