@@ -391,6 +391,48 @@ class GCodeProperties(DataPlugin):
     def file_feed(self, chan):
         return chan.value
 
+    @DataChannel
+    def min_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = list()
+        else:
+            print(chan.value)
+        return chan.value
+
+    @DataChannel
+    def max_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = list()
+        else:
+            print(chan.value)
+        return chan.value
+
     def initialise(self):
         pass
 
@@ -456,6 +498,9 @@ class GCodeProperties(DataPlugin):
         self.file_work_planes.setValue(self.canon.work_planes)
         self.file_rigid_taps.setValue(self.canon.rigid_taps)
         self.file_offsets.setValue(self.canon.g5x_offset_dict)
+
+        self.min_extents.setValue(self.canon.min_extents)
+        self.max_extents.setValue(self.canon.max_extents)
 
     def calc_distance(self):
 
