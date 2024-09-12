@@ -450,6 +450,70 @@ class GCodeProperties(DataPlugin):
         if not self.loaded_file:
             chan.value = list()
 
+
+        return chan.value
+
+    @DataChannel
+    def x_extents_size(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def y_extents_size(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def z_extents_size(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
         return chan.value
 
 
@@ -522,13 +586,35 @@ class GCodeProperties(DataPlugin):
 
         self.calc_extents()
 
-        self.min_extents.setValue(self.canon.min_extents)
-        self.max_extents.setValue(self.canon.max_extents)
+        x_min_extents = self.canon.min_extents[0]
+        y_min_extents = self.canon.min_extents[1]
+        z_min_extents = self.canon.min_extents[2]
+
+        x_max_extents = self.canon.min_extents[0]
+        y_max_extents = self.canon.min_extents[1]
+        z_max_extents = self.canon.min_extents[2]
+
+        if self.stat.linear_units == 1:
+            self.min_extents.setValue((x_min_extents, y_min_extents, z_min_extents))
+            self.max_extents.setValue((x_max_extents, y_max_extents, z_max_extents))
+        else:
+            self.min_extents.setValue((x_min_extents*25.4, y_min_extents*25.4, z_min_extents*25.4))
+            self.max_extents.setValue((x_max_extents*25.4, y_max_extents*25.4, z_max_extents*25.4))
+
+
+
 
         extents_size = list()
 
         for i in range(3):
-            extents_size.append(self.canon.max_extents[i] +  abs(self.canon.min_extents[i]))
+            if self.stat.linear_units == 1:
+                extents_size.append(self.canon.max_extents[i] + abs(self.canon.min_extents[i]))
+            else:
+                extents_size.append((self.canon.max_extents[i] +  abs(self.canon.min_extents[i]))*25.4)
+
+        self.x_extents_size.setValue(extents_size[0])
+        self.y_extents_size.setValue(extents_size[1])
+        self.z_extents_size.setValue(extents_size[2])
 
         self.extents_size.setValue(extents_size)
     
