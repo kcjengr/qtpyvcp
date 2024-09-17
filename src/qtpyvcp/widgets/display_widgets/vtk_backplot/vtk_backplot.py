@@ -341,6 +341,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
             connectSetting('backplot.show-machine-labels', self.showMachineLabels)
             connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
+            connectSetting('backplot.show-machine', self.plotMachine)
             connectSetting('backplot.perspective-view', self.viewPerspective)
             connectSetting('backplot.view', self.setView)
             connectSetting('backplot.multitool-colors', self.showMultiColorPath)
