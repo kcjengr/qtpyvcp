@@ -113,9 +113,8 @@ class QtpyVCPQFileSystemModel(QFileSystemModel):
                     formatted_date = f"{date:%m/%d/%y   %I:%M  %p}"
                     return formatted_date
                 except ValueError as e:
-                    print("Error parsing date:", e)
-                    pass  # handle invalid dates or non-date strings
-            return f"{data}"
+                    pass
+                return f"{data}"
 
         if role == Qt.TextAlignmentRole:
             if col == 3:
