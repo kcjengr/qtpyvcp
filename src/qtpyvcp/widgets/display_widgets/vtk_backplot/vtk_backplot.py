@@ -701,12 +701,31 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # rotation = self._datasource.getRotationOfActiveWcs()
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
-            x = current_offsets[self._datasource.getOffsetColumns().get('X')]
-            y = current_offsets[self._datasource.getOffsetColumns().get('Y')]
-            z = current_offsets[self._datasource.getOffsetColumns().get('Z')]
-            
-            rotation = current_offsets[self._datasource.getOffsetColumns().get('R')]
-            
+            x_column = self._datasource.getOffsetColumns().get('X')
+            y_column = self._datasource.getOffsetColumns().get('Y')
+            z_column = self._datasource.getOffsetColumns().get('Z')
+            r_column = self._datasource.getOffsetColumns().get('R')
+
+            if x_column is not None:
+                x = current_offsets[x_column]
+            else:
+                x = 0.0
+
+            if y_column is not None:
+                y = current_offsets[y_column]
+            else:
+                y = 0.0
+
+            if z_column is not None:
+                z = current_offsets[z_column]
+            else:
+                z = 0.0
+
+            if r_column is not None:
+                rotation = current_offsets[r_column]
+            else:
+                rotation = 0.0
+
             self.rotation_xy_table.insert(wcs_index-1, rotation)
             
             actor_transform = vtk.vtkTransform()
