@@ -10,9 +10,9 @@ class AxesActor(vtk.vtkAxesActor):
         self._axis_mask = self._datasource.getAxisMask()
 
         if  self._datasource.isMachineMetric():
-            self.length = 1
+            self.length = 1.5
         else:
-            self.length = 0.25
+            self.length = 0.375
             
         transform = vtk.vtkTransform()
         transform.Translate(0.0, 0.0, 0.0)  # Z up
