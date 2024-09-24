@@ -413,6 +413,69 @@ class GCodeProperties(DataPlugin):
         return chan.value
 
     @DataChannel
+    def x_min_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def y_min_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def z_min_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
     def max_extents(self, chan):
         """The current file run distance.
 
@@ -429,6 +492,69 @@ class GCodeProperties(DataPlugin):
         """
         if not self.loaded_file:
             chan.value = list()
+
+        return chan.value
+
+    @DataChannel
+    def x_max_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def y_max_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def z_max_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
 
         return chan.value
 
@@ -590,16 +716,28 @@ class GCodeProperties(DataPlugin):
         y_min_extents = self.canon.min_extents[1]
         z_min_extents = self.canon.min_extents[2]
 
-        x_max_extents = self.canon.min_extents[0]
-        y_max_extents = self.canon.min_extents[1]
-        z_max_extents = self.canon.min_extents[2]
+        x_max_extents = self.canon.max_extents[0]
+        y_max_extents = self.canon.max_extents[1]
+        z_max_extents = self.canon.max_extents[2]
 
         if self.stat.linear_units == 1:
             self.min_extents.setValue((x_min_extents, y_min_extents, z_min_extents))
             self.max_extents.setValue((x_max_extents, y_max_extents, z_max_extents))
+            self.x_min_extents.setValue(x_min_extents)
+            self.y_min_extents.setValue(y_min_extents)
+            self.z_min_extents.setValue(z_min_extents)
+            self.x_max_extents.setValue(x_max_extents)
+            self.y_max_extents.setValue(y_max_extents)
+            self.z_max_extents.setValue(z_max_extents)
         else:
             self.min_extents.setValue((x_min_extents*25.4, y_min_extents*25.4, z_min_extents*25.4))
             self.max_extents.setValue((x_max_extents*25.4, y_max_extents*25.4, z_max_extents*25.4))
+            self.x_min_extents.setValue(x_min_extents*25.4)
+            self.y_min_extents.setValue(y_min_extents*25.4)
+            self.z_min_extents.setValue(z_min_extents*25.4)
+            self.x_max_extents.setValue(x_max_extents*25.4)
+            self.y_max_extents.setValue(y_max_extents*25.4)
+            self.z_max_extents.setValue(z_max_extents*25.4)
 
 
 
