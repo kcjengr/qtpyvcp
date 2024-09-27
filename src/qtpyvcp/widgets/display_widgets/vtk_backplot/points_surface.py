@@ -46,18 +46,43 @@ class PointsSurfaceActor(vtkActor):
         self.log = LOG
         self._datasource = datasource
 
+        self.probe_results = [[0.0]]
+
         self.axis = self._datasource.getAxis()
         # show_surface = getSetting('backplot.show-points-surface')
         # self.showSurface(show_surface and show_surface.value)
+
+        self.probe_results = [
+            [0.000000, -0.000000, -0.380763, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [1.000000, 0.000000, 3.533403, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [2.000000, 0.000000, 4.215070, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [3.000000, 0.000000, 4.024237, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [3.000000, 1.000000, 4.510903, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [2.000000, 1.000000, 4.621737, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [1.000000, 1.000000, 4.764237, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [0.000000, 1.000000, 4.740070, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [0.000000, 2.000000, 4.830070, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [1.000000, 2.000000, 5.090903, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [2.000000, 2.000000, 4.716737, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [3.000000, 2.000000, 4.947570, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [000000, 3.000000, 4.980903, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [2.000000, 3.000000, 4.829237, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [1.000000, 3.000000, 5.010903, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+            [0.000000, 3.000000, 4.858403, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000]
+        ]
+
 
     def showSurface(self, show_surface):
 
         if show_surface:
             self.log.info("SHOW POINTS SURFACE ")
+            # Define the size of the grid (number of points in X and Y directions)
 
             # Define the size of the grid (number of points in X and Y directions)
-            num_points_x = 10
-            num_points_y = 10
+            num_points_x = len(self.probe_results[0])
+            num_points_y = len(self.probe_results)
+
+            print(num_points_x, num_points_y)
 
             # Define the original range of X and Y coordinates
             original_x_range = np.linspace(0, 1, num_points_x)
@@ -74,7 +99,7 @@ class PointsSurfaceActor(vtkActor):
             for i, x in enumerate(original_x_range):
                 for j, y in enumerate(original_y_range):
                     # Calculate the Z-coordinate (elevation) using a simple function
-                    z = np.sin(x * 2 * np.pi) * np.cos(y * 2 * np.pi)
+                    z = self.probe_results[j][i]
                     # Translate the X and Y coordinates to the new range
                     new_x = new_x_range[i]
                     new_y = new_y_range[j]
