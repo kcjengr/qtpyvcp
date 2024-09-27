@@ -54,6 +54,7 @@ from qtpyvcp.utilities.settings import connectSetting, getSetting
 from .base_backplot import BaseBackPlot
 from .axes_actor import AxesActor
 from .tool_actor import ToolActor, ToolBitActor
+from .points_surface import PointsSurfaceActor
 from .table_actor import TableActor
 from .spindle_actor import SpindleActor
 from .machine_actor import MachineCubeActor, MachineLineActor, MachinePartsASM
@@ -305,6 +306,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actors = OrderedDict()
             self.path_cache_actor = PathCacheActor(self.tooltip_position)
 
+            self.points_surface_actor = PointsSurfaceActor(self._datasource)
 
             self.table_model = self._datasource._inifile.find("VTK", "TABLE")
             if self.table_model is not None:
@@ -342,6 +344,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             connectSetting('backplot.show-machine-labels', self.showMachineLabels)
             connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
             connectSetting('backplot.show-machine', self.showMachine)
+            connectSetting('backplot.show-points-surface', self.showSurface)
             connectSetting('backplot.perspective-view', self.viewPerspective)
             connectSetting('backplot.view', self.setView)
             connectSetting('backplot.multitool-colors', self.showMultiColorPath)
@@ -439,6 +442,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
+            self.renderer.AddActor(self.points_surface_actor)
             self.renderer.AddActor(self.machine_actor)
             self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
@@ -1908,6 +1912,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     def alphaBlend(self, alpha):
         LOG.debug('alpha blend')
+
+    @Slot(bool)
+    @Slot(object)
+    def showSurface(self, surface):
+        LOG.debug('show surface')
+        self.points_surface_actor.showSurface(surface)
+        self.renderer_window.Render()
 
     @Slot(bool)
     @Slot(object)
