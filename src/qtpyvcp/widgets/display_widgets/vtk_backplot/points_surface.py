@@ -7,8 +7,8 @@ from vtk import (
     vtkPolyDataMapper,
     vtkPolyData,
     vtkDelaunay2D,
-    vtkSmoothPolyDataFilter
-
+    vtkSmoothPolyDataFilter,
+    vtkTransform
 )
 
 # noinspection PyUnresolvedReferences
@@ -47,6 +47,7 @@ class PointsSurfaceActor(vtkActor):
         self._datasource = datasource
 
         self.probe_results = [[0.0]]
+        self.mesh_z_offset = 0.0
 
         self.axis = self._datasource.getAxis()
         # show_surface = getSetting('backplot.show-points-surface')
@@ -77,6 +78,10 @@ class PointsSurfaceActor(vtkActor):
         if show_surface:
             self.log.info("SHOW POINTS SURFACE ")
             # Define the size of the grid (number of points in X and Y directions)
+
+            self.mesh_x_offset = getSetting("backplot.mesh-x-offset")
+            self.mesh_y_offset = getSetting("backplot.mesh-y-offset")
+            self.mesh_z_offset = getSetting("backplot.mesh-z-offset")
 
             # Define the size of the grid (number of points in X and Y directions)
             num_points_x = len(self.probe_results[0])
@@ -122,19 +127,27 @@ class PointsSurfaceActor(vtkActor):
             delaunay.SetInputData(polydata)
             delaunay.Update()
 
+            x_offset = self.mesh_x_offset.value
+            y_offset = self.mesh_y_offset.value
+            z_offset = self.mesh_z_offset.value
+
+            mesh_transform = vtkTransform()
+            mesh_transform.Translate(x_offset, y_offset, z_offset)
+
             # Smooth the mesh using vtkSmoothPolyDataFilter
-            smooth_filter = vtkSmoothPolyDataFilter()
-            smooth_filter.SetInputConnection(delaunay.GetOutputPort())
-            smooth_filter.SetNumberOfIterations(50)  # Number of smoothing iterations
-            smooth_filter.SetRelaxationFactor(0.1)  # Relaxation factor
-            smooth_filter.FeatureEdgeSmoothingOff()
-            smooth_filter.BoundarySmoothingOff()
-            smooth_filter.Update()
+            # smooth_filter = vtkSmoothPolyDataFilter()
+            # smooth_filter.SetInputConnection(delaunay.GetOutputPort())
+            # smooth_filter.SetNumberOfIterations(50)  # Number of smoothing iterations
+            # smooth_filter.SetRelaxationFactor(0.1)  # Relaxation factor
+            # smooth_filter.FeatureEdgeSmoothingOff()
+            # smooth_filter.BoundarySmoothingOff()
+            # smooth_filter.Update()
 
             # Create a mapper and set the input connection
             mapper = vtkPolyDataMapper()
-            mapper.SetInputConnection(smooth_filter.GetOutputPort())
+            mapper.SetInputConnection(delaunay.GetOutputPort())
 
+            self.SetUserTransform(mesh_transform)
             self.SetMapper(mapper)
             self.GetProperty().SetPointSize(10)
 
