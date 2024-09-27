@@ -84,31 +84,24 @@ class PointsSurfaceActor(vtkActor):
             self.mesh_z_offset = getSetting("backplot.mesh-z-offset")
 
             # Define the size of the grid (number of points in X and Y directions)
-            num_points_x = len(self.probe_results[0])
-            num_points_y = len(self.probe_results)
+            num_points_x = len(self.probe_results)
+            num_points_y = len(self.probe_results[0])
 
             print(num_points_x, num_points_y)
 
             # Define the original range of X and Y coordinates
-            original_x_range = np.linspace(0, 1, num_points_x)
-            original_y_range = np.linspace(0, 1, num_points_y)
-
-            # Define the new range of X and Y coordinates
-            new_x_range = np.linspace(0.0, 10.0, num_points_x)
-            new_y_range = np.linspace(0.0, -10.0, num_points_y)
+            x_range = np.linspace(0, 1, num_points_x)
+            y_range = np.linspace(0, 1, num_points_y)
 
             # Initialize the points array
             points_array = np.zeros((num_points_x * num_points_y, 3))
 
             # Generate the points with elevation and translated coordinates
-            for i, x in enumerate(original_x_range):
-                for j, y in enumerate(original_y_range):
+            for i, x in enumerate(x_range):
+                for j, y in enumerate(y_range):
                     # Calculate the Z-coordinate (elevation) using a simple function
-                    z = self.probe_results[j][i]
-                    # Translate the X and Y coordinates to the new range
-                    new_x = new_x_range[i]
-                    new_y = new_y_range[j]
-                    points_array[i * num_points_y + j] = [new_x, new_y, z]
+                    z = self.probe_results[i][j]
+                    points_array[i * num_points_y + j] = [x_range[i], y_range[j], z]
 
             # Print the points array
             print(points_array)
