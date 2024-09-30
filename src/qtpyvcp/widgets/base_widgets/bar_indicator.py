@@ -12,6 +12,7 @@ class BarIndicatorBase(QWidget):
     """docstring for BarIndicator"""
     def __init__(self, parent=None):
         super(BarIndicatorBase, self).__init__(parent)
+        self.setFocusPolicy(Qt.NoFocus)
 
         self._value = 100
         self._minimum = 0.0

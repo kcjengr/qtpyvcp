@@ -2,10 +2,10 @@ from qtpy.QtWidgets import QLCDNumber
 from qtpy.QtCore import Property
 
 from qtpyvcp import hal
-from qtpyvcp.widgets import HALWidget
+from qtpyvcp.widgets import HALWidget, VCPWidget
 
 
-class HalLCDNumber(QLCDNumber, HALWidget):
+class HalLCDNumber(QLCDNumber, HALWidget, VCPWidget):
     """HAL LCD Number
 
     LCD Number for displaying `float` or `s32` HAL pin values.

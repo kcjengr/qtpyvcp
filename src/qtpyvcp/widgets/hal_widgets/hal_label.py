@@ -2,7 +2,7 @@ from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Property, Q_ENUMS
 
 from qtpyvcp import hal
-from qtpyvcp.widgets import HALWidget
+from qtpyvcp.widgets import HALWidget, VCPWidget
 
 from . import HalType
 
@@ -10,7 +10,7 @@ from . import HalType
 from qtpyvcp.utilities.logger import getLogger
 LOG = getLogger(__name__)
 
-class HalLabel(QLabel, HALWidget, HalType):
+class HalLabel(QLabel, HALWidget, HalType, VCPWidget):
     """HAL Label
 
     Label for displaying HAL pin values.

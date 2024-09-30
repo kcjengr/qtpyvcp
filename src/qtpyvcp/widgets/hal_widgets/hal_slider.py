@@ -2,7 +2,7 @@
 from qtpy.QtWidgets import QSlider
 
 from qtpyvcp import hal
-from qtpyvcp.widgets import HALWidget
+from qtpyvcp.widgets import HALWidget, VCPWidget
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
@@ -10,7 +10,7 @@ from qtpyvcp.plugins import getPlugin
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 
-class HalSlider(QSlider, HALWidget):
+class HalSlider(QSlider, HALWidget, VCPWidget):
     """HAL Slider
 
     Slider for setting `u32` or `float` HAL pin values.

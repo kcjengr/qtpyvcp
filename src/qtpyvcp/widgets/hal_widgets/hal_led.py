@@ -1,6 +1,6 @@
 
 from qtpyvcp import hal
-from qtpyvcp.widgets import HALWidget
+from qtpyvcp.widgets import HALWidget, VCPWidget
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
 
 # Setup logging
@@ -8,7 +8,7 @@ from qtpyvcp.utilities.logger import getLogger
 log = getLogger(__name__)
 
 
-class HalLedIndicator(LEDWidget, HALWidget):
+class HalLedIndicator(LEDWidget, HALWidget, VCPWidget):
     """HAL LED
 
     LED for indicated the state of `bit` HAL pins.

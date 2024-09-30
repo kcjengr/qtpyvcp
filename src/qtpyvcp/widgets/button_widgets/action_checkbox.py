@@ -1,5 +1,5 @@
 from qtpy.QtWidgets import QCheckBox
-from qtpy.QtCore import Property
+from qtpy.QtCore import Qt, Property
 
 from qtpyvcp.widgets import CMDWidget
 from qtpyvcp.actions import bindWidget
@@ -13,6 +13,7 @@ class ActionCheckBox(QCheckBox, CMDWidget):
     """
     def __init__(self, parent=None, action=None):
         super(ActionCheckBox, self).__init__(parent)
+        self.setFocusPolicy(Qt.NoFocus)
 
         self._action_name = ''
         if action is not None:

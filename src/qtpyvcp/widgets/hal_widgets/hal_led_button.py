@@ -16,6 +16,7 @@ class HALLEDButton(QPushButton):
     """
     def __init__(self, parent=None):
         super(HALLEDButton, self).__init__(parent)
+        self.setFocusPolicy(Qt.NoFocus)
 
         self._alignment = Qt.AlignRight | Qt.AlignTop
         self._pin_name = ''

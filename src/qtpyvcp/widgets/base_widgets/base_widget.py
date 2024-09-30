@@ -211,6 +211,11 @@ class VCPWidget(VCPBaseWidget):
     """
     def __init__(self, parent=None):
         super(VCPWidget, self).__init__()
+        # Logically no focus policy here should be correct.
+        # Risk is that VCPWidget maybe used as the base for
+        # widgets that DO expect user interaction. So below would be a
+        # breaking change until some cleaning is done. Test it?
+        self.setFocusPolicy(Qt.NoFocus)
 
 class CMDWidget(VCPBaseWidget):
     """Command Widget

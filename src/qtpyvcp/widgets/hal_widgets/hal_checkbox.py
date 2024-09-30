@@ -4,7 +4,7 @@ from qtpy.QtWidgets import QCheckBox
 from qtpy.QtCore import Property, QEvent
 
 from qtpyvcp import hal
-from qtpyvcp.widgets import HALWidget
+from qtpyvcp.widgets import HALWidget, VCPWidget
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
@@ -13,7 +13,7 @@ LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 
 
-class HalCheckBox(QCheckBox, HALWidget):
+class HalCheckBox(QCheckBox, HALWidget, VCPWidget):
     """HAL CheckBox
 
     CheckBox for displaying and setting `bit` HAL pin values.

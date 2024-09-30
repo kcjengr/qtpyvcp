@@ -6,8 +6,8 @@ from qtpy.QtWidgets import QWidget
 class LEDWidget(QWidget):
 
     def __init__(self, parent=None):
-
         super(LEDWidget, self).__init__(parent)
+        self.setFocusPolicy(Qt.NoFocus)
 
         self._diamX = 0
         self._diamY = 0
