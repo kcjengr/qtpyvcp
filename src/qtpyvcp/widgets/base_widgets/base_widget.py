@@ -9,7 +9,7 @@ all other QtPyVCP widgets are based.
 import os
 import json
 
-from qtpy.QtCore import Property, Slot
+from qtpy.QtCore import Property, Slot, Qt
 from qtpy.QtWidgets import QPushButton
 
 from qtpyvcp.plugins import getPlugin
@@ -272,6 +272,8 @@ class VCPButton(QPushButton, CMDWidget):
     def __init__(self, parent=None):
         super(VCPButton, self).__init__(parent)
         self.status = getPlugin('status')
+        # stop focus that will interfere with keyboard jog
+        self.setFocusPolicy(Qt.NoFocus)
 
     def mousePressEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place
