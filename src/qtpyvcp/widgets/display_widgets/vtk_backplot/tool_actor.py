@@ -64,6 +64,8 @@ class ToolActor(vtk.vtkActor):
 
         elif self._datasource.isMachineLathe():
             mapper = vtk.vtkPolyDataMapper()
+        elif self._datasource.isMachineJet():
+            mapper = vtk.vtkPolyDataMapper()
         else:
             if tool.id == 0 or tool.diameter < .05:
                 transform = vtk.vtkTransform()

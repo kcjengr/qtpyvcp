@@ -98,7 +98,9 @@ def vtk_version_ok(major, minor):
     else:
         return False
 
-
+# Currently event handler has been removed from use as jogging is handled at a
+# global framework level. The handler code is kept here as in the future we
+# may use it not for jogging but for other keyboard shortcut use.
 class InteractorEventFilter(QObject):
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:
@@ -149,14 +151,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._datasource = LinuxCncDataSource()
         
-        if self._datasource.getKeyboardJog():
-            LOG.info("keyboard JOG enabled")
-        else:
-            LOG.info("keyboard JOG disabled")
         
-        if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
-            event_filter = InteractorEventFilter(self)
-            self.installEventFilter(event_filter)
+        # Keyboard jogging is handled at the global level.
+        #if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
+        #    event_filter = InteractorEventFilter(self)
+        #    self.installEventFilter(event_filter)
 
         self.current_time = round(time.time() * 1000)
         self.plot_interval = 1000/30  # 1 second / 30 fps
@@ -165,6 +164,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.ploter_enabled = True
         self.touch_enabled = False
+        # provide a control to UI builders to suppress when line "breadcrumbs" are plotted
+        self.breadcrumbs_plotted = True
         
         view_default_setting = getSetting("backplot.view").value
         view_options_setting = getSetting("backplot.view").enum_options
@@ -995,7 +996,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # self.tool_actor.SetPosition(self.spindle_position)
 
         #print(f"Update tool tip position {time.time()}")
-        self.path_cache_actor.add_line_point(self.tooltip_position)
+        if self.breadcrumbs_plotted:
+            self.path_cache_actor.add_line_point(self.tooltip_position)
         self.renderer_window.Render()
         
     def move_part(self, part):
@@ -1871,6 +1873,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_cache_actor = PathCacheActor(self.tooltip_position)
         self.renderer.AddActor(self.path_cache_actor)
         self.renderer_window.Render()
+
+    @Slot(bool)
+    def enableBreadcrumbs(self, enable):
+        self.breadcrumbs_plotted = enable
 
     @Slot(bool)
     def enable_panning(self, enabled):
