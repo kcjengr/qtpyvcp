@@ -356,6 +356,9 @@ class PlasmaProcesses(Plugin):
         self._measurementid = LinearSystem.get_by_key(self._session, 'name', linear_setting)[0].id
         self._pressureid = PressureSystem.get_by_key(self._session, 'name', pressure_setting)[0].id
         self._machineid = Machine.get_by_key(self._session, 'name', machine)[0].id
+        self._measurement_name = linear_setting
+        self._pressure_name = pressure_setting
+        self._machine_name = machine
     
     
     def drop_all(self):
@@ -490,7 +493,10 @@ class PlasmaProcesses(Plugin):
         LOG.debug(f'tool_id = {data[0].id}')
         return data
 
-    def tool_list_for_lcnc(self, machine, pressure, measurement):
+    def tool_list_for_lcnc(self, machine=None, pressure=None, measurement=None):
+        if machine == None: machine = self._machine_name
+        if pressure == None: pressure = self._pressure_name
+        if measurement == None: measurement = self._measurement_name
         LOG.debug(f'lcnc tool list for filters machine={machine}, pressure={pressure}, measurement={measurement}')
         data = Cutchart.tool_list_for_lcnc(self._session, machine, pressure, measurement)
         return data
