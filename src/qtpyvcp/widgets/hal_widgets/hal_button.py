@@ -3,7 +3,7 @@ from qtpy.QtCore import Property, QTimer
 from qtpy.QtWidgets import QPushButton
 
 from qtpyvcp import hal
-from qtpyvcp.widgets import HALWidget
+from qtpyvcp.widgets import HALWidget, VCPWidget
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
@@ -13,7 +13,7 @@ LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 
 
-class HalButton(QPushButton, HALWidget):
+class HalButton(QPushButton, HALWidget, VCPWidget):
     """HAL Button
 
     Button for setting `bit` HAL pin values.
