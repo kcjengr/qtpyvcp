@@ -1346,7 +1346,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._datasource.isModeMdi() or self._datasource.isModeAuto():
             self.g92_offset = g92_offset
 
-            path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
+            path_offset = [sum(x) for x in zip(self.g92_offset, self.original_g92_offset)]
             LOG.debug("---------path_offset: {}".format(path_offset))
 
             for wcs_index, actor in list(self.path_actors.items()):
@@ -1354,8 +1354,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 old_program_bounds_actor = self.program_bounds_actors[wcs_index]
                 self.renderer.RemoveActor(old_program_bounds_actor)
                 # determine change in g92 offset since path was drawn
-
-                new_path_position = list(map(add, self.wcs_offsets[wcs_index][:9], path_offset))
+                new_path_position = [sum(x) for x in zip(self.wcs_offsets[wcs_index][:9], path_offset)]
                 LOG.debug("---------new_path_position: {}".format(path_offset))
 
                 axes = actor.get_axes_actor()
