@@ -61,8 +61,8 @@ class QPin(QObject):
 class QParam(QObject):
     """QParam
     TODO update desc.
-    QPin is a QObject wrapper for a HAL pin and emits the valueChanged signal
-    when the HAL pins value changes.
+    QParam is a QObject wrapper for a HAL namedparams and emits the valueChanged signal
+    when the HAL param value changes.
 
     Args:
         comp (_hal.component) : The HAL comp the pins should belong to.
@@ -86,6 +86,7 @@ class QParam(QObject):
         self.startTimer(cycle_time)
 
     def timerEvent(self, timer):
+        print("PARAM EVENT")
         tmp = self._param.get()
         if tmp != self._val:
             self._val = tmp
