@@ -73,10 +73,12 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._hal_param_name = None
         self._hal_param_type = "s32"
         self._hal_param_access = "rw"
-
-    def initialize(self):
+        
+        
+    def postInitialize(self):
+        
         if self.enableHalParams:
-            comp = qhal.getComponent()
+            comp = qhal.getComponent("qtpyvcp")
             comp.addParam(self.halParamName, self.halParamType, self.halParamAccess)
 
     #

@@ -265,6 +265,12 @@ class VCPApplication(QApplication):
         for w in self.allWidgets():
             if isinstance(w, VCPPrimitiveWidget):
                 w.initialize()
+                
+    def postInitialiseWidgets(self):
+        for w in self.allWidgets():
+            if isinstance(w, VCPPrimitiveWidget):
+                if (hasattr(w, 'postInitialize') and callable(w.postInitialize)):
+                    w.postInitialize()
 
     def terminateWidgets(self):
         LOG.debug("Terminating widgets")

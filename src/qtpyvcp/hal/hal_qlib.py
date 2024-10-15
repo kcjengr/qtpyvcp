@@ -86,9 +86,11 @@ class QParam(QObject):
         self.startTimer(cycle_time)
 
     def timerEvent(self, timer):
-        print("PARAM EVENT")
         tmp = self._param.get()
+        
+        print(tmp)
         if tmp != self._val:
+            print("PARAM CHANGED")
             self._val = tmp
             self.valueChanged.emit(tmp)
 
@@ -167,6 +169,12 @@ class QComponent(QObject):
 
     def removeListener(self, pin_name, *args):
         self._pins[pin_name].valueChanged.disconnect(*args)
+        
+    def addParamListener(self, param_name, *args):
+        self._params[param_name].valueChanged.connect(*args)
+
+    def removeParamListener(self, param_name, *args):
+        self._params[param_name].valueChanged.disconnect(*args)
 
     def ready(self):
         self._comp.ready()
