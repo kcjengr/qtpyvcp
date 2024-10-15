@@ -11,7 +11,7 @@ from qtpyvcp.utilities.settings import connectSetting, getSetting
 from qtpyvcp.plugins.db_tool_table import DBToolTable
 
 LOG = getLogger(__name__)
-
+TOOL_TABLE = getPlugin("tooltable")
 
 class ItemDelegate(QStyledItemDelegate):
 
@@ -111,8 +111,7 @@ class ToolModel(QStandardItemModel):
         self.tt.tool_table_changed.connect(self.updateModel)
         
         self.row_offset = 1
-        tool_table = getPlugin("tooltable")
-        if isinstance(tool_table, DBToolTable):
+        if isinstance(TOOL_TABLE, DBToolTable):
             self.row_offset = 0
 
 
@@ -148,11 +147,9 @@ class ToolModel(QStandardItemModel):
 
     def data(self, index, role=Qt.DisplayRole):
         
-
-        
         if role == Qt.DisplayRole or role == Qt.EditRole:
             key = self._columns[index.column()]
-            tnum = sorted(self._tool_table)[index.row() +self.row_offset]
+            tnum = sorted(self._tool_table)[index.row() + self.row_offset]
             return self._tool_table[tnum][key]
 
         elif role == Qt.TextAlignmentRole:
@@ -195,7 +192,7 @@ class ToolModel(QStandardItemModel):
 
     def addTool(self):
         try:
-            tnum = sorted(self._tool_table)[-1] + self.row_offset
+            tnum = sorted(self._tool_table)[-1] + 1
         except IndexError:
             tnum = 1
 
@@ -208,14 +205,16 @@ class ToolModel(QStandardItemModel):
         self.beginInsertRows(QModelIndex(), row, row)
         self._tool_table[tnum] = self.tt.newTool(tnum=tnum)
         self.endInsertRows()
+        
         return True
 
     def toolDataFromRow(self, row):
         """Returns dictionary of tool data"""
-        tnum = sorted(self._tool_table)[row + self.row_offset]
+        tnum = sorted(self._tool_table)[row + 1]
         return self._tool_table[tnum]
 
     def saveToolTable(self):
+        print("SAVE Tool table")
         self.tt.saveToolTable(self._tool_table, self._columns)
         return True
 
@@ -266,7 +265,11 @@ class ToolTable(QTableView):
         self.setSelectionMode(QTableView.SingleSelection)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
-
+        
+        self.row_offset = 1
+        if isinstance(TOOL_TABLE, DBToolTable):
+            self.row_offset = 0
+            
     @Slot()
     def saveToolTable(self):
         if not self.confirmAction("Do you want to save changes and\n"
@@ -285,7 +288,7 @@ class ToolTable(QTableView):
     def deleteSelectedTool(self):
         """Delete the currently selected item"""
         current_row = self.selectedRow()
-        if current_row == -1:
+        if current_row == - self.row_offset:
             # no row selected
             return
 
@@ -313,13 +316,13 @@ class ToolTable(QTableView):
     @Slot()
     def selectPrevious(self):
         """Select the previous item in the view."""
-        self.selectRow(self.selectedRow() - 1)
+        self.selectRow(self.selectedRow() - self.row_offset)
         return True
 
     @Slot()
     def selectNext(self):
         """Select the next item in the view."""
-        self.selectRow(self.selectedRow() + 1)
+        self.selectRow(self.selectedRow() + self.row_offset)
         return True
 
     @Slot()
@@ -335,7 +338,8 @@ class ToolTable(QTableView):
     def addTool(self):
         """Appends a new item to the model"""
         self.tool_model.addTool()
-        self.selectRow(self.tool_model.rowCount() - 1)
+        self.selectRow(self.tool_model.rowCount() - self.row_offset)
+        
 
     @Slot()
     def loadSelectedTool(self):
