@@ -33,6 +33,8 @@ from qtpyvcp.utilities.config_loader import load_config_files
 
 #import pydevd;pydevd.settrace()
 
+PREPROC_VERSION = '00.30'
+
 INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
 preprocessor_log_name = normalizePath(path='gcode_preprocessor.log', base=os.getenv('CONFIG_DIR', '~/'))
 # Constrcut LOG from qtpyvcp standard logging framework
@@ -1348,6 +1350,11 @@ class PreProcessor:
         
 
     def parse(self):
+        # Build Header for parsed file
+        self._parsed.append(CodeLine( '(--------------------------------------------------)', parent=self))
+        self._parsed.append(CodeLine( '(            Plasma G-Code Preprocessor            )', parent=self))
+        self._parsed.append(CodeLine(f'(                 {PREPROC_VERSION}                            )', parent=self))
+        self._parsed.append(CodeLine( '(--------------------------------------------------)', parent=self))
         # setup any global default modal groups that we need to be aware of
         self.set_active_g_modal('G91.1')
         self.set_active_g_modal('G40')
