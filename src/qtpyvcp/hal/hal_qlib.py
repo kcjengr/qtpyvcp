@@ -148,13 +148,13 @@ class QComponent(QObject):
         self._pins[name] = pin
         return pin
 
-    def addParam(self, name, pin_type, access_mode):
+    def addParam(self, name, param_type, access_mode):
 
-        pin_type = self.type_map.get(pin_type.lower())
+        param_type = self.type_map.get(param_type.lower())
         access_mode = self.mode_map.get(access_mode.lower())
         LOG.debug("Adding PARAM params: %s %s", self.name, name)
 
-        param = QParam(self._comp, name, pin_type, access_mode)
+        param = QParam(self._comp, name, param_type, access_mode)
         self._params[name] = param
         return param
 
