@@ -87,10 +87,8 @@ class QParam(QObject):
 
     def timerEvent(self, timer):
         tmp = self._param.get()
-        
-        print(tmp)
+
         if tmp != self._val:
-            print("PARAM CHANGED")
             self._val = tmp
             self.valueChanged.emit(tmp)
 

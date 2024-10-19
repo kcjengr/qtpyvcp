@@ -31,7 +31,7 @@ Example:
 
 from qtpyvcp.utilities.logger import getLogger
 
-from .hal_qlib import QComponent, QPin
+from .hal_qlib import QComponent, QPin, QParam
 
 COMPONENTS = {}
 LOG = getLogger(__name__)
