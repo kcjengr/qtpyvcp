@@ -22,6 +22,7 @@ import sys
 import re
 import math
 import logging
+import time
 from enum import Enum, auto
 from typing import List, Dict, Tuple, Union
 
@@ -1482,8 +1483,9 @@ class PreProcessor:
                 # query for tool was empty so we need to create the magic
                 LOG.debug("ISSUE: The Magic tool 99999 does not exist!")
             
-            rtn = hal.set_p("qtpyvcp.cutchart-id", f"99999")
+            rtn = hal.set_p("qtpyvcp.cutchart-id", "99999")
             LOG.debug(f'Set hal cutchart-id pin: 99999')
+            rtn = hal.set_p("qtpyvcp.cutchart-reload", "1")
         else:
             LOG.debug('No active cutchart')
 
