@@ -53,6 +53,8 @@ class GCodeProperties(DataPlugin):
         self.ini = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self.config_dir = os.path.dirname(inifile)
 
+        self.linear_units = MACHINE_UNITS
+
         self.canon = None
         self.stat.file.notify(self._file_event)
         self.loaded_file = None
@@ -795,7 +797,7 @@ class GCodeProperties(DataPlugin):
 
     def from_internal_units(self, pos, unit=None):
         if unit is None:
-            unit = s.linear_units
+            unit = self.linear_units
         lu = (unit or 1) * 25.4
 
         lus = [lu, lu, lu, 1, 1, 1, lu, lu, lu]
@@ -803,7 +805,7 @@ class GCodeProperties(DataPlugin):
 
     def from_internal_linear_unit(self, v, unit=None):
         if unit is None:
-            unit = s.linear_units
+            unit = self.linear_units
         lu = (unit or 1) * 25.4
         return v * lu
 
@@ -974,7 +976,7 @@ class PropertiesCanon(BaseCanon):
             LOG.debug(f"straight_feed: {e}")
 
     def get_axis_mask(self):
-        return 7  # XYZ
+        return 511  # XYZABCUVW
 
     def rigid_tap(self, x, y, z):
         try:
