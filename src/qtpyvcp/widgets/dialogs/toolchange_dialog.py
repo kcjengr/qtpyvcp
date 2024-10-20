@@ -22,6 +22,7 @@ from qtpy.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.obj_status import HALStatus
 
 from qtpyvcp import hal
 
@@ -58,6 +59,7 @@ class ToolChangeDialog(BaseDialog):
     """
     def __init__(self, *args, **kwargs):
         super(ToolChangeDialog, self).__init__(stay_on_top=True)
+        self.hal_stat = HALStatus()
 
         self.tt = getPlugin('tooltable')
         self.tool_number = 0
@@ -67,6 +69,25 @@ class ToolChangeDialog(BaseDialog):
         self.ui_file = kwargs.get('ui_file', default_ui)
 
         self.ui = uic.loadUi(self.ui_file, self)
+
+        # Set the tool number to existing tool
+        self.ui.lblToolNumber.setText(str(self.tool_number))
+
+        if self.ui_file == default_ui:
+            self.label_1Remove = 'Manual Tool Change Requested<br>Remove the following tool and hit "Done" to continue.'
+            self.btnDoneRemove = 'Done'
+            self.label_1Insert = 'Manual Tool Change Requested<br>Insert the following tool and hit "Done" to continue.'
+            self.btnDoneInsert = 'Done'
+        else:
+            self.label_1Remove = 'Tool Change Requested, Remove tool'
+            self.btnDoneRemove = 'ONCE TOOL IS REMOVED - PRESS TO RESUME'
+            self.label_1Insert = 'Tool Change Requested, Insert tool'
+            self.btnDoneInsert = 'ONCE TOOL IS LOADED - PRESS TO RESUME'
+
+        self.ui.label_1.setText(self.label_1Remove)
+        self.ui.btnDone.setText(self.btnDoneRemove)
+        self.toolRemark = "Please remove existing tool from spindle."
+        self.ui.lblToolRemark.setText(self.toolRemark)
 
         comp = hal.getComponent("qtpyvcp_manualtoolchange")
         comp.addPin('number', 's32', 'in')
@@ -86,17 +107,41 @@ class ToolChangeDialog(BaseDialog):
             self.changed_pin.value = False
             if self.isVisible():
                 self.hide()
+                current_tool = self.getCurrentTool()
+                if current_tool != 0:
+                    self.ui.lblToolNumber.setText('0') # Set this to 0, we set it to valid tool # on prep
+                if current_tool == 0:
+                    self.ui.lblToolRemark.setText(self.toolRemark)
 
     def prepare_tool(self, tool_no):
         if self.tool_number == tool_no: return  # Already prepared this tool
+
+        current_tool = self.getCurrentTool()
+
         tool_data = self.tt.getToolTable().get(tool_no, {})
         tool_r = tool_data.get('R', 'UNKNOWN')
-        self.ui.lblToolNumber.setText(str(tool_no))
-        self.ui.lblToolRemark.setText(tool_r)
+
+        current_tool_data = self.tt.getToolTable().get(current_tool, {})
+        current_tool_r = current_tool_data.get('R', 'UNKNOWN')
+
+        if tool_no == 0:
+            self.ui.lblToolNumber.setText(str(self.tool_number))
+            self.ui.label_1.setText(self.label_1Remove)
+            self.ui.lblToolRemark.setText(current_tool_r)
+            self.ui.btnDone.setText(self.btnDoneRemove)
+        else:
+            self.ui.btnDone.setText(self.btnDoneInsert)
+            self.ui.label_1.setText(self.label_1Insert)
+            self.ui.lblToolNumber.setText(str(tool_no))
+            self.ui.lblToolRemark.setText(tool_r)
+
         self.tool_number = tool_no
 
     def on_change(self, value=True):
         if value:
+            current_tool = self.getCurrentTool()
+            if current_tool != 0:
+                self.ui.lblToolNumber.setText(str(current_tool))
             self.show()
 
     def on_change_button(self, value=True):
@@ -108,3 +153,6 @@ class ToolChangeDialog(BaseDialog):
 
     def accept(self):
         self.changed_pin.value = True
+
+    def getCurrentTool(self):
+        return self.hal_stat.getHALPin('halui.tool.number').getValue()

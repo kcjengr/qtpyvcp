@@ -333,7 +333,7 @@ class HALPoller(QObject):
             if len(rawtuple[0]) <= 0:
                 time.sleep(self.cycle_time/1000.0)
                 continue
-            raw = rawtuple[0].split('\n')
+            raw = rawtuple[0].decode('utf-8').split('\n')
 
             pins = [ [a for a in [x.strip() for x in line.split(' ')] if a != ''] for line in raw ]
 
@@ -375,9 +375,9 @@ class HALPoller(QObject):
         si = self.status_items.get(pin_name)
         if si is None:
             raw = subprocess.check_output(['halcmd', '-s', 'show', 'pin', pin_name]).strip()
-            if len(raw.split('\n')) > 1: # more than one pin name matches
+            if len(raw.decode('utf-8').split('\n')) > 1: # more than one pin name matches
                 raise ValueError("HAL pin red<{}> does not exist".format(pin_name))
-            pin_data = raw.split()
+            pin_data = raw.decode('utf-8').split()
             if len(pin_data) == 0: # no pin names match
                 raise ValueError("HAL pin red<{}> does not exist".format(pin_name))
                 return
