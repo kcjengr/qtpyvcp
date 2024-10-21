@@ -34,6 +34,7 @@ class VCPMainWindow(QMainWindow):
 
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
+        self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF ") or "false"
         # keyboard jogging multi key press tracking
         # Key   Purpose
         # ---   ---------------------------------------------
@@ -310,6 +311,8 @@ class VCPMainWindow(QMainWindow):
         if event.modifiers() & Qt.ControlModifier:
             jog_active = 1
             LOG.debug("Key event modifier Ctrl is active")
+        elif self._keyboard_jog_ctrl_off != 'false':
+            jog_active = 1
         else:
             jog_active = 0
         
