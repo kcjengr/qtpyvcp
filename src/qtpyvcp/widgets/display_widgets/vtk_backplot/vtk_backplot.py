@@ -44,6 +44,7 @@ vtk.qt.QVTKRWIBase = "QGLWidget"
 # Fix end
 
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
 
 from qtpyvcp import actions
 from qtpyvcp.widgets import VCPWidget
@@ -73,6 +74,8 @@ NUMBER_OF_WCS = 9
 from qtpy.QtOpenGL import QGLFormat
 f = QGLFormat()
 f.setSampleBuffers(True)
+f.setSamples(8)  # Request 8x antialiasing (adjustable)
+
 QGLFormat.setDefaultFormat(f)
 
 
@@ -269,6 +272,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.clipping_range_far = 1000.0 #TODO: check this value
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        
+        if self._datasource.getAntialias():
+            #self.camera.SetUseAntialiasing(True)  # VTK 9.x+
+            pass
+        
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
 
@@ -280,8 +288,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.interactor = self.renderer_window.GetInteractor()
         self.interactor.SetInteractorStyle(self.nav_style)
-        self.interactor.SetRenderWindow(self.renderer_window)
+        self.interactor.render_window = self.renderer_window
+        # self.interactor.SetRenderWindow(self.renderer_window)
+        
+        if self._datasource.getAntialias() in ["true", "True", "TRUE", 1, "1"]:
+            self.renderer_window.SetMultiSamples(8)  # Enable 8x multisampling for antialiasing
 
+            
+        if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
+            print("NAV")
+            self.cam_orient_manipulator = vtkCameraOrientationWidget()
+            self.cam_orient_manipulator.SetParentRenderer(self.renderer)
+            
         if not IN_DESIGNER:
             
             bounds_type = self._datasource.getMachineBounds()
@@ -375,6 +393,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.interactor.AddObserver("MouseWheelForwardEvent", self.mouse_scroll_forward)
             self.interactor.AddObserver("MouseWheelBackwardEvent", self.mouse_scroll_backward)
 
+
+            
             self.interactor.Initialize()
             self.renderer_window.Render()
             self.interactor.Start()
@@ -457,7 +477,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             # self.setViewP()
             # self.renderer.ResetCamera()
-
+            if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
+                print("NAV 2")
+                # Enable the widget.
+                self.cam_orient_manipulator.On()
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
