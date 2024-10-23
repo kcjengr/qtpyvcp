@@ -13,6 +13,7 @@ class ToolTable(Base):
     name = Column(String)
     tools = relationship("Tool")
     tool_models = relationship("ToolModel")
+    tool_properties = relationship("ToolProperties")
 
         
 class Tool(Base):
@@ -40,6 +41,7 @@ class Tool(Base):
     diameter = Column(Float)
     
     model = relationship("ToolModel")
+    properties = relationship("ToolProperties")
     
     tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
     tool_table = relationship("ToolTable", back_populates="tools")
@@ -52,3 +54,19 @@ class ToolModel(Base):
     model = Column(Text)
     tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
     tool_table = relationship("ToolTable", back_populates="tool_models")
+    
+class ToolProperties(Base):
+    __tablename__ = 'tool_properties'
+    
+    id = Column(Integer, primary_key=True)
+    tool_no = Column(Integer, ForeignKey('tool.tool_no'))
+    model = Column(Text)
+    tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
+    max_rpm = Column(Float)
+    wear_factor= Column(Float)
+    bullnose_radious = Column(Float)
+    model = Column(Text)
+    
+    tool_table = relationship("ToolTable", back_populates="tool_properties")
+    
+    
