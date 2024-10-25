@@ -4,38 +4,46 @@ Install from apt repository
 
 
 
-This only works for amd64.
+Add the APT Repository for the Installation type
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    **AMD64 for PC Installation Repository:**
+    
+        Run the following commands in the main terminal one at a time:
+
+        .. code-block:: bash
+
+            sudo apt install curl
+
+
+            echo 'deb [arch=amd64] https://repository.qtpyvcp.com/apt stable main' | sudo tee /etc/apt/sources.list.d/kcjengr.list
+
+
+            curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/kcjengr.gpg
+
+
+            gpg --keyserver keys.openpgp.org --recv-key 2DEC041F290DF85A
 
 
 
-Upgrade the system
+    
+    **NEW - ARM64 Raspberry Pi 4 and 5 Installation Repository:**
+    
+        Run the following commands in the main terminal one at a time:
+
+        .. code-block:: bash
+
+            sudo apt install curl
 
 
-.. code:: sh
-
-	$ sudo apt update
-	$ sudo apt upgrade
+            echo 'deb [arch=arm64] https://repository.qtpyvcp.com/apt stable main' | sudo tee /etc/apt/sources.list.d/kcjengr.list
 
 
-Add kcjengr repository to debian 12
+            curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/kcjengr.gpg
 
 
-.. code:: sh
+            gpg --keyserver keys.openpgp.org --recv-key 2DEC041F290DF85A
 
-	$ echo 'deb [signed-by=/usr/share/keyrings/kcjengr.gpg] https://repository.qtpyvcp.com/apt develop main' | sudo tee /etc/apt/sources.list.d/kcjengr.list
-
-
-Get the apt keys
-
-
-.. code:: sh
-
-    $ sudo apt install curl
-	$ curl -sS https://repository.qtpyvcp.com/repo/kcjengr.key | gpg --dearmor | sudo tee /usr/share/keyrings/kcjengr.gpg 2>&1 > /dev/null
-
-
-
-Update the repositories
 
 
 .. code:: sh
