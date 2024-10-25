@@ -101,9 +101,6 @@ def vtk_version_ok(major, minor):
     else:
         return False
 
-# Currently event handler has been removed from use as jogging is handled at a
-# global framework level. The handler code is kept here as in the future we
-# may use it not for jogging but for other keyboard shortcut use.
 class InteractorEventFilter(QObject):
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:
@@ -156,9 +153,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         
         # Keyboard jogging is handled at the global level.
-        #if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
-        #    event_filter = InteractorEventFilter(self)
-        #    self.installEventFilter(event_filter)
+        if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
+            event_filter = InteractorEventFilter(self)
+            self.installEventFilter(event_filter)
 
         self.current_time = round(time.time() * 1000)
         self.plot_interval = 1000/30  # 1 second / 30 fps

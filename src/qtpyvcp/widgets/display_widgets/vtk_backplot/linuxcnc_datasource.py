@@ -39,6 +39,7 @@ class LinuxCncDataSource(QObject):
         self._offsettable = getPlugin('offsettable')
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
+        self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF ") or "false"
         self._is_lathe = bool(self._inifile.find("DISPLAY", "LATHE"))
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
         self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
@@ -165,6 +166,9 @@ class LinuxCncDataSource(QObject):
     def getKeyboardJog(self):
         return self._keyboard_jog
     
+    def getKeyboardJogLock(self):
+        return self._keyboard_jog_ctrl_off
+
     def getMachineBounds(self):
         return self._machine_bounds
     
