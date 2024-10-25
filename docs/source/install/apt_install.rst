@@ -2,7 +2,17 @@
 Install from apt repository
 ===========================
 
+Update the System
+^^^^^^^^^^^^^^^^^
 
+    .. code-block:: bash
+
+        sudo apt update
+        
+        
+        sudo apt upgrade
+
+		
 
 Add the APT Repository for the Installation type
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
