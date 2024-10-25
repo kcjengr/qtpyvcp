@@ -300,6 +300,11 @@ class VCPMainWindow(QMainWindow):
         if event.isAutoRepeat():
             return
 
+        if self.app.focusWidget() != None:
+            LOG.debug(f"Focus widget = {self.app.focusWidget().objectName()}")
+        else:
+            LOG.debug(f"Focus widget = None")
+
         #speed = actions.machine.MAX_JOG_SPEED / 60.0 if event.modifiers() & Qt.ShiftModifier else None
         if self.rapid_jog:
             speed = actions.machine.MAX_JOG_SPEED / 60
@@ -310,11 +315,13 @@ class VCPMainWindow(QMainWindow):
         
         if event.modifiers() & Qt.ControlModifier:
             jog_active = 1
-            LOG.debug("Key event modifier Ctrl is active")
+            LOG.debug("GLOBAL Key event modifier Ctrl is active")
         elif self._keyboard_jog_ctrl_off != 'false':
             jog_active = 1
         else:
             jog_active = 0
+
+        LOG.debug("GLOBAL - Key event processing")
         
         if event.key() == Qt.Key_Up:
             actions.machine.jog.axis('Y', 1*jog_active, speed=speed)

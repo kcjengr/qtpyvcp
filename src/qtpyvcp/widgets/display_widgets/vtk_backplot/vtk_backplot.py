@@ -101,28 +101,55 @@ def vtk_version_ok(major, minor):
     else:
         return False
 
-# Currently event handler has been removed from use as jogging is handled at a
-# global framework level. The handler code is kept here as in the future we
-# may use it not for jogging but for other keyboard shortcut use.
 class InteractorEventFilter(QObject):
+    def __init__(self, parent=None, jog_safety_off=True):
+        super(InteractorEventFilter, self).__init__(parent)
+        self._keyboard_jog_ctrl_off = jog_safety_off
+        self.slow_jog = False
+        self.rapid_jog = True
+        
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:
             if event.isAutoRepeat():
                 return super().eventFilter(obj, event)
 
-            speed = actions.machine.MAX_JOG_SPEED / 60.0 if event.modifiers() & Qt.ShiftModifier else None
+            if event.modifiers() & Qt.ControlModifier:
+                jog_active = 1
+                LOG.debug("VTK - Key event modifier Ctrl is active")
+            elif self._keyboard_jog_ctrl_off:
+                jog_active = 1
+            else:
+                jog_active = 0
+
+    
+            #speed = actions.machine.MAX_JOG_SPEED / 60.0 if event.modifiers() & Qt.ShiftModifier else None
+            if self.rapid_jog:
+                speed = actions.machine.MAX_JOG_SPEED / 60
+            elif self.slow_jog:
+                speed = actions.machine.jog_linear_speed() / 60 / 10.0
+            else:
+                speed = None
+
+            LOG.debug("VTK - Key event processing")
+
             if event.key() == Qt.Key_Up:
-                actions.machine.jog.axis('Y', 1, speed=speed)
+                actions.machine.jog.axis('Y', 1*jog_active, speed=speed)
             elif event.key() == Qt.Key_Down:
-                actions.machine.jog.axis('Y', -1, speed=speed)
+                actions.machine.jog.axis('Y', -1*jog_active, speed=speed)
             elif event.key() == Qt.Key_Left:
-                actions.machine.jog.axis('X', -1, speed=speed)
+                actions.machine.jog.axis('X', -1*jog_active, speed=speed)
             elif event.key() == Qt.Key_Right:
-                actions.machine.jog.axis('X', 1, speed=speed)
+                actions.machine.jog.axis('X', 1*jog_active, speed=speed)
             elif event.key() == Qt.Key_PageUp:
-                actions.machine.jog.axis('Z', 1, speed=speed)
+                actions.machine.jog.axis('Z', 1*jog_active, speed=speed)
             elif event.key() == Qt.Key_PageDown:
-                actions.machine.jog.axis('Z', -1, speed=speed)
+                actions.machine.jog.axis('Z', -1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Minus:
+                self.slow_jog = True
+                self.rapid_jog = False
+            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                self.rapid_jog = True
+                self.slow_jog = False
             #else:
                 #print('Unhandled key press event')
         elif event.type() == QEvent.KeyRelease:
@@ -141,8 +168,12 @@ class InteractorEventFilter(QObject):
                 actions.machine.jog.axis('Z', 0)
             elif event.key() == Qt.Key_PageDown:
                 actions.machine.jog.axis('Z', 0)
+            elif event.key() == Qt.Key_Minus:
+                self.slow_jog = False
+            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                self.rapid_jog = False
             #else:
-            #print('Unhandled key release event')
+                #print('Unhandled key release event')
 
         return super().eventFilter(obj, event)
 
@@ -156,9 +187,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         
         # Keyboard jogging is handled at the global level.
-        #if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
-        #    event_filter = InteractorEventFilter(self)
-        #    self.installEventFilter(event_filter)
+        if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
+            if self._datasource.getKeyboardJogLock().lower() in ['true', '1', 't', 'y', 'yes']:
+                event_filter = InteractorEventFilter(self, True)
+            else:
+                event_filter = InteractorEventFilter(self)
+            self.installEventFilter(event_filter)
 
         self.current_time = round(time.time() * 1000)
         self.plot_interval = 1000/30  # 1 second / 30 fps
@@ -547,6 +581,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def keypress(self, obj, event):
         key = obj.GetKeySym()
+        LOG.debug("VTK - keypress for w or s")
         if key == 'w' or key == 's':
             self._setRepresentation(key)
 
