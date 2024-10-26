@@ -111,8 +111,7 @@ class ToolModel(QStandardItemModel):
         self.tt.tool_table_changed.connect(self.updateModel)
         
         self.row_offset = 1
-        if isinstance(TOOL_TABLE, DBToolTable):
-            self.row_offset = 0
+
 
 
     def refreshModel(self):

@@ -164,6 +164,8 @@ class DBToolTable(DataPlugin):
         # STATUS.tool_table.notify(lambda *args: self.loadToolTable())
         #
         # STATUS.all_axes_homed.notify(self.reload_tool)
+        
+        # CMD.load_tool_table()
 
     def reload_tool(self):
         if self.remember_tool_in_spindle and STATUS.all_axes_homed.value and STATUS.enabled.value:
@@ -252,6 +254,7 @@ class DBToolTable(DataPlugin):
         self.current_tool.setValue(self.TOOL_TABLE[tool_num])
 
     def reloadToolTable(self):
+        CMD.load_tool_table()
         self.loadToolTable()
         
     def loadToolTable(self): 
@@ -332,12 +335,10 @@ class DBToolTable(DataPlugin):
         to_delete = diff.get("dictionary_item_removed")
         
         if to_insert is not None:
-            print("TO INSTER")
+            print("TO INSTERT")
             for a in to_insert:
                 temp_tool = a.t2
-                
-                self.session.add(
-                    Tool(remark=temp_tool['R'],
+                tool = Tool(remark=temp_tool['R'],
                          tool_no=temp_tool['T'],
                          in_use=False,
                          pocket=temp_tool['P'],
@@ -356,7 +357,7 @@ class DBToolTable(DataPlugin):
                          diameter=temp_tool['D'],
                          tool_table_id=1
                     )
-                )
+                self.session.add(tool)
                 self.session.commit()
                 
         if to_update is not None:
@@ -394,5 +395,5 @@ class DBToolTable(DataPlugin):
                 tool_row = tool_data.filter(Tool.tool_no == temp_tool['T']).one()
                 self.session.delete(tool_row)
                 self.session.commit()
-        
-        CMD.load_tool_table()
+                
+        self.session.close()
