@@ -45,7 +45,7 @@ from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
-import pprint
+from pprint import pprint
 
 CMD = command()
 LOG = getLogger(__name__)
@@ -206,9 +206,12 @@ class DBToolTable(DataPlugin):
         :param item: the name of the tool data item to get
         :return: dict, int, float, str
         """
+        
+        tool_in_spindle = STAT.tool_in_spindle
+                
         if item is None:
-            return self.TOOL_TABLE[STAT.tool_in_spindle]
-        return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
+            return self.table[tool_in_spindle]
+        return self.table[tool_in_spindle].get(item[0].upper())
 
     def initialise(self):
         self.session = Session()

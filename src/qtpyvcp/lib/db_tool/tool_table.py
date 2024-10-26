@@ -60,13 +60,13 @@ class ToolProperties(Base):
     
     id = Column(Integer, primary_key=True)
     tool_no = Column(Integer, ForeignKey('tool.tool_no'))
-    tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
     max_rpm = Column(Float)
     wear_factor= Column(Float)
     bullnose_radious = Column(Float)
     model = Column(Text)
-    atc = Column(Integer)
+    atc = Column(Float)
     
+    tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
     tool_table = relationship("ToolTable", back_populates="tool_properties")
     
     

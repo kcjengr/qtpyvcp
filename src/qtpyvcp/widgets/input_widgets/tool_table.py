@@ -267,8 +267,6 @@ class ToolTable(QTableView):
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
         
         self.row_offset = 1
-        if isinstance(TOOL_TABLE, DBToolTable):
-            self.row_offset = 0
             
     @Slot()
     def saveToolTable(self):
