@@ -997,7 +997,9 @@ class PropertiesCanon(BaseCanon):
     def change_tool(self, tool):
         if tool != -1:
             self.tool_calls += 1
-            self.tools.append(tool)
+
+            if tool not in self.tools:
+                self.tools.append(tool)
 
     def next_line(self, st):
         self.num_lines += 1
