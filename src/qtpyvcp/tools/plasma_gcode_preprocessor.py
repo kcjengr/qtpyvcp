@@ -1409,11 +1409,18 @@ class PreProcessor:
                     out = ''
                 try:
                     for p in l.params:
-                        out += f' {p}{l.params[p]}'
+                        if isinstance(l.params[p], float):
+                            if l.params[p] < 0.001:
+                                out += f' {p}{l.params[p]:.6f}'
+                            else:
+                                out += f' {p}{l.params[p]:.3f}'
+                        else:
+                            out += f' {p}{l.params[p]}'
                     out += f' {l.comment}'
                     out = out.strip()
                 except:
                     out = ''
+            #LOG.debug(f"Dump line >>> {out}")
             print(out, file=sys.stdout)
             sys.stdout.flush()
 
