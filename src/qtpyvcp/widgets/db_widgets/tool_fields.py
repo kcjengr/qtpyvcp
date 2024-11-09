@@ -321,7 +321,7 @@ class DBIntField(QWidget):
             if tool_data:
                 setattr(tool_data, column, self.spinbox.value())
                 self.session.commit()
-    
+    # Label
     @Property(str)
     def labelText(self):
         return self._label_text
@@ -331,6 +331,25 @@ class DBIntField(QWidget):
         self.label.setText(text)
         self._label_text = text
 
+    # Minimum
+    @Property(int)
+    def minimum(self):
+        return self.spinbox.minimum()
+
+    @minimum.setter
+    def minimum(self, value):
+        self.spinbox.setMinimum(value)
+        
+    # Maximum
+    @Property(int)
+    def maximum(self):
+        return self.spinbox.maximum()
+
+    @maximum.setter
+    def maximum(self, value):
+        self.spinbox.setMaximum(value)
+        
+    # Query
     @Property(str)
     def query(self):
         return self._query
