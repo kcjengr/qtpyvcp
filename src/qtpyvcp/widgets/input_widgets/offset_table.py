@@ -77,6 +77,7 @@ class OffsetModel(QStandardItemModel):
         self.ot = getPlugin('offsettable')
 
         self.current_row_color = QColor(Qt.darkGreen)
+        self.current_row_bg = None  # Add this line
 
         self._columns = self.ot.columns
         self._rows = self.ot.rows
@@ -148,6 +149,13 @@ class OffsetModel(QStandardItemModel):
 
                 return QStandardItemModel.data(self, index, role)
 
+        elif role == Qt.BackgroundRole and self.current_row_bg is not None:  # Add this block
+            offset = index.row() + 1
+            if self.ot.current_index == offset:
+                return QBrush(self.current_row_bg)
+            else:
+                return QStandardItemModel.data(self, index, role)
+
         return QStandardItemModel.data(self, index, role)
 
     def setData(self, index, value, role):
@@ -205,6 +213,7 @@ class OffsetTable(QTableView):
         self._columns = self.offset_model._columns
         self._confirm_actions = False
         self._current_row_color = QColor('sage')
+        self._current_row_bg = None  # Add this line
 
         self.proxy_model = QSortFilterProxyModel()
         self.proxy_model.setFilterKeyColumn(0)
@@ -300,15 +309,13 @@ class OffsetTable(QTableView):
         else:
             return False
 
-    # @Property(str)
-    # def displayColumns(self):
-    #     return "".join(self._columns)
-    #
-    # @displayColumns.setter
-    # def displayColumns(self, columns):
-    #     self._columns = [col for col in columns.upper() if col in 'XYZABCUVWR']
-    #     self.offset_model.setColumns(self._columns)
-    #     self.itemDelegate().setColumns(self._columns)
+    @Property(int)
+    def currentRow(self):
+        return self.selectedRow()
+
+    @currentRow.setter
+    def currentRow(self, row):
+        self.selectRow(row)
 
     @Property(bool)
     def confirmActions(self):
@@ -325,3 +332,11 @@ class OffsetTable(QTableView):
     @currentRowColor.setter
     def currentRowColor(self, color):
         self.offset_model.current_row_color = color
+
+    @Property(QColor)
+    def currentRowBackground(self):
+        return self.offset_model.current_row_bg or QColor()
+
+    @currentRowBackground.setter 
+    def currentRowBackground(self, color):
+        self.offset_model.current_row_bg = color

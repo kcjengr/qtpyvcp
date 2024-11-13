@@ -399,6 +399,13 @@ class ToolTable(QTableView):
     def currentToolBackground(self, color):
         self.tool_model.current_tool_bg = color
 
+    @Property(int)
+    def currentRow(self):
+        return self.selectedRow()
+
+    @currentRow.setter
+    def currentRow(self, row):
+        self.selectRow(row)
 
     def insertToolAbove(self):
         # it does not make sense to insert tools, since the numbering
