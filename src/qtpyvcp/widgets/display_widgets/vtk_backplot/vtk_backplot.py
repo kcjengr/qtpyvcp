@@ -1009,20 +1009,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._plot_machine == True:
             if self.machine_parts:
 
-                print(f"Machine : {self.machine_parts_actor}")
+                # print(f"Machine : {self.machine_parts_actor}")
 
                 # self.machine_parts_actor.InitPathTraversal()
                 # parts = self.machine_parts_actor.GetParts()
                 
                 self.machine_parts_actor.InitPathTraversal()
                 for part in self.get_asm_parts(self.machine_parts_actor):
-                    print(f"PATH: {part}")
+                    # print(f"PATH: {part}")
                     # part_prop = path.GetViewProp()
                     # if isinstance(part, vtk.vtkActor):
                     #    print(f"Actor FOUND: ")
                     #    self.move_part(part)
                     if isinstance(part, vtk.vtkAssembly):
-                        print(f"ASM FOUND: ")
+                        # print(f"ASM FOUND: ")
                         self.move_part(part)
                     #
 
@@ -1060,12 +1060,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer_window.Render()
         
     def move_part(self, part):
-                   
+                
+        position = part.GetPartPosition()
+        
         part_axis = part.GetPartAxis()
         part_type = part.GetPartType()
 
-        print(part_axis)
-        print(part_type)
+        # print(part_axis)
+        # print(part_type)
 
         part_transform = vtk.vtkTransform()  
         
@@ -1073,64 +1075,68 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             #part_position = self.joints[part_joint].input.value
             
-            if part_axis == "x":
-                part.SetPosition(self.spindle_position[0], 0, 0)
-            elif part_axis == "y":
-                part.SetPosition(0, self.spindle_position[1], 0)
-            elif part_axis == "z":
-                part.SetPosition(0, 0, self.spindle_position[2])
-            elif part_axis == "-x":
-                part.SetPosition(-self.spindle_position[0], 0, 0)
-            elif part_axis == "-y":
-                part.SetPosition(0, -self.spindle_position[1], 0)
-            elif part_axis == "-z":
-                part.SetPosition(0, 0, -self.spindle_position[2])
-                
             # if part_axis == "x":
-            #     part_transform.Translate(self.spindle_position[0], 0, 0)
+            #     part.SetPosition(self.spindle_position[0], 0, 0)
             # elif part_axis == "y":
-            #     part_transform.Translate(0, self.spindle_position[1], 0)
+            #     part.SetPosition(0, self.spindle_position[1], 0)
             # elif part_axis == "z":
-            #     part_transform.Translate(0, 0, self.spindle_position[2])
+            #     part.SetPosition(0, 0, self.spindle_position[2])
             # elif part_axis == "-x":
-            #     part_transform.Translate(-self.spindle_position[0], 0, 0)
+            #     part.SetPosition(-self.spindle_position[0], 0, 0)
             # elif part_axis == "-y":
-            #     part_transform.Translate(0, -self.spindle_position[1], 0)
+            #     part.SetPosition(0, -self.spindle_position[1], 0)
             # elif part_axis == "-z":
-            #     part_transform.Translate(0, 0, -self.spindle_position[2])
-            #
-            # part.SetUserTransform(part_transform)
+            #     part.SetPosition(0, 0, -self.spindle_position[2])
+                
+            if part_axis == "x":
+                part_transform.Translate(self.spindle_position[0], 0, 0)
+            elif part_axis == "y":
+                part_transform.Translate(0, self.spindle_position[1], 0)
+            elif part_axis == "z":
+                part_transform.Translate(0, 0, self.spindle_position[2])
+            elif part_axis == "-x":
+                part_transform.Translate(-self.spindle_position[0], 0, 0)
+            elif part_axis == "-y":
+                part_transform.Translate(0, -self.spindle_position[1], 0)
+            elif part_axis == "-z":
+                part_transform.Translate(0, 0, -self.spindle_position[2])
+            
 
         elif part_type == "angular":
+            
             # part_position = self.joints[part_joint].input.value
             
-            if part_axis == "a":
-                part.SetOrientation(self.spindle_rotation[0], 0, 0)
-            elif part_axis== "b":
-                part.SetOrientation(0, self.spindle_rotation[1], 0)
-            elif part_axis == "c":
-                part.SetOrientation(0, 0, self.spindle_rotation[2])
-            elif part_axis == "-a":
-                part.SetOrientation(-self.spindle_rotation[0], 0, 0)
-            elif part_axis == "-b":
-                part.SetOrientation(0, -self.spindle_rotation[1], 0)
-            elif part_axis == "-c":
-                part.SetOrientation(0, 0, -self.spindle_rotation[2])
- 
             # if part_axis == "a":
-            #     part_transform.RotateX(-self.spindle_rotation[0])
+            #     part.SetOrientation(self.spindle_rotation[0], 0, 0)
             # elif part_axis== "b":
-            #     part_transform.RotateY(-self.spindle_rotation[1])
+            #     part.SetOrientation(0, self.spindle_rotation[1], 0)
             # elif part_axis == "c":
-            #     part_transform.RotateZ(-self.spindle_rotation[2])
+            #     part.SetOrientation(0, 0, self.spindle_rotation[2])
             # elif part_axis == "-a":
-            #     part_transform.RotateX(self.spindle_rotation[0])
+            #     part.SetOrientation(-self.spindle_rotation[0], 0, 0)
             # elif part_axis == "-b":
-            #     part_transform.RotateY(self.spindle_rotation[1])
+            #     part.SetOrientation(0, -self.spindle_rotation[1], 0)
             # elif part_axis == "-c":
-            #     part_transform.RotateZ(self.spindle_rotation[2])  
-            #
-            # part.SetUserTransform(part_transform)
+            #     part.SetOrientation(0, 0, -self.spindle_rotation[2])
+ 
+            part_transform.Translate(position[0], position[1], position[2])
+            
+            if part_axis == "a":
+                part_transform.RotateX(self.spindle_rotation[0])
+            elif part_axis== "b":
+                part_transform.RotateY(self.spindle_rotation[1])
+            elif part_axis == "c":
+                part_transform.RotateZ(self.spindle_rotation[2])
+            elif part_axis == "-a":
+                part_transform.RotateX(-self.spindle_rotation[0])
+            elif part_axis == "-b":
+                part_transform.RotateY(-self.spindle_rotation[1])
+            elif part_axis == "-c":
+                part_transform.RotateZ(-self.spindle_rotation[2])  
+            
+            part_transform.Translate(-position[0], -position[1], -position[2])
+            
+        part.SetUserTransform(part_transform)
         
 
     def update_joints(self, joints):
