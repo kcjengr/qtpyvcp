@@ -998,9 +998,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
-        tool_transform.RotateX(-self.spindle_rotation[0])
-        tool_transform.RotateY(-self.spindle_rotation[1])
-        tool_transform.RotateZ(-self.spindle_rotation[2])
+        #tool_transform.RotateX(-self.spindle_rotation[0])
+        #tool_transform.RotateY(-self.spindle_rotation[1])
+        #tool_transform.RotateZ(-self.spindle_rotation[2])
+        
 
         if self.spindle_model is not None:
             self.spindle_actor.SetUserTransform(tool_transform)
@@ -1037,7 +1038,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._datasource.isMachineFoam():
             self.tool_bit_actor.set_position(position)
         else:
-            self.tool_bit_actor.SetUserTransform(tool_transform)
+            self.tool_bit_actor.set_position_cnc(position)
 
         tlo = self._datasource.getToolOffset()
         self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]

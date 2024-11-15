@@ -20,6 +20,7 @@ from qtpyvcp.plugins.db_tool_table import DBToolTable
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
 from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
 
+
 LOG = logger.getLogger(__name__)
 
 class ToolActor(vtk.vtkActor):
@@ -137,7 +138,7 @@ class ToolBitActor(vtk.vtkActor):
         self.foam_z = 0.0
         self.foam_w = 0.0
 
-        tool = self._tool_table[0]
+        self.tool = self._tool_table[0]
 
         if self._datasource.isMachineMetric():
             self.height = 25.4 * 2.0
@@ -148,7 +149,7 @@ class ToolBitActor(vtk.vtkActor):
 
         if self._datasource.isMachineLathe():
 
-            if tool.id == 0 or tool.id == -1:
+            if self.tool.id == 0 or self.tool.id == -1:
                 source = vtk.vtkRegularPolygonSource()
                 source.SetNumberOfSides(64)
                 source.SetRadius(0.035)
@@ -165,14 +166,14 @@ class ToolBitActor(vtk.vtkActor):
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
-                if tool.orientation == 1 and tool.frontangle == 90 and tool.backangle == 90:
+                if self.tool.orientation == 1 and self.tool.frontangle == 90 and self.tool.backangle == 90:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset - 0.05))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset - 0.05))
+                    points.InsertNextPoint((-self.tool.xoffset + 0.5, 0.0, -self.tool.zoffset - 0.05))
+                    points.InsertNextPoint((-self.tool.xoffset + 0.5, 0.0, -self.tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -195,14 +196,14 @@ class ToolBitActor(vtk.vtkActor):
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(polygonPolyData)
 
-                elif tool.orientation == 2 and tool.frontangle == 90 and tool.backangle == 90:
+                elif self.tool.orientation == 2 and self.tool.frontangle == 90 and self.tool.backangle == 90:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset + 0.5, 0.0, -self.tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset + 0.5, 0.0, -self.tool.zoffset + 0.05))
+                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset + 0.05))
+                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -225,14 +226,14 @@ class ToolBitActor(vtk.vtkActor):
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(polygonPolyData)
 
-                elif tool.orientation == 3 and tool.frontangle == 90 and tool.backangle == 90:
+                elif self.tool.orientation == 3 and self.tool.frontangle == 90 and self.tool.backangle == 90:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset + 0.05))
+                    points.InsertNextPoint((-self.tool.xoffset - 0.5, 0.0, -self.tool.zoffset + 0.05))
+                    points.InsertNextPoint((-self.tool.xoffset - 0.5, 0.0, -self.tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -255,14 +256,14 @@ class ToolBitActor(vtk.vtkActor):
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(polygonPolyData)
 
-                elif tool.orientation == 4 and tool.frontangle == 90 and tool.backangle == 90:
+                elif self.tool.orientation == 4 and self.tool.frontangle == 90 and self.tool.backangle == 90:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset - 0.05))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset - 0.5, 0.0, -self.tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset - 0.5, 0.0, -self.tool.zoffset - 0.05))
+                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset - 0.05))
+                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -285,16 +286,16 @@ class ToolBitActor(vtk.vtkActor):
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(polygonPolyData)
 
-                elif tool.orientation == 9:
+                elif self.tool.orientation == 9:
 
-                    radius = tool.diameter / 2
+                    radius = self.tool.diameter / 2
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset + radius, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset + radius, 0.0, -tool.zoffset + 1.0))
-                    points.InsertNextPoint((-tool.xoffset - radius, 0.0, -tool.zoffset + 1.0))
-                    points.InsertNextPoint((-tool.xoffset - radius, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset + radius, 0.0, -self.tool.zoffset))
+                    points.InsertNextPoint((-self.tool.xoffset + radius, 0.0, -self.tool.zoffset + 1.0))
+                    points.InsertNextPoint((-self.tool.xoffset - radius, 0.0, -self.tool.zoffset + 1.0))
+                    points.InsertNextPoint((-self.tool.xoffset - radius, 0.0, -self.tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -321,7 +322,7 @@ class ToolBitActor(vtk.vtkActor):
                     negative = -1
                     flip = False
 
-                    if tool.orientation == 1:
+                    if self.tool.orientation == 1:
                         fa_x_pol = negative
                         fa_z_pol = negative
 
@@ -329,14 +330,14 @@ class ToolBitActor(vtk.vtkActor):
                         ba_z_pol = negative
                         flip = True
 
-                    elif tool.orientation == 2:
+                    elif self.tool.orientation == 2:
                         fa_x_pol = negative
                         fa_z_pol = positive
 
                         ba_x_pol = negative
                         ba_z_pol = positive
 
-                    elif tool.orientation == 3:
+                    elif self.tool.orientation == 3:
                         fa_x_pol = positive
                         fa_z_pol = positive
 
@@ -344,7 +345,7 @@ class ToolBitActor(vtk.vtkActor):
                         ba_z_pol = positive
                         flip = True
 
-                    elif tool.orientation == 4:
+                    elif self.tool.orientation == 4:
                         fa_x_pol = positive
                         fa_z_pol = negative
 
@@ -352,7 +353,7 @@ class ToolBitActor(vtk.vtkActor):
                         ba_z_pol = negative
                         flip = True
 
-                    elif tool.orientation == 5:
+                    elif self.tool.orientation == 5:
                         fa_x_pol = negative
                         fa_z_pol = negative
 
@@ -360,7 +361,7 @@ class ToolBitActor(vtk.vtkActor):
                         ba_z_pol = negative
                         flip = True
 
-                    elif tool.orientation == 6:
+                    elif self.tool.orientation == 6:
                         fa_x_pol = negative
                         fa_z_pol = positive
 
@@ -368,14 +369,14 @@ class ToolBitActor(vtk.vtkActor):
                         ba_z_pol = negative
                         flip = True
 
-                    elif tool.orientation == 7:
+                    elif self.tool.orientation == 7:
                         fa_x_pol = positive
                         fa_z_pol = positive
 
                         ba_x_pol = negative
                         ba_z_pol = positive
 
-                    elif tool.orientation == 8:
+                    elif self.tool.orientation == 8:
                         fa_x_pol = positive
                         fa_z_pol = positive
 
@@ -388,8 +389,8 @@ class ToolBitActor(vtk.vtkActor):
                         ba_x_pol = 0.0
                         ba_z_pol = 0.0
 
-                    A = radians(float(tool.frontangle))
-                    B = radians(float(tool.backangle))
+                    A = radians(float(self.tool.frontangle))
+                    B = radians(float(self.tool.backangle))
                     C = 0.35
 
                     p1_x = abs(C * sin(A))
@@ -404,24 +405,24 @@ class ToolBitActor(vtk.vtkActor):
                     p2_x_pos = p2_x * ba_x_pol
                     p2_z_pos = p2_z * ba_z_pol
 
-                    LOG.debug("Drawing Lathe tool id {}".format(tool.id))
+                    LOG.debug("Drawing Lathe tool id {}".format(self.tool.id))
 
                     LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}"
-                              .format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                              .format(float(self.tool.frontangle), p1_x_pos, p1_z_pos))
                     LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}"
-                              .format(float(tool.backangle), p2_x_pos, p2_z_pos))
+                              .format(float(self.tool.backangle), p2_x_pos, p2_z_pos))
 
                     # Setup three points
                     points = vtk.vtkPoints()
 
                     if flip:
-                        points.InsertNextPoint((tool.xoffset + p2_x_pos, 0.0, p2_z_pos - tool.zoffset))
-                        points.InsertNextPoint((tool.xoffset + p1_x_pos, 0.0, p1_z_pos - tool.zoffset))
-                        points.InsertNextPoint((tool.xoffset, 0.0, -tool.zoffset))
+                        points.InsertNextPoint((self.tool.xoffset + p2_x_pos, 0.0, p2_z_pos - self.tool.zoffset))
+                        points.InsertNextPoint((self.tool.xoffset + p1_x_pos, 0.0, p1_z_pos - self.tool.zoffset))
+                        points.InsertNextPoint((self.tool.xoffset, 0.0, -tool.zoffset))
                     else:
-                        points.InsertNextPoint((tool.xoffset, 0.0, -tool.zoffset))
-                        points.InsertNextPoint((tool.xoffset + p1_x_pos, 0.0, p1_z_pos - tool.zoffset))
-                        points.InsertNextPoint((tool.xoffset + p2_x_pos, 0.0, p2_z_pos - tool.zoffset))
+                        points.InsertNextPoint((self.tool.xoffset, 0.0, -tool.zoffset))
+                        points.InsertNextPoint((self.tool.xoffset + p1_x_pos, 0.0, p1_z_pos - self.tool.zoffset))
+                        points.InsertNextPoint((self.tool.xoffset + p2_x_pos, 0.0, p2_z_pos - self.tool.zoffset))
 
                     # Create the polygon
                     polygon = vtk.vtkPolygon()
@@ -465,8 +466,8 @@ class ToolBitActor(vtk.vtkActor):
             #
 
 
-            self.start_point = [tool.xoffset, tool.yoffset, tool.zoffset+self.foam_z]
-            self.end_point = [tool.uoffset, tool.voffset, tool.woffset+self.foam_z]
+            self.start_point = [self.tool.xoffset, self.tool.yoffset, self.tool.zoffset+self.foam_z]
+            self.end_point = [self.tool.uoffset, self.tool.voffset, self.tool.woffset+self.foam_z]
 
             self.source = vtkLineSource()
             self.source.SetPoint1(self.start_point)
@@ -474,17 +475,17 @@ class ToolBitActor(vtk.vtkActor):
 
             transform = vtk.vtkTransform()
 
-            # # source.SetHeight(tool.zoffset)
+            # # source.SetHeight(self.tool.zoffset)
             # source.SetHeight(10)
-            # source.SetCenter(tool.xoffset, tool.zoffset - 5, tool.yoffset,)
-            # source.SetRadius(tool.diameter / 2)
+            # source.SetCenter(self.tool.xoffset, self.tool.zoffset - 5, self.tool.yoffset,)
+            # source.SetRadius(self.tool.diameter / 2)
             # source.SetResolution(64)
 
             transform.RotateWXYZ(0, 1, 0, 0)
 
-            transform.RotateX(tool.aoffset)
-            transform.RotateY(tool.boffset)
-            transform.RotateZ(tool.coffset)
+            transform.RotateX(self.tool.aoffset)
+            transform.RotateY(self.tool.boffset)
+            transform.RotateZ(self.tool.coffset)
 
             transform_filter = vtk.vtkTransformPolyDataFilter()
             transform_filter.SetTransform(transform)
@@ -501,18 +502,19 @@ class ToolBitActor(vtk.vtkActor):
             self.source = vtkCylinderSource()
             transform = vtk.vtkTransform()
 
-            tool_height = tool.zoffset
 
-            self.source.SetHeight(tool_height)
-            self.source.SetCenter(tool.xoffset, -tool_height/2, tool.yoffset)
-            self.source.SetRadius(tool.diameter / 2)
+            self.source.SetHeight(self.tool.zoffset)
+            self.source.SetCenter(self.tool.xoffset, self.tool.yoffset, -self.tool.zoffset/2)
+            self.source.SetRadius(self.tool.diameter / 2)
             self.source.SetResolution(64)
 
             transform.RotateWXYZ(90, 1, 0, 0)
+            
+            transform.Translate(self.tool.xoffset, -self.tool.zoffset/2, self.tool.zoffset/2)
 
-            transform.RotateX(tool.aoffset)
-            transform.RotateY(tool.boffset)
-            transform.RotateZ(tool.coffset)
+            transform.RotateX(self.tool.aoffset)
+            transform.RotateY(self.tool.boffset)
+            transform.RotateZ(self.tool.coffset)
 
             transform_filter = vtk.vtkTransformPolyDataFilter()
             transform_filter.SetTransform(transform)
@@ -540,6 +542,27 @@ class ToolBitActor(vtk.vtkActor):
         self.foam_z = zo
         self.foam_w = wo
 
+    def set_position_cnc(self, position):
+        
+        
+        # self.source.SetCenter(self.tool.xoffset, self.tool.yoffset, -self.tool.zoffset/2)
+
+        
+        transform = vtk.vtkTransform()
+        
+        transform.Translate(position[0], position[1], (position[2] - self.tool.zoffset))
+        
+        transform.RotateX(position[3])
+        transform.RotateY(position[5])
+        transform.RotateZ(position[4])
+        
+        transform.Translate(-position[0], -position[1], -(position[2] - self.tool.zoffset))
+
+        self.SetUserTransform(transform)
+        
+        self.SetPosition(position[0], position[1], position[2])
+        
+        
     def set_position(self, position):
         self.position = position
 
