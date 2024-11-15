@@ -319,6 +319,14 @@ class MachinePartsASM(vtk.vtkAssembly):
         part_actor.SetPosition(part_position[0], part_position[1], part_position[2])
         part_actor.SetOrigin(part_origin[0], part_origin[1], part_origin[2])
         
+        transform = vtk.vtkTransform()
+        
+        transform.RotateX(part_position[3])
+        transform.RotateY(part_position[4])
+        transform.RotateZ(part_position[5])
+        
+        part_actor.SetUserTransform(transform)
+        
         tmp_assembly = MachinePart()
         tmp_assembly.SetPartAxis(part_axis)
         tmp_assembly.SetPartType(part_type)
