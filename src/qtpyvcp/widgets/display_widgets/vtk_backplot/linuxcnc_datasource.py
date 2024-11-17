@@ -46,6 +46,10 @@ class LinuxCncDataSource(QObject):
         self._machine_bounds = str(self._inifile.find("DISPLAY", "BOUNDARIES"))
         self._nav_helper = bool(self._inifile.find("DISPLAY", "NAV")) or False
         self._antialias = bool(self._inifile.find("DISPLAY", "ANTIALIAS")) or False
+        self._traj_axes = int(self._inifile.find("TRAJ", "AXES")) or 0
+        self._traj_coords = str(self._inifile.find("TRAJ", "COORDINATES")) or ""
+        self._kinematics = str(self._inifile.find("KINS", "KINEMATICS")) or ""
+        self._kins_joints = int(self._inifile.find("KINS", "JOINTS")) or 0
 
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -177,7 +181,23 @@ class LinuxCncDataSource(QObject):
     
     def getAntialias(self):
         return self._antialias
+        
+    def getTrajAxes(self):
+        return self._traj_axes
 
+    def getTrajCoords(self):
+        return self._traj_coords
+    
+    def getKins(self):
+        return self._kinematics.split(' ')[0]
+    
+    def getSparm(self):
+        return self._kinematics.split(' ')[1]
+    
+    def getKinsJoints(self):
+        return self._kins_joints
+    
+    
     def getActiveWcsIndex(self):
         # in the stat, the first one the list is G53 (Machine Coordinates)
         # therefore to get the correct index of the G54 we need to do a -1

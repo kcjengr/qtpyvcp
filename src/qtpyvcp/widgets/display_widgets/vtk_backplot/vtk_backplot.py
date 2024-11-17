@@ -258,6 +258,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.g92_offset = self._datasource.getG92_offset()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
         
+        self.traj_axes = self._datasource.getTrajAxes()
+        self.traj_coords = self._datasource.getTrajCoords()
+        self.kinematics = self._datasource.getKins()
+        self.sparm = self._datasource.getSparm()
+        self.kins_joints = self._datasource.getKinsJoints()
+        
         self.rotation_xy_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
         LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
@@ -405,10 +411,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
 
             self.path_colors = {'traverse': self._traverse_color,
-                           'arcfeed': self._arcfeed_color,
-                           'feed': self._feed_color,
-                           'dwell': QColor(0, 0, 255, 255),
-                           'user': QColor(0, 100, 255, 255)
+                               'arcfeed': self._arcfeed_color,
+                               'feed': self._feed_color,
+                               'dwell': QColor(0, 0, 255, 255),
+                               'user': QColor(0, 100, 255, 255)
                        }
 
             self.offset_axes = OrderedDict()
@@ -998,9 +1004,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
-        #tool_transform.RotateX(-self.spindle_rotation[0])
-        #tool_transform.RotateY(-self.spindle_rotation[1])
-        #tool_transform.RotateZ(-self.spindle_rotation[2])
+        # tool_transform.RotateX(-self.spindle_rotation[0])
+        # tool_transform.RotateY(-self.spindle_rotation[1])
+        # tool_transform.RotateZ(-self.spindle_rotation[2])
         
 
         if self.spindle_model is not None:
@@ -1033,15 +1039,36 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                         #     # if isinstance(p, vtk.vtkAssembly):
                             #     self.move_part(p)
 
+        tlo = self._datasource.getToolOffset()
+        self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
         self.tool_actor.SetUserTransform(tool_transform)
 
         if self._datasource.isMachineFoam():
             self.tool_bit_actor.set_position(position)
         else:
-            self.tool_bit_actor.set_position_cnc(position)
+            if self.kinematics == "xyzac-trt-kins":
+                self.tool_bit_actor.set_position_cnc([0, 0, position[2], 0, 0, 0])
+                
+                path_transform = vtk.vtkTransform()
+                
 
-        tlo = self._datasource.getToolOffset()
-        self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
+                
+                for wcs_index, actor in self.path_actors.items():
+                    
+                    path_transform.Translate(-position[0],
+                                             -position[1],
+                                             self.wcs_offsets[wcs_index][2])
+                
+                    path_transform.RotateX(position[3])
+                    path_transform.RotateY(position[4])
+                    path_transform.RotateZ(position[5])
+                    
+                    actor.SetUserTransform(path_transform)
+                    # self.path_cache_actor.SetUserTransform(path_transform)
+                    
+            else:
+                self.tool_bit_actor.set_position_cnc(position)
+            
 
         if self._datasource.isMachineJet():
             # if a jet based machine (plasma, water jet, laser) suppress
@@ -1089,15 +1116,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             #     part.SetPosition(0, 0, -self.spindle_position[2])
                 
             if part_axis == "x":
-                part_transform.Translate(self.spindle_position[0], 0, 0)
+                part_transform.Translate(-self.spindle_position[0], 0, 0)
             elif part_axis == "y":
-                part_transform.Translate(0, self.spindle_position[1], 0)
+                part_transform.Translate(0, -self.spindle_position[1], 0)
             elif part_axis == "z":
                 part_transform.Translate(0, 0, self.spindle_position[2])
             elif part_axis == "-x":
-                part_transform.Translate(-self.spindle_position[0], 0, 0)
+                part_transform.Translate(self.spindle_position[0], 0, 0)
             elif part_axis == "-y":
-                part_transform.Translate(0, -self.spindle_position[1], 0)
+                part_transform.Translate(0, self.spindle_position[1], 0)
             elif part_axis == "-z":
                 part_transform.Translate(0, 0, -self.spindle_position[2])
             
