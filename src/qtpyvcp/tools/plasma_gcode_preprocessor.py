@@ -1030,6 +1030,7 @@ class PreProcessor:
     def __init__(self, inCode):
         self._new_gcode = []
         self._parsed = []
+        self.preparsed = False
         self._line = ''
         self._line_num = 0
         self._line_type = 0
@@ -1062,6 +1063,12 @@ class PreProcessor:
         openfile= open(inCode, 'r')
         self._orig_gcode = openfile.readlines()
         openfile.close()
+        
+        # Test to see if the file has been previously parsed by this processor
+        # This test is agnostic of the version of the preprocessor
+        if self._orig_gcode[0] == '(--------------------------------------------------)' and \
+           self._orig_gcode[0] == '(            Plasma G-Code Preprocessor            )':
+            self.preparsed = True
 
     def set_active_g_modal(self, gcode):
         # get the modal grp for the code and set things
@@ -1373,7 +1380,12 @@ class PreProcessor:
             l.save_g_modal_group(self.active_g_modal_grps)
             self._parsed.append(l)
 
-
+    def dump_raw(self):
+        LOG.debug('Dump raw gcode to stdio')
+        for l in self._orig_gcode:
+            print(l, file=sys.stdout)
+            sys.stdout.flush()
+            
 
     def dump_parsed(self):
         LOG.debug('Dump parsed gcode to stdio')
@@ -1531,36 +1543,43 @@ def main():
     # Start cycling through each line of the file and processing it
     LOG.debug('Build preprocessor object and process gcode')
     p = PreProcessor(inCode)
-    p.parse()
-    LOG.debug('Parsing done.')
+    if not p.preparsed:
+        p.parse()
+        LOG.debug('Parsing done.')
+    else:
+        LOG.debug('File is Preparsed.')
 
-    # Holes flag
-    try:
-        do_holes = hal.get_value('qtpyvcp.plasma-hole-detect-enable.checked')
-    except:
-        do_holes = False
+    if not p.preparsed:
+        # Holes flag
+        try:
+            do_holes = hal.get_value('qtpyvcp.plasma-hole-detect-enable.checked')
+        except:
+            do_holes = False
+        
+        # Pierce only flag
+        try:
+            do_pierce = hal.get_value('qtpyvcp.plasma-pierce-only-enable.checked')
+        except:
+            do_pierce = False
+        
+        if do_holes and not do_pierce:
+            LOG.debug('Flag holes ...')
+            p.flag_holes()
+            LOG.debug('... Flag holes done')
+        elif do_pierce:
+            LOG.debug('Flag piercing ...')
+            p.flag_pierce()
+            LOG.debug('... Flag piercing done')
     
-    # Pierce only flag
-    try:
-        do_pierce = hal.get_value('qtpyvcp.plasma-pierce-only-enable.checked')
-    except:
-        do_pierce = False
+        # pass file to stdio and set any hal pins
+        LOG.debug('Dump parsed file')
+        p.dump_parsed()
+        # Set hal pin on UI for cutchart.id
+        LOG.debug('Set UI param data via cutchart pin')
+        p.set_ui_hal_cutchart_pin()
+    else:
+        p.dump_raw()
     
-    if do_holes and not do_pierce:
-        LOG.debug('Flag holes ...')
-        p.flag_holes()
-        LOG.debug('... Flag holes done')
-    elif do_pierce:
-        LOG.debug('Flag piercing ...')
-        p.flag_pierce()
-        LOG.debug('... Flag piercing done')
-    
-    # pass file to stdio and set any hal pins
-    LOG.debug('Dump parsed file')
-    p.dump_parsed()
-    # Set hal pin on UI for cutchart.id
-    LOG.debug('Set UI param data via cutchart pin')
-    p.set_ui_hal_cutchart_pin()
     # Close out DB
     PLASMADB.terminate()
     LOG.debug('Plasma DB closed and end.')
