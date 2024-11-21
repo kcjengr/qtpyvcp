@@ -24,7 +24,6 @@ from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolProperties
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 from qtpyvcp.widgets.base_widgets.base_widget import VCPWidget
-from blinker._utilities import text
 
 LOG = getLogger(__name__)
 
