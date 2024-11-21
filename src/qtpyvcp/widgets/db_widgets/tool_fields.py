@@ -3,6 +3,7 @@ Tool Model Property fields
 ---------
 """
 
+
 from qtpy.QtCore import Property, Slot
 
 from qtpy.QtWidgets import (
@@ -26,6 +27,8 @@ from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 from qtpyvcp.widgets.base_widgets.base_widget import VCPWidget
 
 LOG = getLogger(__name__)
+
+
 
 
 
@@ -303,6 +306,7 @@ class DBIntField(QWidget):
         if tool_data:
             val = getattr(tool_data, column, None)
             self.spinbox.setValue(int(val))
+            self.spinbox.setDisabled(False)
         else:
             self.spinbox.setValue(0)
             self.spinbox.setDisabled(True)
