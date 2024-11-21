@@ -1,20 +1,43 @@
 # coding=utf-8
 
+import os
+import sys
+
 import re
 
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
+from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolProperties
 from qtpyvcp.lib.db_tool.base import Session, engine, Base
 from qtpyvcp.utilities.logger import getLogger
 
 
 LOG = getLogger(__name__)
 
-def main():
+LOADING_CHARS = ['-', '\\', '|', '/', '-', '\\', '|', '/']
 
-    with open("tool.tbl", 'r') as tt_file:
+def main():
+    
+    argv = sys.argv
+    
+    if len(argv) > 1:
+        filename = argv[1]
+    else:
+        filename = "tool.tbl"
+    
+    if not os.path.isfile(filename):
+        
+        print(f"file {filename} not found!")
+        exit(1)
+    
+    print("Importing tool data to db.sqlite")
+
+    with open(filename, 'r') as tt_file:
         tt_tools = [line.strip() for line in tt_file.readlines()]
 
+    
+    loading_step = 0
+    
     tools_data = list()
+    tools_properties_data = list()
     for index, tt_tool in enumerate(tt_tools):
         data, sep, comment = tt_tool.partition(';')
         items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
@@ -73,13 +96,20 @@ def main():
                         w_offset=tool_data['W'],
                         diameter=tool_data['D'],
             )
-
+            
+            tool_properties = ToolProperties(id=index,
+                        tool_no=tool_data['T']
+            )
+            
             tools_data.append(tool)
-
+            
+            tools_properties_data.append(tool_properties)
+            
 
     tool_table = ToolTable(name="Tool Table")
 
     tool_table.tools = tools_data
+    tool_table.tool_properties = tools_properties_data
 
     Base.metadata.create_all(engine)
 
@@ -88,6 +118,8 @@ def main():
 
     session.commit()
     session.close()
+    
+    print("Done.")
 
 if "__main__" == __name__:
     main()
