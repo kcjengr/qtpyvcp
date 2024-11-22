@@ -196,7 +196,7 @@ class ToolTable(DataPlugin):
         """
         if item is None:
             return self.TOOL_TABLE[STAT.tool_in_spindle]
-        return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
+        return self.table[STAT.tool_in_spindle].get(item[0].upper())
 
     def initialise(self):
         if self.db_prog is None:

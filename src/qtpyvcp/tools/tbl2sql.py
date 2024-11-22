@@ -38,11 +38,44 @@ def main():
     
     tools_data = list()
     tools_properties_data = list()
+    
+    
+    tool_data = dict()
+    
+    tool = Tool(id=0,
+        remark="No tool",
+        tool_no=0,
+        pocket=0,
+        x_offset=0.0,
+        y_offset=0.0,
+        z_offset=0.0,
+        a_offset=0.0,
+        b_offset=0.0,
+        c_offset=0.0,
+        i_offset=0.0,
+        j_offset=0.0,
+        q_offset=0,
+        u_offset=0.0,
+        v_offset=0.0,
+        w_offset=0.0,
+        diameter=0.0,
+    )
+    
+    tool_properties = ToolProperties(id=0,
+        tool_no=0,
+        max_rpm=0.0,
+        wear_factor=0.0,
+        bullnose_radious=0.0,
+        model="NONE",
+        atc=False,
+        tool_table_id=1,
+    )
+    tools_data.append(tool)
+    tools_properties_data.append(tool_properties)
+    
     for index, tt_tool in enumerate(tt_tools):
         data, sep, comment = tt_tool.partition(';')
         items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
-
-        tool_data = dict()
 
         tool_data['T'] = 0
         tool_data['P'] = 0
@@ -98,7 +131,13 @@ def main():
             )
             
             tool_properties = ToolProperties(id=index,
-                        tool_no=tool_data['T']
+                        tool_no=tool_data['T'],
+                        max_rpm=0.0,
+                        wear_factor=0.0,
+                        bullnose_radious=0.0,
+                        model="NONE",
+                        atc=False,
+                        tool_table_id=1,
             )
             
             tools_data.append(tool)
