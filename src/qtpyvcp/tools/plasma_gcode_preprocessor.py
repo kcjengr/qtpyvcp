@@ -163,7 +163,10 @@ class Commands(Enum):
     DIGITAL_OUT                 = auto()
     ANALOG_IN                   = auto()
     ANALOG_OUT                  = auto()
+    OWORD                       = auto()
+    VARIABLE                    = auto()
     REMOVE                      = auto()
+    RAW                         = auto()
 
 
 
@@ -194,7 +197,7 @@ class CodeLine:
         # token mapping for line commands
         tokens = {
             'G0':(Commands.MOVE_LINEAR, self.parse_linear),
-            'G10':(Commands.PASSTHROUGH, self.parse_passthrough),
+            'G10':(Commands.PASSTHROUGH, self.parse_raw),
             'G1':(Commands.MOVE_LINEAR, self.parse_linear),
             'G20':(Commands.UNITS, self.set_inches),
             'G21':(Commands.UNITS, self.set_mms),
@@ -249,12 +252,14 @@ class CodeLine:
             'G90.1':(Commands.ARC_ABSOLUTE, self.parse_passthrough),
             'F#':(Commands.FEEDRATE_MATERIAL, self.parse_passthrough),
             'F':(Commands.FEEDRATE_LINE, self.parse_feedrate),
+            'O':(Commands.OWORD, self.parse_raw),
             '#<holes>':(Commands.HOLE_MODE, self.placeholder),
             '#<h_diameter>':(Commands.HOLE_DIAM, self.placeholder),
             '#<h_velocity>':(Commands.HOLE_VEL, self.placeholder),
             '#<oclength>':(Commands.HOLE_OVERCUT, self.placeholder),
             '#<pierce-only>':(Commands.PIERCE_MODE, self.placeholder),
             #'#<keep-z-motion>':Commands.KEEP_Z,
+            '#<':(Commands.VARIABLE, self.parse_raw),
             ';':(Commands.COMMENT, self.parse_comment),
             '(o=':(Commands.MAGIC_MATERIAL, self.parse_material),
             '(':(Commands.COMMENT, self.parse_comment),
@@ -299,14 +304,14 @@ class CodeLine:
                 if k == '(':
                     # deal with escaping the '(' which is special char in regex
                     pattern = r"^\({1}"
-                    r = re.search(pattern, line.upper())
+                    r = re.search(pattern, line.upper().strip())
                 elif k == '(o=':
                     pattern = r"^\(o={1}"
                     magic = True
-                    r = re.search(pattern, line.lower())
+                    r = re.search(pattern, line.lower().strip())
                 else:
                     pattern = r"^"+k + r"{1}"
-                    r = re.search(pattern, line.upper())
+                    r = re.search(pattern, line.upper().strip())
                 
                 if r != None:
                     # since r is NOT None we must have found something
@@ -365,7 +370,10 @@ class CodeLine:
 
     def parse_other(self):
         LOG.debug(f'Type OTHER -- {self.token} -- found - this code is not handled or considered')
-        pass
+        self.type = Commands.OTHER
+
+    def parse_raw(self):
+        self.type = Commands.RAW
 
     def parse_passthrough(self):
         self.type = Commands.PASSTHROUGH
@@ -1363,6 +1371,52 @@ class PreProcessor:
         self._parsed.append(CodeLine( '(            Plasma G-Code Preprocessor            )', parent=self))
         self._parsed.append(CodeLine(f'(                 {PREPROC_VERSION}                            )', parent=self))
         self._parsed.append(CodeLine( '(--------------------------------------------------)', parent=self))
+        # Build inputs for scale, tiles, flip, mirror and rotation
+        self._parsed.append(CodeLine( ';inputs', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_x_offset> = #5221', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_y_offset> = #5222', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_r_offset> = #5230', parent=self))
+        self._parsed.append(CodeLine( '#<array_x_offset> = #<_hal[qtpyvcp.column-separation.out]>', parent=self))
+        self._parsed.append(CodeLine( '#<array_y_offset> = #<_hal[qtpyvcp.row-separation.out]>', parent=self))
+        self._parsed.append(CodeLine( '#<array_columns> = #<_hal[qtpyvcp.tile-columns.out]>', parent=self))
+        self._parsed.append(CodeLine( '#<array_rows> = #<_hal[qtpyvcp.tile-rows.out]>', parent=self))
+        self._parsed.append(CodeLine( '#<origin_x_offset> = 0.0', parent=self))
+        self._parsed.append(CodeLine( '#<origin_y_offset> = 0.0', parent=self))
+        self._parsed.append(CodeLine( '#<array_angle> = 0.0', parent=self))
+        self._parsed.append(CodeLine( '#<blk_scale> = #<_hal[qtpyvcp.gcode-scale.out]>', parent=self))
+        self._parsed.append(CodeLine( '#<shape_angle> = #<_hal[qtpyvcp.gcode-rotation.out]>', parent=self))
+
+        self._parsed.append(CodeLine( 'o<mirror> if [#<_hal[qtpyvcp.gcode-mirror.checked]>]', parent=self))
+        self._parsed.append(CodeLine( '    #<shape_mirror> = -1', parent=self))
+        self._parsed.append(CodeLine( 'o<mirror> else', parent=self))
+        self._parsed.append(CodeLine( '    #<shape_mirror> = 1', parent=self))
+        self._parsed.append(CodeLine( 'o<mirror> endif', parent=self))
+        
+        self._parsed.append(CodeLine( 'o<flip> if [#<_hal[qtpyvcp.gcode-flip.checked]>]', parent=self))
+        self._parsed.append(CodeLine( '    #<shape_flip> = -1', parent=self))
+        self._parsed.append(CodeLine( 'o<flip> else', parent=self))
+        self._parsed.append(CodeLine( '    #<shape_flip> = 1', parent=self))
+        self._parsed.append(CodeLine( 'o<flip> endif', parent=self))
+        
+        self._parsed.append(CodeLine( ';calculations', parent=self))
+        self._parsed.append(CodeLine( '#<this_col> = 0', parent=self))
+        self._parsed.append(CodeLine( '#<this_row> = 0', parent=self))
+        self._parsed.append(CodeLine( '#<array_rot> = [#<array_angle> + #<ucs_r_offset>]', parent=self))
+        self._parsed.append(CodeLine( '#<blk_x_offset> = [#<origin_x_offset> + [#<ucs_x_offset> * 1]]', parent=self))
+        self._parsed.append(CodeLine( '#<blk_y_offset> = [#<origin_y_offset> + [#<ucs_y_offset> * 1]]', parent=self))
+        self._parsed.append(CodeLine( '#<x_sin> = [[#<array_x_offset> * #<blk_scale>] * SIN[#<array_rot>]]', parent=self))
+        self._parsed.append(CodeLine( '#<x_cos> = [[#<array_x_offset> * #<blk_scale>] * COS[#<array_rot>]]', parent=self))
+        self._parsed.append(CodeLine( '#<y_sin> = [[#<array_y_offset> * #<blk_scale>] * SIN[#<array_rot>]]', parent=self))
+        self._parsed.append(CodeLine( '#<y_cos> = [[#<array_y_offset> * #<blk_scale>] * COS[#<array_rot>]]', parent=self))
+        self._parsed.append(CodeLine( '', parent=self))
+
+        self._parsed.append(CodeLine( ';main loop', parent=self))
+        self._parsed.append(CodeLine( 'o<loop> while [#<this_row> LT #<array_rows>]', parent=self))
+        self._parsed.append(CodeLine( '#<shape_x_start> = [[#<this_col> * #<x_cos>] - [#<this_row> * #<y_sin>] + #<blk_x_offset>]', parent=self))
+        self._parsed.append(CodeLine( '#<shape_y_start> = [[#<this_row> * #<y_cos>] + [#<this_col> * #<x_sin>] + #<blk_y_offset>]', parent=self))
+        self._parsed.append(CodeLine( '#<blk_angle> = [#<shape_angle> + #<array_rot>]', parent=self))
+        self._parsed.append(CodeLine( 'G10 L2 P0 X#<shape_x_start> Y#<shape_y_start> R#<blk_angle>', parent=self))     
+        
         # setup any global default modal groups that we need to be aware of
         self.set_active_g_modal('G91.1')
         self.set_active_g_modal('G40')
@@ -1405,10 +1459,22 @@ class PreProcessor:
                 continue
             if l.type in [Commands.COMMENT, Commands.MAGIC_MATERIAL]:
                 out = l.comment
+                if out == ';end post-amble':
+                    out += """
+                    
+#<this_col> = [#<this_col> + 1]
+o<count> if [#<this_col> EQ #<array_columns>]
+    #<this_col> = 0
+    #<this_row> = [#<this_row> + 1]
+o<count> endif
+o<loop> endwhile
+
+G10 L2 P0 X[#<ucs_x_offset> * 1] Y[#<ucs_y_offset> * 1] R#<ucs_r_offset>
+                    """
             elif l.type is Commands.OTHER:
                 # Other at the moment means not recognised
                 out = "; >>  "+l.raw
-            elif l.type is Commands.PASSTHROUGH:
+            elif l.type in [Commands.PASSTHROUGH, Commands.RAW]:
                 out = l.raw
             elif l.type is Commands.REMOVE:
                 # skip line as not to be used
@@ -1421,11 +1487,20 @@ class PreProcessor:
                     out = ''
                 try:
                     for p in l.params:
+                        vars = ''
+                        if p == 'X':
+                            vars = '#<blk_scale>*#<shape_mirror>'
+                        elif p == 'Y':
+                            vars = '#<blk_scale>*#<shape_flip>'
+                        elif p == 'I':
+                            vars = '#<blk_scale>*#<shape_mirror>'
+                        elif p == 'J':
+                            vars = '#<blk_scale>*#<shape_flip>'
                         if isinstance(l.params[p], float):
                             if l.params[p] < 0.001:
-                                out += f' {p}{l.params[p]:.6f}'
+                                out += f' {p}[{l.params[p]:.6f}*{vars}]'
                             else:
-                                out += f' {p}{l.params[p]:.3f}'
+                                out += f' {p}[{l.params[p]:.3f}*{vars}]'
                         else:
                             out += f' {p}{l.params[p]}'
                     out += f' {l.comment}'
