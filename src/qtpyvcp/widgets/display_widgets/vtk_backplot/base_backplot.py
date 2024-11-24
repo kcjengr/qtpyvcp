@@ -3,10 +3,8 @@ import linuxcnc
 import os
 import shutil
 
-from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
 
-LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 NOTIFICATIONS = getPlugin('notifications')
 
@@ -81,8 +79,7 @@ class BaseBackPlot(object):
             # probably raised by an (AXIS, stop) comment in the G-code file
             # abort generating the backplot
             pass
-        except Exception as e:
-            LOG.debug(f"CANON ERROR {e}")
+
         # clean up temp var file and the backup
         os.unlink(self.temp_parameter_file)
         os.unlink(self.temp_parameter_file + '.bak')

@@ -19,12 +19,10 @@ import gcode
 import linuxcnc
 import math
 
-from qtpy.QtCore import Signal, QObject
-
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-class BaseCanon(QObject):
+class BaseCanon(object):
     def __init__(self):
 
         self.feedrate = 1
@@ -122,12 +120,12 @@ class BaseCanon(QObject):
         u += self.g92_offset_u
         v += self.g92_offset_v
         w += self.g92_offset_w
-        
+
         if self.rotation_xy:
             rotx = x * self.rotation_cos - y * self.rotation_sin
             roty = x * self.rotation_sin + y * self.rotation_cos
             x, y = rotx, roty
-        
+
         x += self.g5x_offset_x
         y += self.g5x_offset_y
         z += self.g5x_offset_z
