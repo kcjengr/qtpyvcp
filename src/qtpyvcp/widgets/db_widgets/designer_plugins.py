@@ -6,6 +6,8 @@ from qtpyvcp.widgets.db_widgets.tool_fields import DBFileField
 from qtpyvcp.widgets.db_widgets.tool_fields import DBTextField
 from qtpyvcp.widgets.db_widgets.tool_fields import DBCheckBoxField
 from qtpyvcp.widgets.db_widgets.tool_fields import DBIntField
+from qtpyvcp.widgets.db_widgets.tool_fields import DBFloatField
+
 
 class DBFileFieldPlugin(_DesignerPlugin):
     def pluginClass(self):
@@ -22,6 +24,6 @@ class DBCheckBoxFieldPlugin(_DesignerPlugin):
         return DBCheckBoxField
 
 
-class DBIntPlugin(_DesignerPlugin):
+class DBFloatFieldPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return DBIntField
+        return DBFloatField

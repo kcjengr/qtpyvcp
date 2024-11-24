@@ -15,7 +15,8 @@ from qtpy.QtWidgets import (
     QDialog,
     QLabel,
     QCheckBox,
-    QSpinBox
+    QSpinBox,
+    QDoubleSpinBox
 )
 
 
@@ -286,6 +287,99 @@ class DBIntField(QWidget):
         
         self.label = QLabel()
         self.spinbox = QSpinBox()
+        
+                
+        self.layout.addWidget(self.label)
+        self.layout.addWidget(self.spinbox)
+        
+
+    @Slot(int)
+    def toolSelected(self, tool_no):
+        
+        table, column = self._query.split('.')            
+        table_class = globals().get(table)
+            
+        self.tool_selected = tool_no
+        
+        tool_data = self.session.query(table_class).filter(table_class.tool_no == self.tool_selected).first()
+
+        
+        if tool_data:
+            val = getattr(tool_data, column, None)
+            self.spinbox.setValue(int(val))
+            self.spinbox.setDisabled(False)
+        else:
+            self.spinbox.setValue(0)
+            self.spinbox.setDisabled(True)
+            
+    @Slot()
+    def saveField(self):
+        
+        if self.tool_selected is not None:
+            
+            table, column = self._query.split('.')
+            table_class = globals().get(table)
+            
+            tool_data = self.session.query(table_class).filter(table_class.tool_no == self.tool_selected).first()
+        
+            if tool_data:
+                setattr(tool_data, column, self.spinbox.value())
+                self.session.commit()
+    # Label
+    @Property(str)
+    def labelText(self):
+        return self._label_text
+
+    @labelText.setter
+    def labelText(self, text):
+        self.label.setText(text)
+        self._label_text = text
+
+    # Minimum
+    @Property(int)
+    def minimum(self):
+        return self.spinbox.minimum()
+
+    @minimum.setter
+    def minimum(self, value):
+        self.spinbox.setMinimum(value)
+        
+    # Maximum
+    @Property(int)
+    def maximum(self):
+        return self.spinbox.maximum()
+
+    @maximum.setter
+    def maximum(self, value):
+        self.spinbox.setMaximum(value)
+        
+    # Query
+    @Property(str)
+    def query(self):
+        return self._query
+
+    @query.setter
+    def query(self, text):
+        self._query = text
+        
+
+class DBFloatField(QWidget):
+    """Tool Integer property Widget"""
+
+    def __init__(self, parent=None):
+        super(DBFloatField, self).__init__(parent)
+        
+        self.session = Session()
+        
+        self.tool_selected = None
+        
+        self.layout = QHBoxLayout(self)
+        self._label_text = None
+        self._query = None
+        
+        
+        self.label = QLabel()
+        self.spinbox = QDoubleSpinBox()
         
                 
         self.layout.addWidget(self.label)

@@ -46,14 +46,6 @@ class Tool(Base):
     tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
     tool_table = relationship("ToolTable", back_populates="tools")
 
-class ToolModel(Base):
-    __tablename__ = 'tool_model'
-    
-    id = Column(Integer, primary_key=True)
-    tool_no = Column(Integer, ForeignKey('tool.tool_no'))
-    model = Column(Text)
-    tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
-    tool_table = relationship("ToolTable", back_populates="tool_models")
     
 class ToolProperties(Base):
     __tablename__ = 'tool_properties'
@@ -70,3 +62,12 @@ class ToolProperties(Base):
     tool_table = relationship("ToolTable", back_populates="tool_properties")
     
     
+# TODO delete this
+class ToolModel(Base):
+    __tablename__ = 'tool_model'
+    
+    id = Column(Integer, primary_key=True)
+    tool_no = Column(Integer, ForeignKey('tool.tool_no'))
+    model = Column(Text)
+    tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
+    tool_table = relationship("ToolTable", back_populates="tool_models")
