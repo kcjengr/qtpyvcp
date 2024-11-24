@@ -549,7 +549,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             actor_transform = vtk.vtkTransform()
             actor_transform.Translate(*current_offsets[:3])
-            actor_transform.RotateZ(current_offsets[9])
+            # actor_transform.RotateZ(current_offsets[9])
 
             actor.SetUserTransform(actor_transform)
             #actor.SetPosition(path_position[:3])
@@ -702,7 +702,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         transform = vtk.vtkTransform()
         transform.Translate(*position[:3])
-        transform.RotateZ(position[9])
+        # transform.RotateZ(position[9])
 
         self.axes_actor.SetUserTransform(transform)
 

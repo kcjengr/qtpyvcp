@@ -92,9 +92,9 @@ class LinuxCncDataSource(QObject):
 
     def __handleRotationChangeXY(self, value):
         LOG.debug("__handleRotationChangeXY: {}".format(value))
-        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        # active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
         LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
-        active_wcs[9] = value
+        # active_wcs[9] = value
         LOG.debug("--------active new wcs: {} {}".format(type(active_wcs), active_wcs))
         self.g5xOffsetChanged.emit(tuple(active_wcs))
 
@@ -171,7 +171,7 @@ class LinuxCncDataSource(QObject):
             try:
                 current_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
                 LOG.debug("-----current_wcs index: {}".format(current_wcs))
-                return current_wcs[9]
+                return 0 #current_wcs[9]
             except KeyError:
                 LOG.warn('-----KeyError: Likely means no program loaded.')
                 return 0
