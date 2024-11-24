@@ -38,7 +38,7 @@ from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 import qtpyvcp
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
+from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolProperties
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
@@ -357,7 +357,12 @@ class DBToolTable(DataPlugin):
                          diameter=temp_tool['D'],
                          tool_table_id=1
                     )
+                
+                tool_properties = ToolProperties(tool_no=temp_tool['T'],
+                         tool_table_id=1)
+                
                 self.session.add(tool)
+                self.session.add(tool_properties)
                 self.session.commit()
                 
         if to_update is not None:
@@ -393,7 +398,9 @@ class DBToolTable(DataPlugin):
             for a in to_delete:
                 temp_tool = a.t1
                 tool_row = tool_data.filter(Tool.tool_no == temp_tool['T']).one()
+                tool_properties_row = tool_data.filter(ToolProperties.tool_no == temp_tool['T']).one()
                 self.session.delete(tool_row)
+                self.session.delete(tool_properties_row)
                 self.session.commit()
                 
         self.session.close()
