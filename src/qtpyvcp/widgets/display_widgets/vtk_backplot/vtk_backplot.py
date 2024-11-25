@@ -818,9 +818,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(axes)
             self.renderer.AddActor(program_bounds_actor)
             self.renderer.AddActor(actor)
+            
             QApplication.processEvents()
-
-            if len(self.path_actors) > 1:
+            
+            if path_count > 1:
                 # Load the start point of rapid from the next offset paths
                 point_01_pos = self.path_offset_start_point[prev_wcs_index]
 
@@ -1253,7 +1254,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             rotation = self.active_rotation
                            
 
-            if len(self.path_actors) > 1:
+            if path_count > 1:
 
                 self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
                 self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
