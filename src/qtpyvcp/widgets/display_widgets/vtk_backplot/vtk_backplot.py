@@ -693,6 +693,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Cleanup the scene, remove any previous actors if any
         for wcs_index, actor in self.path_actors.items():
+            actions.machine.issue_mdi(f"G5{wcs_index+4}")
             LOG.debug("-------load_program wcs_index: {}".format(wcs_index))
             axes_actor = actor.get_axes_actor()
             program_bounds_actor = self.program_bounds_actors[wcs_index]
