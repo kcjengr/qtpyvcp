@@ -76,17 +76,19 @@ class LinuxCncDataSource(QObject):
 
     def __handleG5xOffsetChange(self, offset):
         # the received parameter, its missing the rotation of the current wcs
-        # emitted_offset = list(offset)
-        # active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        LOG.debug("__handleG5xOffsetChange --- Start")
+        emitted_offset = list(offset)
+        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
         #
-        # LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
-        # LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
+        LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
+        LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
         #
         # # emitted_offset.append(self.__getRotationOfActiveWcs())
         # LOG.debug("--------correct_offset: {}".format(emitted_offset))
-        # result = tuple(emitted_offset)
-        # LOG.debug("--------result: {} {}".format(type(result), result))
+        result = tuple(emitted_offset)
+        LOG.debug("--------result: {} {}".format(type(result), result))
         self.g5xOffsetChanged.emit(offset)
+        LOG.debug("__handleG5xOffsetChange --- End")
 
     def __handleG92OffsetChange(self, offset):
         #LOG.debug("__handleG92OffsetChange: {}".format(type(offset)))

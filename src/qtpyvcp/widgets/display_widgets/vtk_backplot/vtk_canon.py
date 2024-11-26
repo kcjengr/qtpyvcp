@@ -29,7 +29,7 @@ COLOR_MAP = {
 class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
-        
+        LOG.debug("VTKCanon --- Init ---")
         self._datasource = LinuxCncDataSource()
 
         self.path_colors = colors
@@ -46,10 +46,15 @@ class VTKCanon(StatCanon):
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
-        
+        g5x = self._datasource.getActiveWcsOffsets()
+        LOG.debug(f" G5x offsets = {g5x}")
+        LOG.debug(f"XY Rotation = {self.active_rotation}")
+        # ensure Canon has correct starting offsets per var file
+        super().set_g5x_offset(self.active_wcs_index, g5x[0],g5x[1],g5x[2],g5x[3],g5x[4],g5x[5],g5x[6],g5x[7],g5x[8])
         
         self.foam_z = 0.0
         self.foam_w = 0.0
+        LOG.debug("VTKCanon --- Init Done ---")
 
     def comment(self, comment):
         LOG.debug("G-code Comment: {}".format(comment))
@@ -74,8 +79,12 @@ class VTKCanon(StatCanon):
         
     
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
+        # ensure the passed values get set on 'self' via super
+        super().set_g5x_offset(index, x, y, z, a, b, c, u, v, w)
         new_wcs = index - 1  # this index counts also G53 so we need to do -1
         LOG.debug("---------received wcs change: {}".format(new_wcs))
+        LOG.debug("--------- wcs values: x, y, z, a, b, c, u, v, w")
+        LOG.debug(f"--------- wcs values: {x}, {y}, {z}, {a}, {b}, {c}, {u}, {v}, {w}")
         if new_wcs not in list(self.path_actors.keys()):
             self.path_actors[new_wcs] = PathActor(self._datasource)
             self.path_points[new_wcs] = list()

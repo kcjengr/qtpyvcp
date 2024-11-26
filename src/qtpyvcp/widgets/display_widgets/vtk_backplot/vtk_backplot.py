@@ -1228,6 +1228,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 rotation = 0.0
             
             LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
+            LOG.debug(f"--------wcs X {x}, Y {y}, Z {z}, R {rotation}")
 
             actor_transform = vtk.vtkTransform()
             axes_transform = vtk.vtkTransform()
@@ -1251,6 +1252,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
             xyz = self.active_wcs_offset[:3]
             rotation = self.active_rotation
+            LOG.debug(f"-------- active wcs: XYZ: {xyz}, R: {rotation}")
                            
 
             if len(self.path_actors) > 1:
