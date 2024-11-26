@@ -1376,23 +1376,31 @@ class PreProcessor:
         self._parsed.append(CodeLine( '#<ucs_x_offset> = #5221', parent=self))
         self._parsed.append(CodeLine( '#<ucs_y_offset> = #5222', parent=self))
         self._parsed.append(CodeLine( '#<ucs_r_offset> = #5230', parent=self))
-        self._parsed.append(CodeLine( '#<array_x_offset> = #<_hal[qtpyvcp.column-separation.out]>', parent=self))
-        self._parsed.append(CodeLine( '#<array_y_offset> = #<_hal[qtpyvcp.row-separation.out]>', parent=self))
-        self._parsed.append(CodeLine( '#<array_columns> = #<_hal[qtpyvcp.tile-columns.out]>', parent=self))
-        self._parsed.append(CodeLine( '#<array_rows> = #<_hal[qtpyvcp.tile-rows.out]>', parent=self))
+        self._parsed.append(CodeLine( f'#<array_x_offset> = {hal.get_value("qtpyvcp.column-separation.out")}', parent=self))
+        self._parsed.append(CodeLine( f'#<array_y_offset> = {hal.get_value("qtpyvcp.row-separation.out")}', parent=self))
+        self._parsed.append(CodeLine( f'#<array_columns> = {hal.get_value("qtpyvcp.tile-columns.out")}', parent=self))
+        self._parsed.append(CodeLine( f'#<array_rows> = {hal.get_value("qtpyvcp.tile-rows.out")}', parent=self))
         self._parsed.append(CodeLine( '#<origin_x_offset> = 0.0', parent=self))
         self._parsed.append(CodeLine( '#<origin_y_offset> = 0.0', parent=self))
         self._parsed.append(CodeLine( '#<array_angle> = 0.0', parent=self))
-        self._parsed.append(CodeLine( '#<blk_scale> = #<_hal[qtpyvcp.gcode-scale.out]>', parent=self))
-        self._parsed.append(CodeLine( '#<shape_angle> = #<_hal[qtpyvcp.gcode-rotation.out]>', parent=self))
+        self._parsed.append(CodeLine( f'#<blk_scale> = {hal.get_value("qtpyvcp.gcode-scale.out")}', parent=self))
+        self._parsed.append(CodeLine( f'#<shape_angle> = {hal.get_value("qtpyvcp.gcode-rotation.out")}', parent=self))
 
-        self._parsed.append(CodeLine( 'o<mirror> if [#<_hal[qtpyvcp.gcode-mirror.checked]>]', parent=self))
+        if hal.get_value("qtpyvcp.gcode-mirror.checked"):
+            checked = 1
+        else:
+            checked = 0
+        self._parsed.append(CodeLine( f'o<mirror> if [{checked}]', parent=self))
         self._parsed.append(CodeLine( '    #<shape_mirror> = -1', parent=self))
         self._parsed.append(CodeLine( 'o<mirror> else', parent=self))
         self._parsed.append(CodeLine( '    #<shape_mirror> = 1', parent=self))
         self._parsed.append(CodeLine( 'o<mirror> endif', parent=self))
-        
-        self._parsed.append(CodeLine( 'o<flip> if [#<_hal[qtpyvcp.gcode-flip.checked]>]', parent=self))
+
+        if hal.get_value("qtpyvcp.gcode-flip.checked"):
+            checked = 1
+        else:
+            checked = 0
+        self._parsed.append(CodeLine( f'o<flip> if [{checked}]', parent=self))
         self._parsed.append(CodeLine( '    #<shape_flip> = -1', parent=self))
         self._parsed.append(CodeLine( 'o<flip> else', parent=self))
         self._parsed.append(CodeLine( '    #<shape_flip> = 1', parent=self))
