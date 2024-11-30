@@ -794,14 +794,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             actor_transform = vtk.vtkTransform()
             axes_transform = vtk.vtkTransform()
                 
-            actor_transform.Translate(x, y, z)
-            actor_transform.RotateZ(rotation)
+            #actor_transform.Translate(x, y, z)
+            #actor_transform.RotateZ(rotation)
             
             axes_transform.Translate(x, y, z)
             axes_transform.RotateZ(rotation)
 
                 
-            actor.SetUserTransform(actor_transform)
+            #actor.SetUserTransform(actor_transform)
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
@@ -842,7 +842,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_point_1.SetMapper(mapper)
                 actor_point_1.GetProperty().SetColor(self.path_colors.get("arcfeed").getRgb()[0:3])
                 actor_point_1.GetProperty().SetPointSize(5)
-                actor_point_1.SetUserTransform(actor_transform)
+                #actor_point_1.SetUserTransform(actor_transform)
                 # actor_point_1.SetPosition(*xyz)
 
                 self.offset_change_start_actor[wcs_index] = actor_point_1
@@ -869,7 +869,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_point_2.SetMapper(mapper)
                 actor_point_2.GetProperty().SetColor(self.path_colors.get("user").getRgb()[0:3])
                 actor_point_2.GetProperty().SetPointSize(5)
-                actor_point_2.SetUserTransform(actor_transform)
+                #actor_point_2.SetUserTransform(actor_transform)
                 # actor_point_2.SetPosition(*xyz)
 
                 self.offset_change_end_actor[wcs_index] = actor_point_2
@@ -1238,9 +1238,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             axes_transform.Translate(x, y, z)
             axes_transform.RotateZ(rotation)
-
+            
             axes_actor.SetUserTransform(axes_transform)
-            path_actor.SetUserTransform(actor_transform)
+            #LOG.debug(f"-------- Path Actor Matrix BEFORE User transform:  {path_actor.GetMatrix()}")
+            #LOG.debug(f"-------- Path Actor User transform BEFORE apply new:  {path_actor.GetUserTransform()}")
+            #path_actor.SetUserTransform(actor_transform)
+            #LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
+            #LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
 
             program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
             program_bounds_actor.showProgramBounds(self.show_program_bounds)
