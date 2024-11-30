@@ -104,6 +104,9 @@ class VTKCanon(StatCanon):
 
     def draw_lines(self):
         # Used to draw the lines of the loaded program
+        LOG.debug("--------------------------------------")
+        LOG.debug("--------- ROTATE & TRANSLATE ---------")
+        LOG.debug("--------------------------------------")
         LOG.debug("---------path points size: {}".format(sys.getsizeof(self.path_points)))
         LOG.debug("---------path points length: {}".format(len(self.path_points)))
 
@@ -225,6 +228,7 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.SetInputData(path_actor.poly_data)
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
+                LOG.debug(f"-------- Path Actor Matrix :  {path_actor.GetMatrix()}")
 
             paths_count += 1
 
