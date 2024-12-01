@@ -172,6 +172,7 @@ class VTKCanon(StatCanon):
                         point_count += 2
 
                     else:
+                        LOG.debug(f"--------- Points:")
                         if len(self.path_actors) > 1:
                             # skip rapids from original path offsets
                             if (paths_count > 0) and (point_count == 0) and (line_type == "traverse"):
@@ -183,6 +184,7 @@ class VTKCanon(StatCanon):
                                             start_point[2] * multiplication_factor]
 
                                 self.path_start_point[prev_wcs_index] = position
+                                LOG.debug(f"--------- Point position if point_count==0: {position} ; wcs index: {prev_wcs_index}")
 
                         path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
                                                           end_point[1] * multiplication_factor,
@@ -191,6 +193,8 @@ class VTKCanon(StatCanon):
                         path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
                                                           start_point[1] * multiplication_factor,
                                                           start_point[2] * multiplication_factor)
+                        LOG.debug(f"--------- Path Actor End Point : {end_point[0] * multiplication_factor} {end_point[1] * multiplication_factor} {end_point[2] * multiplication_factor}")
+                        LOG.debug(f"--------- Path Actor STart Point : {start_point[0] * multiplication_factor} {start_point[1] * multiplication_factor} {start_point[2] * multiplication_factor}")
 
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
 
@@ -203,9 +207,9 @@ class VTKCanon(StatCanon):
                         point_count += 2
 
                     last_point = end_point
-                
-                print(len(self.path_actors))
-                print(last_point)
+
+                LOG.debug(f"Length of path_actors {len(self.path_actors)}")
+                LOG.debug(f"last_point: {last_point}")
                 
                 if (len(self.path_actors) > 1) and (last_point is not None):
                     # Store the last point of the part as first point of the rapid line
@@ -213,6 +217,7 @@ class VTKCanon(StatCanon):
                     position = [last_point[0] * multiplication_factor,
                                 last_point[1] * multiplication_factor,
                                 last_point[2] * multiplication_factor]
+                    LOG.debug(f"--------- Path Actor Last Point : {last_point[0] * multiplication_factor} {last_point[1] * multiplication_factor} {last_point[2] * multiplication_factor}")
 
                     self.path_end_point[wcs_index] = position
                 else:
@@ -233,6 +238,11 @@ class VTKCanon(StatCanon):
             paths_count += 1
 
             prev_wcs_index = wcs_index
+
+        LOG.debug("------------------------------------------")
+        LOG.debug("--------- ROTATE & TRANSLATE END ---------")
+        LOG.debug("------------------------------------------")
+
     def get_path_actors(self):
         return self.path_actors
 

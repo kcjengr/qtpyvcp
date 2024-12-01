@@ -181,6 +181,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
         
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        LOG.debug("@@@@@@@@@@  VTKBackPlot __init__  @@@@@@@@@")
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         # LOG.debug("---------using refactored vtk code")
 
         self._datasource = LinuxCncDataSource()
@@ -460,6 +463,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             for wcs_index, path_actor in list(self.path_actors.items()):
                 current_offsets = self.wcs_offsets[wcs_index]
 
+                LOG.debug("---------path_actor List loop")
                 LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
                 LOG.debug("---------wcs_index: {}".format(wcs_index))
                 LOG.debug("---------current_offsets: {}".format(current_offsets))
@@ -468,8 +472,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_transform.Translate(*current_offsets[:3])
                 actor_transform.RotateZ(current_offsets[9])
 
-                path_actor.SetUserTransform(actor_transform)
-                path_actor.SetPosition(*current_offsets[:3])
+                #path_actor.SetUserTransform(actor_transform)
+                #path_actor.SetPosition(*current_offsets[:3])
 
                 LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
@@ -515,6 +519,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 print("NAV 2")
                 # Enable the widget.
                 self.cam_orient_manipulator.On()
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        LOG.debug("@@@@@@@@@@  __init__  END @@@@@@@@@")
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
@@ -1243,6 +1250,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             #LOG.debug(f"-------- Path Actor Matrix BEFORE User transform:  {path_actor.GetMatrix()}")
             #LOG.debug(f"-------- Path Actor User transform BEFORE apply new:  {path_actor.GetUserTransform()}")
             #path_actor.SetUserTransform(actor_transform)
+            #self.canon.set_g5x_offset(self.active_wcs_index+1, self.active_wcs_offset[0], self.active_wcs_offset[1], self.active_wcs_offset[2], self.active_wcs_offset[3],self.active_wcs_offset[4],self.active_wcs_offset[5],self.active_wcs_offset[6],self.active_wcs_offset[7],self.active_wcs_offset[8])
             #LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
             #LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
 
