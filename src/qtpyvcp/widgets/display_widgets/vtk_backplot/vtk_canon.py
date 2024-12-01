@@ -35,6 +35,7 @@ class VTKCanon(StatCanon):
         self.path_colors = colors
         self.path_actors = OrderedDict()
         self.path_points = OrderedDict()
+        self.initial_wcs_offsets = OrderedDict()
 
         self.paths_start_point = OrderedDict()
         self.paths_angle_point = OrderedDict()
@@ -88,6 +89,7 @@ class VTKCanon(StatCanon):
         if new_wcs not in list(self.path_actors.keys()):
             self.path_actors[new_wcs] = PathActor(self._datasource)
             self.path_points[new_wcs] = list()
+            self.initial_wcs_offsets[new_wcs] = (x, y, z, a, b, c, u, v, w)
 
         self.active_wcs_index = new_wcs
 
@@ -99,8 +101,23 @@ class VTKCanon(StatCanon):
 
 
     def add_path_point(self, line_type, start_point, end_point):
-        line = [start_point, end_point]
+        LOG.debug("----------------------------------")
+        LOG.debug("--------- add_path_point ---------")
+        LOG.debug("----------------------------------")
+        # As the points come through with the active wcs offsets baked in
+        # remove them to allow vtk setusertransforms to work correctly.
+        # These transforms apply wcs offsets for us in VTK
+        LOG.debug(f"--------- wcs values to back out: {self.initial_wcs_offsets[self.active_wcs_index]}")
+        LOG.debug(f"--------- Raw line_type={line_type}, start={start_point}, end={end_point}")
+        adj_start_point = start_point.copy()
+        adj_end_point = end_point.copy()
+        for count,value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
+            adj_start_point[count] -= value
+            adj_end_point[count] -= value
+            
+        line = [adj_start_point, adj_end_point]
         self.path_points.get(self.active_wcs_index).append((line_type, line))
+        LOG.debug(f"--------- Adjusted line_type={line_type}, start={adj_start_point}, end={adj_end_point}")
 
     def draw_lines(self):
         # Used to draw the lines of the loaded program
@@ -174,7 +191,8 @@ class VTKCanon(StatCanon):
                     else:
                         LOG.debug(f"--------- Points:")
                         if len(self.path_actors) > 1:
-                            # skip rapids from original path offsets
+                            # skip rapids from original path offsets. This actually means previous wcs
+                            # >1 path_actors means more than one g5x in use in the file.
                             if (paths_count > 0) and (point_count == 0) and (line_type == "traverse"):
                                 continue
 
@@ -193,8 +211,8 @@ class VTKCanon(StatCanon):
                         path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
                                                           start_point[1] * multiplication_factor,
                                                           start_point[2] * multiplication_factor)
+                        LOG.debug(f"--------- Path Actor Start Point : {start_point[0] * multiplication_factor} {start_point[1] * multiplication_factor} {start_point[2] * multiplication_factor}")
                         LOG.debug(f"--------- Path Actor End Point : {end_point[0] * multiplication_factor} {end_point[1] * multiplication_factor} {end_point[2] * multiplication_factor}")
-                        LOG.debug(f"--------- Path Actor STart Point : {start_point[0] * multiplication_factor} {start_point[1] * multiplication_factor} {start_point[2] * multiplication_factor}")
 
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
 

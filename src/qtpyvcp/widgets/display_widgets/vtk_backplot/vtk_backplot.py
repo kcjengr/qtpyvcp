@@ -472,8 +472,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_transform.Translate(*current_offsets[:3])
                 actor_transform.RotateZ(current_offsets[9])
 
-                #path_actor.SetUserTransform(actor_transform)
-                #path_actor.SetPosition(*current_offsets[:3])
+                path_actor.SetUserTransform(actor_transform)
+                path_actor.SetPosition(*current_offsets[:3])
 
                 LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
@@ -801,14 +801,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             actor_transform = vtk.vtkTransform()
             axes_transform = vtk.vtkTransform()
                 
-            #actor_transform.Translate(x, y, z)
-            #actor_transform.RotateZ(rotation)
+            actor_transform.Translate(x, y, z)
+            actor_transform.RotateZ(rotation)
             
             axes_transform.Translate(x, y, z)
             axes_transform.RotateZ(rotation)
 
                 
-            #actor.SetUserTransform(actor_transform)
+            actor.SetUserTransform(actor_transform)
 
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
@@ -1249,8 +1249,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes_actor.SetUserTransform(axes_transform)
             #LOG.debug(f"-------- Path Actor Matrix BEFORE User transform:  {path_actor.GetMatrix()}")
             #LOG.debug(f"-------- Path Actor User transform BEFORE apply new:  {path_actor.GetUserTransform()}")
-            #path_actor.SetUserTransform(actor_transform)
-            #self.canon.set_g5x_offset(self.active_wcs_index+1, self.active_wcs_offset[0], self.active_wcs_offset[1], self.active_wcs_offset[2], self.active_wcs_offset[3],self.active_wcs_offset[4],self.active_wcs_offset[5],self.active_wcs_offset[6],self.active_wcs_offset[7],self.active_wcs_offset[8])
+            path_actor.SetUserTransform(actor_transform)
             #LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
             #LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
 
