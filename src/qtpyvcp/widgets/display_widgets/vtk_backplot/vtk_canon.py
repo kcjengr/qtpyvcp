@@ -127,6 +127,18 @@ class VTKCanon(StatCanon):
         LOG.debug("---------path points size: {}".format(sys.getsizeof(self.path_points)))
         LOG.debug("---------path points length: {}".format(len(self.path_points)))
 
+        # Due to how the callbacks operate we can get a situation where there is
+        # a path_points entry with no points in data and perhaps even
+        # a missing path_actor entry.
+        # Scan and clean for this situation
+        try:
+            for wcs_index, data in self.path_points.items():
+                if len(data) == 0:
+                    self.path_points.pop(wcs_index)
+                    self.path_actors.pop(wcs_index)
+        except:
+            LOG.warn("Trapped exception when in draw_lines cleaning the path_points for empty data")
+
         # TODO: for some reason, we need to multiply for metric, find out why!
         multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
 
