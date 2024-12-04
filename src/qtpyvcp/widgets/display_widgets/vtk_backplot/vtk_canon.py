@@ -131,13 +131,14 @@ class VTKCanon(StatCanon):
         # a path_points entry with no points in data and perhaps even
         # a missing path_actor entry.
         # Scan and clean for this situation
-        try:
-            for wcs_index, data in self.path_points.items():
-                if len(data) == 0:
-                    self.path_points.pop(wcs_index)
-                    self.path_actors.pop(wcs_index)
-        except:
-            LOG.warn("Trapped exception when in draw_lines cleaning the path_points for empty data")
+        keys = self.path_points.keys()
+        for k in keys:
+            data = self.path_points[k]
+            if len(data) == 0:
+                self.path_points.pop(k)
+                # make sure there is a matching key in path_actors before removing it
+                if k in self.path_actors:
+                    self.path_actors.pop(k)
 
         # TODO: for some reason, we need to multiply for metric, find out why!
         multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
