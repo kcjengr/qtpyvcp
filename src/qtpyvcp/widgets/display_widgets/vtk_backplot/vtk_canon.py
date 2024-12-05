@@ -131,13 +131,16 @@ class VTKCanon(StatCanon):
         # a path_points entry with no points in data and perhaps even
         # a missing path_actor entry.
         # Scan and clean for this situation
+        LOG.debug("--------- Scan path_points for zero length data")
         keys = self.path_points.keys()
         for k in keys:
             data = self.path_points[k]
             if len(data) == 0:
+                LOG.debug(f"--------- Key {k} has zero length data - remove from path_points")
                 self.path_points.pop(k)
                 # make sure there is a matching key in path_actors before removing it
                 if k in self.path_actors:
+                    LOG.debug(f"--------- Key {k} has zero length data - remove from path_actors")
                     self.path_actors.pop(k)
 
         # TODO: for some reason, we need to multiply for metric, find out why!
