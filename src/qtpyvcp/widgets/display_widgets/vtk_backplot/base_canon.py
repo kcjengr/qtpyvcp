@@ -269,6 +269,7 @@ class BaseCanon(QObject):
         self.add_path_point('user', self.last_pos, self.last_pos)
 
     def dwell(self, arg):
+        LOG.debug(f"--------- dwell: {arg}s ---------")
         if self.suppress > 0:
             return
 
