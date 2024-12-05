@@ -78,16 +78,18 @@ class VTKCanon(StatCanon):
     def message(self, msg):
         LOG.debug("G-code Message: {}".format(msg))
         
-    
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
         # ensure the passed values get set on 'self' via super
+        LOG.debug("----------------------------------")
+        LOG.debug("--------- set_g5x_offset ---------")
+        LOG.debug("----------------------------------")
         super().set_g5x_offset(index, x, y, z, a, b, c, u, v, w)
         new_wcs = index - 1  # this index counts also G53 so we need to do -1
         LOG.debug("---------received wcs change: {}".format(new_wcs))
         LOG.debug("--------- wcs values: x, y, z, a, b, c, u, v, w")
         LOG.debug(f"--------- wcs values: {x}, {y}, {z}, {a}, {b}, {c}, {u}, {v}, {w}")
-        if new_wcs not in list(self.path_actors.keys()):
-            self.path_actors[new_wcs] = PathActor(self._datasource)
+        if new_wcs not in list(self.path_points.keys()):
+            #self.path_actors[new_wcs] = PathActor(self._datasource)
             self.path_points[new_wcs] = list()
             self.initial_wcs_offsets[new_wcs] = (x, y, z, a, b, c, u, v, w)
 
@@ -111,6 +113,9 @@ class VTKCanon(StatCanon):
         LOG.debug(f"--------- Raw line_type={line_type}, start={start_point}, end={end_point}")
         adj_start_point = start_point.copy()
         adj_end_point = end_point.copy()
+        # check to see if active wcs is in the path_actor list.
+        if self.active_wcs_index not in list(self.path_actors.keys()):
+            self.path_actors[self.active_wcs_index] = PathActor(self._datasource)
         for count,value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
             adj_start_point[count] -= value
             adj_end_point[count] -= value
@@ -121,27 +126,11 @@ class VTKCanon(StatCanon):
 
     def draw_lines(self):
         # Used to draw the lines of the loaded program
-        LOG.debug("--------------------------------------")
-        LOG.debug("--------- ROTATE & TRANSLATE ---------")
-        LOG.debug("--------------------------------------")
-        LOG.debug("---------path points size: {}".format(sys.getsizeof(self.path_points)))
-        LOG.debug("---------path points length: {}".format(len(self.path_points)))
-
-        # Due to how the callbacks operate we can get a situation where there is
-        # a path_points entry with no points in data and perhaps even
-        # a missing path_actor entry.
-        # Scan and clean for this situation
-        LOG.debug("--------- Scan path_points for zero length data")
-        keys = self.path_points.keys()
-        for k in keys:
-            data = self.path_points[k]
-            if len(data) == 0:
-                LOG.debug(f"--------- Key {k} has zero length data - remove from path_points")
-                self.path_points.pop(k)
-                # make sure there is a matching key in path_actors before removing it
-                if k in self.path_actors:
-                    LOG.debug(f"--------- Key {k} has zero length data - remove from path_actors")
-                    self.path_actors.pop(k)
+        LOG.debug("------------------------------")
+        LOG.debug("--------- draw_lines ---------")
+        LOG.debug("------------------------------")
+        LOG.debug("--------- path points size: {}".format(sys.getsizeof(self.path_points)))
+        LOG.debug("--------- path points length: {}".format(len(self.path_points)))
 
         # TODO: for some reason, we need to multiply for metric, find out why!
         multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
@@ -273,9 +262,9 @@ class VTKCanon(StatCanon):
 
             prev_wcs_index = wcs_index
 
-        LOG.debug("------------------------------------------")
-        LOG.debug("--------- ROTATE & TRANSLATE END ---------")
-        LOG.debug("------------------------------------------")
+        LOG.debug("----------------------------------")
+        LOG.debug("--------- draw_lines END ---------")
+        LOG.debug("----------------------------------")
 
     def get_path_actors(self):
         return self.path_actors
