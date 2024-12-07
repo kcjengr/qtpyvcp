@@ -698,7 +698,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("-------load_program")
         self._datasource._status.addLock()
 
-        # Cleanup the scene, remove any previous actors if any
+        # Cleanup the scene, remove any previous actors if any.
+        # Do this for each WCS.
         for wcs_index, actor in self.path_actors.items():
             LOG.debug("-------load_program wcs_index: {}".format(wcs_index))
             axes_actor = actor.get_axes_actor()
@@ -711,6 +712,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.RemoveActor(actor)
             self.renderer.RemoveActor(program_bounds_actor)
 
+            # Get the WCS transition actors and if found remove them
+            # as part of the clean up of the scene.
             start_actor = self.offset_change_start_actor.get(wcs_index)
             end_actor = self.offset_change_end_actor.get(wcs_index)
             line_actor = self.offset_change_line_actor.get(wcs_index)
@@ -742,7 +745,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.canon.draw_lines()
 
-        LOG.debug("-------Draw time %s seconds ---" % (time.time() - start_time))
+        LOG.info("-------Draw time %s seconds ---" % (time.time() - start_time))
         self.path_actors = self.canon.get_path_actors()
 
         self.path_offset_start_point = self.canon.get_offsets_start_point()
@@ -849,7 +852,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_point_1.SetMapper(mapper)
                 actor_point_1.GetProperty().SetColor(self.path_colors.get("arcfeed").getRgb()[0:3])
                 actor_point_1.GetProperty().SetPointSize(5)
-                #actor_point_1.SetUserTransform(actor_transform)
+                actor_point_1.SetUserTransform(actor_transform)
                 # actor_point_1.SetPosition(*xyz)
 
                 self.offset_change_start_actor[wcs_index] = actor_point_1
@@ -876,7 +879,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_point_2.SetMapper(mapper)
                 actor_point_2.GetProperty().SetColor(self.path_colors.get("user").getRgb()[0:3])
                 actor_point_2.GetProperty().SetPointSize(5)
-                #actor_point_2.SetUserTransform(actor_transform)
+                actor_point_2.SetUserTransform(actor_transform)
                 # actor_point_2.SetPosition(*xyz)
 
                 self.offset_change_end_actor[wcs_index] = actor_point_2
@@ -1268,10 +1271,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if len(self.path_actors) > 1:
 
+                # Apply the user transform to the WCS transition actors
                 self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
                 self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
             
-                                                
+                
                 if path_count > 0:
                     
                     point_01 = self.offset_change_end_actor.get(prev_wcs_index)
@@ -1300,7 +1304,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     
                     line = vtk.vtkPolyData()
                     line.SetPoints(pts)
-    
+
+                    # Create the square markers for the transition
                     line0 = vtk.vtkLine()
                     line0.GetPointIds().SetId(0, 0)
                     line0.GetPointIds().SetId(1, 1)
@@ -1308,6 +1313,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     line1 = vtk.vtkLine()
                     line1.GetPointIds().SetId(0, 1)
                     line1.GetPointIds().SetId(1, 2)
+                    # squares now made.
     
                     lines = vtk.vtkCellArray()
                     lines.InsertNextCell(line0)

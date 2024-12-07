@@ -121,7 +121,8 @@ class VTKCanon(StatCanon):
         for count,value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
             adj_start_point[count] -= value
             adj_end_point[count] -= value
-            
+        
+
         line = [tuple(adj_start_point), tuple(adj_end_point)]
         self.path_points.get(self.active_wcs_index).append((line_type, line))
         LOG.debug(f"--------- Adjusted line_type={line_type}, start={adj_start_point}, end={adj_end_point}")
@@ -210,6 +211,7 @@ class VTKCanon(StatCanon):
                                             start_point[1] * multiplication_factor,
                                             start_point[2] * multiplication_factor]
 
+                                # Get start point for a transition line between different WCS
                                 self.path_start_point[prev_wcs_index] = position
                                 LOG.debug(f"--------- Point position if point_count==0: {position} ; wcs index: {prev_wcs_index}")
 
@@ -245,7 +247,7 @@ class VTKCanon(StatCanon):
                                 last_point[1] * multiplication_factor,
                                 last_point[2] * multiplication_factor]
                     LOG.debug(f"--------- Path Actor Last Point : {last_point[0] * multiplication_factor} {last_point[1] * multiplication_factor} {last_point[2] * multiplication_factor}")
-
+                    # Get end point for a transition line between different WCS
                     self.path_end_point[wcs_index] = position
                 else:
                     self.path_end_point[wcs_index] = None
@@ -273,6 +275,8 @@ class VTKCanon(StatCanon):
     def get_path_actors(self):
         return self.path_actors
 
+    # Methods get_offsets_start_point and get_offsets_end_point provide
+    # the start and end points for a transition line between different WCS
     def get_offsets_start_point(self):
         return self.path_start_point
 
