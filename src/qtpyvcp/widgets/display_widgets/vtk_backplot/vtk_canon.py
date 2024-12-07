@@ -104,14 +104,14 @@ class VTKCanon(StatCanon):
 
 
     def add_path_point(self, line_type, start_point, end_point):
-        LOG.debug("----------------------------------")
-        LOG.debug("--------- add_path_point ---------")
-        LOG.debug("----------------------------------")
+        # LOG.debug("----------------------------------")
+        # LOG.debug("--------- add_path_point ---------")
+        # LOG.debug("----------------------------------")
         # As the points come through with the active wcs offsets baked in
         # remove them to allow vtk setusertransforms to work correctly.
         # These transforms apply wcs offsets for us in VTK
-        LOG.debug(f"--------- wcs values to back out: {self.initial_wcs_offsets[self.active_wcs_index]}")
-        LOG.debug(f"--------- Raw line_type={line_type}, start={start_point}, end={end_point}")
+        # LOG.debug(f"--------- wcs values to back out: {self.initial_wcs_offsets[self.active_wcs_index]}")
+        # LOG.debug(f"--------- Raw line_type={line_type}, start={start_point}, end={end_point}")
         #try:
         adj_start_point = list(start_point)
         adj_end_point = list(end_point)
@@ -125,7 +125,7 @@ class VTKCanon(StatCanon):
 
         line = [tuple(adj_start_point), tuple(adj_end_point)]
         self.path_points.get(self.active_wcs_index).append((line_type, line))
-        LOG.debug(f"--------- Adjusted line_type={line_type}, start={adj_start_point}, end={adj_end_point}")
+        # LOG.debug(f"--------- Adjusted line_type={line_type}, start={adj_start_point}, end={adj_end_point}")
         #except Exception as error:
         #    LOG.debug(f"add_path_point - Exception raised: {type(error).__name__} - {error}")
 
@@ -199,7 +199,7 @@ class VTKCanon(StatCanon):
                         point_count += 2
 
                     else:
-                        LOG.debug(f"--------- Points:")
+                        # LOG.debug(f"--------- Points:")
                         if len(self.path_actors) > 1:
                             # skip rapids from original path offsets. This actually means previous wcs
                             # >1 path_actors means more than one g5x in use in the file.
@@ -213,7 +213,7 @@ class VTKCanon(StatCanon):
 
                                 # Get start point for a transition line between different WCS
                                 self.path_start_point[prev_wcs_index] = position
-                                LOG.debug(f"--------- Point position if point_count==0: {position} ; wcs index: {prev_wcs_index}")
+                                # LOG.debug(f"--------- Point position if point_count==0: {position} ; wcs index: {prev_wcs_index}")
 
                         path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
                                                           end_point[1] * multiplication_factor,
@@ -222,8 +222,8 @@ class VTKCanon(StatCanon):
                         path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
                                                           start_point[1] * multiplication_factor,
                                                           start_point[2] * multiplication_factor)
-                        LOG.debug(f"--------- Path Actor Start Point : {start_point[0] * multiplication_factor} {start_point[1] * multiplication_factor} {start_point[2] * multiplication_factor}")
-                        LOG.debug(f"--------- Path Actor End Point : {end_point[0] * multiplication_factor} {end_point[1] * multiplication_factor} {end_point[2] * multiplication_factor}")
+                        # LOG.debug(f"--------- Path Actor Start Point : {start_point[0] * multiplication_factor} {start_point[1] * multiplication_factor} {start_point[2] * multiplication_factor}")
+                        # LOG.debug(f"--------- Path Actor End Point : {end_point[0] * multiplication_factor} {end_point[1] * multiplication_factor} {end_point[2] * multiplication_factor}")
 
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
 
@@ -237,8 +237,8 @@ class VTKCanon(StatCanon):
 
                     last_point = end_point
 
-                LOG.debug(f"Length of path_actors {len(self.path_actors)}")
-                LOG.debug(f"last_point: {last_point}")
+                # LOG.debug(f"Length of path_actors {len(self.path_actors)}")
+                # LOG.debug(f"last_point: {last_point}")
                 
                 if (len(self.path_actors) > 1) and (last_point is not None):
                     # Store the last point of the part as first point of the rapid line
@@ -246,7 +246,7 @@ class VTKCanon(StatCanon):
                     position = [last_point[0] * multiplication_factor,
                                 last_point[1] * multiplication_factor,
                                 last_point[2] * multiplication_factor]
-                    LOG.debug(f"--------- Path Actor Last Point : {last_point[0] * multiplication_factor} {last_point[1] * multiplication_factor} {last_point[2] * multiplication_factor}")
+                    # LOG.debug(f"--------- Path Actor Last Point : {last_point[0] * multiplication_factor} {last_point[1] * multiplication_factor} {last_point[2] * multiplication_factor}")
                     # Get end point for a transition line between different WCS
                     self.path_end_point[wcs_index] = position
                 else:
@@ -262,7 +262,7 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.SetInputData(path_actor.poly_data)
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
-                LOG.debug(f"-------- Path Actor Matrix :  {path_actor.GetMatrix()}")
+                # LOG.debug(f"-------- Path Actor Matrix :  {path_actor.GetMatrix()}")
 
             paths_count += 1
 
