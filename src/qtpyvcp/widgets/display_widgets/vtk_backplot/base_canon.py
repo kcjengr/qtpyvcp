@@ -198,6 +198,12 @@ class BaseCanon(QObject):
     def select_plane(self, plane):
         pass
 
+    def set_traverse_rate(self, traverse_rate):
+        pass
+
+    def set_feed_mode(self, mode):
+        pass
+
     def change_tool(self, pocket):
         self.first_move = True
 
@@ -287,6 +293,7 @@ class BaseCanon(QObject):
 
     def get_block_delete(self):
         return 0
+    
 
 
 class StatCanon(BaseCanon):
