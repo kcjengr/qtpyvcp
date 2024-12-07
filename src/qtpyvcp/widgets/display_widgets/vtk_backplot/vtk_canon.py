@@ -78,6 +78,7 @@ class VTKCanon(StatCanon):
     def message(self, msg):
         LOG.debug("G-code Message: {}".format(msg))
         
+    
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
         # ensure the passed values get set on 'self' via super
         LOG.debug("----------------------------------")
@@ -111,8 +112,9 @@ class VTKCanon(StatCanon):
         # These transforms apply wcs offsets for us in VTK
         LOG.debug(f"--------- wcs values to back out: {self.initial_wcs_offsets[self.active_wcs_index]}")
         LOG.debug(f"--------- Raw line_type={line_type}, start={start_point}, end={end_point}")
-        adj_start_point = start_point.copy()
-        adj_end_point = end_point.copy()
+        #try:
+        adj_start_point = list(start_point)
+        adj_end_point = list(end_point)
         # check to see if active wcs is in the path_actor list.
         if self.active_wcs_index not in list(self.path_actors.keys()):
             self.path_actors[self.active_wcs_index] = PathActor(self._datasource)
@@ -120,9 +122,11 @@ class VTKCanon(StatCanon):
             adj_start_point[count] -= value
             adj_end_point[count] -= value
             
-        line = [adj_start_point, adj_end_point]
+        line = [tuple(adj_start_point), tuple(adj_end_point)]
         self.path_points.get(self.active_wcs_index).append((line_type, line))
         LOG.debug(f"--------- Adjusted line_type={line_type}, start={adj_start_point}, end={adj_end_point}")
+        #except Exception as error:
+        #    LOG.debug(f"add_path_point - Exception raised: {type(error).__name__} - {error}")
 
     def draw_lines(self):
         # Used to draw the lines of the loaded program

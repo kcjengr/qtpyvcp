@@ -1245,7 +1245,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             axes_transform.Translate(x, y, z)
             axes_transform.RotateZ(rotation)
-            
+
             axes_actor.SetUserTransform(axes_transform)
             #LOG.debug(f"-------- Path Actor Matrix BEFORE User transform:  {path_actor.GetMatrix()}")
             #LOG.debug(f"-------- Path Actor User transform BEFORE apply new:  {path_actor.GetUserTransform()}")
