@@ -173,12 +173,13 @@ class Commands(Enum):
 class CodeLine:
 # Class to represent a single line of gcode
 
-    def __init__(self, line, parent = None):
+    def __init__(self, line, parent = None, g2g3flip = False):
         """args:
         line:  the gcode line to be parsed
         mode: the model state. i.e. what G state has been set
         """
         self._parent = parent
+        self.arc_flip = g2g3flip
         self.command = ()
         self.params = {}
         self.comment = ''
@@ -409,6 +410,14 @@ class CodeLine:
     def parse_arc(self):
         # arc motion means either G2 or G3. So looking for X/Y/I/J/P on this line
         self.command = ('G',int(self.token[1:]))
+        # check for g2g3 flip and adjust command as needed
+        if self.arc_flip:
+            LOG.debug(f"Arc Flip True. Unchanged command: {self.command}")
+            if self.command == ('G',2):
+                self.command = ('G',3)
+            else:
+                self.command = ('G',2)
+            LOG.debug(f"Arc Flip True. CHANGED command: {self.command}")
         # split the raw line at the token and then look for X/Y/I/J/P existence
         line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
         tokens = re.finditer(r"X[\d\+\.-]*|Y[\d\+\.-]*|I[\d\+\.-]*|J[\d\+\.-]*|P[\d\+\.-]*", line)
@@ -1066,6 +1075,8 @@ class PreProcessor:
         self.pressure = None
         self.pause_at_end = None
         self.thc = None
+        # track if flip or mirror is active
+        self.g2g3_flip = False
 
 
         openfile= open(inCode, 'r')
@@ -1373,9 +1384,9 @@ class PreProcessor:
         self._parsed.append(CodeLine( '(--------------------------------------------------)', parent=self))
         # Build inputs for scale, tiles, flip, mirror and rotation
         self._parsed.append(CodeLine( ';inputs', parent=self))
-        self._parsed.append(CodeLine( '#<ucs_x_offset> = #5221', parent=self))
-        self._parsed.append(CodeLine( '#<ucs_y_offset> = #5222', parent=self))
-        self._parsed.append(CodeLine( '#<ucs_r_offset> = #5230', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_x_offset> = [#5221 + [[#5220-1] * 20]]', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_y_offset> = [#5222 + [[#5220-1] * 20]]', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_r_offset> = [#5230 + [[#5220-1] * 20]]', parent=self))
         self._parsed.append(CodeLine( f'#<array_x_offset> = {hal.get_value("qtpyvcp.column-separation.out")}', parent=self))
         self._parsed.append(CodeLine( f'#<array_y_offset> = {hal.get_value("qtpyvcp.row-separation.out")}', parent=self))
         self._parsed.append(CodeLine( f'#<array_columns> = {hal.get_value("qtpyvcp.tile-columns.out")}', parent=self))
@@ -1387,24 +1398,16 @@ class PreProcessor:
         self._parsed.append(CodeLine( f'#<shape_angle> = {hal.get_value("qtpyvcp.gcode-rotation.out")}', parent=self))
 
         if hal.get_value("qtpyvcp.gcode-mirror.checked"):
-            checked = 1
+            self._parsed.append(CodeLine( '#<shape_mirror> = -1', parent=self))
+            self.g2g3_flip = not self.g2g3_flip
         else:
-            checked = 0
-        self._parsed.append(CodeLine( f'o<mirror> if [{checked}]', parent=self))
-        self._parsed.append(CodeLine( '    #<shape_mirror> = -1', parent=self))
-        self._parsed.append(CodeLine( 'o<mirror> else', parent=self))
-        self._parsed.append(CodeLine( '    #<shape_mirror> = 1', parent=self))
-        self._parsed.append(CodeLine( 'o<mirror> endif', parent=self))
+            self._parsed.append(CodeLine( '#<shape_mirror> = 1', parent=self))
 
         if hal.get_value("qtpyvcp.gcode-flip.checked"):
-            checked = 1
+            self._parsed.append(CodeLine( '#<shape_flip> = -1', parent=self))
+            self.g2g3_flip = not self.g2g3_flip
         else:
-            checked = 0
-        self._parsed.append(CodeLine( f'o<flip> if [{checked}]', parent=self))
-        self._parsed.append(CodeLine( '    #<shape_flip> = -1', parent=self))
-        self._parsed.append(CodeLine( 'o<flip> else', parent=self))
-        self._parsed.append(CodeLine( '    #<shape_flip> = 1', parent=self))
-        self._parsed.append(CodeLine( 'o<flip> endif', parent=self))
+            self._parsed.append(CodeLine( '#<shape_flip> = 1', parent=self))
         
         self._parsed.append(CodeLine( ';calculations', parent=self))
         self._parsed.append(CodeLine( '#<this_col> = 0', parent=self))
@@ -1433,7 +1436,7 @@ class PreProcessor:
             self._line_num += 1
             self._line = line.strip()
             LOG.debug('Parse: Build gcode line.')
-            l = CodeLine(self._line, parent=self)
+            l = CodeLine(self._line, parent=self, g2g3flip=self.g2g3_flip)
             try:
                 gcode = f'{l.command[0]}{l.command[1]}'
             except:
