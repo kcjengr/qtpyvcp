@@ -338,7 +338,7 @@ class MachinePartsASM(vtk.vtkAssembly):
         part_actor.GetProperty().SetDiffuse(.8)
         part_actor.GetProperty().SetSpecular(.5)
         part_actor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
-        part_actor.GetProperty().SetSpecularPower(30.0)
+        part_actor.GetProperty().SetSpecularPower(1.0)
         
         # part_actor.SetPosition(part_position[0], part_position[1], part_position[2])
         # part_actor.SetOrigin(part_origin[0], part_origin[1], part_origin[2])
