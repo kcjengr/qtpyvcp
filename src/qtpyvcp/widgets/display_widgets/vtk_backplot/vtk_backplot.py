@@ -235,6 +235,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
+        
+        #used to set the perspective view direction
+        self.view_x_vec = 1
+        self.view_y_vec = -1
+        self.view_z_vec = 1
 
         self._plot_machine = True
         
@@ -368,7 +373,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if self.table_model is not None:
                 self.table_actor = TableActor(self.table_model)
 
-
+            x_vec = float(self._datasource._inifile.find("VTK", "VIEW_X"))
+            y_vec = float(self._datasource._inifile.find("VTK", "VIEW_Y"))
+            z_vec = float(self._datasource._inifile.find("VTK", "VIEW_Z"))
+            if x_vec:
+                self.view_x_vec = x_vec
+            if y_vec:
+                self.view_y_vec = y_vec
+            if z_vec:
+                self.view_z_vec = z_vec
 
             self.spindle_model = self._datasource._inifile.find("VTK", "SPINDLE")
 
@@ -1571,7 +1584,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         position = self.wcs_offsets[self.active_wcs_index]
         
-        self.camera.SetPosition(self.position_mult, -self.position_mult, self.position_mult)
+        self.camera.SetPosition(self.position_mult * self.view_x_vec, 
+            self.position_mult * self.view_y_vec, 
+            self.position_mult * self.view_z_vec)
         self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()
@@ -1809,9 +1824,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                                   machine_center[1],
                                   machine_center[2])
 
-        self.camera.SetPosition(machine_center[0] + self.position_mult,
-                                -(machine_center[1] + self.position_mult),
-                                machine_center[2] + self.position_mult)
+        self.camera.SetPosition((machine_center[0] + self.position_mult) * self.view_x_vec,
+                                (machine_center[1] + self.position_mult) * self.view_y_vec,
+                                (machine_center[2] + self.position_mult) * self.view_z_vec)
         
         x_dist = abs(machine_bounds[0] - machine_bounds[1])
         y_dist = abs(machine_bounds[2] - machine_bounds[3])
@@ -1887,9 +1902,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             x_up = 1
         else:
             # treat as P
-            pc_x = program_center[0] + self.position_mult
-            pc_y = -(program_center[1] + self.position_mult)
-            pc_z = program_center[2] + self.position_mult
+            pc_x = (program_center[0] + self.position_mult) * self.view_x_vec
+            pc_y = (program_center[1] + self.position_mult) * self.view_y_vec
+            pc_z = (program_center[2] + self.position_mult) * self.view_z_vec
             z_up = 1
 
         self.camera.SetPosition(pc_x, pc_y, pc_z)
@@ -1919,9 +1934,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.active_wcs_index = 0
 
         position = self.wcs_offsets[self.active_wcs_index]
-        self.camera.SetPosition(position[0] + self.position_mult,
-                                -(position[1] + self.position_mult),
-                                position[2] + self.position_mult)
+        self.camera.SetPosition((position[0] + self.position_mult) * self.view_x_vec,
+                                (position[1] + self.position_mult) * self.view_y_vec,
+                                (position[2] + self.position_mult) * self.view_z_vec)
         self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()

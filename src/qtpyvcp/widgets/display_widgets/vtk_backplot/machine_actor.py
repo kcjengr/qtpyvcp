@@ -277,6 +277,7 @@ class MachinePartsASM(vtk.vtkAssembly):
         self.part_origin = None
         self.part_axis = None
         self.part_joint = None
+        self.part_color = None
         
         #print("########")
         #print("NEW Machine")
@@ -308,6 +309,7 @@ class MachinePartsASM(vtk.vtkAssembly):
         self.part_origin = data.get("origin")
         self.part_axis = data.get("axis")
         self.part_joint = data.get("joint")
+        self.part_color = data.get("color")
         
         # print(f"part_id:\t\t{self.part_id}")
         # print(f"part_model:\t\t{self.part_model}")
@@ -324,12 +326,15 @@ class MachinePartsASM(vtk.vtkAssembly):
         part_mapper = vtk.vtkPolyDataMapper()
         part_mapper.SetInputConnection(part_source.GetOutputPort())
         
+        if not self.part_color:
+            self.part_color = (0.9, 0.9, 0.9)
+        
         part_actor = vtk.vtkActor()
         
         part_actor.SetMapper(part_mapper)
         
         part_actor.GetProperty().SetColor(1, 0, 1)
-        part_actor.GetProperty().SetDiffuseColor(0.9, 0.9, 0.9)
+        part_actor.GetProperty().SetDiffuseColor(self.part_color)
         part_actor.GetProperty().SetDiffuse(.8)
         part_actor.GetProperty().SetSpecular(.5)
         part_actor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
