@@ -310,6 +310,7 @@ class MachinePartsASM(vtk.vtkAssembly):
         self.part_axis = data.get("axis")
         self.part_joint = data.get("joint")
         self.part_color = data.get("color")
+        self.part_power = data.get("power")
         
         # print(f"part_id:\t\t{self.part_id}")
         # print(f"part_model:\t\t{self.part_model}")
@@ -328,6 +329,9 @@ class MachinePartsASM(vtk.vtkAssembly):
         
         if not self.part_color:
             self.part_color = (0.9, 0.9, 0.9)
+            
+        if not self.part_power:
+            self.part_power = 5.0
         
         part_actor = vtk.vtkActor()
         
@@ -338,7 +342,7 @@ class MachinePartsASM(vtk.vtkAssembly):
         part_actor.GetProperty().SetDiffuse(.8)
         part_actor.GetProperty().SetSpecular(.5)
         part_actor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
-        part_actor.GetProperty().SetSpecularPower(1.0)
+        part_actor.GetProperty().SetSpecularPower(self.part_power)
         
         # part_actor.SetPosition(part_position[0], part_position[1], part_position[2])
         # part_actor.SetOrigin(part_origin[0], part_origin[1], part_origin[2])
