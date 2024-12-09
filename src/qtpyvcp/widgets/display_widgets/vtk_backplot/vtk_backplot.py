@@ -373,9 +373,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if self.table_model is not None:
                 self.table_actor = TableActor(self.table_model)
 
-            x_vec = float(self._datasource._inifile.find("VTK", "VIEW_X"))
-            y_vec = float(self._datasource._inifile.find("VTK", "VIEW_Y"))
-            z_vec = float(self._datasource._inifile.find("VTK", "VIEW_Z"))
+            x_vec = float(self._datasource._inifile.find("VTK", "VIEW_X") or 0.0)
+            y_vec = float(self._datasource._inifile.find("VTK", "VIEW_Y") or 0.0)
+            z_vec = float(self._datasource._inifile.find("VTK", "VIEW_Z") or 0.0)
+            
             if x_vec:
                 self.view_x_vec = x_vec
             if y_vec:
