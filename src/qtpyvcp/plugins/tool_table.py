@@ -362,7 +362,7 @@ class ToolTable(DataPlugin):
         return table.copy()
 
     def getToolTable(self):
-        return self.TOOL_TABLE.copy()
+        return self.TOOL_TABLE
 
     def saveToolTable(self, tool_table, columns=None, tool_file=None):
         """Write tooltable data to file.
