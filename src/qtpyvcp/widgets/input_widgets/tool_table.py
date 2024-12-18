@@ -143,8 +143,15 @@ class ToolModel(QStandardItemModel):
     def rowCount(self, parent=None):
         return len(self._tool_table) - 1
 
+
     def flags(self, index):
+        tnum = sorted(self._tool_table)[index.row() + self.row_offset]
+        # check tool in spindle
+        if tnum == self.stat.tool_in_spindle:
+            return Qt.ItemIsEnabled | Qt.ItemIsSelectable
+        
         return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
+    
 
     def data(self, index, role=Qt.DisplayRole):
         
