@@ -18,7 +18,7 @@ from qtpyvcp.plugins import iterPlugins, getPlugin
 from qtpyvcp.plugins.db_tool_table import DBToolTable
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
+from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolProperties
 
 LOG = logger.getLogger(__name__)
 
@@ -94,7 +94,7 @@ class ToolActor(vtk.vtkActor):
                 mapper = vtk.vtkPolyDataMapper()
 
                 if isinstance(tool_table_plugin, DBToolTable):
-                    tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool.id).first()
+                    tool_data = self.session.query(ToolProperties).filter(ToolProperties.tool_no == tool.id).first()
 
                     if tool_data:
 
