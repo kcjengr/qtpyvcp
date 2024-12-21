@@ -440,7 +440,7 @@ class optional_stop:
 
         ActionButton syntax::
 
-            program.option-stop.off
+            program.optional-stop.off
 
         """
 
