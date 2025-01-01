@@ -46,7 +46,11 @@ class LinuxCncDataSource(QObject):
         self._machine_bounds = str(self._inifile.find("DISPLAY", "BOUNDARIES"))
         self._nav_helper = bool(self._inifile.find("DISPLAY", "NAV")) or False
         self._antialias = bool(self._inifile.find("DISPLAY", "ANTIALIAS")) or False
-
+        self._fps = int(self._inifile.find("DISPLAY", "FPS") or 0)
+        if self._fps == 0:
+            self._fps = int(self._inifile.find("VTK", "FPS") or 30)
+        LOG.debug(f'FPS = {self._fps}')
+        
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
         self._status.motion_type.notify(self.__handleMotionTypeChanged)
@@ -128,6 +132,9 @@ class LinuxCncDataSource(QObject):
     def __handleToolTableChanged(self, tool_table):
         #LOG.debug("__handleToolTableChanged: {}".format(type(tool_table)))
         self.toolTableChanged.emit(tool_table)
+
+    def getFPS(self):
+        return self._fps
 
     def getAxis(self):
         return self._status.stat.axis

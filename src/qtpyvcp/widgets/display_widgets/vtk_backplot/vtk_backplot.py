@@ -198,7 +198,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.installEventFilter(event_filter)
 
         self.current_time = round(time.time() * 1000)
-        self.plot_interval = 1000/30  # 1 second / 30 fps
+        self.plot_interval = 1000/self._datasource.getFPS()  # 1 second / 30 fps
         self.prev_plot_time = 0
         
         self.parent = parent
