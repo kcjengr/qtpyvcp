@@ -1,6 +1,6 @@
 import os
 import re
-from qtpy.QtWidgets import qApp
+from qtpy.QtWidgets import qApp, QWidget
 from qtpy.QtCore import Property
 
 from qtpyvcp.utilities.info import Info
@@ -82,10 +82,17 @@ class SubCallButton(VCPButton):
             if int(pnumber) > 30:
                 # only #1-#30 are passed to the sub
                 continue
-
+            
+            val = default_val
+                                    
             try:
                 # get the value from the GUI input widget
-                val = getattr(window, pname).text() or default_val
+                # val = getattr(window, pname).text() or default_val
+                
+                for widget in window.findChildren(QWidget):
+                    if widget.objectName() == pname:
+                        val = widget.text() or default_val
+                            
             except:
                 val = default_val
                 LOG.warning('No input for red<{}> parameter, using default value blue<{}>'.format(pname, val))
