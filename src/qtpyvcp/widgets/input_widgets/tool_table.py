@@ -145,9 +145,16 @@ class ToolModel(QStandardItemModel):
 
 
     def flags(self, index):
-        tnum = sorted(self._tool_table)[index.row() + self.row_offset]
-        # check tool in spindle
-        if tnum == self.stat.tool_in_spindle:
+        
+        row = index.row()
+        col = index.column()
+            
+        header_text = self.headerData(col, Qt.Horizontal, Qt.DisplayRole)
+        
+        tnum = sorted(self._tool_table)[row + self.row_offset]
+        
+        # check tool in spindle and make Tool No. read-only
+        if tnum == self.stat.tool_in_spindle and header_text == "Tool":
             return Qt.ItemIsEnabled | Qt.ItemIsSelectable
         
         return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
