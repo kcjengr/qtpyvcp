@@ -418,9 +418,9 @@ class ToolBitActor(vtk.vtkActor):
                     if flip:
                         points.InsertNextPoint((self.tool.xoffset + p2_x_pos, 0.0, p2_z_pos - self.tool.zoffset))
                         points.InsertNextPoint((self.tool.xoffset + p1_x_pos, 0.0, p1_z_pos - self.tool.zoffset))
-                        points.InsertNextPoint((self.tool.xoffset, 0.0, -tool.zoffset))
+                        points.InsertNextPoint((self.tool.xoffset, 0.0, -self.tool.zoffset))  # Fixed here
                     else:
-                        points.InsertNextPoint((self.tool.xoffset, 0.0, -tool.zoffset))
+                        points.InsertNextPoint((self.tool.xoffset, 0.0, -self.tool.zoffset))  # Fixed here
                         points.InsertNextPoint((self.tool.xoffset + p1_x_pos, 0.0, p1_z_pos - self.tool.zoffset))
                         points.InsertNextPoint((self.tool.xoffset + p2_x_pos, 0.0, p2_z_pos - self.tool.zoffset))
 
