@@ -124,11 +124,11 @@ def launch_designer(opts=DotDict()) -> None:
             LOG.error(INSTALLED_ERROR_MSG)
             sys.exit(1)
 
-    if distro.id() == 'gentoo':
+    if distro.id() == 'gentoo' or distro.id() == 'arch':
         cmd = ['designer6']
     else:
         cmd = ["pyside6-designer"]
-    
+
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
 
