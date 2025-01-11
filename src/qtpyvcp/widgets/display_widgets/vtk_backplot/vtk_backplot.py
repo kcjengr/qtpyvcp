@@ -476,7 +476,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             for wcs_index, path_actor in list(self.path_actors.items()):
                 wcs = self.canon.get_offsets_list[wcs_index] 
-                current_offsets = self.wcs_offsets[wcs]
+                current_offsets = self.wcs_offsets[wcs_index]
 
                 LOG.debug("---------path_actor List loop")
                 LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
@@ -922,7 +922,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     self.offset_change_end_actor[wcs_index] = actor_point_2
                     self.renderer.AddActor(actor_point_2)
 
-                if path_count > 0:
+                if (path_count > 0) and (point_01_pos is not None) and (point_02_pos is not None):
                     
                     p1_position = self.offset_change_end_actor[prev_wcs_index].GetCenter()
                     # p1_rotation = self.offset_change_end_actor[prev_wcs_index].GetUserTransform().GetOrientation()[2]
@@ -1315,8 +1315,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if len(self.path_actors) > 1:
 
                 # Apply the user transform to the WCS transition actors
-                self.offset_change_start_actor[wcs].SetUserTransform(actor_transform)
-                self.offset_change_end_actor[wcs].SetUserTransform(actor_transform)
+                self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
+                self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
             
                 
                 if path_count > 0:
