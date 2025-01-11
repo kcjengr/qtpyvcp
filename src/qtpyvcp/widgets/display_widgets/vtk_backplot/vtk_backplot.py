@@ -1234,8 +1234,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Get the WCS index mapping from canon
         wcs_list = self.canon.get_offsets_list()
+        wcs_indices = list(self.path_actors.keys())
 
-        for wcs_index, path_actor in self.path_actors.items():
+        for i, wcs_index in enumerate(wcs_indices):
             if wcs_list and wcs_index in wcs_list:
                 wcs = wcs_list[wcs_index]
             else:
@@ -1307,65 +1308,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if end_actor:
                 end_actor.SetUserTransform(actor_transform)
 
-            if path_count > 0:
-                point_01 = self.offset_change_end_actor.get(prev_wcs_index)
-                point_02 = self.offset_change_start_actor.get(wcs_index)
+            # Draw line for current WCS index
+            if i > 0:  # Not the first WCS
+                self.draw_wcs_transition_line(prev_wcs_index, wcs_index)
 
-                if point_01 and point_02:
-                    point_01_pos = point_01.GetCenter()
-                    point_02_pos = point_02.GetCenter()
-
-                    actor_p01_pos = [point_01_pos[0],
-                                     point_01_pos[1],
-                                     point_01_pos[2]]
-
-                    actor_p02_pos = [point_02_pos[0],
-                                     point_02_pos[1],
-                                     point_02_pos[2]]
-
-                    actor_p03_pos = [point_02_pos[0],
-                                     point_02_pos[1],
-                                     point_01_pos[2]]
-
-                    pts = vtk.vtkPoints()
-                    pts.InsertNextPoint(*actor_p01_pos)
-                    pts.InsertNextPoint(*actor_p03_pos)
-                    pts.InsertNextPoint(*actor_p02_pos)
-
-                    line = vtk.vtkPolyData()
-                    line.SetPoints(pts)
-
-                    line0 = vtk.vtkLine()
-                    line0.GetPointIds().SetId(0, 0)
-                    line0.GetPointIds().SetId(1, 1)
-
-                    line1 = vtk.vtkLine()
-                    line1.GetPointIds().SetId(0, 1)
-                    line1.GetPointIds().SetId(1, 2)
-
-                    lines = vtk.vtkCellArray()
-                    lines.InsertNextCell(line0)
-                    lines.InsertNextCell(line1)
-
-                    line.SetLines(lines)
-
-                    colors = vtk.vtkUnsignedCharArray()
-                    colors.SetNumberOfComponents(3)
-                    colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
-                    colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
-
-                    line.GetCellData().SetScalars(colors)
-
-                    mapper = vtk.vtkPolyDataMapper()
-                    mapper.SetInputData(line)
-
-                    actor_line = vtk.vtkActor()
-                    actor_line.SetMapper(mapper)
-                    actor_line.GetProperty().SetLineWidth(1)
-
-                    self.offset_change_line_actor[wcs_index] = actor_line
-
-                    self.renderer.AddActor(actor_line)
+            # Draw line for the last WCS index
+            if i == len(wcs_indices) - 1:
+                self.draw_wcs_transition_line(wcs_index, None)
 
             prev_wcs_index = wcs_index
             prev_offset_x = x
@@ -1375,7 +1324,59 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.interactor.ReInitialize()
         self.renderer_window.Render()
-        
+
+    def draw_wcs_transition_line(self, start_wcs_index, end_wcs_index):
+        point_01 = self.offset_change_end_actor.get(start_wcs_index)
+        point_02 = self.offset_change_start_actor.get(end_wcs_index) if end_wcs_index is not None else None
+
+        if point_01 and (point_02 or end_wcs_index is None):
+            point_01_pos = point_01.GetCenter()
+            point_02_pos = point_02.GetCenter() if point_02 else self.path_offset_end_point.get(start_wcs_index)
+
+            if point_02_pos:
+                actor_p01_pos = list(point_01_pos)
+                actor_p02_pos = list(point_02_pos)
+                actor_p03_pos = [point_02_pos[0], point_02_pos[1], point_01_pos[2]]
+
+                pts = vtk.vtkPoints()
+                pts.InsertNextPoint(*actor_p01_pos)
+                pts.InsertNextPoint(*actor_p03_pos)
+                pts.InsertNextPoint(*actor_p02_pos)
+
+                line = vtk.vtkPolyData()
+                line.SetPoints(pts)
+
+                line0 = vtk.vtkLine()
+                line0.GetPointIds().SetId(0, 0)
+                line0.GetPointIds().SetId(1, 1)
+
+                line1 = vtk.vtkLine()
+                line1.GetPointIds().SetId(0, 1)
+                line1.GetPointIds().SetId(1, 2)
+
+                lines = vtk.vtkCellArray()
+                lines.InsertNextCell(line0)
+                lines.InsertNextCell(line1)
+
+                line.SetLines(lines)
+
+                colors = vtk.vtkUnsignedCharArray()
+                colors.SetNumberOfComponents(3)
+                colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
+                colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
+
+                line.GetCellData().SetScalars(colors)
+
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputData(line)
+
+                actor_line = vtk.vtkActor()
+                actor_line.SetMapper(mapper)
+                actor_line.GetProperty().SetLineWidth(1)
+
+                self.offset_change_line_actor[start_wcs_index] = actor_line
+                self.renderer.AddActor(actor_line)
+
     def update_g5x_index(self, index):
         
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
