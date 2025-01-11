@@ -1224,8 +1224,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("@@@@@@@@@ ROTATE & TRANSLATE @@@@@@@@@")
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         
-        # self.axes_actor.SetUserTransform(transform)
-
         path_count = 0
         prev_wcs_index = 0
         prev_offset_x = 0.0
@@ -1237,12 +1235,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         wcs_indices = list(self.path_actors.keys())
 
         for i, wcs_index in enumerate(wcs_indices):
+            path_actor = self.path_actors[wcs_index]
             if wcs_list and wcs_index in wcs_list:
                 wcs = wcs_list[wcs_index]
             else:
                 wcs = wcs_index  # Fallback to using index directly if no mapping
-
-            # ...existing actor removal code...
 
             current_offsets = self.wcs_offsets[wcs]  # Use mapped WCS index
 
@@ -1251,27 +1248,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             z_column = self._datasource.getOffsetColumns().get('Z')
             r_column = self._datasource.getOffsetColumns().get('R')
 
-            if x_column is not None:
-                x = current_offsets[x_column]
-            else:
-                x = 0.0
+            x = current_offsets[x_column] if x_column is not None else 0.0
+            y = current_offsets[y_column] if y_column is not None else 0.0
+            z = current_offsets[z_column] if z_column is not None else 0.0
+            rotation = current_offsets[r_column] if r_column is not None else 0.0
 
-            if y_column is not None:
-                y = current_offsets[y_column]
-            else:
-                y = 0.0
-
-            if z_column is not None:
-                z = current_offsets[z_column]
-            else:
-                z = 0.0
-
-            if r_column is not None:
-                rotation = current_offsets[r_column]
-            else:
-                rotation = 0.0
-
-            LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
+            LOG.debug(f"--------wcs_index: {wcs_index}, active_wcs_index: {self.active_wcs_index}")
             LOG.debug(f"--------wcs X {x}, Y {y}, Z {z}, R {rotation}")
 
             actor_transform = vtk.vtkTransform()
