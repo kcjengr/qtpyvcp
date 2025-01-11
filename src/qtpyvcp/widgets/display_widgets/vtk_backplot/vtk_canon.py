@@ -282,6 +282,9 @@ class VTKCanon(StatCanon):
 
     def get_offsets_end_point(self):
         return self.path_end_point
+    
+    def get_offsets_list(self):
+        return self.g5x_index
 
     def get_foam(self):
         return self.foam_z, self.foam_w

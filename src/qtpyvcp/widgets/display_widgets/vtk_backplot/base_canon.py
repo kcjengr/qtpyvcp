@@ -70,6 +70,11 @@ class BaseCanon(QObject):
         self.g92_offset_v = 0.0
         self.g92_offset_w = 0.0
 
+        # g5x index
+        
+        self.g5x_index = dict()
+        self.g5x_changes_count = 0
+        
         # g5x offsets
         self.g5x_offset_x = 0.0
         self.g5x_offset_y = 0.0
@@ -141,6 +146,11 @@ class BaseCanon(QObject):
         return [x, y, z, a, b, c, u, v, w]
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
+        
+        self.g5x_index[self.g5x_changes_count] = index
+        
+        self.g5x_changes_count += 1
+        
         self.g5x_offset_x = x
         self.g5x_offset_y = y
         self.g5x_offset_z = z
