@@ -1232,28 +1232,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         prev_offset_y = 0.0
         prev_offset_z = 0.0
 
-
+        # Get the WCS index mapping from canon
+        wcs_list = self.canon.get_offsets_list()
 
         for wcs_index, path_actor in self.path_actors.items():
-            
-            wcs_list = self.canon.get_offsets_list()
-            wcs = wcs_list[wcs_index]
-            
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
-            axes_actor = path_actor.get_axes_actor()
-            if axes_actor:
-                self.renderer.RemoveActor(axes_actor)
-                
-            offset_change_actor = self.offset_change_line_actor.get(wcs_index)
-            if offset_change_actor:
-                self.renderer.RemoveActor(offset_change_actor)
-                
-            program_bounds_actor = self.program_bounds_actors.get(wcs_index)
-            if program_bounds_actor:
-                self.renderer.RemoveActor(program_bounds_actor)
-        
-            
-            current_offsets = self.wcs_offsets[wcs_index]
+            if wcs_list and wcs_index in wcs_list:
+                wcs = wcs_list[wcs_index]
+            else:
+                wcs = wcs_index  # Fallback to using index directly if no mapping
+
+            # ...existing actor removal code...
+
+            current_offsets = self.wcs_offsets[wcs]  # Use mapped WCS index
 
             x_column = self._datasource.getOffsetColumns().get('X')
             y_column = self._datasource.getOffsetColumns().get('Y')
@@ -1279,7 +1269,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 rotation = current_offsets[r_column]
             else:
                 rotation = 0.0
-            
+
             LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
             LOG.debug(f"--------wcs X {x}, Y {y}, Z {z}, R {rotation}")
 
@@ -1292,105 +1282,96 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes_transform.Translate(x, y, z)
             axes_transform.RotateZ(rotation)
 
-            axes_actor.SetUserTransform(axes_transform)
-            #LOG.debug(f"-------- Path Actor Matrix BEFORE User transform:  {path_actor.GetMatrix()}")
-            #LOG.debug(f"-------- Path Actor User transform BEFORE apply new:  {path_actor.GetUserTransform()}")
-            path_actor.SetUserTransform(actor_transform)
-            #LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
-            #LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
+            axes_actor = path_actor.get_axes_actor()
+            if axes_actor:
+                self.renderer.RemoveActor(axes_actor)
 
-            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+            path_actor.SetUserTransform(actor_transform)
+
+            program_bounds_actor = self.program_bounds_actors[wcs_index]
             program_bounds_actor.showProgramBounds(self.show_program_bounds)
 
+            axes_actor.SetUserTransform(axes_transform)
             self.renderer.AddActor(axes_actor)
             self.renderer.AddActor(program_bounds_actor)
 
             self.program_bounds_actors[wcs_index] = program_bounds_actor
-        
-            xyz = self.active_wcs_offset[:3]
-            rotation = self.active_rotation
-            LOG.debug(f"-------- active wcs: XYZ: {xyz}, R: {rotation}")
-                           
 
-            if len(self.path_actors) > 1:
+            # Only try to transform actors that exist
+            start_actor = self.offset_change_start_actor.get(wcs_index)
+            end_actor = self.offset_change_end_actor.get(wcs_index)
 
-                # Apply the user transform to the WCS transition actors
-                self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
-                self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
-            
-                
-                if path_count > 0:
-                    
-                    point_01 = self.offset_change_end_actor.get(prev_wcs_index)
-                    point_02 = self.offset_change_start_actor.get(wcs_index)
-                    
-                    if point_01 and point_02:
-                            
-                        
-                        point_01_pos = point_01.GetCenter()
-                        point_02_pos = point_02.GetCenter()
-                        
-                        actor_p01_pos = [point_01_pos[0],
-                                         point_01_pos[1],
-                                         point_01_pos[2]]
-        
-                        actor_p02_pos = [point_02_pos[0],
-                                         point_02_pos[1],
-                                         point_02_pos[2]]
-        
-                        actor_p03_pos = [point_02_pos[0],
-                                         point_02_pos[1],
-                                         point_01_pos[2]]
-        
-                        pts = vtk.vtkPoints()
-                        pts.InsertNextPoint(*actor_p01_pos)
-                        pts.InsertNextPoint(*actor_p03_pos)
-                        pts.InsertNextPoint(*actor_p02_pos)
-        
-                        line = vtk.vtkPolyData()
-                        line.SetPoints(pts)
-    
-                        # Create the square markers for the transition
-                        line0 = vtk.vtkLine()
-                        line0.GetPointIds().SetId(0, 0)
-                        line0.GetPointIds().SetId(1, 1)
-        
-                        line1 = vtk.vtkLine()
-                        line1.GetPointIds().SetId(0, 1)
-                        line1.GetPointIds().SetId(1, 2)
-                        # squares now made.
-        
-                        lines = vtk.vtkCellArray()
-                        lines.InsertNextCell(line0)
-                        lines.InsertNextCell(line1)
-        
-                        line.SetLines(lines)
-        
-                        colors = vtk.vtkUnsignedCharArray()
-                        colors.SetNumberOfComponents(3)
-                        colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
-                        colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
-        
-                        line.GetCellData().SetScalars(colors)
-        
-                        mapper = vtk.vtkPolyDataMapper()
-                        mapper.SetInputData(line)
-                            
-                        actor_line = vtk.vtkActor()
-                        actor_line.SetMapper(mapper)
-                        actor_line.GetProperty().SetLineWidth(1)
-        
-                        self.offset_change_line_actor[wcs_index] = actor_line
-        
-                        self.renderer.AddActor(actor_line)
+            if start_actor:
+                start_actor.SetUserTransform(actor_transform)
 
-                prev_wcs_index = wcs_index
-                
-                prev_offset_x = x
-                prev_offset_y = y
-                prev_offset_z = z
-                
-                path_count += 1
+            if end_actor:
+                end_actor.SetUserTransform(actor_transform)
+
+            if path_count > 0:
+                point_01 = self.offset_change_end_actor.get(prev_wcs_index)
+                point_02 = self.offset_change_start_actor.get(wcs_index)
+
+                if point_01 and point_02:
+                    point_01_pos = point_01.GetCenter()
+                    point_02_pos = point_02.GetCenter()
+
+                    actor_p01_pos = [point_01_pos[0],
+                                     point_01_pos[1],
+                                     point_01_pos[2]]
+
+                    actor_p02_pos = [point_02_pos[0],
+                                     point_02_pos[1],
+                                     point_02_pos[2]]
+
+                    actor_p03_pos = [point_02_pos[0],
+                                     point_02_pos[1],
+                                     point_01_pos[2]]
+
+                    pts = vtk.vtkPoints()
+                    pts.InsertNextPoint(*actor_p01_pos)
+                    pts.InsertNextPoint(*actor_p03_pos)
+                    pts.InsertNextPoint(*actor_p02_pos)
+
+                    line = vtk.vtkPolyData()
+                    line.SetPoints(pts)
+
+                    line0 = vtk.vtkLine()
+                    line0.GetPointIds().SetId(0, 0)
+                    line0.GetPointIds().SetId(1, 1)
+
+                    line1 = vtk.vtkLine()
+                    line1.GetPointIds().SetId(0, 1)
+                    line1.GetPointIds().SetId(1, 2)
+
+                    lines = vtk.vtkCellArray()
+                    lines.InsertNextCell(line0)
+                    lines.InsertNextCell(line1)
+
+                    line.SetLines(lines)
+
+                    colors = vtk.vtkUnsignedCharArray()
+                    colors.SetNumberOfComponents(3)
+                    colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
+                    colors.InsertNextTypedTuple(self.path_colors.get("traverse").getRgb()[0:3])
+
+                    line.GetCellData().SetScalars(colors)
+
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(line)
+
+                    actor_line = vtk.vtkActor()
+                    actor_line.SetMapper(mapper)
+                    actor_line.GetProperty().SetLineWidth(1)
+
+                    self.offset_change_line_actor[wcs_index] = actor_line
+
+                    self.renderer.AddActor(actor_line)
+
+            prev_wcs_index = wcs_index
+            prev_offset_x = x
+            prev_offset_y = y
+            prev_offset_z = z
+            path_count += 1
 
         self.interactor.ReInitialize()
         self.renderer_window.Render()
