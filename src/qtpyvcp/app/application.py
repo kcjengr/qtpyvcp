@@ -223,7 +223,7 @@ class VCPApplication(QApplication):
         """
         for win_name, obj in list(qtpyvcp.WINDOWS.items()):
             for widget in QApplication.allWidgets():
-                if widget.objectName() == pname:
+                if widget.objectName() == name:
                     return getattr(obj, name)
 
         raise AttributeError("Could not find widget with name: %s" % name)
