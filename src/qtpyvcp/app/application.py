@@ -224,9 +224,8 @@ class VCPApplication(QApplication):
         for win_name, obj in list(qtpyvcp.WINDOWS.items()):
             for widget in QApplication.allWidgets():
                 if widget.objectName() == pname:
-                    val = str(widget.text())
-                    return val
-                
+                    return getattr(obj, name)
+
         raise AttributeError("Could not find widget with name: %s" % name)
 
 
