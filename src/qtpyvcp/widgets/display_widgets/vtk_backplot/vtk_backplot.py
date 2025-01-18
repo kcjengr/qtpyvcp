@@ -478,6 +478,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 wcs = self.canon.get_offsets_list[wcs_index] 
                 current_offsets = self.wcs_offsets[wcs_index]
 
+                LOG.debug("---------VTK '__init__'")
                 LOG.debug("---------path_actor List loop")
                 LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
                 LOG.debug("---------wcs_index: {}".format(wcs_index))
@@ -535,6 +536,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 print("NAV 2")
                 # Enable the widget.
                 self.cam_orient_manipulator.On()
+                
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         LOG.debug("@@@@@@@@@@  __init__  END @@@@@@@@@")
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
@@ -714,10 +716,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("-------load_program")
         self._datasource._status.addLock()
 
+        
         # Cleanup the scene, remove any previous actors if any.
         # Do this for each WCS.
         for wcs_index, actor in self.path_actors.items():
             LOG.debug("-------load_program wcs_index: {}".format(wcs_index))
+            
+                        
             axes_actor = actor.get_axes_actor()
             program_bounds_actor = self.program_bounds_actors[wcs_index]
 
@@ -782,27 +787,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         prev_y_position = 0.0
         prev_z_position = 0.0
 
-        
-        offset_list = self.canon.get_offsets_list()
-        print("##########################")
-        for index, wcs in offset_list.items():
-            print(index, wcs)
-        print("##########################")
 
 
         for wcs_index, actor in self.path_actors.items():
-            
-            wcs_list = self.canon.get_offsets_list()
-            wcs = wcs_list[wcs_index]
-            
-            
+                        
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
             LOG.debug("---------wcs_index: {}".format(wcs_index))
-            LOG.debug("---------wcs: {}".format(wcs))
             LOG.debug("---------prev_wcs_index: {}".format(prev_wcs_index))
             LOG.debug("---------path_count: {}".format(path_count))
 
-            current_offsets = self.wcs_offsets[wcs]
+            current_offsets = self.wcs_offsets[wcs_index]
             # rotation = self._datasource.getRotationOfActiveWcs()
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
@@ -924,10 +918,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 if (path_count > 0) and (point_01_pos is not None) and (point_02_pos is not None):
                     
-                    p1_position = self.offset_change_end_actor[prev_wcs_index].GetCenter()
+                    p1_position = self.offset_change_end_actor.get(prev_wcs_index).GetCenter()
                     # p1_rotation = self.offset_change_end_actor[prev_wcs_index].GetUserTransform().GetOrientation()[2]
                     
-                    p2_position = self.offset_change_start_actor.get(wcs).GetCenter()
+                    p2_position = self.offset_change_start_actor.get(wcs_index).GetCenter()
                     # p2_rotation = self.offset_change_end_actor[wcs_index].GetUserTransform().GetOrientation()[2]
                     
                     # print(p1_position, p1_rotation)
@@ -989,9 +983,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             path_count += 1
             prev_wcs_index = wcs_index
-            
+        
+        
         # self.renderer.AddActor(self.axes_actor)
+        
         self.renderer_window.Render()
+        
         if self.program_view_when_loading_program:
             self.setViewProgram(self.program_view_when_loading_program_view)
 
@@ -1235,11 +1232,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
 
         for wcs_index, path_actor in self.path_actors.items():
-            
-            wcs_list = self.canon.get_offsets_list()
-            wcs = wcs_list[wcs_index]
-            
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
+                        
+            program_bounds_actor = self.program_bounds_actors.get(wcs_index)
             axes_actor = path_actor.get_axes_actor()
             if axes_actor:
                 self.renderer.RemoveActor(axes_actor)
@@ -1253,7 +1247,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.RemoveActor(program_bounds_actor)
         
             
-            current_offsets = self.wcs_offsets[wcs_index]
+            current_offsets = self.wcs_offsets.get(wcs_index)
 
             x_column = self._datasource.getOffsetColumns().get('X')
             y_column = self._datasource.getOffsetColumns().get('Y')
@@ -1315,9 +1309,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if len(self.path_actors) > 1:
 
                 # Apply the user transform to the WCS transition actors
-                self.offset_change_start_actor[wcs_index].SetUserTransform(actor_transform)
-                self.offset_change_end_actor[wcs_index].SetUserTransform(actor_transform)
+                offset_change_start_actor = self.offset_change_start_actor.get(wcs_index)
+                offset_change_end_actor = self.offset_change_end_actor.get(wcs_index)
             
+                if offset_change_start_actor is not None:
+                    offset_change_start_actor.SetUserTransform(actor_transform)
+            
+                if offset_change_end_actor is not None:
+                    offset_change_end_actor.SetUserTransform(actor_transform)
                 
                 if path_count > 0:
                     
