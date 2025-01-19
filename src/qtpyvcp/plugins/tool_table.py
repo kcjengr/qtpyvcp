@@ -24,6 +24,7 @@ Tool Table YAML configuration:
 import os
 import re
 import io
+
 from itertools import takewhile
 from datetime import datetime
 
@@ -137,13 +138,14 @@ class ToolTable(DataPlugin):
 
         self.data_manager = getPlugin('persistent_data_manager')
 
+
         self.setCurrentToolNumber(0)
 
         self.tool_table_file = INFO.getToolTableFile()
         if not os.path.exists(self.tool_table_file) and self.db_prog is None:
             return
 
-        self.loadToolTable()
+        self.table = self.loadToolTable()
 
         self.current_tool.setValue(self.TOOL_TABLE[STATUS.tool_in_spindle.getValue()])
 
