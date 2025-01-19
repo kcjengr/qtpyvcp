@@ -48,6 +48,12 @@ class DataBaseManager():
         self.tools = dict()
 
   
+    def run(self):
+        try:
+            tooldb_loop()  # loop forever, use callbacks
+        except Exception as e:
+            print(f"Exception = {e}", file=sys.stderr)
+    
     def close(self):
         self.session.close()
 
@@ -155,10 +161,7 @@ def main():
     
     tool_db_man = DataBaseManager()
     
-    try:
-        tooldb_loop()  # loop forever, use callbacks
-    except Exception as e:
-        print(f"Exception = {e}", file=sys.stderr)
+    tool_db_man.run()
     
     tool_db_man.close()
 

@@ -38,14 +38,14 @@ from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 import qtpyvcp
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
+from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolProperties
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
-import pprint
+from pprint import pprint
 
 CMD = command()
 LOG = getLogger(__name__)
@@ -164,6 +164,8 @@ class DBToolTable(DataPlugin):
         # STATUS.tool_table.notify(lambda *args: self.loadToolTable())
         #
         # STATUS.all_axes_homed.notify(self.reload_tool)
+        
+        # CMD.load_tool_table()
 
     def reload_tool(self):
         if self.remember_tool_in_spindle and STATUS.all_axes_homed.value and STATUS.enabled.value:
@@ -206,9 +208,12 @@ class DBToolTable(DataPlugin):
         :param item: the name of the tool data item to get
         :return: dict, int, float, str
         """
+        
+        tool_in_spindle = STAT.tool_in_spindle
+                
         if item is None:
-            return self.TOOL_TABLE[STAT.tool_in_spindle]
-        return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
+            return self.table[tool_in_spindle]
+        return self.table[tool_in_spindle].get(item[0].upper())
 
     def initialise(self):
         self.session = Session()
@@ -249,6 +254,7 @@ class DBToolTable(DataPlugin):
         self.current_tool.setValue(self.TOOL_TABLE[tool_num])
 
     def reloadToolTable(self):
+        CMD.load_tool_table()
         self.loadToolTable()
         
     def loadToolTable(self): 
@@ -329,12 +335,10 @@ class DBToolTable(DataPlugin):
         to_delete = diff.get("dictionary_item_removed")
         
         if to_insert is not None:
-            print("TO INSTER")
+            print("TO INSTERT")
             for a in to_insert:
                 temp_tool = a.t2
-                
-                self.session.add(
-                    Tool(remark=temp_tool['R'],
+                tool = Tool(remark=temp_tool['R'],
                          tool_no=temp_tool['T'],
                          in_use=False,
                          pocket=temp_tool['P'],
@@ -353,7 +357,12 @@ class DBToolTable(DataPlugin):
                          diameter=temp_tool['D'],
                          tool_table_id=1
                     )
-                )
+                
+                tool_properties = ToolProperties(tool_no=temp_tool['T'],
+                         tool_table_id=1)
+                
+                self.session.add(tool)
+                self.session.add(tool_properties)
                 self.session.commit()
                 
         if to_update is not None:
@@ -389,7 +398,9 @@ class DBToolTable(DataPlugin):
             for a in to_delete:
                 temp_tool = a.t1
                 tool_row = tool_data.filter(Tool.tool_no == temp_tool['T']).one()
+                tool_properties_row = tool_data.filter(ToolProperties.tool_no == temp_tool['T']).one()
                 self.session.delete(tool_row)
+                self.session.delete(tool_properties_row)
                 self.session.commit()
-        
-        CMD.load_tool_table()
+                
+        self.session.close()
