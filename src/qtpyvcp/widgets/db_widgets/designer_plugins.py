@@ -22,7 +22,10 @@ class DBTextFieldPlugin(_DesignerPlugin):
 class DBCheckBoxFieldPlugin(_DesignerPlugin):
     def pluginClass(self):
         return DBCheckBoxField
-
+    
+class DBIntFieldPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return DBIntField
 
 class DBFloatFieldPlugin(_DesignerPlugin):
     def pluginClass(self):
