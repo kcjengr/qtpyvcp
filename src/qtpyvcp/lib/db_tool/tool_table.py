@@ -49,7 +49,7 @@ class ToolProperties(Base):
     __tablename__ = 'tool_properties'
     
     tool_no = Column(Integer, ForeignKey('tool.tool_no'), primary_key=True, autoincrement=False)
-    max_rpm = Column(Integer)
+    max_rpm = Column(Float)
     wear_factor= Column(Float)
     bullnose_radious = Column(Float)
     model = Column(Text)

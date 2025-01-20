@@ -5,6 +5,8 @@ import sys
 
 import re
 
+from pathlib import Path
+
 from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolProperties
 from qtpyvcp.utilities.logger import getLogger
 
@@ -33,17 +35,22 @@ def main():
         print(f"usage: tbl2sql tools.tbl config.ini")
         exit(1)
 
-    if not os.path.isfile(filename):
-        print(f"file {filename} not found!")
-        exit(1)
-        
-    if not os.path.isfile(ini_filename):
-        print(f"file {filename} not found!")
-        exit(1)
-        
-    os.environ['INI_FILE_NAME'] = ini_filename
     
+    tool_table = Path(filename)
+    
+    if not tool_table.exists():
+        print(f"file {filename} not found!")
+        exit(1)
+        
+    ini_file = Path(ini_filename)
+    
+    if not ini_file.exists():
+        print(f"file {ini_file} not found!")
+        exit(1)
+        
+    # os.environ['INI_FILE_NAME'] = ini_file
     # we need INI environment variable first from arguments
+    
     from qtpyvcp.lib.db_tool.base import Base, Session, engine
     
     if not database_exists(engine.url):
@@ -97,7 +104,7 @@ def main():
         
             tool_properties = ToolProperties(
                 tool_no=0,
-                max_rpm=0.0,
+                max_rpm=0,
                 wear_factor=0.0,
                 bullnose_radious=0.0,
                 model="NONE",

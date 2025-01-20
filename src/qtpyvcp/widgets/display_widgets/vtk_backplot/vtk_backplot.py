@@ -384,9 +384,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if z_vec:
                 self.view_z_vec = z_vec
 
-            self.spindle_model = self._datasource._inifile.find("VTK", "SPINDLE")
+            self.spindle_model = self._datasource._inifile.find("VTK", "SPINDLE") or False
 
-            if self.spindle_model is not None:
+            if self.spindle_model:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
             
             
@@ -509,7 +509,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 if self.table_model is not None:
                     self.renderer.AddActor(self.table_actor)
 
-            if self.spindle_model is not None:
+            if self.spindle_model:
                 self.renderer.AddActor(self.spindle_actor)
 
 
@@ -1027,7 +1027,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         #tool_transform.RotateZ(-self.spindle_rotation[2])
         
 
-        if self.spindle_model is not None:
+        if self.spindle_model:
             self.spindle_actor.SetUserTransform(tool_transform)
 
         if self._plot_machine == True:
@@ -1517,7 +1517,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(object)
     def showSpindle(self, value):
 
-        self.spindle_actor.SetVisibility(value)
+        if self.spindle_model:
+            self.spindle_actor.SetVisibility(value)
 
         # self.renderer.ResetCamera()
         self.interactor.ReInitialize()

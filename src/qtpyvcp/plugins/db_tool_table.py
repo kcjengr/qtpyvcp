@@ -283,10 +283,10 @@ class DBToolTable(DataPlugin):
 
         # CMD.load_tool_table()
         
-        self.tool_table_changed.emit(self.table.copy())     
+        self.tool_table_changed.emit(self.table)     
 
     def getToolTable(self):
-        return self.table.copy()
+        return self.table
     
     def saveToolTable(self, tool_table, columns=None):
         """Write tooltable data to db.
