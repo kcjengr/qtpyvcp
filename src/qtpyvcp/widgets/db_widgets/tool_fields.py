@@ -429,7 +429,7 @@ class DBFloatField(QWidget):
         self._label_text = text
 
     # Minimum
-    @Property(int)
+    @Property(float)
     def minimum(self):
         return self.spinbox.minimum()
 
@@ -438,7 +438,7 @@ class DBFloatField(QWidget):
         self.spinbox.setMinimum(value)
         
     # Maximum
-    @Property(int)
+    @Property(float)
     def maximum(self):
         return self.spinbox.maximum()
 
