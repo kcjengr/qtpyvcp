@@ -18,6 +18,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
         self._form_editor = None
 
     # This MUST be overridden to return the widget class
+
     def pluginClass(self):
         raise NotImplementedError()
 
@@ -48,7 +49,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
 
     # Override to set the icon used for the widget in QtDesigner
     def icon(self):
-        return QIcon()
+        return  QIcon()
 
     # Override to set the QtDesigner widget box group heading
     def group(self):
@@ -63,8 +64,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
 
     # Override to set initial QtDesigner property values
     def domXml(self):
-        return '<widget class="{}" name="{}">\n</widget>\n'.format(
-            self.name(), self.objectName())
+        return f"<ui language='c++'>\n<widget class='{self.name()}' name='{self.objectName()}'>\n</widget>\n</ui>"
 
 #==============================================================================
 #  These methods should not need to be overridden

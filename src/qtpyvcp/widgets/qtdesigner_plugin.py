@@ -1,6 +1,5 @@
 import os
 import sys
-import PySide6
 
 os.environ['DESIGNER'] = 'true'
 
