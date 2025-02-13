@@ -65,6 +65,7 @@ from linuxcnc import ini
 from docopt import docopt
 
 import PySide6
+from PySide6 import QtCore
 from qtpyvcp import __version__ as QTPYVCP_VERSION
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.misc import normalizePath
@@ -271,9 +272,9 @@ def printSystemInfo():
         lcnc_version=linuxcnc.version,
 
         # qt info
-        qt_version=PySide6.QT_VERSION,
-        qt_api=PySide6.API_NAME,
-        api_version=PySide6.PYSIDE_VERSION,
+        qt_version=QtCore. __version__,
+        qt_api=PySide6.__package__,
+        api_version=PySide6.__version__,
 
         # system info
         dist=subprocess.check_output(['lsb_release', '-d']).decode("utf-8").split('\t')[1],
