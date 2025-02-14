@@ -1,3 +1,4 @@
+import os
 import sys
 import linuxcnc
 import tempfile
@@ -10,8 +11,10 @@ LOG = logger.getLogger(__name__)
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import getPlugin
 
-STATUS = getPlugin('status')
-STAT = STATUS.stat
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
 INFO = Info()
 CMD = linuxcnc.command()
 

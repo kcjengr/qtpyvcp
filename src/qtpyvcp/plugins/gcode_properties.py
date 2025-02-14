@@ -29,6 +29,7 @@ from qtpyvcp.plugins import DataPlugin, DataChannel
 
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import BaseCanon
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 INFO = Info()
@@ -48,7 +49,6 @@ class GCodeProperties(DataPlugin):
         super(GCodeProperties, self).__init__()
 
         inifile = os.getenv("INI_FILE_NAME")
-        self.stat = STATUS
         self.ini = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self.config_dir = os.path.dirname(inifile)
 
@@ -59,6 +59,9 @@ class GCodeProperties(DataPlugin):
         temp = self.ini.find("RS274NGC", "PARAMETER_FILE") or "linuxcnc.var"
         self.parameter_file = os.path.join(self.config_dir, temp)
         self.temp_parameter_file = os.path.join(self.parameter_file + '.temp')
+        if IN_DESIGNER:
+            return
+        self.stat = STATUS
 
     @DataChannel
     def file_name(self, chan):

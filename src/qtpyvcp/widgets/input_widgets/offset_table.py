@@ -16,6 +16,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
 from PySide6.QtGui import QStandardItemModel, QColor, QBrush
 from PySide6.QtWidgets import QTableView, QHeaderView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
@@ -26,6 +28,7 @@ from qtpyvcp.utilities.settings import connectSetting, getSetting
 
 STATUS = getPlugin('status')
 LOG = getLogger(__name__)
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 
 class ItemDelegate(QStyledItemDelegate):
@@ -224,6 +227,8 @@ class OffsetTable(QTableView):
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
+        if IN_DESIGNER:
+            return
         STATUS.all_axes_homed.notify(self.handle_home_signal)
 
     def handle_home_signal(self, all_axes):

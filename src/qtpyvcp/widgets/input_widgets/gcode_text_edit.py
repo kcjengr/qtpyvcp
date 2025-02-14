@@ -32,7 +32,7 @@ LOG = getLogger(__name__)
 INFO = Info()
 STATUS = getPlugin('status')
 YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
-
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class GcodeSyntaxHighlighter(QSyntaxHighlighter):
     def __init__(self, document, font):
@@ -190,6 +190,8 @@ class GcodeTextEdit(QPlainTextEdit):
         # connect signals
         self.cursorPositionChanged.connect(self.onCursorChanged)
 
+        if IN_DESIGNER:
+            return
         # connect status signals
         STATUS.file.notify(self.loadProgramFile)
         STATUS.motion_line.onValueChanged(self.setCurrentLine)

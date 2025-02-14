@@ -1,3 +1,4 @@
+import os
 import linuxcnc
 
 # Set up logging
@@ -6,8 +7,10 @@ LOG = logger.getLogger(__name__)
 
 from qtpyvcp.plugins import getPlugin
 
-STATUS = getPlugin('status')
-STAT = STATUS.stat
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
 
 CMD = linuxcnc.command()
 

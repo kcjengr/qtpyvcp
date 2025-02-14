@@ -85,6 +85,8 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
             self._format = self._metric_format
 
         self.update(getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
+        if IN_DESIGNER:
+            return
         STATUS.program_units.notify(self.onUnitsChanged, 'string')
 
     def update(self, pos):

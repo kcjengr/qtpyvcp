@@ -1,3 +1,4 @@
+import os
 import linuxcnc
 from PySide6.QtWidgets import QComboBox
 
@@ -10,9 +11,10 @@ LOG = logger.getLogger(__name__)
 
 from qtpyvcp.actions.base_actions import setTaskMode
 from qtpyvcp.plugins import getPlugin
-
-STATUS = getPlugin('status')
-STAT = STATUS.stat
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
 
 from qtpyvcp.utilities.info import Info
 INFO = Info()
@@ -169,7 +171,8 @@ def _resetMode(interp_state):
             LOG.debug("Successfully reset task_mode after MDI")
         PREVIOUS_MODE = None
 
-STATUS.interp_state.onValueChanged(_resetMode)
+if not IN_DESIGNER:
+    STATUS.interp_state.onValueChanged(_resetMode)
 
 def issue_mdi(command, reset=True):
     """Issue an MDI command.

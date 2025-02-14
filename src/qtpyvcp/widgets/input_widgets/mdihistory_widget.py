@@ -31,9 +31,10 @@ from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
 import linuxcnc
 
-
-STATUS = getPlugin('status')
-STAT = STATUS.stat
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
 INFO = Info()
 
 

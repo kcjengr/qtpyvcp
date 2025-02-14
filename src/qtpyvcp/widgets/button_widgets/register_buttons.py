@@ -1,3 +1,5 @@
+#import pydevd; pydevd.settrace()
+
 from qtpyvcp.widgets.button_widgets.action_button import (ActionButton)  # noqa: F401
 
 from qtpyvcp.widgets.button_widgets.designer_plugins import (ActionButtonPlugin)

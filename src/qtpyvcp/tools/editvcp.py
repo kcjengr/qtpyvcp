@@ -189,6 +189,7 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
     os.environ['QT_SELECT'] = 'qt6'
+    os.environ['DESIGNER'] = 'True'
 
     widgets_path_list = (os.path.join(base, "..", "widgets"),
                          os.path.join(base, "..", "widgets", "hal_widgets"),
@@ -217,10 +218,12 @@ def launch_designer(opts=DotDict()) -> None:
                   sudo apt install qttools5-dev qttools5-dev-tools""")
         LOG.error(f'Exception occured: {exception}')
         LOG.error('Subprocess failed')
+        os.environ.pop('DESIGNER')
         return False
     else:
         # no exception was raised
         LOG.info('EditVCP finished')
+        os.environ.pop('DESIGNER')
 
 
 def main() -> None:
