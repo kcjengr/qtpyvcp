@@ -120,6 +120,9 @@ def _run_ok(widget=None):
     Returns:
         bool : True if Ok, else False.
     """
+    if IN_DESIGNER:
+        return 
+    
     if STAT.estop:
         ok = False
         msg = "Can't run program when in E-Stop"

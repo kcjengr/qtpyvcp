@@ -45,6 +45,8 @@ class RemovableDeviceComboBox(QComboBox):
         self.setSizeAdjustPolicy(QComboBox.AdjustToContents)
 
         self._file_locations = getPlugin('file_locations')
+        if IN_DESIGNER:
+            return
         self._file_locations.removable_devices.notify(self.onRemovableDevicesChanged)
         self._file_locations.new_device.notify(self.onNewDeviceAdded)
 

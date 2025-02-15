@@ -182,6 +182,8 @@ class GcodeTextEdit(QPlainTextEdit):
 
         # FixMe: Picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
+        if IN_DESIGNER:
+            return
         self.run_action.setEnabled(program_actions.run_from_line.ok())
         program_actions.run_from_line.bindOk(self.run_action)
 
@@ -190,8 +192,6 @@ class GcodeTextEdit(QPlainTextEdit):
         # connect signals
         self.cursorPositionChanged.connect(self.onCursorChanged)
 
-        if IN_DESIGNER:
-            return
         # connect status signals
         STATUS.file.notify(self.loadProgramFile)
         STATUS.motion_line.onValueChanged(self.setCurrentLine)

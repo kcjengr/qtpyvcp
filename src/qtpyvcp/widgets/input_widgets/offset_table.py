@@ -81,6 +81,9 @@ class OffsetModel(QStandardItemModel):
 
         self.current_row_color = QColor(Qt.darkGreen)
 
+        if IN_DESIGNER:
+            return 
+        
         self._columns = self.ot.columns
         self._rows = self.ot.rows
 
@@ -118,9 +121,13 @@ class OffsetModel(QStandardItemModel):
         return QStandardItemModel.headerData(self, section, orientation, role)
 
     def columnCount(self, parent=None):
+        if IN_DESIGNER:
+            return 0
         return len(self._columns)
 
     def rowCount(self, parent=None):
+        if IN_DESIGNER:
+            return 0
         return len(self._rows)
 
     def flags(self, index):
@@ -205,16 +212,17 @@ class OffsetTable(QTableView):
         self.offset_model = OffsetModel(self)
 
         # Properties
-        self._columns = self.offset_model._columns
-        self._confirm_actions = False
         self._current_row_color = QColor('sage')
-
+        if not IN_DESIGNER:
+            self._columns = self.offset_model._columns
+        self._confirm_actions = False
         self.proxy_model = QSortFilterProxyModel()
         self.proxy_model.setFilterKeyColumn(0)
         self.proxy_model.setSourceModel(self.offset_model)
 
-        self.item_delegate = ItemDelegate(columns=self._columns)
-        self.setItemDelegate(self.item_delegate)
+        if not IN_DESIGNER:
+            self.item_delegate = ItemDelegate(columns=self._columns)
+            self.setItemDelegate(self.item_delegate)
 
         self.setModel(self.proxy_model)
 

@@ -168,22 +168,21 @@ class OffsetTable(DataPlugin):
 
         # print(f"X: {self.x_column}\nY: {self.y_column}\nZ: {self.z_column}\nA: {self.a_column}\nB: {self.b_column}\nC: {self.c_column}\nU: {self.u_column}\nV: {self.v_column}\nW: {self.w_column}\nZ: {self.r_column}")
 
-        if IN_DESIGNER:
-            return
-
-        self.status = STATUS
 
         for i in range(9):
             for j in range(len(self.columns)):
                 self.DEFAULT_OFFSET.get(i).insert(j, 0.0)
+
+        if IN_DESIGNER:
+            return
 
         self.setCurrentOffsetNumber(1)
 
         self.g5x_offset_table = self.DEFAULT_OFFSET.copy()
         self.current_index = STATUS.stat.g5x_index
 
+        self.status = STATUS
         self.loadOffsetTable()
-
         self.status.g5x_index.notify(self.setCurrentOffsetNumber)
 
     @DataChannel
