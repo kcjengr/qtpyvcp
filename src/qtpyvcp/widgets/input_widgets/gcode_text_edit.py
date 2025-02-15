@@ -588,19 +588,18 @@ class NumberMargin(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         self.parent = parent
+        self.background = QColor('#e8e8e8')
+        self.highlight_background = QColor('#e8e8e8')
+        self.color = QColor('#717171')
+        self.highlight_color = QColor('#000000')
         # this only happens when lines are added or subtracted
         self.parent.blockCountChanged.connect(self.updateWidth)
         # this happens quite often
         self.parent.updateRequest.connect(self.updateContents)
 
-        self.background = QColor('#e8e8e8')
-        self.highlight_background = QColor('#e8e8e8')
-        self.color = QColor('#717171')
-        self.highlight_color = QColor('#000000')
-
     def getWidth(self):
         blocks = self.parent.blockCount()
-        return self.parent.fontMetrics().width(str(blocks)) + 5
+        return self.parent.fontMetrics().horizontalAdvance(str(blocks)) + 5
 
     def updateWidth(self):  # check the number column width and adjust
         width = self.getWidth()
@@ -618,6 +617,9 @@ class NumberMargin(QWidget):
             self.updateWidth()
 
     def paintEvent(self, event):  # this puts the line numbers in the margin
+        if IN_DESIGNER:
+            QWidget.paintEvent(self, event)
+            return 
         painter = QPainter(self)
         painter.fillRect(event.rect(), self.background)
         block = self.parent.firstVisibleBlock()
