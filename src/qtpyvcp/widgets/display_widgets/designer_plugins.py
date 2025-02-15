@@ -14,14 +14,17 @@ class DROLabel_Plugin(_DesignerPlugin):
     def designerExtensions(self):
         return [DroEditorExtension, RulesEditorExtension]
 
-from .camera.camera import Camera
-class CameraPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return Camera
-    def toolTip(self):
-        return "Camera widget"
-    def isContainer(self):
-        return True
+#
+# Remove camera until refactored to not need qtpy
+#
+# from .camera.camera import Camera
+# class CameraPlugin(_DesignerPlugin):
+#     def pluginClass(self):
+#         return Camera
+#     def toolTip(self):
+#         return "Camera widget"
+#     def isContainer(self):
+#         return True
 
 from .bar_indicator import BarIndicator
 class BarIndicatorPlugin(_DesignerPlugin):
