@@ -165,6 +165,8 @@ class VCPBaseWidget(VCPPrimitiveWidget):
             # print(rule)
             ch = ChanList()
             triggers = []
+            if IN_DESIGNER:
+                return
             for chan in rule['channels']:
 
                 try:

@@ -347,14 +347,18 @@ class feed_override:
         CMD.feedrate(1.0)
 
 def _feed_override_enable_ok(widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON \
-        and STAT.interp_state == linuxcnc.INTERP_IDLE:
-        ok = True
-        msg = ""
+    if not IN_DESIGNER:
+        if STAT.task_state == linuxcnc.STATE_ON \
+            and STAT.interp_state == linuxcnc.INTERP_IDLE:
+            ok = True
+            msg = ""
+        else:
+            ok = False
+            msg = "Machine must be ON and IDLE to enable/disable feed override"
     else:
         ok = False
-        msg = "Machine must be ON and IDLE to enable/disable feed override"
-
+        msg = "In Designer"
+        
     _feed_override_enable_ok.msg = msg
 
     if widget is not None:
@@ -365,23 +369,29 @@ def _feed_override_enable_ok(widget=None):
     return ok
 
 def _feed_override_enable_bindOk(widget):
+    if IN_DESIGNER:
+        return
     STATUS.task_state.onValueChanged(lambda: _feed_override_enable_ok(widget))
     STATUS.interp_state.onValueChanged(lambda: _feed_override_enable_ok(widget))
     STATUS.feed_override_enabled.onValueChanged(widget.setChecked)
 
 def _feed_override_ok(value=100, widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON and STAT.feed_override_enabled == 1:
-        ok = True
-        msg = ""
-    elif STAT.task_state != linuxcnc.STATE_ON:
-        ok = False
-        msg = "Machine must be ON to set feed override"
-    elif STAT.feed_override_enabled == 0:
-        ok = False
-        msg = "Feed override is not enabled"
+    if not IN_DESIGNER:
+        if STAT.task_state == linuxcnc.STATE_ON and STAT.feed_override_enabled == 1:
+            ok = True
+            msg = ""
+        elif STAT.task_state != linuxcnc.STATE_ON:
+            ok = False
+            msg = "Machine must be ON to set feed override"
+        elif STAT.feed_override_enabled == 0:
+            ok = False
+            msg = "Feed override is not enabled"
+        else:
+            ok = False
+            msg = "Feed override can not be changed"
     else:
         ok = False
-        msg = "Feed override can not be changed"
+        msg = "In Designer"
 
     _feed_override_ok.msg = msg
 
@@ -393,7 +403,8 @@ def _feed_override_ok(value=100, widget=None):
     return ok
 
 def _feed_override_bindOk(value=100, widget=None):
-
+    if IN_DESIGNER:
+        return
     # This will work for any widget
     STATUS.task_state.onValueChanged(lambda: _feed_override_ok(widget=widget))
     STATUS.feed_override_enabled.onValueChanged(lambda: _feed_override_ok(widget=widget))
@@ -440,12 +451,16 @@ class rapid_override:
         CMD.rapidrate(1.0)
 
 def _rapid_override_ok(value=100, widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON:
-        ok = True
-        msg = ""
+    if not IN_DESIGNER:
+        if STAT.task_state == linuxcnc.STATE_ON:
+            ok = True
+            msg = ""
+        else:
+            ok = False
+            msg = "Machine must be ON to set rapid override"
     else:
         ok = False
-        msg = "Machine must be ON to set rapid override"
+        msg = "In Designer"
 
     _rapid_override_ok.msg = msg
 
@@ -457,7 +472,8 @@ def _rapid_override_ok(value=100, widget=None):
     return ok
 
 def _rapid_override_bindOk(value=100, widget=None):
-
+    if IN_DESIGNER:
+        return
     # This will work for any widget
     STATUS.task_state.onValueChanged(lambda: _rapid_override_ok(widget=widget))
 
@@ -503,13 +519,17 @@ class max_velocity:
         CMD.maxvel(INFO.maxVelocity() / 60)
 
 def _max_velocity_ok(value=100, widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON:
-        ok = True
-        msg = ""
+    if not IN_DESIGNER:
+        if STAT.task_state == linuxcnc.STATE_ON:
+            ok = True
+            msg = ""
+        else:
+            ok = False
+            msg = "Machine must be ON to set max velocity"
     else:
         ok = False
-        msg = "Machine must be ON to set max velocity"
-
+        msg = "In Designer"
+            
     _max_velocity_ok.msg = msg
 
     if widget is not None:
@@ -520,7 +540,8 @@ def _max_velocity_ok(value=100, widget=None):
     return ok
 
 def _max_velocity_bindOk(value=100, widget=None):
-
+    if IN_DESIGNER:
+        return
     # This will work for any widget
     STATUS.task_state.onValueChanged(lambda: _max_velocity_ok(widget=widget))
 
@@ -590,14 +611,18 @@ class mode:
         setTaskMode(linuxcnc.MODE_MDI)
 
 def _mode_ok(widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON and STAT.interp_state == linuxcnc.INTERP_IDLE:
-        ok = True
-        msg = ""
-
+    if not IN_DESIGNER:
+        if STAT.task_state == linuxcnc.STATE_ON and STAT.interp_state == linuxcnc.INTERP_IDLE:
+            ok = True
+            msg = ""
+    
+        else:
+            ok = False
+            msg = "Can't set mode when not ON and IDLE"
     else:
         ok = False
-        msg = "Can't set mode when not ON and IDLE"
-
+        msg = "In Designer"
+            
     _mode_ok.msg = msg
 
     if widget is not None:
@@ -608,6 +633,8 @@ def _mode_ok(widget=None):
     return ok
 
 def _manual_bindOk(widget):
+    if IN_DESIGNER:
+        return
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_MANUAL)
     STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
     STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
@@ -617,6 +644,8 @@ mode.manual.ok = _mode_ok
 mode.manual.bindOk = _manual_bindOk
 
 def _auto_bindOk(widget):
+    if IN_DESIGNER:
+        return 
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_AUTO)
     STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
     STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
@@ -626,6 +655,8 @@ mode.auto.ok = _mode_ok
 mode.auto.bindOk = _auto_bindOk
 
 def _mdi_bindOk(widget):
+    if IN_DESIGNER:
+        return
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_MDI)
     STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
     STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
@@ -684,13 +715,17 @@ class home:
         _home_joint(jnum)
 
 def _home_ok(jnum=-1, widget=None):
-    # TODO: Check if homing a specific joint is OK
-    if power.is_on(): # and not STAT.homed[jnum]:
-        ok = True
-        msg = ""
+    if not IN_DESIGNER:
+        # TODO: Check if homing a specific joint is OK
+        if power.is_on(): # and not STAT.homed[jnum]:
+            ok = True
+            msg = ""
+        else:
+            ok = False
+            msg = "Machine must be on to home"
     else:
         ok = False
-        msg = "Machine must be on to home"
+        msg = "In Designer"        
 
     _home_ok.msg = msg
 
@@ -702,6 +737,8 @@ def _home_ok(jnum=-1, widget=None):
     return ok
 
 def _home_all_bindOk(widget):
+    if IN_DESIGNER:
+        return 
     STATUS.on.notify(lambda: _home_ok(widget=widget))
     STATUS.homed.notify(lambda: _home_ok(widget=widget))
 
@@ -709,6 +746,8 @@ home.all.ok = _home_ok
 home.all.bindOk = _home_all_bindOk
 
 def _home_joint_bindOk(jnum, widget):
+    if IN_DESIGNER:
+        return 
     STATUS.on.notify(lambda: _home_ok(jnum, widget=widget))
     STATUS.homed.notify(lambda: _home_ok(jnum, widget=widget))
 
@@ -716,6 +755,8 @@ home.joint.ok = _home_ok
 home.joint.bindOk = _home_joint_bindOk
 
 def _home_axis_bindOk(axis, widget):
+    if IN_DESIGNER:
+        return
     aletter = getAxisLetter(axis)
     if aletter not in INFO.AXIS_LETTER_LIST:
         msg = 'Machine has no {} axis'.format(aletter.upper())
@@ -829,6 +870,8 @@ def override_limits():
 def _override_limits_ok(widget=None):
     ok = False
     mgs = None
+    if IN_DESIGNER:
+        return 
     for anum in INFO.AXIS_NUMBER_LIST:
         if STAT.limit[anum] != 0:
             aaxis = getAxisLetter(anum)
@@ -849,6 +892,8 @@ def _override_limits_ok(widget=None):
     return ok
 
 def _override_limits_bindOk(widget):
+    if IN_DESIGNER:
+        return 
     STATUS.limit.onValueChanged(lambda: _override_limits_ok(widget))
 
 override_limits.ok = _override_limits_ok
@@ -1016,6 +1061,8 @@ class jog:
             distance (float, optional) : Desired jog distance, continuous if 0.00.
         """
 
+        if IN_DESIGNER:
+            return 
         # check if it even makes sense to try to jog
         if STAT.task_state != linuxcnc.STATE_ON or STAT.task_mode != linuxcnc.MODE_MANUAL:
             return
@@ -1128,17 +1175,22 @@ jog.set_angular_speed_percentage.bindOk = _jog_angular_speed_slider_bindOk
 
 
 def _jog_axis_ok(axis, direction=0, widget=None):
-    axisnum = getAxisNumber(axis)
-    jnum = INFO.COORDINATES.index(axis)
-    if STAT.task_state == linuxcnc.STATE_ON \
-            and STAT.interp_state == linuxcnc.INTERP_IDLE \
-            and (STAT.limit[axisnum] == 0 or STAT.joint[jnum]['override_limits']):
-        # and STAT.homed[axisnum] == 1 \
-        ok = True
-        msg = ""
+    if not IN_DESIGNER:
+        axisnum = getAxisNumber(axis)
+        jnum = INFO.COORDINATES.index(axis)
+        if STAT.task_state == linuxcnc.STATE_ON \
+                and STAT.interp_state == linuxcnc.INTERP_IDLE \
+                and (STAT.limit[axisnum] == 0 or STAT.joint[jnum]['override_limits']):
+            # and STAT.homed[axisnum] == 1 \
+            ok = True
+            msg = ""
+        else:
+            ok = False
+            msg = "Machine must be ON and in IDLE to jog"
     else:
         ok = False
-        msg = "Machine must be ON and in IDLE to jog"
+        msg = "In Designer"
+        
 
     _jog_axis_ok.msg = msg
 
@@ -1151,6 +1203,8 @@ def _jog_axis_ok(axis, direction=0, widget=None):
 
 
 def _jog_axis_bindOk(axis, direction, widget):
+    if IN_DESIGNER:
+        return 
     aletter = getAxisLetter(axis)
     if aletter not in INFO.AXIS_LETTER_LIST:
         msg = 'Machine has no {} axis'.format(aletter.upper())

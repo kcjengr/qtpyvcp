@@ -101,6 +101,9 @@ class DROBaseWidget(VCPWidget):
             self._fmt = self._deg_fmt
 
         else:
+            if IN_DESIGNER:
+                self._fmt = self._mm_fmt
+                return
             if units is None:
                 units = str(self.status.program_units)
 

@@ -55,6 +55,10 @@ def bindWidget(widget, action):
 
     prev_item = ''
     method = sys.modules[__name__]
+    
+    if IN_DESIGNER:
+        return
+    
     for item in action.split('.'):
         if item.isdigit():
             kwargs[prev_item] = int(item)
