@@ -16,6 +16,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 from PySide6.QtCore import Qt, QSortFilterProxyModel, QRegularExpression
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PySide6.QtWidgets import QVBoxLayout, QStackedWidget, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
@@ -25,6 +26,8 @@ from qtpyvcp.plugins import getPlugin
 
 from datetime import datetime
 from time import time
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class NotificationWidget(QWidget, VCPWidget):
     def __init__(self, parent=None):
@@ -91,6 +94,8 @@ class NotificationWidget(QWidget, VCPWidget):
 
         self.setLayout(self.main_layout)
 
+        if IN_DESIGNER:
+            return
         self.notification_channel.info_message.notify(self.on_info_message)
         self.notification_channel.warn_message.notify(self.on_warn_message)
         self.notification_channel.error_message.notify(self.on_error_message)

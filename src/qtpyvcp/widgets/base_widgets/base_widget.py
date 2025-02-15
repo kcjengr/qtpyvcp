@@ -15,6 +15,8 @@ from PySide6.QtWidgets import QPushButton
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
+
 LOG = getLogger(__name__)
 
 class ChanList(list):

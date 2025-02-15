@@ -10,6 +10,7 @@ INFO = Info()
 LOG = logger.getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
+
 """
 This class acts as a datasource for the VTK components.
 It abstracts all the linuxcnc specific logic and exposes simple methods that could be eventually
@@ -43,6 +44,9 @@ class LinuxCncDataSource(QObject):
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
         self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
         self._machine_bounds = str(self._inifile.find("VTK", "BOUNDARIES"))
+        
+        if IN_DESIGNER:
+            return
 
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)

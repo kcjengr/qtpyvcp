@@ -214,6 +214,11 @@ def issue_mdi(command, reset=True):
         LOG.error("Failed to issue MDI command: {}".format(command))
 
 def _issue_mdi_ok(mdi_cmd='', widget=None):
+    if IN_DESIGNER:
+        ok = False
+        msg = "Can't issue MDI unless machine is ON, HOMED and IDLE"
+        return ok
+        
     if STAT.task_state == linuxcnc.STATE_ON \
                           and STATUS.allHomed() \
                           and STAT.interp_state == linuxcnc.INTERP_IDLE:
@@ -236,6 +241,8 @@ def _issue_mdi_ok(mdi_cmd='', widget=None):
 
 def _issue_mdi_bindOk(mdi_cmd='', widget=None):
     _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)
+    if IN_DESIGNER:
+        return
     STATUS.task_state.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
     STATUS.interp_state.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
     STATUS.homed.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))

@@ -4,6 +4,7 @@ DROBaseWidget
 
 """
 
+import os
 from enum import IntEnum
 
 from PySide6.QtCore import Slot, Property
@@ -16,6 +17,7 @@ from qtpyvcp.utilities import logger
 
 from qtpyvcp.utilities.info import Info
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 LOG = logger.getLogger(__name__)
 INFO = Info()
 
@@ -79,6 +81,9 @@ class DROBaseWidget(VCPWidget):
         self._fmt = self._in_fmt
         self._input_type = 'number:float'
 
+        if IN_DESIGNER:
+            return
+        
         self.updateValue()
 
         self.status.program_units.notify(self.updateUnits, 'string')
@@ -136,6 +141,8 @@ class DROBaseWidget(VCPWidget):
 
     def updateValue(self, pos=None):
         """Update the displayed position."""
+        if IN_DESIGNER:
+            return
         if pos is None:
             pos = getattr(self.pos, self._ref_typ.name).getValue()
 

@@ -180,17 +180,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._dwel_color = self._default_dwell_color
         self._user_color = self._default_user_color
 
-        self.active_wcs_index = self._datasource.getActiveWcsIndex()
-        self.wcs_offsets = self._datasource.getWcsOffsets()
-        self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
-        self.g92_offset = self._datasource.getG92_offset()
-        self.active_rotation = self._datasource.getRotationOfActiveWcs()
+        if not IN_DESIGNER:
+            self.active_wcs_index = self._datasource.getActiveWcsIndex()
+            self.wcs_offsets = self._datasource.getWcsOffsets()
+            self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
+            self.g92_offset = self._datasource.getG92_offset()
+            self.active_rotation = self._datasource.getRotationOfActiveWcs()
         
-        self.rotation_xy_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
+            LOG.debug("---------active_wcs_offset {}".format(self.active_wcs_offset))
+            LOG.debug("---------wcs_offsets {}".format(self.wcs_offsets))
+            
+            self.joints = self._datasource._status.joint
 
-        LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
-        LOG.debug("---------active_wcs_offset {}".format(self.active_wcs_offset))
-        LOG.debug("---------wcs_offsets {}".format(self.wcs_offsets))
+        self.rotation_xy_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
         self.original_g5x_offset = [0.0] * NUMBER_OF_WCS
         self.original_g92_offset = [0.0] * NUMBER_OF_WCS
@@ -199,7 +202,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
         
-        self.joints = self._datasource._status.joint
 
         self.foam_offset = [0.0, 0.0]
 
@@ -224,14 +226,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_offset_angle_point = OrderedDict
         self.path_offset_end_point = OrderedDict()
         
-        if self._datasource.isMachineMetric():
+        if not IN_DESIGNER:
+            if self._datasource.isMachineMetric():
+                self.position_mult = 1000  # 500 here works for me
+                self.clipping_range_near = 0.01
+                self.clipping_range_far = 10000.0  # TODO: check this value
+            else:
+                self.position_mult = 100
+                self.clipping_range_near = 0.001
+                self.clipping_range_far = 1000.0  # TODO: check this value
+        else:
             self.position_mult = 1000  # 500 here works for me
             self.clipping_range_near = 0.01
             self.clipping_range_far = 10000.0  # TODO: check this value
-        else:
-            self.position_mult = 100
-            self.clipping_range_near = 0.001
-            self.clipping_range_far = 1000.0  # TODO: check this value
+            
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self.renderer = vtk.vtkRenderer()
