@@ -149,7 +149,7 @@ class GcodeTextEdit(QPlainTextEdit):
 
         self.block_number = None
         self.focused_line = 1
-        self.current_line_background = QColor(self.palette().alternateBase())
+        self.current_line_background = QColor(self.palette().alternateBase().color())
         self.readonly = False
         self.syntax_highlighting = False
 
