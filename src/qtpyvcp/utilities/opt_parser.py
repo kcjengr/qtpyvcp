@@ -272,7 +272,7 @@ def printSystemInfo():
         lcnc_version=linuxcnc.version,
 
         # qt info
-        qt_version=QtCore. __version__,
+        qt_version=QtCore.__version__,
         qt_api=PySide6.__package__,
         api_version=PySide6.__version__,
 
