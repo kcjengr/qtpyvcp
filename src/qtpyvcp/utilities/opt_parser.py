@@ -256,7 +256,6 @@ def printSystemInfo():
     import psutil
 
     import linuxcnc
-    import qtpy
     import qtpyvcp
 
     def getProcessorModelName():

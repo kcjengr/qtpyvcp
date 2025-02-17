@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (QFileDialog,
 
 from qtpyvcp import TOP_DIR
 
-from qtpyvcp.vcp_chooser.vcp_chooser_ui import Ui_Dialog
+#from qtpyvcp.vcp_chooser.vcp_chooser_ui import Ui_Dialog
 
 CHOOSER_DIR = os.path.abspath(os.path.dirname(__file__))
 
