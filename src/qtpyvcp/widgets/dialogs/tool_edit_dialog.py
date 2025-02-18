@@ -20,14 +20,17 @@
 import linuxcnc
 import os
 
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile
+#from PySide6.QtUiTools import QUiLoader
+#from PySide6.QtCore import QFile
 from PySide6.QtWidgets import QDialog
 
+from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
+LOG = logger.getLogger(__name__)
 
 
 class ToolEditDialog(BaseDialog):
@@ -43,9 +46,13 @@ class ToolEditDialog(BaseDialog):
             self.dialog_ui = self.mill_ui_dialog
 
         file_path = os.path.join(os.path.dirname(__file__), self.dialog_ui)
-        ui_file = QFile(file_path)
-        ui_file.open(QFile.ReadOnly)
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
         
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file, self)
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
+        LOG.debug(f"ToolEditDialog UI file to load and convert: {file_path}")
+        form_class, base_class = PySide6Ui(file_path).load()
+        form = form_class()
+        form.setupUi(self)
 
