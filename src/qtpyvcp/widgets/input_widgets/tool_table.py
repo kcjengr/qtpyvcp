@@ -155,7 +155,7 @@ class ToolModel(QStandardItemModel):
             else:               # All the other floats
                 return Qt.AlignVCenter | Qt.AlignRight
 
-        elif role == Qt.TextColorRole:
+        elif role == Qt.ForegroundRole:
             tnum = sorted(self._tool_table)[index.row() + 1]
             if self.stat.tool_in_spindle == tnum:
                 return QBrush(self.current_tool_color)
