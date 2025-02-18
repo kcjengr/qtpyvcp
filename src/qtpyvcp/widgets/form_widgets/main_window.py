@@ -91,10 +91,7 @@ class VCPMainWindow(QMainWindow):
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
-            form_class, base_class = PySide6Ui(ui_file).load()
-            form = form_class()
-            form.setupUi(self)
-            #self.loadUi(ui_file)
+            self.loadUi(ui_file)
             # self.initUi()
 
         if menu is not None:
@@ -154,15 +151,17 @@ class VCPMainWindow(QMainWindow):
         """
         # TODO: Check for compiled *_ui.py files and load from that if exists
         file_path = os.path.join(os.path.dirname(__file__), ui_file)
-        ui_file = QFile(file_path)
-        ui_file.open(QFile.ReadOnly)
-        
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file, self)
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
         # self.ui.initUi()
-        
-        self.setCentralWidget(self.ui)
-        self.ui.show()
+        #self.setCentralWidget(self.ui)
+        #self.ui.show()
+        LOG.debug(f"UI file to load and convert: {file_path}")
+        form_class, base_class = PySide6Ui(file_path).load()
+        form = form_class()
+        form.setupUi(self)
 
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied
