@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QDialog, QApplication
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 LOG = getLogger(__name__)
 
@@ -18,12 +19,15 @@ class ErrorDialog(BaseDialog):
         super(ErrorDialog, self).__init__(stay_on_top=True)
         
         file_path = os.path.join(os.path.dirname(__file__), 'error_dialog.ui')
-        ui_file = QFile(file_path)
-        ui_file.open(QFile.ReadOnly)
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
         
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file, self)
-        self.ui.show()
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
+        #self.ui.show()
+        form_class, base_class = PySide6Ui(file_path).load()
+        form = form_class()
+        form.setupUi(self)
 
         self.exc_info = exc_info
         exc_type, exc_msg, exc_tb = exc_info

@@ -24,6 +24,7 @@ from PySide6.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 from qtpyvcp import hal
 
@@ -69,11 +70,14 @@ class ToolChangeDialog(BaseDialog):
         self.ui_file = kwargs.get('ui_file', default_ui)
 
         file_path = os.path.join(os.path.dirname(__file__), self.ui_file)
-        ui_file = QFile(file_path)
-        ui_file.open(QFile.ReadOnly)
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
         
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file, self)
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
+        form_class, base_class = PySide6Ui(file_path).load()
+        form = form_class()
+        form.setupUi(self)
 
 
         comp = hal.getComponent("qtpyvcp_manualtoolchange")

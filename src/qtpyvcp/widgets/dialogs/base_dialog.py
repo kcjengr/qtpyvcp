@@ -7,6 +7,7 @@ from PySide6.QtCore import Qt, QFile
 from PySide6.QtWidgets import QDialog
 
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 LOG = getLogger(__name__)
 
@@ -91,12 +92,15 @@ class BaseDialog(QDialog):
         """
 
         file_path = os.path.join(os.path.dirname(__file__), ui_file)
-        ui_file = QFile(file_path)
-        ui_file.open(QFile.ReadOnly)
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
         
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file, self)
-        self.ui.show()
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
+        #self.ui.show()
+        form_class, base_class = PySide6Ui(file_path).load()
+        form = form_class()
+        form.setupUi(self)
 
     def setWindowFlag(self, flag, on):
         """BackPort QWidget.setWindowFlag() implementation from Qt 5.9
