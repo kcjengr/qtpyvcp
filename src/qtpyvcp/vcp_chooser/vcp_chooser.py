@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (QFileDialog,
                                QStyleFactory)
 
 from qtpyvcp import TOP_DIR
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 #from qtpyvcp.vcp_chooser.vcp_chooser_ui import Ui_Dialog
 
@@ -23,25 +24,29 @@ class VCPChooser(QDialog):
     def __init__(self, opts):
         super(VCPChooser, self).__init__()
 
-        # file_path = os.path.join(os.path.dirname(__file__), 'vcp_chooser.ui')
+        file_path = os.path.join(os.path.dirname(__file__), 'vcp_chooser.ui')
         # ui_file = QFile(file_path)
         # ui_file.open(QFile.ReadOnly)
         #
         # loader = QUiLoader()
         # self.ui = loader.load(ui_file, self)
 
-        self.ui = Ui_Dialog()
-        self.ui.setupUi(self)
+        #self.ui = Ui_Dialog()
+        #self.ui.setupUi(self)
+        form_class, base_class = PySide6Ui(file_path).load()
+        form = form_class()
+        form.setupUi(self)
+        self.ui = form
         
         self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         self.opts = opts
         self._vcp_data = {}
 
-        self.selection = self.ui.vcpTreeView.selectionModel()
+        self.selection = form.vcpTreeView.selectionModel()
 
         # example VCP section
-        category = QTreeWidgetItem(self.ui.vcpTreeView)
+        category = QTreeWidgetItem(form.vcpTreeView)
         category.setText(0, 'Example VCPs')
         category.setFlags(Qt.ItemIsEnabled)
 
@@ -51,7 +56,7 @@ class VCPChooser(QDialog):
             child.setText(0, self.get_vcp_data(entry_point))
 
         # test VCP section
-        category = QTreeWidgetItem(self.ui.vcpTreeView)
+        category = QTreeWidgetItem(form.vcpTreeView)
         category.setText(0, 'Video Test VCPs')
         category.setFlags(Qt.ItemIsEnabled)
 
@@ -62,7 +67,7 @@ class VCPChooser(QDialog):
 
 
         # installed VCP section
-        category = QTreeWidgetItem(self.ui.vcpTreeView)
+        category = QTreeWidgetItem(form.vcpTreeView)
         category.setText(0, 'Installed VCPs')
         category.setFlags(Qt.ItemIsEnabled)
         category.setHidden(True)
@@ -74,7 +79,7 @@ class VCPChooser(QDialog):
             category.setHidden(False)
 
         if os.path.exists(CUSTOM_VCP_DIR):
-            category = QTreeWidgetItem(self.ui.vcpTreeView)
+            category = QTreeWidgetItem(form.vcpTreeView)
             category.setText(0, 'Custom VCPs')
             category.setFlags(Qt.ItemIsEnabled)
             for dir_name in os.listdir(CUSTOM_VCP_DIR):
@@ -83,8 +88,8 @@ class VCPChooser(QDialog):
                 child = QTreeWidgetItem(category)
                 child.setText(0, dir_name)
 
-        self.ui.vcpTreeView.expandAll()
-        self.ui.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
+        form.vcpTreeView.expandAll()
+        form.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
         self.selection.selectionChanged.connect(self.on_selection_changed)
 
     def get_vcp_data(self, entry_point):
@@ -122,7 +127,7 @@ class VCPChooser(QDialog):
         vcp_data = self._vcp_data[selection[0].data()]
 
         desc = vcp_data.get('description', '')
-        self.vcpDescription.setText(desc)
+        self.ui.vcpDescription.setText(desc)
 
 
     @Slot()

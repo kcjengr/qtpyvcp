@@ -28,6 +28,7 @@ class ErrorDialog(BaseDialog):
         form_class, base_class = PySide6Ui(file_path).load()
         form = form_class()
         form.setupUi(self)
+        self.ui = form
 
         self.exc_info = exc_info
         exc_type, exc_msg, exc_tb = exc_info
@@ -36,11 +37,11 @@ class ErrorDialog(BaseDialog):
         self.exc_msg = exc_msg
         self.exc_tb = "".join(format_exception(*exc_info))
         color = 'orange' if 'warning'in self.exc_typ.lower() else 'red'
-        self.ui.errorType.setText("<font color='{}'>{}:</font>"
+        form.errorType.setText("<font color='{}'>{}:</font>"
                                .format(color, self.exc_typ))
-        self.ui.errorValue.setText(str(exc_msg))
-        self.ui.setWindowTitle('Unhandled Exception - {}'.format(self.exc_typ))
-        self.ui.tracebackText.setText(self.exc_tb)
+        form.errorValue.setText(str(exc_msg))
+        self.setWindowTitle('Unhandled Exception - {}'.format(self.exc_typ))
+        form.tracebackText.setText(self.exc_tb)
         self.show()
 
     @Slot()
@@ -52,7 +53,7 @@ class ErrorDialog(BaseDialog):
 
     @Slot()
     def on_ignoreException_clicked(self):
-        if self.ignoreCheckBox.isChecked():
+        if self.ui.ignoreCheckBox.isChecked():
             LOG.warn("User selected to ignore future occurrences of exception.",
                      exc_info=self.exc_info)
             IGNORE_LIST.append((str(self.exc_info[0]),
