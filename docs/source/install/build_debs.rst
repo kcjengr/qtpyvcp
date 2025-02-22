@@ -40,7 +40,7 @@ Create a changelog file
 .. code:: sh
 
    $ cd qtpyvcp
-   $ dch --create --distribution unstable --package qtpyvcp --newversion 0.1-2 Experimental Release version."
+   $ dch --create --distribution unstable --package qtpyvcp --newversion 0.1-2 Experimental Release version.
 
 
 Build the deb file
@@ -48,7 +48,7 @@ Build the deb file
 
 .. code:: sh
 
-   $ dpkg-buildpackage", "-b", "-uc
+   $ dpkg-buildpackage -b -uc
 
 
 If all went ok deb should be in the parent directory

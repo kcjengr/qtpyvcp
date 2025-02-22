@@ -104,15 +104,18 @@ class RemovableDeviceComboBox(QComboBox):
 class QtpyVCPQFileSystemModel(QFileSystemModel):
     
     def data(self, index, role=Qt.DisplayRole):
-        # Column nº 3 is datem, align it to right
+        # Column nº 3 is date, align it to right
         col = index.column()
         
         if role == Qt.DisplayRole:
             data = QFileSystemModel.data(self, index, role)
             if col == 3:
-                date = parse(data)
-                return f"{date:%m/%d/%y   %I:%M  %p}"
-            else:
+                try:
+                    date = parse(data)
+                    formatted_date = f"{date:%m/%d/%y   %I:%M  %p}"
+                    return formatted_date
+                except ValueError as e:
+                    pass
                 return f"{data}"
 
         if role == Qt.TextAlignmentRole:

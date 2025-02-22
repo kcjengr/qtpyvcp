@@ -20,6 +20,7 @@ import os
 import logging
 from logging.handlers import SocketHandler
 
+from linuxcnc import ini
 
 # Our custom colorizing formatter for the terminal handler
 from qtpyvcp.lib.colored_formatter import ColoredFormatter

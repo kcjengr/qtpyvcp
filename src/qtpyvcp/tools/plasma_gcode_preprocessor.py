@@ -22,6 +22,7 @@ import sys
 import re
 import math
 import logging
+import time
 from enum import Enum, auto
 from typing import List, Dict, Tuple, Union
 
@@ -32,6 +33,8 @@ from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
 #import pydevd;pydevd.settrace()
+
+PREPROC_VERSION = '00.30'
 
 INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
 preprocessor_log_name = normalizePath(path='gcode_preprocessor.log', base=os.getenv('CONFIG_DIR', '~/'))
@@ -160,19 +163,23 @@ class Commands(Enum):
     DIGITAL_OUT                 = auto()
     ANALOG_IN                   = auto()
     ANALOG_OUT                  = auto()
+    OWORD                       = auto()
+    VARIABLE                    = auto()
     REMOVE                      = auto()
+    RAW                         = auto()
 
 
 
 class CodeLine:
 # Class to represent a single line of gcode
 
-    def __init__(self, line, parent = None):
+    def __init__(self, line, parent = None, g2g3flip = False):
         """args:
         line:  the gcode line to be parsed
         mode: the model state. i.e. what G state has been set
         """
         self._parent = parent
+        self.arc_flip = g2g3flip
         self.command = ()
         self.params = {}
         self.comment = ''
@@ -191,7 +198,7 @@ class CodeLine:
         # token mapping for line commands
         tokens = {
             'G0':(Commands.MOVE_LINEAR, self.parse_linear),
-            'G10':(Commands.PASSTHROUGH, self.parse_passthrough),
+            'G10':(Commands.PASSTHROUGH, self.parse_raw),
             'G1':(Commands.MOVE_LINEAR, self.parse_linear),
             'G20':(Commands.UNITS, self.set_inches),
             'G21':(Commands.UNITS, self.set_mms),
@@ -246,12 +253,14 @@ class CodeLine:
             'G90.1':(Commands.ARC_ABSOLUTE, self.parse_passthrough),
             'F#':(Commands.FEEDRATE_MATERIAL, self.parse_passthrough),
             'F':(Commands.FEEDRATE_LINE, self.parse_feedrate),
+            'O':(Commands.OWORD, self.parse_raw),
             '#<holes>':(Commands.HOLE_MODE, self.placeholder),
             '#<h_diameter>':(Commands.HOLE_DIAM, self.placeholder),
             '#<h_velocity>':(Commands.HOLE_VEL, self.placeholder),
             '#<oclength>':(Commands.HOLE_OVERCUT, self.placeholder),
             '#<pierce-only>':(Commands.PIERCE_MODE, self.placeholder),
             #'#<keep-z-motion>':Commands.KEEP_Z,
+            '#<':(Commands.VARIABLE, self.parse_raw),
             ';':(Commands.COMMENT, self.parse_comment),
             '(o=':(Commands.MAGIC_MATERIAL, self.parse_material),
             '(':(Commands.COMMENT, self.parse_comment),
@@ -296,14 +305,14 @@ class CodeLine:
                 if k == '(':
                     # deal with escaping the '(' which is special char in regex
                     pattern = r"^\({1}"
-                    r = re.search(pattern, line.upper())
+                    r = re.search(pattern, line.upper().strip())
                 elif k == '(o=':
                     pattern = r"^\(o={1}"
                     magic = True
-                    r = re.search(pattern, line.lower())
+                    r = re.search(pattern, line.lower().strip())
                 else:
                     pattern = r"^"+k + r"{1}"
-                    r = re.search(pattern, line.upper())
+                    r = re.search(pattern, line.upper().strip())
                 
                 if r != None:
                     # since r is NOT None we must have found something
@@ -362,7 +371,10 @@ class CodeLine:
 
     def parse_other(self):
         LOG.debug(f'Type OTHER -- {self.token} -- found - this code is not handled or considered')
-        pass
+        self.type = Commands.OTHER
+
+    def parse_raw(self):
+        self.type = Commands.RAW
 
     def parse_passthrough(self):
         self.type = Commands.PASSTHROUGH
@@ -398,6 +410,14 @@ class CodeLine:
     def parse_arc(self):
         # arc motion means either G2 or G3. So looking for X/Y/I/J/P on this line
         self.command = ('G',int(self.token[1:]))
+        # check for g2g3 flip and adjust command as needed
+        if self.arc_flip:
+            LOG.debug(f"Arc Flip True. Unchanged command: {self.command}")
+            if self.command == ('G',2):
+                self.command = ('G',3)
+            else:
+                self.command = ('G',2)
+            LOG.debug(f"Arc Flip True. CHANGED command: {self.command}")
         # split the raw line at the token and then look for X/Y/I/J/P existence
         line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
         tokens = re.finditer(r"X[\d\+\.-]*|Y[\d\+\.-]*|I[\d\+\.-]*|J[\d\+\.-]*|P[\d\+\.-]*", line)
@@ -474,6 +494,7 @@ class CodeLine:
             self._parent.active_feedrate = self._parent.cut_speed = float(parts['fr'])
             # optional
             self._parent.active_thickness = float(parts.get('mt', 8/UNITS_PER_MM))
+            LOG.debug(f"material parsing - thickness = {self._parent.active_thickness}")
             self._parent.process_name = parts.get('na', 'Automatic Process')
             self._parent.thc = int(parts.get('th', 0))
             self._parent.volts = float(parts.get('cv', 99))
@@ -507,6 +528,7 @@ class CodeLine:
             self.type = Commands.TOOLCHANGE
         # test if this process ID is known about
         cut_process = PLASMADB.tool_id(tool)
+        LOG.debug(f"parse toolchange - tool = {tool}")
         if len(cut_process) == 0:
             # rewrite the raw line as an error comment
             self.raw = f"; ERROR: Invalid Cutchart ID in Tx. Check CAM Tools: {self.raw}"
@@ -515,7 +537,9 @@ class CodeLine:
             self.cutchart_id = tool
             self._parent.active_cutchart = tool
             self._parent.active_feedrate = cut_process[0].cut_speed
-            self._parent.active_thickness = cut_process[0].thickness.thickness
+            if tool != 99999:
+                # only change tool if not magic tool as already set as part of magic comment
+                self._parent.active_thickness = cut_process[0].thickness.thickness
             self._parent.active_machineid = cut_process[0].machineid
             self._parent.active_thicknessid = cut_process[0].thicknessid
             self._parent.active_materialid = cut_process[0].materialid
@@ -1023,6 +1047,7 @@ class PreProcessor:
     def __init__(self, inCode):
         self._new_gcode = []
         self._parsed = []
+        self.preparsed = False
         self._line = ''
         self._line_num = 0
         self._line_type = 0
@@ -1050,11 +1075,19 @@ class PreProcessor:
         self.pressure = None
         self.pause_at_end = None
         self.thc = None
+        # track if flip or mirror is active
+        self.g2g3_flip = False
 
 
         openfile= open(inCode, 'r')
         self._orig_gcode = openfile.readlines()
         openfile.close()
+        
+        # Test to see if the file has been previously parsed by this processor
+        # This test is agnostic of the version of the preprocessor
+        if self._orig_gcode[0] == '(--------------------------------------------------)' and \
+           self._orig_gcode[0] == '(            Plasma G-Code Preprocessor            )':
+            self.preparsed = True
 
     def set_active_g_modal(self, gcode):
         # get the modal grp for the code and set things
@@ -1344,6 +1377,57 @@ class PreProcessor:
         
 
     def parse(self):
+        # Build Header for parsed file
+        self._parsed.append(CodeLine( '(--------------------------------------------------)', parent=self))
+        self._parsed.append(CodeLine( '(            Plasma G-Code Preprocessor            )', parent=self))
+        self._parsed.append(CodeLine(f'(                 {PREPROC_VERSION}                            )', parent=self))
+        self._parsed.append(CodeLine( '(--------------------------------------------------)', parent=self))
+        # Build inputs for scale, tiles, flip, mirror and rotation
+        self._parsed.append(CodeLine( ';inputs', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_x_offset> = [#5221 + [[#5220-1] * 20]]', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_y_offset> = [#5222 + [[#5220-1] * 20]]', parent=self))
+        self._parsed.append(CodeLine( '#<ucs_r_offset> = [#5230 + [[#5220-1] * 20]]', parent=self))
+        self._parsed.append(CodeLine( f'#<array_x_offset> = {hal.get_value("qtpyvcp.column-separation.out")}', parent=self))
+        self._parsed.append(CodeLine( f'#<array_y_offset> = {hal.get_value("qtpyvcp.row-separation.out")}', parent=self))
+        self._parsed.append(CodeLine( f'#<array_columns> = {hal.get_value("qtpyvcp.tile-columns.out")}', parent=self))
+        self._parsed.append(CodeLine( f'#<array_rows> = {hal.get_value("qtpyvcp.tile-rows.out")}', parent=self))
+        self._parsed.append(CodeLine( '#<origin_x_offset> = 0.0', parent=self))
+        self._parsed.append(CodeLine( '#<origin_y_offset> = 0.0', parent=self))
+        self._parsed.append(CodeLine( '#<array_angle> = 0.0', parent=self))
+        self._parsed.append(CodeLine( f'#<blk_scale> = {hal.get_value("qtpyvcp.gcode-scale.out")}', parent=self))
+        self._parsed.append(CodeLine( f'#<shape_angle> = {hal.get_value("qtpyvcp.gcode-rotation.out")}', parent=self))
+
+        if hal.get_value("qtpyvcp.gcode-mirror.checked"):
+            self._parsed.append(CodeLine( '#<shape_mirror> = -1', parent=self))
+            self.g2g3_flip = not self.g2g3_flip
+        else:
+            self._parsed.append(CodeLine( '#<shape_mirror> = 1', parent=self))
+
+        if hal.get_value("qtpyvcp.gcode-flip.checked"):
+            self._parsed.append(CodeLine( '#<shape_flip> = -1', parent=self))
+            self.g2g3_flip = not self.g2g3_flip
+        else:
+            self._parsed.append(CodeLine( '#<shape_flip> = 1', parent=self))
+        
+        self._parsed.append(CodeLine( ';calculations', parent=self))
+        self._parsed.append(CodeLine( '#<this_col> = 0', parent=self))
+        self._parsed.append(CodeLine( '#<this_row> = 0', parent=self))
+        self._parsed.append(CodeLine( '#<array_rot> = [#<array_angle> + #<ucs_r_offset>]', parent=self))
+        self._parsed.append(CodeLine( '#<blk_x_offset> = [#<origin_x_offset> + [#<ucs_x_offset> * 1]]', parent=self))
+        self._parsed.append(CodeLine( '#<blk_y_offset> = [#<origin_y_offset> + [#<ucs_y_offset> * 1]]', parent=self))
+        self._parsed.append(CodeLine( '#<x_sin> = [[#<array_x_offset> * #<blk_scale>] * SIN[#<array_rot>]]', parent=self))
+        self._parsed.append(CodeLine( '#<x_cos> = [[#<array_x_offset> * #<blk_scale>] * COS[#<array_rot>]]', parent=self))
+        self._parsed.append(CodeLine( '#<y_sin> = [[#<array_y_offset> * #<blk_scale>] * SIN[#<array_rot>]]', parent=self))
+        self._parsed.append(CodeLine( '#<y_cos> = [[#<array_y_offset> * #<blk_scale>] * COS[#<array_rot>]]', parent=self))
+        self._parsed.append(CodeLine( '', parent=self))
+
+        self._parsed.append(CodeLine( ';main loop', parent=self))
+        self._parsed.append(CodeLine( 'o<loop> while [#<this_row> LT #<array_rows>]', parent=self))
+        self._parsed.append(CodeLine( '#<shape_x_start> = [[#<this_col> * #<x_cos>] - [#<this_row> * #<y_sin>] + #<blk_x_offset>]', parent=self))
+        self._parsed.append(CodeLine( '#<shape_y_start> = [[#<this_row> * #<y_cos>] + [#<this_col> * #<x_sin>] + #<blk_y_offset>]', parent=self))
+        self._parsed.append(CodeLine( '#<blk_angle> = [#<shape_angle> + #<array_rot>]', parent=self))
+        self._parsed.append(CodeLine( 'G10 L2 P0 X#<shape_x_start> Y#<shape_y_start> R#<blk_angle>', parent=self))     
+        
         # setup any global default modal groups that we need to be aware of
         self.set_active_g_modal('G91.1')
         self.set_active_g_modal('G40')
@@ -1352,7 +1436,7 @@ class PreProcessor:
             self._line_num += 1
             self._line = line.strip()
             LOG.debug('Parse: Build gcode line.')
-            l = CodeLine(self._line, parent=self)
+            l = CodeLine(self._line, parent=self, g2g3flip=self.g2g3_flip)
             try:
                 gcode = f'{l.command[0]}{l.command[1]}'
             except:
@@ -1361,7 +1445,12 @@ class PreProcessor:
             l.save_g_modal_group(self.active_g_modal_grps)
             self._parsed.append(l)
 
-
+    def dump_raw(self):
+        LOG.debug('Dump raw gcode to stdio')
+        for l in self._orig_gcode:
+            print(l, file=sys.stdout)
+            sys.stdout.flush()
+            
 
     def dump_parsed(self):
         LOG.debug('Dump parsed gcode to stdio')
@@ -1381,10 +1470,22 @@ class PreProcessor:
                 continue
             if l.type in [Commands.COMMENT, Commands.MAGIC_MATERIAL]:
                 out = l.comment
+                if out == ';end post-amble':
+                    out += """
+                    
+#<this_col> = [#<this_col> + 1]
+o<count> if [#<this_col> EQ #<array_columns>]
+    #<this_col> = 0
+    #<this_row> = [#<this_row> + 1]
+o<count> endif
+o<loop> endwhile
+
+G10 L2 P0 X[#<ucs_x_offset> * 1] Y[#<ucs_y_offset> * 1] R#<ucs_r_offset>
+                    """
             elif l.type is Commands.OTHER:
                 # Other at the moment means not recognised
                 out = "; >>  "+l.raw
-            elif l.type is Commands.PASSTHROUGH:
+            elif l.type in [Commands.PASSTHROUGH, Commands.RAW]:
                 out = l.raw
             elif l.type is Commands.REMOVE:
                 # skip line as not to be used
@@ -1397,11 +1498,27 @@ class PreProcessor:
                     out = ''
                 try:
                     for p in l.params:
-                        out += f' {p}{l.params[p]}'
+                        vars = ''
+                        if p == 'X':
+                            vars = '#<blk_scale>*#<shape_mirror>'
+                        elif p == 'Y':
+                            vars = '#<blk_scale>*#<shape_flip>'
+                        elif p == 'I':
+                            vars = '#<blk_scale>*#<shape_mirror>'
+                        elif p == 'J':
+                            vars = '#<blk_scale>*#<shape_flip>'
+                        if isinstance(l.params[p], float):
+                            if l.params[p] < 0.001:
+                                out += f' {p}[{l.params[p]:.6f}*{vars}]'
+                            else:
+                                out += f' {p}[{l.params[p]:.3f}*{vars}]'
+                        else:
+                            out += f' {p}{l.params[p]}'
                     out += f' {l.comment}'
                     out = out.strip()
                 except:
                     out = ''
+            #LOG.debug(f"Dump line >>> {out}")
             print(out, file=sys.stdout)
             sys.stdout.flush()
 
@@ -1416,6 +1533,27 @@ class PreProcessor:
             q = PLASMADB.tool_id(99999)
             if q != None:
                 LOG.debug("Magic tool 99999 found. Updating")
+                # find the linera system ID
+                linear_systems = PLASMADB.linearsystems()
+                for lsys in linear_systems:
+                    if lsys.name == UNITS:
+                        linear_sys_id = lsys.id
+                        break
+                    else:
+                        linear_sys_id = None
+                LOG.debug(f"Linear System ID = {linear_sys_id}")
+                thicknesses_list = PLASMADB.thicknesses(measureid=linear_sys_id)
+                LOG.debug(f"active thickness = {self.active_thickness}")
+                for thick in thicknesses_list:
+                    LOG.debug(f"thick.name: {thick.name}   thick.thickness: {thick.thickness}")
+                    if thick.thickness == self.active_thickness:
+                        thickness_id = thick.id
+                        thickness_name = thick.name
+                        break
+                    else:
+                        thickness_id = None
+                        thickness_name = None
+                LOG.debug(f"Thickness ID = {thickness_id}")
                 # def updateCut(self, q, **args):
                 #     Cutchart.update(self._session, q, \
                 #             pierce_height = args['pierce_height'], \
@@ -1431,6 +1569,8 @@ class PreProcessor:
                 #             pressure = args['pressure'], \
                 #             pause_at_end = args['pause_at_end'])
                 PLASMADB.updateCut(q,
+                                   name=f'Auto Material {thickness_name}',
+                                   thicknessid=thickness_id,
                                    pierce_height=self.pierce_height,
                                    pierce_delay=self.pierce_delay,
                                    cut_height=self.cut_height,
@@ -1448,8 +1588,9 @@ class PreProcessor:
                 # query for tool was empty so we need to create the magic
                 LOG.debug("ISSUE: The Magic tool 99999 does not exist!")
             
-            rtn = hal.set_p("qtpyvcp.cutchart-id", f"99999")
+            rtn = hal.set_p("qtpyvcp.cutchart-id", "99999")
             LOG.debug(f'Set hal cutchart-id pin: 99999')
+            rtn = hal.set_p("qtpyvcp.cutchart-reload", "1")
         else:
             LOG.debug('No active cutchart')
 
@@ -1488,36 +1629,43 @@ def main():
     # Start cycling through each line of the file and processing it
     LOG.debug('Build preprocessor object and process gcode')
     p = PreProcessor(inCode)
-    p.parse()
-    LOG.debug('Parsing done.')
+    if not p.preparsed:
+        p.parse()
+        LOG.debug('Parsing done.')
+    else:
+        LOG.debug('File is Preparsed.')
 
-    # Holes flag
-    try:
-        do_holes = hal.get_value('qtpyvcp.plasma-hole-detect-enable.checked')
-    except:
-        do_holes = False
+    if not p.preparsed:
+        # Holes flag
+        try:
+            do_holes = hal.get_value('qtpyvcp.plasma-hole-detect-enable.checked')
+        except:
+            do_holes = False
+        
+        # Pierce only flag
+        try:
+            do_pierce = hal.get_value('qtpyvcp.plasma-pierce-only-enable.checked')
+        except:
+            do_pierce = False
+        
+        if do_holes and not do_pierce:
+            LOG.debug('Flag holes ...')
+            p.flag_holes()
+            LOG.debug('... Flag holes done')
+        elif do_pierce:
+            LOG.debug('Flag piercing ...')
+            p.flag_pierce()
+            LOG.debug('... Flag piercing done')
     
-    # Pierce only flag
-    try:
-        do_pierce = hal.get_value('qtpyvcp.plasma-pierce-only-enable.checked')
-    except:
-        do_pierce = False
+        # pass file to stdio and set any hal pins
+        LOG.debug('Dump parsed file')
+        p.dump_parsed()
+        # Set hal pin on UI for cutchart.id
+        LOG.debug('Set UI param data via cutchart pin')
+        p.set_ui_hal_cutchart_pin()
+    else:
+        p.dump_raw()
     
-    if do_holes and not do_pierce:
-        LOG.debug('Flag holes ...')
-        p.flag_holes()
-        LOG.debug('... Flag holes done')
-    elif do_pierce:
-        LOG.debug('Flag piercing ...')
-        p.flag_pierce()
-        LOG.debug('... Flag piercing done')
-    
-    # pass file to stdio and set any hal pins
-    LOG.debug('Dump parsed file')
-    p.dump_parsed()
-    # Set hal pin on UI for cutchart.id
-    LOG.debug('Set UI param data via cutchart pin')
-    p.set_ui_hal_cutchart_pin()
     # Close out DB
     PLASMADB.terminate()
     LOG.debug('Plasma DB closed and end.')

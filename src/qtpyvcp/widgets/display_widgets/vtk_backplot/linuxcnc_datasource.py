@@ -10,7 +10,6 @@ INFO = Info()
 LOG = logger.getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
-
 """
 This class acts as a datasource for the VTK components.
 It abstracts all the linuxcnc specific logic and exposes simple methods that could be eventually
@@ -40,10 +39,17 @@ class LinuxCncDataSource(QObject):
         self._offsettable = getPlugin('offsettable')
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
+        self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF ") or "false"
         self._is_lathe = bool(self._inifile.find("DISPLAY", "LATHE"))
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
         self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
-        self._machine_bounds = str(self._inifile.find("VTK", "BOUNDARIES"))
+        self._machine_bounds = str(self._inifile.find("DISPLAY", "BOUNDARIES"))
+        self._nav_helper = bool(self._inifile.find("DISPLAY", "NAV")) or False
+        self._antialias = bool(self._inifile.find("DISPLAY", "ANTIALIAS")) or False
+        self._fps = int(self._inifile.find("DISPLAY", "FPS") or 0)
+        if self._fps == 0:
+            self._fps = int(self._inifile.find("VTK", "FPS") or 30)
+        LOG.debug(f'FPS = {self._fps}')
         
         if IN_DESIGNER:
             return
@@ -77,17 +83,19 @@ class LinuxCncDataSource(QObject):
 
     def __handleG5xOffsetChange(self, offset):
         # the received parameter, its missing the rotation of the current wcs
-        # emitted_offset = list(offset)
-        # active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        LOG.debug("__handleG5xOffsetChange --- Start")
+        emitted_offset = list(offset)
+        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
         #
-        # LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
-        # LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
+        LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
+        LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
         #
         # # emitted_offset.append(self.__getRotationOfActiveWcs())
         # LOG.debug("--------correct_offset: {}".format(emitted_offset))
-        # result = tuple(emitted_offset)
-        # LOG.debug("--------result: {} {}".format(type(result), result))
+        result = tuple(emitted_offset)
+        LOG.debug("--------result: {} {}".format(type(result), result))
         self.g5xOffsetChanged.emit(offset)
+        LOG.debug("__handleG5xOffsetChange --- End")
 
     def __handleG92OffsetChange(self, offset):
         #LOG.debug("__handleG92OffsetChange: {}".format(type(offset)))
@@ -128,6 +136,9 @@ class LinuxCncDataSource(QObject):
         #LOG.debug("__handleToolTableChanged: {}".format(type(tool_table)))
         self.toolTableChanged.emit(tool_table)
 
+    def getFPS(self):
+        return self._fps
+
     def getAxis(self):
         return self._status.stat.axis
 
@@ -167,8 +178,17 @@ class LinuxCncDataSource(QObject):
     def getKeyboardJog(self):
         return self._keyboard_jog
     
+    def getKeyboardJogLock(self):
+        return self._keyboard_jog_ctrl_off
+
     def getMachineBounds(self):
         return self._machine_bounds
+    
+    def getNavHelper(self):
+        return self._nav_helper
+    
+    def getAntialias(self):
+        return self._antialias
 
     def getActiveWcsIndex(self):
         # in the stat, the first one the list is G53 (Machine Coordinates)
@@ -195,5 +215,5 @@ class LinuxCncDataSource(QObject):
         # returns a dictionary with the coordinate systems from 0 to 8 (g54 up to g59.3)
         return self._offsettable.getOffsetTable()
     
-    def getOffsetCoumns(self):
+    def getOffsetColumns(self):
         return self._offsettable.column_labels

@@ -9,6 +9,7 @@ from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import connectSetting, getSetting
+from qtpyvcp.plugins.db_tool_table import DBToolTable
 
 LOG = getLogger(__name__)
 
@@ -109,6 +110,12 @@ class ToolModel(QStandardItemModel):
 
         self.status.tool_in_spindle.notify(self.refreshModel)
         self.tt.tool_table_changed.connect(self.updateModel)
+        
+        self.row_offset = 1
+        tool_table = getPlugin("tooltable")
+        if isinstance(tool_table, DBToolTable):
+            self.row_offset = 0
+
 
     def refreshModel(self):
         # refresh model so current tool gets highlighted
@@ -137,13 +144,30 @@ class ToolModel(QStandardItemModel):
     def rowCount(self, parent=None):
         return len(self._tool_table) - 1
 
+
     def flags(self, index):
+        
+        row = index.row()
+        col = index.column()
+            
+        header_text = self.headerData(col, Qt.Horizontal, Qt.DisplayRole)
+        
+        tnum = sorted(self._tool_table)[row + self.row_offset]
+        
+        # check tool in spindle and make Tool No. read-only
+        if tnum == self.stat.tool_in_spindle and header_text == "Tool":
+            return Qt.ItemIsEnabled | Qt.ItemIsSelectable
+        
         return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
+    
 
     def data(self, index, role=Qt.DisplayRole):
+        
+
+        
         if role == Qt.DisplayRole or role == Qt.EditRole:
             key = self._columns[index.column()]
-            tnum = sorted(self._tool_table)[index.row() + 1]
+            tnum = sorted(self._tool_table)[index.row() +self.row_offset]
             return self._tool_table[tnum][key]
 
         elif role == Qt.TextAlignmentRole:
@@ -156,14 +180,14 @@ class ToolModel(QStandardItemModel):
                 return Qt.AlignVCenter | Qt.AlignRight
 
         elif role == Qt.ForegroundRole:
-            tnum = sorted(self._tool_table)[index.row() + 1]
+            tnum = sorted(self._tool_table)[index.row() + self.row_offset]
             if self.stat.tool_in_spindle == tnum:
                 return QBrush(self.current_tool_color)
             else:
                 return QStandardItemModel.data(self, index, role)
 
         elif role == Qt.BackgroundRole and self.current_tool_bg is not None:
-            tnum = sorted(self._tool_table)[index.row() + 1]
+            tnum = sorted(self._tool_table)[index.row() + self.row_offset]
             if self.stat.tool_in_spindle == tnum:
                 return QBrush(self.current_tool_bg)
             else:
@@ -173,20 +197,20 @@ class ToolModel(QStandardItemModel):
 
     def setData(self, index, value, role):
         key = self._columns[index.column()]
-        tnum = sorted(self._tool_table)[index.row() + 1]
+        tnum = sorted(self._tool_table)[index.row() + self.row_offset]
         self._tool_table[tnum][key] = value
         return True
 
     def removeTool(self, row):
         self.beginRemoveRows(QModelIndex(), row, row)
-        tnum = sorted(self._tool_table)[row + 1]
+        tnum = sorted(self._tool_table)[row + self.row_offset]
         del self._tool_table[tnum]
         self.endRemoveRows()
         return True
 
     def addTool(self):
         try:
-            tnum = sorted(self._tool_table)[-1] + 1
+            tnum = sorted(self._tool_table)[-1] + self.row_offset
         except IndexError:
             tnum = 1
 
@@ -203,7 +227,7 @@ class ToolModel(QStandardItemModel):
 
     def toolDataFromRow(self, row):
         """Returns dictionary of tool data"""
-        tnum = sorted(self._tool_table)[row + 1]
+        tnum = sorted(self._tool_table)[row + self.row_offset]
         return self._tool_table[tnum]
 
     def saveToolTable(self):
@@ -230,8 +254,8 @@ class ToolTable(QTableView):
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
 
-
         self.clicked.connect(self.onClick)
+
         self.tool_model = ToolModel(self)
 
         self.item_delegate = ItemDelegate(columns=self.tool_model._columns)
@@ -390,6 +414,13 @@ class ToolTable(QTableView):
     def currentToolBackground(self, color):
         self.tool_model.current_tool_bg = color
 
+    @Property(int)
+    def currentRow(self):
+        return self.selectedRow()
+
+    @currentRow.setter
+    def currentRow(self, row):
+        self.selectRow(row)
 
     def insertToolAbove(self):
         # it does not make sense to insert tools, since the numbering

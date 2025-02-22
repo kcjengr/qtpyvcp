@@ -24,13 +24,11 @@ class StatusLabel(QLabel, VCPWidget):
     def __init__(self, parent=None):
         super(StatusLabel, self).__init__(parent)
 
-
         self._format = '{}'
         self._expression = 'val'
         self._compiled_exp = lambda val: val
 
         self.setText('Not Set')
-
 
     @Property(str)
     def format(self):

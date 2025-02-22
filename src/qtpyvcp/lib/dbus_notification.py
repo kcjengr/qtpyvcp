@@ -58,8 +58,10 @@ def init(app_name):
     interface = "org.freedesktop.Notifications"
 
     mainloop = None
-    session_bus = QDBusConnection.sessionBus()
-    bus = dbus.SessionBus(session_bus)
+    if DBusQtMainLoop is not None:
+        mainloop = DBusQtMainLoop(set_as_default=True)
+
+    bus = dbus.SessionBus(mainloop)
     proxy = bus.get_object(name, path)
     DBUS_IFACE = dbus.Interface(proxy, interface)
 

@@ -1,5 +1,7 @@
  root:
     id: "base"
+    color: [0.25, 0.85, 0.42]
+    power: 3.0
     model: "parts/Base.stl"
     type: "table"
     position: [0, 75, 0, 0, 0, 0]
@@ -8,6 +10,8 @@
     joint: null
     child_linear:
         id: "x_axis"
+        color: [0.25, 0.56, 0.85]
+        power: 3.0
         model: "parts/Xaxis.stl"
         type: "linear"
         position: [0, 110, 0, 0, 0, 0]
@@ -16,6 +20,7 @@
         joint: 0
         child_1a:
             id: "y_axis"
+            power: 3.0
             model: "parts/Yaxis.stl"
             type: "linear"
             position: [0, 45, 35, 0, 0, 0]
@@ -24,6 +29,8 @@
             joint: 1   
             child_2a: 
                 id: "z_axis"
+                color: [0.85, 0.25, 0.63]
+                power: 3.0
                 model: "parts/Zaxis.stl"
                 type: "linear"
                 position: [0, 35, 0, 0, 0, 0]
@@ -33,6 +40,8 @@
 
     child_rotative:
         id: "b_axis"
+        color: [0.85, 0.40, 0.25]
+        power: 3.0
         model: "parts/Baxis.stl"
         type: "angular"
         position: [0, 50, -50, 0, 0, 0]
@@ -41,6 +50,7 @@
         joint: 3
         child_1b:
             id: "c_axis"
+            color: [0.65, 0.85, 0.25]
             model: "parts/Caxis.stl"
             type: "angular"
             position: [0,10, -62, 0, 0, 0]

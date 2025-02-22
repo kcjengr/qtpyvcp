@@ -356,6 +356,9 @@ class PlasmaProcesses(Plugin):
         self._measurementid = LinearSystem.get_by_key(self._session, 'name', linear_setting)[0].id
         self._pressureid = PressureSystem.get_by_key(self._session, 'name', pressure_setting)[0].id
         self._machineid = Machine.get_by_key(self._session, 'name', machine)[0].id
+        self._measurement_name = linear_setting
+        self._pressure_name = pressure_setting
+        self._machine_name = machine
     
     
     def drop_all(self):
@@ -490,7 +493,10 @@ class PlasmaProcesses(Plugin):
         LOG.debug(f'tool_id = {data[0].id}')
         return data
 
-    def tool_list_for_lcnc(self, machine, pressure, measurement):
+    def tool_list_for_lcnc(self, machine=None, pressure=None, measurement=None):
+        if machine == None: machine = self._machine_name
+        if pressure == None: pressure = self._pressure_name
+        if measurement == None: measurement = self._measurement_name
         LOG.debug(f'lcnc tool list for filters machine={machine}, pressure={pressure}, measurement={measurement}')
         data = Cutchart.tool_list_for_lcnc(self._session, machine, pressure, measurement)
         return data
@@ -545,19 +551,22 @@ class PlasmaProcesses(Plugin):
         return id
     
     def updateCut(self, q, **args):
-        Cutchart.update(self._session, q, \
-                        pierce_height = args['pierce_height'], \
-                        pierce_delay = args['pierce_delay'], \
-                        cut_height = args['cut_height'], 
-                        cut_speed = args['cut_speed'], \
-                        volts = args['volts'], \
-                        kerf_width = args['kerf_width'], \
-                        plunge_rate = args['plunge_rate'], \
-                        puddle_height = args['puddle_height'], \
-                        puddle_delay = args['puddle_delay'], \
-                        amps = args['amps'], \
-                        pressure = args['pressure'], \
-                        pause_at_end = args['pause_at_end'])
+        LOG.debug(f"updateCut: args = {args}")
+        Cutchart.update(self._session, q, **args)
+        # Cutchart.update(self._session, q, \
+        #                 thicknessid = args['thicknessid'], \
+        #                 pierce_height = args['pierce_height'], \
+        #                 pierce_delay = args['pierce_delay'], \
+        #                 cut_height = args['cut_height'], 
+        #                 cut_speed = args['cut_speed'], \
+        #                 volts = args['volts'], \
+        #                 kerf_width = args['kerf_width'], \
+        #                 plunge_rate = args['plunge_rate'], \
+        #                 puddle_height = args['puddle_height'], \
+        #                 puddle_delay = args['puddle_delay'], \
+        #                 amps = args['amps'], \
+        #                 pressure = args['pressure'], \
+        #                 pause_at_end = args['pause_at_end'])
         LOG.debug(f"Update cutchart.")
 
     def seed_data_base(self, source_file, holes_file=None):

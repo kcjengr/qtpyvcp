@@ -244,13 +244,20 @@ class MachinePart(vtk.vtkAssembly):
         
         self.part_axis = None
         self.part_type = None
+        self.part_pos = None
 
+    def SetPartPosition(self, attr):
+        self.part_pos = attr
+        
     def SetPartAxis(self, attr):
         self.part_axis = attr
         
     def SetPartType(self, attr):
         self.part_type = attr
 
+    def GetPartPosition(self):
+        return self.part_pos
+    
     def GetPartAxis(self):
         return self.part_axis
     
@@ -263,8 +270,17 @@ class MachinePartsASM(vtk.vtkAssembly):
     def __init__(self, parts):
         super(MachinePartsASM, self).__init__()
         
-        print("########")
-        print("NEW Machine")
+        self.part_id = None
+        self.part_model = None
+        self.part_type = None
+        self.part_position = None
+        self.part_origin = None
+        self.part_axis = None
+        self.part_joint = None
+        self.part_color = None
+        
+        #print("########")
+        #print("NEW Machine")
         
         # print(f"{parts}")
         previous_asm = None
@@ -275,53 +291,76 @@ class MachinePartsASM(vtk.vtkAssembly):
         
         # for depth, part_root, part_data in self.items_recursive(parts):
         for part in self.items_recursive(parts, self):
-            print(f"{part}")
+            pass
+            #print(f"{part}")
             
-        print(f"vtkAssembly: {self}")
+        #print(f"vtkAssembly: {self}")
 
+
+    def get_part_pos(self):
+        return self.part_position
 
     def create_part(self, data):
         
-        part_id = data.get("id")
-        part_model = data.get("model")
-        part_type = data.get("type")
-        part_position = data.get("position")
-        part_origin = data.get("origin")
-        part_axis = data.get("axis")
-        part_joint = data.get("joint")
+        self.part_id = data.get("id")
+        self.part_model = data.get("model")
+        self.part_type = data.get("type")
+        self.part_position = data.get("position")
+        self.part_origin = data.get("origin")
+        self.part_axis = data.get("axis")
+        self.part_joint = data.get("joint")
+        self.part_color = data.get("color")
+        self.part_power = data.get("power")
         
-        print(f"part_id:\t\t{part_id}")
-        print(f"part_model:\t\t{part_model}")
-        print(f"part_type:\t\t{part_type}")
-        print(f"part_position:\t\t{part_position}")
-        print(f"part_origin:\t\t{part_origin}")
-        print(f"part_axis:\t\t{part_axis}")
-        print(f"part_joint:\t\t{part_joint}")
+        # print(f"part_id:\t\t{self.part_id}")
+        # print(f"part_model:\t\t{self.part_model}")
+        # print(f"part_type:\t\t{self.part_type}")
+        # print(f"part_position:\t\t{self.part_position}")
+        # print(f"part_origin:\t\t{self.part_origin}")
+        # print(f"part_axis:\t\t{self.part_axis}")
+        # print(f"part_joint:\t\t{self.part_joint}")
         
         part_source = vtk.vtkSTLReader()
-        part_source.SetFileName(part_model)
+        part_source.SetFileName(self.part_model)
         part_source.Update()
         
         part_mapper = vtk.vtkPolyDataMapper()
         part_mapper.SetInputConnection(part_source.GetOutputPort())
+        
+        if not self.part_color:
+            self.part_color = (0.9, 0.9, 0.9)
+            
+        if not self.part_power:
+            self.part_power = 5.0
         
         part_actor = vtk.vtkActor()
         
         part_actor.SetMapper(part_mapper)
         
         part_actor.GetProperty().SetColor(1, 0, 1)
-        part_actor.GetProperty().SetDiffuseColor(0.9, 0.9, 0.9)
+        part_actor.GetProperty().SetDiffuseColor(self.part_color)
         part_actor.GetProperty().SetDiffuse(.8)
         part_actor.GetProperty().SetSpecular(.5)
         part_actor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
-        part_actor.GetProperty().SetSpecularPower(30.0)
+        part_actor.GetProperty().SetSpecularPower(self.part_power)
         
-        part_actor.SetPosition(part_position[0], part_position[1], part_position[2])
-        part_actor.SetOrigin(part_origin[0], part_origin[1], part_origin[2])
+        # part_actor.SetPosition(part_position[0], part_position[1], part_position[2])
+        # part_actor.SetOrigin(part_origin[0], part_origin[1], part_origin[2])
+        
+        transform = vtk.vtkTransform()
+        
+        transform.Translate(self.part_position[0], self.part_position[1], self.part_position[2])
+        
+        transform.RotateX(self.part_position[3])
+        transform.RotateY(self.part_position[4])
+        transform.RotateZ(self.part_position[5])
+        
+        part_actor.SetUserTransform(transform)
         
         tmp_assembly = MachinePart()
-        tmp_assembly.SetPartAxis(part_axis)
-        tmp_assembly.SetPartType(part_type)
+        tmp_assembly.SetPartAxis(self.part_axis)
+        tmp_assembly.SetPartType(self.part_type)
+        tmp_assembly.SetPartPosition(self.part_position)
         
         tmp_assembly.AddPart(part_actor)
         

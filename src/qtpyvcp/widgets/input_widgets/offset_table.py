@@ -80,6 +80,7 @@ class OffsetModel(QStandardItemModel):
         self.ot = getPlugin('offsettable')
 
         self.current_row_color = QColor(Qt.darkGreen)
+        self.current_row_bg = None  # Add this line
 
         if IN_DESIGNER:
             return 
@@ -156,6 +157,13 @@ class OffsetModel(QStandardItemModel):
 
             else:
 
+                return QStandardItemModel.data(self, index, role)
+
+        elif role == Qt.BackgroundRole and self.current_row_bg is not None:  # Add this block
+            offset = index.row() + 1
+            if self.ot.current_index == offset:
+                return QBrush(self.current_row_bg)
+            else:
                 return QStandardItemModel.data(self, index, role)
 
         return QStandardItemModel.data(self, index, role)
@@ -338,3 +346,11 @@ class OffsetTable(QTableView):
     @currentRowColor.setter
     def currentRowColor(self, color):
         self.offset_model.current_row_color = color
+
+    @Property(QColor)
+    def currentRowBackground(self):
+        return self.offset_model.current_row_bg or QColor()
+
+    @currentRowBackground.setter 
+    def currentRowBackground(self, color):
+        self.offset_model.current_row_bg = color

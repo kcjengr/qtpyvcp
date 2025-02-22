@@ -214,11 +214,29 @@ class VCPApplication(QApplication):
         Returns: QWidget
         """
         for win_name, obj in list(qtpyvcp.WINDOWS.items()):
-            if hasattr(obj, name):
-                return getattr(obj, name)
+            for widget in QApplication.allWidgets():
+                if widget.objectName() == name:
+                    return widget
+
 
         raise AttributeError("Could not find widget with name: %s" % name)
 
+
+    def getWindow(self, name):
+        """Searches for a window by name in the application.
+
+        Args:
+            name (str) : ObjectName of the window.
+
+        Returns: VCPMainWindow
+        """
+        for win_name, window in qtpyvcp.WINDOWS.items():
+            if win_name == name:
+                return window
+
+        raise AttributeError("Could not find window with name: %s" % name)
+        
+        
     @Slot()
     def logPerformance(self):
         """Logs total CPU usage (in percent), as well as per-thread usage.
@@ -241,6 +259,12 @@ class VCPApplication(QApplication):
         for w in self.allWidgets():
             if isinstance(w, VCPPrimitiveWidget):
                 w.initialize()
+                
+    def postInitialiseWidgets(self):
+        for w in self.allWidgets():
+            if isinstance(w, VCPPrimitiveWidget):
+                if (hasattr(w, 'postInitialize') and callable(w.postInitialize)):
+                    w.postInitialize()
 
     def terminateWidgets(self):
         LOG.debug("Terminating widgets")

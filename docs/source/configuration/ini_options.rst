@@ -70,6 +70,15 @@ Options available in the INI file are:
     # Additional args passed to the QtApplication.
     COMMAND_LINE_ARGS = <args>
 
+    # Maximum, Minimum and Default angular/linear jog velcoity in units per second.
+    DEFAULT_LINEAR_VELOCITY = <float>
+    MAX_LINEAR_VELOCITY = <float>
+    MIN_LINEAR_VELOCITY = <float>
+    DEFAULT_ANGULAR_VELOCITY = <float>
+    MAX_ANGULAR_VELOCITY = <float>
+    MIN_ANGULAR_VELOCITY = <float>
+
+
     # Provide user defined G code Syntax file
     GCODE_SYNTAX = file
 

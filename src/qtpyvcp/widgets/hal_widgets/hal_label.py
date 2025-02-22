@@ -10,7 +10,7 @@ from qtpyvcp.widgets import HALWidget
 from qtpyvcp.utilities.logger import getLogger
 LOG = getLogger(__name__)
 
-class HalLabel(QLabel, HALWidget):
+class HalLabel(QLabel, HALWidget, HalType, VCPWidget):
     """HAL Label
 
     Label for displaying HAL pin values.

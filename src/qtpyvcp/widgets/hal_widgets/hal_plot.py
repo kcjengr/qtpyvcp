@@ -10,7 +10,7 @@ import pyqtgraph as pg
 import numpy as np
 
 from qtpyvcp import hal
-from qtpyvcp.widgets import HALWidget
+from qtpyvcp.widgets import HALWidget, VCPWidget
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -25,7 +25,7 @@ class TimeAxisItem(pg.AxisItem):
         return [QTime().currentTime().addMSecs(int(value)).toString('mm:ss') for value in values]
 
 
-class HalPlot(QWidget, HALWidget):
+class HalPlot(QWidget, HALWidget, VCPWidget):
     """HAL Plot
 
     Plots HAL pin values over time, similar to HAL scope.

@@ -18,10 +18,9 @@ Q_TYPEID = {
     'QDesignerPropertySheetExtension': 'org.qt-project.Qt.Designer.PropertySheet'
 }
 
-
 class ExtensionFactory(QExtensionFactory):
-    def __init__(self, extension_manager):
-        super().__init__(extension_manager)
+    def __init__(self, parent=None):
+        super(ExtensionFactory, self).__init__(parent)
 
     def createExtension(self, obj, iid, parent):
         if iid == Q_TYPEID['QDesignerTaskMenuExtension']:
@@ -34,7 +33,7 @@ class ExtensionFactory(QExtensionFactory):
 
 class TaskMenuExtension(QPyDesignerTaskMenuExtension):
     def __init__(self, widget, parent):
-        super().__init__(parent)
+        super(TaskMenuExtension, self).__init__(parent)
 
         self.widget = widget
         self.__actions = None

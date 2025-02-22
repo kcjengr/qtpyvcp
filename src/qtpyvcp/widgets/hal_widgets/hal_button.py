@@ -13,7 +13,7 @@ LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 
 
-class HalButton(QPushButton, HALWidget):
+class HalButton(QPushButton, HALWidget, VCPWidget):
     """HAL Button
 
     Button for setting `bit` HAL pin values.

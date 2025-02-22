@@ -47,7 +47,7 @@ from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 
-CMD = linuxcnc.command()
+#CMD = linuxcnc.command()
 LOG = getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -117,7 +117,7 @@ class OffsetTable(DataPlugin):
 
         self.fs_watcher = None
 
-        self.command = linuxcnc.command()
+        #self.command = linuxcnc.command()
 
         self.columns = self.validateColumns(columns) or [c for c in 'XYZABCUVWR']
         self.rows = self.ROW_LABELS
@@ -578,6 +578,9 @@ class OffsetTable(DataPlugin):
 
         return self.g5x_offset_table
 
+    def getTableColumnsIndex(self):
+        return self.column_labels
+        
     def getOffsetTable(self):
         return self.g5x_offset_table
 

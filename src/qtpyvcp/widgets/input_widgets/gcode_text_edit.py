@@ -588,14 +588,15 @@ class NumberMargin(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         self.parent = parent
-        self.background = QColor('#e8e8e8')
-        self.highlight_background = QColor('#e8e8e8')
-        self.color = QColor('#717171')
-        self.highlight_color = QColor('#000000')
         # this only happens when lines are added or subtracted
         self.parent.blockCountChanged.connect(self.updateWidth)
         # this happens quite often
         self.parent.updateRequest.connect(self.updateContents)
+
+        self.background = QColor('#e8e8e8')
+        self.highlight_background = QColor('#e8e8e8')
+        self.color = QColor('#717171')
+        self.highlight_color = QColor('#000000')
 
     def getWidth(self):
         blocks = self.parent.blockCount()

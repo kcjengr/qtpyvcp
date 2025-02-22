@@ -9,9 +9,10 @@ all other QtPyVCP widgets are based.
 import os
 import json
 
-from PySide6.QtCore import Property, Slot
+from PySide6.QtCore import Qt,Property, Slot
 from PySide6.QtWidgets import QPushButton
 
+from qtpyvcp import hal as qhal
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
 
@@ -70,6 +71,17 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._style = ''
         self._data_channels = []
         self._security_level = 0
+        # self._hal_param_enable = False
+        # self._hal_param_name = None
+        # self._hal_param_type = "s32"
+        # self._hal_param_access = "rw"
+        
+        
+    # def postInitialize(self):
+    #
+    #     if self.enableHalParams:
+    #         comp = qhal.getComponent("qtpyvcp")
+    #         comp.addParam(self.halParamName, self.halParamType, self.halParamAccess)
 
     #
     # Security implementation
@@ -104,8 +116,58 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._security_level = security
 
     #
+    # Pparameter implementation ( Disabled for now )
+    #
+
+    # @Property(bool)
+    # def enableHalParams(self):
+    #     return self._hal_param_enable
+    #
+    # @enableHalParams.setter
+    # def enableHalParams(self, enabled):
+    #     self._hal_param_enable = enabled
+    #
+    # ###
+    #
+    # @Property(str)
+    # def halParamName(self):
+    #     if self._hal_param_name is None:
+    #         return str(self.objectName()).replace('-', '_')
+    #     return self._hal_param_name
+    #
+    # @halParamName.setter
+    # def halParamName(self, name):
+    #     self._hal_param_name = name
+    #
+    # ###
+    #
+    # @Property(str)
+    # def halParamType(self):
+    #     return self._hal_param_type
+    #
+    # @halParamType.setter
+    # def halParamType(self, param_type):
+    #     self._hal_param_type = param_type
+    #
+    # ###
+    #
+    # @Property(str)
+    # def halParamAccess(self):
+    #     return self._hal_param_access
+    #
+    # @halParamAccess.setter
+    # def halParamAccess(self, param_access):
+    #     self._hal_param_access = param_access
+    
+    def action_event(self, instance, value):
+        print(instance)
+        print(value)
+        super().action_event(instance, value)
+    
+    #
     # Style Rules implementation
     #
+
     def setStyleClass(self, style_class):
         """Set the QSS style class for the widget"""
         self.setProperty('style', style_class)
@@ -215,6 +277,13 @@ class VCPWidget(VCPBaseWidget):
     """
     def __init__(self, parent=None):
         super(VCPWidget, self).__init__()
+        # Logically no focus policy here should be correct.
+        # Risk is that VCPWidget maybe used as the base for
+        # widgets that DO expect user interaction. So below would be a
+        # breaking change until some cleaning is done. Test it?
+        # Causes issue under pyside6 with runtime error
+        #self.setFocusPolicy(Qt.NoFocus)
+
 
 class CMDWidget(VCPBaseWidget):
     """Command Widget
@@ -276,6 +345,8 @@ class VCPButton(QPushButton, CMDWidget):
     def __init__(self, parent=None):
         super(VCPButton, self).__init__(parent)
         self.status = getPlugin('status')
+        # stop focus that will interfere with keyboard jog
+        self.setFocusPolicy(Qt.NoFocus)
 
     def mousePressEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place

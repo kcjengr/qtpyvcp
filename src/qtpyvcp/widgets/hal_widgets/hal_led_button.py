@@ -16,6 +16,7 @@ class HALLEDButton(QPushButton):
     """
     def __init__(self, parent=None):
         super(HALLEDButton, self).__init__(parent)
+        self.setFocusPolicy(Qt.NoFocus)
 
         self._alignment = Qt.AlignRight | Qt.AlignTop
         self._pin_name = ''
@@ -51,7 +52,7 @@ class HALLEDButton(QPushButton):
         elif alignment & Qt.AlignVCenter:
             y = self.height()/2 - halfLed
         # print(x, y)
-        self.led.move(x, y)
+        self.led.move(int(x), int(y))
         self.updateGeometry()
 
     def resizeEvent(self, event):

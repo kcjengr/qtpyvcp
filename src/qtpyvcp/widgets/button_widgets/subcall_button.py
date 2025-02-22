@@ -19,7 +19,6 @@ PARSE_POSITIONAL_ARGS = re.compile(r' *# *<([a-z0-9_-]+)> *= *#([0-9]+) *(?:\(= 
 
 SUBROUTINE_SEARCH_DIRS = INFO.getSubroutineSearchDirs()
 
-
 class SubCallButton(VCPButton):
     """Button for calling ngc subroutines.
 

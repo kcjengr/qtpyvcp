@@ -82,6 +82,8 @@ def launch_application(opts, config):
     app.initialiseWidgets()
     log_time('done initializing widgets')
 
+    app.postInitialiseWidgets()
+    
     hal_comp.ready()
 
     # load any post GUI hal file

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>774</width>
+    <height>523</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -167,6 +167,48 @@
       <widget class="StatusLabel" name="statuslabel_21">
        <property name="rules" stdset="0">
         <string>[{&quot;name&quot;: &quot;offset_changes&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:tools&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>min extents</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="StatusLabel" name="statuslabel_22">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;mix_extents&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:min_extents&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0">
+      <widget class="QLabel" name="label_15">
+       <property name="text">
+        <string>max extents</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="1">
+      <widget class="StatusLabel" name="statuslabel_23">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;max_extents&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:max_extents&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="0">
+      <widget class="QLabel" name="label_16">
+       <property name="text">
+        <string>extents size</string>
+       </property>
+      </widget>
+     </item>
+     <item row="13" column="1">
+      <widget class="StatusLabel" name="statuslabel_24">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;extents_size&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:extents_size&quot;, &quot;trigger&quot;: true}]}]</string>
        </property>
       </widget>
      </item>

@@ -52,6 +52,8 @@ class GCodeProperties(DataPlugin):
         self.ini = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self.config_dir = os.path.dirname(inifile)
 
+        self.linear_units = MACHINE_UNITS
+
         self.canon = None
         self.stat.file.notify(self._file_event)
         self.loaded_file = None
@@ -394,6 +396,257 @@ class GCodeProperties(DataPlugin):
     def file_feed(self, chan):
         return chan.value
 
+    @DataChannel
+    def min_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = list()
+
+        return chan.value
+
+    @DataChannel
+    def x_min_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def y_min_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def z_min_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def max_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = list()
+
+        return chan.value
+
+    @DataChannel
+    def x_max_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def y_max_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def z_max_extents(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def extents_size(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = list()
+
+
+        return chan.value
+
+    @DataChannel
+    def x_extents_size(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def y_extents_size(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+    @DataChannel
+    def z_extents_size(self, chan):
+        """The current file run distance.
+
+        Args:
+            None
+
+        Returns:
+            The distance the machine will run with the loaded file
+
+        Channel syntax::
+
+            gcode_properties:feed
+
+        """
+        if not self.loaded_file:
+            chan.value = 0.0
+
+
+        return chan.value
+
+
     def initialise(self):
         pass
 
@@ -446,6 +699,7 @@ class GCodeProperties(DataPlugin):
         g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
             sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
 
+
         self.file_name.setValue(file_name)
         self.file_size.setValue(file_size)
         self.file_lines.setValue(file_lines)
@@ -460,6 +714,52 @@ class GCodeProperties(DataPlugin):
         self.file_rigid_taps.setValue(self.canon.rigid_taps)
         self.file_offsets.setValue(self.canon.g5x_offset_dict)
 
+        self.calc_extents()
+
+        x_min_extents = self.canon.min_extents[0]
+        y_min_extents = self.canon.min_extents[1]
+        z_min_extents = self.canon.min_extents[2]
+
+        x_max_extents = self.canon.max_extents[0]
+        y_max_extents = self.canon.max_extents[1]
+        z_max_extents = self.canon.max_extents[2]
+
+        if self.stat.linear_units == 1:
+            self.min_extents.setValue((x_min_extents, y_min_extents, z_min_extents))
+            self.max_extents.setValue((x_max_extents, y_max_extents, z_max_extents))
+            self.x_min_extents.setValue(x_min_extents)
+            self.y_min_extents.setValue(y_min_extents)
+            self.z_min_extents.setValue(z_min_extents)
+            self.x_max_extents.setValue(x_max_extents)
+            self.y_max_extents.setValue(y_max_extents)
+            self.z_max_extents.setValue(z_max_extents)
+        else:
+            self.min_extents.setValue((x_min_extents*25.4, y_min_extents*25.4, z_min_extents*25.4))
+            self.max_extents.setValue((x_max_extents*25.4, y_max_extents*25.4, z_max_extents*25.4))
+            self.x_min_extents.setValue(x_min_extents*25.4)
+            self.y_min_extents.setValue(y_min_extents*25.4)
+            self.z_min_extents.setValue(z_min_extents*25.4)
+            self.x_max_extents.setValue(x_max_extents*25.4)
+            self.y_max_extents.setValue(y_max_extents*25.4)
+            self.z_max_extents.setValue(z_max_extents*25.4)
+
+
+
+
+        extents_size = list()
+
+        for i in range(3):
+            if self.stat.linear_units == 1:
+                extents_size.append(self.canon.max_extents[i] + abs(self.canon.min_extents[i]))
+            else:
+                extents_size.append((self.canon.max_extents[i] +  abs(self.canon.min_extents[i]))*25.4)
+
+        self.x_extents_size.setValue(extents_size[0])
+        self.y_extents_size.setValue(extents_size[1])
+        self.z_extents_size.setValue(extents_size[2])
+
+        self.extents_size.setValue(extents_size)
+    
     def calc_distance(self):
 
         mf = 100.0
@@ -488,6 +788,10 @@ class GCodeProperties(DataPlugin):
         # # properties(root_window, _("G-Code Properties"), property_names, props)
         # pprint.pprint(props)
 
+    def calc_extents(self):
+        self.canon.calc_extents()
+
+
     def dist(self, xxx, xxx_1):
         (x, y, z) = xxx  # todo changeme
         (p, q, r) = xxx_1  # todo changeme
@@ -495,7 +799,7 @@ class GCodeProperties(DataPlugin):
 
     def from_internal_units(self, pos, unit=None):
         if unit is None:
-            unit = s.linear_units
+            unit = self.linear_units
         lu = (unit or 1) * 25.4
 
         lus = [lu, lu, lu, 1, 1, 1, lu, lu, lu]
@@ -503,7 +807,7 @@ class GCodeProperties(DataPlugin):
 
     def from_internal_linear_unit(self, v, unit=None):
         if unit is None:
-            unit = s.linear_units
+            unit = self.linear_units
         lu = (unit or 1) * 25.4
         return v * lu
 
@@ -511,24 +815,26 @@ class GCodeProperties(DataPlugin):
 class PropertiesCanon(BaseCanon):
 
     def __init__(self):
+        super(PropertiesCanon, self).__init__()
+        
         self.num_lines = 0
         self.tool_calls = 0
 
         # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
-        self.traverse = []
+        self.traverse = list()
 
         # feed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
-        self.feed = []
+        self.feed = list()
 
         # arcfeed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
-        self.arcfeed = []
+        self.arcfeed = list()
 
         # dwell list - [line number, color, pos x, pos y, pos z, plane]
-        self.dwells = []
+        self.dwells = list()
 
-        self.work_planes = []
+        self.work_planes = list()
 
-        self.rigid_taps = []
+        self.rigid_taps = list()
 
         self.feedrate = 1
         self.dwell_time = 0
@@ -672,7 +978,7 @@ class PropertiesCanon(BaseCanon):
             LOG.debug(f"straight_feed: {e}")
 
     def get_axis_mask(self):
-        return 7  # XYZ
+        return 511  # XYZABCUVW
 
     def rigid_tap(self, x, y, z):
         try:
@@ -693,7 +999,9 @@ class PropertiesCanon(BaseCanon):
     def change_tool(self, tool):
         if tool != -1:
             self.tool_calls += 1
-            self.tools.append(tool)
+
+            if tool not in self.tools:
+                self.tools.append(tool)
 
     def next_line(self, st):
         self.num_lines += 1
@@ -707,3 +1015,57 @@ class PropertiesCanon(BaseCanon):
         # print(("seq", st.sequence_number))
         # print(("MCODES", st.mcodes))
         # print(("TOOLCHANGE", st.toolchange))
+
+    def calc_extents(self):
+        self.min_extents, self.max_extents, self.min_extents_notool, self.max_extents_notool = self.rs274_calc_extents((self.arcfeed, self.feed, self.traverse))
+
+    def rs274_calc_extents(self, args):
+        min_x, min_y, min_z = 9e99, 9e99, 9e99
+        min_xt, min_yt, min_zt = 9e99, 9e99, 9e99
+        max_x, max_y, max_z = -9e99, -9e99, -9e99
+        max_xt, max_yt, max_zt = -9e99, -9e99, -9e99
+
+        for si in args:
+            if not isinstance(si, (list, tuple)):
+                return [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+
+            xs, ys, zs = 9e99, 9e99, 9e99
+            xe, ye, ze = -9e99, -9e99, -9e99
+            xt, yt, zt = 0, 0, 0
+
+            for sj in si:
+                print(len(sj))
+                print(sj)
+                if not isinstance(sj, (list, tuple)) or len(sj) not in (2, 3, 4, 5):
+                    return [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+
+                xs, ys, zs, xe, ye, ze, xt, yt, zt = sj[0]
+
+                max_x = max(max_x, xs)
+                max_y = max(max_y, ys)
+                max_z = max(max_z, zs)
+                min_x = min(min_x, xs)
+                min_y = min(min_y, ys)
+                min_z = min(min_z, zs)
+                max_xt = max(max_xt, xs + xt)
+                max_yt = max(max_yt, ys + yt)
+                max_zt = max(max_zt, zs + zt)
+                min_xt = min(min_xt, xs + xt)
+                min_yt = min(min_yt, ys + yt)
+                min_zt = min(min_zt, zs + zt)
+
+            if len(si) > 0:
+                max_x = max(max_x, xe)
+                max_y = max(max_y, ye)
+                max_z = max(max_z, ze)
+                min_x = min(min_x, xe)
+                min_y = min(min_y, ye)
+                min_z = min(min_z, ze)
+                max_xt = max(max_xt, xe + xt)
+                max_yt = max(max_yt, ye + yt)
+                max_zt = max(max_zt, ze + zt)
+                min_xt = min(min_xt, xe + xt)
+                min_yt = min(min_yt, ye + yt)
+                min_zt = min(min_zt, ze + zt)
+
+        return [[min_x, min_y, min_z], [max_x, max_y, max_z], [min_xt, min_yt, min_zt], [max_xt, max_yt, max_zt]]

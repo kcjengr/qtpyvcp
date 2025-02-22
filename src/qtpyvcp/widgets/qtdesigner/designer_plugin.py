@@ -11,14 +11,13 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
 
     group_name = None
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super(_DesignerPlugin, self).__init__(parent=parent)
         self.initialized = False
         self.manager = None
         self._form_editor = None
 
     # This MUST be overridden to return the widget class
-
     def pluginClass(self):
         raise NotImplementedError()
 
@@ -49,7 +48,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
 
     # Override to set the icon used for the widget in QtDesigner
     def icon(self):
-        return  QIcon()
+        return QIcon()
 
     # Override to set the QtDesigner widget box group heading
     def group(self):
@@ -81,8 +80,9 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
         self.manager = form_editor.extensionManager()
 
         if len(self.designerExtensions()) > 0 and self.manager:
-            factory = ExtensionFactory(self.manager)
-            self.manager.registerExtensions(factory, Q_TYPEID['QDesignerTaskMenuExtension'])
+            factory = ExtensionFactory(parent=self.manager)
+            self.manager.registerExtensions(factory,
+                                            Q_TYPEID['QDesignerTaskMenuExtension'])
 
         self.initialized = True
 
@@ -90,7 +90,6 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
         return self._form_editor is not None
 
     def createWidget(self, parent):
-
         w = self.pluginClass()(parent)
         w.extensions = self.designerExtensions()
         return w
