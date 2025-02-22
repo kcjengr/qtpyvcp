@@ -10,9 +10,9 @@ class AxesActor(vtk.vtkAxesActor):
         self._axis_mask = self._datasource.getAxisMask()
 
         if  self._datasource.isMachineMetric():
-            self.length = 1.5
+            self.axes_length = 1.5
         else:
-            self.length = 0.375
+            self.axes_length = 0.375
             
         transform = vtk.vtkTransform()
         transform.Translate(0.0, 0.0, 0.0)  # Z up
@@ -25,11 +25,11 @@ class AxesActor(vtk.vtkAxesActor):
 
         # Lathe modes
         if self._axis_mask == 3:
-            self.SetTotalLength(self.length, self.length, 0)
+            self.SetTotalLength(self.axes_length, self.axes_length, 0)
         elif self._axis_mask == 5:
-            self.SetTotalLength(self.length, 0, self.length)
+            self.SetTotalLength(self.axes_length, 0, self.axes_length)
         elif self._axis_mask == 6:
-            self.SetTotalLength(0, self.length, self.length)
+            self.SetTotalLength(0, self.axes_length, self.axes_length)
         # Mill mode
         else:
-            self.SetTotalLength(self.length, self.length, self.length)
+            self.SetTotalLength(self.axes_length, self.axes_length, self.axes_length)
