@@ -664,7 +664,7 @@ class Status(DataPlugin):
             # looking for a ui element axis that machine does not have
             LOG.warning(f'Homed axis anum={anum} will be outside INFO.AXIS_LETTER_LIST index range: 0 to {len(INFO.AXIS_LETTER_LIST)-1}')
             return False
-        axis_ltr = self.axis_mask.getValue(format='string')[anum]
+        axis_ltr = self.axis_mask.getString()[int(anum)]
         is_homed = []
         for ax in INFO.ALETTER_JNUM_DICT:
             if axis_ltr == ax[0]:
