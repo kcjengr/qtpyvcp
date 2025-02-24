@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QPushButton
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
+from qtpyvcp.widgets.base_widgets import VCPWidget
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
