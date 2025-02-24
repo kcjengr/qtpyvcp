@@ -74,13 +74,14 @@ class BaseBackPlot(object):
             if result > gcode.MIN_ERROR:
                 msg = gcode.strerror(result)
                 fname = os.path.basename(filename)
-                self.notification.notification_dispatcher.setNotify("3D plot", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
+                self.notification.notification_dispatcher.setNotify(f"3D plot", "Error in {fname} line {seq - 1}\n{msg}")
                 # raise SyntaxError("Error in %s line %i: %s" % (fname, seq - 1, msg))
 
         except KeyboardInterrupt:
             # probably raised by an (AXIS, stop) comment in the G-code file
             # abort generating the backplot
             pass
+        
         except Exception as e:
             LOG.debug(f"CANON ERROR {e}")
         # clean up temp var file and the backup

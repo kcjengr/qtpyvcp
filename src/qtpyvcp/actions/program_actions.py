@@ -36,11 +36,11 @@ def load(fname, add_to_recents=True, isreload=False):
     
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:
-        LOG.debug('Loading NC program: %s', fname)
+        LOG.debug(f"Loading NC program: {fname}")
         CMD.program_open(fname.encode('utf-8'))
         CMD.wait_complete()
     else:
-        LOG.debug('Loading file with filter program: %s', fname)
+        LOG.debug(f"Loading file with filter program: {fname}")
         openFilterProgram(fname, filter_prog)
 
     if add_to_recents:
