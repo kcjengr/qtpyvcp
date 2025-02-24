@@ -35,12 +35,12 @@ class RecentFilesMenu(QMenu):
         self._actions = []
 
         self.status = getPlugin('status')
-
+        
         for i in range(max_files):
             action = QAction(parent=self,
                              visible=False,
-                             triggered=lambda: actions.program.load(self.sender().data()),
-                             )
+                             triggered=self.load_file
+                            )
 
             self._actions.append(action)
             self.addAction(action)
@@ -60,8 +60,16 @@ class RecentFilesMenu(QMenu):
     def update(self, files):
         for i, fname in enumerate(files):
             
-            text = "&{} {}".format(i + 1, os.path.basename(fname))
+            text = f"&{i + 1} {os.path.basename(fname)}"
             action = self._actions[i]
             action.setText(text)
             action.setData(fname)
             action.setVisible(True)
+            
+    def load_file(self):
+        sender = self.sender()
+        
+        file_name = sender.data()
+        
+        actions.program.load(file_name)
+        
