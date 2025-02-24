@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QCheckBox
-from PySide6.QtCore import Property
+from PySide6.QtCore import Qt, Property
 
 from qtpyvcp.widgets import CMDWidget
 from qtpyvcp.actions import bindWidget
