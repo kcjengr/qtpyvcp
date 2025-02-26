@@ -44,6 +44,9 @@ class VCPMainWindow(QMainWindow):
         self.slow_jog = False
         self.rapid_jog = False
         
+        # Add shift override tracking
+        self.shift_override = False
+        
         self.setWindowTitle(title)
 
         self.app = QApplication.instance()
@@ -305,13 +308,17 @@ class VCPMainWindow(QMainWindow):
         else:
             LOG.debug(f"Focus widget = None")
 
-        #speed = actions.machine.MAX_JOG_SPEED / 60.0 if event.modifiers() & Qt.ShiftModifier else None
-        if self.rapid_jog:
+        # Check for shift key to override speed
+        if event.modifiers() & Qt.ShiftModifier:
+            self.shift_override = True
             speed = actions.machine.MAX_JOG_SPEED / 60
-        elif self.slow_jog:
-            speed = actions.machine.jog_linear_speed() / 60 / 10.0
         else:
-            speed = None
+            if self.rapid_jog:
+                speed = actions.machine.MAX_JOG_SPEED / 60
+            elif self.slow_jog:
+                speed = actions.machine.jog_linear_speed() / 60 / 10.0
+            else:
+                speed = None
         
         if event.modifiers() & Qt.ControlModifier:
             jog_active = 1
@@ -357,6 +364,10 @@ class VCPMainWindow(QMainWindow):
         
         if event.isAutoRepeat():
             return
+
+        # Reset shift override when shift released
+        if event.key() == Qt.Key_Shift:
+            self.shift_override = False
 
         if event.key() == Qt.Key_Up:
             actions.machine.jog.axis('Y', 0)
