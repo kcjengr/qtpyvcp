@@ -26,9 +26,8 @@ class ErrorDialog(BaseDialog):
         #self.ui = loader.load(ui_file, self)
         #self.ui.show()
         form_class, base_class = PySide6Ui(file_path).load()
-        form = form_class()
-        form.setupUi(self)
-        self.ui = form
+        self.ui = form_class()
+        self.ui.setupUi(self)
 
         self.exc_info = exc_info
         exc_type, exc_msg, exc_tb = exc_info

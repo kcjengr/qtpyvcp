@@ -76,8 +76,8 @@ class ToolChangeDialog(BaseDialog):
         #loader = QUiLoader()
         #self.ui = loader.load(ui_file, self)
         form_class, base_class = PySide6Ui(file_path).load()
-        form = form_class()
-        form.setupUi(self)
+        self.ui = form_class()
+        self.ui.setupUi(self)
 
 
         comp = hal.getComponent("qtpyvcp_manualtoolchange")

@@ -53,6 +53,6 @@ class ToolEditDialog(BaseDialog):
         #self.ui = loader.load(ui_file, self)
         LOG.debug(f"ToolEditDialog UI file to load and convert: {file_path}")
         form_class, base_class = PySide6Ui(file_path).load()
-        form = form_class()
-        form.setupUi(self)
+        self.ui = form_class()
+        self.ui.setupUi(self)
 

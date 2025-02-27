@@ -125,8 +125,8 @@ class VCPMainWindow(QMainWindow):
         #self.ui.show()
         LOG.debug(f"UI file to load and convert: {file_path}")
         form_class, base_class = PySide6Ui(file_path).load()
-        form = form_class()
-        form.setupUi(self)
+        self.ui = form_class()
+        self.ui.setupUi(self)
 
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied

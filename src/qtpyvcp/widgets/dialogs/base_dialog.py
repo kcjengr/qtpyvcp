@@ -99,8 +99,8 @@ class BaseDialog(QDialog):
         #self.ui = loader.load(ui_file, self)
         #self.ui.show()
         form_class, base_class = PySide6Ui(file_path).load()
-        form = form_class()
-        form.setupUi(self)
+        self.ui = form_class()
+        self.ui.setupUi(self)
 
     def setWindowFlag(self, flag, on):
         """BackPort QWidget.setWindowFlag() implementation from Qt 5.9
