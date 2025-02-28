@@ -34,19 +34,18 @@ class VCPChooser(QDialog):
         #self.ui = Ui_Dialog()
         #self.ui.setupUi(self)
         form_class, base_class = PySide6Ui(file_path).load()
-        form = form_class()
-        form.setupUi(self)
-        self.ui = form
+        self.ui = form_class()
+        self.ui.setupUi(self)
         
         self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         self.opts = opts
         self._vcp_data = {}
 
-        self.selection = form.vcpTreeView.selectionModel()
+        self.selection = self.ui.vcpTreeView.selectionModel()
 
         # example VCP section
-        category = QTreeWidgetItem(form.vcpTreeView)
+        category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Example VCPs')
         category.setFlags(Qt.ItemIsEnabled)
 
@@ -56,7 +55,7 @@ class VCPChooser(QDialog):
             child.setText(0, self.get_vcp_data(entry_point))
 
         # test VCP section
-        category = QTreeWidgetItem(form.vcpTreeView)
+        category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Video Test VCPs')
         category.setFlags(Qt.ItemIsEnabled)
 
@@ -67,7 +66,7 @@ class VCPChooser(QDialog):
 
 
         # installed VCP section
-        category = QTreeWidgetItem(form.vcpTreeView)
+        category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Installed VCPs')
         category.setFlags(Qt.ItemIsEnabled)
         category.setHidden(True)
@@ -79,7 +78,7 @@ class VCPChooser(QDialog):
             category.setHidden(False)
 
         if os.path.exists(CUSTOM_VCP_DIR):
-            category = QTreeWidgetItem(form.vcpTreeView)
+            category = QTreeWidgetItem(self.ui.vcpTreeView)
             category.setText(0, 'Custom VCPs')
             category.setFlags(Qt.ItemIsEnabled)
             for dir_name in os.listdir(CUSTOM_VCP_DIR):
@@ -88,8 +87,8 @@ class VCPChooser(QDialog):
                 child = QTreeWidgetItem(category)
                 child.setText(0, dir_name)
 
-        form.vcpTreeView.expandAll()
-        form.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
+        self.ui.vcpTreeView.expandAll()
+        self.ui.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
         self.selection.selectionChanged.connect(self.on_selection_changed)
 
     def get_vcp_data(self, entry_point):
