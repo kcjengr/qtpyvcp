@@ -105,7 +105,7 @@ def bindWidget(widget, action):
         widget.valueChanged.connect(method)
 
     elif isinstance(widget, QComboBox):
-        widget.activated[str].connect(method)
+        widget.activated[int].connect(method)
 
     else:
         raise InvalidAction('Can\'t bind action "{}" to unsupported widget type "{}"'
