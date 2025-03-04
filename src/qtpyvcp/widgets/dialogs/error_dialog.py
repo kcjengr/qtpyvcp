@@ -36,11 +36,11 @@ class ErrorDialog(BaseDialog):
         self.exc_msg = exc_msg
         self.exc_tb = "".join(format_exception(*exc_info))
         color = 'orange' if 'warning'in self.exc_typ.lower() else 'red'
-        form.errorType.setText("<font color='{}'>{}:</font>"
+        self.ui.errorType.setText("<font color='{}'>{}:</font>"
                                .format(color, self.exc_typ))
-        form.errorValue.setText(str(exc_msg))
+        self.ui.errorValue.setText(str(exc_msg))
         self.setWindowTitle('Unhandled Exception - {}'.format(self.exc_typ))
-        form.tracebackText.setText(self.exc_tb)
+        self.ui.tracebackText.setText(self.exc_tb)
         self.show()
 
     @Slot()
