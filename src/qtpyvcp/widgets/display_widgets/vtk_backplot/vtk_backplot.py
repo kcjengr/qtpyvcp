@@ -209,19 +209,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.touch_enabled = False
         # provide a control to UI builders to suppress when line "breadcrumbs" are plotted
         self.breadcrumbs_plotted = True
-        
-        view_default_setting = getSetting("backplot.view").value
-        view_options_setting = getSetting("backplot.view").enum_options
-        view_options = list()
-        self.machine_ext_scale = getSetting("backplot.machine-ext-scale").value
-            
-        for option in view_options_setting:
-            view_options.append(option.split(':')[0])
-            
-        print(view_options_setting)
-        print(view_options)
-            
-        self.default_view = view_options[view_default_setting]
+        if not IN_DESIGNER:
+            view_default_setting = getSetting("backplot.view").value
+            view_options_setting = getSetting("backplot.view").enum_options
+            view_options = list()
+            self.machine_ext_scale = getSetting("backplot.machine-ext-scale").value
+                
+            for option in view_options_setting:
+                view_options.append(option.split(':')[0])
+                
+            print(view_options_setting)
+            print(view_options)
+                
+            self.default_view = view_options[view_default_setting]
 
         
         self.program_view_when_loading_program = False
@@ -272,10 +272,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.rotation_xy_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-        LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
-        LOG.debug("---------active_wcs_offset {}".format(self.active_wcs_offset))
-        LOG.debug("---------wcs_offsets {}".format(self.wcs_offsets))
-
+        if not IN_DESIGNER:
+            LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
+            LOG.debug("---------active_wcs_offset {}".format(self.active_wcs_offset))
+            LOG.debug("---------wcs_offsets {}".format(self.wcs_offsets))
+    
         self.original_g5x_offset = [0.0] * NUMBER_OF_WCS
         self.original_g92_offset = [0.0] * NUMBER_OF_WCS
 
@@ -283,7 +284,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
         
-        self.joints = self._datasource._status.joint
+        if not IN_DESIGNER:
+            self.joints = self._datasource._status.joint
 
         self.foam_offset = [0.0, 0.0]
 
