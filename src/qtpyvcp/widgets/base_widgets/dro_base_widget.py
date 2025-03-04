@@ -84,7 +84,9 @@ class DROBaseWidget(VCPWidget):
         if IN_DESIGNER:
             return
         
-        self.updateValue()
+        # Calling updateValue here under pyside is causing
+        # super not called errors.
+        #self.updateValue()
 
         self.status.program_units.notify(self.updateUnits, 'string')
 
