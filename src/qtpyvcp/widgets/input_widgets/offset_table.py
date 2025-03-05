@@ -105,6 +105,10 @@ class OffsetModel(QStandardItemModel):
 
     def updateModel(self, offset_table):
         # update model with new data
+        if len(offset_table) == 0:
+            LOG.warn("Offset Table update is zero length - skip it")
+            return
+        
         self.beginResetModel()
         self._offset_table = offset_table
         self.endResetModel()
@@ -135,7 +139,7 @@ class OffsetModel(QStandardItemModel):
         return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
 
     def data(self, index, role=Qt.DisplayRole):
-        if role == Qt.DisplayRole or role == Qt.EditRole:
+        if (role == Qt.DisplayRole or role == Qt.EditRole) and len(self._offset_table) > 0:
             columns_index = index.column()
             rows_index = index.row()
 
