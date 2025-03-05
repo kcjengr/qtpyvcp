@@ -112,7 +112,7 @@ class ActiveGcodesModel(QStandardItemModel):
                     return data['description'].format()
                 return data['description']
 
-        elif role == Qt.TextColorRole:
+        elif role == Qt.ForegroundRole:
             if DATA[row]['code'] in self.gcodes:
                 return QBrush(self.active_code_color)
 

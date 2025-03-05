@@ -147,7 +147,7 @@ class OffsetModel(QStandardItemModel):
         elif role == Qt.TextAlignmentRole:
             return Qt.AlignVCenter | Qt.AlignRight
 
-        elif role == Qt.TextColorRole:
+        elif role == Qt.ForegroundRole:
 
             offset = index.row() + 1
 
