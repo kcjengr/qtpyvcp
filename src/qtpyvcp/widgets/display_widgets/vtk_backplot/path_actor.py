@@ -1,3 +1,4 @@
+import vtk
 import vtk.qt
 from .axes_actor import AxesActor
 from qtpyvcp.utilities import logger
@@ -14,16 +15,16 @@ class PathActor(vtk.vtkActor):
         self.origin_cords = None
 
         if self._datasource.isMachineMetric():
-            self.length = 1
+            self.unit_length = 1
         else:
-            self.length = .25
+            self.unit_length = .25
 
         self.axes_actor = AxesActor(self._datasource)
 
         if self._datasource.isMachineLathe():
-            self.axes_actor.SetTotalLength(self.length, 0, self.length)
+            self.axes_actor.SetTotalLength(self.unit_length, 0, self.unit_length)
         else:
-            self.axes_actor.SetTotalLength(self.length, self.length, self.length)
+            self.axes_actor.SetTotalLength(self.unit_length, self.unit_length, self.unit_length)
 
         # Create a vtkUnsignedCharArray container and store the colors in it
         self.colors = vtk.vtkUnsignedCharArray()
