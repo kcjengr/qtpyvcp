@@ -118,9 +118,8 @@ class LinuxCncDataSource(QObject):
         #LOG.debug("__handleOffsetTableChanged: {}".format(type(offset_table)))
         if len(offset_table) == 0:
             # this must be an error condition as offset table should always have something in it.
-            # Therefore we exit and do not propogate this signal
+            # Therefore we force a reread before propogating
             self.getWcsOffsets()
-            return
         
         self.offsetTableChanged.emit(offset_table)
         
