@@ -8,3 +8,5 @@ pyudev
 distro
 python-dateutil
 simpleeval
+deepdiff
+panda
