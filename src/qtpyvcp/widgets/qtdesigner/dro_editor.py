@@ -41,16 +41,16 @@ class DroEditor(QDialog):
         self.ui = loader.load(ui_file, self)
         self.ui.show()
 
-        self.axisCombo.setCurrentIndex(self.widget.axisNumber)
-        self.refTypCombo.setCurrentIndex(self.widget.referenceType)
+        self.ui.axisCombo.setCurrentIndex(self.widget.axisNumber)
+        self.ui.refTypCombo.setCurrentIndex(self.widget.referenceType)
 
-        self.inFmtEntry.setText(self.widget.inchFormat)
-        self.mmFmtEntry.setText(self.widget.millimeterFormat)
-        self.degFmtEntry.setText(self.widget.degreeFormat)
+        self.ui.inFmtEntry.setText(self.widget.inchFormat)
+        self.ui.mmFmtEntry.setText(self.widget.millimeterFormat)
+        self.ui.degFmtEntry.setText(self.widget.degreeFormat)
 
-        self.latheModeCombo.setCurrentIndex(self.widget.latheMode)
+        self.ui.latheModeCombo.setCurrentIndex(self.widget.latheMode)
 
-        bb = self.buttonBox
+        bb = self.ui.buttonBox
         bb.button(QDialogButtonBox.Apply).setDefault(True)
         bb.button(QDialogButtonBox.Cancel).setDefault(False)
         bb.button(QDialogButtonBox.Apply).clicked.connect(self.accept)
@@ -59,16 +59,16 @@ class DroEditor(QDialog):
     def accept(self):
         """Commit changes"""
         # general options
-        self.setCursorProperty('axisNumber', self.axisCombo.currentIndex())
-        self.setCursorProperty('referenceType', self.refTypCombo.currentIndex())
+        self.setCursorProperty('axisNumber', self.ui.axisCombo.currentIndex())
+        self.setCursorProperty('referenceType', self.ui.refTypCombo.currentIndex())
 
         # format options
-        self.setCursorProperty('inchFormat', self.inFmtEntry.text())
-        self.setCursorProperty('millimeterFormat', self.mmFmtEntry.text())
-        self.setCursorProperty('degreeFormat', self.degFmtEntry.text())
+        self.setCursorProperty('inchFormat', self.ui.inFmtEntry.text())
+        self.setCursorProperty('millimeterFormat', self.ui.mmFmtEntry.text())
+        self.setCursorProperty('degreeFormat', self.ui.degFmtEntry.text())
 
         # lathe options
-        self.setCursorProperty('latheMode', self.latheModeCombo.currentIndex())
+        self.setCursorProperty('latheMode', self.ui.latheModeCombo.currentIndex())
 
         self.close()
 
