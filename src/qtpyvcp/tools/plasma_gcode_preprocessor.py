@@ -291,7 +291,7 @@ class CodeLine:
                 if code == 'G91':
                     self._parent.set_active_g_modal('G91')
             # look for Tx M6 combo
-            f = re.findall("T\s*\d+|M6", line.upper().strip())
+            f = re.findall(r"T\s*\d+|M6", line.upper().strip())
             if len(f) == 2:
                 # we have a tool change combo. Assume in form Tx M6
                 self.parse_toolchange(combo=True)
@@ -338,7 +338,7 @@ class CodeLine:
 
 
     def strip_inline_comment(self, line):
-        s = re.split(";|\(", line, 1)
+        s = re.split(r";|\(", line, 1)
         try:
             return s[0].strip()
         except:
@@ -356,8 +356,8 @@ class CodeLine:
 
     def parse_inline_comment(self):
         # look for possible inline comment
-        s = re.split(";|\(",self.raw[1:],1)
-        robj = re.search(";|\(",self.raw[1:])
+        s = re.split(r";|\(",self.raw[1:],1)
+        robj = re.search(r";|\(",self.raw[1:])
         if robj != None:
             # found an inline comment. get the char token for the comment
             i = robj.start() + 1
@@ -432,7 +432,7 @@ class CodeLine:
         self.command = ('M', int(self.token[1:]))
         # split the raw line at the token
         line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
-        params = re.findall('\$\d+|S\d+', line)
+        params = re.findall(r"\$\d+|S\d+", line)
         if len(params) == 2:
             self.params['$'] = int(params[0][1:])
             self.params['S'] = int(params[1][1:])
@@ -449,7 +449,7 @@ class CodeLine:
         self.command = ('M', int(self.token[1:]))
         # split the raw line at the token
         line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
-        params = re.findall('\$\d+', line)
+        params = re.findall(r"\$\d+", line)
         if len(params) == 1:
             self.params['$'] = int(params[0][1:])
         elif len(params) == 0:
