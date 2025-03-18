@@ -218,10 +218,15 @@ class HALPin(QObject):
         """
 
         self.pin_name = pin_name
+        
         type_map = {'float': float, 's32': int, 'u32': int, 'bit': bool}
-        self.type = type_map.get(pin_type)
-        self.settable = pin_direction in ['IN', 'I/O']
+        self.type = type_map.get(pin_type.decode('utf-8'))
+        
+        if self.type is None:
+            raise ValueError(f"Invalid pin_type: {pin_type}. Expected one of {list(type_map.keys())}")
+
         self.value = self.type(pin_value)
+        self.settable = pin_direction in ['IN', 'I/O']
 
         self.log_change = False
 
@@ -333,7 +338,7 @@ class HALPoller(QObject):
             if len(rawtuple[0]) <= 0:
                 time.sleep(self.cycle_time/1000.0)
                 continue
-            raw = rawtuple[0].split('\n')
+            raw = rawtuple[0].decode('utf-8').split('\n')
 
             pins = [ [a for a in [x.strip() for x in line.split(' ')] if a != ''] for line in raw ]
 
@@ -375,17 +380,21 @@ class HALPoller(QObject):
         si = self.status_items.get(pin_name)
         if si is None:
             raw = subprocess.check_output(['halcmd', '-s', 'show', 'pin', pin_name]).strip()
-            if len(raw.split('\n')) > 1: # more than one pin name matches
+            # print(raw)
+            if len(raw.split(b'\n')) > 1: # more than one pin name matches
                 raise ValueError("HAL pin red<{}> does not exist".format(pin_name))
             pin_data = raw.split()
             if len(pin_data) == 0: # no pin names match
                 raise ValueError("HAL pin red<{}> does not exist".format(pin_name))
                 return
-            if pin_name != pin_data[4]: # name is not complete, but only one pin could match
+            if pin_name != pin_data[4].decode('utf-8'): # name is not complete, but only one pin could match
                 raise ValueError("HAL pin red<{}> does not exist, did you mean green<{}>?".format(pin_name, pin_data[4]))
             pin_type = pin_data[1].strip()
             pin_direction = pin_data[2].strip()
             pin_value = pin_data[3].strip()
+            
+            # print(f"pin type = {pin_type}\npin direction = {pin_direction}\n pin value {pin_value}")
+            
             log.debug("Adding new HALStatusItem for pin '{}'".format(pin_name))
             si = HALPin(pin_name, pin_type, pin_direction, pin_value)
             self.status_items[pin_name] = si
