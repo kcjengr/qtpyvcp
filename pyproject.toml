@@ -12,12 +12,12 @@ authors = [
 ]
 description = "Qt and Python based Virtual Control Panel framework for LinuxCNC."
 readme = "README.md"
-version = "0.0"
+version = "0.0.0"
 
 packages = [
-    { include = "examples", from = "src" },
+    { include = "qtpyvcp_examples", from = "src" },
     { include = "qtpyvcp", from = "src" },
-    { include = "video_tests", from = "src" },
+    { include = "qtpyvcp_video_tests", from = "src" },
 ]
 
 [tool.poetry.dependencies]
@@ -31,22 +31,22 @@ editvcp = "qtpyvcp.tools.editvcp:main"
 plasma_tooldbpipe = "qtpyvcp.tools.plasma_tooldbpipe:main"
 plasma_gcode_preprocessor = "qtpyvcp.tools.plasma_gcode_preprocessor:main"
 tool_db_backend = "qtpyvcp.tools.tool_db_backend:main"
-tbl2qsl = "qtpyvcp.tools.tbl2sql:main"
-mini = "examples.mini:main"
-brender = "examples.brender:main"
-vtk_test = "video_tests.vtk_test:main"
-qtpyvcp_test = "video_tests.qtpyvcp_test:main"
+tbl2sql = "qtpyvcp.tools.tbl2sql:main"
+mini = "qtpyvcp_examples.mini:main"
+brender = "qtpyvcp_examples.brender:main"
+vtk_test = "qtpyvcp_video_tests.vtk_test:main"
+qtpyvcp_test = "qtpyvcp_video_tests.qtpyvcp_test:main"
 
 [tool.poetry.plugins]
 
 [tool.poetry.plugins."qtpyvcp.example_vcp"]
-mini = "examples.mini"
-brender = "examples.brender"
-actions = "examples.actions"
+mini = "qtpyvcp_examples.mini"
+brender = "qtpyvcp_examples.brender"
+actions = "qtpyvcp_examples.actions"
 
 [tool.poetry.plugins."qtpyvcp.test_vcp"]
-vtk_test = "video_tests.vtk_test"
-qtpyvcp_test = "video_tests.qtpyvcp_test"
+vtk_test = "qtpyvcp_video_tests.vtk_test"
+qtpyvcp_test = "qtpyvcp_video_tests.qtpyvcp_test"
 
 
 [tool.versioneer]

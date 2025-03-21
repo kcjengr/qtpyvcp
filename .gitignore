@@ -53,3 +53,11 @@ DEBIAN/
 tmp/
 
 poetry.lock
+debian/.debhelper/
+debian/changelog
+debian/debhelper-build-stamp
+debian/files
+debian/python3-qtpyvcp.postinst.debhelper
+debian/python3-qtpyvcp.prerm.debhelper
+debian/python3-qtpyvcp.substvars
+debian/python3-qtpyvcp/

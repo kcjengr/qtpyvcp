@@ -335,7 +335,7 @@ class HALPoller(QObject):
                 continue
             raw = rawtuple[0].split('\n')
 
-            pins = [ [a for a in [x.strip() for x in line.split(' ')] if a != ''] for line in raw ]
+            pins = [ [a for a in [x.strip() for x in line.split(b' ')] if a != ''] for line in raw ]
 
             # UPDATE THE DICTIONARY OF PIN INFO
             # Acquire the mutex so we don't step on other threads
