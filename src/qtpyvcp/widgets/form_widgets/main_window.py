@@ -127,6 +127,8 @@ class VCPMainWindow(QMainWindow):
         form_class, base_class = PySide6Ui(file_path).load()
         self.ui = form_class()
         self.ui.setupUi(self)
+        
+        self.loadSplashGcode()
 
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied
