@@ -1,17 +1,16 @@
-
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
-from .hal_checkbox import HalCheckBox
+from qtpyvcp.widgets.hal_widgets.hal_checkbox import HalCheckBox
 class HalCheckBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalCheckBox
 
-from .hal_spinbox import HalQSpinBox
+from qtpyvcp.widgets.hal_widgets.hal_spinbox import HalQSpinBox
 class HalQSpinBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalQSpinBox
 
-from .hal_double_spinbox import HalDoubleSpinBox
+from qtpyvcp.widgets.hal_widgets.hal_double_spinbox import HalDoubleSpinBox
 class HalDoubleSpinBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalDoubleSpinBox
