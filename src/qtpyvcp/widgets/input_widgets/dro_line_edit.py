@@ -29,7 +29,7 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
         self.editingFinished.connect(self.onEditingFinished)
         self.textEdited.connect(self.setCurrentPos)
 
-        issue_mdi.bindOk(widget=self)
+        #  issue_mdi.bindOk(widget=self)
         if IN_DESIGNER:
             return
         self.last_commanded_pos = self.status.stat.position[self._anum]

@@ -10,6 +10,7 @@ from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import connectSetting, getSetting
 from qtpyvcp.plugins.db_tool_table import DBToolTable
+from qtpyvcp.actions import IN_DESIGNER
 
 LOG = getLogger(__name__)
 
@@ -93,6 +94,8 @@ class ToolModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(ToolModel, self).__init__(parent)
 
+        if IN_DESIGNER:
+            return
         self.status = getPlugin('status')
         self.stat = self.status.stat
         self.tt = getPlugin('tooltable')

@@ -26,7 +26,9 @@ from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import connectSetting, getSetting
 
-STATUS = getPlugin('status')
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
 LOG = getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
