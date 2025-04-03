@@ -79,15 +79,14 @@ class QParam(QObject):
 
     def __init__(self, comp, name, pin_type=hal.HAL_BIT, access_mode=hal.HAL_RW, cycle_time=100):
         super(QParam, self).__init__(MAIN_WINDOW)
-
         self._param = _hal.component.newparam(comp, name, pin_type, access_mode)
+        self._name = name
         self._val = self._param.get()
 
         self.startTimer(cycle_time)
 
     def timerEvent(self, timer):
         tmp = self._param.get()
-
         if tmp != self._val:
             self._val = tmp
             self.valueChanged.emit(tmp)
@@ -102,10 +101,14 @@ class QParam(QObject):
         self._param.set(val)
         self.valueChanged.emit(val)
 
+    @property
+    def name(self):
+        return self._name
+
 
 class QComponent(QObject):
     """QComponent"""
-    def __init__(self, comp_name ):
+    def __init__(self, comp_name):
         super(QComponent, self).__init__(MAIN_WINDOW)
 
         self.name = comp_name
@@ -146,18 +149,24 @@ class QComponent(QObject):
         self._pins[name] = pin
         return pin
 
-    def addParam(self, name, param_type, access_mode):
+    def addParam(self, name, pin_type, access_mode):
 
-        param_type = self.type_map.get(param_type.lower())
+        pin_type = self.type_map.get(pin_type.lower())
         access_mode = self.mode_map.get(access_mode.lower())
         LOG.debug("Adding PARAM params: %s %s", self.name, name)
 
-        param = QParam(self._comp, name, param_type, access_mode)
+        param = QParam(self._comp, name, pin_type, access_mode)
         self._params[name] = param
         return param
 
     def getParam(self, param_name):
         return self._params[param_name]
+    
+    def addParamsListener(self, name, *args):
+        self._params[name].valueChanged.connect(*args)
+
+    def removeParamsListener(self, name, *args):
+        self._params[name].valueChanged.disconnect(*args)
 
     def getPin(self, pin_name):
         return self._pins[pin_name]
@@ -167,12 +176,6 @@ class QComponent(QObject):
 
     def removeListener(self, pin_name, *args):
         self._pins[pin_name].valueChanged.disconnect(*args)
-        
-    def addParamListener(self, param_name, *args):
-        self._params[param_name].valueChanged.connect(*args)
-
-    def removeParamListener(self, param_name, *args):
-        self._params[param_name].valueChanged.disconnect(*args)
 
     def ready(self):
         self._comp.ready()
