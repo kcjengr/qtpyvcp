@@ -148,9 +148,9 @@ class BarIndicatorBase(QWidget):
         # draw the load percentage text
         p.setPen(self._text_color)
         if self.orientation == Qt.Vertical:
-            p.drawText(0, 0, self.height(), self.width(), Qt.AlignCenter, self.text())
+            p.drawText(0, 0, self.height(), self.width(), Qt.AlignmentFlag.AlignCenter, self.text())
         else:
-            p.drawText(0, 0, self.width(), self.height(), Qt.AlignCenter, self.text())
+            p.drawText(0, 0, self.width(), self.height(), Qt.AlignmentFlag.AlignCenter, self.text())
 
     def minimumSizeHint(self):
         return QSize(30, 30)

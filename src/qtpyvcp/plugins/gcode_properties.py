@@ -55,15 +55,17 @@ class GCodeProperties(DataPlugin):
         self.linear_units = MACHINE_UNITS
 
         self.canon = None
-        self.stat.file.notify(self._file_event)
         self.loaded_file = None
 
         temp = self.ini.find("RS274NGC", "PARAMETER_FILE") or "linuxcnc.var"
         self.parameter_file = os.path.join(self.config_dir, temp)
         self.temp_parameter_file = os.path.join(self.parameter_file + '.temp')
+        
         if IN_DESIGNER:
             return
+            
         self.stat = STATUS
+        self.stat.file.notify(self._file_event)
 
     @DataChannel
     def file_name(self, chan):

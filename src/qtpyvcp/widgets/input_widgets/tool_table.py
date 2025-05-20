@@ -51,7 +51,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'TPQ':
             editor = QSpinBox(parent)
             editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
+            editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
             if col == 'Q':
                 editor.setMaximum(9)
             else:
@@ -61,7 +61,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'XYZABCUVWD':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
+            editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
             editor.setDecimals(4)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
@@ -79,7 +79,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'IJ':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
+            editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
             editor.setMaximum(360.0)
             editor.setMinimum(0.0)
             editor.setDecimals(4)
@@ -176,11 +176,11 @@ class ToolModel(QStandardItemModel):
         elif role == Qt.TextAlignmentRole:
             col = self._columns[index.column()]
             if col == 'R':      # Remark
-                return Qt.AlignVCenter | Qt.AlignLeft
+                return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
             elif col in 'TPQ':  # Integers (Tool, Pocket, Orient)
-                return Qt.AlignVCenter | Qt.AlignCenter
+                return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter
             else:               # All the other floats
-                return Qt.AlignVCenter | Qt.AlignRight
+                return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight
 
         elif role == Qt.ForegroundRole:
             tnum = sorted(self._tool_table)[index.row() + self.row_offset]

@@ -333,7 +333,7 @@ class HALPoller(QObject):
             if len(rawtuple[0]) <= 0:
                 time.sleep(self.cycle_time/1000.0)
                 continue
-            raw = rawtuple[0].split('\n')
+            raw = rawtuple[0].decode("utf-8").split('\n')
 
             pins = [ [a for a in [x.strip() for x in line.split(' ')] if a != ''] for line in raw ]
 
@@ -493,14 +493,14 @@ if __name__ == '__main__':
     win.setLayout(mainLayout)
 
     # status stuff
-    mainLayout.addWidget(stat_pos_label, 0, 0, Qt.AlignRight)
+    mainLayout.addWidget(stat_pos_label, 0, 0, Qt.AlignmentFlag.AlignRight)
     mainLayout.addWidget(stat_pos_dro, 0, 1)
 
     # HAL stuff
-    mainLayout.addWidget(hal_pos_label, 1, 0, Qt.AlignRight)
+    mainLayout.addWidget(hal_pos_label, 1, 0, Qt.AlignmentFlag.AlignRight)
     mainLayout.addWidget(hal_pos_dro, 1, 1)
 
-    mainLayout.addWidget(flood_toggle, 2, 0, Qt.AlignRight)
+    mainLayout.addWidget(flood_toggle, 2, 0, Qt.AlignmentFlag.AlignRight)
     mainLayout.addWidget(flood_state_label, 2, 1)
 
     win.show()
