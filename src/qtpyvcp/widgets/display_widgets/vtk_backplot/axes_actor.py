@@ -24,12 +24,7 @@ class AxesActor(vtk.vtkAxesActor):
         self.SetTipTypeToCone()
 
         # Lathe modes
-        if self._axis_mask == 3:
-            self.SetTotalLength(self.length, self.length, 0)
-        elif self._axis_mask == 5:
+        if self._datasource.isMachineLathe():
             self.SetTotalLength(self.length, 0, self.length)
-        elif self._axis_mask == 6:
-            self.SetTotalLength(0, self.length, self.length)
-        # Mill mode
         else:
             self.SetTotalLength(self.length, self.length, self.length)

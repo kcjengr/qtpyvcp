@@ -35,6 +35,7 @@ class VCPMainWindow(QMainWindow):
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
         self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF ") or "false"
+        self._lathe_mode = (self._inifile.find("DISPLAY", "LATHE") or "0").strip() not in ["0", "false", "no", "n", ""]
         # keyboard jogging multi key press tracking
         # Key   Purpose
         # ---   ---------------------------------------------
@@ -323,26 +324,44 @@ class VCPMainWindow(QMainWindow):
 
         LOG.debug("GLOBAL - Key event processing")
         
-        if event.key() == Qt.Key_Up:
-            actions.machine.jog.axis('Y', 1*jog_active, speed=speed)
-        elif event.key() == Qt.Key_Down:
-            actions.machine.jog.axis('Y', -1*jog_active, speed=speed)
-        elif event.key() == Qt.Key_Left:
-            actions.machine.jog.axis('X', -1*jog_active, speed=speed)
-        elif event.key() == Qt.Key_Right:
-            actions.machine.jog.axis('X', 1*jog_active, speed=speed)
-        elif event.key() == Qt.Key_PageUp:
-            actions.machine.jog.axis('Z', 1*jog_active, speed=speed)
-        elif event.key() == Qt.Key_PageDown:
-            actions.machine.jog.axis('Z', -1*jog_active, speed=speed)
-        elif event.key() == Qt.Key_Minus:
-            self.slow_jog = True
-            self.rapid_jog = False
-        elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
-            self.rapid_jog = True
-            self.slow_jog = False
-        #else:
-            #print('Unhandled key press event')
+        if self._lathe_mode:
+            if event.key() == Qt.Key_Up:
+                actions.machine.jog.axis('X', 1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Down:
+                actions.machine.jog.axis('X', -1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Left:
+                actions.machine.jog.axis('Z', -1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Right:
+                actions.machine.jog.axis('Z', 1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_PageUp:
+                actions.machine.jog.axis('Y', 1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_PageDown:
+                actions.machine.jog.axis('Y', -1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Minus:
+                self.slow_jog = True
+                self.rapid_jog = False
+            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                self.rapid_jog = True
+                self.slow_jog = False
+        else:
+            if event.key() == Qt.Key_Up:
+                actions.machine.jog.axis('Y', 1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Down:
+                actions.machine.jog.axis('Y', -1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Left:
+                actions.machine.jog.axis('X', -1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Right:
+                actions.machine.jog.axis('X', 1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_PageUp:
+                actions.machine.jog.axis('Z', 1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_PageDown:
+                actions.machine.jog.axis('Z', -1*jog_active, speed=speed)
+            elif event.key() == Qt.Key_Minus:
+                self.slow_jog = True
+                self.rapid_jog = False
+            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                self.rapid_jog = True
+                self.slow_jog = False
 
     def keyReleaseEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place
@@ -358,24 +377,40 @@ class VCPMainWindow(QMainWindow):
         if event.isAutoRepeat():
             return
 
-        if event.key() == Qt.Key_Up:
-            actions.machine.jog.axis('Y', 0)
-        elif event.key() == Qt.Key_Down:
-            actions.machine.jog.axis('Y', 0)
-        elif event.key() == Qt.Key_Left:
-            actions.machine.jog.axis('X', 0)
-        elif event.key() == Qt.Key_Right:
-            actions.machine.jog.axis('X', 0)
-        elif event.key() == Qt.Key_PageUp:
-            actions.machine.jog.axis('Z', 0)
-        elif event.key() == Qt.Key_PageDown:
-            actions.machine.jog.axis('Z', 0)
-        elif event.key() == Qt.Key_Minus:
-            self.slow_jog = False
-        elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
-            self.rapid_jog = False
-        #else:
-            #print('Unhandled key release event')
+        if self._lathe_mode:
+            if event.key() == Qt.Key_Up:
+                actions.machine.jog.axis('X', 0)
+            elif event.key() == Qt.Key_Down:
+                actions.machine.jog.axis('X', 0)
+            elif event.key() == Qt.Key_Left:
+                actions.machine.jog.axis('Z', 0)
+            elif event.key() == Qt.Key_Right:
+                actions.machine.jog.axis('Z', 0)
+            elif event.key() == Qt.Key_PageUp:
+                actions.machine.jog.axis('Y', 0)
+            elif event.key() == Qt.Key_PageDown:
+                actions.machine.jog.axis('Y', 0)
+            elif event.key() == Qt.Key_Minus:
+                self.slow_jog = False
+            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                self.rapid_jog = False
+        else:
+            if event.key() == Qt.Key_Up:
+                actions.machine.jog.axis('Y', 0)
+            elif event.key() == Qt.Key_Down:
+                actions.machine.jog.axis('Y', 0)
+            elif event.key() == Qt.Key_Left:
+                actions.machine.jog.axis('X', 0)
+            elif event.key() == Qt.Key_Right:
+                actions.machine.jog.axis('X', 0)
+            elif event.key() == Qt.Key_PageUp:
+                actions.machine.jog.axis('Z', 0)
+            elif event.key() == Qt.Key_PageDown:
+                actions.machine.jog.axis('Z', 0)
+            elif event.key() == Qt.Key_Minus:
+                self.slow_jog = False
+            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                self.rapid_jog = False
 
     def mousePressEvent(self, event):
         #print('Button press')

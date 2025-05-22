@@ -34,7 +34,7 @@ from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
 from qtpy.QtWidgets import QApplication
 from qtpy.QtGui import QColor
 
-
+from qtpyvcp.actions import machine_actions
 
 # Fix poligons not drawing correctly on some GPU
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
@@ -107,7 +107,31 @@ class InteractorEventFilter(QObject):
         self._keyboard_jog_ctrl_off = jog_safety_off
         self.slow_jog = False
         self.rapid_jog = True
-        
+        # Add lathe mode detection
+        import linuxcnc, os
+        inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
+        # Treat either LATHE=1 or BACK_TOOL_LATHE=1 as lathe mode for backplot logic
+        lathe_val = (inifile.find("DISPLAY", "LATHE") or "0").strip()
+        back_tool_val = (inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
+        self._lathe_mode = (lathe_val not in ["0", "false", "no", "n", ""]) or (back_tool_val not in ["0", "false", "no", "n", ""])
+        self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
+        # Store reference to parent for jog speed slider access
+        self._parent = parent
+        # Get linuxcnc status for max_velocity
+        self._status = linuxcnc.stat()
+        # Try to resolve jog_speed_slider reference at init if possible
+        self._jog_speed_slider = getattr(self._parent, "jog_speed_slider", None)
+
+    def get_jog_speed(self, event=None):
+        # If Shift is held, use linuxcnc status max_velocity (units/sec)
+        if event is not None and event.modifiers() & Qt.ShiftModifier:
+            self._status.poll()
+            max_vel = getattr(self._status, "max_velocity", None)
+            if max_vel is not None:
+                return float(max_vel)
+        # Otherwise use the standard QtPyVCP jog speed logic
+        return machine_actions.jog_linear_speed.value / 60.0
+
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:
             if event.isAutoRepeat():
@@ -121,59 +145,93 @@ class InteractorEventFilter(QObject):
             else:
                 jog_active = 0
 
-    
-            #speed = actions.machine.MAX_JOG_SPEED / 60.0 if event.modifiers() & Qt.ShiftModifier else None
-            if self.rapid_jog:
-                speed = actions.machine.MAX_JOG_SPEED / 60
-            elif self.slow_jog:
-                speed = actions.machine.jog_linear_speed() / 60 / 10.0
-            else:
-                speed = None
+            # Use jog speed from slider, or Shift for max speed
+            speed = self.get_jog_speed(event)
 
             LOG.debug("VTK - Key event processing")
 
-            if event.key() == Qt.Key_Up:
-                actions.machine.jog.axis('Y', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Down:
-                actions.machine.jog.axis('Y', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Left:
-                actions.machine.jog.axis('X', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Right:
-                actions.machine.jog.axis('X', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_PageUp:
-                actions.machine.jog.axis('Z', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_PageDown:
-                actions.machine.jog.axis('Z', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Minus:
-                self.slow_jog = True
-                self.rapid_jog = False
-            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
-                self.rapid_jog = True
-                self.slow_jog = False
-            #else:
-                #print('Unhandled key press event')
+            if self._lathe_mode:
+                # Invert X axis only if BACK_TOOL_LATHE is enabled
+                x_sign = -1 if self._back_tool_lathe else 1
+                if event.key() == Qt.Key_Up:
+                    actions.machine.jog.axis('X', -1 * jog_active * x_sign, speed=speed)
+                elif event.key() == Qt.Key_Down:
+                    actions.machine.jog.axis('X', 1 * jog_active * x_sign, speed=speed)
+                elif event.key() == Qt.Key_Left:
+                    actions.machine.jog.axis('Z', -1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_Right:
+                    actions.machine.jog.axis('Z', 1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_PageUp:
+                    actions.machine.jog.axis('Y', 1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_PageDown:
+                    actions.machine.jog.axis('Y', -1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_Minus:
+                    self.slow_jog = True
+                    self.rapid_jog = False
+                elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                    self.rapid_jog = True
+                    self.slow_jog = False
+            else:
+                # Default mill mapping
+                if event.key() == Qt.Key_Up:
+                    actions.machine.jog.axis('Y', 1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_Down:
+                    actions.machine.jog.axis('Y', -1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_Left:
+                    actions.machine.jog.axis('X', -1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_Right:
+                    actions.machine.jog.axis('X', 1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_PageUp:
+                    actions.machine.jog.axis('Z', 1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_PageDown:
+                    actions.machine.jog.axis('Z', -1 * jog_active, speed=speed)
+                elif event.key() == Qt.Key_Minus:
+                    self.slow_jog = True
+                    self.rapid_jog = False
+                elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                    self.rapid_jog = True
+                    self.slow_jog = False
         elif event.type() == QEvent.KeyRelease:
             if event.isAutoRepeat():
                 return super().eventFilter(obj, event)
 
-            if event.key() == Qt.Key_Up:
-                actions.machine.jog.axis('Y', 0)
-            elif event.key() == Qt.Key_Down:
-                actions.machine.jog.axis('Y', 0)
-            elif event.key() == Qt.Key_Left:
-                actions.machine.jog.axis('X', 0)
-            elif event.key() == Qt.Key_Right:
-                actions.machine.jog.axis('X', 0)
-            elif event.key() == Qt.Key_PageUp:
-                actions.machine.jog.axis('Z', 0)
-            elif event.key() == Qt.Key_PageDown:
-                actions.machine.jog.axis('Z', 0)
-            elif event.key() == Qt.Key_Minus:
-                self.slow_jog = False
-            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
-                self.rapid_jog = False
-            #else:
-                #print('Unhandled key release event')
+            # Lathe mode jog key remapping
+            if self._lathe_mode:
+                x_sign = -1 if self._back_tool_lathe else 1
+                if event.key() == Qt.Key_Up:
+                    actions.machine.jog.axis('X', 0)
+                elif event.key() == Qt.Key_Down:
+                    actions.machine.jog.axis('X', 0)
+                elif event.key() == Qt.Key_Left:
+                    actions.machine.jog.axis('Z', 0)
+                elif event.key() == Qt.Key_Right:
+                    actions.machine.jog.axis('Z', 0)
+                elif event.key() == Qt.Key_PageUp:
+                    actions.machine.jog.axis('Y', 0)
+                elif event.key() == Qt.Key_PageDown:
+                    actions.machine.jog.axis('Y', 0)
+                elif event.key() == Qt.Key_Minus:
+                    self.slow_jog = False
+                elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                    self.rapid_jog = False
+            else:
+                # Default mill mapping
+                if event.key() == Qt.Key_Up:
+                    actions.machine.jog.axis('Y', 0)
+                elif event.key() == Qt.Key_Down:
+                    actions.machine.jog.axis('Y', 0)
+                elif event.key() == Qt.Key_Left:
+                    actions.machine.jog.axis('X', 0)
+                elif event.key() == Qt.Key_Right:
+                    actions.machine.jog.axis('X', 0)
+                elif event.key() == Qt.Key_PageUp:
+                    actions.machine.jog.axis('Z', 0)
+                elif event.key() == Qt.Key_PageDown:
+                    actions.machine.jog.axis('Z', 0)
+                elif event.key() == Qt.Key_Minus:
+                    self.slow_jog = False
+                elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+                    self.rapid_jog = False
 
         return super().eventFilter(obj, event)
 
@@ -188,6 +246,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._datasource = LinuxCncDataSource()
         
+        # Detect lathe mode for backplot view logic (LATHE=1 or BACK_TOOL_LATHE=1)
+        import linuxcnc, os
+        inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
+        lathe_val = (inifile.find("DISPLAY", "LATHE") or "0").strip()
+        back_tool_val = (inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
+        self._lathe_mode = (lathe_val not in ["0", "false", "no", "n", ""]) or (back_tool_val not in ["0", "false", "no", "n", ""])
+        self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
         
         # Keyboard jogging is handled at the global level.
         if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
@@ -207,18 +272,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # provide a control to UI builders to suppress when line "breadcrumbs" are plotted
         self.breadcrumbs_plotted = True
         
-        view_default_setting = getSetting("backplot.view").value
-        view_options_setting = getSetting("backplot.view").enum_options
-        view_options = list()
-        self.machine_ext_scale = getSetting("backplot.machine-ext-scale").value
+        # Set default view for lathe/back-tool-lathe
+        if self._datasource.isMachineLathe():
+            self.default_view = "XZ"
+        else:
+            view_default_setting = getSetting("backplot.view").value
+            view_options_setting = getSetting("backplot.view").enum_options
+            view_options = list()
+            self.machine_ext_scale = getSetting("backplot.machine-ext-scale").value
             
-        for option in view_options_setting:
-            view_options.append(option.split(':')[0])
+            for option in view_options_setting:
+                view_options.append(option.split(':')[0])
             
-        print(view_options_setting)
-        print(view_options)
+            print(view_options_setting)
+            print(view_options)
             
-        self.default_view = view_options[view_default_setting]
+            self.default_view = view_options[view_default_setting]
 
         
         self.program_view_when_loading_program = False
@@ -830,7 +899,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
             program_bounds_actor = ProgramBoundsActor(self.camera, actor)
-            program_bounds_actor.showProgramBounds(self.show_program_bounds)
 
             axes = actor.get_axes_actor()
 

@@ -40,7 +40,10 @@ class LinuxCncDataSource(QObject):
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
         self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF ") or "false"
-        self._is_lathe = bool(self._inifile.find("DISPLAY", "LATHE"))
+        self._is_lathe = (
+            bool(self._inifile.find("DISPLAY", "LATHE")) or
+            bool(self._inifile.find("DISPLAY", "BACK_TOOL_LATHE"))
+        )
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
         self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
         self._machine_bounds = str(self._inifile.find("DISPLAY", "BOUNDARIES"))
@@ -155,6 +158,7 @@ class LinuxCncDataSource(QObject):
         return str(self._status.program_units)
 
     def isMachineLathe(self):
+        # Return True if either LATHE or BACK_TOOL_LATHE is set
         return self._is_lathe
 
     def isMachineFoam(self):
