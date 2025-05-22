@@ -258,7 +258,8 @@ class VCPBaseWidget(VCPPrimitiveWidget):
             try:
                 exp()
             except:
-                LOG.exception('Error calling rules expression:')
+                widget_name = self.objectName()
+                LOG.exception(f'Error calling rules expression from {widget_name}:')
                 continue
 
             for trigger in triggers:
