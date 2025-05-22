@@ -107,8 +107,8 @@ class InteractorEventFilter(QObject):
         self._keyboard_jog_ctrl_off = jog_safety_off
         self.slow_jog = False
         self.rapid_jog = True
+
         # Add lathe mode detection
-        import linuxcnc, os
         inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         # Treat either LATHE=1 or BACK_TOOL_LATHE=1 as lathe mode for backplot logic
         lathe_val = (inifile.find("DISPLAY", "LATHE") or "0").strip()
@@ -247,7 +247,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._datasource = LinuxCncDataSource()
         
         # Detect lathe mode for backplot view logic (LATHE=1 or BACK_TOOL_LATHE=1)
-        import linuxcnc, os
         inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         lathe_val = (inifile.find("DISPLAY", "LATHE") or "0").strip()
         back_tool_val = (inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
