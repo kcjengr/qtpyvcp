@@ -167,7 +167,9 @@ class _Info(object):
     def getIsLathe(self):
         temp = self.ini.find('DISPLAY', 'LATHE')
         if not temp or temp == "0":
-            return False
+            temp = self.ini.find('DISPLAY', 'BACK_TOOL_LATHE')
+            if not temp or temp == "0":
+                return False
         return True
 
     def getIsBacktoolLathe(self):
