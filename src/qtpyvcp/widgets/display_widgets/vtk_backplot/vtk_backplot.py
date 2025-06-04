@@ -1337,7 +1337,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             #LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
             #LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
 
-            program_bounds_actor = ProgramBoundsActor(self.camera, actor)
+            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
             program_bounds_actor.showProgramBounds(self.show_program_bounds)
 
             self.renderer.AddActor(axes_actor)

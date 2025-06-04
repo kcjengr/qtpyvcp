@@ -47,7 +47,7 @@ class VCPMainWindow(QMainWindow):
         # Ctl   ctrl key needs to be pushed to enable jog
         self.slow_jog = False
         self.rapid_jog = False
-        
+
         self.setWindowTitle(title)
 
         self.app = QApplication.instance()
@@ -109,6 +109,12 @@ class VCPMainWindow(QMainWindow):
         QShortcut(QKeySequence("F11"), self, self.toggleFullscreen)
         self.app.focusChanged.connect(self.focusChangedEvent)
 
+        # Add a timer to periodically check for focus and stop jogging if not active
+        self._jog_active = False  # Track if keyboard jog is currently active
+        self._jog_safety_timer = QTimer(self)
+        self._jog_safety_timer.timeout.connect(self._jogSafetyCheck)
+        self._jog_safety_timer.start(100)  # check every 100ms
+
     def loadUi(self, ui_file):
         """Loads a window layout from a QtDesigner .ui file.
 
@@ -127,6 +133,22 @@ class VCPMainWindow(QMainWindow):
         """
         LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
         self.setStyleSheet("file:///" + stylesheet)
+
+    def stopAllJogAxes(self):
+        # Stop all axes (X, Y, Z, and optionally A, B, C)
+        for axis in ['X', 'Y', 'Z', 'A', 'B', 'C']:
+            try:
+                actions.machine.jog.axis(axis, 0)
+            except Exception:
+                pass
+        # Also reset jog state so keyReleaseEvent doesn't expect a key to be held
+        self.slow_jog = False
+        self.rapid_jog = False
+
+    def showModalDialog(self, dialog_func, *args, **kwargs):
+        # Stop all jog axes before showing any modal dialog
+        self.stopAllJogAxes()
+        return dialog_func(*args, **kwargs)
 
     def getMenuAction(self, menu, title='notitle', action_name='noaction',
                       shortcut="", args=[], kwargs={}):
@@ -211,7 +233,8 @@ class VCPMainWindow(QMainWindow):
               "<b>{}</b> menu item could not be triggered. " \
               "Check the YAML config file for errors." \
               .format(action_name or '', title.replace('&', ''))
-        menu_action.triggered.connect(lambda: QMessageBox.critical(self, "Menu Action Error!", msg))
+        # Use showModalDialog to ensure jogging is stopped
+        menu_action.triggered.connect(lambda: self.showModalDialog(QMessageBox.critical, self, "Menu Action Error!", msg))
         menu.addAction(menu_action)
 
     def buildMenuBar(self, menus):
@@ -274,13 +297,12 @@ class VCPMainWindow(QMainWindow):
             self.showFullScreen()
 
     def closeEvent(self, event):
-        """Catch close event and show confirmation dialog."""
+        # Use showModalDialog to ensure jogging is stopped
         if os.getenv('DESIGNER', False):
             self.close()
-
         elif self.confirm_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
-            reply = QMessageBox.question(self, 'Exit LinuxCNC?',
+            reply = self.showModalDialog(QMessageBox.question, self, 'Exit LinuxCNC?',
                                          quit_msg, QMessageBox.Yes, QMessageBox.No)
             if reply == QMessageBox.Yes:
                 QApplication.instance().quit()
@@ -293,6 +315,7 @@ class VCPMainWindow(QMainWindow):
         # super(VCPMainWindow, self).keyPressEvent(event)
         # Test for UI LOCK and consume event but do nothing if LOCK in place
         if STATUS.isLocked():
+            self.stopAllJogAxes()  # Stop jog if UI is locked (e.g., by modal dialog)
             LOG.debug('Accept keyPressEvent Event')
             event.accept()
             return
@@ -329,6 +352,7 @@ class VCPMainWindow(QMainWindow):
 
         LOG.debug("GLOBAL - Key event processing")
 
+        jog_started = False
         # Only jog if jog_active is set
         if jog_active:
             if self._lathe_mode:
@@ -336,29 +360,41 @@ class VCPMainWindow(QMainWindow):
                 x_sign = -1 if (not self._back_tool_lathe and self._lathe_mode) else 1
                 if event.key() == Qt.Key_Up:
                     actions.machine.jog.axis('X', 1 * x_sign, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_Down:
                     actions.machine.jog.axis('X', -1 * x_sign, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_Left:
                     actions.machine.jog.axis('Z', -1, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_Right:
                     actions.machine.jog.axis('Z', 1, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_PageUp:
                     actions.machine.jog.axis('Y', 1, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_PageDown:
                     actions.machine.jog.axis('Y', -1, speed=speed)
+                    jog_started = True
             else:
                 if event.key() == Qt.Key_Up:
                     actions.machine.jog.axis('Y', 1, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_Down:
                     actions.machine.jog.axis('Y', -1, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_Left:
                     actions.machine.jog.axis('X', -1, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_Right:
                     actions.machine.jog.axis('X', 1, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_PageUp:
                     actions.machine.jog.axis('Z', 1, speed=speed)
+                    jog_started = True
                 elif event.key() == Qt.Key_PageDown:
                     actions.machine.jog.axis('Z', -1, speed=speed)
+                    jog_started = True
 
         # Handle jog speed keys regardless of jog_active
         if event.key() == Qt.Key_Minus:
@@ -368,9 +404,13 @@ class VCPMainWindow(QMainWindow):
             self.rapid_jog = True
             self.slow_jog = False
 
+        if jog_started:
+            self._jog_active = True
+
     def keyReleaseEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place
         if STATUS.isLocked():
+            self.stopAllJogAxes()  # Stop jog if UI is locked (e.g., by modal dialog)
             LOG.debug('Accept keyReleaseEvent Event')
             event.accept()
             return
@@ -382,20 +422,27 @@ class VCPMainWindow(QMainWindow):
         if event.isAutoRepeat():
             return
 
+        jog_stopped = False
         if self._lathe_mode:
             x_sign = -1 if (not self._back_tool_lathe and self._lathe_mode) else 1
             if event.key() == Qt.Key_Up:
                 actions.machine.jog.axis('X', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_Down:
                 actions.machine.jog.axis('X', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_Left:
                 actions.machine.jog.axis('Z', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_Right:
                 actions.machine.jog.axis('Z', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_PageUp:
                 actions.machine.jog.axis('Y', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_PageDown:
                 actions.machine.jog.axis('Y', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_Minus:
                 self.slow_jog = False
             elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
@@ -403,20 +450,28 @@ class VCPMainWindow(QMainWindow):
         else:
             if event.key() == Qt.Key_Up:
                 actions.machine.jog.axis('Y', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_Down:
                 actions.machine.jog.axis('Y', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_Left:
                 actions.machine.jog.axis('X', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_Right:
                 actions.machine.jog.axis('X', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_PageUp:
                 actions.machine.jog.axis('Z', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_PageDown:
                 actions.machine.jog.axis('Z', 0)
+                jog_stopped = True
             elif event.key() == Qt.Key_Minus:
                 self.slow_jog = False
             elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
                 self.rapid_jog = False
+        if jog_stopped:
+            self._jog_active = False
 
     def mousePressEvent(self, event):
         #print('Button press')
@@ -437,9 +492,15 @@ class VCPMainWindow(QMainWindow):
         super().mouseReleaseEvent(event)
 
     def focusChangedEvent(self, old_w, new_w):
+        # Only handle QLineEdit selection, no jog stop needed here anymore
         if issubclass(new_w.__class__, QLineEdit):
-            #print("QLineEdit got focus: ", new_w)
             QTimer.singleShot(0, new_w.selectAll)
+
+    def _jogSafetyCheck(self):
+        # Only stop axes if keyboard jog is currently active and window is not focused
+        if self._jog_active and not self.isActiveWindow():
+            self.stopAllJogAxes()
+            self._jog_active = False
 
 # ==============================================================================
 #  menu action slots
@@ -447,11 +508,11 @@ class VCPMainWindow(QMainWindow):
 
     @Slot()
     def openFile(self):
-        _showDialog('open_file')
+        self.showModalDialog(_showDialog, 'open_file')
 
     @Slot(str)
     def showDialog(self, dialog_name):
-        _showDialog(dialog_name)
+        self.showModalDialog(_showDialog, dialog_name)
 
 # ==============================================================================
 # menu functions
