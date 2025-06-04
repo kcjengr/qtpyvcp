@@ -255,11 +255,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         # Keyboard jogging is handled at the global level.
         if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
-            if self._datasource.getKeyboardJogLock().lower() in ['true', '1', 't', 'y', 'yes']:
-                event_filter = InteractorEventFilter(self, True)
-            else:
-                event_filter = InteractorEventFilter(self)
+            jog_safety_off = self._datasource.getKeyboardJogLock().lower() in ['true', '1', 't', 'y', 'yes']
+            event_filter = InteractorEventFilter(self, jog_safety_off)
             self.installEventFilter(event_filter)
+            # Ensure this widget does not keep focus after mouse clicks
+            self.setFocusPolicy(Qt.NoFocus)
 
         self.current_time = round(time.time() * 1000)
         self.plot_interval = 1000/self._datasource.getFPS()  # 1 second / 30 fps
@@ -1337,7 +1337,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             #LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
             #LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
 
-            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+            program_bounds_actor = ProgramBoundsActor(self.camera, actor)
             program_bounds_actor.showProgramBounds(self.show_program_bounds)
 
             self.renderer.AddActor(axes_actor)

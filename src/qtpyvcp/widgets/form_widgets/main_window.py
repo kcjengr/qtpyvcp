@@ -34,8 +34,11 @@ class VCPMainWindow(QMainWindow):
 
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
-        self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF ") or "false"
-        self._lathe_mode = (self._inifile.find("DISPLAY", "LATHE") or "0").strip() not in ["0", "false", "no", "n", ""]
+        self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF") or "false"
+        lathe_val = (self._inifile.find("DISPLAY", "LATHE") or "0").strip().lower()
+        back_tool_val = (self._inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip().lower()
+        self._lathe_mode = (lathe_val not in ["0", "false", "no", "n", ""]) or (back_tool_val not in ["0", "false", "no", "n", ""])
+        self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
         # keyboard jogging multi key press tracking
         # Key   Purpose
         # ---   ---------------------------------------------
@@ -306,62 +309,64 @@ class VCPMainWindow(QMainWindow):
         else:
             LOG.debug(f"Focus widget = None")
 
-        #speed = actions.machine.MAX_JOG_SPEED / 60.0 if event.modifiers() & Qt.ShiftModifier else None
-        if self.rapid_jog:
+        # Determine jog speed: Shift always means rapid jog
+        if event.modifiers() & Qt.ShiftModifier:
+            speed = actions.machine.MAX_JOG_SPEED / 60
+        elif self.rapid_jog:
             speed = actions.machine.MAX_JOG_SPEED / 60
         elif self.slow_jog:
             speed = actions.machine.jog_linear_speed() / 60 / 10.0
         else:
             speed = None
-        
-        if event.modifiers() & Qt.ControlModifier:
+
+        # Consistent jog safety logic
+        if self._keyboard_jog_ctrl_off.lower() in ['true', '1', 't', 'y', 'yes']:
             jog_active = 1
-            LOG.debug("GLOBAL Key event modifier Ctrl is active")
-        elif self._keyboard_jog_ctrl_off != 'false':
+        elif event.modifiers() & Qt.ControlModifier:
             jog_active = 1
         else:
             jog_active = 0
 
         LOG.debug("GLOBAL - Key event processing")
-        
-        if self._lathe_mode:
-            if event.key() == Qt.Key_Up:
-                actions.machine.jog.axis('X', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Down:
-                actions.machine.jog.axis('X', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Left:
-                actions.machine.jog.axis('Z', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Right:
-                actions.machine.jog.axis('Z', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_PageUp:
-                actions.machine.jog.axis('Y', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_PageDown:
-                actions.machine.jog.axis('Y', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Minus:
-                self.slow_jog = True
-                self.rapid_jog = False
-            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
-                self.rapid_jog = True
-                self.slow_jog = False
-        else:
-            if event.key() == Qt.Key_Up:
-                actions.machine.jog.axis('Y', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Down:
-                actions.machine.jog.axis('Y', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Left:
-                actions.machine.jog.axis('X', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Right:
-                actions.machine.jog.axis('X', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_PageUp:
-                actions.machine.jog.axis('Z', 1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_PageDown:
-                actions.machine.jog.axis('Z', -1*jog_active, speed=speed)
-            elif event.key() == Qt.Key_Minus:
-                self.slow_jog = True
-                self.rapid_jog = False
-            elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
-                self.rapid_jog = True
-                self.slow_jog = False
+
+        # Only jog if jog_active is set
+        if jog_active:
+            if self._lathe_mode:
+                # Invert X axis for LATHE=1 and not BACK_TOOL_LATHE=1
+                x_sign = -1 if (not self._back_tool_lathe and self._lathe_mode) else 1
+                if event.key() == Qt.Key_Up:
+                    actions.machine.jog.axis('X', 1 * x_sign, speed=speed)
+                elif event.key() == Qt.Key_Down:
+                    actions.machine.jog.axis('X', -1 * x_sign, speed=speed)
+                elif event.key() == Qt.Key_Left:
+                    actions.machine.jog.axis('Z', -1, speed=speed)
+                elif event.key() == Qt.Key_Right:
+                    actions.machine.jog.axis('Z', 1, speed=speed)
+                elif event.key() == Qt.Key_PageUp:
+                    actions.machine.jog.axis('Y', 1, speed=speed)
+                elif event.key() == Qt.Key_PageDown:
+                    actions.machine.jog.axis('Y', -1, speed=speed)
+            else:
+                if event.key() == Qt.Key_Up:
+                    actions.machine.jog.axis('Y', 1, speed=speed)
+                elif event.key() == Qt.Key_Down:
+                    actions.machine.jog.axis('Y', -1, speed=speed)
+                elif event.key() == Qt.Key_Left:
+                    actions.machine.jog.axis('X', -1, speed=speed)
+                elif event.key() == Qt.Key_Right:
+                    actions.machine.jog.axis('X', 1, speed=speed)
+                elif event.key() == Qt.Key_PageUp:
+                    actions.machine.jog.axis('Z', 1, speed=speed)
+                elif event.key() == Qt.Key_PageDown:
+                    actions.machine.jog.axis('Z', -1, speed=speed)
+
+        # Handle jog speed keys regardless of jog_active
+        if event.key() == Qt.Key_Minus:
+            self.slow_jog = True
+            self.rapid_jog = False
+        elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
+            self.rapid_jog = True
+            self.slow_jog = False
 
     def keyReleaseEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place
@@ -378,6 +383,7 @@ class VCPMainWindow(QMainWindow):
             return
 
         if self._lathe_mode:
+            x_sign = -1 if (not self._back_tool_lathe and self._lathe_mode) else 1
             if event.key() == Qt.Key_Up:
                 actions.machine.jog.axis('X', 0)
             elif event.key() == Qt.Key_Down:
