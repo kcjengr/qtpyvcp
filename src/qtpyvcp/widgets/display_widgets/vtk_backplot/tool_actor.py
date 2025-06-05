@@ -134,7 +134,7 @@ class ToolBitActor(vtk.vtkActor):
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
 
-        self.position = []
+        self.tool_position = []
         self.foam_z = 0.0
         self.foam_w = 0.0
 
@@ -564,7 +564,7 @@ class ToolBitActor(vtk.vtkActor):
         
         
     def set_position(self, position):
-        self.position = position
+        self.tool_position = position
 
         x, y, z = position[:3]
         u, v, w = position[6:9]
