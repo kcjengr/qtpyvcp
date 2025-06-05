@@ -1,0 +1,6 @@
+pyqt5
+distro
+docopt
+qtpy
+hiyapyco
+vtk
