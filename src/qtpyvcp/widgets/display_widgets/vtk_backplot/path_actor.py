@@ -14,16 +14,16 @@ class PathActor(vtk.vtkActor):
         self.origin_cords = None
 
         if self._datasource.isMachineMetric():
-            self.length = 1
+            self.axes_length = 1
         else:
-            self.length = .25
+            self.axes_length = .25
 
         self.axes_actor = AxesActor(self._datasource)
 
         if self._datasource.isMachineLathe():
-            self.axes_actor.SetTotalLength(self.length, 0, self.length)
+            self.axes_actor.SetTotalLength(self.axes_length, 0, self.axes_length)
         else:
-            self.axes_actor.SetTotalLength(self.length, self.length, self.length)
+            self.axes_actor.SetTotalLength(self.axes_length, self.axes_length, self.axes_length)
 
         # Create a vtkUnsignedCharArray container and store the colors in it
         self.colors = vtk.vtkUnsignedCharArray()

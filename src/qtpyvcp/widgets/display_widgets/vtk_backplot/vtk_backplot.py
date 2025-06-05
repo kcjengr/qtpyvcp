@@ -255,11 +255,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         # Keyboard jogging is handled at the global level.
         if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
-            if self._datasource.getKeyboardJogLock().lower() in ['true', '1', 't', 'y', 'yes']:
-                event_filter = InteractorEventFilter(self, True)
-            else:
-                event_filter = InteractorEventFilter(self)
+            jog_safety_off = self._datasource.getKeyboardJogLock().lower() in ['true', '1', 't', 'y', 'yes']
+            event_filter = InteractorEventFilter(self, jog_safety_off)
             self.installEventFilter(event_filter)
+            # Ensure this widget does not keep focus after mouse clicks
+            self.setFocusPolicy(Qt.NoFocus)
 
         self.current_time = round(time.time() * 1000)
         self.plot_interval = 1000/self._datasource.getFPS()  # 1 second / 30 fps
