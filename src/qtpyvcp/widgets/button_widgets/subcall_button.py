@@ -85,12 +85,17 @@ class SubCallButton(VCPButton):
             if int(pnumber) > 30:
                 # only #1-#30 are passed to the sub
                 continue
-            
+
             val = default_val
-            
+
             for widget in QApplication.allWidgets():
                 if widget.objectName() == pname:
-                    val = str(widget.text())
+                    # Try text() first, then currentText()
+                    if hasattr(widget, "text"):
+                        val = str(widget.text())
+                    elif hasattr(widget, "currentText"):
+                        val = str(widget.currentText())
+                    # else leave as default_val
 
             if val == '':
                 LOG.error('No value given for parameter red<{}>, and no default specified'.format(pname))
@@ -101,8 +106,7 @@ class SubCallButton(VCPButton):
             except ValueError:
                 LOG.error('Input value "{}" given for parameter "{}" is not a valid number'.format(val, pname))
                 return
-            
-          
+
             index = int(pnumber) - 1
             while len(args) <= index:
                 args.append("[0.0000]")

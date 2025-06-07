@@ -285,31 +285,76 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
 
 
 class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
-    """Settings ComboBox"""
+    """Settings ComboBox
+
+    By default, stores the current index as the setting value.
+    If 'storeIndex' is set to False, stores the currentText value instead.
+    """
 
     DEFAULT_RULE_PROPERTY = 'Enable'
 
     def __init__(self, parent):
         super(VCPSettingsComboBox, self).__init__(parent=parent)
+        self._store_index = True  # Default: store index, not value
 
-    def setDisplayIndex(self, index):
-        self.blockSignals(True)
-        self.setCurrentIndex(index)
-        self.blockSignals(False)
+    @Property(bool)
+    def storeIndex(self):
+        """If True (default), store the index. If False, store the value (currentText)."""
+        return self._store_index
+
+    @storeIndex.setter
+    def storeIndex(self, val):
+        self._store_index = val
+
+    def setDisplayValue(self, value):
+        """Set the combo box to the index matching the value or index."""
+        if self._store_index:
+            # Value is index
+            try:
+                idx = int(value)
+            except Exception:
+                idx = -1
+        else:
+            # Value is item text
+            value_str = str(value)
+            idx = self.findText(value_str)
+        if idx >= 0:
+            self.blockSignals(True)
+            self.setCurrentIndex(idx)
+            self.blockSignals(False)
+
+    def onIndexChanged(self, idx):
+        """Store the actual index or value in the setting."""
+        if self._setting is not None:
+            if self._store_index:
+                self._setting.setValue(idx)
+            else:
+                value = self.itemText(idx)
+                # Try to convert to int or float if possible
+                try:
+                    value = int(value)
+                except ValueError:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        pass
+                self._setting.setValue(value)
 
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
-
-            value = self._setting.getValue()
-
+            # Populate items
             options = self._setting.enum_options
             if isinstance(options, list):
+                self.clear()
                 for option in options:
-                    self.addItem(option)
+                    self.addItem(str(option))
+            elif self._setting.min_value is not None and self._setting.max_value is not None:
+                self.clear()
+                for v in range(int(self._setting.min_value), int(self._setting.max_value) + 1):
+                    self.addItem(str(v))
 
-            self.setDisplayIndex(value)
-            self.currentIndexChanged.emit(value)
-
-            self._setting.notify(self.setDisplayIndex)
-            self.currentIndexChanged.connect(self._setting.setValue)
+            # Set display to current value
+            self.setDisplayValue(self._setting.getValue())
+            self._setting.notify(self.setDisplayValue)
+            self.currentIndexChanged.connect(self.onIndexChanged)
