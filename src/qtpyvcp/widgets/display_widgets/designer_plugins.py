@@ -54,3 +54,14 @@ from .gcode_properties import GCodeProperties
 class GCodeProperties_Plugin(_DesignerPlugin):
     def pluginClass(self):
         return GCodeProperties
+
+from .tool_data_label import ToolDataLabel
+class ToolDataLabelPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ToolDataLabel
+    
+    def toolTip(self):
+        return "Label that displays tool table data for a specific column"
+    
+    def whatsThis(self):
+        return "A label widget that displays tool table data (diameter, offsets, etc.) for a specific tool number and column"
