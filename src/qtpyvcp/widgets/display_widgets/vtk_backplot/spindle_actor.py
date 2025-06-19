@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import vtk.qt
 
 from vtkmodules.vtkCommonColor import vtkNamedColors
@@ -19,8 +21,8 @@ class SpindleActor(vtk.vtkActor):
             self.height = 25.4 * 2.0
         else:
             self.height = 2.0
-
-        filename = model_path
+            
+        filename = Path(model_path)
         # filename = os.path.join(os.path.dirname(__file__), "models/laser.stl")
 
         source = vtk.vtkSTLReader()

@@ -10,18 +10,17 @@ class ToolTable(Base):
     __tablename__ = 'tool_table'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(Text)
+    
     tools = relationship("Tool")
-    tool_models = relationship("ToolModel")
+    tool_properties = relationship("ToolProperties")
 
         
 class Tool(Base):
     __tablename__ = 'tool'
     
-    id = Column(Integer, primary_key=True)
     
-    remark = Column(Text)
-    tool_no = Column(Integer)
+    tool_no = Column(Integer, primary_key=True, autoincrement=False)
     in_use = Column(Integer)
     pocket = Column(Integer)
     
@@ -39,16 +38,23 @@ class Tool(Base):
     w_offset = Column(Float)
     diameter = Column(Float)
     
-    model = relationship("ToolModel")
+    remark = Column(Text)
     
+    tool_properties = relationship("ToolProperties", back_populates="tool")    
     tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
     tool_table = relationship("ToolTable", back_populates="tools")
 
-class ToolModel(Base):
-    __tablename__ = 'tool_model'
     
-    id = Column(Integer, primary_key=True)
-    tool_no = Column(Integer, ForeignKey('tool.tool_no'))
+class ToolProperties(Base):
+    __tablename__ = 'tool_properties'
+    
+    tool_no = Column(Integer, ForeignKey('tool.tool_no'), primary_key=True, autoincrement=False)
+    max_rpm = Column(Float)
+    wear_factor= Column(Float)
+    bullnose_radious = Column(Float)
     model = Column(Text)
+    atc = Column(Float)
+    
     tool_table_id = Column(Integer, ForeignKey('tool_table.id'))
-    tool_table = relationship("ToolTable", back_populates="tool_models")
+    tool_table = relationship("ToolTable", back_populates="tool_properties")
+    tool = relationship("Tool", back_populates="tool_properties")
