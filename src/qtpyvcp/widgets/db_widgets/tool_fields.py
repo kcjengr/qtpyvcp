@@ -399,7 +399,7 @@ class DBFloatField(QWidget):
         
         if tool_data:
             val = getattr(tool_data, column, None)
-            self.spinbox.setValue(int(val))
+            self.spinbox.setValue(float(val))
             self.spinbox.setDisabled(False)
         else:
             self.spinbox.setValue(0)
