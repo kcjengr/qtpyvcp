@@ -162,3 +162,33 @@ class DROLineEdit_Plugin(_DesignerPlugin):
         return 'dro_entry'
     def designerExtensions(self):
         return [DroEditorExtension, RulesEditorExtension]
+
+from .var_line_edit import VCPVarLineEdit
+class VCPVarLineEditPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPVarLineEdit
+    def objectName(self):
+        return 'var_lineedit'
+    def toolTip(self):
+        return "Universal LinuxCNC Parameter Line Edit - Automatically detects parameter file from ini"
+    def designerExtensions(self):
+        return [SettingSelectorExtension, RulesEditorExtension]
+    def domXml(self):
+        return """
+        <widget class="VCPVarLineEdit" name="var_lineedit">
+          <property name="focusPolicy">
+            <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="varParameterNumber">
+            <number>3015</number>
+          </property>
+          <property name="highPrecisionStorage">
+            <bool>true</bool>
+          </property>
+          <property name="displayDecimals">
+            <number>4</number>
+          </property>
+          <property name="autoWriteEnabled">
+            <bool>true</bool>
+          </property>
+        </widget>"""

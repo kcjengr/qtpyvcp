@@ -38,33 +38,104 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         self._setting_name = ''
         self._text_format = ''
         self._tmp_value = None
+        
+        # High-precision storage properties
+        self._high_precision_storage = False
+        self._internal_value = None
+        self._display_decimals = 4
+        self._user_just_edited = False
 
         self.returnPressed.connect(self.onReturnPressed)
 
+    @Property(bool)
+    def highPrecisionStorage(self):
+        """If True, store full precision internally but display with limited decimals"""
+        return self._high_precision_storage
+
+    @highPrecisionStorage.setter
+    def highPrecisionStorage(self, enabled):
+        self._high_precision_storage = enabled
+
+    @Property(int)
+    def displayDecimals(self):
+        """Number of decimal places to show in display (when highPrecisionStorage is True)"""
+        return self._display_decimals
+
+    @displayDecimals.setter
+    def displayDecimals(self, decimals):
+        self._display_decimals = max(0, decimals)
+
     def formatValue(self, value):
-        if self._setting.value_type in (int, float):
+        if self._high_precision_storage and isinstance(value, (int, float)):
+            # Use display decimals for formatting instead of textFormat
+            return f"{value:.{self._display_decimals}f}"
+        elif self._setting and self._setting.value_type in (int, float):
             return self._text_format.format(value)
-
-        if isinstance(value, str):
+        elif isinstance(value, str):
             return value
-
         else:
             return str(value)
 
-    def setValue(self, text):
+    def setValue(self, value):
         if self._setting is not None:
-            value = self._setting.normalizeValue(text)
-            self.setDisplayValue(value)
-            self._setting.setValue(value)
+            if self._high_precision_storage:
+                # Store full precision internally
+                self._internal_value = float(value)
+                # Display with limited precision
+                self.setDisplayValue(self._internal_value)
+                # Store full precision in settings
+                self._setting.setValue(value)
+            else:
+                # Normal behavior
+                normalized_value = self._setting.normalizeValue(value)
+                self.setDisplayValue(normalized_value)
+                self._setting.setValue(normalized_value)
         else:
-            self._tmp_value = text
+            self._tmp_value = value
+
+    def value(self):
+        """Return the stored value - high precision if enabled, otherwise current text value"""
+        if self._high_precision_storage and self._internal_value is not None:
+            return self._internal_value
+        elif self._setting:
+            return self._setting.normalizeValue(self.text())
+        else:
+            try:
+                return float(self.text())
+            except ValueError:
+                return 0.0
 
     def onReturnPressed(self):
         self.clearFocus()
 
     def setDisplayValue(self, value):
+        if self._high_precision_storage:
+            print(f"DEBUG: setDisplayValue called with {value}, internal_value: {self._internal_value}")
+            print(f"DEBUG: setDisplayValue - user_just_edited: {self._user_just_edited}")
+        
+        # Skip settings notifications if user just edited to prevent overriding the formatted display
+        if self._high_precision_storage and self._user_just_edited:
+            print(f"DEBUG: setDisplayValue - skipping because user just edited")
+            return
+        
         self.blockSignals(True)
-        self.setText(self.formatValue(value))
+        
+        if self._high_precision_storage:
+            try:
+                float_value = float(value)
+                # Always format for display, but store full precision internally
+                self._internal_value = float_value
+                display_text = self.formatValue(float_value)
+                print(f"DEBUG: setDisplayValue - storing {float_value} internally, displaying: '{display_text}'")
+            except (ValueError, TypeError):
+                display_text = str(value)
+                print(f"DEBUG: setDisplayValue - invalid value, displaying as string: '{display_text}'")
+        else:
+            # Normal behavior
+            display_text = self.formatValue(value)
+        
+        print(f"DEBUG: setDisplayValue - final text being set: '{display_text}'")
+        self.setText(display_text)
         self.blockSignals(False)
 
     def initialize(self):
@@ -82,19 +153,56 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             self.setValidator(validator)
 
             if self._tmp_value:
+                if self._high_precision_storage:
+                    self._internal_value = float(self._tmp_value)
                 self.setDisplayValue(self._tmp_value)
                 self._setting.setValue(self._tmp_value)
             else:
+                if self._high_precision_storage:
+                    self._internal_value = float(self._setting.getValue())
                 self.setDisplayValue(self._setting.getValue())
 
             self._setting.notify(self.setDisplayValue)
-
             self.editingFinished.connect(self.onEditingFinished)
 
     def onEditingFinished(self):
-        value = self._setting.normalizeValue(self.text())
-        self.setDisplayValue(value)
-        self._setting.setValue(value)
+        # When user edits, parse their input and store appropriately
+        try:
+            user_text = self.text()
+            user_value = float(user_text)
+            print(f"DEBUG: onEditingFinished - user entered: {user_value}")
+            print(f"DEBUG: onEditingFinished - current text: '{user_text}'")
+            print(f"DEBUG: onEditingFinished - high_precision_storage: {self._high_precision_storage}")
+            
+            if self._high_precision_storage:
+                print(f"DEBUG: onEditingFinished - storing {user_value} internally")
+                # Store full precision internally
+                self._internal_value = user_value
+                # Set flag to prevent settings notification from overriding
+                self._user_just_edited = True
+                print(f"DEBUG: onEditingFinished - calling setValue({user_value}) on settings")
+                # Store full precision in settings
+                self._setting.setValue(user_value)
+                # Format the display but keep full precision stored
+                formatted_text = self.formatValue(user_value)
+                print(f"DEBUG: onEditingFinished - formatting display to: '{formatted_text}'")
+                self.blockSignals(True)
+                self.setText(formatted_text)
+                self.blockSignals(False)
+                self._user_just_edited = False
+                print(f"DEBUG: onEditingFinished - after formatting, text is now: '{self.text()}'")
+            else:
+                # Normal behavior - normalize and store
+                normalized_value = self._setting.normalizeValue(user_value)
+                self.setDisplayValue(normalized_value)
+                self._setting.setValue(normalized_value)
+                
+        except ValueError:
+            # Revert to previous value if invalid input
+            if self._high_precision_storage and self._internal_value is not None:
+                self.setDisplayValue(self._internal_value)
+            else:
+                self.setDisplayValue(self._setting.getValue())
 
     @Property(str)
     def textFormat(self):
@@ -102,16 +210,17 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     @textFormat.setter
     def textFormat(self, text_fmt):
-        if self._setting_name != "":
-            setting = SETTINGS.get(self._setting_name)
-            if setting:
-                try:
-                    str = text_fmt.format(setting.getValue())
-                except Exception as e:
-                    LOG.warning(e)
-            else:
-                return
-
+        # Only use textFormat if not using high precision storage
+        if not self._high_precision_storage:
+            if self._setting_name != "":
+                setting = SETTINGS.get(self._setting_name)
+                if setting:
+                    try:
+                        str = text_fmt.format(setting.getValue())
+                    except Exception as e:
+                        LOG.warning(e)
+                else:
+                    return
         self._text_format = text_fmt
 
 
