@@ -26,6 +26,7 @@ class Settings(DataPlugin):
             chan_obj = SETTINGS[url]
             chan_exp = chan_obj.getValue
         except KeyError:
+            LOG.warn(f"FAILED TO GET CHANNEL: {url}")
             return None, None
 
         return chan_obj, chan_exp
@@ -37,9 +38,7 @@ class Settings(DataPlugin):
             try:
                 SETTINGS[key].setValue(value)
             except KeyError:
-                
-                LOG.error("########################## FAILED TO INITIALIZE SETTINGS")
-                LOG.error(f"########################## {key}")
+                LOG.warn(f"FAILED TO INITIALIZE SETTINGS: {key}")
                 pass
 
     def terminate(self):
