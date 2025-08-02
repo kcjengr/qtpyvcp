@@ -21,6 +21,7 @@ import yaml
 import linuxcnc
 import os
 from collections import OrderedDict
+from operator import add
 
 import time
 
@@ -1510,7 +1511,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("---------update_g92_offset: {}".format(g92_offset))
         if self._datasource.isModeMdi() or self._datasource.isModeAuto():
             self.g92_offset = g92_offset
-            add = lambda *x: sum(x)
+
             path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
             LOG.debug("---------path_offset: {}".format(path_offset))
 
