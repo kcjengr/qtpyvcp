@@ -92,7 +92,7 @@ class MDIEntry(QLineEdit, CMDWidget):
 
     def focusInEvent(self, event):
         super(MDIEntry, self).focusInEvent(event)
-        if self._completer_enabled:
+        if self._completer_enabled and self.completer() is not None:
             self.completer().complete()
 
     def supress_rtn_key_behaviour(self):

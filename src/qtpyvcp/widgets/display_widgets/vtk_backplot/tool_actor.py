@@ -535,7 +535,7 @@ class ToolBitActor(vtk.vtkActor):
 
         # Avoid visible backfaces on Linux with some video cards like intel
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
-        self.GetProperty().SetBackfaceCulling(1)
+        # self.GetProperty().SetBackfaceCulling(1)
 
     def set_foam_offsets(self, zo, wo):
 
