@@ -2,6 +2,15 @@
 Line Edit
 ---------
 """
+import locale
+from qtpy.QtCore import Property
+from qtpy.QtWidgets import QLineEdit
+
+from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.misc import cnc_float
+from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
+
+LOG = getLogger(__name__)
 
 import locale
 from qtpy.QtCore import Property
@@ -13,7 +22,7 @@ from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 LOG = getLogger(__name__)
 
 
-def _cnc_float(value):
+def cnc_float(value):
     """
     Parse a float value with CNC decimal point format (e.g., "1234.5678")
     
@@ -94,7 +103,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
     def setValue(self, value):
         """Set the value - high precision if enabled, otherwise as text"""
         try:
-            numeric_value = _cnc_float(value)
+            numeric_value = cnc_float(value)
             if self._high_precision_storage:
                 self._internal_value = numeric_value
                 self._update_display()
@@ -113,7 +122,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
             return self._internal_value
         else:
             try:
-                return _cnc_float(self.text()) if self.text() else 0.0
+                return cnc_float(self.text()) if self.text() else 0.0
             except ValueError:
                 return 0.0
 
@@ -136,7 +145,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         """Update internal value when user types (only if high precision storage is enabled)"""
         if self._high_precision_storage:
             try:
-                self._internal_value = _cnc_float(text) if text else 0.0
+                self._internal_value = cnc_float(text) if text else 0.0
             except ValueError:
                 # Keep previous internal value if user enters invalid text
                 pass

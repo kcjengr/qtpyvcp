@@ -7,45 +7,12 @@ DROLineEdit
 import locale
 from qtpy.QtCore import Qt, Property
 from qtpyvcp.widgets.base_widgets.eval_line_edit import EvalLineEdit
-
 from qtpyvcp.widgets.base_widgets.dro_base_widget import DROBaseWidget, Axis, LatheMode
 from qtpyvcp.actions.machine_actions import issue_mdi
+from qtpyvcp.utilities.misc import cnc_float
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
-
-
-def _cnc_float(value):
-    """
-    Parse a float value with CNC decimal point format (e.g., "1234.5678")
-    
-    This function temporarily sets the locale to 'C' to ensure that float() 
-    parsing always uses decimal point (.) regardless of system locale, avoiding
-    C locale for parsing to avoid locale-dependent float() behavior.
-    
-    Args:
-        value: String or numeric value to parse as float
-        
-    Returns:
-        float: Parsed value
-        
-    Raises:
-        ValueError: If value cannot be parsed as float
-        TypeError: If value is not a valid type for conversion
-    """
-    if isinstance(value, (int, float)):
-        return float(value)
-    
-    # Save current locale, set to C for consistent parsing, then restore
-    old_locale = locale.getlocale(locale.LC_NUMERIC)
-    try:
-        locale.setlocale(locale.LC_NUMERIC, 'C')
-        result = float(value)
-        return result
-    finally:
-        # Restore original locale
-        if old_locale[0] is not None:
-            locale.setlocale(locale.LC_NUMERIC, old_locale)
 
 
 class DROLineEdit(EvalLineEdit, DROBaseWidget):
@@ -67,7 +34,7 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
 
     def onReturnPressed(self):
         try:
-            val = _cnc_float(self.text().strip().replace('mm', '').replace('in', ''))
+            val = cnc_float(self.text().strip().replace('mm', '').replace('in', ''))
             g5x_index = self.status.stat.g5x_index
             axis = 'XYZABCUVW'[self._anum]
 
