@@ -1,53 +1,74 @@
 import os
-import re
-import linuxcnc
 from qtpy.QtCore import Property, QTimer
-from qtpy.QtWidgets import QLineEdit
-from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit
+from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
+from qtpyvcp.widgets.base_widgets import VarWidgetMixin
 from qtpyvcp.utilities import logger
+from qtpyvcp.plugins import getPlugin
+from qtpyvcp.actions.machine_actions import issue_mdi
 
 LOG = logger.getLogger(__name__)
 
-class VCPVarLineEdit(VCPSettingsLineEdit):
+IN_DESIGNER = os.getenv('DESIGNER') != None
+
+def _safe_import_linuxcnc():
+    """Import linuxcnc with intelligent error handling"""
+    if IN_DESIGNER:
+        # Expected in designer mode - don't log
+        return None
+    
+    try:
+        import linuxcnc
+        return linuxcnc
+    except ImportError as e:
+        # Unexpected in runtime mode - log the error
+        LOG.error(f"Failed to import linuxcnc in runtime mode: {e}")
+        return None
+
+class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
     """
-    Universal LinuxCNC Parameter Line Edit Widget with automatic configuration.
+    LinuxCNC Parameter Line Edit Widget with automatic var file integration.
     
-    This widget extends VCPSettingsLineEdit to provide direct LinuxCNC parameter access
-    with automatic configuration detection. It eliminates precision loss that occurs when
-    values are passed through subroutines by setting full-precision values directly in
-    LinuxCNC's parameter table via MDI commands.
-    
-    The widget automatically configures itself by reading the LinuxCNC ini file to
-    determine the parameter file location, making it universally compatible with any
-    LinuxCNC configuration without manual setup.
+    This widget extends VCPLineEdit to provide direct LinuxCNC parameter access
+    with automatic configuration detection. It reads/writes LinuxCNC var parameters
+    directly via MDI commands and var file reading.
     
     Key Features:
     - Fully automatic configuration from LinuxCNC ini file
-    - High-precision parameter storage via MDI commands  
+    - 6-decimal precision parameter storage (LinuxCNC var parameter limit)
     - Universal compatibility across different machine configurations
+    - Configurable display formatting with displayDecimals property
     - Configurable auto-write functionality with delays
     - Direct parameter file reading for initialization
-    - Built-in error handling and logging
+    - VCP rules functionality from VCPLineEdit base class
+    - Safety monitoring with machine state validation
     
     Usage:
     - Simply set the varParameterNumber property in Qt Designer
     - Widget automatically detects and uses the correct parameter file
+    - Set displayDecimals property to control display formatting
     - No manual path configuration required
+    - Widget automatically disables when machine is not in safe state
     """
     
     def __init__(self, parent=None):
-        super(VCPVarLineEdit, self).__init__(parent)
+        VCPLineEdit.__init__(self, parent)
+        VarWidgetMixin.__init__(self)
         
-        # Set appropriate focus policy for line edit
-        from qtpy.QtCore import Qt
-        self.setFocusPolicy(Qt.ClickFocus)
-        
-        # Widget properties
-        self._var_parameter_number = 0
+        # Widget properties for var parameter functionality
         self._auto_write_enabled = True
         self._write_delay = 500  # ms delay before writing to prevent excessive writes
+        self._display_decimals = 4  # User-configurable display formatting
+        self._require_homed = True  # Safety feature: require machine to be homed
         
-        # Get LinuxCNC ini file and parameter file path automatically
+        # Status monitoring for safety
+        self._status = None
+        self._original_enabled_state = True
+        
+        # Internal 6-decimal storage (LinuxCNC var parameter limit)
+        self._internal_value = None
+        self._user_just_edited = False
+        
+        # LinuxCNC configuration (legacy - will be removed)
         self._ini_file = None
         self._parameter_file_path = None
         self._config_dir = None
@@ -60,39 +81,39 @@ class VCPVarLineEdit(VCPSettingsLineEdit):
         
         # Connect to value changes
         self.textChanged.connect(self._onTextChanged)
+        self.editingFinished.connect(self.onEditingFinished)
 
     def _loadIniConfiguration(self):
         """Load LinuxCNC ini file and extract parameter file path"""
-        try:
-            # Get the ini file path from environment variable
-            ini_file_name = os.getenv('INI_FILE_NAME')
-            if not ini_file_name:
-                LOG.warning("VCPVarLineEdit: INI_FILE_NAME environment variable not set")
-                return
-                
-            # Load the ini file
-            self._ini_file = linuxcnc.ini(ini_file_name)
+        linuxcnc = _safe_import_linuxcnc()
+        if linuxcnc is None:
+            return  # Skip when linuxcnc unavailable (designer mode or error already logged)
             
-            # Get config directory from environment
-            self._config_dir = os.getenv('CONFIG_DIR', os.path.dirname(ini_file_name))
+        # Get the ini file path from environment variable
+        ini_file_name = os.getenv('INI_FILE_NAME')
+        if not ini_file_name:
+            LOG.warning("VCPVarLineEdit: INI_FILE_NAME environment variable not set")
+            return
             
-            # Get parameter file from [RS274NGC] section
-            parameter_file = self._ini_file.find('RS274NGC', 'PARAMETER_FILE')
-            if parameter_file:
-                # Handle relative paths by joining with config directory
-                if not os.path.isabs(parameter_file):
-                    self._parameter_file_path = os.path.join(self._config_dir, parameter_file)
-                else:
-                    self._parameter_file_path = parameter_file
-                    
-                LOG.debug(f"VCPVarLineEdit: Parameter file path: {self._parameter_file_path}")
-            else:
-                LOG.warning("VCPVarLineEdit: PARAMETER_FILE not found in [RS274NGC] section of ini file")
-                
-        except Exception as e:
-            LOG.error(f"VCPVarLineEdit: Error loading ini configuration: {e}")
-            self._ini_file = None
-            self._parameter_file_path = None
+        # Load the ini file
+        self._ini_file = linuxcnc.ini(ini_file_name)
+        
+        # Get config directory from environment
+        self._config_dir = os.getenv('CONFIG_DIR', os.path.dirname(ini_file_name))
+        
+        # Get parameter file from [RS274NGC] section
+        parameter_file = self._ini_file.find('RS274NGC', 'PARAMETER_FILE')
+        if not parameter_file:
+            LOG.warning("VCPVarLineEdit: PARAMETER_FILE not found in [RS274NGC] section of ini file")
+            return
+            
+        # Handle relative paths by joining with config directory
+        if not os.path.isabs(parameter_file):
+            self._parameter_file_path = os.path.join(self._config_dir, parameter_file)
+        else:
+            self._parameter_file_path = parameter_file
+            
+        LOG.debug(f"VCPVarLineEdit: Parameter file path: {self._parameter_file_path}")
 
     def getParameterFilePath(self):
         """Get the automatically detected parameter file path"""
@@ -110,21 +131,23 @@ class VCPVarLineEdit(VCPSettingsLineEdit):
             'config_dir': self._config_dir,
             'parameter_file_path': self._parameter_file_path,
             'effective_parameter_file_path': self.getParameterFilePath(),
-            'var_parameter_number': self._var_parameter_number,
+            'var_parameter_number': self.var_parameter_number,
             'auto_write_enabled': self._auto_write_enabled,
             'write_delay': self._write_delay,
+            'display_decimals': self._display_decimals,
+            'var_monitoring_enabled': self.var_monitoring_enabled,
             'parameter_file_exists': os.path.exists(self.getParameterFilePath()) if self.getParameterFilePath() else False
         }
 
     @Property(int)
     def varParameterNumber(self):
         """LinuxCNC parameter number to write to (e.g., 3014 for #3014)"""
-        return self._var_parameter_number
+        return self.var_parameter_number
 
     @varParameterNumber.setter
     def varParameterNumber(self, param_num):
-        self._var_parameter_number = int(param_num)
-        # Optionally load the current value from the var file when parameter number is set
+        self.var_parameter_number = param_num
+        # Load the current value from VarFileManager when parameter number is set
         if param_num > 0 and self.getParameterFilePath():
             # Use a timer to defer loading until after widget is fully initialized
             QTimer.singleShot(100, self.loadParameterValue)
@@ -146,9 +169,163 @@ class VCPVarLineEdit(VCPSettingsLineEdit):
     @writeDelay.setter
     def writeDelay(self, delay):
         self._write_delay = int(delay)
+
+    @Property(int)
+    def displayDecimals(self):
+        """Number of decimal places to display in the widget"""
+        return self._display_decimals
+
+    @displayDecimals.setter
+    def displayDecimals(self, decimals):
+        self._display_decimals = max(0, min(decimals, 6))  # Cap at 6 decimals max
+        # Update display immediately when decimals setting changes
+        if self._internal_value is not None:
+            self.setDisplayValue(self._internal_value)
+
+    @Property(bool)
+    def requireHomed(self):
+        """Whether to require machine to be homed before enabling the widget"""
+        return self._require_homed
+
+    @requireHomed.setter
+    def requireHomed(self, require):
+        self._require_homed = bool(require)
+        # Re-evaluate enabled state when this property changes
+        self._updateEnabledState()
+
+    def _connectStatusPlugin(self):
+        """Connect to the status plugin for monitoring machine state"""
+        self._status = getPlugin('status')
+        if not self._status:
+            LOG.warning("VCPVarLineEdit: Status plugin not available")
+            return
+            
+        # Connect to all homed status signal
+        self._status.all_axes_homed.notify(self._updateEnabledState)
+        LOG.debug("VCPVarLineEdit: Connected to status plugin for homing monitoring")
+        # Update initial state
+        self._updateEnabledState()
+
+    def _updateEnabledState(self):
+        """Update widget enabled state based on machine state"""
+        if not self._require_homed:
+            # If homing not required, use original enabled state
+            super().setEnabled(self._original_enabled_state)
+            return
+            
+        if self._status is None:
+            # If no status plugin, default to disabled for safety
+            super().setEnabled(False)
+            self.setToolTip("Status plugin not available - widget disabled for safety")
+            return
+            
+        # Check if machine is in safe state for parameter editing
+        linuxcnc = _safe_import_linuxcnc()
+        if linuxcnc is None:
+            # Disable widget when linuxcnc unavailable
+            super().setEnabled(False)
+            self.setToolTip("LinuxCNC not available - widget disabled")
+            return
+            
+        stat = linuxcnc.stat()
+        stat.poll()
         
+        # Check machine state: ON, HOMED, and IDLE (same as MDI button safety)
+        is_machine_on = stat.task_state == linuxcnc.STATE_ON
+        is_all_homed = self._status.allHomed()
+        is_idle = stat.interp_state == linuxcnc.INTERP_IDLE
+        
+        is_safe = is_machine_on and is_all_homed and is_idle
+        
+        if is_safe:
+            super().setEnabled(self._original_enabled_state)
+            self.setToolTip("")  # Clear any safety tooltip
+        else:
+            super().setEnabled(False)
+            if not is_machine_on:
+                self.setToolTip("Widget disabled: Machine must be ON")
+            elif not is_all_homed:
+                self.setToolTip("Widget disabled: Machine must be HOMED")
+            elif not is_idle:
+                self.setToolTip("Widget disabled: Machine must be IDLE")
+
+    def setEnabled(self, enabled):
+        """Override setEnabled to track original state and respect safety requirements"""
+        self._original_enabled_state = enabled
+        self._updateEnabledState()
+
+    def formatValue(self, value):
+        """Format value for display using displayDecimals setting"""
+        if isinstance(value, (int, float)):
+            return f"{float(value):.{self._display_decimals}f}"
+        elif isinstance(value, str):
+            # Parse string as float and format it
+            float_value = float(value)
+            return f"{float_value:.{self._display_decimals}f}"
+        else:
+            return str(value)
+
+    def setValue(self, value):
+        """Set the value with 6-decimal internal storage and formatted display"""
+        float_value = float(value)
+        
+        # Always store with 6-decimal precision (LinuxCNC var limit)
+        self._internal_value = round(float_value, 6)
+        
+        # Format for display using user-configurable decimals
+        self.setDisplayValue(self._internal_value)
+
+    def value(self):
+        """Return the stored 6-decimal precision value"""
+        if self._internal_value is not None:
+            return self._internal_value
+        else:
+            return round(float(self.text()), 6) if self.text() else 0.0
+
+    def setDisplayValue(self, value):
+        """Set display value with consistent formatting using displayDecimals"""
+        # Skip settings notifications if user just edited to prevent overriding
+        if self._user_just_edited:
+            return
+        
+        self.blockSignals(True)
+        
+        # Always format using displayDecimals setting
+        float_value = float(value)
+        display_text = self.formatValue(float_value)
+        self.setText(display_text)
+        
+        self.blockSignals(False)
+
+    def onEditingFinished(self):
+        """Handle user editing with 6-decimal precision storage and display formatting"""
+        user_text = self.text()
+        if not user_text.strip():
+            return
+            
+        user_value = float(user_text)
+        
+        # Set flag to prevent settings notification from overriding
+        self._user_just_edited = True
+        
+        # Store with 6-decimal precision (LinuxCNC var limit)
+        self._internal_value = round(user_value, 6)
+        
+        # Format display using displayDecimals setting
+        formatted_text = self.formatValue(self._internal_value)
+        
+        self.blockSignals(True)
+        self.setText(formatted_text)
+        self.blockSignals(False)
+        
+        self._user_just_edited = False
+
     def _onTextChanged(self):
         """Handle text changes and schedule LinuxCNC parameter update if auto-write is enabled"""
+        # Update internal value when user types
+        if self.text():
+            self._internal_value = round(float(self.text()), 6)
+            
         if self._auto_write_enabled and self._var_parameter_number > 0:
             # Reset the timer to delay the write
             self._write_timer.stop()
@@ -167,70 +344,44 @@ class VCPVarLineEdit(VCPSettingsLineEdit):
             self._onTextChanged()
 
     def _writeToLinuxCNC(self):
-        """Write the current high-precision value to LinuxCNC via MDI command"""
-        if not self._var_parameter_number > 0:
+        """Write the current 6-decimal precision value to LinuxCNC via MDI command"""
+        if not self.var_parameter_number > 0:
             LOG.warning("VCPVarLineEdit: parameter number not set")
             return
 
-        try:
-            # Get the high-precision value
-            if self._high_precision_storage and self._internal_value is not None:
-                value = self._internal_value
-                LOG.debug(f"VCPVarLineEdit: Using high-precision internal value: {value}")
-            else:
-                try:
-                    value = float(self.text())
-                    LOG.debug(f"VCPVarLineEdit: Using text value: {value}")
-                except ValueError:
-                    LOG.warning(f"VCPVarLineEdit: Invalid numeric value: '{self.text()}'")
-                    return
+        # Safety check: ensure machine is in safe state if required
+        if self._require_homed and self._status:
+            linuxcnc = _safe_import_linuxcnc()
+            if linuxcnc is None:
+                return  # Skip writing when linuxcnc unavailable
+                
+            stat = linuxcnc.stat()
+            stat.poll()
+            
+            # Check machine state: ON, HOMED, and IDLE
+            is_machine_on = stat.task_state == linuxcnc.STATE_ON
+            is_all_homed = self._status.allHomed()
+            is_idle = stat.interp_state == linuxcnc.INTERP_IDLE
+            
+            if not (is_machine_on and is_all_homed and is_idle):
+                LOG.warning("VCPVarLineEdit: Cannot write parameter - machine not in safe state")
+                return
 
-            # Use LinuxCNC MDI command to set parameter
-            try:
-                from qtpyvcp.actions.machine_actions import issue_mdi
-                
-                # Format the MDI command to set the parameter
-                # Using the #NNNN format for numbered parameters (not #<_NNNN>)
-                mdi_command = f"#{self._var_parameter_number} = {value:.15g}"
-                
-                LOG.debug(f"VCPVarLineEdit: Issuing MDI command: {mdi_command}")
-                issue_mdi(mdi_command)
-                
-                LOG.info(f"VCPVarLineEdit: Set parameter #{self._var_parameter_number} = {value} via MDI")
-                
-            except ImportError:
-                LOG.error("VCPVarLineEdit: Could not import issue_mdi from qtpyvcp.actions.machine_actions")
-                # Fallback to direct LinuxCNC command interface
-                self._writeToLinuxCNCDirect(value)
-                
-        except Exception as e:
-            LOG.error(f"VCPVarLineEdit: Error setting parameter via MDI: {e}")
-            # Try fallback method
-            try:
-                self._writeToLinuxCNCDirect(value)
-            except Exception as fallback_error:
-                LOG.error(f"VCPVarLineEdit: Fallback method also failed: {fallback_error}")
+        # Get the 6-decimal precision value
+        if self._internal_value is not None:
+            value = self._internal_value
+            LOG.debug(f"VCPVarLineEdit: Using internal 6-decimal value: {value}")
+        else:
+            value = round(float(self.text()), 6)
+            LOG.debug(f"VCPVarLineEdit: Using text value rounded to 6 decimals: {value}")
 
-    def _writeToLinuxCNCDirect(self, value):
-        """
-        Fallback method to write directly to LinuxCNC using the command interface
+        # Use LinuxCNC MDI command to set parameter with 6-decimal precision
+        mdi_command = f"#{self.var_parameter_number} = {value:.6f}"
         
-        Args:
-            value (float): The value to set
-        """
-        try:
-            import linuxcnc
-            command = linuxcnc.command()
-            
-            # Set the parameter using LinuxCNC's MDI command interface
-            mdi_cmd = f"#<_{self._var_parameter_number}> = {value:.15g}"
-            command.mdi(mdi_cmd)
-            
-            LOG.info(f"VCPVarLineEdit: Set parameter #{self._var_parameter_number} = {value} via direct LinuxCNC command")
-            
-        except Exception as e:
-            LOG.error(f"VCPVarLineEdit: Error setting parameter via direct LinuxCNC command: {e}")
-            raise
+        LOG.debug(f"VCPVarLineEdit: Issuing MDI command: {mdi_command}")
+        issue_mdi(mdi_command)
+        
+        LOG.info(f"VCPVarLineEdit: Set parameter #{self.var_parameter_number} = {value:.6f} via MDI")
 
     def readParameterFromVarFile(self, parameter_number=None):
         """
@@ -240,7 +391,7 @@ class VCPVarLineEdit(VCPSettingsLineEdit):
             parameter_number (int): Parameter number to read. If None, uses self._var_parameter_number
             
         Returns:
-            float or None: The parameter value, or None if not found or error
+            float or None: The parameter value with 6-decimal precision, or None if not found
         """
         param_num = parameter_number or self._var_parameter_number
         if not param_num:
@@ -252,31 +403,24 @@ class VCPVarLineEdit(VCPSettingsLineEdit):
             LOG.warning(f"VCPVarLineEdit: Parameter file not found: {var_file_path}")
             return None
             
-        try:
-            with open(var_file_path, 'r') as f:
-                for line in f:
-                    line = line.strip()
-                    if not line or line.startswith('#'):
-                        continue
+        with open(var_file_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                    
+                # Parse parameter line: "parameter_number<tab>value"
+                parts = line.split('\t')
+                if len(parts) >= 2:
+                    file_param_num = int(parts[0])
+                    if file_param_num == param_num:
+                        # Round to 6 decimals to match LinuxCNC var precision
+                        value = round(float(parts[1]), 6)
+                        LOG.debug(f"VCPVarLineEdit: Read parameter #{param_num} = {value:.6f} from var file")
+                        return value
                         
-                    # Parse parameter line: "parameter_number<tab>value"
-                    parts = line.split('\t')
-                    if len(parts) >= 2:
-                        try:
-                            file_param_num = int(parts[0])
-                            if file_param_num == param_num:
-                                value = float(parts[1])
-                                LOG.debug(f"VCPVarLineEdit: Read parameter #{param_num} = {value} from var file")
-                                return value
-                        except ValueError:
-                            continue
-                            
-            LOG.debug(f"VCPVarLineEdit: Parameter #{param_num} not found in var file")
-            return None
-            
-        except Exception as e:
-            LOG.error(f"VCPVarLineEdit: Error reading parameter from var file: {e}")
-            return None
+        LOG.debug(f"VCPVarLineEdit: Parameter #{param_num} not found in var file")
+        return None
 
     def loadParameterValue(self):
         """Load the parameter value from the var file into the widget"""
@@ -288,22 +432,67 @@ class VCPVarLineEdit(VCPSettingsLineEdit):
                 self._auto_write_enabled = False
                 self.setValue(value)
                 self._auto_write_enabled = old_auto_write
-                LOG.debug(f"VCPVarLineEdit: Loaded parameter #{self._var_parameter_number} = {value}")
+                LOG.debug(f"VCPVarLineEdit: Loaded parameter #{self._var_parameter_number} = {value:.6f}")
             else:
                 LOG.debug(f"VCPVarLineEdit: Could not load parameter #{self._var_parameter_number}")
 
-    def setValue(self, value):
-        """Override setValue to trigger LinuxCNC parameter update"""
-        super(VCPVarLineEdit, self).setValue(value)
-        
-        # Schedule LinuxCNC parameter update after settings are updated
-        if self._auto_write_enabled:
-            self._onTextChanged()
-
     def onReturnPressed(self):
         """Override to ensure LinuxCNC parameter is updated on return press"""
+        # Call parent onReturnPressed for VCP rules functionality
         super(VCPVarLineEdit, self).onReturnPressed()
         
         # Force immediate write to LinuxCNC parameter on return press
         if self._auto_write_enabled:
             self.writeToLinuxCNC(force=True)
+
+    def initialize(self):
+        """Initialize the widget - called by VCP system"""
+        # Initialize VarWidgetMixin (sets up var file monitoring)
+        self._setup_var_monitoring()
+        
+        # Connect to status plugin for safety monitoring
+        self._connectStatusPlugin()
+        
+        LOG.info(f"VCPVarLineEdit initialized: param #{self.var_parameter_number}, auto_write={self._auto_write_enabled}, require_homed={self._require_homed}")
+
+    def terminate(self):
+        """Cleanup when widget is destroyed"""
+        # Cleanup var file monitoring
+        self._cleanup_var_monitoring()
+        
+        # Disconnect from status plugin
+        if self._status:
+            self._status.all_axes_homed.signal.disconnect(self._updateEnabledState)
+        
+        # Restore original enabled state
+        if hasattr(self, '_original_enabled_state'):
+            self.setEnabled(self._original_enabled_state)
+        
+        if self._write_timer.isActive():
+            self._write_timer.stop()
+        LOG.debug("VCPVarLineEdit terminated")
+
+    # VarWidgetMixin abstract method implementations
+    def _load_parameter_value(self, value):
+        """Load a parameter value from var file into the line edit widget"""
+        # Temporarily disable auto-write to prevent feedback loops
+        old_auto_write = self._auto_write_enabled
+        self._auto_write_enabled = False
+        
+        # Set the value using existing setValue method
+        self.setValue(value)
+        
+        # Restore auto-write setting
+        self._auto_write_enabled = old_auto_write
+        
+        LOG.debug(f"VCPVarLineEdit: Loaded parameter value {value} from var file")
+
+    def _get_widget_value(self):
+        """Get the current value from the line edit widget"""
+        return self.value()
+
+    def _on_parameter_changed(self, param_number, new_value):
+        """Handle parameter change notifications from VarFileManager"""
+        if param_number == self.var_parameter_number and new_value is not None:
+            LOG.debug(f"VCPVarLineEdit: Parameter #{param_number} changed to {new_value}")
+            self._load_parameter_value(new_value)
