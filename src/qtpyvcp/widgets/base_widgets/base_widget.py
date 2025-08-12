@@ -8,6 +8,8 @@ all other QtPyVCP widgets are based.
 
 import os
 import json
+import math
+
 
 from qtpy.QtCore import Property, Slot, Qt
 from qtpy.QtWidgets import QPushButton
@@ -222,46 +224,46 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     def registerRules(self):
         rules = json.loads(self._rules)
         for rule in rules:
-            # print(rule)
             ch = ChanList()
             triggers = []
             for chan in rule['channels']:
-
                 try:
                     url = chan['url'].strip()
                     protocol, sep, item = url.partition(':')
                     chan_obj, chan_exp = getPlugin(protocol).getChannel(item)
-
                     ch.append(chan_exp)
-
                     if chan.get('trigger', False):
                         triggers.append(chan_obj.notify)
-
                 except Exception:
                     LOG.exception("Error evaluating rule: {}"
                                   .format(chan.get('url', '')))
                     return
-
             prop = self.RULE_PROPERTIES[rule['property']]
-
             if prop[1] is None:
                 # donothing
                 self._data_channels = ch
                 continue
 
-            eval_env = {'ch': ch, 'widget': self}
+            eval_env = {
+                'ch': ch,
+                'widget': self,
+                'abs': abs,  # from builtins
+                'max': max,  # from builtins
+                'min': min,  # from builtins
+                'tan': math.tan,
+                'radians': math.radians,
+            }
+            
             eval_exp = 'lambda: widget.{}({})'.format(
                             prop[0], rule['expression']).encode('utf-8')
             exp = eval(eval_exp, eval_env)
 
-            # initial call to update
             try:
                 exp()
             except:
                 widget_name = self.objectName()
                 LOG.exception(f'Error calling rules expression from {widget_name}:')
                 continue
-
             for trigger in triggers:
                 trigger(exp)
 

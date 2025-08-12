@@ -26,22 +26,25 @@ class Settings(DataPlugin):
             chan_obj = SETTINGS[url]
             chan_exp = chan_obj.getValue
         except KeyError:
+            LOG.warn(f"FAILED TO GET CHANNEL: {url}")
             return None, None
 
         return chan_obj, chan_exp
 
-    def initialise(self):
+    def postGuiInitialise(self, window):
         settings = self.data_manager.getData('settings', {})
 
         for key, value in list(settings.items()):
             try:
                 SETTINGS[key].setValue(value)
             except KeyError:
+                LOG.warn(f"FAILED TO INITIALIZE SETTINGS: {key}")
                 pass
 
     def terminate(self):
         settings = {}
         for key, obj in list(SETTINGS.items()):
+            LOG.debug(f"TERMINATE | KEY: {key} ,obj : {obj}")
             if obj.persistent == True:
                 value = obj.getValue()
                 if obj.default_value != value:
