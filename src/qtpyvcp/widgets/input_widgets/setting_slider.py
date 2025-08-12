@@ -1,3 +1,18 @@
+#!/usr/bin/env python
+
+"""
+Settings Widgets with Fail-Fast Validation
+
+This module implements settings widgets that use fail-fast methodology:
+- Invalid inputs raise exceptions immediately rather than being silently handled
+- No try/except blocks that could hide bugs or lead to unpredictable state
+- Clear error messages when validation fails
+- Predictable widget behavior in all cases
+
+This approach ensures bugs are caught early in development and the widgets
+maintain consistent, reliable behavior in production.
+"""
+
 from qtpy.QtCore import Property
 from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
 from qtpy.QtGui import QIntValidator, QDoubleValidator
@@ -24,7 +39,17 @@ class VCPAbstractSettingsWidget(VCPWidget):
 
 
 class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
-    """Settings LineEdit"""
+    """Settings LineEdit with type-aware validation and high precision storage
+    
+    This widget supports both string and numeric settings with fail-fast methodology:
+    - String settings: Values stored and displayed as-is (format strings, text, etc.)
+    - Numeric settings: Values validated and optionally formatted with decimal precision
+    - None values: Handled gracefully by displaying empty text
+    - Invalid inputs: Raise exceptions immediately for early bug detection
+    
+    The widget automatically detects the setting type from the stored value and
+    adapts its behavior accordingly while maintaining predictable state.
+    """
 
     DEFAULT_RULE_PROPERTY = 'Enable'
     RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
@@ -39,17 +64,17 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         self._text_format = ''
         self._tmp_value = None
         
-        # High-precision storage properties
+        # High-precision storage properties with consistent display formatting
         self._high_precision_storage = False
         self._internal_value = None
-        self._display_decimals = 4
+        self._display_decimals = 4  # Always controls display format
         self._user_just_edited = False
 
         self.returnPressed.connect(self.onReturnPressed)
 
     @Property(bool)
     def highPrecisionStorage(self):
-        """If True, store full precision internally but display with limited decimals"""
+        """If True, store full precision internally. Display format always uses displayDecimals."""
         return self._high_precision_storage
 
     @highPrecisionStorage.setter
@@ -58,151 +83,249 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     @Property(int)
     def displayDecimals(self):
-        """Number of decimal places to show in display (when highPrecisionStorage is True)"""
+        """Number of decimal places to show in display (applies to both precision modes)"""
         return self._display_decimals
 
     @displayDecimals.setter
     def displayDecimals(self, decimals):
         self._display_decimals = max(0, decimals)
+        # Update display immediately when decimals setting changes
+        if hasattr(self, '_setting') and self._setting is not None:
+            current_value = self.value()
+            self.setDisplayValue(current_value)
 
     def formatValue(self, value):
-        if self._high_precision_storage and isinstance(value, (int, float)):
-            # Use display decimals for formatting instead of textFormat
-            return f"{value:.{self._display_decimals}f}"
-        elif self._setting and self._setting.value_type in (int, float):
-            return self._text_format.format(value)
+        """Format value with type-aware validation"""
+        # Handle None values
+        if value is None:
+            return ""
+        
+        # Handle different value types based on display mode
+        if hasattr(self, '_setting') and self._setting is not None:
+            setting_value = self._setting.getValue()
+            if isinstance(setting_value, str):
+                # String settings: return as-is
+                return str(value)
+        
+        # Numeric settings: use displayDecimals formatting
+        if isinstance(value, (int, float)):
+            return f"{float(value):.{self._display_decimals}f}"
         elif isinstance(value, str):
-            return value
+            # Try to format as numeric if it looks like a number
+            if value.strip():
+                # Check if it's a numeric string
+                try:
+                    float_value = float(value)
+                    return f"{float_value:.{self._display_decimals}f}"
+                except ValueError:
+                    # Not numeric, return as string
+                    return value
+            else:
+                return ""
         else:
             return str(value)
 
     def setValue(self, value):
+        """Store value with type-aware validation"""
         if self._setting is not None:
-            if self._high_precision_storage:
-                # Store full precision internally
-                self._internal_value = float(value)
-                # Display with limited precision
-                self.setDisplayValue(self._internal_value)
-                # Store full precision in settings
-                self._setting.setValue(value)
+            # Get the expected type from the setting
+            setting_value = self._setting.getValue()
+            
+            if isinstance(setting_value, str):
+                # String setting: store as string
+                str_value = str(value) if value is not None else ""
+                self._setting.setValue(str_value)
+                self.setDisplayValue(str_value)
             else:
-                # Normal behavior
-                normalized_value = self._setting.normalizeValue(value)
-                self.setDisplayValue(normalized_value)
-                self._setting.setValue(normalized_value)
+                # Numeric setting: convert and validate
+                if value is None:
+                    raise ValueError(f"VCPSettingsLineEdit: Cannot set None value for numeric setting")
+                
+                float_value = float(value)  # Let this raise ValueError/TypeError if invalid
+                
+                if self._high_precision_storage:
+                    # Store full precision internally and in settings
+                    self._internal_value = float_value
+                    self._setting.setValue(float_value)  # Store full precision
+                else:
+                    # Store display-formatted precision in settings
+                    normalized_value = self._setting.normalizeValue(float_value)
+                    self._setting.setValue(normalized_value)
+                
+                # Always format display the same way
+                self.setDisplayValue(float_value)
         else:
             self._tmp_value = value
 
     def value(self):
-        """Return the stored value - high precision if enabled, otherwise current text value"""
+        """Return the stored value with type-aware validation"""
         if self._high_precision_storage and self._internal_value is not None:
             return self._internal_value
-        elif self._setting:
-            return self._setting.normalizeValue(self.text())
-        else:
-            try:
-                return float(self.text())
-            except ValueError:
-                return 0.0
+        
+        text = self.text()
+        
+        # Determine expected type from setting
+        if hasattr(self, '_setting') and self._setting is not None:
+            setting_value = self._setting.getValue()
+            if isinstance(setting_value, str):
+                # String setting: return as string
+                return text
+        
+        # Numeric setting: validate and convert
+        if not text.strip():
+            raise ValueError(f"VCPSettingsLineEdit: Cannot get numeric value from empty text")
+        return float(text)  # Let this raise ValueError if invalid
 
     def onReturnPressed(self):
         self.clearFocus()
 
     def setDisplayValue(self, value):
-        if self._high_precision_storage:
-            print(f"DEBUG: setDisplayValue called with {value}, internal_value: {self._internal_value}")
-            print(f"DEBUG: setDisplayValue - user_just_edited: {self._user_just_edited}")
-        
-        # Skip settings notifications if user just edited to prevent overriding the formatted display
-        if self._high_precision_storage and self._user_just_edited:
-            print(f"DEBUG: setDisplayValue - skipping because user just edited")
+        """Set display value with type-aware formatting"""
+        # Skip settings notifications if user just edited to prevent overriding
+        if self._user_just_edited:
             return
         
         self.blockSignals(True)
         
-        if self._high_precision_storage:
-            try:
-                float_value = float(value)
-                # Always format for display, but store full precision internally
-                self._internal_value = float_value
-                display_text = self.formatValue(float_value)
-                print(f"DEBUG: setDisplayValue - storing {float_value} internally, displaying: '{display_text}'")
-            except (ValueError, TypeError):
-                display_text = str(value)
-                print(f"DEBUG: setDisplayValue - invalid value, displaying as string: '{display_text}'")
-        else:
-            # Normal behavior
-            display_text = self.formatValue(value)
+        # Handle None values gracefully
+        if value is None:
+            self.setText("")
+            self.blockSignals(False)
+            return
         
-        print(f"DEBUG: setDisplayValue - final text being set: '{display_text}'")
+        # Determine the expected type from settings
+        is_string_setting = False
+        if hasattr(self, '_setting') and self._setting is not None:
+            setting_value = self._setting.getValue()
+            is_string_setting = isinstance(setting_value, str)
+        
+        if is_string_setting:
+            # String setting: display as-is
+            display_text = str(value)
+        else:
+            # Numeric setting: validate and format
+            if isinstance(value, (int, float)):
+                float_value = float(value)
+            elif isinstance(value, str):
+                if not value.strip():
+                    # Empty string for numeric setting
+                    display_text = ""
+                    self.setText(display_text)
+                    self.blockSignals(False)
+                    return
+                try:
+                    float_value = float(value)
+                except ValueError:
+                    raise ValueError(f"VCPSettingsLineEdit: Cannot display non-numeric string '{value}' for numeric setting")
+            else:
+                raise TypeError(f"VCPSettingsLineEdit: Cannot display value of type {type(value)}: {value}")
+            
+            if self._high_precision_storage:
+                # Store full precision internally
+                self._internal_value = float_value
+            
+            # Format for display using displayDecimals
+            display_text = self.formatValue(float_value)
+        
         self.setText(display_text)
         self.blockSignals(False)
 
     def initialize(self):
+        """Enhanced initialization with type-aware validation"""
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
 
             val = self._setting.getValue()
 
+            # Set up validators based on setting type
             validator = None
-            if type(val) == int:
+            if isinstance(val, int):
                 validator = QIntValidator()
-            elif type(val) == float:
+            elif isinstance(val, float):
                 validator = QDoubleValidator()
+            # No validator for string types - allow any input
 
             self.setValidator(validator)
 
-            if self._tmp_value:
-                if self._high_precision_storage:
-                    self._internal_value = float(self._tmp_value)
-                self.setDisplayValue(self._tmp_value)
-                self._setting.setValue(self._tmp_value)
+            # Handle temporary values with type-aware validation
+            if self._tmp_value is not None:
+                if isinstance(val, str):
+                    # String setting: use as-is
+                    str_value = str(self._tmp_value)
+                    self._setting.setValue(str_value)
+                    self.setDisplayValue(str_value)
+                else:
+                    # Numeric setting: validate and convert
+                    float_value = float(self._tmp_value)  # Let this raise if invalid
+                    if self._high_precision_storage:
+                        self._internal_value = float_value
+                        self._setting.setValue(float_value)  # Store full precision
+                    else:
+                        normalized_value = self._setting.normalizeValue(float_value)
+                        self._setting.setValue(normalized_value)
+                    self.setDisplayValue(float_value)
             else:
-                if self._high_precision_storage:
-                    self._internal_value = float(self._setting.getValue())
-                self.setDisplayValue(self._setting.getValue())
+                # Initialize from settings value
+                if isinstance(val, str):
+                    # String setting
+                    self.setDisplayValue(val)
+                elif isinstance(val, (int, float)):
+                    # Numeric setting
+                    float_value = float(val)
+                    if self._high_precision_storage:
+                        self._internal_value = float_value
+                    self.setDisplayValue(float_value)
+                elif val is None:
+                    # Handle None values gracefully
+                    self.setDisplayValue("")
+                else:
+                    raise TypeError(f"VCPSettingsLineEdit: Unsupported settings value type {type(val)}: {val}")
 
+            # Connect to settings notifications and editing
             self._setting.notify(self.setDisplayValue)
             self.editingFinished.connect(self.onEditingFinished)
 
     def onEditingFinished(self):
-        # When user edits, parse their input and store appropriately
-        try:
-            user_text = self.text()
-            user_value = float(user_text)
-            print(f"DEBUG: onEditingFinished - user entered: {user_value}")
-            print(f"DEBUG: onEditingFinished - current text: '{user_text}'")
-            print(f"DEBUG: onEditingFinished - high_precision_storage: {self._high_precision_storage}")
+        """Handle user editing with type-aware validation"""
+        user_text = self.text()
+        
+        # Determine expected type from setting
+        is_string_setting = False
+        if hasattr(self, '_setting') and self._setting is not None:
+            setting_value = self._setting.getValue()
+            is_string_setting = isinstance(setting_value, str)
+        
+        # Set flag to prevent settings notification from overriding
+        self._user_just_edited = True
+        
+        if is_string_setting:
+            # String setting: store as-is
+            self._setting.setValue(user_text)
+            formatted_text = user_text
+        else:
+            # Numeric setting: validate and convert
+            if not user_text.strip():
+                raise ValueError(f"VCPSettingsLineEdit: Cannot process empty user input for numeric setting")
+            
+            user_value = float(user_text)  # Let this raise ValueError if invalid
             
             if self._high_precision_storage:
-                print(f"DEBUG: onEditingFinished - storing {user_value} internally")
-                # Store full precision internally
+                # Store full precision internally and in settings
                 self._internal_value = user_value
-                # Set flag to prevent settings notification from overriding
-                self._user_just_edited = True
-                print(f"DEBUG: onEditingFinished - calling setValue({user_value}) on settings")
-                # Store full precision in settings
-                self._setting.setValue(user_value)
-                # Format the display but keep full precision stored
-                formatted_text = self.formatValue(user_value)
-                print(f"DEBUG: onEditingFinished - formatting display to: '{formatted_text}'")
-                self.blockSignals(True)
-                self.setText(formatted_text)
-                self.blockSignals(False)
-                self._user_just_edited = False
-                print(f"DEBUG: onEditingFinished - after formatting, text is now: '{self.text()}'")
+                self._setting.setValue(user_value)  # Store full precision
             else:
-                # Normal behavior - normalize and store
+                # Store display-formatted precision
                 normalized_value = self._setting.normalizeValue(user_value)
-                self.setDisplayValue(normalized_value)
                 self._setting.setValue(normalized_value)
-                
-        except ValueError:
-            # Revert to previous value if invalid input
-            if self._high_precision_storage and self._internal_value is not None:
-                self.setDisplayValue(self._internal_value)
-            else:
-                self.setDisplayValue(self._setting.getValue())
+            
+            # Always format display consistently for numeric values
+            formatted_text = self.formatValue(user_value)
+        
+        self.blockSignals(True)
+        self.setText(formatted_text)
+        self.blockSignals(False)
+        
+        self._user_just_edited = False
 
     @Property(str)
     def textFormat(self):
@@ -210,15 +333,14 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     @textFormat.setter
     def textFormat(self, text_fmt):
-        # Only use textFormat if not using high precision storage
-        if not self._high_precision_storage:
+        # textFormat is ignored when using display decimals formatting
+        if not hasattr(self, '_display_decimals'):
+            # Only use textFormat for legacy compatibility if displayDecimals not set
             if self._setting_name != "":
                 setting = SETTINGS.get(self._setting_name)
                 if setting:
-                    try:
-                        str = text_fmt.format(setting.getValue())
-                    except Exception as e:
-                        LOG.warning(e)
+                    # Fail fast: format string must be valid
+                    formatted_str = text_fmt.format(setting.getValue())  # Let this raise if invalid
                 else:
                     return
         self._text_format = text_fmt
@@ -360,7 +482,7 @@ class VCPSettingsCheckBox(QCheckBox, VCPAbstractSettingsWidget):
 
 
 class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
-    """Settings PushButton"""
+    """Settings PushButton with configurable output type and fail-fast validation"""
 
     DEFAULT_RULE_PROPERTY = 'Enable'
     RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
@@ -373,11 +495,68 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
         super(VCPSettingsPushButton, self).__init__(parent=parent)
         self.setCheckable(True)
         self.setEnabled(False)
+        # Property to control output type
+        self._output_as_int = False
+
+    @Property(bool)
+    def outputAsInt(self):
+        """If True, value() returns 0/1 integers. If False (default), returns True/False booleans."""
+        return self._output_as_int
+
+    @outputAsInt.setter
+    def outputAsInt(self, use_int):
+        self._output_as_int = bool(use_int)
 
     def setDisplayChecked(self, checked):
         self.blockSignals(True)
         self.setChecked(checked)
         self.blockSignals(False)
+
+    # Provide value() method with configurable output type
+    def value(self):
+        """Return the current checked state as boolean or integer based on outputAsInt property"""
+        checked_state = self.isChecked()
+        if self._output_as_int:
+            return 1 if checked_state else 0  # Return integer 0/1
+        else:
+            return checked_state  # Return boolean True/False
+
+    # Provide setValue() method that handles both int and bool inputs
+    def setValue(self, value):
+        """Set the checked state from a boolean, integer, or compatible value with fail-fast validation"""
+        if isinstance(value, bool):
+            self.setChecked(value)
+        elif isinstance(value, (int, float)):
+            # Handle both 0/1 integers and boolean conversion
+            self.setChecked(bool(value))
+        elif isinstance(value, str):
+            # Handle string representations of both boolean and integer values
+            value_lower = value.lower()
+            if value_lower in ['true', '1', 'yes', 'on']:
+                self.setChecked(True)
+            elif value_lower in ['false', '0', 'no', 'off']:
+                self.setChecked(False)
+            else:
+                # Fail fast: string must be convertible to integer
+                int_value = int(value)  # Let this raise ValueError if invalid
+                self.setChecked(bool(int_value))
+        else:
+            self.setChecked(bool(value))
+
+    # Override text() to return empty string for checkable buttons
+    def text(self):
+        """Override text() to return empty string so parameter collection uses value() instead"""
+        return ""  # Return empty string so get_val() falls through to value() method
+
+    # Settings persistence with proper type handling
+    def getSettingsValue(self):
+        """Get value for settings persistence using configured output type"""
+        return self.value()  # Uses the configurable output type
+
+    def setSettingsValue(self, value):
+        """Set value from settings persistence"""
+        # Use the setValue method which handles all input types
+        self.setValue(value)
 
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
@@ -390,8 +569,15 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
             self.toggled.emit(value)
 
             self._setting.notify(self.setDisplayChecked)
-            self.toggled.connect(self._setting.setValue)
+            # Connect to a wrapper that uses the configured output type
+            self.toggled.connect(self._onToggled)
 
+    # Wrapper method to emit the correct value type to settings
+    def _onToggled(self, checked):
+        """Internal method to emit the correct value type based on outputAsInt property"""
+        if self._setting is not None:
+            value_to_store = self.value()  # Uses the configurable output type
+            self._setting.setValue(value_to_store)
 
 class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
     """Settings ComboBox
@@ -416,37 +602,39 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
         self._store_index = val
 
     def setDisplayValue(self, value):
-        """Set the combo box to the index matching the value or index."""
+        """Set the combo box to the index matching the value or index with fail-fast validation"""
         if self._store_index:
-            # Value is index
-            try:
-                idx = int(value)
-            except Exception:
-                idx = -1
+            # Value is index - fail fast if not convertible to int
+            idx = int(value)  # Let this raise ValueError if invalid
         else:
             # Value is item text
             value_str = str(value)
             idx = self.findText(value_str)
-        if idx >= 0:
-            self.blockSignals(True)
-            self.setCurrentIndex(idx)
-            self.blockSignals(False)
+            if idx < 0:
+                raise ValueError(f"VCPSettingsComboBox: Text '{value_str}' not found in combo box items")
+        
+        if idx < 0:
+            raise ValueError(f"VCPSettingsComboBox: Invalid index {idx} for combo box")
+        
+        self.blockSignals(True)
+        self.setCurrentIndex(idx)
+        self.blockSignals(False)
 
     def onIndexChanged(self, idx):
-        """Store the actual index or value in the setting."""
+        """Store the actual index or value in the setting with fail-fast validation"""
         if self._setting is not None:
             if self._store_index:
                 self._setting.setValue(idx)
             else:
                 value = self.itemText(idx)
-                # Try to convert to int or float if possible
-                try:
+                # Try to convert to int or float if possible, fail fast if conversion fails
+                if value.isdigit() or (value.startswith('-') and value[1:].isdigit()):
+                    # Integer conversion
                     value = int(value)
-                except ValueError:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        pass
+                elif '.' in value:
+                    # Float conversion - fail fast if invalid
+                    value = float(value)  # Let this raise ValueError if invalid
+                # Otherwise keep as string
                 self._setting.setValue(value)
 
     def initialize(self):
