@@ -3,6 +3,7 @@ Line Edit
 ---------
 """
 
+import locale
 from qtpy.QtCore import Property
 from qtpy.QtWidgets import QLineEdit
 
@@ -10,6 +11,39 @@ from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
 LOG = getLogger(__name__)
+
+
+def _cnc_float(value):
+    """
+    Parse a float value with CNC decimal point format (e.g., "1234.5678")
+    
+    This function temporarily sets the locale to 'C' to ensure that float() 
+    parsing always uses decimal point (.) regardless of system locale, avoiding
+    C locale for parsing to avoid locale-dependent float() behavior.
+    
+    Args:
+        value: String or numeric value to parse as float
+        
+    Returns:
+        float: Parsed value
+        
+    Raises:
+        ValueError: If value cannot be parsed as float
+        TypeError: If value is not a valid type for conversion
+    """
+    if isinstance(value, (int, float)):
+        return float(value)
+    
+    # Save current locale, set to C for consistent parsing, then restore
+    old_locale = locale.getlocale(locale.LC_NUMERIC)
+    try:
+        locale.setlocale(locale.LC_NUMERIC, 'C')
+        result = float(value)
+        return result
+    finally:
+        # Restore original locale
+        if old_locale[0] is not None:
+            locale.setlocale(locale.LC_NUMERIC, old_locale)
 
 
 class VCPLineEdit(QLineEdit, CMDWidget):
@@ -60,7 +94,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
     def setValue(self, value):
         """Set the value - high precision if enabled, otherwise as text"""
         try:
-            numeric_value = float(value)
+            numeric_value = _cnc_float(value)
             if self._high_precision_storage:
                 self._internal_value = numeric_value
                 self._update_display()
@@ -79,7 +113,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
             return self._internal_value
         else:
             try:
-                return float(self.text()) if self.text() else 0.0
+                return _cnc_float(self.text()) if self.text() else 0.0
             except ValueError:
                 return 0.0
 
@@ -102,7 +136,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         """Update internal value when user types (only if high precision storage is enabled)"""
         if self._high_precision_storage:
             try:
-                self._internal_value = float(text) if text else 0.0
+                self._internal_value = _cnc_float(text) if text else 0.0
             except ValueError:
                 # Keep previous internal value if user enters invalid text
                 pass

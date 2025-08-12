@@ -1,4 +1,5 @@
 import os
+import locale
 from qtpy.QtCore import Property, QTimer
 from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
 from qtpyvcp.widgets.base_widgets import VarWidgetMixin
@@ -23,6 +24,53 @@ def _safe_import_linuxcnc():
         # Unexpected in runtime mode - log the error
         LOG.error(f"Failed to import linuxcnc in runtime mode: {e}")
         return None
+
+def _cnc_float(value):
+    """
+    Convert string to float using CNC-standard decimal point format.
+    
+    This function ensures that CNC decimal values (like "1234.5678") are always
+    parsed correctly regardless of system locale. It temporarily switches to
+    C locale for parsing to avoid locale-dependent float() behavior.
+    
+    Args:
+        value: String or numeric value to convert to float
+        
+    Returns:
+        float: The parsed value
+        
+    Raises:
+        ValueError: If the value cannot be parsed as a CNC decimal number
+    """
+    if isinstance(value, (int, float)):
+        return float(value)
+    
+    if not isinstance(value, str):
+        raise ValueError(f"Cannot convert {type(value).__name__} to CNC float")
+    
+    value = value.strip()
+    if not value:
+        return 0.0
+    
+    # Save current locale
+    current_locale = locale.getlocale(locale.LC_NUMERIC)
+    
+    try:
+        # Temporarily set C locale for CNC-standard parsing
+        locale.setlocale(locale.LC_NUMERIC, 'C')
+        result = float(value)
+        return result
+    except (ValueError, locale.Error) as e:
+        raise ValueError(f"Invalid CNC decimal format: '{value}'. Use format like 1234.5678")
+    finally:
+        # Restore original locale
+        try:
+            if current_locale[0] is not None:
+                locale.setlocale(locale.LC_NUMERIC, current_locale)
+        except locale.Error:
+            # If we can't restore the locale, log but don't fail
+            LOG.warning(f"Could not restore locale {current_locale}")
+            pass
 
 class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
     """
@@ -257,17 +305,17 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
     def formatValue(self, value):
         """Format value for display using displayDecimals setting"""
         if isinstance(value, (int, float)):
-            return f"{float(value):.{self._display_decimals}f}"
+            return f"{_cnc_float(value):.{self._display_decimals}f}"
         elif isinstance(value, str):
             # Parse string as float and format it
-            float_value = float(value)
+            float_value = _cnc_float(value)
             return f"{float_value:.{self._display_decimals}f}"
         else:
             return str(value)
 
     def setValue(self, value):
         """Set the value with 6-decimal internal storage and formatted display"""
-        float_value = float(value)
+        float_value = _cnc_float(value)
         
         # Always store with 6-decimal precision (LinuxCNC var limit)
         self._internal_value = round(float_value, 6)
@@ -280,7 +328,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         if self._internal_value is not None:
             return self._internal_value
         else:
-            return round(float(self.text()), 6) if self.text() else 0.0
+            return round(_cnc_float(self.text()), 6) if self.text() else 0.0
 
     def setDisplayValue(self, value):
         """Set display value with consistent formatting using displayDecimals"""
@@ -291,7 +339,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         self.blockSignals(True)
         
         # Always format using displayDecimals setting
-        float_value = float(value)
+        float_value = _cnc_float(value)
         display_text = self.formatValue(float_value)
         self.setText(display_text)
         
@@ -303,7 +351,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         if not user_text.strip():
             return
             
-        user_value = float(user_text)
+        user_value = _cnc_float(user_text)
         
         # Set flag to prevent settings notification from overriding
         self._user_just_edited = True
@@ -324,7 +372,11 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         """Handle text changes and schedule LinuxCNC parameter update if auto-write is enabled"""
         # Update internal value when user types
         if self.text():
-            self._internal_value = round(float(self.text()), 6)
+            try:
+                self._internal_value = round(_cnc_float(self.text()), 6)
+            except ValueError:
+                # Invalid input - don't update internal value yet
+                pass
             
         if self._auto_write_enabled and self._var_parameter_number > 0:
             # Reset the timer to delay the write
@@ -372,7 +424,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
             value = self._internal_value
             LOG.debug(f"VCPVarLineEdit: Using internal 6-decimal value: {value}")
         else:
-            value = round(float(self.text()), 6)
+            value = round(_cnc_float(self.text()), 6)
             LOG.debug(f"VCPVarLineEdit: Using text value rounded to 6 decimals: {value}")
 
         # Use LinuxCNC MDI command to set parameter with 6-decimal precision
@@ -415,7 +467,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
                     file_param_num = int(parts[0])
                     if file_param_num == param_num:
                         # Round to 6 decimals to match LinuxCNC var precision
-                        value = round(float(parts[1]), 6)
+                        value = round(_cnc_float(parts[1]), 6)
                         LOG.debug(f"VCPVarLineEdit: Read parameter #{param_num} = {value:.6f} from var file")
                         return value
                         

@@ -13,7 +13,8 @@ This approach ensures bugs are caught early in development and the widgets
 maintain consistent, reliable behavior in production.
 """
 
-from qtpy.QtCore import Property
+import locale
+from qtpy.QtCore import Property, Qt, QTimer
 from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
 from qtpy.QtGui import QIntValidator, QDoubleValidator
 
@@ -22,6 +23,46 @@ from qtpyvcp.widgets import VCPWidget
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
+
+
+def _cnc_float(value):
+    """
+    Parse a float value with CNC decimal point format (e.g., "1234.5678")
+    
+    This function temporarily sets the locale to 'C' to ensure that float() 
+    parsing always uses decimal point (.) regardless of system locale, avoiding
+    C locale for parsing to avoid locale-dependent float() behavior.
+    
+    Args:
+        value: String or numeric value to parse as float
+        
+    Returns:
+        float: Parsed value
+        
+    Raises:
+        ValueError: If value cannot be parsed as float
+        TypeError: If value is not a valid type for conversion
+    """
+    if isinstance(value, (int, float)):
+        return float(value)
+    
+    # Save current locale, set to C for consistent parsing, then restore
+    old_locale = locale.getlocale(locale.LC_NUMERIC)
+    try:
+        locale.setlocale(locale.LC_NUMERIC, 'C')
+        result = float(value)
+        return result
+    except Exception as e:
+        LOG.error(f"_cnc_float parsing failed for {repr(value)}: {e}")
+        raise
+    finally:
+        # Restore original locale
+        try:
+            if old_locale[0] is not None:
+                locale.setlocale(locale.LC_NUMERIC, old_locale)
+        except Exception as e:
+            LOG.error(f"_cnc_float failed to restore locale: {e}")
+
 
 class VCPAbstractSettingsWidget(VCPWidget):
     def __init__(self):
@@ -71,6 +112,45 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         self._user_just_edited = False
 
         self.returnPressed.connect(self.onReturnPressed)
+        
+        # Add debugging for key events
+        self.textChanged.connect(self._onTextChanged)
+        
+        # Debug validator settings and fix locale issues
+        LOG.debug(f"VCPSettingsLineEdit.__init__() validator: {self.validator()}")
+        if self.validator():
+            validator = self.validator()
+            LOG.debug(f"VCPSettingsLineEdit.__init__() validator type: {type(validator)}")
+            if hasattr(validator, 'locale'):
+                LOG.debug(f"VCPSettingsLineEdit.__init__() validator locale: {validator.locale().name()}")
+                
+                # Fix validator locale for CNC compatibility - always use C locale for decimal points
+                from qtpy.QtCore import QLocale
+                c_locale = QLocale(QLocale.C)
+                validator.setLocale(c_locale)
+                LOG.debug(f"VCPSettingsLineEdit.__init__() validator locale changed to: {validator.locale().name()}")
+        
+        # If no validator exists, create a CNC-compatible one for numeric settings
+        self._ensureCncCompatibleValidator()
+
+    def _ensureCncCompatibleValidator(self):
+        """Ensure the widget has a CNC-compatible validator that uses decimal points"""
+        # This will be called during initialization and when connecting to numeric settings
+        if hasattr(self, '_setting') and self._setting is not None:
+            setting_value = self._setting.getValue()
+            if isinstance(setting_value, (int, float)):
+                # Numeric setting needs CNC-compatible validator
+                from qtpy.QtGui import QDoubleValidator
+                from qtpy.QtCore import QLocale
+                
+                validator = QDoubleValidator()
+                # Always use C locale for CNC decimal point format
+                c_locale = QLocale(QLocale.C)
+                validator.setLocale(c_locale)
+                validator.setDecimals(6)  # Support CNC precision
+                
+                self.setValidator(validator)
+                LOG.debug(f"VCPSettingsLineEdit._ensureCncCompatibleValidator() set CNC validator with C locale")
 
     @Property(bool)
     def highPrecisionStorage(self):
@@ -96,6 +176,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     def formatValue(self, value):
         """Format value with type-aware validation"""
+        
         # Handle None values
         if value is None:
             return ""
@@ -109,21 +190,29 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         
         # Numeric settings: use displayDecimals formatting
         if isinstance(value, (int, float)):
-            return f"{float(value):.{self._display_decimals}f}"
+            try:
+                cnc_value = _cnc_float(value)
+                return f"{cnc_value:.{self._display_decimals}f}"
+            except Exception as e:
+                LOG.error(f"VCPSettingsLineEdit.formatValue() numeric formatting failed: {e}")
+                raise
         elif isinstance(value, str):
             # Try to format as numeric if it looks like a number
             if value.strip():
                 # Check if it's a numeric string
                 try:
-                    float_value = float(value)
+                    float_value = _cnc_float(value)
                     return f"{float_value:.{self._display_decimals}f}"
-                except ValueError:
+                except ValueError as e:
+                    LOG.error(f"VCPSettingsLineEdit.formatValue() string parsing failed: {e}")
                     # Not numeric, return as string
                     return value
             else:
                 return ""
         else:
-            return str(value)
+            result = str(value)
+            LOG.debug(f"VCPSettingsLineEdit.formatValue() other type -> '{result}'")
+            return result
 
     def setValue(self, value):
         """Store value with type-aware validation"""
@@ -141,7 +230,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
                 if value is None:
                     raise ValueError(f"VCPSettingsLineEdit: Cannot set None value for numeric setting")
                 
-                float_value = float(value)  # Let this raise ValueError/TypeError if invalid
+                float_value = _cnc_float(value)  # Let this raise ValueError/TypeError if invalid
                 
                 if self._high_precision_storage:
                     # Store full precision internally and in settings
@@ -159,7 +248,10 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     def value(self):
         """Return the stored value with type-aware validation"""
+        LOG.debug(f"VCPSettingsLineEdit.value() called, text='{self.text()}'")
+        
         if self._high_precision_storage and self._internal_value is not None:
+            LOG.debug(f"VCPSettingsLineEdit.value() returning high precision: {self._internal_value}")
             return self._internal_value
         
         text = self.text()
@@ -169,15 +261,38 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             setting_value = self._setting.getValue()
             if isinstance(setting_value, str):
                 # String setting: return as string
+                LOG.debug(f"VCPSettingsLineEdit.value() returning string: '{text}'")
                 return text
         
         # Numeric setting: validate and convert
         if not text.strip():
+            LOG.error("VCPSettingsLineEdit.value() empty text for numeric setting")
             raise ValueError(f"VCPSettingsLineEdit: Cannot get numeric value from empty text")
-        return float(text)  # Let this raise ValueError if invalid
+        
+        LOG.debug(f"VCPSettingsLineEdit.value() parsing numeric: '{text}'")
+        result = _cnc_float(text)  # Let this raise ValueError if invalid
+        LOG.debug(f"VCPSettingsLineEdit.value() parsed result: {result}")
+        return result
 
     def onReturnPressed(self):
+        # Since the validator now works properly with C locale, let the normal Qt signals handle this
+        # Just clear focus and let editingFinished signal do its job
         self.clearFocus()
+
+    def _onTextChanged(self, text):
+        """Debug text changes"""
+        LOG.debug(f"VCPSettingsLineEdit._onTextChanged() called with: '{text}'")
+
+    def keyPressEvent(self, event):
+        """Handle key press events"""
+        if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+            self.onReturnPressed()
+        
+        super(VCPSettingsLineEdit, self).keyPressEvent(event)
+
+    def focusOutEvent(self, event):
+        """Handle focus out events"""
+        super(VCPSettingsLineEdit, self).focusOutEvent(event)
 
     def setDisplayValue(self, value):
         """Set display value with type-aware formatting"""
@@ -205,7 +320,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         else:
             # Numeric setting: validate and format
             if isinstance(value, (int, float)):
-                float_value = float(value)
+                float_value = _cnc_float(value)
             elif isinstance(value, str):
                 if not value.strip():
                     # Empty string for numeric setting
@@ -214,7 +329,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
                     self.blockSignals(False)
                     return
                 try:
-                    float_value = float(value)
+                    float_value = _cnc_float(value)
                 except ValueError:
                     raise ValueError(f"VCPSettingsLineEdit: Cannot display non-numeric string '{value}' for numeric setting")
             else:
@@ -237,12 +352,18 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
             val = self._setting.getValue()
 
-            # Set up validators based on setting type
+            # Set up validators based on setting type with CNC compatibility
             validator = None
             if isinstance(val, int):
                 validator = QIntValidator()
             elif isinstance(val, float):
                 validator = QDoubleValidator()
+                # Ensure CNC-compatible decimal point format
+                from qtpy.QtCore import QLocale
+                c_locale = QLocale(QLocale.C)
+                validator.setLocale(c_locale)
+                validator.setDecimals(6)  # Support CNC precision
+                LOG.debug(f"VCPSettingsLineEdit.initialize() set CNC-compatible float validator")
             # No validator for string types - allow any input
 
             self.setValidator(validator)
@@ -256,7 +377,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
                     self.setDisplayValue(str_value)
                 else:
                     # Numeric setting: validate and convert
-                    float_value = float(self._tmp_value)  # Let this raise if invalid
+                    float_value = _cnc_float(self._tmp_value)  # Let this raise if invalid
                     if self._high_precision_storage:
                         self._internal_value = float_value
                         self._setting.setValue(float_value)  # Store full precision
@@ -271,7 +392,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
                     self.setDisplayValue(val)
                 elif isinstance(val, (int, float)):
                     # Numeric setting
-                    float_value = float(val)
+                    float_value = _cnc_float(val)
                     if self._high_precision_storage:
                         self._internal_value = float_value
                     self.setDisplayValue(float_value)
@@ -289,43 +410,56 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         """Handle user editing with type-aware validation"""
         user_text = self.text()
         
+        # Prevent duplicate calls when we're setting formatted text
+        if self._user_just_edited:
+            return
+        
         # Determine expected type from setting
         is_string_setting = False
         if hasattr(self, '_setting') and self._setting is not None:
             setting_value = self._setting.getValue()
             is_string_setting = isinstance(setting_value, str)
         
-        # Set flag to prevent settings notification from overriding
+        # Set flag to prevent duplicate processing
         self._user_just_edited = True
         
-        if is_string_setting:
-            # String setting: store as-is
-            self._setting.setValue(user_text)
-            formatted_text = user_text
-        else:
-            # Numeric setting: validate and convert
-            if not user_text.strip():
-                raise ValueError(f"VCPSettingsLineEdit: Cannot process empty user input for numeric setting")
-            
-            user_value = float(user_text)  # Let this raise ValueError if invalid
-            
-            if self._high_precision_storage:
-                # Store full precision internally and in settings
-                self._internal_value = user_value
-                self._setting.setValue(user_value)  # Store full precision
+        try:
+            if is_string_setting:
+                # String setting: store as-is
+                self._setting.setValue(user_text)
+                formatted_text = user_text
             else:
-                # Store display-formatted precision
-                normalized_value = self._setting.normalizeValue(user_value)
-                self._setting.setValue(normalized_value)
+                # Numeric setting: validate and convert
+                if not user_text.strip():
+                    raise ValueError(f"VCPSettingsLineEdit: Cannot process empty user input for numeric setting")
+                
+                user_value = _cnc_float(user_text)  # Let this raise ValueError if invalid
+                
+                if self._high_precision_storage:
+                    # Store full precision internally and in settings
+                    self._internal_value = user_value
+                    self._setting.setValue(user_value)  # Store full precision
+                else:
+                    # Store display-formatted precision
+                    normalized_value = self._setting.normalizeValue(user_value)
+                    self._setting.setValue(normalized_value)
+                
+                # Always format display consistently for numeric values
+                formatted_text = self.formatValue(user_value)
             
-            # Always format display consistently for numeric values
-            formatted_text = self.formatValue(user_value)
-        
-        self.blockSignals(True)
-        self.setText(formatted_text)
-        self.blockSignals(False)
-        
-        self._user_just_edited = False
+            self.blockSignals(True)
+            self.setText(formatted_text)
+            self.blockSignals(False)
+            
+        except Exception as e:
+            LOG.error(f"VCPSettingsLineEdit.onEditingFinished() failed: {e}")
+            import traceback
+            LOG.error(f"VCPSettingsLineEdit.onEditingFinished() traceback: {traceback.format_exc()}")
+            raise
+        finally:
+            # Use QTimer to reset flag after all Qt events are processed
+            from qtpy.QtCore import QTimer
+            QTimer.singleShot(0, lambda: setattr(self, '_user_just_edited', False))
 
     @Property(str)
     def textFormat(self):
@@ -633,7 +767,7 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
                     value = int(value)
                 elif '.' in value:
                     # Float conversion - fail fast if invalid
-                    value = float(value)  # Let this raise ValueError if invalid
+                    value = _cnc_float(value)  # Let this raise ValueError if invalid
                 # Otherwise keep as string
                 self._setting.setValue(value)
 
