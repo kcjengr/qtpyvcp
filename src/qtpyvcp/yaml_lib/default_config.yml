@@ -48,6 +48,14 @@ data_plugins:
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
 
+  var_file_manager:
+    provider: qtpyvcp.plugins.var_file_manager:VarFileManager
+    kwargs:
+      # monitoring mode: can be 'polling' or 'filesystem'
+      monitoring_mode: filesystem
+      # polling interval in ms (only used if monitoring_mode is 'polling')
+      polling_interval: 500
+
   offsettable:
     provider: qtpyvcp.plugins.offset_table:OffsetTable
 
