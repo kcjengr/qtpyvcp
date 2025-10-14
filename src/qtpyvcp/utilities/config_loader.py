@@ -69,7 +69,7 @@ def process_templates(files):
     filter_module = INIFilterModule()
     
     for name, func in filter_module.filters().items():
-        print(f"Filter name: {name} func: {func}")
+        LOG.debug(f"Filter name: {name} func: {func}")
         env.filters[name] = func
     
     expanded_templates = []
