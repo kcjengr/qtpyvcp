@@ -6,6 +6,7 @@ These package level functions provide methods for registering and initializing
 plugins, as well as retrieving them for use and terminating them in the proper
 order.
 """
+import os
 import importlib
 
 from collections import OrderedDict
@@ -14,7 +15,7 @@ from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins.base_plugins import Plugin, DataPlugin, DataChannel
 
 LOG = getLogger(__name__)
-
+IN_DESIGNER = os.getenv('DESIGNER', False)
 _PLUGINS = OrderedDict()  # Ordered dict so we can initialize/terminate in order
 
 
@@ -93,10 +94,14 @@ def getPlugin(plugin_id):
     Returns:
         A plugin instance, or None.
     """
-    try:
-        return _PLUGINS[plugin_id]
-    except KeyError:
-        LOG.error("Failed to find plugin with ID '%s'", plugin_id)
+    if not IN_DESIGNER:
+        try:
+            return _PLUGINS[plugin_id]
+        except KeyError:
+            LOG.error("Failed to find plugin with ID '%s'", plugin_id)
+            return None
+    else:
+        LOG.warn("Skip load plugin with ID '%s' while in designer", plugin_id)
         return None
 
 
