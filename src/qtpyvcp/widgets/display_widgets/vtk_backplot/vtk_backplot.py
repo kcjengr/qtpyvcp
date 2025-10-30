@@ -361,16 +361,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_start_point = OrderedDict()
 
         self.path_offset_start_point = OrderedDict()
-        self.path_offset_angle_points = OrderedDict()
         self.path_offset_end_point = OrderedDict()
 
         self.offset_change_start_actor = OrderedDict()
         self.offset_change_end_actor = OrderedDict()
         self.offset_change_line_actor = OrderedDict()
-
-        self.path_offset_start_point = OrderedDict()
-        self.path_offset_angle_point = OrderedDict()
-        self.path_offset_end_point = OrderedDict()
         
         if self._datasource.isMachineMetric():
             self.position_mult = 1000 #500 here works for me
