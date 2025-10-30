@@ -33,5 +33,6 @@ from qtpyvcp.widgets.input_widgets.designer_plugins import *
 from qtpyvcp.widgets.hal_widgets.designer_plugins import *
 from qtpyvcp.widgets.containers.designer_plugins import *
 from qtpyvcp.widgets.db_widgets.designer_plugins import *
+from qtpyvcp.widgets.conversational.designer_plugins import *
 
 from qtpyvcp.widgets.external_widgets import *
