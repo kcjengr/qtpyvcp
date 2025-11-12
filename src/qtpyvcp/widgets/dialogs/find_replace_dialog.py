@@ -1,6 +1,7 @@
 
 from qtpy.QtWidgets import (QLineEdit, QHBoxLayout,
-                            QVBoxLayout, QLabel, QPushButton, QCheckBox)
+                            QVBoxLayout, QLabel, QPushButton, QCheckBox, QMessageBox)
+from qtpy.QtGui import QTextCursor, QTextDocument
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
@@ -13,6 +14,9 @@ class FindReplaceDialog(BaseDialog):
         self.parent = parent
         self.setWindowTitle("Find Replace")
         self.setFixedSize(400, 200)
+        
+        # Track if we've wrapped around to avoid infinite loops
+        self.has_wrapped = False
 
         main_layout = QVBoxLayout()
 
@@ -70,11 +74,43 @@ class FindReplaceDialog(BaseDialog):
         self.replace_button.clicked.connect(self.replace_text)
         self.all_button.clicked.connect(self.replace_all_text)
         self.close_button.clicked.connect(self.hide_dialog)
+        
+        # Reset wrap flag when search text changes
+        self.find_input.textChanged.connect(self.reset_wrap_flag)
 
     def find_text(self):
         find_text = self.find_input.text()
+        
+        if not find_text:
+            return
 
-        self.parent.findForwardText(find_text)
+        # Get the search flags from parent if available (like GcodeTextEdit)
+        flags = QTextDocument.FindFlag()
+        if hasattr(self.parent, 'find_case') and self.parent.find_case:
+            flags |= QTextDocument.FindCaseSensitively
+        if hasattr(self.parent, 'find_words') and self.parent.find_words:
+            flags |= QTextDocument.FindWholeWords
+        
+        # Try to find the text from current position
+        found = self.parent.find(find_text, flags)
+        
+        # If not found, try wrapping to beginning silently
+        if not found:
+            # Move cursor to beginning of document
+            cursor = self.parent.textCursor()
+            cursor.movePosition(QTextCursor.Start)
+            self.parent.setTextCursor(cursor)
+            
+            # Try finding again from the beginning
+            found_after_wrap = self.parent.find(find_text, flags)
+            
+            if not found_after_wrap:
+                # Only show dialog if truly not found anywhere
+                QMessageBox.information(self, "Find", f"'{find_text}' not found.")
+
+    def reset_wrap_flag(self):
+        """Reset the wrap flag when search text changes"""
+        self.has_wrapped = False
 
     def replace_text(self):
         find_text = self.find_input.text()

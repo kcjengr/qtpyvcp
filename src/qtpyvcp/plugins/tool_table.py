@@ -196,6 +196,10 @@ class ToolTable(DataPlugin):
         :param item: the name of the tool data item to get
         :return: dict, int, float, str
         """
+        
+        if IN_DESIGNER:
+            return ""
+
         if item is None:
             return self.TOOL_TABLE[STAT.tool_in_spindle]
         return self.table[STAT.tool_in_spindle].get(item[0].upper())

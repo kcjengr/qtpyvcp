@@ -137,6 +137,8 @@ class GcodeTextEdit(QPlainTextEdit):
     QPlainTextEdit based G-code editor with syntax heightening.
     """
     focusLine = Signal(int)
+    m6LineFound = Signal(int)  # New signal for M6 line numbers
+    m6LineFoundStr = Signal(str)  # String version for easier QLineEdit connection
 
     def __init__(self, parent=None):
         super(GcodeTextEdit, self).__init__(parent)
@@ -347,6 +349,34 @@ class GcodeTextEdit(QPlainTextEdit):
         LOG.debug(f"Replace all text :{search_text} with {replace_text}")
 
         self.replaceAllText(search_text, replace_text)
+
+    @Slot()
+    def findNextM6(self):
+        """Find the next M6 tool change command with wrap-around"""
+        search_text = "M6"
+        
+        # Set up search flags
+        flags = QTextDocument.FindFlag()
+        if self.find_case:
+            flags |= QTextDocument.FindCaseSensitively
+        if self.find_words:
+            flags |= QTextDocument.FindWholeWords
+        
+        # Try to find from current position
+        found = self.find(search_text, flags)
+        
+        # If not found, wrap to beginning and try again
+        if not found:
+            cursor = self.textCursor()
+            cursor.movePosition(QTextCursor.Start)
+            self.setTextCursor(cursor)
+            found = self.find(search_text, flags)
+        
+        # If found (either from current position or after wrap), emit the line number
+        if found:
+            current_line = self.textCursor().blockNumber() + 1  # +1 because line numbers start at 1
+            self.m6LineFound.emit(current_line)
+            self.m6LineFoundStr.emit(str(current_line))  # String version for QLineEdit
 
     @Slot()
     def saveFile(self, save_file_name = None):
