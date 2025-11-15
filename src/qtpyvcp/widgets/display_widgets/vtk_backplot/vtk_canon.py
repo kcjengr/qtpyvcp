@@ -47,14 +47,18 @@ class VTKCanon(StatCanon):
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
+        self.tool_offset = self._datasource.getToolOffset()
+
         g5x = self._datasource.getActiveWcsOffsets()
         LOG.debug(f" G5x offsets = {g5x}")
         LOG.debug(f"XY Rotation = {self.active_rotation}")
+
         # ensure Canon has correct starting offsets per var file
         super().set_g5x_offset(self.active_wcs_index, g5x[0],g5x[1],g5x[2],g5x[3],g5x[4],g5x[5],g5x[6],g5x[7],g5x[8])
         
         self.foam_z = 0.0
         self.foam_w = 0.0
+
         LOG.debug("VTKCanon --- Init Done ---")
 
     def comment(self, comment):
@@ -89,6 +93,7 @@ class VTKCanon(StatCanon):
         LOG.debug("---------received wcs change: {}".format(new_wcs))
         LOG.debug("--------- wcs values: x, y, z, a, b, c, u, v, w")
         LOG.debug(f"--------- wcs values: {x}, {y}, {z}, {a}, {b}, {c}, {u}, {v}, {w}")
+        
         if new_wcs not in list(self.path_points.keys()):
             #self.path_actors[new_wcs] = PathActor(self._datasource)
             self.path_points[new_wcs] = list()
@@ -115,10 +120,23 @@ class VTKCanon(StatCanon):
         #try:
         adj_start_point = list(start_point)
         adj_end_point = list(end_point)
+
+        for i in range(9):
+            if i == 2:
+                adj_start_point[i] -= self.tool_offsets[i]
+                adj_end_point[i] -= self.tool_offsets[i]
+            else:
+                adj_start_point[i] += self.tool_offsets[i]
+                adj_end_point[i] += self.tool_offsets[i]
+
+        print(adj_end_point)
+        print(adj_start_point)
+
         # check to see if active wcs is in the path_actor list.
         if self.active_wcs_index not in list(self.path_actors.keys()):
             self.path_actors[self.active_wcs_index] = PathActor(self._datasource)
-        for count,value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
+
+        for count, value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
             adj_start_point[count] -= value
             adj_end_point[count] -= value
         
@@ -246,11 +264,13 @@ class VTKCanon(StatCanon):
                     position = [last_point[0] * multiplication_factor,
                                 last_point[1] * multiplication_factor,
                                 last_point[2] * multiplication_factor]
+
                     # LOG.debug(f"--------- Path Actor Last Point : {last_point[0] * multiplication_factor} {last_point[1] * multiplication_factor} {last_point[2] * multiplication_factor}")
                     # Get end point for a transition line between different WCS
                     self.path_end_point[wcs_index] = position
                 else:
                     self.path_end_point[wcs_index] = None
+
                 # free up memory, lots of it for big files
 
                 self.path_points[wcs_index].clear()
@@ -262,6 +282,7 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.SetInputData(path_actor.poly_data)
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
+
                 # LOG.debug(f"-------- Path Actor Matrix :  {path_actor.GetMatrix()}")
 
             paths_count += 1
