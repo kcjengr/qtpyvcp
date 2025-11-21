@@ -29,3 +29,8 @@ class XYCoordWidgetPlugin(_DesignerPlugin):
 class FacingWidgetPlugin(_DesignerPlugin):
     def pluginClass(self):
         return FacingWidget
+
+from .facing_qml import FacingWidgetQML
+class FacingWidgetQML_Plugin(_DesignerPlugin):
+    def pluginClass(self):
+        return FacingWidgetQML
