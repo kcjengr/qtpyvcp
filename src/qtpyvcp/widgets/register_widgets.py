@@ -1,25 +1,45 @@
-# # Action Widgets
-# #import pydevd; pydevd.settrace()
-#
-# from button_widgets.action_button import (ActionButton)  # noqa: F401
-# from button_widgets.designer_plugins import (ActionButtonPlugin)  # noqa: F401
-#
-#
+#import pydevd; pydevd.settrace()
+
+
+# Button Widgets
+
+from qtpyvcp.widgets.button_widgets.action_button import (ActionButton)  # noqa: F401
+from qtpyvcp.widgets.button_widgets.action_checkbox import (ActionCheckBox)  # noqa: F401
+from qtpyvcp.widgets.button_widgets.action_spinbox import (ActionSpinBox)  # noqa: F401
+from qtpyvcp.widgets.button_widgets.subcall_button import (SubCallButton)  # noqa: F401
+from qtpyvcp.widgets.button_widgets.led_button import (LEDButton)  # noqa: F401
+from qtpyvcp.widgets.button_widgets.mdi_button import (MDIButton)  # noqa: F401
+from qtpyvcp.widgets.button_widgets.dialog_button import (DialogButton)  # noqa: F401
+
+
+# Tool Database fields
+from qtpyvcp.widgets.db_widgets.tool_model import (ToolSTLField)  # noqa: F401
+
+# Display Widgets
+
+from qtpyvcp.widgets.display_widgets.bar_indicator import (BarIndicator)  # noqa: F401
+from qtpyvcp.widgets.display_widgets.dro_label import (DROLabel)  # noqa: F401
+from qtpyvcp.widgets.display_widgets.gcode_properties import (GCodeProperties)  # noqa: F401
+from qtpyvcp.widgets.display_widgets.notification_widget import (NotificationWidget)  # noqa: F401
+from qtpyvcp.widgets.display_widgets.status_label import (StatusLabel)  # noqa: F401
+from qtpyvcp.widgets.display_widgets.status_led import (StatusLED)  # noqa: F401
+from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import (VTKBackPlot)  # noqa: F401
+
 # HAL Widgets
 
-from hal_widgets.hal_bar_indicator import (HalBarIndicator)  # noqa: F401
-from hal_widgets.hal_button import (HalButton)  # noqa: F401
-from hal_widgets.hal_checkbox import (HalCheckBox)  # noqa: F401
-from hal_widgets.hal_double_spinbox import (HalDoubleSpinBox)  # noqa: F401
-from hal_widgets.hal_groupbox import (HalGroupBox)  # noqa: F401
-from hal_widgets.hal_label import (HalLabel)  # noqa: F401
-from hal_widgets.hal_lcd import (HalLCDNumber)  # noqa: F401
-from hal_widgets.hal_led import (HalLedIndicator)  # noqa: F401
-from hal_widgets.hal_led_button import (HALLEDButton)  # noqa: F401
-from hal_widgets.hal_plot import (HalPlot)  # noqa: F401
-from hal_widgets.hal_slider import (HalSlider)  # noqa: F401
-from hal_widgets.hal_spinbox import (HalQSpinBox)  # noqa: F401
-from hal_widgets.designer_plugins import (HalLoadMeterPlugin) # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_bar_indicator import (HalBarIndicator)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_button import (HalButton)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_checkbox import (HalCheckBox)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_double_spinbox import (HalDoubleSpinBox)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_groupbox import (HalGroupBox)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_label import (HalLabel)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_lcd import (HalLCDNumber)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_led import (HalLedIndicator)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_led_button import (HALLEDButton)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_plot import (HalPlot)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_slider import (HalSlider)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.hal_spinbox import (HalQSpinBox)  # noqa: F401
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLoadMeterPlugin) # noqa: F401
 
 
 
@@ -55,7 +75,26 @@ def main():
 
     from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
 
-    from hal_widgets.designer_plugins import (HalLoadMeterPlugin,
+    from qtpyvcp.widgets.button_widgets.designer_plugins import (ActionButtonPlugin,
+                                                 ActionCheckBoxPlugin,
+                                                 ActionSpinBoxPlugin,
+                                                 MacroButtonPlugin,
+                                                 LedButtonPlugin,
+                                                 MDIButtonPlugin,
+                                                 DialogButtonPlugin)
+
+    from qtpyvcp.widgets.db_widgets.designer_plugins import (ToolSTLFieldPlugin)
+
+    from qtpyvcp.widgets.display_widgets.designer_plugins import (StatusLabelPlugin,
+                                                                  DROLabel_Plugin,
+                                                                  BarIndicatorPlugin,
+                                                                  StatusLEDPlugin,
+                                                                  VTKWidgetPlugin,
+                                                                  NotificationPlugin,
+                                                                  GcodeReferenceTablePlugin,
+                                                                  GCodePropertiesPlugin)
+
+    from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLoadMeterPlugin,
                                               HalButtonPlugin,
                                               HalCheckBoxPlugin,
                                               HalDoubleSpinBoxPlugin,
@@ -91,14 +130,32 @@ def main():
                                                                 VCPSettingsComboBoxPlugin
                                                                 )
 
-# Action Widgets
-#     QPyDesignerCustomWidgetCollection.addCustomWidget(ActionButtonPlugin())
+    # Button Widgets
+    QPyDesignerCustomWidgetCollection.addCustomWidget(ActionButtonPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(ActionCheckBoxPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(ActionSpinBoxPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(MacroButtonPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(LedButtonPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(MDIButtonPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(DialogButtonPlugin())
+
+    # Display Widgets
+
+    QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLabelPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(DROLabel_Plugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(BarIndicatorPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLEDPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(NotificationPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(GcodeReferenceTablePlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(GCodePropertiesPlugin())
+
 
     # HAL Widgets
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLoadMeterPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalButtonPlugin())
-    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalCheckBoxPlugin())  # FixMe !! giver error code -6 in designer
-    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalDoubleSpinBoxPlugin())  # FixMe !! giver error code -6 in designer
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalCheckBoxPlugin())  # FixMe !! gives error code -6 in designer
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalDoubleSpinBoxPlugin())  # FixMe !! gives error code -6 in designer
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalGroupBoxPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLabelPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLCDNumberPlugin())

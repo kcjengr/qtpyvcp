@@ -49,11 +49,11 @@ class NotificationPlugin(_DesignerPlugin):
         return NotificationWidget
 
 from .active_gcodes_table import ActiveGcodesTable
-class GcodeReferenceTable_Plugin(_DesignerPlugin):
+class GcodeReferenceTablePlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActiveGcodesTable
 
 from .gcode_properties import GCodeProperties
-class GCodeProperties_Plugin(_DesignerPlugin):
+class GCodePropertiesPlugin(_DesignerPlugin):
     def pluginClass(self):
         return GCodeProperties
