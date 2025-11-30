@@ -314,10 +314,20 @@ class CodeLine:
                     pattern = r"^"+k + r"{1}"
                     r = re.search(pattern, line.upper().strip())
                 
+                # we need to do an over ride check for a line that has gcode
+                # variables in it.  These lines need to be passed through with
+                # no further processing else the intent of the gcode progam
+                # could be ruined.
+                override = re.search('#<', line.upper().strip())
+                if override != None:
+                    # found gcode variables, force r to None
+                    r = None
+                
                 if r != None:
                     # since r is NOT None we must have found something
                     self.type = tokens[k][0]
                     self.token = k
+                    LOG.debug(f'Non-Multi: token type = {self.type} token = {self.token}')
                     # call the parser method bound to this key
                     tokens[k][1]()
                     # check for an inline comment if the entire line is not a comment
@@ -333,7 +343,9 @@ class CodeLine:
                 # If the result was seen as 'OTHER' do some further checks
                 # As soon as we shift off being type OTHER, exit the method
                 # 1. is it an XY line
-                self.parse_XY_line()
+                override = re.search('#<', line.upper().strip())
+                if override == None:
+                    self.parse_XY_line()
                 #if self.type is not Commands.OTHER: return
 
 
