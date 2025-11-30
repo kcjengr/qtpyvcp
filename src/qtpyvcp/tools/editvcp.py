@@ -36,14 +36,14 @@ import distro
 # ➜  ~ sudo echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 # eclipse plugins
-# sys.path.append(r'~/.p2/pool/plugins/org.python.pydev.core_12.0.0.202402010911/pysrc')
+# sys.path.append(r'~/.p2/pool/plugins/org.python.pydev.core_13.1.0.202509210817/pysrc')
 # import pydevd; pydevd.settrace()
 
 
 from io import TextIOWrapper
 
 from subprocess import Popen, PIPE, STDOUT
-from pkg_resources import iter_entry_points
+from importlib.metadata import entry_points
 
 from docopt import docopt
 from PySide6.QtWidgets import QApplication, QFileDialog
@@ -108,14 +108,21 @@ def launch_designer(opts=DotDict()) -> None:
         fname = opts.vcp or opts.ui_file
 
     if '.'not in fname or '/' not in fname:
-        entry_points = {}
-        for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
-            entry_points[entry_point.name] = entry_point
-        for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
-            entry_points[entry_point.name] = entry_point
+        entry_points2 = {}
+
+        eps = entry_points()
+
+        example_vcps = eps.select(group='qtpyvcp.example_vcp')
+        vcps = eps.select(group='qtpyvcp.vcp')
+        
+        for example_vcp in example_vcps:
+            entry_points2[example_vcp.name] = example_vcp
+
+        for vcp in vcps:
+            entry_points2[vcp.name] = vcp
 
         try:
-            vcp = entry_points[fname.lower()].load()
+            vcp = entry_points2[fname.lower()].load()
             fname = vcp.VCP_CONFIG_FILE
         except KeyError:
             pass
@@ -124,8 +131,10 @@ def launch_designer(opts=DotDict()) -> None:
             LOG.error(INSTALLED_ERROR_MSG)
             sys.exit(1)
 
-    if distro.id() == 'gentoo' or distro.id() == 'arch':
-        cmd = ['pyside6-designer']
+    if distro.id() == "gentoo":
+        cmd = ["designer"]
+    elif distro.id() == "arch":
+        cmd = ["pyside6-designer"]
     else:
         cmd = ["pyside6-designer"]
 
@@ -186,13 +195,12 @@ def launch_designer(opts=DotDict()) -> None:
 
     base = os.path.dirname(__file__)
     sys.path.insert(0, base)
+    widgets_path =  os.path.join(base, "..", "widgets")
+    
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
     os.environ['QT_SELECT'] = 'qt6'
     os.environ['DESIGNER'] = '1'
-
-    widgets_path =  os.path.join(base, "..", "widgets")
-
     os.environ['PYSIDE_DESIGNER_PLUGINS'] = widgets_path
 
 
@@ -209,14 +217,19 @@ def launch_designer(opts=DotDict()) -> None:
     except OSError as exception:
         LOG.error("""Designer not found, Install with\n
                   sudo apt install qttools5-dev qttools5-dev-tools""")
-        LOG.error(f'Exception occured: {exception}')
-        LOG.error('Subprocess failed')
-        os.environ.pop('DESIGNER')
+        LOG.error(f"Exception occured: {exception}")
+        LOG.error("Subprocess failed")
+        os.environ.pop("DESIGNER")
         return False
+    except Exception as e:
+        LOG.error(f"Exception occured: {e}")
+        return False
+
+    
     else:
         # no exception was raised
-        LOG.info('EditVCP finished')
-        os.environ.pop('DESIGNER')
+        LOG.info(f"EditVCP finished exit({exitcode})")
+        os.environ.pop("DESIGNER")
 
 
 def main() -> None:

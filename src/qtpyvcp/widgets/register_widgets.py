@@ -59,6 +59,7 @@ from qtpyvcp.widgets.input_widgets.offset_table import (OffsetTable)  # noqa: F4
 from qtpyvcp.widgets.input_widgets.probesim_widget import (ProbeSim)  # noqa: F401
 from qtpyvcp.widgets.input_widgets.recent_file_combobox import (RecentFileComboBox)  # noqa: F401
 
+# Settings Widgets
 from qtpyvcp.widgets.input_widgets.setting_slider import (VCPSettingsLineEdit,  # noqa: F401
                                                           VCPSettingsSlider,  # noqa: F401
                                                           VCPSettingsSpinBox,  # noqa: F401
@@ -75,6 +76,8 @@ def main():
 
     from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
 
+
+    # Action Buttons
     from qtpyvcp.widgets.button_widgets.designer_plugins import (ActionButtonPlugin,
                                                  ActionCheckBoxPlugin,
                                                  ActionSpinBoxPlugin,
@@ -82,9 +85,10 @@ def main():
                                                  LedButtonPlugin,
                                                  MDIButtonPlugin,
                                                  DialogButtonPlugin)
-
+    # Tool Database Widgets
     from qtpyvcp.widgets.db_widgets.designer_plugins import (ToolSTLFieldPlugin)
 
+    # Display Widgets
     from qtpyvcp.widgets.display_widgets.designer_plugins import (StatusLabelPlugin,
                                                                   DROLabel_Plugin,
                                                                   BarIndicatorPlugin,
@@ -93,7 +97,7 @@ def main():
                                                                   NotificationPlugin,
                                                                   GcodeReferenceTablePlugin,
                                                                   GCodePropertiesPlugin)
-
+    # HAL Widgets
     from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLoadMeterPlugin,
                                               HalButtonPlugin,
                                               HalCheckBoxPlugin,
@@ -106,7 +110,7 @@ def main():
                                               HalPlotPlugin,
                                               HalSliderPlugin,
                                               HalQSpinBoxPlugin)
-
+    # Input Widgets
     from qtpyvcp.widgets.input_widgets.designer_plugins import (ActionComboBoxPlugin,
                                                                 ActionDialPlugin,
                                                                 ActionSliderPlugin,
@@ -149,24 +153,24 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(DROLabel_Plugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(BarIndicatorPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLEDPlugin())
-    QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())  # glitches / fails in designer
     QPyDesignerCustomWidgetCollection.addCustomWidget(NotificationPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GcodeReferenceTablePlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GCodePropertiesPlugin())
 
-
+    
     # HAL Widgets
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLoadMeterPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalButtonPlugin())
     # QPyDesignerCustomWidgetCollection.addCustomWidget(HalCheckBoxPlugin())  # FixMe !! gives error code -6 in designer
     # QPyDesignerCustomWidgetCollection.addCustomWidget(HalDoubleSpinBoxPlugin())  # FixMe !! gives error code -11 in designer
-    QPyDesignerCustomWidgetCollection.addCustomWidget(HalGroupBoxPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(HalGroupBoxPlugin())  
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLabelPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLCDNumberPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLedIndicatorPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLedButtonPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalPlotPlugin())
-    QPyDesignerCustomWidgetCollection.addCustomWidget(HalSliderPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalSliderPlugin())  # FixMe !! gives segfault error in designer
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalQSpinBoxPlugin())
 
     # Input Widgets
@@ -184,6 +188,8 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(OffsetTablePlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(ProbeSimPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(RecentFileComboBoxPlugin())
+    
+    # Settings Widgets
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsLineEditPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsSliderPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsSpinBoxPlugin())

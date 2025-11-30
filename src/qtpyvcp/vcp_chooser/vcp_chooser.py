@@ -1,6 +1,6 @@
 import os
 import yaml
-from pkg_resources import iter_entry_points
+from importlib.metadata import entry_points
 
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import (Qt, Slot, QFile)
@@ -43,6 +43,7 @@ class VCPChooser(QDialog):
         self._vcp_data = {}
 
         self.selection = self.ui.vcpTreeView.selectionModel()
+        eps = entry_points()
 
         # example VCP section
         category = QTreeWidgetItem(self.ui.vcpTreeView)
@@ -50,7 +51,8 @@ class VCPChooser(QDialog):
         category.setFlags(Qt.ItemIsEnabled)
 
         # add example VCPs to the treeview
-        for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
+        example_vcps = eps.select(group='qtpyvcp.example_vcp')
+        for entry_point in example_vcps:
             child = QTreeWidgetItem(category)
             child.setText(0, self.get_vcp_data(entry_point))
 
@@ -60,7 +62,9 @@ class VCPChooser(QDialog):
         category.setFlags(Qt.ItemIsEnabled)
 
         # add example VCPs to the treeview
-        for entry_point in iter_entry_points(group='qtpyvcp.test_vcp'):
+        
+        test_vcps = eps.select(group='qtpyvcp.test_vcp')
+        for entry_point in test_vcps:
             child = QTreeWidgetItem(category)
             child.setText(0, self.get_vcp_data(entry_point))
 
@@ -72,7 +76,8 @@ class VCPChooser(QDialog):
         category.setHidden(True)
 
         # add installed VCPs to the treeview
-        for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
+        vcps = eps.select(group='qtpyvcp.vcp')
+        for entry_point in vcps:
             child = QTreeWidgetItem(category)
             child.setText(0, self.get_vcp_data(entry_point))
             category.setHidden(False)
