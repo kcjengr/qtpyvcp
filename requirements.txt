@@ -10,3 +10,7 @@ python-dateutil
 simpleeval
 deepdiff
 panda
+poetry-core
+versioneer[toml]
+sqlalchemy
+vtk

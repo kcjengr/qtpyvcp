@@ -125,7 +125,7 @@ def launch_designer(opts=DotDict()) -> None:
             sys.exit(1)
 
     if distro.id() == 'gentoo' or distro.id() == 'arch':
-        cmd = ['designer6']
+        cmd = ['pyside6-designer']
     else:
         cmd = ["pyside6-designer"]
 
@@ -189,18 +189,11 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
     os.environ['QT_SELECT'] = 'qt6'
-    os.environ['DESIGNER'] = 'True'
+    os.environ['DESIGNER'] = '1'
 
-    widgets_path_list = (os.path.join(base, "..", "widgets"),
-                         os.path.join(base, "..", "widgets", "hal_widgets"),
-                         os.path.join(base, "..", "widgets", "button_widgets"),
-                         os.path.join(base, "..", "widgets", "db_widgets"),
-                         os.path.join(base, "..", "widgets", "display_widgets"),
-                         os.path.join(base, "..", "widgets", "input_widgets"))
+    widgets_path =  os.path.join(base, "..", "widgets")
 
-    print(":".join(widgets_path_list))
-    
-    os.environ['PYSIDE_DESIGNER_PLUGINS'] = ":".join(widgets_path_list)
+    os.environ['PYSIDE_DESIGNER_PLUGINS'] = widgets_path
 
 
     LOG.info("Starting QtDesigner ...")

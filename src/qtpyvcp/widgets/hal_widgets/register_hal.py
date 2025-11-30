@@ -12,18 +12,18 @@ from qtpyvcp.widgets.hal_widgets.hal_slider import (HalSlider)  # noqa: F401
 from qtpyvcp.widgets.hal_widgets.hal_spinbox import (HalQSpinBox)  # noqa: F401
 
 
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLoadMeterPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalButtonPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalCheckBoxPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalDoubleSpinBoxPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalGroupBoxPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLabelPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLCDNumberPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLedIndicatorPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLedButtonPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalPlotPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalSliderPlugin) # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalQSpinBoxPlugin) # noqa: F401
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLoadMeterPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalButtonPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalCheckBoxPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalDoubleSpinBoxPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalGroupBoxPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLabelPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLCDNumberPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLedIndicatorPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLedButtonPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalPlotPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalSliderPlugin)
+from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalQSpinBoxPlugin)
 
 from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
 

@@ -39,7 +39,7 @@ from qtpyvcp.utilities.info import Info
 LOG = logger.getLogger(__name__)
 
 try:
-    from PyQt5.Qsci import QsciScintilla, QsciLexerCustom
+    from PySide6.Qsci import QsciScintilla, QsciLexerCustom
 except ImportError as e:
     LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
     sys.exit(1)
