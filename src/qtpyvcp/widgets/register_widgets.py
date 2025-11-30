@@ -139,6 +139,10 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(MDIButtonPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(DialogButtonPlugin())
 
+    # Tool database Widgets
+    QPyDesignerCustomWidgetCollection.addCustomWidget(ToolSTLFieldPlugin())
+
+
     # Display Widgets
 
     QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLabelPlugin())
@@ -155,7 +159,7 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLoadMeterPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalButtonPlugin())
     # QPyDesignerCustomWidgetCollection.addCustomWidget(HalCheckBoxPlugin())  # FixMe !! gives error code -6 in designer
-    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalDoubleSpinBoxPlugin())  # FixMe !! gives error code -6 in designer
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalDoubleSpinBoxPlugin())  # FixMe !! gives error code -11 in designer
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalGroupBoxPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLabelPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLCDNumberPlugin())
