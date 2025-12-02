@@ -12,6 +12,7 @@ NOTIFICATIONS = getPlugin('notifications')
 
 class BaseBackPlot(object):
     def __init__(self, inifile=None):
+
         self.notification = NOTIFICATIONS
 
         inifile = inifile or os.getenv("INI_FILE_NAME")

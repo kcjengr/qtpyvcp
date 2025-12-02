@@ -1,6 +1,5 @@
 #import pydevd; pydevd.settrace()
 
-
 # Button Widgets
 
 from qtpyvcp.widgets.button_widgets.action_button import (ActionButton)  # noqa: F401
@@ -110,6 +109,7 @@ def main():
                                               HalPlotPlugin,
                                               HalSliderPlugin,
                                               HalQSpinBoxPlugin)
+    
     # Input Widgets
     from qtpyvcp.widgets.input_widgets.designer_plugins import (ActionComboBoxPlugin,
                                                                 ActionDialPlugin,
@@ -153,7 +153,7 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(DROLabel_Plugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(BarIndicatorPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLEDPlugin())
-    # QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())  # glitches / fails in designer
+    QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())  # glitches / fails in designer
     QPyDesignerCustomWidgetCollection.addCustomWidget(NotificationPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GcodeReferenceTablePlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GCodePropertiesPlugin())

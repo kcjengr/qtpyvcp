@@ -25,7 +25,7 @@ from operator import add
 import time
 
 import vtk
-import vtk.qt
+
 from vtkmodules.vtkCommonCore import (
     VTK_VERSION_NUMBER,
     vtkVersion
@@ -34,14 +34,17 @@ from PySide6.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QColor
 
-# Fix poligons not drawing correctly on some GPU
+IN_DESIGNER = os.getenv('DESIGNER', False)
+
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
 
-vtk.qt.QVTKRWIBase = "QGLWidget"
+if not IN_DESIGNER:
+    from vtk.qt import QVTKRWIBase
+    from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
-# Fix end
+    QVTKRWIBase = "QGLWidget"  # Fix poligons not drawing correctly on some GPU
 
-from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+
 from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
 
 from qtpyvcp import actions
@@ -64,7 +67,6 @@ from .linuxcnc_datasource import LinuxCncDataSource
 
 LOG = logger.getLogger(__name__)
 
-IN_DESIGNER = os.getenv('DESIGNER', False)
 NUMBER_OF_WCS = 9
 
 # TODO: check this with PySide6
@@ -178,7 +180,10 @@ class InteractorEventFilter(QObject):
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
-        
+
+        if IN_DESIGNER:
+            return
+
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         LOG.debug("@@@@@@@@@@  VTKBackPlot __init__  @@@@@@@@@")
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
@@ -546,6 +551,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 print("NAV 2")
                 # Enable the widget.
                 self.cam_orient_manipulator.On()
+
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         LOG.debug("@@@@@@@@@@  __init__  END @@@@@@@@@")
         LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
