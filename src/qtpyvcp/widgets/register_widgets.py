@@ -146,14 +146,13 @@ def main():
     # Tool database Widgets
     QPyDesignerCustomWidgetCollection.addCustomWidget(ToolSTLFieldPlugin())
 
-
     # Display Widgets
 
     QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLabelPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(DROLabel_Plugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(BarIndicatorPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLEDPlugin())
-    QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())  # glitches / fails in designer
+    QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(NotificationPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GcodeReferenceTablePlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GCodePropertiesPlugin())
@@ -162,15 +161,15 @@ def main():
     # HAL Widgets
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLoadMeterPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalButtonPlugin())
-    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalCheckBoxPlugin())  # FixMe !! gives error code -6 in designer
-    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalDoubleSpinBoxPlugin())  # FixMe !! gives error code -11 in designer
+    QPyDesignerCustomWidgetCollection.addCustomWidget(HalCheckBoxPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(HalDoubleSpinBoxPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalGroupBoxPlugin())  
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLabelPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLCDNumberPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLedIndicatorPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalLedButtonPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalPlotPlugin())
-    # QPyDesignerCustomWidgetCollection.addCustomWidget(HalSliderPlugin())  # FixMe !! gives segfault error in designer
+    QPyDesignerCustomWidgetCollection.addCustomWidget(HalSliderPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(HalQSpinBoxPlugin())
 
     # Input Widgets

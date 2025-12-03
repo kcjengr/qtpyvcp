@@ -1,4 +1,4 @@
-
+import os
 
 from PySide6.QtWidgets import QCheckBox
 from PySide6.QtCore import Property, QEvent
@@ -12,6 +12,7 @@ from qtpyvcp.plugins import getPlugin
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class HalCheckBox(QCheckBox, HALWidget, VCPWidget):
     """HAL CheckBox
@@ -34,8 +35,8 @@ class HalCheckBox(QCheckBox, HALWidget, VCPWidget):
         self._enable_pin = None
         self._check_pin = None
         self._checked_pin = None
-
-        self.toggled.connect(self.onCheckedStateChanged)
+        if not IN_DESIGNER:
+            self.toggled.connect(self.onCheckedStateChanged)
 
     def mousePressEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place

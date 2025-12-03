@@ -1,3 +1,4 @@
+import os
 
 from PySide6.QtWidgets import QSlider
 
@@ -9,6 +10,8 @@ from qtpyvcp.plugins import getPlugin
 
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class HalSlider(QSlider, HALWidget, VCPWidget):
     """HAL Slider
@@ -33,8 +36,9 @@ class HalSlider(QSlider, HALWidget, VCPWidget):
         self._float_value_pin = None
 
         self._signed_int = True
-
-        self.valueChanged.connect(self.onValueChanged)
+        
+        if not IN_DESIGNER:
+            self.valueChanged.connect(self.onValueChanged)
 
     def mousePressEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place
