@@ -31,7 +31,7 @@ from vtkmodules.vtkCommonCore import (
     vtkVersion
 )
 from PySide6.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QWidget
 from PySide6.QtGui import QColor
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
@@ -39,11 +39,11 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
 
 if not IN_DESIGNER:
-    from vtk.qt import QVTKRWIBase
-    from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-
+    from vtkmodules.qt import QVTKRWIBase
     QVTKRWIBase = "QGLWidget"  # Fix poligons not drawing correctly on some GPU
-
+    from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+else:
+    QVTKRenderWindowInteractor = QWidget
 
 from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
 
