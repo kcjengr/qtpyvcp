@@ -180,7 +180,25 @@ class InteractorEventFilter(QObject):
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
+        self._plot_machine = True
+        
+        self._background_color = QColor(0, 0, 0)
+        self._background_color2 = QColor(0, 0, 0)
+        self._enableProgramTicks = True
+        self._enableProgramTicks = True
 
+        self._default_traverse_color = QColor(200, 35, 35, 255)
+        self._default_arcfeed_color = QColor(110, 110, 255, 255)
+        self._default_feed_color = QColor(210, 210, 255, 255)
+        self._default_dwell_color = QColor(0, 0, 255, 255)
+        self._default_user_color = QColor(0, 100, 255, 255)
+
+        self._traverse_color = self._default_traverse_color
+        self._arcfeed_color = self._default_arcfeed_color
+        self._feed_color = self._default_feed_color
+        self._dwel_color = self._default_dwell_color
+        self._user_color = self._default_user_color
+        
         if IN_DESIGNER:
             return
 
@@ -249,24 +267,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.view_y_vec = -1
         self.view_z_vec = 1
 
-        self._plot_machine = True
-        
-        self._background_color = QColor(0, 0, 0)
-        self._background_color2 = QColor(0, 0, 0)
-        self._enableProgramTicks = True
-        self._enableProgramTicks = True
 
-        self._default_traverse_color = QColor(200, 35, 35, 255)
-        self._default_arcfeed_color = QColor(110, 110, 255, 255)
-        self._default_feed_color = QColor(210, 210, 255, 255)
-        self._default_dwell_color = QColor(0, 0, 255, 255)
-        self._default_user_color = QColor(0, 100, 255, 255)
-
-        self._traverse_color = self._default_traverse_color
-        self._arcfeed_color = self._default_arcfeed_color
-        self._feed_color = self._default_feed_color
-        self._dwel_color = self._default_dwell_color
-        self._user_color = self._default_user_color
 
         if not IN_DESIGNER:
             self.active_wcs_index = self._datasource.getActiveWcsIndex()
