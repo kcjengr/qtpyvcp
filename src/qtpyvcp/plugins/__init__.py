@@ -17,6 +17,7 @@ from qtpyvcp.plugins.base_plugins import Plugin, DataPlugin, DataChannel
 LOG = getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 _PLUGINS = OrderedDict()  # Ordered dict so we can initialize/terminate in order
+_DESIGNER_PLUGINS_LOADED = False  # Track if designer plugins have been initialized
 
 
 def registerPlugin(plugin_id, plugin_inst):
@@ -94,15 +95,21 @@ def getPlugin(plugin_id):
     Returns:
         A plugin instance, or None.
     """
-    if not IN_DESIGNER:
-        try:
-            return _PLUGINS[plugin_id]
-        except KeyError:
+    try:
+       return _PLUGINS[plugin_id]
+    except KeyError:
+        if IN_DESIGNER:
+            # In designer mode, try to auto-load commonly used plugins
+            _initializeDesignerPlugins()
+            # Try again after loading designer plugins
+            if plugin_id in _PLUGINS:
+                return _PLUGINS[plugin_id]
+            # If still not found, log at debug level
+            LOG.debug("Plugin '%s' not found (OK in designer mode)", plugin_id)
+        else:
             LOG.error("Failed to find plugin with ID '%s'", plugin_id)
-            return None
-    else:
-        LOG.warn("Skip load plugin with ID '%s' while in designer", plugin_id)
         return None
+
 
 
 def iterPlugins():
@@ -151,3 +158,59 @@ def terminatePlugins():
             plugin_inst.terminate()
         except Exception:
             LOG.exception("Error terminating '%s' plugin", plugin_id)
+
+
+def _initializeDesignerPlugins():
+    """Initialize commonly used plugins in Designer mode.
+    
+    This function is called automatically when getPlugin() is called in designer mode
+    and the requested plugin is not found. It loads essential plugins that widgets
+    commonly depend on, allowing widgets to work properly in the designer.
+    """
+    global _DESIGNER_PLUGINS_LOADED
+    
+    if _DESIGNER_PLUGINS_LOADED:
+        return
+    
+    _DESIGNER_PLUGINS_LOADED = True
+    
+    # Dictionary of essential plugins to load in designer mode
+    # Format: plugin_id: (module_path, class_name, kwargs)
+    essential_plugins = {
+        'status': ('qtpyvcp.plugins.status', 'Status', {'cycle_time': 100}),
+        'position': ('qtpyvcp.plugins.positions', 'Position', {}),
+        'clock': ('qtpyvcp.plugins.clock', 'Clock', {}),
+        'settings': ('qtpyvcp.plugins.settings', 'Settings', {}),
+        'tooltable': ('qtpyvcp.plugins.tool_table', 'ToolTable', {}),
+        'offsettable': ('qtpyvcp.plugins.offset_table', 'OffsetTable', {}),
+        'notifications': ('qtpyvcp.plugins.notifications', 'Notifications', {}),
+        'persistent_data_manager': ('qtpyvcp.plugins.persistent_data_manager', 'PersistentDataManager', {}),
+        'file_locations': ('qtpyvcp.plugins.file_locations', 'FileLocations', {}),
+    }
+    
+    LOG.debug("Initializing essential plugins for Designer mode")
+    
+    for plugin_id, (module_path, class_name, kwargs) in essential_plugins.items():
+        # Skip if already registered
+        if plugin_id in _PLUGINS:
+            continue
+        
+        try:
+            # Import the module and get the class
+            module = importlib.import_module(module_path)
+            plugin_cls = getattr(module, class_name)
+            
+            # Instantiate and register the plugin
+            plugin_inst = plugin_cls(**kwargs)
+            registerPlugin(plugin_id, plugin_inst)
+            LOG.debug("Loaded designer plugin: %s", plugin_id)
+            
+        except ImportError as e:
+            # Module import failed (e.g., linuxcnc not available)
+            LOG.debug("Could not import designer plugin '%s' module: %s", plugin_id, e)
+        except AttributeError as e:
+            # Class not found in module
+            LOG.debug("Could not find class for designer plugin '%s': %s", plugin_id, e)
+        except Exception as e:
+            # Plugin initialization failed
+            LOG.debug("Could not initialize designer plugin '%s': %s", plugin_id, e)

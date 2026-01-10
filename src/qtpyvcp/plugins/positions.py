@@ -250,6 +250,9 @@ class Position(DataPlugin):
             # STATUS.joint_position.signal.connect(self._update)
 
     def _update(self):
+        # Skip updates in designer mode where STAT is not available
+        if IN_DESIGNER:
+            return
 
         if self._report_actual_pos:
             pos = STAT.actual_position
