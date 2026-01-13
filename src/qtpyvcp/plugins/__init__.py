@@ -11,12 +11,37 @@ import importlib
 
 from collections import OrderedDict
 
+from qtpyvcp import DEFAULT_CONFIG_FILE
+from qtpyvcp.utilities.config_loader import load_config_files
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins.base_plugins import Plugin, DataPlugin, DataChannel
 
 LOG = getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 _PLUGINS = OrderedDict()  # Ordered dict so we can initialize/terminate in order
+
+DEFAULT_CONFIG = load_config_files(DEFAULT_CONFIG_FILE)
+
+
+def _initializeDesignerPlugin(plugin_id):
+    
+    plugin = DEFAULT_CONFIG["data_plugins"][plugin_id]
+    
+    module_path = str(plugin["provider"].split(':')[0])
+    class_name = str(plugin["provider"].split(':')[1])
+    class_kwards = plugin.get("kwargs")
+    
+    module = importlib.import_module(module_path)
+    
+    plugin_cls = getattr(module, class_name)
+    if class_kwards:
+        plugin_inst = plugin_cls(**class_kwards)
+    else:
+        plugin_inst = plugin_cls()
+        
+    registerPlugin(plugin_id, plugin_inst)
+    
+    LOG.debug("Loaded designer plugin: %s", plugin_id)
 
 
 def registerPlugin(plugin_id, plugin_inst):
@@ -28,10 +53,12 @@ def registerPlugin(plugin_id, plugin_inst):
     """
 
     if plugin_id in _PLUGINS:
-        LOG.warning("Replacing {} with {} for use with '{}' plugin"
-                    .format(_PLUGINS[plugin_id].__class__, plugin_inst.__class__, plugin_id))
-
-    _PLUGINS[plugin_id] = plugin_inst
+            
+        LOG.warning(f"Plugin '{plugin_id}' already loaded")    
+        # LOG.warning("Replacing {} with {} for use with '{}' plugin"
+        #             .format(_PLUGINS[plugin_id].__class__, plugin_inst.__class__, plugin_id))
+    else:
+        _PLUGINS[plugin_id] = plugin_inst
 
 
 def registerPluginFromClass(plugin_id, plugin_cls, args=[], kwargs={}):
@@ -94,15 +121,15 @@ def getPlugin(plugin_id):
     Returns:
         A plugin instance, or None.
     """
-    if not IN_DESIGNER:
-        try:
-            return _PLUGINS[plugin_id]
-        except KeyError:
-            LOG.error("Failed to find plugin with ID '%s'", plugin_id)
-            return None
-    else:
-        LOG.warn("Skip load plugin with ID '%s' while in designer", plugin_id)
+    if plugin_id not in _PLUGINS:
+        _initializeDesignerPlugin(plugin_id)
+        
+    try:
+        return _PLUGINS[plugin_id]
+    except KeyError:
+        LOG.error("Failed to find plugin with ID '%s'", plugin_id)
         return None
+
 
 
 def iterPlugins():
