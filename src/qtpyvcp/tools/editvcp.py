@@ -138,6 +138,8 @@ def launch_designer(opts=DotDict()) -> None:
     else:
         cmd = ["pyside6-designer"]
 
+    env = os.environ.copy()
+    
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
 
@@ -146,9 +148,11 @@ def launch_designer(opts=DotDict()) -> None:
         from qtpyvcp import CONFIG, DEFAULT_CONFIG_FILE
         from qtpyvcp.utilities.config_loader import load_config_files
 
+        CONFIG.update(load_config_files(fname, DEFAULT_CONFIG_FILE))
+        data = CONFIG.get('qtdesigner')
+        
         try:
-            CONFIG.update(load_config_files(fname, DEFAULT_CONFIG_FILE))
-            data = CONFIG.get('qtdesigner')
+            pass
         except Exception as e:
             LOG.error("Error loading YAML config file:")
             LOG.error(e)
@@ -160,7 +164,7 @@ def launch_designer(opts=DotDict()) -> None:
 
         # add to path so that QtDesginer can load it when it starts
         config_file = f"{fname}:{os.getenv('VCP_CONFIG_FILES', '')}"
-        os.environ['VCP_CONFIG_FILES'] = config_file
+        env['VCP_CONFIG_FILES'] = config_file
 
         if data is not None:
             yml_dir = os.path.realpath(os.path.dirname(fname))
@@ -178,7 +182,7 @@ def launch_designer(opts=DotDict()) -> None:
             qss_file = opts.qss_file or data.get('qss_file')
             if qss_file is not None:
                 qss_file = os.path.join(yml_dir, qss_file)
-                os.environ['QSS_STYLESHEET'] = qss_file
+                env['QSS_STYLESHEET'] = qss_file
                 LOG.info(f"Loading QSS file: {qss_file}")
             else:
                 LOG.info("No QSS file specified.")
@@ -197,17 +201,17 @@ def launch_designer(opts=DotDict()) -> None:
     sys.path.insert(0, base)
     widgets_path =  os.path.join(base, "..", "widgets")
     
-    os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
-    os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
-    os.environ['QT_SELECT'] = 'qt6'
-    os.environ['DESIGNER'] = '1'
-    os.environ['PYSIDE_DESIGNER_PLUGINS'] = widgets_path
+    env['QTPYVCP_LOG_FILE'] = opts.log_file
+    env['QTPYVCP_LOG_LEVEL'] = opts.log_level
+    env['QT_SELECT'] = 'qt6'
+    env['DESIGNER'] = '1'
+    env['PYSIDE_DESIGNER_PLUGINS'] = widgets_path
 
 
     LOG.info("Starting QtDesigner ...")
 
     try:
-        process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
+        process = Popen(cmd, stdout=PIPE, stderr=STDOUT, env=env)
 
         with process.stdout:
             log_subprocess_output(process.stdout)
@@ -219,7 +223,7 @@ def launch_designer(opts=DotDict()) -> None:
                   sudo apt install qttools5-dev qttools5-dev-tools""")
         LOG.error(f"Exception occured: {exception}")
         LOG.error("Subprocess failed")
-        os.environ.pop("DESIGNER")
+        env.pop("DESIGNER")
         return False
     except Exception as e:
         LOG.error(f"Exception occured: {e}")
@@ -229,7 +233,7 @@ def launch_designer(opts=DotDict()) -> None:
     else:
         # no exception was raised
         LOG.info(f"EditVCP finished exit({exitcode})")
-        os.environ.pop("DESIGNER")
+        env.pop("DESIGNER")
 
 
 def main() -> None:

@@ -9,10 +9,13 @@ order.
 import os
 import importlib
 
+from pprint import pprint
 from collections import OrderedDict
 
-from qtpyvcp import DEFAULT_CONFIG_FILE
-from qtpyvcp.utilities.config_loader import load_config_files
+import qtpyvcp
+
+from qtpyvcp import DEFAULT_CONFIG_FILE, CONFIG
+from qtpyvcp.utilities.config_loader import load_config_files_from_env
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins.base_plugins import Plugin, DataPlugin, DataChannel
 
@@ -20,15 +23,23 @@ LOG = getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 _PLUGINS = OrderedDict()  # Ordered dict so we can initialize/terminate in order
 
-DEFAULT_CONFIG = load_config_files(DEFAULT_CONFIG_FILE)
+
+CONFIG_DATA = None
 
 
 def _initializeDesignerPlugin(plugin_id):
     
-    plugin = DEFAULT_CONFIG["data_plugins"][plugin_id]
+    global CONFIG_DATA
     
-    module_path = str(plugin["provider"].split(':')[0])
-    class_name = str(plugin["provider"].split(':')[1])
+    if CONFIG_DATA is None:
+        
+        CONFIG_DATA = load_config_files_from_env()
+    
+    
+    plugin = CONFIG_DATA["data_plugins"][plugin_id]
+    
+    module_path = plugin["provider"].split(':')[0]
+    class_name = plugin["provider"].split(':')[1]
     class_kwards = plugin.get("kwargs")
     
     module = importlib.import_module(module_path)
@@ -38,7 +49,7 @@ def _initializeDesignerPlugin(plugin_id):
         plugin_inst = plugin_cls(**class_kwards)
     else:
         plugin_inst = plugin_cls()
-        
+    
     registerPlugin(plugin_id, plugin_inst)
     
     LOG.debug("Loaded designer plugin: %s", plugin_id)
