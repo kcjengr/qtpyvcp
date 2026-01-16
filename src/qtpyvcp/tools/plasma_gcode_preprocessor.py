@@ -32,13 +32,13 @@ from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-#import pydevd;pydevd.settrace()
+# import pydevd;pydevd.settrace()
 
 PREPROC_VERSION = '00.30'
 
 INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
 preprocessor_log_name = normalizePath(path='gcode_preprocessor.log', base=os.getenv('CONFIG_DIR', '~/'))
-# Constrcut LOG from qtpyvcp standard logging framework
+# Construct LOG from qtpyvcp standard logging framework
 formatter = "%(asctime)s; %(levelname)s; %(message)s"
 logging.basicConfig(filename=preprocessor_log_name, level=logging.DEBUG, format=formatter)
 LOG = logging.getLogger(__name__)
@@ -1097,9 +1097,19 @@ class PreProcessor:
         
         # Test to see if the file has been previously parsed by this processor
         # This test is agnostic of the version of the preprocessor
-        if self._orig_gcode[0] == '(--------------------------------------------------)' and \
-           self._orig_gcode[0] == '(            Plasma G-Code Preprocessor            )':
-            self.preparsed = True
+        line1 = self._orig_gcode[0]
+        line2 = self._orig_gcode[1]
+        
+        if line1 == '(--------------------------------------------------)\n':
+            LOG.debug("Line1 HAS pre parse match")
+            if line2 == '(            Plasma G-Code Preprocessor            )\n':
+                LOG.debug("Line2 HAS pre parse match")
+                self.preparsed = True
+            else:
+                LOG.debug("Line2 not have pre parse match")
+        else:
+            LOG.debug("Line1 not have pre parse match")
+
 
     def set_active_g_modal(self, gcode):
         # get the modal grp for the code and set things
@@ -1460,7 +1470,7 @@ class PreProcessor:
     def dump_raw(self):
         LOG.debug('Dump raw gcode to stdio')
         for l in self._orig_gcode:
-            print(l, file=sys.stdout)
+            print(l, file=sys.stdout, end="")
             sys.stdout.flush()
             
 

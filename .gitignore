@@ -53,3 +53,19 @@ DEBIAN/
 tmp/
 
 poetry.lock
+
+.qtc_clangd/compile_commands.json
+
+qtpyvcp.cflags
+
+qtpyvcp.config
+
+qtpyvcp.creator
+
+qtpyvcp.creator.user
+
+qtpyvcp.cxxflags
+
+qtpyvcp.files
+
+qtpyvcp.includes
