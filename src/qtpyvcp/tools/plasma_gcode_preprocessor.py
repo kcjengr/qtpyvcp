@@ -1146,6 +1146,11 @@ class PreProcessor:
         leadin_radius = hal.get_value('qtpyvcp.plasma-leadin-radius.out')
         
         kerf_width = hal.get_value('qtpyvcp.param-kirfwidth.out')
+        hole_kerf = hal.get_value('qtpyvcp.plasma-hole-kerf.out')
+        if hole_kerf != 0:
+            kerf_width = hole_kerf
+            LOG.debug(f"Hole Kerf is non Zero [{hole_kerf}].  Kerf aligned to Hole Kerh.  Kerf={kerf_width}")
+
 
         torch_off_distance_before_zero = hal.get_value('qtpyvcp.plasma-torch-off-distance.out')
                 
