@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1119</width>
+    <width>1411</width>
     <height>1132</height>
    </rect>
   </property>
@@ -32,99 +32,13 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QTabWidget" name="tabWidget">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
            <string>Buttons and Inputs</string>
           </attribute>
-          <widget class="ActionDial" name="actiondial">
-           <property name="geometry">
-            <rect>
-             <x>310</x>
-             <y>30</y>
-             <width>131</width>
-             <height>121</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="ActionSlider" name="actionslider">
-           <property name="geometry">
-            <rect>
-             <x>490</x>
-             <y>30</y>
-             <width>41</width>
-             <height>131</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="DROLineEdit" name="dro_entry">
-           <property name="geometry">
-            <rect>
-             <x>310</x>
-             <y>210</y>
-             <width>211</width>
-             <height>26</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_2">
-           <property name="geometry">
-            <rect>
-             <x>310</x>
-             <y>180</y>
-             <width>81</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>DRO Edit</string>
-           </property>
-          </widget>
-          <widget class="FileSystemTable" name="filesystemtable">
-           <property name="geometry">
-            <rect>
-             <x>580</x>
-             <y>40</y>
-             <width>481</width>
-             <height>211</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="RemovableDeviceComboBox" name="removabledevicecombobox">
-           <property name="geometry">
-            <rect>
-             <x>580</x>
-             <y>290</y>
-             <width>311</width>
-             <height>26</height>
-            </rect>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_3">
-           <property name="geometry">
-            <rect>
-             <x>580</x>
-             <y>10</y>
-             <width>391</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>File System Table</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_4">
-           <property name="geometry">
-            <rect>
-             <x>580</x>
-             <y>260</y>
-             <width>291</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Removable Device Combo Box</string>
-           </property>
-          </widget>
           <widget class="QGroupBox" name="groupBox">
            <property name="geometry">
             <rect>
@@ -138,52 +52,7 @@
             <string>Action Controls</string>
            </property>
            <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="0">
-             <widget class="ActionButton" name="actionbutton">
-              <property name="text">
-               <string>Action Button</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="ActionCheckBox" name="actioncheckbox">
-              <property name="text">
-               <string>Action Checkbox</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="ActionSpinBox" name="actionspinbox"/>
-            </item>
-            <item row="3" column="0">
-             <widget class="SubCallButton" name="subcallbutton">
-              <property name="text">
-               <string>Sub Call Button</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="LEDButton" name="ledbutton">
-              <property name="text">
-               <string>LED Button</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="MDIButton" name="mdibutton">
-              <property name="text">
-               <string>MDI Button</string>
-              </property>
-             </widget>
-            </item>
             <item row="6" column="0">
-             <widget class="DialogButton" name="dialogbutton">
-              <property name="text">
-               <string>Dialog Button</string>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="0">
              <widget class="ActionComboBox" name="actioncombobox">
               <property name="currentText">
                <string>Action Combo Box</string>
@@ -195,24 +64,62 @@
               </item>
              </widget>
             </item>
+            <item row="4" column="0">
+             <widget class="LEDButton" name="ledbutton">
+              <property name="text">
+               <string>LED Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="ActionButton" name="actionbutton">
+              <property name="text">
+               <string>Action Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="DialogButton" name="dialogbutton">
+              <property name="text">
+               <string>Dialog Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="ActionSpinBox" name="actionspinbox"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="ActionCheckBox" name="actioncheckbox">
+              <property name="text">
+               <string>Action Checkbox</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="SubCallButton" name="subcallbutton">
+              <property name="text">
+               <string>Sub Call Button</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
           <widget class="GcodeTextEdit" name="gcodetextedit">
            <property name="geometry">
             <rect>
-             <x>580</x>
-             <y>360</y>
+             <x>600</x>
+             <y>30</y>
              <width>471</width>
-             <height>361</height>
+             <height>141</height>
             </rect>
            </property>
           </widget>
           <widget class="QLabel" name="label">
            <property name="geometry">
             <rect>
-             <x>580</x>
-             <y>330</y>
-             <width>201</width>
+             <x>470</x>
+             <y>40</y>
+             <width>111</width>
              <height>18</height>
             </rect>
            </property>
@@ -220,10 +127,286 @@
             <string>GCode Text Edit</string>
            </property>
           </widget>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="geometry">
+            <rect>
+             <x>200</x>
+             <y>20</y>
+             <width>235</width>
+             <height>135</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Various line edit controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="1">
+             <widget class="VCPLineEdit" name="lineedit"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>DRO Edit</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="DROLineEdit" name="dro_entry"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>VCP Line Edit</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_3">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>470</y>
+             <width>390</width>
+             <height>269</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>File System controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="1" column="0" colspan="2">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Removable Device Combo Box</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="RemovableDeviceComboBox" name="removabledevicecombobox"/>
+            </item>
+            <item row="0" column="1" colspan="2">
+             <widget class="FileSystemTable" name="filesystemtable"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>File System Table</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="RecentFileComboBox" name="recentfilecombobox"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Recent file combo box</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_4">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>800</y>
+             <width>554</width>
+             <height>193</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Visual / Graphical Controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="ActionDial" name="actiondial"/>
+            </item>
+            <item row="0" column="1">
+             <widget class="ActionSlider" name="actionslider">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Jog Increments</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="JogIncrementWidget" name="jogincrementwidget"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_5">
+           <property name="geometry">
+            <rect>
+             <x>200</x>
+             <y>170</y>
+             <width>308</width>
+             <height>259</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>VCP Settings Controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Settings Line Edit</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="VCPSettingsLineEdit" name="settings_lineedit"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Settings Slider</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="VCPSettingsSlider" name="settings_slider">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_14">
+              <property name="text">
+               <string>Settings Spin Box</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="VCPSettingsSpinBox" name="settings_spinbox"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Settings Double Spin Box</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="VCPSettingsDoubleSpinBox" name="settings_double_spinbox"/>
+            </item>
+            <item row="4" column="1">
+             <widget class="VCPSettingsCheckBox" name="settings_checkbox">
+              <property name="text">
+               <string>CheckBox</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="VCPSettingsPushButton" name="settings_pushbutton">
+              <property name="text">
+               <string>Settings Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Settings Combo Box</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="VCPSettingsComboBox" name="settingscombobox"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_6">
+           <property name="geometry">
+            <rect>
+             <x>520</x>
+             <y>180</y>
+             <width>352</width>
+             <height>325</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>MDI Related Controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>MDI Enttry</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="MDIEntry" name="mdientry"/>
+            </item>
+            <item row="1" column="1">
+             <widget class="MDIButton" name="mdibutton">
+              <property name="text">
+               <string>MDI Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="MDIHistory" name="mdihistory"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>MDI History</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_7">
+           <property name="geometry">
+            <rect>
+             <x>520</x>
+             <y>520</y>
+             <width>280</width>
+             <height>237</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Offsets Table</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="0" column="0">
+             <widget class="OffsetTable" name="offset_table"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_8">
+           <property name="geometry">
+            <rect>
+             <x>900</x>
+             <y>200</y>
+             <width>208</width>
+             <height>89</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Probe Sim</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="0" column="0">
+             <widget class="ProbeSim" name="probesim"/>
+            </item>
+           </layout>
+          </widget>
          </widget>
          <widget class="QWidget" name="tab_2">
           <attribute name="title">
-           <string>Tab 2</string>
+           <string>HAL Controls</string>
           </attribute>
          </widget>
         </widget>
@@ -343,6 +526,76 @@
    <class>GcodeTextEdit</class>
    <extends>QPlainTextEdit</extends>
    <header>qtpyvcp.widgets.input_widgets.gcode_text_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>JogIncrementWidget</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.line_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIHistory</class>
+   <extends>QListWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdihistory_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>OffsetTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.offset_table</header>
+  </customwidget>
+  <customwidget>
+   <class>ProbeSim</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.probesim_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>RecentFileComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsPushButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
   </customwidget>
  </customwidgets>
  <resources/>

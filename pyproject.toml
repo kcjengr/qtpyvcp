@@ -37,6 +37,7 @@ mini = "examples.mini:main"
 brender = "examples.brender:main"
 vtk_test = "video_tests.vtk_test:main"
 qtpyvcp_test = "video_tests.qtpyvcp_test:main"
+widgets_test = "video_tests.widgets_test:main"
 
 
 [tool.poetry.plugins]
@@ -51,6 +52,7 @@ actions = "examples.actions"
 [tool.poetry.plugins."qtpyvcp.test_vcp"]
 vtk_test = "video_tests.vtk_test"
 qtpyvcp_test = "video_tests.qtpyvcp_test"
+widgets_test = "video_tests.widgets_test"
 
 
 [tool.versioneer]
