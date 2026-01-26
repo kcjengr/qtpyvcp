@@ -403,6 +403,16 @@
             </item>
            </layout>
           </widget>
+          <widget class="ToolSTLField" name="toolstlfield">
+           <property name="geometry">
+            <rect>
+             <x>940</x>
+             <y>340</y>
+             <width>338</width>
+             <height>42</height>
+            </rect>
+           </property>
+          </widget>
          </widget>
          <widget class="QWidget" name="tab_2">
           <attribute name="title">
@@ -767,6 +777,11 @@
    <class>DialogButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolSTLField</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.db_widgets.tool_model</header>
   </customwidget>
   <customwidget>
    <class>StatusLabel</class>
