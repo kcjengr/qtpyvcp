@@ -45,17 +45,17 @@ class SettingSelector(QDialog):
         for setting in sorted(SETTINGS):
             print(setting)
             print((SETTINGS[setting].__doc__))
-            self.settingsCombo.addItem(setting)
+            self.ui.settingsCombo.addItem(setting)
 
         current_setting = self.widget.settingName
         if current_setting:
             if current_setting in SETTINGS:
-                    self.settingsCombo.setCurrentText(self.widget.settingName)
+                    self.ui.settingsCombo.setCurrentText(self.widget.settingName)
             else:
-                self.settingsCombo.insertItem(0, current_setting)
-                self.settingsCombo.setCurrentIndex(0)
+                self.ui.settingsCombo.insertItem(0, current_setting)
+                self.ui.settingsCombo.setCurrentIndex(0)
 
-        bb = self.buttonBox
+        bb = self.ui.buttonBox
         bb.button(QDialogButtonBox.Apply).setDefault(True)
         bb.button(QDialogButtonBox.Cancel).setDefault(False)
         bb.button(QDialogButtonBox.Apply).clicked.connect(self.accept)
