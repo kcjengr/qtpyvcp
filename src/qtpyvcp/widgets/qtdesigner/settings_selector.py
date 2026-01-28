@@ -12,6 +12,8 @@ from qtpyvcp import SETTINGS
 
 from qtpyvcp.widgets.qtdesigner import _PluginExtension
 
+from .settings_selector_ui import Ui_Dialog
+
 UI_FILE = os.path.join(os.path.dirname(__file__), "settings_selector.ui")
 
 
@@ -25,7 +27,7 @@ class SettingSelectorExtension(_PluginExtension):
         SettingSelector(self.widget, parent=None).exec_()
 
 
-class SettingSelector(QDialog):
+class SettingSelector(QDialog, Ui_Dialog):
     """QDialog for user-friendly selection of settings in Qt Designer."""
 
     def __init__(self, widget, parent=None):
@@ -33,29 +35,33 @@ class SettingSelector(QDialog):
 
         self.widget = widget
         self.app = QApplication.instance()
+        
 
-        file_path = os.path.join(os.path.dirname(__file__), UI_FILE)
-        ui_file = QFile(file_path)
-        ui_file.open(QFile.ReadOnly)
-
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file, self)
-        self.ui.show()
+        # file_path = os.path.join(os.path.dirname(__file__), UI_FILE)
+        # ui_file = QFile(file_path)
+        # ui_file.open(QFile.ReadOnly)
+        #
+        # loader = QUiLoader()
+        # self.ui = loader.load(ui_file, self)
+        #self.ui.show()
+        
+        # self.ui = Ui_Dialog()
+        self.setupUi(self)
 
         for setting in sorted(SETTINGS):
             print(setting)
             print((SETTINGS[setting].__doc__))
-            self.ui.settingsCombo.addItem(setting)
+            self.settingsCombo.addItem(setting)
 
         current_setting = self.widget.settingName
         if current_setting:
             if current_setting in SETTINGS:
-                    self.ui.settingsCombo.setCurrentText(self.widget.settingName)
+                    self.settingsCombo.setCurrentText(self.widget.settingName)
             else:
-                self.ui.settingsCombo.insertItem(0, current_setting)
-                self.ui.settingsCombo.setCurrentIndex(0)
+                self.settingsCombo.insertItem(0, current_setting)
+                self.settingsCombo.setCurrentIndex(0)
 
-        bb = self.ui.buttonBox
+        bb = self.buttonBox
         bb.button(QDialogButtonBox.Apply).setDefault(True)
         bb.button(QDialogButtonBox.Cancel).setDefault(False)
         bb.button(QDialogButtonBox.Apply).clicked.connect(self.accept)
