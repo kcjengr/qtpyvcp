@@ -1,7 +1,10 @@
+========================
+Python 2.7 Legacy Notice
+========================
 
-## Warning Python2.7
+.. warning::
 
-QtPyVCP master branch is now python 3 only
+   QtPyVCP master branch is now python 3 only
 
 Requires debian 11
 
