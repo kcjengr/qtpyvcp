@@ -20,6 +20,7 @@ from qtpy import uic
 from qtpy.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
+from qtpyvcp import __version__
 
 
 class AboutDialog(BaseDialog):
@@ -45,9 +46,10 @@ class AboutDialog(BaseDialog):
             self.about_text = QLabel()
             self.about_text.setOpenExternalLinks(True)
             self.about_text.setText(
-                """
+                f"""
                 <center>
                 QtPyVCP is a Qt and Python based framework for LinuxCNC.<br />
+                Version: {__version__}<br />
                 Copyright (c) 2018 - 2021 Kurt Jacobson<br />
                 <a href="https://www.qtpyvcp.com">https://www.qtpyvcp.com</a>
                 </center>
