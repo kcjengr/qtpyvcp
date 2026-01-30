@@ -17,6 +17,9 @@ from .misc import normalizePath
 from qtpyvcp.utilities import logger
 log = logger.getLogger(__name__)
 
+# Detect if we're building documentation
+BUILDING_DOCS = 'sphinx' in sys.argv[0].lower() or os.environ.get('SPHINX', False)
+
 
 class Info(object):
     """Ensures only one instance of StatusPoller exists per python interpretor.
@@ -124,7 +127,8 @@ class _Info(object):
         '''Returns [TRAJ] SPINDLES or 1'''
         temp = self.ini.find('TRAJ', 'SPINDLES')
         if not temp:
-            log.warning("No [TRAJ] SPINDLES entry in INI, using 1")
+            if not BUILDING_DOCS:
+                log.warning("No [TRAJ] SPINDLES entry in INI, using 1")
             return 1
         return int(temp)
 
@@ -132,7 +136,8 @@ class _Info(object):
         '''Returns value of [KINS] JOINTS or 3'''
         temp = self.ini.find('KINS', 'JOINTS')
         if not temp:
-            log.warning("No [KINS] JOINTS entry in self.ini file, using 3")
+            if not BUILDING_DOCS:
+                log.warning("No [KINS] JOINTS entry in self.ini file, using 3")
             return (3)
         return int(temp)
 
@@ -228,7 +233,8 @@ class _Info(object):
         temp = self.ini.find('DISPLAY', 'DEFAULT_SPINDLE_SPEED')
         if not temp:
             temp = 300
-            log.warning("No [DISPLAY] DEFAULT_SPINDLE_SPEED entry found in INI, using 300rpm")
+            if not BUILDING_DOCS:
+                log.warning("No [DISPLAY] DEFAULT_SPINDLE_SPEED entry found in INI, using 300rpm")
         return float(temp)
 
     def maxSpindleOverride(self):
@@ -350,7 +356,8 @@ class _Info(object):
             jog_increments.insert(0, 0)
         else:
             jog_increments = [ "0", "1.000", "0.100", "0.010", "0.001" ]
-            log.warning("No default jog increments entry found in [DISPLAY] of self.ini file")
+            if not BUILDING_DOCS:
+                log.warning("No default jog increments entry found in [DISPLAY] of self.ini file")
         return jog_increments
 
     def getSubroutinePath(self):
