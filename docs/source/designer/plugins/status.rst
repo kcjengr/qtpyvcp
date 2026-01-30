@@ -9,120 +9,120 @@ linuxcnc.stat python module.
 *Available datachannels*
 ------------------------
 
-* :ref:`acceleration <acceleration>`
-* :ref:`active queue <active_queue>`
-* :ref:`actual position <actual_position>`
-* :ref:`adaptive feed enabled <adaptive_feed_enabled>`
-* :ref:`analog inputs <ain>`
-* :ref:`all axes homed <all_axes_homed>`
-* :ref:`angular units <angular_units>`
-* :ref:`analog outputs <aout>`
-* :ref:`axes configured <axes>`
-* :ref:`axis mask <axis_mask>`
-* :ref:`block delete <block_delete>`
-* :ref:`o word call level <call_level>`
-* :ref:`currently executing line <current_line>`
-* :ref:`current velocity <current_vel>`
-* :ref:`cycle time <cycle_time>`
-* :ref:`G4 delay left <delay_left>`
-* :ref:`digital inputs <din>`
-* :ref:`distance to go <distance_to_go>`
-* :ref:`digital outputs <dout>`
-* :ref:`distance to go by axis <dtg>`
-* :ref:`serial number <echo_serial_number>`
-* :ref:`enabled <enabled>`
-* :ref:`estop <estop>`
-* :ref:`task execution state <exec_state>`
-* :ref:`feed hold <feed_hold_enabled>`
-* :ref:`feed override enabled <feed_override_enabled>`
-* :ref:`feedrate override <feedrate>`
-* :ref:`filename <file>`
-* :ref:`flood <flood>`
-* :ref:`G5x index <g5x_index>`
-* :ref:`G5x offset <g5x_offset>`
-* :ref:`G92 offset <g92_offset>`
-* :ref:`gcodes <gcodes>`
-* :ref:`homed <homed>`
-* :ref:`id <id>`
-* :ref:`in position <inpos>`
-* :ref:`input timer <input_timeout>`
-* :ref:`interpreter state <interp_state>`
-* :ref:`interpreter return code <interpreter_errcode>`
-* :ref:`joint n backlash <joint.n.backlash>`
-* :ref:`joint n enabled <joint.n.enabled>`
-* :ref:`joint n fault <joint.n.fault>`
-* :ref:`joint n following error <joint.n.ferror_current>`
-* :ref:`joint n maximum following error <joint.n.ferror_highmark>`
-* :ref:`joint n homed <joint.n.homed>`
-* :ref:`joint n homing <joint.n.homing>`
-* :ref:`joint n in position <joint.n.inpos>`
-* :ref:`joint n input position <joint.n.input>`
+* :ref:`acceleration <status-plugin-acceleration>`
+* :ref:`active queue <status-plugin-active_queue>`
+* :ref:`actual position <status-plugin-actual_position>`
+* :ref:`adaptive feed enabled <status-plugin-adaptive_feed_enabled>`
+* :ref:`analog inputs <status-plugin-ain>`
+* :ref:`all axes homed <status-plugin-all_axes_homed>`
+* :ref:`angular units <status-plugin-angular_units>`
+* :ref:`analog outputs <status-plugin-aout>`
+* :ref:`axes configured <status-plugin-axes>`
+* :ref:`axis mask <status-plugin-axis_mask>`
+* :ref:`block delete <status-plugin-block_delete>`
+* :ref:`o word call level <status-plugin-call_level>`
+* :ref:`currently executing line <status-plugin-current_line>`
+* :ref:`current velocity <status-plugin-current_vel>`
+* :ref:`cycle time <status-plugin-cycle_time>`
+* :ref:`G4 delay left <status-plugin-delay_left>`
+* :ref:`digital inputs <status-plugin-din>`
+* :ref:`distance to go <status-plugin-distance_to_go>`
+* :ref:`digital outputs <status-plugin-dout>`
+* :ref:`distance to go by axis <status-plugin-dtg>`
+* :ref:`serial number <status-plugin-echo_serial_number>`
+* :ref:`enabled <status-plugin-enabled>`
+* :ref:`estop <status-plugin-estop>`
+* :ref:`task execution state <status-plugin-exec_state>`
+* :ref:`feed hold <status-plugin-feed_hold_enabled>`
+* :ref:`feed override enabled <status-plugin-feed_override_enabled>`
+* :ref:`feedrate override <status-plugin-feedrate>`
+* :ref:`filename <status-plugin-file>`
+* :ref:`flood <status-plugin-flood>`
+* :ref:`G5x index <status-plugin-g5x_index>`
+* :ref:`G5x offset <status-plugin-g5x_offset>`
+* :ref:`G92 offset <status-plugin-g92_offset>`
+* :ref:`gcodes <status-plugin-gcodes>`
+* :ref:`homed <status-plugin-homed>`
+* :ref:`id <status-plugin-id>`
+* :ref:`in position <status-plugin-inpos>`
+* :ref:`input timer <status-plugin-input_timeout>`
+* :ref:`interpreter state <status-plugin-interp_state>`
+* :ref:`interpreter return code <status-plugin-interpreter_errcode>`
+* :ref:`joint n backlash <status-plugin-joint.n.backlash>`
+* :ref:`joint n enabled <status-plugin-joint.n.enabled>`
+* :ref:`joint n fault <status-plugin-joint.n.fault>`
+* :ref:`joint n following error <status-plugin-joint.n.ferror_current>`
+* :ref:`joint n maximum following error <status-plugin-joint.n.ferror_highmark>`
+* :ref:`joint n homed <status-plugin-joint.n.homed>`
+* :ref:`joint n homing <status-plugin-joint.n.homing>`
+* :ref:`joint n in position <status-plugin-joint.n.inpos>`
+* :ref:`joint n input position <status-plugin-joint.n.input>`
 * :ref:`joint n type of axis <joint.n.jointType>`
-* :ref:`joint n maximum following error rapid <joint.n.max_ferror>`
-* :ref:`joint n maximum hard limit <joint.n.max_hard_limit>`
-* :ref:`joint n maximum soft limit setting <joint.n.max_position_limit>`
-* :ref:`joint n maximum soft limit <joint.n.max_soft_limit>`
-* :ref:`joint n maximum following error feed <joint.n.min_ferror>`
-* :ref:`joint n minimum hard limit <joint.n.min_hard_limit>`
-* :ref:`joint n minimum soft limit <joint.n.min_position_limit>`
-* :ref:`joint n minimum soft limit exceeded <joint.n.min_soft_limit>`
-* :ref:`joint n commanded output position <joint.n.output>`
-* :ref:`joint n override limits <joint.n.override_limits>`
-* :ref:`joint n units <joint.n.units>`
-* :ref:`joint n velocity <joint.n.velocity>`
-* :ref:`joint actual positions <joint_actual_position>`
-* :ref:`commanded joint positions <joint_position>`
-* :ref:`joints <joints>`
-* :ref:`kinematics type <kinematics_type>`
-* :ref:`limit masks <limit>`
-* :ref:`linear units <linear_units>`
-* :ref:`lube status <lube>`
-* :ref:`lube level <lube_level>`
-* :ref:`maximum acceleration <max_acceleration>`
-* :ref:`maximum velocity <max_velocity>`
-* :ref:`m codes <mcodes>`
-* :ref:`mist status <mist>`
-* :ref:`motion line <motion_line>`
+* :ref:`joint n maximum following error rapid <status-plugin-joint.n.max_ferror>`
+* :ref:`joint n maximum hard limit <status-plugin-joint.n.max_hard_limit>`
+* :ref:`joint n maximum soft limit setting <status-plugin-joint.n.max_position_limit>`
+* :ref:`joint n maximum soft limit <status-plugin-joint.n.max_soft_limit>`
+* :ref:`joint n maximum following error feed <status-plugin-joint.n.min_ferror>`
+* :ref:`joint n minimum hard limit <status-plugin-joint.n.min_hard_limit>`
+* :ref:`joint n minimum soft limit <status-plugin-joint.n.min_position_limit>`
+* :ref:`joint n minimum soft limit exceeded <status-plugin-joint.n.min_soft_limit>`
+* :ref:`joint n commanded output position <status-plugin-joint.n.output>`
+* :ref:`joint n override limits <status-plugin-joint.n.override_limits>`
+* :ref:`joint n units <status-plugin-joint.n.units>`
+* :ref:`joint n velocity <status-plugin-joint.n.velocity>`
+* :ref:`joint actual positions <status-plugin-joint_actual_position>`
+* :ref:`commanded joint positions <status-plugin-joint_position>`
+* :ref:`joints <status-plugin-joints>`
+* :ref:`kinematics type <status-plugin-kinematics_type>`
+* :ref:`limit masks <status-plugin-limit>`
+* :ref:`linear units <status-plugin-linear_units>`
+* :ref:`lube status <status-plugin-lube>`
+* :ref:`lube level <status-plugin-lube_level>`
+* :ref:`maximum acceleration <status-plugin-max_acceleration>`
+* :ref:`maximum velocity <status-plugin-max_velocity>`
+* :ref:`m codes <status-plugin-mcodes>`
+* :ref:`mist status <status-plugin-mist>`
+* :ref:`motion line <status-plugin-motion_line>`
 * :ref:`motion mode<motion_mode>`
-* :ref:`motion type <motion_type>`
-* :ref:`machine power <on>`
-* :ref:`optional stop <optional_stop>`
-* :ref:`motion paused <paused>`
-* :ref:`pocket prepped <pocket_prepped>`
-* :ref:`trajectory position <position>`
-* :ref:`probe tripped <probe_tripped>`
-* :ref:`probe input value <probe_val>`
-* :ref:`probed position <probed_position>`
-* :ref:`probing status <probing>`
-* :ref:`program units <program_units>`
-* :ref:`trajectory planner queue <queue>`
-* :ref:`trajectory planner queue full <queue_full>`
-* :ref:`queued mdi commands <queued_mdi_commands>`
-* :ref:`rapid override scale <rapidrate>`
-* :ref:`interperter read line <read_line>`
-* :ref:`recent files <recent_files>`
-* :ref:`rotation XY <rotation_xy>`
-* :ref:`interpreter settings <settings>`
-* :ref:`spindle brake <spindle.n.brake>`
-* :ref:`spindle direction <spindle.n.direction>`
-* :ref:`spindle enabled <spindle.n.enabled>`
-* :ref:`spindle homed <spindle.n.homed>`
-* :ref:`spindle orient fault <spindle.n.orient_fault>`
-* :ref:`spindle n orient state <spindle.n.orient_state>`
-* :ref:`spindle speed override <spindle.n.override>`
-* :ref:`spindle speed override enabled <spindle.n.override_enabled>`
-* :ref:`spindle speed <spindle.n.speed>`
-* :ref:`spindles <spindles>`
-* :ref:`command execution status <state>`
-* :ref:`task mode <task_mode>`
-* :ref:`task paused <task_paused>`
-* :ref:`task state <task_state>`
-* :ref:`tool in spindle <tool_in_spindle>`
-* :ref:`tool offset <tool_offset>`
-* :ref:`tool table <tool_table>`
-* :ref:`velocity <velocity>`
+* :ref:`motion type <status-plugin-motion_type>`
+* :ref:`machine power <status-plugin-on>`
+* :ref:`optional stop <status-plugin-optional_stop>`
+* :ref:`motion paused <status-plugin-paused>`
+* :ref:`pocket prepped <status-plugin-pocket_prepped>`
+* :ref:`trajectory position <status-plugin-position>`
+* :ref:`probe tripped <status-plugin-probe_tripped>`
+* :ref:`probe input value <status-plugin-probe_val>`
+* :ref:`probed position <status-plugin-probed_position>`
+* :ref:`probing status <status-plugin-probing>`
+* :ref:`program units <status-plugin-program_units>`
+* :ref:`trajectory planner queue <status-plugin-queue>`
+* :ref:`trajectory planner queue full <status-plugin-queue_full>`
+* :ref:`queued mdi commands <status-plugin-queued_mdi_commands>`
+* :ref:`rapid override scale <status-plugin-rapidrate>`
+* :ref:`interperter read line <status-plugin-read_line>`
+* :ref:`recent files <status-plugin-recent_files>`
+* :ref:`rotation XY <status-plugin-rotation_xy>`
+* :ref:`interpreter settings <status-plugin-settings>`
+* :ref:`spindle brake <status-plugin-spindle.n.brake>`
+* :ref:`spindle direction <status-plugin-spindle.n.direction>`
+* :ref:`spindle enabled <status-plugin-spindle.n.enabled>`
+* :ref:`spindle homed <status-plugin-spindle.n.homed>`
+* :ref:`spindle orient fault <status-plugin-spindle.n.orient_fault>`
+* :ref:`spindle n orient state <status-plugin-spindle.n.orient_state>`
+* :ref:`spindle speed override <status-plugin-spindle.n.override>`
+* :ref:`spindle speed override enabled <status-plugin-spindle.n.override_enabled>`
+* :ref:`spindle speed <status-plugin-spindle.n.speed>`
+* :ref:`spindles <status-plugin-spindles>`
+* :ref:`command execution status <status-plugin-state>`
+* :ref:`task mode <status-plugin-task_mode>`
+* :ref:`task paused <status-plugin-task_paused>`
+* :ref:`task state <status-plugin-task_state>`
+* :ref:`tool in spindle <status-plugin-tool_in_spindle>`
+* :ref:`tool offset <status-plugin-tool_offset>`
+* :ref:`tool table <status-plugin-tool_table>`
+* :ref:`velocity <status-plugin-velocity>`
 
-.. _acceleration:
+.. _status-plugin-acceleration:
 
 acceleration
     default acceleration, ini parameter [TRAJ]DEFAULT_ACCELERATION
@@ -132,7 +132,7 @@ acceleration
 
 :ref:`return to the status items list <status_list>`
 
-.. _active_queue:
+.. _status-plugin-active_queue:
 
 active_queue
     number of motions blending
@@ -142,7 +142,7 @@ active_queue
 
 :ref:`return to the status items list <status_list>`
 
-.. _actual_position:
+.. _status-plugin-actual_position:
 
 actual_position
     current trajectory position, (x y z a b c u v w) in machine units
@@ -152,7 +152,7 @@ actual_position
 
 :ref:`return to the status items list <status_list>`
 
-.. _adaptive_feed_enabled:
+.. _status-plugin-adaptive_feed_enabled:
 
 adaptive_feed_enabled
     status of adaptive feedrate override
@@ -162,7 +162,7 @@ adaptive_feed_enabled
 
 :ref:`return to the status items list <status_list>`
 
-.. _ain:
+.. _status-plugin-ain:
 
 ain
     current value of the analog input pins
@@ -172,7 +172,7 @@ ain
 
 :ref:`return to the status items list <status_list>`
 
-.. _all_axes_homed:
+.. _status-plugin-all_axes_homed:
 
 all_axes_homed
     current status of all axes homed, if any axis is not homed it is false
@@ -182,7 +182,7 @@ all_axes_homed
 
 :ref:`return to the status items list <status_list>`
 
-.. _angular_units:
+.. _status-plugin-angular_units:
 
 angular_units
     machine angular units per deg, ini parameter [TRAJ]ANGULAR_UNITS
@@ -192,7 +192,7 @@ angular_units
 
 :ref:`return to the status items list <status_list>`
 
-.. _aout:
+.. _status-plugin-aout:
 
 aout
     current value of the analog output pins
@@ -202,7 +202,7 @@ aout
 
 :ref:`return to the status items list <status_list>`
 
-.. _axes:
+.. _status-plugin-axes:
 
 axes
     number of axes. derived from [TRAJ]COORDINATES ini parameter
@@ -212,7 +212,7 @@ axes
 
 :ref:`return to the status items list <status_list>`
 
-.. _axis_mask:
+.. _status-plugin-axis_mask:
 
 axis_mask
     axes as configured in the [TRAJ]COORDINATES INI parameter
@@ -225,7 +225,7 @@ axis_mask
 
 :ref:`return to the status items list <status_list>`
 
-.. _block_delete:
+.. _status-plugin-block_delete:
 
 block_delete
     block delete curren status
@@ -235,7 +235,7 @@ block_delete
 
 :ref:`return to the status items list <status_list>`
 
-.. _call_level:
+.. _status-plugin-call_level:
 
 call_level
     current nesting level of O-word procedures
@@ -245,7 +245,7 @@ call_level
 
 :ref:`return to the status items list <status_list>`
 
-.. _current_line:
+.. _status-plugin-current_line:
 
 current_line
     currently executing line
@@ -255,7 +255,7 @@ current_line
 
 :ref:`return to the status items list <status_list>`
 
-.. _current_vel:
+.. _status-plugin-current_vel:
 
 current_vel
     current velocity in user units per second
@@ -265,7 +265,7 @@ current_vel
 
 :ref:`return to the status items list <status_list>`
 
-.. _cycle_time:
+.. _status-plugin-cycle_time:
 
 cycle_time
     thread period
@@ -275,7 +275,7 @@ cycle_time
 
 :ref:`return to the status items list <status_list>`
 
-.. _delay_left:
+.. _status-plugin-delay_left:
 
 delay_left
     remaining time on the G4 dwell command, seconds
@@ -285,7 +285,7 @@ delay_left
 
 :ref:`return to the status items list <status_list>`
 
-.. _din:
+.. _status-plugin-din:
 
 din
     current value of the digital input pins
@@ -295,7 +295,7 @@ din
 
 :ref:`return to the status items list <status_list>`
 
-.. _distance_to_go:
+.. _status-plugin-distance_to_go:
 
 distance_to_go
     remaining distance of current move, as reported by trajectory planner
@@ -305,7 +305,7 @@ distance_to_go
 
 :ref:`return to the status items list <status_list>`
 
-.. _dout:
+.. _status-plugin-dout:
 
 dout
     current value of the digital output pins
@@ -315,7 +315,7 @@ dout
 
 :ref:`return to the status items list <status_list>`
 
-.. _dtg:
+.. _status-plugin-dtg:
 
 dtg
     remaining distance of current move for each axis, as reported by trajectory planner
@@ -325,7 +325,7 @@ dtg
 
 :ref:`return to the status items list <status_list>`
 
-.. _echo_serial_number:
+.. _status-plugin-echo_serial_number:
 
 echo_serial_number
     The serial number of the last completed command sent by a UI to task
@@ -335,7 +335,7 @@ echo_serial_number
 
 :ref:`return to the status items list <status_list>`
 
-.. _enabled:
+.. _status-plugin-enabled:
 
 enabled
     trajectory planner enabled flag
@@ -345,7 +345,7 @@ enabled
 
 :ref:`return to the status items list <status_list>`
 
-.. _estop:
+.. _status-plugin-estop:
 
 estop
     status of E Stop, 1 for enabled and 0 for not enabled
@@ -355,7 +355,7 @@ estop
 
 :ref:`return to the status items list <status_list>`
 
-.. _exec_state:
+.. _status-plugin-exec_state:
 
 exec_state
     task execution state
@@ -380,7 +380,7 @@ exec_state
 
 :ref:`return to the status items list <status_list>`
 
-.. _feed_hold_enabled:
+.. _status-plugin-feed_hold_enabled:
 
 feed_hold_enabled
     status of feed hold
@@ -390,7 +390,7 @@ feed_hold_enabled
 
 :ref:`return to the status items list <status_list>`
 
-.. _feed_override_enabled:
+.. _status-plugin-feed_override_enabled:
 
 feed_override_enabled
     status of feed override
@@ -400,7 +400,7 @@ feed_override_enabled
 
 :ref:`return to the status items list <status_list>`
 
-.. _feedrate:
+.. _status-plugin-feedrate:
 
 feedrate
     current feedrate override, 1.0 = 100%
@@ -410,7 +410,7 @@ feedrate
 
 :ref:`return to the status items list <status_list>`
 
-.. _file:
+.. _status-plugin-file:
 
 file
     currently loaded gcode filename with path
@@ -420,7 +420,7 @@ file
 
 :ref:`return to the status items list <status_list>`
 
-.. _flood:
+.. _status-plugin-flood:
 
 flood
     current flood status 0 for off, 1 for on
@@ -430,7 +430,7 @@ flood
 
 :ref:`return to the status items list <status_list>`
 
-.. _g5x_index:
+.. _status-plugin-g5x_index:
 
 g5x_index
     currently active coordinate system
@@ -455,7 +455,7 @@ g5x_index
 
 :ref:`return to the status items list <status_list>`
 
-.. _g5x_offset:
+.. _status-plugin-g5x_offset:
 
 g5x_offset
     offsets of the currently active coordinate system
@@ -465,7 +465,7 @@ g5x_offset
 
 :ref:`return to the status items list <status_list>`
 
-.. _g92_offset:
+.. _status-plugin-g92_offset:
 
 g92_offset
     current g92 offsets
@@ -475,7 +475,7 @@ g92_offset
 
 :ref:`return to the status items list <status_list>`
 
-.. _gcodes:
+.. _status-plugin-gcodes:
 
 gcodes
     active G-codes for each modal group
@@ -485,7 +485,7 @@ gcodes
 
 :ref:`return to the status items list <status_list>`
 
-.. _homed:
+.. _status-plugin-homed:
 
 homed
     currently homed joints, 0 = not homed, 1 = homed
@@ -495,7 +495,7 @@ homed
 
 :ref:`return to the status items list <status_list>`
 
-.. _id:
+.. _status-plugin-id:
 
 id
     currently executing motion id
@@ -505,7 +505,7 @@ id
 
 :ref:`return to the status items list <status_list>`
 
-.. _inpos:
+.. _status-plugin-inpos:
 
 inpos
     status machine in position
@@ -515,7 +515,7 @@ inpos
 
 :ref:`return to the status items list <status_list>`
 
-.. _input_timeout:
+.. _status-plugin-input_timeout:
 
 input_timeout
     flag for M66 timer in progress
@@ -525,7 +525,7 @@ input_timeout
 
 :ref:`return to the status items list <status_list>`
 
-.. _interp_state:
+.. _status-plugin-interp_state:
 
 interp_state
     current state of RS274NGC interpreter
@@ -544,7 +544,7 @@ interp_state
 
 :ref:`return to the status items list <status_list>`
 
-.. _interpreter_errcode:
+.. _status-plugin-interpreter_errcode:
 
 interpreter_errcode
     current RS274NGC interpreter return code
@@ -565,7 +565,7 @@ interpreter_errcode
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.backlash:
+.. _status-plugin-joint.n.backlash:
 
 joint.n.backlash
     backlash in machine units, ini parameter [JOINT_n]BACKLASH (`n` is joint number)
@@ -575,7 +575,7 @@ joint.n.backlash
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.enabled:
+.. _status-plugin-joint.n.enabled:
 
 joint.n.enabled
     status of joint n enabled, 0 not enabled 1 enabled
@@ -585,7 +585,7 @@ joint.n.enabled
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.fault:
+.. _status-plugin-joint.n.fault:
 
 joint.n.fault
     status of joint n fault, 0 not faulted 1 faulted
@@ -595,7 +595,7 @@ joint.n.fault
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.ferror_current:
+.. _status-plugin-joint.n.ferror_current:
 
 joint.n.ferror_current
     current joint n following error
@@ -605,7 +605,7 @@ joint.n.ferror_current
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.ferror_highmark:
+.. _status-plugin-joint.n.ferror_highmark:
 
 joint.n.ferror_highmark
     joint n magnitude of maximum following error
@@ -615,7 +615,7 @@ joint.n.ferror_highmark
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.homed:
+.. _status-plugin-joint.n.homed:
 
 joint.n.homed
     status of joint n homed, 0 not homed 1 homed
@@ -625,7 +625,7 @@ joint.n.homed
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.homing:
+.. _status-plugin-joint.n.homing:
 
 joint.n.homing
     status of joint n homing in progress, 0 not homing 1 homing
@@ -635,7 +635,7 @@ joint.n.homing
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.inpos:
+.. _status-plugin-joint.n.inpos:
 
 joint.n.inpos
     status of joint n in position, 0 not in position 1 in position
@@ -645,7 +645,7 @@ joint.n.inpos
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.input:
+.. _status-plugin-joint.n.input:
 
 joint.n.input
     joint n current input position
@@ -665,7 +665,7 @@ joint.n.jointType
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.max_ferror:
+.. _status-plugin-joint.n.max_ferror:
 
 joint.n.max_ferror
     joint n maximum following error rapid, ini parameter [JOINT_n]FERROR
@@ -675,7 +675,7 @@ joint.n.max_ferror
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.max_hard_limit:
+.. _status-plugin-joint.n.max_hard_limit:
 
 joint.n.max_hard_limit
     status of joint n maximum hard limit, 0 not exceeded 1 exceeded
@@ -685,7 +685,7 @@ joint.n.max_hard_limit
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.max_position_limit:
+.. _status-plugin-joint.n.max_position_limit:
 
 joint.n.max_position_limit
     joint n maximum soft limit, ini parameter [JOINT_n]MAX_LIMIT
@@ -695,7 +695,7 @@ joint.n.max_position_limit
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.max_soft_limit:
+.. _status-plugin-joint.n.max_soft_limit:
 
 joint.n.max_soft_limit
     status of joint n maximum soft limit, 0 not exceeded 1 exceeded
@@ -705,7 +705,7 @@ joint.n.max_soft_limit
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.min_ferror:
+.. _status-plugin-joint.n.min_ferror:
 
 joint.n.min_ferror
     maximum following error feed, ini parameter [JOINT_n]MIN_FERROR
@@ -715,7 +715,7 @@ joint.n.min_ferror
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.min_hard_limit:
+.. _status-plugin-joint.n.min_hard_limit:
 
 joint.n.min_hard_limit
     non-zero means min hard limit exceeded
@@ -725,7 +725,7 @@ joint.n.min_hard_limit
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.min_position_limit:
+.. _status-plugin-joint.n.min_position_limit:
 
 joint.n.min_position_limit
     minimum soft limit ini parameter [JOINT_n]MIN_LIMIT
@@ -735,7 +735,7 @@ joint.n.min_position_limit
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.min_soft_limit:
+.. _status-plugin-joint.n.min_soft_limit:
 
 joint.n.min_soft_limit
     non-zero means min_position_limit was exceeded
@@ -745,7 +745,7 @@ joint.n.min_soft_limit
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.output:
+.. _status-plugin-joint.n.output:
 
 joint.n.output
     commanded output position
@@ -755,7 +755,7 @@ joint.n.output
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.override_limits:
+.. _status-plugin-joint.n.override_limits:
 
 joint.n.override_limits
     non-zero means limits are overridden
@@ -765,7 +765,7 @@ joint.n.override_limits
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.units:
+.. _status-plugin-joint.n.units:
 
 joint.n.units
     joint units
@@ -775,7 +775,7 @@ joint.n.units
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.velocity:
+.. _status-plugin-joint.n.velocity:
 
 joint.n.velocity
     current velocity
@@ -785,7 +785,7 @@ joint.n.velocity
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint_actual_position:
+.. _status-plugin-joint_actual_position:
 
 joint_actual_position
     joint actual positions
@@ -795,7 +795,7 @@ joint_actual_position
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint_position:
+.. _status-plugin-joint_position:
 
 joint_position
     commanded joint positions
@@ -805,7 +805,7 @@ joint_position
 
 :ref:`return to the status items list <status_list>`
 
-.. _joints:
+.. _status-plugin-joints:
 
 joints
     number of joints, ini parameter [KINS]JOINTS
@@ -815,7 +815,7 @@ joints
 
 :ref:`return to the status items list <status_list>`
 
-.. _kinematics_type:
+.. _status-plugin-kinematics_type:
 
 kinematics_type
     kinematics type
@@ -825,7 +825,7 @@ kinematics_type
 
 :ref:`return to the status items list <status_list>`
 
-.. _limit:
+.. _status-plugin-limit:
 
 limit
     axis limit masks
@@ -835,7 +835,7 @@ limit
 
 :ref:`return to the status items list <status_list>`
 
-.. _linear_units:
+.. _status-plugin-linear_units:
 
 linear_units
     machine linear units,  ini parameter [TRAJ]LINEAR_UNITS
@@ -845,7 +845,7 @@ linear_units
 
 :ref:`return to the status items list <status_list>`
 
-.. _lube:
+.. _status-plugin-lube:
 
 lube
     lube status
@@ -855,7 +855,7 @@ lube
 
 :ref:`return to the status items list <status_list>`
 
-.. _lube_level:
+.. _status-plugin-lube_level:
 
 lube_level
     status of iocontrol.0.lube_level
@@ -865,7 +865,7 @@ lube_level
 
 :ref:`return to the status items list <status_list>`
 
-.. _max_acceleration:
+.. _status-plugin-max_acceleration:
 
 max_acceleration
     maximum acceleration,  ini parameter [TRAJ]MAX_ACCELERATION
@@ -875,7 +875,7 @@ max_acceleration
 
 :ref:`return to the status items list <status_list>`
 
-.. _max_velocity:
+.. _status-plugin-max_velocity:
 
 max_velocity
     maximum velocity,  ini parameter [TRAJ]MAX_VELOCITY
@@ -885,7 +885,7 @@ max_velocity
 
 :ref:`return to the status items list <status_list>`
 
-.. _mcodes:
+.. _status-plugin-mcodes:
 
 mcodes
     currently active M codes
@@ -895,7 +895,7 @@ mcodes
 
 :ref:`return to the status items list <status_list>`
 
-.. _mist:
+.. _status-plugin-mist:
 
 mist
     mist status
@@ -905,7 +905,7 @@ mist
 
 :ref:`return to the status items list <status_list>`
 
-.. _motion_line:
+.. _status-plugin-motion_line:
 
 motion_line
     source line number motion is currently executing
@@ -915,7 +915,7 @@ motion_line
 
 :ref:`return to the status items list <status_list>`
 
-.. _motion_mode:
+.. _status-plugin-motion_mode:
 
 motion_mode
     mode of the motion controller
@@ -934,7 +934,7 @@ motion_mode
 
 :ref:`return to the status items list <status_list>`
 
-.. _motion_type:
+.. _status-plugin-motion_type:
 
 motion_type
     motion type of move currently executing
@@ -956,7 +956,7 @@ motion_type
 
 :ref:`return to the status items list <status_list>`
 
-.. _on:
+.. _status-plugin-on:
 
 on
     status of machine power
@@ -966,7 +966,7 @@ on
 
 :ref:`return to the status items list <status_list>`
 
-.. _optional_stop:
+.. _status-plugin-optional_stop:
 
 optional_stop
     status of optional stop
@@ -976,7 +976,7 @@ optional_stop
 
 :ref:`return to the status items list <status_list>`
 
-.. _paused:
+.. _status-plugin-paused:
 
 paused
     motion paused
@@ -986,7 +986,7 @@ paused
 
 :ref:`return to the status items list <status_list>`
 
-.. _pocket_prepped:
+.. _status-plugin-pocket_prepped:
 
 pocket_prepped
     pocket prepped from last Tn commaned
@@ -996,7 +996,7 @@ pocket_prepped
 
 :ref:`return to the status items list <status_list>`
 
-.. _position:
+.. _status-plugin-position:
 
 position
     trajectory position
@@ -1006,7 +1006,7 @@ position
 
 :ref:`return to the status items list <status_list>`
 
-.. _probe_tripped:
+.. _status-plugin-probe_tripped:
 
 probe_tripped
     probe tripped
@@ -1016,7 +1016,7 @@ probe_tripped
 
 :ref:`return to the status items list <status_list>`
 
-.. _probe_val:
+.. _status-plugin-probe_val:
 
 probe_val
     value of the motion.probe-input pin
@@ -1026,7 +1026,7 @@ probe_val
 
 :ref:`return to the status items list <status_list>`
 
-.. _probed_position:
+.. _status-plugin-probed_position:
 
 probed_position
     position where probe tripped
@@ -1036,7 +1036,7 @@ probed_position
 
 :ref:`return to the status items list <status_list>`
 
-.. _probing:
+.. _status-plugin-probing:
 
 probing
     probe operation is in progress
@@ -1046,7 +1046,7 @@ probing
 
 :ref:`return to the status items list <status_list>`
 
-.. _program_units:
+.. _status-plugin-program_units:
 
 program_units
     program units
@@ -1066,7 +1066,7 @@ program_units
 
 :ref:`return to the status items list <status_list>`
 
-.. _queue:
+.. _status-plugin-queue:
 
 queue
     current size of the trajectory planner queue
@@ -1076,7 +1076,7 @@ queue
 
 :ref:`return to the status items list <status_list>`
 
-.. _queue_full:
+.. _status-plugin-queue_full:
 
 queue_full
     status of the trajectory planner queue
@@ -1086,7 +1086,7 @@ queue_full
 
 :ref:`return to the status items list <status_list>`
 
-.. _queued_mdi_commands:
+.. _status-plugin-queued_mdi_commands:
 
 queued_mdi_commands
     queued mdi commands
@@ -1096,7 +1096,7 @@ queued_mdi_commands
 
 :ref:`return to the status items list <status_list>`
 
-.. _rapidrate:
+.. _status-plugin-rapidrate:
 
 rapidrate
     rapid override scale
@@ -1106,7 +1106,7 @@ rapidrate
 
 :ref:`return to the status items list <status_list>`
 
-.. _read_line:
+.. _status-plugin-read_line:
 
 read_line
     current line the interperter is reading
@@ -1116,7 +1116,7 @@ read_line
 
 :ref:`return to the status items list <status_list>`
 
-.. _recent_files:
+.. _status-plugin-recent_files:
 
 recent_files
     recent files opened including file path
@@ -1126,7 +1126,7 @@ recent_files
 
 :ref:`return to the status items list <status_list>`
 
-.. _rotation_xy:
+.. _status-plugin-rotation_xy:
 
 rotation_xy
     current XY rotation angle around Z axis
@@ -1136,7 +1136,7 @@ rotation_xy
 
 :ref:`return to the status items list <status_list>`
 
-.. _settings:
+.. _status-plugin-settings:
 
 settings
     current interpreter settings
@@ -1158,7 +1158,7 @@ settings
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.brake:
+.. _status-plugin-spindle.n.brake:
 
 spindle.n.brake
     status of spindle n brake
@@ -1168,7 +1168,7 @@ spindle.n.brake
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.direction:
+.. _status-plugin-spindle.n.direction:
 
 spindle.n.direction
     rotational direction of the spindle. forward=1, reverse=-1
@@ -1178,7 +1178,7 @@ spindle.n.direction
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.enabled:
+.. _status-plugin-spindle.n.enabled:
 
 spindle.n.enabled
     spindle enabled status
@@ -1188,7 +1188,7 @@ spindle.n.enabled
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.homed:
+.. _status-plugin-spindle.n.homed:
 
 spindle.n.homed
     spindle n homed
@@ -1198,7 +1198,7 @@ spindle.n.homed
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.orient_fault:
+.. _status-plugin-spindle.n.orient_fault:
 
 spindle.n.orient_fault
     spindle n orient fault status
@@ -1208,7 +1208,7 @@ spindle.n.orient_fault
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.orient_state:
+.. _status-plugin-spindle.n.orient_state:
 
 spindle.n.orient_state
     unknown
@@ -1218,7 +1218,7 @@ spindle.n.orient_state
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.override:
+.. _status-plugin-spindle.n.override:
 
 spindle.n.override
     spindle n speed override scale
@@ -1228,7 +1228,7 @@ spindle.n.override
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.override_enabled:
+.. _status-plugin-spindle.n.override_enabled:
 
 spindle.n.override_enabled
     spindle n override enabled
@@ -1238,7 +1238,7 @@ spindle.n.override_enabled
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindle.n.speed:
+.. _status-plugin-spindle.n.speed:
 
 spindle.n.speed
     spindle n speed rpm, > 0 clockwise, < 0 counterclockwise
@@ -1248,7 +1248,7 @@ spindle.n.speed
 
 :ref:`return to the status items list <status_list>`
 
-.. _spindles:
+.. _status-plugin-spindles:
 
 spindles
     number of spindles, ini parameter [TRAJ]SPINDLES
@@ -1258,7 +1258,7 @@ spindles
 
 :ref:`return to the status items list <status_list>`
 
-.. _state:
+.. _status-plugin-state:
 
 state
     current command execution status
@@ -1268,7 +1268,7 @@ state
 
 :ref:`return to the status items list <status_list>`
 
-.. _task_mode:
+.. _status-plugin-task_mode:
 
 task_mode
     current task mode
@@ -1287,7 +1287,7 @@ task_mode
 
 :ref:`return to the status items list <status_list>`
 
-.. _task_paused:
+.. _status-plugin-task_paused:
 
 task_paused
     task paused status
@@ -1297,7 +1297,7 @@ task_paused
 
 :ref:`return to the status items list <status_list>`
 
-.. _task_state:
+.. _status-plugin-task_state:
 
 task_state
     current task state
@@ -1317,7 +1317,7 @@ task_state
 
 :ref:`return to the status items list <status_list>`
 
-.. _tool_in_spindle:
+.. _status-plugin-tool_in_spindle:
 
 tool_in_spindle
     current tool number
@@ -1327,7 +1327,7 @@ tool_in_spindle
 
 :ref:`return to the status items list <status_list>`
 
-.. _tool_offset:
+.. _status-plugin-tool_offset:
 
 tool_offset
     offset values of the current tool
@@ -1339,7 +1339,7 @@ tool_offset
 
 :ref:`return to the status items list <status_list>`
 
-.. _tool_table:
+.. _status-plugin-tool_table:
 
 tool_table
     list of tool entries
@@ -1349,7 +1349,7 @@ tool_table
 
 :ref:`return to the status items list <status_list>`
 
-.. _velocity:
+.. _status-plugin-velocity:
 
 velocity
     This property is defined, but it does not have a useful interpretation

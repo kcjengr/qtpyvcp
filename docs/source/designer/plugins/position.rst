@@ -10,11 +10,11 @@ distance to go coordinates.
 *Available datachannels*
 ------------------------
 
-* :ref:`abs <abs>`
-* :ref:`rel <rel>`
-* :ref:`dtg <dtg>`
+* :ref:`abs <position-plugin-abs>`
+* :ref:`rel <position-plugin-rel>`
+* :ref:`dtg <position-plugin-dtg>`
 
-.. _abs:
+.. _position-plugin-abs:
 
 abs
     Gives the current absolute/machine position.
@@ -25,7 +25,7 @@ abs
 
     | syntax ``position:abs?string&axis=x`` returns str
 
-.. _rel:
+.. _position-plugin-rel:
 
 rel
     Gives the current relative position with all offsets applied.
@@ -36,7 +36,7 @@ rel
 
     | syntax ``position:rel?string&axis=x`` returns str
     
-.. _dtg:
+.. _position-plugin-dtg:
 
 dtg
     Gives the remaining distance to go for the current move. Useful when 
