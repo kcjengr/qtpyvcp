@@ -34,36 +34,21 @@ Sample configuration:
 current_tool
     Gets information of the current tool.
 
-    | syntax ``tooltable:current_tool`` returns a dictionary containing
-    all column information.
-    | syntax ``tooltable:current_tool?T`` returns the current tool 
-    number.
-    | syntax ``tooltable:current_tool?P`` returns the current tool 
-    pocket number.
-    | syntax ``tooltable:current_tool?X`` returns the current tools X 
-    offset.
-    | syntax ``tooltable:current_tool?Y`` returns the current tools Y 
-    offset.
-    | syntax ``tooltable:current_tool?Z`` returns the current tools Z 
-    offset.
-    | syntax ``tooltable:current_tool?A`` returns the current tools A 
-    offset.
-    | syntax ``tooltable:current_tool?B`` returns the current tools B 
-    offset.
-    | syntax ``tooltable:current_tool?C`` returns the current tools C 
-    offset.
-    | syntax ``tooltable:current_tool?U`` returns the current tools U 
-    offset.
-    | syntax ``tooltable:current_tool?V`` returns the current tools V 
-    offset.
-    | syntax ``tooltable:current_tool?W`` returns the current tools W 
-    offset.
-    | syntax ``tooltable:current_tool?I`` returns the current tools 
-    front angle.
-    | syntax ``tooltable:current_tool?J`` returns the current tools 
-    back angle.
-    | syntax ``tooltable:current_tool?Q`` returns the current tools 
-    orientation.
-    | syntax ``tooltable:current_tool?R`` returns the current tools 
-    remark.
+    | syntax ``tooltable:current_tool`` returns a dictionary containing all column information.
+    | syntax ``tooltable:current_tool?T`` returns the current tool number.
+    | syntax ``tooltable:current_tool?P`` returns the current tool pocket number.
+    | syntax ``tooltable:current_tool?X`` returns the current tools X offset.
+    | syntax ``tooltable:current_tool?Y`` returns the current tools Y offset.
+    | syntax ``tooltable:current_tool?Z`` returns the current tools Z offset.
+    | syntax ``tooltable:current_tool?A`` returns the current tools A offset.
+    | syntax ``tooltable:current_tool?B`` returns the current tools B offset.
+    | syntax ``tooltable:current_tool?C`` returns the current tools C offset.
+    | syntax ``tooltable:current_tool?U`` returns the current tools U offset.
+    | syntax ``tooltable:current_tool?V`` returns the current tools V offset.
+    | syntax ``tooltable:current_tool?W`` returns the current tools W offset.
+    | syntax ``tooltable:current_tool?I`` returns the current tools front angle.
+    | syntax ``tooltable:current_tool?J`` returns the current tools back angle.
+    | syntax ``tooltable:current_tool?Q`` returns the current tools orientation.
+    | syntax ``tooltable:current_tool?R`` returns the current tools remark.
+
 
