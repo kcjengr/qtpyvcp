@@ -33,7 +33,7 @@ Sample configuration:
 
 current_tool
     Gets information of the current tool.
-    
+
     | syntax ``tooltable:current_tool`` returns a dictionary containing 
     all column information 
     | syntax ``tooltable:current_tool?T`` returns the current tool 
