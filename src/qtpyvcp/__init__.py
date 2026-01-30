@@ -5,8 +5,22 @@ import os
 
 from qtpyvcp.lib.types import DotDict
 
-from . import _version
-__version__ = _version.get_versions()['version']
+try:
+    # Try to get version from package metadata (for installed packages)
+    from importlib.metadata import version, PackageNotFoundError
+    try:
+        __version__ = version("qtpyvcp")
+    except PackageNotFoundError:
+        # Fall back to versioneer for development installations
+        from . import _version
+        __version__ = _version.get_versions()['version']
+except ImportError:
+    # Python < 3.8 fallback
+    try:
+        from . import _version
+        __version__ = _version.get_versions()['version']
+    except:
+        __version__ = "unknown"
 
 QTPYVCP_DIR = os.path.abspath(os.path.dirname(__file__))
 TOP_DIR = os.path.dirname(QTPYVCP_DIR)

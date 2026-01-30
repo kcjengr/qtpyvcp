@@ -1,6 +1,6 @@
 [build-system]
-requires = ["poetry-core", "versioneer[toml]"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
 
 [tool.poetry]
 name = "qtpyvcp"
@@ -12,7 +12,8 @@ authors = [
 ]
 description = "Qt and Python based Virtual Control Panel framework for LinuxCNC."
 readme = "README.md"
-version = "0.0"
+version = "0.0.0"
+dynamic = ["version"]
 
 
 packages = [
@@ -61,3 +62,16 @@ versionfile_source = "qtpyvcp/_version.py"
 versionfile_build = "qtpyvcp/_version.py"
 tag_prefix = ""
 parentdir_prefix = ""
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "pep440"
+pattern = "^(?P<base>\\d+\\.\\d+\\.\\d+)"
+format-jinja = """
+    {%- if distance == 0 -%}
+        {{ base }}
+    {%- else -%}
+        {{ base }}+{{ distance }}.g{{ commit }}
+    {%- endif -%}
+"""
