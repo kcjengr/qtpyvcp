@@ -1203,8 +1203,8 @@ class PreProcessor:
                     if line.is_hole:
                         LOG.debug("Found a Hole. Start HoleBuilder")
                         line.hole_builder = HoleBuilder()
-                        arc_i = line.params['I']
-                        arc_j = line.params['J']
+                        arc_i = line.params.get('I', 0)
+                        arc_j = line.params.get('J', 0)
                         centre_x = endx + arc_i
                         centre_y = endy + arc_j
                         radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
