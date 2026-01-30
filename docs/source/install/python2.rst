@@ -30,5 +30,5 @@ In runtime mode how does affect my configs?
 Nothing it should be transparent
 
 I have python component
-run `2to3.py`in yor component directory
+run `2to3.py` in yor component directory
 

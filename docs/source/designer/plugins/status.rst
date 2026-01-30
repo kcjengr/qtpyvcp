@@ -57,7 +57,7 @@ linuxcnc.stat python module.
 * :ref:`joint n homing <status-plugin-joint.n.homing>`
 * :ref:`joint n in position <status-plugin-joint.n.inpos>`
 * :ref:`joint n input position <status-plugin-joint.n.input>`
-* :ref:`joint n type of axis <joint.n.jointType>`
+* :ref:`joint n type of axis <status-plugin-joint.n.jointType>`
 * :ref:`joint n maximum following error rapid <status-plugin-joint.n.max_ferror>`
 * :ref:`joint n maximum hard limit <status-plugin-joint.n.max_hard_limit>`
 * :ref:`joint n maximum soft limit setting <status-plugin-joint.n.max_position_limit>`
@@ -655,7 +655,7 @@ joint.n.input
 
 :ref:`return to the status items list <status_list>`
 
-.. _joint.n.jointType:
+.. _status-plugin-joint.n.jointType:
 
 joint.n.jointType
     joint n type of axis, ini parameter [JOINT_n]TYPE

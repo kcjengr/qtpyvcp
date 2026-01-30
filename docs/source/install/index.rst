@@ -13,6 +13,7 @@ Installation
    bullseye
    bookworm
    build_debs
+   python2
 
 There are multiple ways to install QtPyVCP, either a development install, or a standard
 install from PyPi. Which one you choose depends on how you intend to use QtPyVCP.

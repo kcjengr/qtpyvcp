@@ -66,3 +66,4 @@ current_tool
     orientation.
     | syntax ``tooltable:current_tool?R`` returns the current tools 
     remark.
+
