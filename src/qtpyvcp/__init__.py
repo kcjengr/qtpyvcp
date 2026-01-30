@@ -17,7 +17,11 @@ try:
         # Fall back to dunamai for development installations
         try:
             from dunamai import Version
-            git_version = Version.from_git()
+            from pathlib import Path
+            # Use this module's directory for git lookup
+            module_dir = Path(__file__).parent.parent.parent
+            # Use same pattern as poetry-dynamic-versioning in pyproject.toml
+            git_version = Version.from_git(path=module_dir, pattern=r"^(?P<base>\d+\.\d+\.\d+)")
             # Format to match poetry-dynamic-versioning: base+distance.gcommit
             if git_version.distance > 0:
                 __version__ = f"{git_version.base}+{git_version.distance}.g{git_version.commit}"
@@ -29,7 +33,9 @@ except ImportError:
     # Python < 3.8 fallback
     try:
         from dunamai import Version
-        git_version = Version.from_git()
+        from pathlib import Path
+        module_dir = Path(__file__).parent.parent.parent
+        git_version = Version.from_git(path=module_dir, pattern=r"^(?P<base>\d+\.\d+\.\d+)")
         if git_version.distance > 0:
             __version__ = f"{git_version.base}+{git_version.distance}.g{git_version.commit}"
         else:
