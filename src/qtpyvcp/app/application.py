@@ -4,7 +4,7 @@ Contains the VCPApplication class with core function and VCP loading logic.
 """
 import os
 import sys
-import imp
+import importlib as imp
 import inspect
 from pkg_resources import iter_entry_points
 
