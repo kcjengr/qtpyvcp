@@ -69,3 +69,4 @@ qtpyvcp.cxxflags
 qtpyvcp.files
 
 qtpyvcp.includes
+.clang-format
