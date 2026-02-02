@@ -49,7 +49,7 @@ try:
     db_connect_str = cfg_dic['data_plugins']['plasmaprocesses']['kwargs']['connect_string']
     # if no error then we found a db connection string. Use it.
     PLASMADB = PlasmaProcesses(connect_string=db_connect_str)
-except:
+except Exception as e:
     # no connect string found OR can't connect so assume sqlite on local machine
     PLASMADB = PlasmaProcesses(db_type='sqlite')
 

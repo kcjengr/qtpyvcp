@@ -22,9 +22,9 @@ import sys
 import re
 import math
 import logging
-import time
+# import time
 from enum import Enum, auto
-from typing import List, Dict, Tuple, Union
+# from typing import List, Dict, Tuple, Union
 
 import hal
 import linuxcnc
@@ -54,7 +54,7 @@ def excepthook(exc_type, exc_msg, exc_tb):
         LOG.debug(exc_msg)
         LOG.debug(exc_tb)
     except Exception as e:
-        LOG.info("lol")
+        LOG.info(f"Exception hook: {e}")
 
 
 sys.excepthook = excepthook
@@ -70,8 +70,8 @@ UNITS, PRECISION, UNITS_PER_MM = ['in',6,25.4] if INI.find('TRAJ', 'LINEAR_UNITS
 try:
     h = hal.component('dummy')
     LOG.debug('Python HAL is available')
-except:
-    LOG.warn('Python HAL is NOT available')
+except Exception as e:
+    LOG.warn(f'Python HAL is NOT available: {e}')
 
 
 # Define some globals that will be referenced from anywhere
@@ -301,14 +301,14 @@ class CodeLine:
             LOG.debug(f'Codeline: Non-Multi code: Scan tokens on line. {line}')
             for k in tokens:
                 # do regex searches to find exact matches of the token patterns
-                magic = False
+                # magic = False
                 if k == '(':
                     # deal with escaping the '(' which is special char in regex
                     pattern = r"^\({1}"
                     r = re.search(pattern, line.upper().strip())
                 elif k == '(o=':
                     pattern = r"^\(o={1}"
-                    magic = True
+                    # magic = True
                     r = re.search(pattern, line.lower().strip())
                 else:
                     pattern = r"^"+k + r"{1}"
@@ -319,11 +319,11 @@ class CodeLine:
                 # no further processing else the intent of the gcode progam
                 # could be ruined.
                 override = re.search('#<', line.upper().strip())
-                if override != None:
+                if override is not None:
                     # found gcode variables, force r to None
                     r = None
                 
-                if r != None:
+                if r is not None:
                     # since r is NOT None we must have found something
                     self.type = tokens[k][0]
                     self.token = k
@@ -344,7 +344,7 @@ class CodeLine:
                 # As soon as we shift off being type OTHER, exit the method
                 # 1. is it an XY line
                 override = re.search('#<', line.upper().strip())
-                if override == None:
+                if override is None:
                     self.parse_XY_line()
                 #if self.type is not Commands.OTHER: return
 
@@ -353,7 +353,8 @@ class CodeLine:
         s = re.split(r";|\(", line, 1)
         try:
             return s[0].strip()
-        except:
+        except Exception as e:
+            LOG.info(f'Strip inline issue: {e}')
             return line
 
     def save_g_modal_group(self, grp):
@@ -370,7 +371,7 @@ class CodeLine:
         # look for possible inline comment
         s = re.split(r";|\(",self.raw[1:],1)
         robj = re.search(r";|\(",self.raw[1:])
-        if robj != None:
+        if robj is not None:
             # found an inline comment. get the char token for the comment
             i = robj.start() + 1
             found_c = self.raw[i]
@@ -582,7 +583,7 @@ class CodeLine:
         # cutter compensation detected.  Not supported by processor
         self.errors['compError'] = "Cutter compensation detected. \
                                     Ensure all compensation is baked into the tool path."
-        print(f'ERROR:CUTTER_COMP:INVALID GCODE FOUND',file=sys.stderr)
+        print('ERROR:CUTTER_COMP:INVALID GCODE FOUND',file=sys.stderr)
         sys.stderr.flush()
         self.type = Commands.REMOVE
 
@@ -596,7 +597,7 @@ class CodeLine:
 
 class HoleBuilder:
     def __init__(self):
-        torch_on = False
+        self.torch_on = False
         self.elements = []
 
     def degrees(self, rad):
@@ -715,7 +716,7 @@ class HoleBuilder:
 
     def plasma_mark(self, line, x, y, delay):
         self.elements=[]
-        feed_rate = line.get_active_feedrate()
+        # feed_rate = line.get_active_feedrate()
         self.elements.append(self.create_comment('---- Marking/Spotting Start ----'))
         #self.elements.append(self.create_feed(feed_rate))
         self.elements.append(self.create_line_gcode(x, y, True))
@@ -767,7 +768,7 @@ class HoleBuilder:
         split_angles = []
         full_circle = math.pi * 2  # 360 degrees. We need to use this for a segment moving to 12 O'clock
         degs90 = math.pi / 2
-        crossed_origin = False
+        # crossed_origin = False
         for spt in splits:
             # using the relationship of arc_length/circumfrance = angle/360 if you work the algebra you find:
             # angle = arc_length/radius (in radians)
@@ -1123,7 +1124,8 @@ class PreProcessor:
     def active_motion_code(self):
         try:
             return self.active_g_modal_grps[1]
-        except:
+        except Exception as e:
+            LOG.info(f'Active motion code issue: {e}')
             return None
 
 
@@ -1134,15 +1136,15 @@ class PreProcessor:
         thickness_ratio = hal.get_value('qtpyvcp.plasma-hole-thickness-ratio.out')
         max_hole_size = hal.get_value('qtpyvcp.plasma-max-hole-size.out')
         
-        arc1_feed_percent = hal.get_value('qtpyvcp.plasma-arc1-percent.out')/100
+        # arc1_feed_percent = hal.get_value('qtpyvcp.plasma-arc1-percent.out')/100
         
         arc2_distance = hal.get_value('qtpyvcp.plasma-arc2-distance.out')
-        arc2_feed_percent = hal.get_value('qtpyvcp.plasma-arc2-percent.out')/100
+        # arc2_feed_percent = hal.get_value('qtpyvcp.plasma-arc2-percent.out')/100
         
         arc3_distance = hal.get_value('qtpyvcp.plasma-arc3-distance.out')
-        arc3_feed_percent = hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
+        # arc3_feed_percent = hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
         
-        leadin_feed_percent = hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
+        # leadin_feed_percent = hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
         leadin_radius = hal.get_value('qtpyvcp.plasma-leadin-radius.out')
         
         kerf_width = hal.get_value('qtpyvcp.param-kirfwidth.out')
@@ -1159,7 +1161,7 @@ class PreProcessor:
         if small_hole_detect:
             small_hole_size = hal.get_value('qtpyvcp.plasma-small-hole-threshold.out')
             
-        marking_voltage = hal.get_value('qtpyvcp.spot-threshold.out')
+        # marking_voltage = hal.get_value('qtpyvcp.spot-threshold.out')
         marking_delay = hal.get_value('qtpyvcp.spot-delay.out')
         LOG.debug("Got all info from HAL pins")
         
@@ -1463,40 +1465,41 @@ class PreProcessor:
             self._line_num += 1
             self._line = line.strip()
             LOG.debug('Parse: Build gcode line.')
-            l = CodeLine(self._line, parent=self, g2g3flip=self.g2g3_flip)
-            try:
-                gcode = f'{l.command[0]}{l.command[1]}'
-            except:
-                gcode = ''
-            self.set_active_g_modal(l.token)
-            l.save_g_modal_group(self.active_g_modal_grps)
-            self._parsed.append(l)
+            cline = CodeLine(self._line, parent=self, g2g3flip=self.g2g3_flip)
+            # try:
+            #     gcode = f'{cline.command[0]}{cline.command[1]}'
+            # except Exception as e:
+            #     LOG.info(f'Gcode command parse issue: {e}')
+            #     gcode = ''
+            self.set_active_g_modal(cline.token)
+            cline.save_g_modal_group(self.active_g_modal_grps)
+            self._parsed.append(cline)
 
     def dump_raw(self):
         LOG.debug('Dump raw gcode to stdio')
-        for l in self._orig_gcode:
-            print(l, file=sys.stdout, end="")
+        for line in self._orig_gcode:
+            print(line, file=sys.stdout, end="")
             sys.stdout.flush()
             
 
     def dump_parsed(self):
         LOG.debug('Dump parsed gcode to stdio')
-        for l in self._parsed:
+        for line in self._parsed:
             #print(f'{l.type}\t\t -- {l.command} \
             #    {l.params} {l.comment}')
             # build up line to go to stdout
-            if l.is_hole:
+            if line.is_hole:
                 print('(---- Smart Hole Start ----)')
-                l.hole_builder.generate_hole_gcode()
+                line.hole_builder.generate_hole_gcode()
                 print('(---- Smart Hole End ----)')
                 print()
                 continue
-            if l.is_pierce:
+            if line.is_pierce:
                 print('(---- Pierce ----)')
-                l.pierce_builder.generate_pierce_gcode(l)
+                line.pierce_builder.generate_pierce_gcode(line)
                 continue
-            if l.type in [Commands.COMMENT, Commands.MAGIC_MATERIAL]:
-                out = l.comment
+            if line.type in [Commands.COMMENT, Commands.MAGIC_MATERIAL]:
+                out = line.comment
                 if out == ';end post-amble':
                     out += """
                     
@@ -1509,22 +1512,23 @@ o<loop> endwhile
 
 G10 L2 P0 X[#<ucs_x_offset> * 1] Y[#<ucs_y_offset> * 1] R#<ucs_r_offset>
                     """
-            elif l.type is Commands.OTHER:
+            elif line.type is Commands.OTHER:
                 # Other at the moment means not recognised
-                out = "; >>  "+l.raw
-            elif l.type in [Commands.PASSTHROUGH, Commands.RAW]:
-                out = l.raw
-            elif l.type is Commands.REMOVE:
+                out = "; >>  "+line.raw
+            elif line.type in [Commands.PASSTHROUGH, Commands.RAW]:
+                out = line.raw
+            elif line.type is Commands.REMOVE:
                 # skip line as not to be used
                 out = ''
                 continue
             else:
                 try:
-                    out = f"{l.command[0]}{l.command[1]}"
-                except:
+                    out = f"{line.command[0]}{line.command[1]}"
+                except Exception as e:
+                    LOG.info(f'Gcode parse issue: {e}')
                     out = ''
                 try:
-                    for p in l.params:
+                    for p in line.params:
                         vars = ''
                         if p == 'X':
                             vars = '#<blk_scale>*#<shape_mirror>'
@@ -1534,16 +1538,17 @@ G10 L2 P0 X[#<ucs_x_offset> * 1] Y[#<ucs_y_offset> * 1] R#<ucs_r_offset>
                             vars = '#<blk_scale>*#<shape_mirror>'
                         elif p == 'J':
                             vars = '#<blk_scale>*#<shape_flip>'
-                        if isinstance(l.params[p], float):
-                            if l.params[p] < 0.001:
-                                out += f' {p}[{l.params[p]:.6f}*{vars}]'
+                        if isinstance(line.params[p], float):
+                            if line.params[p] < 0.001:
+                                out += f' {p}[{line.params[p]:.6f}*{vars}]'
                             else:
-                                out += f' {p}[{l.params[p]:.3f}*{vars}]'
+                                out += f' {p}[{line.params[p]:.3f}*{vars}]'
                         else:
-                            out += f' {p}{l.params[p]}'
-                    out += f' {l.comment}'
+                            out += f' {p}{line.params[p]}'
+                    out += f' {line.comment}'
                     out = out.strip()
-                except:
+                except Exception as e:
+                    LOG.info(f'GCode parse issue: {e}')
                     out = ''
             #LOG.debug(f"Dump line >>> {out}")
             print(out, file=sys.stdout)
@@ -1551,14 +1556,14 @@ G10 L2 P0 X[#<ucs_x_offset> * 1] Y[#<ucs_y_offset> * 1] R#<ucs_r_offset>
 
     def set_ui_hal_cutchart_pin(self):
         if self.active_cutchart is not None and self.active_cutchart != 99999:
-            rtn = hal.set_p("qtpyvcp.cutchart-id", f"{self.active_cutchart}")
+            hal.set_p("qtpyvcp.cutchart-id", f"{self.active_cutchart}")
             LOG.debug(f'Set hal cutchart-id pin: {self.active_cutchart}')
         elif self.active_cutchart == 99999:
             # custom material type has been set via magic comment, configure
             # the DB entry and save, then update the cutchard ID pin to activate
             LOG.debug("Process for magic process tool 99999")
             q = PLASMADB.tool_id(99999)
-            if q != None:
+            if q is not None:
                 LOG.debug("Magic tool 99999 found. Updating")
                 # find the linera system ID
                 linear_systems = PLASMADB.linearsystems()
@@ -1615,9 +1620,9 @@ G10 L2 P0 X[#<ucs_x_offset> * 1] Y[#<ucs_y_offset> * 1] R#<ucs_r_offset>
                 # query for tool was empty so we need to create the magic
                 LOG.debug("ISSUE: The Magic tool 99999 does not exist!")
             
-            rtn = hal.set_p("qtpyvcp.cutchart-id", "99999")
-            LOG.debug(f'Set hal cutchart-id pin: 99999')
-            rtn = hal.set_p("qtpyvcp.cutchart-reload", "1")
+            hal.set_p("qtpyvcp.cutchart-id", "99999")
+            LOG.debug('Set hal cutchart-id pin: 99999')
+            hal.set_p("qtpyvcp.cutchart-reload", "1")
         else:
             LOG.debug('No active cutchart')
 
@@ -1628,8 +1633,9 @@ def main():
     try:
         inCode = sys.argv[1]
         LOG.debug(f'File to process: {inCode}')
-    except:
+    except Exception as e:
         # no arg found, probably being run from command line and someone forgot a file
+        LOG.info(f'Arg call issue: {e}')
         print(__doc__)
         return
 
@@ -1648,8 +1654,9 @@ def main():
         # if no error then we found a db connection string. Use it.
         PLASMADB = PlasmaProcesses(connect_string=db_connect_str)
         LOG.debug(f'Connected to NON SQLite DB: {db_connect_str}')
-    except:
+    except Exception as e:
         # no connect string found OR can't connect so assume sqlite on local machine
+        LOG.debug(f'Connection issue to SQL DB: {e}')
         PLASMADB = PlasmaProcesses(db_type='sqlite')
         LOG.debug('Connected to SQLite DB')
 
@@ -1666,13 +1673,15 @@ def main():
         # Holes flag
         try:
             do_holes = hal.get_value('qtpyvcp.plasma-hole-detect-enable.checked')
-        except:
+        except Exception as e:
+            LOG.debug(f'Hal pin query issue: {e}')
             do_holes = False
         
         # Pierce only flag
         try:
             do_pierce = hal.get_value('qtpyvcp.plasma-pierce-only-enable.checked')
-        except:
+        except Exception as e:
+            LOG.debug(f'Hal pin query issue: {e}')
             do_pierce = False
         
         if do_holes and not do_pierce:
