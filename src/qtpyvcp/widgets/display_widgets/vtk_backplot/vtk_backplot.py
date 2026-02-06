@@ -2187,8 +2187,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def backgroundColor(self, color):
         self._background_color = color
 
-        self.renderer.SetBackground(color.getRgbF()[:3])
-        self.renderer_window.Render()
+        if hasattr(self, 'renderer'):
+            self.renderer.SetBackground(color.getRgbF()[:3])
+            self.renderer_window.Render()
 
     # PySide6.QtCore.Property has no reset attribute
     # @backgroundColor.reset
@@ -2207,9 +2208,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def backgroundColor2(self, color2):
         self._background_color2 = color2
 
-        self.renderer.GradientBackgroundOn()
-        self.renderer.SetBackground2(color2.getRgbF()[:3])
-        self.renderer_window.Render()
+        if hasattr(self, 'renderer'):
+            self.renderer.GradientBackgroundOn()
+            self.renderer.SetBackground2(color2.getRgbF()[:3])
+            self.renderer_window.Render()
 
     # PySide6.QtCore.Property has no reset attribute
     # @backgroundColor2.reset

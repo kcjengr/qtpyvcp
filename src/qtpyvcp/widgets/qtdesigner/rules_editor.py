@@ -454,9 +454,9 @@ class RulesEditor(QtWidgets.QDialog):
 
         # Make the first entry be checked as suggestion
         if self.tbl_channels.rowCount() == 0:
-            state = QtCore.Qt.Checked
+            state = True
         else:
-            state = QtCore.Qt.Unchecked
+            state = False
 
         self.tbl_channels.insertRow(self.tbl_channels.rowCount())
         row = self.tbl_channels.rowCount() - 1

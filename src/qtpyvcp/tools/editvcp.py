@@ -39,6 +39,8 @@ import distro
 # sys.path.append(r'~/.p2/pool/plugins/org.python.pydev.core_13.1.0.202509210817/pysrc')
 # import pydevd; pydevd.settrace()
 
+# Force qtpy to use PySide6
+os.environ['QT_API'] = 'pyside6'
 
 from io import TextIOWrapper
 
