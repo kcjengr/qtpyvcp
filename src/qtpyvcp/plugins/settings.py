@@ -1,9 +1,13 @@
 """Settings Plugin"""
 
+import os
+
 from qtpyvcp import SETTINGS, CONFIG
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.settings import addSetting
-from qtpyvcp.plugins import DataPlugin, getPlugin, IN_DESIGNER
+from qtpyvcp.plugins import DataPlugin, getPlugin
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 LOG = getLogger(__name__)
 

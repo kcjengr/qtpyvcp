@@ -14,13 +14,18 @@ import json
 import functools
 import webbrowser
 
+# Force qtpy to use PySide6
+os.environ['QT_API'] = 'pyside6'
+
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from PySide6 import QtWidgets, QtCore, QtDesigner
 
-from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins, IN_DESIGNER
+from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins
 from qtpyvcp.utilities.settings import Setting
 from .plugin_extension import _PluginExtension
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 # Set up logging
 from qtpyvcp.utilities import logger
