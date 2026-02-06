@@ -18,7 +18,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from PySide6 import QtWidgets, QtCore, QtDesigner
 
-from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins
+from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins, IN_DESIGNER
 from qtpyvcp.utilities.settings import Setting
 from .plugin_extension import _PluginExtension
 
@@ -130,6 +130,9 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.widget = widget
         self.app = QtWidgets.QApplication.instance()
+
+        if IN_DESIGNER:
+            getPlugin('status')  # trigger designer plugin initialization
 
         self.lst_rule_item = None
         self.loading_data = False
