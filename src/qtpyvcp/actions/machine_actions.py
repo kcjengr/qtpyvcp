@@ -192,15 +192,43 @@ def issue_mdi(command, reset=True):
         reset (bool, optional): Whether to reset the Task Mode to the state
             the machine was in prior to issuing the MDI command.
     """
+    # Check if we're in G96 mode and this command might affect it
+    cmd_upper = command.upper()
+    in_g96_mode = False
+    g96_params = ""
+    try:
+        spindle_mode = STAT.gcodes[13] if len(STAT.gcodes) > 13 else None
+        in_g96_mode = (spindle_mode == 960)
+        
+        # If in G96 mode, save the current S (surface speed) parameter
+        if in_g96_mode:
+            s_value = STAT.settings[2]  # Surface speed from status
+            # Use a high default for D parameter (max RPM) since it's not in status
+            g96_params = f"G96 D1000 S{int(s_value)}"
+    except Exception as e:
+        LOG.error(f"Error checking G96 mode: {e}")
+    
+    # If in G96 mode, prepend G96 to commands to restore it after synch()
+    # This is necessary because LinuxCNC calls synch() before each MDI command,
+    # and synch() resets spindle_mode to CONSTANT_RPM (G97)
+    # Protect all commands except those explicitly setting G97 or already containing G96
+    if in_g96_mode and 'G96' not in cmd_upper and 'G97' not in cmd_upper:
+        command = f"{g96_params} {command}"
+        LOG.debug(f"Prepending G96 to preserve CSS mode: {command}")
+        reset = False  # Don't reset mode to prevent additional synch()
+    
+    global PREVIOUS_MODE
     if reset:
         # save the previous mode
-        global PREVIOUS_MODE
         PREVIOUS_MODE = STAT.task_mode
         # Force `interp_state` update on next status cycle. This is needed because
         # some commands might take less than `cycle_time` (50ms) to complete,
         # so status would not even notice that the interp_state had changed and the
         # reset mode method would not be called.
         STATUS.old['interp_state'] = -1
+    else:
+        # Clear PREVIOUS_MODE to prevent any automatic reset
+        PREVIOUS_MODE = None
 
     if setTaskMode(linuxcnc.MODE_MDI):
         # issue multiple MDI commands separated by ';'

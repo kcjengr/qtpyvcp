@@ -102,17 +102,17 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     @textFormat.setter
     def textFormat(self, text_fmt):
+        # Always save the format first
+        self._text_format = text_fmt
+        
+        # Validate the format if setting is already available
         if self._setting_name != "":
             setting = SETTINGS.get(self._setting_name)
             if setting:
                 try:
-                    str = text_fmt.format(setting.getValue())
+                    test_str = text_fmt.format(setting.getValue())
                 except Exception as e:
-                    LOG.warning(e)
-            else:
-                return
-
-        self._text_format = text_fmt
+                    LOG.warning(f"Invalid textFormat '{text_fmt}' for setting '{self._setting_name}': {e}")
 
 
 class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
