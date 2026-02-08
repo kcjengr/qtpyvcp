@@ -161,6 +161,9 @@ power.on.bindOk = power.off.bindOk = power.toggle.bindOk = _power_bindOk
 # -------------------------------------------------------------------------
 
 PREVIOUS_MODE = None
+G96_MAX_RPM = None  # Track the last G96 D value (max RPM limit)
+G96_SURFACE_SPEED = None  # Track the last G96 S value (surface speed in ft/min or m/min)
+G97_SPINDLE_RPM = None  # Track the last G97 S value (spindle RPM)
 
 def _resetMode(interp_state):
     global PREVIOUS_MODE
@@ -192,19 +195,48 @@ def issue_mdi(command, reset=True):
         reset (bool, optional): Whether to reset the Task Mode to the state
             the machine was in prior to issuing the MDI command.
     """
-    # Check if we're in G96 mode and this command might affect it
+    # Track G96/G97 parameters if this command contains them
+    global G96_MAX_RPM, G96_SURFACE_SPEED, G97_SPINDLE_RPM
     cmd_upper = command.upper()
+    
+    # Track G96 parameters (D = max RPM, S = surface speed in ft/min or m/min)
+    if 'G96' in cmd_upper:
+        import re
+        # Extract D value (max RPM limit)
+        if 'D' in cmd_upper:
+            d_match = re.search(r'D\s*(\d+(?:\.\d+)?)', cmd_upper)
+            if d_match:
+                G96_MAX_RPM = float(d_match.group(1))
+                LOG.debug(f"Captured G96 D value (max RPM): {G96_MAX_RPM}")
+        # Extract S value (surface speed in ft/min or m/min)
+        if 'S' in cmd_upper:
+            s_match = re.search(r'S\s*(\d+(?:\.\d+)?)', cmd_upper)
+            if s_match:
+                G96_SURFACE_SPEED = float(s_match.group(1))
+                LOG.debug(f"Captured G96 S value (surface speed): {G96_SURFACE_SPEED}")
+    
+    # Track G97 parameters (S = RPM - completely different from G96 S!)
+    elif 'G97' in cmd_upper and 'S' in cmd_upper:
+        import re
+        s_match = re.search(r'S\s*(\d+(?:\.\d+)?)', cmd_upper)
+        if s_match:
+            G97_SPINDLE_RPM = float(s_match.group(1))
+            LOG.debug(f"Captured G97 S value (spindle RPM): {G97_SPINDLE_RPM}")
+    
+    # Check if we're in G96 mode and this command might affect it
     in_g96_mode = False
     g96_params = ""
     try:
         spindle_mode = STAT.gcodes[13] if len(STAT.gcodes) > 13 else None
         in_g96_mode = (spindle_mode == 960)
         
-        # If in G96 mode, save the current S (surface speed) parameter
+        # If in G96 mode, use tracked D and S values from last G96 command
         if in_g96_mode:
-            s_value = STAT.settings[2]  # Surface speed from status
-            # Use a high default for D parameter (max RPM) since it's not in status
-            g96_params = f"G96 D1000 S{int(s_value)}"
+            # Use the last captured values, or fall back to status/defaults
+            d_value = G96_MAX_RPM if G96_MAX_RPM is not None else 1000
+            s_value = G96_SURFACE_SPEED if G96_SURFACE_SPEED is not None else STAT.settings[2]
+            g96_params = f"G96 D{int(d_value)} S{int(s_value)}"
+            LOG.debug(f"Will prepend G96 params: D={d_value}, S={s_value}")
     except Exception as e:
         LOG.error(f"Error checking G96 mode: {e}")
     
