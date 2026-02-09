@@ -247,7 +247,10 @@ def issue_mdi(command, reset=True):
     if in_g96_mode and 'G96' not in cmd_upper and 'G97' not in cmd_upper:
         command = f"{g96_params} {command}"
         LOG.debug(f"Prepending G96 to preserve CSS mode: {command}")
-        reset = False  # Don't reset mode to prevent additional synch()
+        # Allow mode reset for work offset commands (G10, G92) to ensure UI updates
+        # Only prevent reset for other commands to avoid extra synch() calls
+        if 'G10' not in cmd_upper and 'G92' not in cmd_upper:
+            reset = False  # Don't reset mode to prevent additional synch()
     
     global PREVIOUS_MODE
     if reset:
