@@ -17,13 +17,20 @@ RS274-Gcode:
         fontWeight: QFont:Normal
         fontCapitalization: QFont:AllUppercase
 
+    numbers:
+      match: ['[+-]?[0-9]+[\.]?[0-9]+?', '.[0-9]+']
+      textFormat:
+        foreground: '#0f0f0f'
+        fontPointSize: 17
+        fontWeight: QFont:Light
+
     modalGroup0:  # Non-Modal
-      match: ['G4', 'G10', 'G28', 'G30', 'G52', 'G53', 'G92', 'G92.1', 'G92.2', 'G92.3']
+      match: ['G0?4', 'G10', 'G28', 'G30', 'G52', 'G53', 'G92', 'G92.1', 'G92.2', 'G92.3']
       textFormat:
         foreground: '#800000'  # Maroon
 
     modalGroup1:  # Motion
-      match: ['G0', 'G1(?!\d)', 'G2(?!\d)', 'G3(?!\d)', 'G33', 'G38.2', 'G38.3', 'G38.4', 'G38.5', \
+      match: ['G', 'G0?0', 'G0?1(?!\d)', 'G0?2(?!\d)', 'G0?3(?!\d)', 'G33', 'G38.2', 'G38.3', 'G38.4', 'G38.5', \
               'G73', 'G76', 'G80', 'G81', 'G82', 'G83', 'G84', 'G85', 'G86', 'G87', 'G88', 'G89']
       textFormat:
         foreground: '#FF0000' # Red
@@ -97,7 +104,7 @@ RS274-Gcode:
         fontWeight: QFont:Bold
 
     modalGroup15:  # Lathe Diameter Mode
-      match: ['G7(?!\d)', 'G8(?!\d)']
+      match: ['G0?7(?!\d)', 'G0?8(?!\d)']
       textFormat:
         foreground: '#C0C0C0'  # Silver
         fontWeight: QFont:Bold
@@ -109,7 +116,7 @@ RS274-Gcode:
         fontWeight: QFont:Bold
 
     axisLetters:
-      match: 'ABCUVW'
+      match: 'ABCUVWIJKPQR'
       textFormat:
         foreground: 'purple'
         fontWeight: QFont:Bold
@@ -144,25 +151,37 @@ RS274-Gcode:
         fontWeight: QFont:Bold
 
     operators:
-      match: ['\*\*', '\*', 'MOD', '\+ ', '\- ', 'AND', 'OR', 'XOR', 'EQ', 'NE', 'GT', 'GE', 'LT', 'LE',]
+      match: ['=', '\*\*', '\*', '\\', 'MOD', '\+ ', '\- ', 'AND', 'OR', 'XOR', 'EQ', 'NE', 'GT', 'GE', 'LT', 'LE',]
       textFormat:
         foreground: 'blue'
         fontWeight: QFont:Bold
 
     functions:
-      match: ['SIN', 'COS', 'TAN', 'ASIN', 'ACOS', 'ATAN', 'ABS', 'EXP', 'FIx', 'FUP', 'ROUND', 'LN', 'SQRT', 'EXISTS']
+      match: ['SIN', 'COS', 'TAN', 'ASIN', 'ACOS', 'ATAN', 'ABS', 'EXP', 'FIX', 'FUP', 'ROUND', 'LN', 'SQRT', 'EXISTS']
+      textFormat:
+        foreground: 'blue'
+        fontWeight: QFont:Bold
+
+    keywords:
+      match: ['CALL', 'DO', 'WHILE', 'GOTO', 'IF', 'ENDIF', 'ELSE', 'SUB', 'ENDSUB', 'END', 'RETURN', 'REPEAT', 'ENDREPEAT']
       textFormat:
         foreground: 'blue'
         fontWeight: QFont:Bold
 
     lineNumbers:
-      match: ['N[0-9.]*']
+      match: ['N[0-9.]+']
       textFormat:
         foreground: 'gray'
         fontWeight: QFont:Light
 
+    subroutines:
+      match: ['O\<[A-Za-z0-9_]+\>', 'O[0-9]+']
+      textFormat:
+        foreground: 'navy'
+        fontWeight: QFont:Normal
+
     variables:
-      match: ['#\<.*?\>']
+      match: ['#\<.*?\>', '#[0-9]+']
       textFormat:
         foreground: 'purple'
         fontWeight: QFont:Normal
