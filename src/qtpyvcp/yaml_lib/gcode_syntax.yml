@@ -139,7 +139,7 @@ RS274-Gcode:
         fontWeight: QFont:Bold
 
     otherCodes:
-      match: ['F[0-9.]*', 'S[0-9.]*', 'T\d+']
+      match: ['F[0-9.]*', 'S[0-9.]*', 'T\d+', 'T']
       textFormat:
         foreground: '#006400'  # Dark Green
 
