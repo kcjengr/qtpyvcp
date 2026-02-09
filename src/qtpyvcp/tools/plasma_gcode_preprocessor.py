@@ -77,7 +77,7 @@ except Exception as e:
 # Define some globals that will be referenced from anywhere
 # assumption is MM's is the base unit of reference.
 PLASMADB = None
-DEBUG_COMMENTS = False
+DEBUG_COMMENTS = True
 
 G_MODAL_GROUPS = {
     1: ('G0','G1','G2','G3','G33','G38.n','G73','G76','G80','G81',\
@@ -745,9 +745,11 @@ class HoleBuilder:
         arc1_feed = feed_rate * hal.get_value('qtpyvcp.plasma-arc1-percent.out')/100
         arc2_feed = feed_rate * hal.get_value('qtpyvcp.plasma-arc2-percent.out')/100
         arc3_feed = feed_rate * hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
+        overburn_feed = feed_rate * hal.get_value('qtpyvcp.plasma-overburn-percent.out')/100
         leadin_feed = feed_rate * hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
 
         straight_leadin = hal.get_value('qtpyvcp.plasma-force-straight-leadin.checked')
+        kerf_adjusted = hal.get_value('qtpyvcp.plasma-is-kerf-compensated.checked')
 
         # is G40 active or not
         if line.active_g_modal_groups[7] == 'G40':
@@ -782,15 +784,15 @@ class HoleBuilder:
             #     this_ang = tmp_ang
             #     crossed_origin = True
             split_angles.append(this_ang)
-        #Sorting is not helpful with splits becasue the smaller values come befor ethe first segment.
-        #We need to keep ssegments in order
-        #sort angles, smallest first
+            LOG.debug(f"Splits to angles: Split = {spt}, Angle = {this_ang} rad, {math.degrees(this_ang)} deg")
+        #Sorting is not helpful with splits becasue the smaller values come before the first segment.
+        #We need to keep segments in order
 
         # compensate hole radius and leadin radius if not already compensated code
         # Testing for g40 active.  HOWEVER using a G41/42 code causes so many lost plasmac featrues
         # why on earth would you use it?
-        r = r if g40 else r - kc
-        leadin_radius = leadin_radius if g40 else leadin_radius -kc
+        r = r if g40 and kerf_adjusted else r - kc
+        leadin_radius = leadin_radius if g40 and kerf_adjusted else leadin_radius -kc
 
         # the first real point of the hole (after leadin)
         arc_x0 = x
@@ -914,6 +916,7 @@ class HoleBuilder:
 
         if len(split_angles) > 0:
             sector_num = 0
+            prev_angle = 0.0
             for sang in split_angles:
                 end_angle = sang
                 end_x = ( cx + r * math.cos(end_angle + degs90))
@@ -930,20 +933,26 @@ class HoleBuilder:
                 self.elements.append(self.create_debug_comment(f'Settings: angle = {str(sang)} end_angle {str(end_angle)} radians {str(self.degrees(end_angle))} degrees'))
                 self.elements.append(self.create_debug_comment(f'Arc length = {r * sang}'))
                 self.elements.append(self.create_comment(f'Sector number: {sector_num}'))
-                if sector_num == 0:
-                    self.elements.append(self.create_feed(arc1_feed))
-                elif sector_num == 1:
-                    self.elements.append(self.create_feed(arc2_feed))
-                elif sector_num == 2:
-                    # TORCH OFF
-                    self.elements.append(self.create_cut_on_off_gcode(False))
-                    self.elements.append(self.create_feed(arc3_feed))
-                self.elements.append(self.create_ccw_arc_gcode(end_x, end_y, cx, cy))
+                # only process a sector if the angle is different from the previous sector.
+                # same angle means 0 length sector and creating arc will generate odd behaviour
+                if sang != prev_angle:
+                    if sector_num == 0:
+                        self.elements.append(self.create_feed(arc1_feed))
+                    elif sector_num == 1:
+                        self.elements.append(self.create_feed(arc2_feed))
+                    elif sector_num == 2:
+                        # TORCH OFF
+                        # self.elements.append(self.create_cut_on_off_gcode(False))
+                        self.elements.append(self.create_feed(arc3_feed))
+                    elif sector_num == 3:
+                        self.elements.append(self.create_feed(overburn_feed))
+                    self.elements.append(self.create_ccw_arc_gcode(end_x, end_y, cx, cy))
                 # if (end_x == 0.00 and end_y == 0.00) == False:
                 #     #if not 12 O'clock, dwell for 0.5 sec so we have a visual indicator of each segment
                 #     # we need to insert a call to a procedure that creates the required gcode actions at the end of each segment
                 #     self.elements.append(self.create_dwell('0.5'))
                 sector_num += 1
+                prev_angle = sang
         else:
             # create hole as four arcs. no overburn or anything special.
             self.elements.append(self.create_ccw_arc_gcode(x-r, y, x, y))
@@ -994,7 +1003,9 @@ class HiDefHole:
                                    'speed1': d.speed1, \
                                    'speed2': d.speed2, \
                                    'speed2dist': d.speed2_distance, \
-                                   'offdistance': d.plasma_off_distance, \
+                                   'speed3': d.speed3, \
+                                   'speed3dist': d.speed3_distance, \
+                                   'overcutstartdistance': d.plasma_overcut_start_distance, \
                                    'overcut': d.over_cut, \
                                    'amps': d.amps
                                    })
@@ -1009,7 +1020,9 @@ class HiDefHole:
                 self.hole_list[i]['scale_speed1'] = self.hole_list[i]['speed1']/delta
                 self.hole_list[i]['scale_speed2'] = self.hole_list[i]['speed2']/delta
                 self.hole_list[i]['scale_speed2dist'] = self.hole_list[i]['speed2dist']/delta
-                self.hole_list[i]['scale_offdistance'] = self.hole_list[i]['offdistance']/delta
+                self.hole_list[i]['scale_speed3'] = self.hole_list[i]['speed3']/delta
+                self.hole_list[i]['scale_speed3dist'] = self.hole_list[i]['speed3dist']/delta
+                self.hole_list[i]['scale_overcutstartdistance'] = self.hole_list[i]['overcutstartdistance']/delta
                 self.hole_list[i]['scale_overcut'] = self.hole_list[i]['overcut']/delta
 
     def get_attribute(self, attribute, holesize):
@@ -1021,7 +1034,9 @@ class HiDefHole:
             speed1
             speed2
             speed2dist
-            offdistance
+            speed3
+            speed3dist
+            overcutstartdistance
             overcut
         """
         for i in range(1, len(self.hole_list)):
@@ -1049,8 +1064,14 @@ class HiDefHole:
     def speed2_distance(self, holesize):
         return self.get_attribute('speed2dist', holesize)
     
-    def plasma_off_distance(self, holesize):
-        return self.get_attribute('offdistance', holesize)
+    def speed3(self, holesize):
+        return self.get_attribute('speed3', holesize)
+    
+    def speed3_distance(self, holesize):
+        return self.get_attribute('speed3dist', holesize)
+
+    def overcut_start_distance(self, holesize):
+        return self.get_attribute('overcutstartdistance', holesize)
     
     def overcut(self, holesize):
         return self.get_attribute('overcut', holesize)
@@ -1143,6 +1164,9 @@ class PreProcessor:
         
         arc3_distance = hal.get_value('qtpyvcp.plasma-arc3-distance.out')
         # arc3_feed_percent = hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
+
+        overburn_distance = hal.get_value('qtpyvcp.plasma-overburn-distance.out')
+        # arc3_feed_percent = hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
         
         # leadin_feed_percent = hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
         leadin_radius = hal.get_value('qtpyvcp.plasma-leadin-radius.out')
@@ -1154,7 +1178,7 @@ class PreProcessor:
             LOG.debug(f"Hole Kerf is non Zero [{hole_kerf}].  Kerf aligned to Hole Kerh.  Kerf={kerf_width}")
 
 
-        torch_off_distance_before_zero = hal.get_value('qtpyvcp.plasma-torch-off-distance.out')
+        overburn_start_distance_before_zero = hal.get_value('qtpyvcp.plasma-overburn-start-distance.out')
                 
         small_hole_size = 0
         small_hole_detect = hal.get_value('qtpyvcp.plasma-small-hole-detect.checked')
@@ -1226,6 +1250,8 @@ class PreProcessor:
                             # speed1
                             # speed2
                             # speed2dist
+                            # speed3
+                            # speed3dist
                             # offdistance
                             # overcut
                             hidef_hole = HiDefHole(hidef_data)
@@ -1235,12 +1261,18 @@ class PreProcessor:
                             hidef_speed1 = hidef_hole.speed1(diameter)
                             hidef_speed2 = hidef_hole.speed2(diameter)
                             hidef_speed2dist = hidef_hole.speed2_distance(diameter)
-                            hidef_offdistance = hidef_hole.plasma_off_distance(diameter)
+                            hidef_speed3 = hidef_hole.speed3(diameter)
+                            hidef_speed3dist = hidef_hole.speed3_distance(diameter)
+                            # point from position 0 (12 oclock) overcut starts.
+                            # positive is right of 0 and negative is left of 0
+                            hidef_overcut_start_distance = hidef_hole.overcut_start_distance(diameter)
+                            # length of the overcut arc
                             hidef_overcut = hidef_hole.overcut(diameter)
                             if None not in (hidef_leadin, hidef_kerf, \
                                             hidef_cutheight, hidef_speed1, \
                                             hidef_speed2, hidef_speed2dist, \
-                                            hidef_offdistance, hidef_overcut):
+                                            hidef_speed3, hidef_speed3dist, \
+                                            hidef_overcut_start_distance, hidef_overcut):
                                 hidef = True
                             LOG.debug("HiDef status is {hidef}")
                         
@@ -1279,15 +1311,18 @@ class PreProcessor:
                                     break
                         elif hidef:
                             LOG.debug("Build a hole using hidef data")
-                            arc1_distance = circumferance - hidef_speed2dist - hidef_offdistance
+                            #TODO: fix for 3 segments and overburn
+                            arc1_distance = circumferance - hidef_speed2dist -hidef_speed2dist - hidef_overcut_start_distance
                             arc2_from_zero = arc1_distance + hidef_speed2dist
-                            arc3_from_zero = arc2_from_zero + hidef_overcut - circumferance
+                            arc3_from_zero = arc2_from_zero + arc3_distance
+                            overcut_from_zero = arc3_from_zero + hidef_overcut - circumferance
                             line.hole_builder.\
                                 plasma_hole(line, centre_x, centre_y, diameter, \
                                             hidef_kerf, hidef_leadin, \
                                             [arc1_distance, \
                                              arc2_from_zero, \
-                                             arc3_from_zero], hidef)
+                                             arc3_from_zero, \
+                                             overcut_from_zero], hidef)
                             
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                             j = i-1
@@ -1336,15 +1371,19 @@ class PreProcessor:
                             else:
                                 this_hole_leadin_radius = leadin_radius
                                 
-                            arc1_distance = circumferance - arc2_distance - torch_off_distance_before_zero
+                            arc1_distance = circumferance - arc2_distance - arc3_distance - overburn_start_distance_before_zero
                             arc2_from_zero = arc1_distance + arc2_distance
-                            arc3_from_zero = arc2_from_zero + arc3_distance - circumferance
+                            # arc3_from_zero = arc2_from_zero + arc3_distance - circumferance
+                            arc3_from_zero = arc2_from_zero + arc3_distance
+                            # overburn_from_zero = arc3_from_zero + overburn_distance - circumferance
+                            overburn_from_zero = arc3_from_zero + overburn_distance
                             line.hole_builder.\
                                 plasma_hole(line, centre_x, centre_y, diameter, \
                                             kerf_width, this_hole_leadin_radius, \
                                             [arc1_distance, \
                                              arc2_from_zero, \
-                                             arc3_from_zero])
+                                             arc3_from_zero, \
+                                             overburn_from_zero])
                             
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                             j = i-1
