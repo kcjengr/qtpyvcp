@@ -21,7 +21,6 @@ RS274-Gcode:
       match: ['[+-]?[0-9]+[\.]?[0-9]+?', '.[0-9]+']
       textFormat:
         foreground: '#0f0f0f'
-        fontPointSize: 17
         fontWeight: QFont:Light
 
     modalGroup0:  # Non-Modal
