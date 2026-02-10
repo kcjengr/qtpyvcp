@@ -17,7 +17,7 @@ from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
 
 from qtpy.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
-                            QPlainTextDocumentLayout)
+                            QPlainTextDocumentLayout, QFileDialog)
 
 from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import getPlugin
@@ -28,10 +28,17 @@ from qtpyvcp.utilities.encode_utils import allEncodings
 
 from qtpyvcp.widgets.dialogs.find_replace_dialog import FindReplaceDialog
 
+import linuxcnc
+
 LOG = getLogger(__name__)
 INFO = Info()
 STATUS = getPlugin('status')
 YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
+
+# Get PROGRAM_PREFIX from INI file for default save location
+INI_FILE = linuxcnc.ini(os.getenv('INI_FILE_NAME'))
+PROGRAM_PREFIX = INI_FILE.find('DISPLAY', 'PROGRAM_PREFIX') or '~/linuxcnc/nc_files'
+PROGRAM_PREFIX = os.path.expandvars(os.path.expanduser(PROGRAM_PREFIX))
 
 
 class GcodeSyntaxHighlighter(QSyntaxHighlighter):
@@ -364,12 +371,22 @@ class GcodeTextEdit(QPlainTextEdit):
         else:
             LOG.debug("---save error")
 
-    # simple input dialog for save as
+    # File save dialog for save as
     def save_as_dialog(self, filename):
-        text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
+        # Use QFileDialog to allow directory browsing
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
 
-        if ok_pressed and text != '':
-            return text
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save G-code File",
+            filename,
+            "G-code Files (*.ngc *.nc *.tap);;All Files (*)",
+            options=options
+        )
+
+        if file_path:
+            return file_path
         else:
             return False
 
@@ -379,7 +396,20 @@ class GcodeTextEdit(QPlainTextEdit):
         if open_file == None:
             return
 
-        save_file = self.save_as_dialog(open_file.fileName())
+        current_file_name = open_file.fileName()
+
+        # Check if current file is in config directory (new or unsaved file)
+        config_dir = os.environ.get('CONFIG_DIR', '')
+        if config_dir and current_file_name.startswith(config_dir):
+            # Use PROGRAM_PREFIX as the default directory
+            base_name = os.path.basename(current_file_name)
+            if not base_name or base_name == 'None':
+                base_name = 'new_file.ngc'
+            default_path = os.path.join(PROGRAM_PREFIX, base_name)
+        else:
+            default_path = current_file_name
+
+        save_file = self.save_as_dialog(default_path)
         self.saveFile(save_file)
 
     def keyPressEvent(self, event):
