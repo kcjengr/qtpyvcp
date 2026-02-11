@@ -9,7 +9,7 @@ import os
 import yaml
 
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
-                         Property, QFile, QTextStream)
+                         Property, QFile, QTextStream, QSize)
 
 from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
@@ -17,7 +17,99 @@ from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
 
 from qtpy.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
-                            QPlainTextDocumentLayout, QFileDialog)
+                            QPlainTextDocumentLayout, QFileDialog,
+                            QStyledItemDelegate, QTreeView, QListView)
+
+from dateutil.parser import parse as parse_date
+
+
+class ColumnFormatterDelegate(QStyledItemDelegate):
+    """Flexible delegate for column formatting with configurable alignment, padding, and text formatting."""
+    
+    def __init__(self, parent=None, alignment=None, margin=None, padding=None, formatter=None, text_padding=None):
+        """
+        Initialize the delegate.
+        
+        Args:
+            parent: Parent QObject
+            alignment: Qt alignment flags (e.g., Qt.AlignLeft, Qt.AlignRight | Qt.AlignVCenter)
+                      Default is Qt.AlignLeft | Qt.AlignVCenter
+            margin: Dict with keys 'top', 'right', 'bottom', 'left' for pixel margins (spacing between items)
+            padding: Dict with keys 'top', 'right', 'bottom', 'left' for pixel padding (inset content from highlight)
+            formatter: Optional function that takes (value, locale) and returns formatted string
+            text_padding: String to add as text padding (e.g., "  " for spaces)
+        """
+        super().__init__(parent)
+        self.alignment = alignment if alignment is not None else (Qt.AlignLeft | Qt.AlignVCenter)
+        self.margin = margin or {'top': 0, 'right': 0, 'bottom': 0, 'left': 0}
+        self.padding = padding or {'top': 0, 'right': 0, 'bottom': 0, 'left': 0}
+        self.text_padding = text_padding or ""
+        self.formatter = formatter
+    
+    def displayText(self, value, locale):
+        """Format the display text using the custom formatter if provided."""
+        if self.formatter:
+            text = self.formatter(value, locale)
+        else:
+            text = str(value)
+        
+        # Apply text padding if specified
+        if self.text_padding:
+            text = self.text_padding + text + self.text_padding
+            
+        return text
+    
+    def initStyleOption(self, option, index):
+        """Set the alignment and padding for this column."""
+        super().initStyleOption(option, index)
+        option.displayAlignment = self.alignment
+        # Apply padding to the rectangle
+        if self.padding:
+            option.rect = option.rect.adjusted(
+                self.padding.get('left', 0),
+                self.padding.get('top', 0),
+                -self.padding.get('right', 0),
+                -self.padding.get('bottom', 0)
+            )
+    
+    def sizeHint(self, option, index):
+        """Return size hint including margin and padding."""
+        size = super().sizeHint(option, index)
+        # Add both margin and padding to the total size
+        total_width = size.width() + self.margin.get('left', 0) + self.margin.get('right', 0) + self.padding.get('left', 0) + self.padding.get('right', 0)
+        total_height = size.height() + self.margin.get('top', 0) + self.margin.get('bottom', 0) + self.padding.get('top', 0) + self.padding.get('bottom', 0)
+        return QSize(total_width, total_height)
+
+
+# Formatter functions for specific column types
+def format_date(value, locale):
+    """Format dates as MM/DD/YY   HH:MM  AM/PM"""
+    try:
+        date = parse_date(str(value))
+        return f"{date:%m/%d/%y   %I:%M  %p}"
+    except (ValueError, TypeError):
+        return str(value)
+
+
+def format_size(value, locale):
+    """Format file sizes with two-letter abbreviations."""
+    text = str(value).strip()
+    replacements = {
+        ' bytes': ' byt',
+        ' KB': ' kib',
+        ' MB': ' mib',
+        ' GB': ' gib',
+        ' TB': ' tib',
+        ' KiB': ' kib',
+        ' MiB': ' mib',
+        ' GiB': ' gib',
+        ' TiB': ' tib',
+    }
+    for old, new in replacements.items():
+        if text.endswith(old):
+            return text[:-len(old)] + new
+    return text
+
 
 from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import getPlugin
@@ -377,18 +469,138 @@ class GcodeTextEdit(QPlainTextEdit):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
 
-        file_path, _ = QFileDialog.getSaveFileName(
-            self,
-            "Save G-code File",
-            filename,
-            "G-code Files (*.ngc *.nc *.tap);;All Files (*)",
-            options=options
-        )
+        directory = os.path.dirname(filename) if filename else ""
+        basename = os.path.basename(filename) if filename else ""
 
-        if file_path:
+        dialog = QFileDialog(self, "Save G-code File", directory,
+                             "G-code Files (*.ngc *.nc *.tap);;All Files (*)")
+        dialog.setOptions(options)
+        dialog.setAcceptMode(QFileDialog.AcceptSave)
+        dialog.setViewMode(QFileDialog.Detail)
+        dialog.setLabelText(QFileDialog.FileType, "File Type:")
+
+        if basename:
+            dialog.selectFile(basename)
+
+        # Configure column formatting
+        # Column configuration: alignment, margin (item spacing), padding (text inset), and formatter function
+        # Alignment options: Qt.AlignLeft, Qt.AlignRight, Qt.AlignCenter, Qt.AlignHCenter
+        # Combine with Qt.AlignVCenter for vertical centering
+        # Margin: spacing between items (affects clickable/highlight area size)
+        # Padding: insets text within the highlight area
+        
+        column_configs = {
+            0: {  # Name column
+                'alignment': Qt.AlignLeft | Qt.AlignVCenter,
+                'margin': {'top': 3, 'right': 0, 'bottom': 3, 'left': 0},  # Space between items
+                'padding': {'top': 0, 'right': 2, 'bottom': 0, 'left': 12},  # Text inset from highlight
+                'text_padding': None,  # String for text padding like "  "
+                'formatter': None,
+                'min_width': 300  # Minimum width in pixels
+            },
+            1: {  # Size column
+                'alignment': Qt.AlignRight | Qt.AlignVCenter,
+                'margin': {'top': 8, 'right': 0, 'bottom': 8, 'left': 0},
+                'padding': {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
+                'text_padding': None,
+                'formatter': format_size,
+                'min_width': 80
+            },
+            2: {  # Type column
+                'alignment': Qt.AlignRight | Qt.AlignVCenter,
+                'margin': {'top': 8, 'right': 0, 'bottom': 8, 'left': 0},
+                'padding': {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
+                'text_padding': None,
+                'formatter': None,
+                'min_width': 80
+            },
+            3: {  # Date column
+                'alignment': Qt.AlignRight | Qt.AlignVCenter,
+                'margin': {'top': 8, 'right': 0, 'bottom': 8, 'left': 0},
+                'padding': {'top': 0, 'right': 12, 'bottom': 0, 'left': 0},
+                'text_padding': None,
+                'formatter': format_date,
+                'min_width': 180
+            }
+        }
+        
+        # View configuration - shared settings for both tree and list views
+        view_font = QFont("sans", 10)
+        view_font.setWeight(QFont.Normal)
+        
+        view_min_width = 200  # Minimum width for the view widget
+        
+        # Sidebar (directory tree) configuration
+        # Note: Sidebar item padding is controlled in probe_basic.qss 
+        # via QFileDialog QTreeView#sidebar::item { padding: ... }
+        sidebar_config = {
+            'min_width': 200,
+            'max_width': 300
+        }
+        
+        # Create delegates for each column
+        delegates = {}
+        for col_num, config in column_configs.items():
+            delegates[col_num] = ColumnFormatterDelegate(
+                dialog,
+                alignment=config['alignment'],
+                margin=config.get('margin'),
+                padding=config.get('padding'),
+                formatter=config.get('formatter'),
+                text_padding=config.get('text_padding')
+            )
+        
+        # Apply delegates and settings to tree and list views
+        for view in dialog.findChildren(QTreeView):
+            if view.objectName() == 'treeView':
+                view.setFont(view_font)
+                view.setMinimumWidth(view_min_width)
+                for col_num, delegate in delegates.items():
+                    view.setItemDelegateForColumn(col_num, delegate)
+                
+                # Set column widths
+                header = view.header()
+                for col_num, config in column_configs.items():
+                    if 'min_width' in config and config['min_width']:
+                        header.resizeSection(col_num, config['min_width'])
+        
+        # Configure the sidebar (directory tree)
+        for sidebar in dialog.findChildren(QTreeView):
+            if sidebar.objectName() == 'sidebar':
+                sidebar.setMinimumWidth(sidebar_config['min_width'])
+                sidebar.setMaximumWidth(sidebar_config['max_width'])
+                sidebar.setFont(view_font)
+                    
+        for view in dialog.findChildren(QListView):
+            if view.objectName() == 'listView':
+                view.setFont(view_font)
+                view.setMinimumWidth(view_min_width)
+                for col_num, delegate in delegates.items():
+                    view.setItemDelegateForColumn(col_num, delegate)
+        
+        # Configure the splitter to show handle and set initial sizes
+        from qtpy.QtWidgets import QSplitter
+        for splitter in dialog.findChildren(QSplitter):
+            splitter.setHandleWidth(8)
+            splitter.setChildrenCollapsible(False)
+            # Set initial sizes: sidebar 200px, file list takes remaining space
+            splitter.setSizes([200, 600])
+
+        # Calculate and set dialog width based on all components
+        sidebar_width = 200        # Directory tree/sidebar on the left
+        splitter_handle = 8        # QSplitter handle width
+        columns_width = sum(config.get('min_width', 0) for config in column_configs.values())
+        scrollbar_width = 20       # Vertical scrollbar
+        dialog_margins = 40        # Left and right margins (20px each)
+        
+        dialog_width = sidebar_width + splitter_handle + columns_width + scrollbar_width + dialog_margins
+        dialog.resize(dialog_width, 600)  # Width based on all components, height 600px
+
+        if dialog.exec_() == QFileDialog.Accepted:
+            file_path = dialog.selectedFiles()[0]
             return file_path
-        else:
-            return False
+
+        return False
 
     @Slot()
     def saveFileAs(self):
