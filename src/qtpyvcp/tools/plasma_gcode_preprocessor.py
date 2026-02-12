@@ -20,7 +20,8 @@ Usage:
 import os
 import sys
 import re
-import math
+# import math
+from math import sqrt, radians, degrees, pi, fabs, cos, sin, atan2
 import logging
 # import time
 from enum import Enum, auto
@@ -600,15 +601,15 @@ class HoleBuilder:
         self.torch_on = False
         self.elements = []
 
-    def degrees(self, rad):
-        #convert radians to degrees to help decipher the angles
-        return(rad *(180/math.pi))
+    # def degrees(self, rad):
+    #     #convert radians to degrees to help decipher the angles
+    #     return(rad *(180/pi))
 
     def line_length(self, x1, y1, x2, y2):
         a = (x2 - x1)**2
         b = (y2 - y1)**2
         s = a + b
-        rtn = math.sqrt(s)
+        rtn = sqrt(s)
         return rtn
 
     def create_ccw_arc_gcode(self, x, y, rx, ry):
@@ -737,6 +738,26 @@ class HoleBuilder:
         # leadin_radius:  Radius for the lead in arc
         # splits[]:       List of length segments. Segments will support different speeds
         #                 and starting positions of the circle. Including overburn
+        
+        # Arc intersect calculation
+        def arc_intersect(h1, k1, h2, k2, r1, r2):
+            # h1,k1 = center of circle/arc 1
+            # h2,k2 = center of circle/arc 2
+            # r1 = radius of circle/arc 1
+            # r2 = radius of circle/arc 2
+            # distance between centres as L
+            L = sqrt((h2-h1)**2 + (k2-k1)**2)
+            # Calculate the distance 'a' from the center of the first circle
+            # to the point between intersection points
+            a = (r1**2 - r2**2 + L**2) / (2*L)
+            # Calculate the distance 'b' from the line joining the centers
+            # to the intersection points
+            b = sqrt(r1**2 - a**2)
+            x = h1 + (a*(h2-h1))/L + (b*(k2-k1))/L
+            y = k1 + (a*(k2-k1))/L - (b*(h2-h1))/L
+            return (x,y)
+
+        
         LOG.debug('Build smart hole')
         #kerf compensation
         # often code is already compensated. We need to be able to tell the script if it is
@@ -750,6 +771,7 @@ class HoleBuilder:
 
         straight_leadin = hal.get_value('qtpyvcp.plasma-force-straight-leadin.checked')
         kerf_adjusted = hal.get_value('qtpyvcp.plasma-is-kerf-compensated.checked')
+        overburn_adjustment = hal.get_value('qtpyvcp.plasma-overburn-adjustment.out')/100
 
         # is G40 active or not
         if line.active_g_modal_groups[7] == 'G40':
@@ -768,14 +790,14 @@ class HoleBuilder:
 
         # convert split distances to angles (in radians)
         split_angles = []
-        full_circle = math.pi * 2  # 360 degrees. We need to use this for a segment moving to 12 O'clock
-        degs90 = math.pi / 2
+        full_circle = pi * 2  # 360 degrees. We need to use this for a segment moving to 12 O'clock
+        degs90 = pi / 2
         # crossed_origin = False
-        for spt in splits:
+        # for spt in splits:
             # using the relationship of arc_length/circumfrance = angle/360 if you work the algebra you find:
             # angle = arc_length/radius (in radians)
-            tmp_ang = float(spt) / float(r)     # need to typecast to prevent Python from truncating to whole values, maybe should be double?
-            this_ang = tmp_ang    # Accoding to Juha, all angles are from 0 degrees, -ve angles to the right, +ve angles to the left
+            # tmp_ang = float(spt) / float(r)     # need to typecast to prevent Python from truncating to whole values, maybe should be double?
+            # this_ang = tmp_ang    # Accoding to Juha, all angles are from 0 degrees, -ve angles to the right, +ve angles to the left
             # this_ang = full_circle + tmp_ang    # Accoding to Juha, all angles are from 0 degrees, -ve angles to the right, +ve angles to the left
             # if (this_ang > full_circle) and (crossed_origin == False):
             #     # Has this split got to the 0deg/360 deg  origin?
@@ -783,8 +805,8 @@ class HoleBuilder:
             #     split_angles.append(full_circle)
             #     this_ang = tmp_ang
             #     crossed_origin = True
-            split_angles.append(this_ang)
-            LOG.debug(f"Splits to angles: Split = {spt}, Angle = {this_ang} rad, {math.degrees(this_ang)} deg")
+            # split_angles.append(this_ang)
+            # LOG.debug(f"Splits to angles: Split = {spt}, Angle = {this_ang} rad, {degrees(this_ang)} deg")
         #Sorting is not helpful with splits becasue the smaller values come before the first segment.
         #We need to keep segments in order
 
@@ -797,6 +819,11 @@ class HoleBuilder:
         # the first real point of the hole (after leadin)
         arc_x0 = x
         arc_y0 = y + r
+        # center for the final arc in an arc lead in
+        leadin_arc_cx = None
+        leadin_arc_cy = None
+        # flag for leadin type
+        is_straight_leadin = False
 
         # make sure gcode elements list is empty
         self.elements = []
@@ -809,7 +836,7 @@ class HoleBuilder:
         self.elements.append(self.create_debug_comment(f'First point on hole: x={arc_x0} y={arc_y0}'))
         self.elements.append(self.create_debug_comment(f'Leadin... Forced Straight = {straight_leadin}'))
 
-        centre_to_leadin_diam_gap = math.fabs(arc_y0 - (2 * leadin_radius) - y)
+        centre_to_leadin_diam_gap = fabs(arc_y0 - (2 * leadin_radius) - y)
         
         # set the lead in speed
         self.elements.append(self.create_feed(leadin_feed))
@@ -828,6 +855,7 @@ class HoleBuilder:
             # TORCH ON
             self.elements.append(self.create_cut_on_off_gcode(True))
             self.elements.append(self.create_line_gcode(arc_x0, arc_y0, False))
+            is_straight_leadin = True
 
         # leadin radius <= r / 2.
         # --> use half circle leadin
@@ -853,13 +881,15 @@ class HoleBuilder:
                 self.elements.append(self.create_cw_arc_gcode(x, y + centre_to_leadin_diam_gap, \
                                                               x, y + centre_to_leadin_diam_gap/2))
                 self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
-            
+            leadin_arc_cx = x
+            leadin_arc_cy = arc_y0 - leadin_radius
+            LOG.debug(f"Half circle radius leading arc centre: {leadin_arc_cx} , {leadin_arc_cy}")
 
         # r/2 < leadin radius < r.
         # --> use combination of leadin arc and a smaller arc from the hole center
         else:
             # TODO:
-            self.elements.append(self.create_debug_comment('Greater then Half circle radius'))
+            self.elements.append(self.create_debug_comment('Greater than Half circle radius'))
             self.elements.append(self.create_debug_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
 
             if centre_to_leadin_diam_gap < kerf:
@@ -879,6 +909,9 @@ class HoleBuilder:
                 self.elements.append(self.create_ccw_arc_gcode(x, y - centre_to_leadin_diam_gap, \
                                                               x, y - centre_to_leadin_diam_gap/2))
                 self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
+            leadin_arc_cx = x
+            leadin_arc_cy = arc_y0 - leadin_radius
+            LOG.debug(f"Greater than half circle radius leading arc centre: {leadin_arc_cx} , {leadin_arc_cy}")
 
 
             
@@ -912,15 +945,36 @@ class HoleBuilder:
         #this has been reworked quite a bit. The original code was referring to the cursor X & Y positions and they needed to be the hole centre
         # TODO: not happy with this as it only works where x = 0 I think. Nees to be more robust
         cx = x
-        cy =  y
+        cy = y
+        # build the split angles
+        inner_cut_radius = r - kc
+        leadin_outer_cut_radius = leadin_radius + kc
+        cut_end_angle = full_circle - kc/r - overburn_adjustment
+        if is_straight_leadin:
+            arc3_end_angle = full_circle - kerf/r
+        else:
+            arc3_end_x, arc3_end_y = \
+                          arc_intersect(x, y, \
+                                  leadin_arc_cx, leadin_arc_cy, \
+                                  inner_cut_radius, leadin_outer_cut_radius)
+            # calc arc3 end angle from x,y points, against hole centre
+            arc3_end_angle = degs90 - atan2(arc3_end_y, arc3_end_x)
 
+        split_angles = \
+            [radians(60), \
+            radians(240)-arc3_end_angle, \
+            full_circle - arc3_end_angle, \
+            cut_end_angle]
+
+        LOG.debug(f"split angle list = {split_angles}")
+        
         if len(split_angles) > 0:
             sector_num = 0
             prev_angle = 0.0
             for sang in split_angles:
                 end_angle = sang
-                end_x = ( cx + r * math.cos(end_angle + degs90))
-                end_y = ( cy + r * math.sin(end_angle + degs90))
+                end_x = ( cx + r * cos(end_angle + degs90))
+                end_y = ( cy + r * sin(end_angle + degs90))
                 if sang == full_circle or sang == 0:
                     #reset coordinates to 0,0 if angle = 360 degrees. We want the next segments to refer to 0 degrees
                     end_x = x
@@ -930,8 +984,7 @@ class HoleBuilder:
                 #     end_x = (cx - r * math.cos(end_angle + degs90))
                 #     end_y = (cy - r * math.sin(end_angle + degs90))
                 #comment the code
-                self.elements.append(self.create_debug_comment(f'Settings: angle = {str(sang)} end_angle {str(end_angle)} radians {str(self.degrees(end_angle))} degrees'))
-                self.elements.append(self.create_debug_comment(f'Arc length = {r * sang}'))
+                self.elements.append(self.create_debug_comment(f'Settings: end_angle {str(end_angle)} radians {str(degrees(end_angle))} degrees'))
                 self.elements.append(self.create_comment(f'Sector number: {sector_num}'))
                 # only process a sector if the angle is different from the previous sector.
                 # same angle means 0 length sector and creating arc will generate odd behaviour
@@ -941,8 +994,6 @@ class HoleBuilder:
                     elif sector_num == 1:
                         self.elements.append(self.create_feed(arc2_feed))
                     elif sector_num == 2:
-                        # TORCH OFF
-                        # self.elements.append(self.create_cut_on_off_gcode(False))
                         self.elements.append(self.create_feed(arc3_feed))
                     elif sector_num == 3:
                         self.elements.append(self.create_feed(overburn_feed))
@@ -1159,13 +1210,14 @@ class PreProcessor:
         
         # arc1_feed_percent = hal.get_value('qtpyvcp.plasma-arc1-percent.out')/100
         
-        arc2_distance = hal.get_value('qtpyvcp.plasma-arc2-distance.out')
+        # arc2_distance = hal.get_value('qtpyvcp.plasma-arc2-distance.out')
         # arc2_feed_percent = hal.get_value('qtpyvcp.plasma-arc2-percent.out')/100
         
-        arc3_distance = hal.get_value('qtpyvcp.plasma-arc3-distance.out')
+        # arc3_distance = hal.get_value('qtpyvcp.plasma-arc3-distance.out')
         # arc3_feed_percent = hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
 
-        overburn_distance = hal.get_value('qtpyvcp.plasma-overburn-distance.out')
+        # overburn_adjustment = hal.get_value('qtpyvcp.plasma-overburn-distance.out')
+        # overburn_distance = hal.get_value('qtpyvcp.plasma-overburn-distance.out')
         # arc3_feed_percent = hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
         
         # leadin_feed_percent = hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
@@ -1178,7 +1230,7 @@ class PreProcessor:
             LOG.debug(f"Hole Kerf is non Zero [{hole_kerf}].  Kerf aligned to Hole Kerh.  Kerf={kerf_width}")
 
 
-        overburn_start_distance_before_zero = hal.get_value('qtpyvcp.plasma-overburn-start-distance.out')
+        # overburn_start_distance_before_zero = hal.get_value('qtpyvcp.plasma-overburn-start-distance.out')
                 
         small_hole_size = 0
         small_hole_detect = hal.get_value('qtpyvcp.plasma-small-hole-detect.checked')
@@ -1234,8 +1286,8 @@ class PreProcessor:
                         centre_x = endx + arc_i
                         centre_y = endy + arc_j
                         radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
-                        diameter = 2 * math.fabs(radius)
-                        circumferance = diameter * math.pi
+                        diameter = 2 * fabs(radius)
+                        circumferance = diameter * pi
                         
                         # see if can find hidef data for this hole scenario
                         LOG.debug("Look for HiDef data on this material/machine/thickness")
@@ -1314,7 +1366,7 @@ class PreProcessor:
                             #TODO: fix for 3 segments and overburn
                             arc1_distance = circumferance - hidef_speed2dist -hidef_speed2dist - hidef_overcut_start_distance
                             arc2_from_zero = arc1_distance + hidef_speed2dist
-                            arc3_from_zero = arc2_from_zero + arc3_distance
+                            arc3_from_zero = arc2_from_zero + hidef_speed3dist
                             overcut_from_zero = arc3_from_zero + hidef_overcut - circumferance
                             line.hole_builder.\
                                 plasma_hole(line, centre_x, centre_y, diameter, \
@@ -1371,19 +1423,14 @@ class PreProcessor:
                             else:
                                 this_hole_leadin_radius = leadin_radius
                                 
-                            arc1_distance = circumferance - arc2_distance - arc3_distance - overburn_start_distance_before_zero
-                            arc2_from_zero = arc1_distance + arc2_distance
-                            # arc3_from_zero = arc2_from_zero + arc3_distance - circumferance
-                            arc3_from_zero = arc2_from_zero + arc3_distance
+                            # arc1_distance = circumferance - arc2_distance - arc3_distance - overburn_start_distance_before_zero
+                            # arc2_from_zero = arc1_distance + arc2_distance
+                            # arc3_from_zero = arc2_from_zero + arc3_distance
                             # overburn_from_zero = arc3_from_zero + overburn_distance - circumferance
-                            overburn_from_zero = arc3_from_zero + overburn_distance
+                            # overburn_from_zero = arc3_from_zero + overburn_distance
                             line.hole_builder.\
                                 plasma_hole(line, centre_x, centre_y, diameter, \
-                                            kerf_width, this_hole_leadin_radius, \
-                                            [arc1_distance, \
-                                             arc2_from_zero, \
-                                             arc3_from_zero, \
-                                             overburn_from_zero])
+                                            kerf_width, this_hole_leadin_radius)
                             
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                             j = i-1
