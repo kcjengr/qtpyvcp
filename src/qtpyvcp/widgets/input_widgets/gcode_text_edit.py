@@ -478,6 +478,26 @@ class GcodeTextEdit(QPlainTextEdit):
         dialog.setAcceptMode(QFileDialog.AcceptSave)
         dialog.setViewMode(QFileDialog.Detail)
         dialog.setLabelText(QFileDialog.FileType, "File Type:")
+        
+        # Clear file dialog history to prevent showing cached paths from other machines
+        # This is especially important when using sync tools like Syncthing that may sync Qt settings
+        # We only clear history, leaving sidebar URLs intact for normal directory navigation
+        dialog.setHistory([])
+        
+        # Filter sidebar URLs to remove non-existent directories
+        # Get current sidebar URLs and only keep ones that exist on this machine
+        from qtpy.QtCore import QUrl
+        current_urls = dialog.sidebarUrls()
+        valid_urls = []
+        
+        for url in current_urls:
+            local_path = url.toLocalFile()
+            if local_path and os.path.isdir(local_path):
+                valid_urls.append(url)
+        
+        # Only update sidebar if we filtered out invalid URLs
+        if len(valid_urls) != len(current_urls):
+            dialog.setSidebarUrls(valid_urls)
 
         if basename:
             dialog.selectFile(basename)
