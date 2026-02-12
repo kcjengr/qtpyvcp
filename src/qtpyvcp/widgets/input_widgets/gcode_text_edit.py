@@ -622,7 +622,10 @@ class GcodeTextEdit(QPlainTextEdit):
             default_path = current_file_name
 
         save_file = self.save_as_dialog(default_path)
-        self.saveFile(save_file)
+        if save_file:
+            self.saveFile(save_file)
+            # Load the newly saved file into LinuxCNC so STATUS.file is updated
+            program_actions.load(save_file)
 
     def keyPressEvent(self, event):
         # keep the cursor centered
