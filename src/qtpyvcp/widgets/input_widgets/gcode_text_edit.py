@@ -481,23 +481,35 @@ class GcodeTextEdit(QPlainTextEdit):
         
         # Clear file dialog history to prevent showing cached paths from other machines
         # This is especially important when using sync tools like Syncthing that may sync Qt settings
-        # We only clear history, leaving sidebar URLs intact for normal directory navigation
         dialog.setHistory([])
         
-        # Filter sidebar URLs to remove non-existent directories
-        # Get current sidebar URLs and only keep ones that exist on this machine
-        from qtpy.QtCore import QUrl
-        current_urls = dialog.sidebarUrls()
-        valid_urls = []
+        # Always use static system locations for consistency across all machines
+        # This prevents synced Qt settings from causing issues with Syncthing
+        from qtpy.QtCore import QUrl, QStandardPaths
         
-        for url in current_urls:
-            local_path = url.toLocalFile()
-            if local_path and os.path.isdir(local_path):
-                valid_urls.append(url)
+        static_urls = []
         
-        # Only update sidebar if we filtered out invalid URLs
-        if len(valid_urls) != len(current_urls):
-            dialog.setSidebarUrls(valid_urls)
+        # Home directory (user's home as first entry)
+        home_dir = os.path.expanduser('~')
+        if os.path.isdir(home_dir):
+            static_urls.append(QUrl.fromLocalFile(home_dir))
+        
+        # Desktop
+        desktop_paths = QStandardPaths.standardLocations(QStandardPaths.DesktopLocation)
+        if desktop_paths and os.path.isdir(desktop_paths[0]):
+            static_urls.append(QUrl.fromLocalFile(desktop_paths[0]))
+        
+        # Documents
+        doc_paths = QStandardPaths.standardLocations(QStandardPaths.DocumentsLocation)
+        if doc_paths and os.path.isdir(doc_paths[0]):
+            static_urls.append(QUrl.fromLocalFile(doc_paths[0]))
+        
+        # PROGRAM_PREFIX (LinuxCNC nc_files)
+        if os.path.isdir(PROGRAM_PREFIX):
+            static_urls.append(QUrl.fromLocalFile(PROGRAM_PREFIX))
+        
+        # Set the static sidebar URLs
+        dialog.setSidebarUrls(static_urls)
 
         if basename:
             dialog.selectFile(basename)
