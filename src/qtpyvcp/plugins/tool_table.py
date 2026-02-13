@@ -135,6 +135,8 @@ class ToolTable(DataPlugin):
         self.remember_tool_in_spindle = remember_tool_in_spindle
         self.columns = self.validateColumns(columns) or [c for c in 'TPXYZABCUVWDIJQR']
 
+        self.auto_home_atc_cmd = INFO.ini.find('ATC','AUTO_HOME_ATC')
+
         self.data_manager = getPlugin('persistent_data_manager')
 
         self.setCurrentToolNumber(0)
@@ -151,6 +153,9 @@ class ToolTable(DataPlugin):
         STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
         STATUS.tool_table.notify(lambda *args: self.loadToolTable())
 
+        if self.auto_home_atc_cmd:
+            STATUS.all_axes_homed.notify(self.reload_atc)
+
         STATUS.all_axes_homed.notify(self.reload_tool)
 
     def reload_tool(self):
@@ -162,6 +167,11 @@ class ToolTable(DataPlugin):
                 cmd = "M61 Q{0} G43".format(tnum)
                 # give LinuxCNC time to switch modes
                 QTimer.singleShot(200, lambda: issue_mdi(cmd))
+                
+    def reload_atc(self):
+        if STATUS.all_axes_homed.value and STATUS.enabled.value:
+            # give LinuxCNC time to switch modes
+            QTimer.singleShot(200, lambda: issue_mdi(self.auto_home_atc_cmd))
 
     @DataChannel
     def current_tool(self, chan, item=None):
