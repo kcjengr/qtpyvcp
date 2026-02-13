@@ -1,3 +1,4 @@
+import re
 import linuxcnc
 from qtpy.QtWidgets import QComboBox
 
@@ -201,7 +202,6 @@ def issue_mdi(command, reset=True):
     
     # Track G96 parameters (D = max RPM, S = surface speed in ft/min or m/min)
     if 'G96' in cmd_upper:
-        import re
         # Extract D value (max RPM limit)
         if 'D' in cmd_upper:
             d_match = re.search(r'D\s*(\d+(?:\.\d+)?)', cmd_upper)
@@ -217,7 +217,6 @@ def issue_mdi(command, reset=True):
     
     # Track G97 parameters (S = RPM - completely different from G96 S!)
     elif 'G97' in cmd_upper and 'S' in cmd_upper:
-        import re
         s_match = re.search(r'S\s*(\d+(?:\.\d+)?)', cmd_upper)
         if s_match:
             G97_SPINDLE_RPM = float(s_match.group(1))
@@ -245,7 +244,14 @@ def issue_mdi(command, reset=True):
     # and synch() resets spindle_mode to CONSTANT_RPM (G97)
     # Protect all commands except those explicitly setting G97 or already containing G96
     if in_g96_mode and 'G96' not in cmd_upper and 'G97' not in cmd_upper:
-        command = f"{g96_params} {command}"
+        # Check if command contains an O-word subroutine call (must be on separate line)
+        # Pattern matches: o<name> call or O<name> call (with optional spaces)
+        if re.search(r'[oO]\s*<[^>]+>\s*call', command):
+            # Use ';' separator for O-word calls (they must be on their own line)
+            command = f"{g96_params}; {command}"
+        else:
+            # Use space separator for regular G-code (allows ';' comments in manual MDI)
+            command = f"{g96_params} {command}"
         LOG.debug(f"Prepending G96 to preserve CSS mode: {command}")
         # Allow mode reset for work offset commands (G10, G92) to ensure UI updates
         # Only prevent reset for other commands to avoid extra synch() calls

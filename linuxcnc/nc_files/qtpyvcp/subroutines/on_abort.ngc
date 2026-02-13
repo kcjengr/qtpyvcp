@@ -1,4 +1,3 @@
-%
 o<on_abort> sub
 
 G90
@@ -6,4 +5,4 @@ G40
 G49
 
 o<on_abort> endsub
-%
+M2
