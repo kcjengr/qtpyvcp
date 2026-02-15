@@ -33,7 +33,7 @@ from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-# import pydevd;pydevd.settrace()
+import pydevd;pydevd.settrace()
 
 PREPROC_VERSION = '00.30'
 
@@ -65,6 +65,9 @@ LOG.info("Initialising ExceptionHook.")
 # Set over arching converstion fact. All thinking and calcs are in mm so need
 # convert and arbirary values to bannas when they are in use
 UNITS, PRECISION, UNITS_PER_MM = ['in',6,25.4] if INI.find('TRAJ', 'LINEAR_UNITS') == 'inch' else ['mm',4,1]
+
+# Get the machine name. This will be used to get the machine_id later
+MACHINE_NAME = INI.find('PLASMAC', 'MACHINE')
 
 # force the python HAL lib to load/init. Not doing this causes a silent "crash"
 # when trying to set a hal pin
@@ -729,7 +732,7 @@ class HoleBuilder:
         self.elements.append(self.create_cut_on_off_gcode(False))
         self.elements.append(self.create_comment('---- Marking/Spotting End ----'))
 
-    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[], hidef=False):
+    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, hidef_settings=None, hidef=False):
         # Params:
         # x:              Hole Centre X position
         # y:              Hole Centre y position
@@ -773,6 +776,30 @@ class HoleBuilder:
         kerf_adjusted = hal.get_value('qtpyvcp.plasma-is-kerf-compensated.checked')
         overburn_adjustment = hal.get_value('qtpyvcp.plasma-overburn-adjustment.out')/100
 
+        if hidef and hidef_settings is not None:
+            # over ride all the UI settings with the hidef data for hole build
+            # "hidef_leadin_radius": hidef_leadin_radius,
+            # "hidef_kerf": hidef_kerf,
+            # "hidef_cutheight": hidef_cutheight,
+            # "hidef_leadin_speed": hidef_leadin_speed,
+            # "hidef_speed1": hidef_speed1,
+            # "hidef_speed2": hidef_speed2,
+            # "hidef_speed3": hidef_speed3,
+            # "hidef_overburn_speed": hidef_overburn_speed,
+            # "hidef_overburn_adjust": hidef_overburn_adjust,
+            # "hidef_straight_leadin": hidef_straight_leadin
+            kerf_adjusted = hidef_settings["hidef_kerf"]
+            leadin_feed = hidef_settings["hidef_leadin_speed"]
+            arc1_feed = hidef_settings["hidef_speed1"]
+            arc2_feed = hidef_settings["hidef_speed2"]
+            arc3_feed = hidef_settings["hidef_speed3"]
+            overburn_feed = hidef_settings["hidef_overburn_speed"]
+            overburn_adjustment = hidef_settings["hidef_overburn_adjust"]
+            straight_leadin = hidef_settings["hidef_straight_leadin"]
+            
+
+        LOG.debug(f"Key params: kerf={kerf}, leadin_radius={leadin_radius}")
+
         # is G40 active or not
         if line.active_g_modal_groups[7] == 'G40':
             g40 = True
@@ -814,7 +841,8 @@ class HoleBuilder:
         # Testing for g40 active.  HOWEVER using a G41/42 code causes so many lost plasmac featrues
         # why on earth would you use it?
         r = r if g40 and kerf_adjusted else r - kc
-        leadin_radius = leadin_radius if g40 and kerf_adjusted else leadin_radius -kc
+        leadin_radius = leadin_radius if g40 and kerf_adjusted else leadin_radius - kc
+        LOG.debug(f"Adjusted leadin_radius={leadin_radius}")
 
         # the first real point of the hole (after leadin)
         arc_x0 = x
@@ -846,6 +874,7 @@ class HoleBuilder:
         # leadin radius too small or greater (or equal) than r.
         # --> use straight leadin from the hole center.
         if leadin_radius < 0 or leadin_radius >= r-kc or straight_leadin:
+            LOG.debug("Build straight leadin")
             if straight_leadin:
                 self.elements.append(self.create_debug_comment('forced straight leadin'))
             else:
@@ -861,10 +890,12 @@ class HoleBuilder:
         # --> use half circle leadin
         # done nothing here
         elif leadin_radius <= (r / 2):
+            LOG.debug("Build radius leadin where leadin_radius <= r/2")
             self.elements.append(self.create_debug_comment('Half circle radius'))
             # rapid to hole centre
             self.elements.append(self.create_debug_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
             if centre_to_leadin_diam_gap < kerf:
+                LOG.debug("... single arc")
                 self.elements.append(self.create_debug_comment('... single arc'))
                 self.elements.append(self.create_line_gcode(x, y, True))
                 self.elements.append(self.create_kerf_off_gcode())
@@ -873,6 +904,7 @@ class HoleBuilder:
                 self.elements.append(self.create_line_gcode(x, arc_y0 - 2 * leadin_radius, False))
                 self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
             else:
+                LOG.debug("... double back arc")
                 self.elements.append(self.create_debug_comment('... double back arc'))
                 self.elements.append(self.create_line_gcode(x, y, True))
                 self.elements.append(self.create_kerf_off_gcode())
@@ -889,10 +921,12 @@ class HoleBuilder:
         # --> use combination of leadin arc and a smaller arc from the hole center
         else:
             # TODO:
+            LOG.debug("Build radius leadin where leadin_radius > r/2")
             self.elements.append(self.create_debug_comment('Greater than Half circle radius'))
             self.elements.append(self.create_debug_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
 
             if centre_to_leadin_diam_gap < kerf:
+                LOG.debug("... single arc")
                 self.elements.append(self.create_debug_comment('... single arc'))
                 self.elements.append(self.create_line_gcode(x, y, True))
                 self.elements.append(self.create_kerf_off_gcode())
@@ -901,6 +935,7 @@ class HoleBuilder:
                 self.elements.append(self.create_line_gcode(x, y - centre_to_leadin_diam_gap, False))
                 self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
             else:
+                LOG.debug("... double back arc")
                 self.elements.append(self.create_debug_comment('... double back arc'))
                 self.elements.append(self.create_line_gcode(x, y, True))
                 self.elements.append(self.create_kerf_off_gcode())
@@ -949,7 +984,7 @@ class HoleBuilder:
         # build the split angles
         inner_cut_radius = r - kc
         leadin_outer_cut_radius = leadin_radius + kc
-        cut_end_angle = full_circle - kc/r - overburn_adjustment
+        cut_end_angle = full_circle - kc/r + overburn_adjustment
         if is_straight_leadin:
             arc3_end_angle = full_circle - kerf/r
         else:
@@ -958,14 +993,19 @@ class HoleBuilder:
                                   leadin_arc_cx, leadin_arc_cy, \
                                   inner_cut_radius, leadin_outer_cut_radius)
             # calc arc3 end angle from x,y points, against hole centre
-            arc3_end_angle = degs90 - atan2(arc3_end_y, arc3_end_x)
+            arc3_end_angle = full_circle - atan2(arc3_end_y, arc3_end_x)
+            LOG.debug(f"arc3 end x,y: {(arc3_end_x, arc3_end_y)}")
+            
+        if cut_end_angle <= arc3_end_angle:
+            cut_end_angle = arc3_end_angle + radians(0.5)
 
         split_angles = \
             [radians(60), \
-            radians(240)-arc3_end_angle, \
-            full_circle - arc3_end_angle, \
+            arc3_end_angle - radians(60), \
+            arc3_end_angle, \
             cut_end_angle]
 
+        LOG.debug(f"arc3 end angle: {arc3_end_angle} rads,  {degrees(arc3_end_angle)} degs")
         LOG.debug(f"split angle list = {split_angles}")
         
         if len(split_angles) > 0:
@@ -988,7 +1028,7 @@ class HoleBuilder:
                 self.elements.append(self.create_comment(f'Sector number: {sector_num}'))
                 # only process a sector if the angle is different from the previous sector.
                 # same angle means 0 length sector and creating arc will generate odd behaviour
-                if sang != prev_angle:
+                if sang > prev_angle:
                     if sector_num == 0:
                         self.elements.append(self.create_feed(arc1_feed))
                     elif sector_num == 1:
@@ -998,6 +1038,9 @@ class HoleBuilder:
                     elif sector_num == 3:
                         self.elements.append(self.create_feed(overburn_feed))
                     self.elements.append(self.create_ccw_arc_gcode(end_x, end_y, cx, cy))
+                else:
+                    self.elements.append(self.create_comment(f'Sector number: {sector_num} collapased as angle smaller than previous sector'))
+                    
                 # if (end_x == 0.00 and end_y == 0.00) == False:
                 #     #if not 12 O'clock, dwell for 0.5 sec so we have a visual indicator of each segment
                 #     # we need to insert a call to a procedure that creates the required gcode actions at the end of each segment
@@ -1051,13 +1094,13 @@ class HiDefHole:
                                    'leadinradius': d.leadin_radius, \
                                    'kerf': d.kerf, \
                                    'cutheight': d.cut_height, \
+                                   'leadin_speed': d.leadin_speed, \
                                    'speed1': d.speed1, \
                                    'speed2': d.speed2, \
-                                   'speed2dist': d.speed2_distance, \
                                    'speed3': d.speed3, \
-                                   'speed3dist': d.speed3_distance, \
-                                   'overcutstartdistance': d.plasma_overcut_start_distance, \
-                                   'overcut': d.over_cut, \
+                                   'overburn_speed': d.overburn_speed, \
+                                   'overburn_adjust': d.overburn_adjust, \
+                                   'straight_leadin': d.straight_leadin, \
                                    'amps': d.amps
                                    })
         for i in range(len(self.hole_list)):
@@ -1066,15 +1109,14 @@ class HiDefHole:
             if i > 0:
                 delta = self.hole_list[i]['hole'] - self.hole_list[i-1]['hole']
                 self.hole_list[i]['scale_leadinradius'] = self.hole_list[i]['leadinradius']/delta
-                self.hole_list[i]['scale_kerf'] = self.hole_list[i]['kerf']/delta
+                self.hole_list[i]['scale_kerf'] = self.hole_list[i]['kerf']/delta       # why would kerf scale?
                 self.hole_list[i]['scale_cutheight'] = self.hole_list[i]['cutheight']/delta
+                self.hole_list[i]['scale_leadin_speed'] = self.hole_list[i]['leadin_speed']/delta
                 self.hole_list[i]['scale_speed1'] = self.hole_list[i]['speed1']/delta
                 self.hole_list[i]['scale_speed2'] = self.hole_list[i]['speed2']/delta
-                self.hole_list[i]['scale_speed2dist'] = self.hole_list[i]['speed2dist']/delta
                 self.hole_list[i]['scale_speed3'] = self.hole_list[i]['speed3']/delta
-                self.hole_list[i]['scale_speed3dist'] = self.hole_list[i]['speed3dist']/delta
-                self.hole_list[i]['scale_overcutstartdistance'] = self.hole_list[i]['overcutstartdistance']/delta
-                self.hole_list[i]['scale_overcut'] = self.hole_list[i]['overcut']/delta
+                self.hole_list[i]['scale_overburn_speed'] = self.hole_list[i]['overburn_speed']/delta
+                self.hole_list[i]['scale_overburn_adjust'] = self.hole_list[i]['overburn_adjust']/delta
 
     def get_attribute(self, attribute, holesize):
         """
@@ -1084,11 +1126,10 @@ class HiDefHole:
             cutheight
             speed1
             speed2
-            speed2dist
             speed3
-            speed3dist
-            overcutstartdistance
-            overcut
+            overburn_speed
+            overburn_adjust
+            straight_leadin
         """
         for i in range(1, len(self.hole_list)):
             if self.hole_list[i-1]['hole'] <= holesize and holesize <= self.hole_list[i]['hole']:
@@ -1105,6 +1146,9 @@ class HiDefHole:
     
     def cut_height(self, holesize):
         return self.get_attribute('cutheight', holesize)
+
+    def leadin_speed(self, holesize):
+        return self.get_attribute('leadin_speed', holesize)
     
     def speed1(self, holesize):
         return self.get_attribute('speed1', holesize)
@@ -1112,20 +1156,17 @@ class HiDefHole:
     def speed2(self, holesize):
         return self.get_attribute('speed2', holesize)
     
-    def speed2_distance(self, holesize):
-        return self.get_attribute('speed2dist', holesize)
-    
     def speed3(self, holesize):
         return self.get_attribute('speed3', holesize)
     
-    def speed3_distance(self, holesize):
-        return self.get_attribute('speed3dist', holesize)
-
-    def overcut_start_distance(self, holesize):
-        return self.get_attribute('overcutstartdistance', holesize)
+    def overburn_speed(self, holesize):
+        return self.get_attribute('overburn_speed', holesize)
     
-    def overcut(self, holesize):
-        return self.get_attribute('overcut', holesize)
+    def overburn_adjust(self, holesize):
+        return self.get_attribute('overburn_adjust', holesize)
+    
+    def straight_leadin(self, holesize):
+        return self.get_attribute('straight_leadin', holesize)
     
 
 class PreProcessor:
@@ -1290,7 +1331,7 @@ class PreProcessor:
                         circumferance = diameter * pi
                         
                         # see if can find hidef data for this hole scenario
-                        LOG.debug("Look for HiDef data on this material/machine/thickness")
+                        LOG.debug(f"Look for HiDef data on this material/machine/thickness {(self.active_machineid, self.active_materialid, self.active_thicknessid)}")
                         hidef_data = PLASMADB.hidef_holes(self.active_machineid, self.active_materialid, self.active_thicknessid)
                         hidef = False
                         LOG.debug(f"Finished hidef data look. Found {len(hidef_data)}")
@@ -1301,30 +1342,26 @@ class PreProcessor:
                             # cutheight
                             # speed1
                             # speed2
-                            # speed2dist
                             # speed3
-                            # speed3dist
-                            # offdistance
-                            # overcut
+                            # overburn_speed
+                            # overburn_adjust
+                            # straight_leadin
                             hidef_hole = HiDefHole(hidef_data)
-                            hidef_leadin = hidef_hole.leadin_radius(diameter)
+                            hidef_leadin_radius = hidef_hole.leadin_radius(diameter)
                             hidef_kerf = hidef_hole.kerf(diameter)
                             hidef_cutheight = hidef_hole.cut_height(diameter)
+                            hidef_leadin_speed = hidef_hole.leadin_speed(diameter)
                             hidef_speed1 = hidef_hole.speed1(diameter)
                             hidef_speed2 = hidef_hole.speed2(diameter)
-                            hidef_speed2dist = hidef_hole.speed2_distance(diameter)
                             hidef_speed3 = hidef_hole.speed3(diameter)
-                            hidef_speed3dist = hidef_hole.speed3_distance(diameter)
-                            # point from position 0 (12 oclock) overcut starts.
-                            # positive is right of 0 and negative is left of 0
-                            hidef_overcut_start_distance = hidef_hole.overcut_start_distance(diameter)
-                            # length of the overcut arc
-                            hidef_overcut = hidef_hole.overcut(diameter)
-                            if None not in (hidef_leadin, hidef_kerf, \
-                                            hidef_cutheight, hidef_speed1, \
-                                            hidef_speed2, hidef_speed2dist, \
-                                            hidef_speed3, hidef_speed3dist, \
-                                            hidef_overcut_start_distance, hidef_overcut):
+                            hidef_overburn_speed = hidef_hole.overburn_speed(diameter)
+                            hidef_overburn_adjust = hidef_hole.overburn_adjust(diameter)
+                            hidef_straight_leadin = hidef_hole.straight_leadin(diameter)
+                            if None not in (hidef_leadin_radius, hidef_kerf, \
+                                            hidef_cutheight, hidef_leadin_speed, hidef_speed1, \
+                                            hidef_speed2, hidef_speed3, \
+                                            hidef_overburn_speed, hidef_overburn_adjust, \
+                                            hidef_straight_leadin):
                                 hidef = True
                             LOG.debug("HiDef status is {hidef}")
                         
@@ -1364,17 +1401,32 @@ class PreProcessor:
                         elif hidef:
                             LOG.debug("Build a hole using hidef data")
                             #TODO: fix for 3 segments and overburn
-                            arc1_distance = circumferance - hidef_speed2dist -hidef_speed2dist - hidef_overcut_start_distance
-                            arc2_from_zero = arc1_distance + hidef_speed2dist
-                            arc3_from_zero = arc2_from_zero + hidef_speed3dist
-                            overcut_from_zero = arc3_from_zero + hidef_overcut - circumferance
+                            # hidef_leadin_radius = hidef_hole.leadin_radius(diameter)
+                            # hidef_kerf = hidef_hole.kerf(diameter)
+                            # hidef_cutheight = hidef_hole.cut_height(diameter)
+                            # hidef_leadin_speed = hidef_hole.leadin_speed(diameter)
+                            # hidef_speed1 = hidef_hole.speed1(diameter)
+                            # hidef_speed2 = hidef_hole.speed2(diameter)
+                            # hidef_speed3 = hidef_hole.speed3(diameter)
+                            # hidef_overburn_speed = hidef_hole.overburn_speed(diameter)
+                            # hidef_overburn_adjust = hidef_hole.overburn_adjust(diameter)
+                            # hidef_straight_leadin = hidef_hole.straight_leadin(diameter)
+                            hidef_settings = {
+                                "hidef_leadin_radius": hidef_leadin_radius,
+                                "hidef_kerf": hidef_kerf,
+                                "hidef_cutheight": hidef_cutheight,
+                                "hidef_leadin_speed": hidef_leadin_speed,
+                                "hidef_speed1": hidef_speed1,
+                                "hidef_speed2": hidef_speed2,
+                                "hidef_speed3": hidef_speed3,
+                                "hidef_overburn_speed": hidef_overburn_speed,
+                                "hidef_overburn_adjust": hidef_overburn_adjust,
+                                "hidef_straight_leadin": hidef_straight_leadin
+                                }
                             line.hole_builder.\
                                 plasma_hole(line, centre_x, centre_y, diameter, \
                                             hidef_kerf, hidef_leadin, \
-                                            [arc1_distance, \
-                                             arc2_from_zero, \
-                                             arc3_from_zero, \
-                                             overcut_from_zero], hidef)
+                                            hidef_settings, hidef)
                             
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                             j = i-1
