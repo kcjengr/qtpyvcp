@@ -26,7 +26,7 @@ from qtpyvcp.plugins import Plugin
 
 from sqlalchemy import create_engine
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, String, Float, LargeBinary
+from sqlalchemy import Integer, String, Float, LargeBinary, Boolean
 from sqlalchemy import and_
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -203,15 +203,13 @@ class HoleCut(crudMixin, BASE):
     leadin_radius = Column(Float)
     kerf = Column(Float)
     cut_height = Column(Float)
+    leadin_speed = Column(Float)
     speed1 = Column(Float)
     speed2 = Column(Float)
-    speed2_distance = Column(Float)
     speed3 = Column(Float)
-    speed3_distance = Column(Float)
-    # distance before 12 o'clock that overcut arc starts
-    plasma_overcut_start_distance = Column(Float)
-    # length of overcut arc
-    over_cut = Column(Float)
+    overburn_speed = Column(Float)
+    overburn_adjust = Column(Float)
+    straight_leadin = Column(Boolean)
 
     @classmethod
     def get_holes(cls, session, mch=0, mat=0, thi=0):
