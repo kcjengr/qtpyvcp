@@ -43,6 +43,8 @@ class VTKCanon(StatCanon):
         self.path_start_point = OrderedDict()
         self.paths_angle_points = OrderedDict()
         self.path_end_point = OrderedDict()
+        self.path_segments = list()
+        self.offset_transitions = list()
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
@@ -98,6 +100,9 @@ class VTKCanon(StatCanon):
             self.path_points[new_wcs] = list()
             self.initial_wcs_offsets[new_wcs] = (x, y, z, a, b, c, u, v, w)
 
+        if len(self.path_segments) == 0 or self.path_segments[-1]['wcs_index'] != new_wcs:
+            self.path_segments.append({'wcs_index': new_wcs, 'lines': list()})
+
         self.active_wcs_index = new_wcs
 
     def set_xy_rotation(self, rotation):
@@ -132,6 +137,9 @@ class VTKCanon(StatCanon):
         if self.active_wcs_index not in list(self.path_actors.keys()):
             self.path_actors[self.active_wcs_index] = PathActor(self._datasource)
 
+        if len(self.path_segments) == 0 or self.path_segments[-1]['wcs_index'] != self.active_wcs_index:
+            self.path_segments.append({'wcs_index': self.active_wcs_index, 'lines': list()})
+
         for count, value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
             adj_start_point[count] -= value
             adj_end_point[count] -= value
@@ -139,6 +147,7 @@ class VTKCanon(StatCanon):
 
         line = [tuple(adj_start_point), tuple(adj_end_point)]
         self.path_points.get(self.active_wcs_index).append((line_type, line))
+        self.path_segments[-1]['lines'].append((line_type, line))
         # LOG.debug(f"--------- Adjusted line_type={line_type}, start={adj_start_point}, end={adj_end_point}")
         #except Exception as error:
         #    LOG.debug(f"add_path_point - Exception raised: {type(error).__name__} - {error}")
@@ -282,6 +291,62 @@ class VTKCanon(StatCanon):
 
             prev_wcs_index = wcs_index
 
+        self.offset_transitions = list()
+        self.path_start_point.clear()
+        self.path_end_point.clear()
+
+        if (not self._datasource.isMachineFoam()) and (len(self.path_segments) > 1):
+            segment_summaries = list()
+
+            for segment_index, segment in enumerate(self.path_segments):
+                segment_wcs_index = segment['wcs_index']
+                segment_data = segment['lines']
+                segment_start = None
+                segment_end = None
+                segment_point_count = 0
+
+                for segment_line_type, segment_line_data in segment_data:
+                    segment_start_point = segment_line_data[0]
+                    segment_end_point = segment_line_data[1]
+
+                    if (segment_index > 0) and (segment_point_count == 0) and (segment_line_type == "traverse"):
+                        continue
+
+                    if segment_start is None:
+                        segment_start = [
+                            segment_start_point[0] * multiplication_factor,
+                            segment_start_point[1] * multiplication_factor,
+                            segment_start_point[2] * multiplication_factor,
+                        ]
+
+                    segment_end = [
+                        segment_end_point[0] * multiplication_factor,
+                        segment_end_point[1] * multiplication_factor,
+                        segment_end_point[2] * multiplication_factor,
+                    ]
+                    segment_point_count += 2
+
+                segment_summaries.append((segment_wcs_index, segment_start, segment_end))
+
+            for transition_index in range(1, len(segment_summaries)):
+                prev_wcs_index, _, prev_end = segment_summaries[transition_index - 1]
+                next_wcs_index, next_start, _ = segment_summaries[transition_index]
+
+                if prev_end is None or next_start is None:
+                    continue
+
+                if prev_wcs_index == next_wcs_index:
+                    continue
+
+                self.path_start_point[prev_wcs_index] = next_start
+                self.path_end_point[prev_wcs_index] = prev_end
+                self.offset_transitions.append({
+                    'from_wcs': prev_wcs_index,
+                    'to_wcs': next_wcs_index,
+                    'from_end': prev_end,
+                    'to_start': next_start,
+                })
+
         LOG.debug("----------------------------------")
         LOG.debug("--------- draw_lines END ---------")
         LOG.debug("----------------------------------")
@@ -299,3 +364,6 @@ class VTKCanon(StatCanon):
 
     def get_foam(self):
         return self.foam_z, self.foam_w
+
+    def get_offset_transitions(self):
+        return self.offset_transitions
