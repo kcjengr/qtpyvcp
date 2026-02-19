@@ -13,7 +13,6 @@ from qtpy.QtWidgets import QApplication
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
-from qtpy.QtWidgets import QApplication
 
 
 LOG = logger.getLogger(__name__)
@@ -129,9 +128,6 @@ class VTKCanon(StatCanon):
                 adj_start_point[i] += self.tool_offsets[i]
                 adj_end_point[i] += self.tool_offsets[i]
 
-        print(adj_end_point)
-        print(adj_start_point)
-
         # check to see if active wcs is in the path_actor list.
         if self.active_wcs_index not in list(self.path_actors.keys()):
             self.path_actors[self.active_wcs_index] = PathActor(self._datasource)
@@ -155,7 +151,7 @@ class VTKCanon(StatCanon):
         LOG.debug("--------- path points size: {}".format(sys.getsizeof(self.path_points)))
         LOG.debug("--------- path points length: {}".format(len(self.path_points)))
 
-        # TODO: for some reason, we need to multiply for metric, find out why!
+        # Metric programs require this scale factor so VTK path points render in machine units.
         multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
 
         paths_count = 0
@@ -166,9 +162,6 @@ class VTKCanon(StatCanon):
             path_actor = self.path_actors.get(wcs_index)
 
             if path_actor is not None:
-
-                first_point = False
-                angle_point = None
                 last_point = None
                 point_count = 0
 

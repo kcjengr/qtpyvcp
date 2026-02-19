@@ -29,6 +29,9 @@ class ToolActor(vtk.vtkActor):
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
 
+        back_tool_val = (self._datasource._inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
+        self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
+
         self.session = Session()
 
         tool = self._tool_table[0]
@@ -124,7 +127,7 @@ class ToolActor(vtk.vtkActor):
 
         # Avoid visible backfaces on Linux with some video cards like intel
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
-        self.GetProperty().SetBackfaceCulling(1)
+        self.GetProperty().SetBackfaceCulling(0)
 
 
 class ToolBitActor(vtk.vtkActor):
@@ -134,6 +137,9 @@ class ToolBitActor(vtk.vtkActor):
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
 
+        back_tool_val = (self._datasource._inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
+        self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
+
         self.tool_position = []
         self.foam_z = 0.0
         self.foam_w = 0.0
@@ -141,9 +147,16 @@ class ToolBitActor(vtk.vtkActor):
         self.tool = self._tool_table[0]
 
         if self._datasource.isMachineMetric():
+            self.unit_scale = 25.4
             self.height = 25.4 * 2.0
         else:
+            self.unit_scale = 1.0
             self.height = 2.0
+
+        tip_edge = 0.05 * self.unit_scale
+        tip_length = 0.5 * self.unit_scale
+        stick_length = 1.0 * self.unit_scale
+        profile_length = 0.35 * self.unit_scale
 
         # FOAM TOOL
 
@@ -152,7 +165,7 @@ class ToolBitActor(vtk.vtkActor):
             if self.tool.id == 0 or self.tool.id == -1:
                 source = vtk.vtkRegularPolygonSource()
                 source.SetNumberOfSides(64)
-                source.SetRadius(0.035)
+                source.SetRadius(0.035 * self.unit_scale)
                 source.SetCenter(0.0, 0.0, 0.0)
 
                 transform = vtk.vtkTransform()
@@ -167,156 +180,47 @@ class ToolBitActor(vtk.vtkActor):
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
                 if self.tool.orientation == 1 and self.tool.frontangle == 90 and self.tool.backangle == 90:
-
-                    # Setup four points
-                    points = vtk.vtkPoints()
-                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset - 0.05))
-                    points.InsertNextPoint((-self.tool.xoffset + 0.5, 0.0, -self.tool.zoffset - 0.05))
-                    points.InsertNextPoint((-self.tool.xoffset + 0.5, 0.0, -self.tool.zoffset))
-                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset))
-
-                    # Create the polygon
-                    # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
-
-                    # Add the polygon to a list of polygons
-                    polygons = vtk.vtkCellArray()
-                    polygons.InsertNextCell(quad)
-
-                    # Create a PolyData
-                    polygonPolyData = vtk.vtkPolyData()
-                    polygonPolyData.SetPoints(points)
-                    polygonPolyData.SetPolys(polygons)
-
-                    # Create a mapper and actor
-                    mapper = vtk.vtkPolyDataMapper()
-                    mapper.SetInputData(polygonPolyData)
+                    mapper = self._make_double_sided_quad_mapper([
+                        (self._lathe_special_x(-self.tool.xoffset), 0.0, -self.tool.zoffset - tip_edge),
+                        (self._lathe_special_x(-self.tool.xoffset + tip_length), 0.0, -self.tool.zoffset - tip_edge),
+                        (self._lathe_special_x(-self.tool.xoffset + tip_length), 0.0, -self.tool.zoffset),
+                        (self._lathe_special_x(-self.tool.xoffset), 0.0, -self.tool.zoffset),
+                    ])
 
                 elif self.tool.orientation == 2 and self.tool.frontangle == 90 and self.tool.backangle == 90:
-
-                    # Setup four points
-                    points = vtk.vtkPoints()
-                    points.InsertNextPoint((-self.tool.xoffset + 0.5, 0.0, -self.tool.zoffset))
-                    points.InsertNextPoint((-self.tool.xoffset + 0.5, 0.0, -self.tool.zoffset + 0.05))
-                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset + 0.05))
-                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset))
-
-                    # Create the polygon
-                    # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
-
-                    # Add the polygon to a list of polygons
-                    polygons = vtk.vtkCellArray()
-                    polygons.InsertNextCell(quad)
-
-                    # Create a PolyData
-                    polygonPolyData = vtk.vtkPolyData()
-                    polygonPolyData.SetPoints(points)
-                    polygonPolyData.SetPolys(polygons)
-
-                    # Create a mapper and actor
-                    mapper = vtk.vtkPolyDataMapper()
-                    mapper.SetInputData(polygonPolyData)
+                    mapper = self._make_double_sided_quad_mapper([
+                        (self._lathe_special_x(-self.tool.xoffset + tip_length), 0.0, -self.tool.zoffset),
+                        (self._lathe_special_x(-self.tool.xoffset + tip_length), 0.0, -self.tool.zoffset + tip_edge),
+                        (self._lathe_special_x(-self.tool.xoffset), 0.0, -self.tool.zoffset + tip_edge),
+                        (self._lathe_special_x(-self.tool.xoffset), 0.0, -self.tool.zoffset),
+                    ])
 
                 elif self.tool.orientation == 3 and self.tool.frontangle == 90 and self.tool.backangle == 90:
-
-                    # Setup four points
-                    points = vtk.vtkPoints()
-                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset))
-                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset + 0.05))
-                    points.InsertNextPoint((-self.tool.xoffset - 0.5, 0.0, -self.tool.zoffset + 0.05))
-                    points.InsertNextPoint((-self.tool.xoffset - 0.5, 0.0, -self.tool.zoffset))
-
-                    # Create the polygon
-                    # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
-
-                    # Add the polygon to a list of polygons
-                    polygons = vtk.vtkCellArray()
-                    polygons.InsertNextCell(quad)
-
-                    # Create a PolyData
-                    polygonPolyData = vtk.vtkPolyData()
-                    polygonPolyData.SetPoints(points)
-                    polygonPolyData.SetPolys(polygons)
-
-                    # Create a mapper and actor
-                    mapper = vtk.vtkPolyDataMapper()
-                    mapper.SetInputData(polygonPolyData)
+                    mapper = self._make_double_sided_quad_mapper([
+                        (self._lathe_special_x(-self.tool.xoffset), 0.0, -self.tool.zoffset),
+                        (self._lathe_special_x(-self.tool.xoffset), 0.0, -self.tool.zoffset + tip_edge),
+                        (self._lathe_special_x(-self.tool.xoffset - tip_length), 0.0, -self.tool.zoffset + tip_edge),
+                        (self._lathe_special_x(-self.tool.xoffset - tip_length), 0.0, -self.tool.zoffset),
+                    ])
 
                 elif self.tool.orientation == 4 and self.tool.frontangle == 90 and self.tool.backangle == 90:
-
-                    # Setup four points
-                    points = vtk.vtkPoints()
-                    points.InsertNextPoint((-self.tool.xoffset - 0.5, 0.0, -self.tool.zoffset))
-                    points.InsertNextPoint((-self.tool.xoffset - 0.5, 0.0, -self.tool.zoffset - 0.05))
-                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset - 0.05))
-                    points.InsertNextPoint((-self.tool.xoffset, 0.0, -self.tool.zoffset))
-
-                    # Create the polygon
-                    # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
-
-                    # Add the polygon to a list of polygons
-                    polygons = vtk.vtkCellArray()
-                    polygons.InsertNextCell(quad)
-
-                    # Create a PolyData
-                    polygonPolyData = vtk.vtkPolyData()
-                    polygonPolyData.SetPoints(points)
-                    polygonPolyData.SetPolys(polygons)
-
-                    # Create a mapper and actor
-                    mapper = vtk.vtkPolyDataMapper()
-                    mapper.SetInputData(polygonPolyData)
+                    mapper = self._make_double_sided_quad_mapper([
+                        (self._lathe_special_x(-self.tool.xoffset - tip_length), 0.0, -self.tool.zoffset),
+                        (self._lathe_special_x(-self.tool.xoffset - tip_length), 0.0, -self.tool.zoffset - tip_edge),
+                        (self._lathe_special_x(-self.tool.xoffset), 0.0, -self.tool.zoffset - tip_edge),
+                        (self._lathe_special_x(-self.tool.xoffset), 0.0, -self.tool.zoffset),
+                    ])
 
                 elif self.tool.orientation == 9:
 
                     radius = self.tool.diameter / 2
 
-                    # Setup four points
-                    points = vtk.vtkPoints()
-                    points.InsertNextPoint((-self.tool.xoffset + radius, 0.0, -self.tool.zoffset))
-                    points.InsertNextPoint((-self.tool.xoffset + radius, 0.0, -self.tool.zoffset + 1.0))
-                    points.InsertNextPoint((-self.tool.xoffset - radius, 0.0, -self.tool.zoffset + 1.0))
-                    points.InsertNextPoint((-self.tool.xoffset - radius, 0.0, -self.tool.zoffset))
-
-                    # Create the polygon
-                    # Create a quad on the four points
-                    quad = vtk.vtkQuad()
-                    quad.GetPointIds().SetId(0, 0)
-                    quad.GetPointIds().SetId(1, 1)
-                    quad.GetPointIds().SetId(2, 2)
-                    quad.GetPointIds().SetId(3, 3)
-
-                    # Add the polygon to a list of polygons
-                    polygons = vtk.vtkCellArray()
-                    polygons.InsertNextCell(quad)
-
-                    # Create a PolyData
-                    polygonPolyData = vtk.vtkPolyData()
-                    polygonPolyData.SetPoints(points)
-                    polygonPolyData.SetPolys(polygons)
-
-                    # Create a mapper and actor
-                    mapper = vtk.vtkPolyDataMapper()
-                    mapper.SetInputData(polygonPolyData)
+                    mapper = self._make_double_sided_quad_mapper([
+                        (self._lathe_special_x(-self.tool.xoffset + radius), 0.0, -self.tool.zoffset),
+                        (self._lathe_special_x(-self.tool.xoffset + radius), 0.0, -self.tool.zoffset + stick_length),
+                        (self._lathe_special_x(-self.tool.xoffset - radius), 0.0, -self.tool.zoffset + stick_length),
+                        (self._lathe_special_x(-self.tool.xoffset - radius), 0.0, -self.tool.zoffset),
+                    ])
                 else:
                     positive = 1
                     negative = -1
@@ -391,7 +295,7 @@ class ToolBitActor(vtk.vtkActor):
 
                     A = radians(float(self.tool.frontangle))
                     B = radians(float(self.tool.backangle))
-                    C = 0.35
+                    C = profile_length
 
                     p1_x = abs(C * sin(A))
                     p1_z = abs(C * cos(A))
@@ -541,6 +445,38 @@ class ToolBitActor(vtk.vtkActor):
 
         self.foam_z = zo
         self.foam_w = wo
+
+    def _lathe_special_x(self, x_value):
+        return x_value
+
+    def _make_double_sided_quad_mapper(self, point_list):
+        points = vtk.vtkPoints()
+        for point in point_list:
+            points.InsertNextPoint(point)
+
+        quad_front = vtk.vtkQuad()
+        quad_front.GetPointIds().SetId(0, 0)
+        quad_front.GetPointIds().SetId(1, 1)
+        quad_front.GetPointIds().SetId(2, 2)
+        quad_front.GetPointIds().SetId(3, 3)
+
+        quad_back = vtk.vtkQuad()
+        quad_back.GetPointIds().SetId(0, 3)
+        quad_back.GetPointIds().SetId(1, 2)
+        quad_back.GetPointIds().SetId(2, 1)
+        quad_back.GetPointIds().SetId(3, 0)
+
+        polygons = vtk.vtkCellArray()
+        polygons.InsertNextCell(quad_front)
+        polygons.InsertNextCell(quad_back)
+
+        polygon_poly_data = vtk.vtkPolyData()
+        polygon_poly_data.SetPoints(points)
+        polygon_poly_data.SetPolys(polygons)
+
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInputData(polygon_poly_data)
+        return mapper
 
     def set_position_cnc(self, position):
         

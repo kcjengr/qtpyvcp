@@ -86,14 +86,20 @@ class MDIEntry(QLineEdit, CMDWidget):
               or event.key() == Qt.Key_Down
              )
            ):
-            self.completer().complete()
+            completer = self.completer()
+            if completer is not None:
+                completer.complete()
+            else:
+                super(MDIEntry, self).keyPressEvent(event)
         else:
             super(MDIEntry, self).keyPressEvent(event)
 
     def focusInEvent(self, event):
         super(MDIEntry, self).focusInEvent(event)
         if self._completer_enabled:
-            self.completer().complete()
+            completer = self.completer()
+            if completer is not None:
+                completer.complete()
 
     def supress_rtn_key_behaviour(self):
         self.mdi_rtnkey_behaviour_supressed = True

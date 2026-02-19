@@ -9,10 +9,11 @@ class AxesActor(vtk.vtkAxesActor):
         self._datasource = linuxcncDataSource
         self._axis_mask = self._datasource.getAxisMask()
 
-        if  self._datasource.isMachineMetric():
-            self.axes_length = 1.5
+        base_axes_length_inch = 0.375
+        if self._datasource.isMachineMetric():
+            self.axes_length = base_axes_length_inch * 25.4
         else:
-            self.axes_length = 0.375
+            self.axes_length = base_axes_length_inch
             
         transform = vtk.vtkTransform()
         transform.Translate(0.0, 0.0, 0.0)  # Z up
