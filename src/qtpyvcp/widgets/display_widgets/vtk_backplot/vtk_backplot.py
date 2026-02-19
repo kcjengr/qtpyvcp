@@ -954,10 +954,36 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     actor_point_2.SetMapper(mapper)
                     actor_point_2.GetProperty().SetColor(self.path_colors.get("user").getRgb()[0:3])
                     actor_point_2.GetProperty().SetPointSize(5)
-                    actor_point_2.SetUserTransform(actor_transform)
+                    prev_offsets = self.wcs_offsets.get(prev_wcs_index, [])
+
+                    if x_column is not None and x_column < len(prev_offsets):
+                        prev_x = prev_offsets[x_column]
+                    else:
+                        prev_x = 0.0
+
+                    if y_column is not None and y_column < len(prev_offsets):
+                        prev_y = prev_offsets[y_column]
+                    else:
+                        prev_y = 0.0
+
+                    if z_column is not None and z_column < len(prev_offsets):
+                        prev_z = prev_offsets[z_column]
+                    else:
+                        prev_z = 0.0
+
+                    if r_column is not None and r_column < len(prev_offsets):
+                        prev_rotation = prev_offsets[r_column]
+                    else:
+                        prev_rotation = 0.0
+
+                    prev_actor_transform = vtk.vtkTransform()
+                    prev_actor_transform.Translate(prev_x, prev_y, prev_z)
+                    prev_actor_transform.RotateZ(prev_rotation)
+
+                    actor_point_2.SetUserTransform(prev_actor_transform)
                     # actor_point_2.SetPosition(*xyz)
 
-                    self.offset_change_end_actor[wcs_index] = actor_point_2
+                    self.offset_change_end_actor[prev_wcs_index] = actor_point_2
                     self.renderer.AddActor(actor_point_2)
 
                     # Draw the connecting line between WCS transitions
