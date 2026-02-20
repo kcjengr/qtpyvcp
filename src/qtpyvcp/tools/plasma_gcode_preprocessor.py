@@ -33,7 +33,7 @@ from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-import pydevd;pydevd.settrace()
+# import pydevd;pydevd.settrace()
 
 PREPROC_VERSION = '00.30'
 
@@ -65,9 +65,6 @@ LOG.info("Initialising ExceptionHook.")
 # Set over arching converstion fact. All thinking and calcs are in mm so need
 # convert and arbirary values to bannas when they are in use
 UNITS, PRECISION, UNITS_PER_MM = ['in',6,25.4] if INI.find('TRAJ', 'LINEAR_UNITS') == 'inch' else ['mm',4,1]
-
-# Get the machine name. This will be used to get the machine_id later
-MACHINE_NAME = INI.find('PLASMAC', 'MACHINE')
 
 # force the python HAL lib to load/init. Not doing this causes a silent "crash"
 # when trying to set a hal pin
@@ -474,7 +471,8 @@ class CodeLine:
             self.params['$'] = int(-1)
 
     def parse_material(self):
-        # Using the same magic material format as qtplasmac we support
+        # Using the an enhanced version of the magic material
+        # format used in qtplasmac we support
         # the dynamic creation of a cut material/process.
         # At this point only dynamic materials are supported with the
         # intention that a tool like SheetCam can hold all the material
@@ -495,6 +493,13 @@ class CodeLine:
         # jh=puddle jump height
         # jd=puddle jump delay
         # mt=material thickness
+        # mc=material type code
+        #    Valid codes are:
+        #    al -- aluminium
+        #    ms -- steel
+        #    ss -- stainless steel
+        #    cp -- copper
+        #    br -- brass
         self.comment = self.raw
         LOG.debug("Magic comment material parsing")
         line = self.raw.strip(" ()")
@@ -502,9 +507,11 @@ class CodeLine:
         line = re.sub(r",\s*", ",", line)
         parts = dict(item.split("=") for item in line.split(","))
         if int(parts['o']) != 0:
+            LOG.debug("Magic comment material parsing - type set as PASSTHROUGH")
             self.type = Commands.PASSTHROUGH
         else:
             # mandatory
+            LOG.debug("Magic comment material parsing - building out details to parent object")
             self._parent.pierce_height = float(parts['ph'])
             self._parent.pierce_delay = float(parts['pd'])
             self._parent.cut_height  = float(parts['ch'])
@@ -523,6 +530,22 @@ class CodeLine:
             self._parent.pressure = 90
             self._parent.pause_at_end = float(parts.get('pe', 0))
             self._parent.active_cutchart = 99999
+            # now determine and set materialID and thicknessID from DB
+            linear_system_list = PLASMADB.linearsystems()
+            for linear_system in linear_system_list:
+                if linear_system.name == UNITS:
+                    linear_system_id = linear_system.id
+            thickness_list = PLASMADB.thicknesses(linear_system_id)
+            for thickness in thickness_list:
+                if thickness.thickness == self._parent.active_thickness:
+                    self._parent.active_thicknessid = thickness.id
+            mat_code = parts.get('mc', None)
+            if mat_code is not None:
+                material_list = PLASMADB.materials()
+                for mat in material_list:
+                    if mat.code == mat_code:
+                        self._parent.active_materialid = mat.id
+            
 
 
     def parse_toolchange(self, combo=False):
@@ -796,6 +819,7 @@ class HoleBuilder:
             overburn_feed = hidef_settings["hidef_overburn_speed"]
             overburn_adjustment = hidef_settings["hidef_overburn_adjust"]
             straight_leadin = hidef_settings["hidef_straight_leadin"]
+            LOG.debug(f"HiDef settings applied to hole: {leadin_radius}")
             
 
         LOG.debug(f"Key params: kerf={kerf}, leadin_radius={leadin_radius}")
@@ -1090,6 +1114,7 @@ class HiDefHole:
     def __init__(self, data_list):
         self.hole_list = []
         for d in data_list:
+            LOG.debug(f'HiDefHole init: data_list={data_list}')
             self.hole_list.append({'hole': d.hole_size, \
                                    'leadinradius': d.leadin_radius, \
                                    'kerf': d.kerf, \
@@ -1103,20 +1128,21 @@ class HiDefHole:
                                    'straight_leadin': d.straight_leadin, \
                                    'amps': d.amps
                                    })
-        for i in range(len(self.hole_list)):
-            # calculate the scale factors to use.
-            # Factors are scaled over the diameter range of the hole
-            if i > 0:
-                delta = self.hole_list[i]['hole'] - self.hole_list[i-1]['hole']
-                self.hole_list[i]['scale_leadinradius'] = self.hole_list[i]['leadinradius']/delta
-                self.hole_list[i]['scale_kerf'] = self.hole_list[i]['kerf']/delta       # why would kerf scale?
-                self.hole_list[i]['scale_cutheight'] = self.hole_list[i]['cutheight']/delta
-                self.hole_list[i]['scale_leadin_speed'] = self.hole_list[i]['leadin_speed']/delta
-                self.hole_list[i]['scale_speed1'] = self.hole_list[i]['speed1']/delta
-                self.hole_list[i]['scale_speed2'] = self.hole_list[i]['speed2']/delta
-                self.hole_list[i]['scale_speed3'] = self.hole_list[i]['speed3']/delta
-                self.hole_list[i]['scale_overburn_speed'] = self.hole_list[i]['overburn_speed']/delta
-                self.hole_list[i]['scale_overburn_adjust'] = self.hole_list[i]['overburn_adjust']/delta
+        # for i in range(len(self.hole_list)):
+        #     # calculate the scale factors to use.
+        #     # Factors are scaled over the diameter range of the hole
+        #     if i > 0:
+        #         delta = self.hole_list[i]['hole'] - self.hole_list[i-1]['hole']
+        #         LOG.debug(f"HiDefHole init: delta calc.  i={i}, delta={delta}: {self.hole_list[i]['hole']} - {self.hole_list[i-1]['hole']}")
+        #         self.hole_list[i]['scale_leadinradius'] = self.hole_list[i]['leadinradius']/delta
+        #         self.hole_list[i]['scale_kerf'] = self.hole_list[i]['kerf']/delta       # why would kerf scale?
+        #         self.hole_list[i]['scale_cutheight'] = self.hole_list[i]['cutheight']/delta
+        #         self.hole_list[i]['scale_leadin_speed'] = self.hole_list[i]['leadin_speed']/delta
+        #         self.hole_list[i]['scale_speed1'] = self.hole_list[i]['speed1']/delta
+        #         self.hole_list[i]['scale_speed2'] = self.hole_list[i]['speed2']/delta
+        #         self.hole_list[i]['scale_speed3'] = self.hole_list[i]['speed3']/delta
+        #         self.hole_list[i]['scale_overburn_speed'] = self.hole_list[i]['overburn_speed']/delta
+        #         self.hole_list[i]['scale_overburn_adjust'] = self.hole_list[i]['overburn_adjust']/delta
 
     def get_attribute(self, attribute, holesize):
         """
@@ -1132,9 +1158,56 @@ class HiDefHole:
             straight_leadin
         """
         for i in range(1, len(self.hole_list)):
-            if self.hole_list[i-1]['hole'] <= holesize and holesize <= self.hole_list[i]['hole']:
-                lr = holesize * self.hole_list[i][f'scale_{attribute}']
+            # exact matches so no need for scaling
+            if self.hole_list[i-1]['hole'] == holesize:
+                lr = self.hole_list[i-1][f'{attribute}']
+                LOG.debug(f'HiDefHole get_attribute: holesize={holesize}, attribute={attribute}, lr={lr}')
                 return lr
+
+            if self.hole_list[i]['hole'] == holesize:
+                lr = self.hole_list[i][f'{attribute}']
+                LOG.debug(f'HiDefHole get_attribute: holesize={holesize}, attribute={attribute}, lr={lr}')
+                return lr
+
+            # hole is somwehere in a band between two sizes.  So need to scale some of the parameters
+            # Scaling process for those attributes that do scale:
+            # 1. get the bottom boundary metric
+            # 2. get the delta of the metric and divide by the hole size delta. This give a scale per hole size unit
+            # 3. test if metric changes between hole bounds.  If not then no scaling and use bottom value. Else do #4
+            # 4. result:  (target_hole_size - bottom_boundry_hole_size) x metric_delta + bottom_boundary_metric             
+            if self.hole_list[i-1]['hole'] <= holesize and holesize <= self.hole_list[i]['hole']:
+                if attribute is 'straight_leadin':
+                    lr = self.hole_list[i][f'{attribute}']
+                    LOG.debug(f'HiDefHole get_attribute: holesize={holesize}, attribute={attribute}, lr={lr}')
+                    return lr
+
+                # test if there is a scaling task to be done or not
+                if self.hole_list[i-1][f'{attribute}'] == self.hole_list[i][f'{attribute}']:
+                    lr = self.hole_list[i-1][f'{attribute}']
+                    LOG.debug(f'HiDefHole get_attribute: no scaling needed >> holesize={holesize}, attribute={attribute}, lr={lr}')
+                    return lr
+
+                bottom_boundary_metric = self.hole_list[i-1][f'{attribute}']
+                top_boundary_metric = self.hole_list[i][f'{attribute}']
+                metric_delta = top_boundary_metric - bottom_boundary_metric
+                target_hole_size_delta = holesize - self.hole_list[i-1]['hole']
+                hole_size_delta = self.hole_list[i]['hole'] - self.hole_list[i-1]['hole']
+                metric_delta_scale = metric_delta / hole_size_delta
+
+                # there is scaling to be done so calc this
+                lr = target_hole_size_delta * metric_delta_scale + bottom_boundary_metric
+                LOG.debug(f'HiDefHole get_attribute: scaled attribute >> holesize={holesize}, attribute={attribute}, lr={lr}')
+                LOG.debug('HiDefHole get_attribute: scaling calc data:')
+                LOG.debug(f'    >>  bottom_boundary_metric={bottom_boundary_metric}')
+                LOG.debug(f'    >>  top_boundary_metric={top_boundary_metric}')
+                LOG.debug(f'    >>  metric_delta={metric_delta}')
+                LOG.debug(f'    >>  hole_size_delta={hole_size_delta}')
+                LOG.debug(f'    >>  target_hole_size_delta={target_hole_size_delta}')
+                LOG.debug(f'    >>  metric_delta_scale={metric_delta_scale}')
+                return lr
+            
+        # catch all return in case its all fallen through
+        LOG.debug('HiDefHole get_attribute: Return NONE')
         return None
 
 
@@ -1185,6 +1258,7 @@ class PreProcessor:
         self.active_thickness = None
         self.active_machineid = None
         self.active_thicknessid = None
+        # self.active_materialid = hal.get_value('qtpyvcp.material-id')
         self.active_materialid = None
         # used for Magic material/process system
         self.process_name = None
@@ -1204,6 +1278,13 @@ class PreProcessor:
         # track if flip or mirror is active
         self.g2g3_flip = False
 
+        # find the active machine from the ini string
+        machine_name = INI.find('PLASMAC', 'MACHINE')
+        machine_list = PLASMADB.machines()
+        for machine in machine_list:
+            LOG.debug(f"machines in machine_list:{machine}")
+            if machine.name == machine_name:
+                self.active_machineid = machine.id
 
         openfile= open(inCode, 'r')
         self._orig_gcode = openfile.readlines()
@@ -1331,21 +1412,26 @@ class PreProcessor:
                         circumferance = diameter * pi
                         
                         # see if can find hidef data for this hole scenario
-                        LOG.debug(f"Look for HiDef data on this material/machine/thickness {(self.active_machineid, self.active_materialid, self.active_thicknessid)}")
-                        hidef_data = PLASMADB.hidef_holes(self.active_machineid, self.active_materialid, self.active_thicknessid)
+                        if self.active_materialid is not None:
+                            LOG.debug(f"Look for HiDef data on this machine/material/thickness {(self.active_machineid, self.active_materialid, self.active_thicknessid)}")
+                            hidef_data = PLASMADB.hidef_holes(self.active_machineid, self.active_materialid, self.active_thicknessid)
+                        else:
+                            hidef_data = []
                         hidef = False
                         LOG.debug(f"Finished hidef data look. Found {len(hidef_data)}")
                         if len(hidef_data) > 0:
                             LOG.debug("Building up hidef hole defintion")
-                            # leadinradius
-                            # kerf
-                            # cutheight
-                            # speed1
-                            # speed2
-                            # speed3
-                            # overburn_speed
-                            # overburn_adjust
-                            # straight_leadin
+                            # leadin_radius = Column(Float)
+                            # kerf = Column(Float)
+                            # cut_height = Column(Float)
+                            # leadin_speed = Column(Float)
+                            # speed1 = Column(Float)
+                            # speed2 = Column(Float)
+                            # speed3 = Column(Float)
+                            # overburn_speed = Column(Float)
+                            # overburn_adjust = Column(Float)
+                            # straight_leadin = Column(Boolean)
+
                             hidef_hole = HiDefHole(hidef_data)
                             hidef_leadin_radius = hidef_hole.leadin_radius(diameter)
                             hidef_kerf = hidef_hole.kerf(diameter)
@@ -1363,7 +1449,7 @@ class PreProcessor:
                                             hidef_overburn_speed, hidef_overburn_adjust, \
                                             hidef_straight_leadin):
                                 hidef = True
-                            LOG.debug("HiDef status is {hidef}")
+                            LOG.debug(f"HiDef status is {hidef}")
                         
                         if diameter < small_hole_size and small_hole_detect:
                             # removde the hole and replace with a pulse
@@ -1425,7 +1511,7 @@ class PreProcessor:
                                 }
                             line.hole_builder.\
                                 plasma_hole(line, centre_x, centre_y, diameter, \
-                                            hidef_kerf, hidef_leadin, \
+                                            hidef_kerf, hidef_leadin_radius, \
                                             hidef_settings, hidef)
                             
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
