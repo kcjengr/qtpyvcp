@@ -57,6 +57,13 @@ building complex VCPs.
 
 .. toctree::
    :maxdepth: 1
+   :caption: Update Release Notes
+
+   update_notes_stable
+   update_notes_develop
+
+.. toctree::
+   :maxdepth: 1
    :caption: Acknowledgements
 
    acknowledgements
