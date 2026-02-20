@@ -105,6 +105,7 @@ class Material(crudMixin, BASE):
     __tablename__ = 'material'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
+    code = Column(String(2))
 
 #    def __init__(self, name):
 #        self.name = name
@@ -404,9 +405,9 @@ class PlasmaProcesses(Plugin):
         LOG.debug("Found Materials.")
         return data
 
-    def add_materials(self, matname):
+    def add_materials(self, matname, matcode):
         LOG.debug(f"Add Material {matname}.")
-        return Material.create(self._session, name=matname)
+        return Material.create(self._session, name=matname, code=matcode)
 
     # Thickness    
     def thicknesses(self,  measureid=None):
@@ -618,10 +619,23 @@ class PlasmaProcesses(Plugin):
         mats = {}
         for r in file:
             if r['material'] not in mats.keys():
-                mats[r['material']] = ''
+                match r['material']:
+                    case 'Mild Steel':
+                        matcode = 'ms'
+                    case 'Aluminium':
+                        matcode = 'al'
+                    case 'Stainless Steel':
+                        matcode = 'ss'
+                    case 'Brass':
+                        matcode = 'br'
+                    case 'Copper':
+                        matcode = 'cp'
+                    case _:
+                        matcode = ''
+                mats[r['material']] = matcode
         
         for k in mats:
-            self.add_materials(k)
+            self.add_materials(k, mats[k])
     
         # Add plasma/shield 'gasses'
         self.add_gas('Air - Air')
@@ -750,8 +764,8 @@ if __name__ == "__main__":
     #con_str = f'mysql+pymysql://{sys.argv[2]}:{sys.argv[3]}@localhost/plasma_table'
     con_str = 'sqlite://' + os.path.expanduser('~/plasma_table.db')
     LOG.debug(f"Opening con_str = {con_str}")
-    p = PlasmaProcesses(db_type='mysql', connect_string=con_str)
-    #p = PlasmaProcesses(db_type='sqlite')
+    #p = PlasmaProcesses(db_type='mysql', connect_string=con_str)
+    p = PlasmaProcesses(db_type='sqlite', connect_string=con_str)
     p.initialise()
     p.seed_data_base(sys.argv[1])
     p.terminate()
