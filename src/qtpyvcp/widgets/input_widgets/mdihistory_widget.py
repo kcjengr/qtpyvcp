@@ -25,6 +25,7 @@ from qtpy.QtWidgets import QListWidgetItem
 import qtpyvcp
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities import logger
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
@@ -35,6 +36,7 @@ import linuxcnc
 STATUS = getPlugin('status')
 STAT = STATUS.stat
 INFO = Info()
+LOG = logger.getLogger(__name__)
 
 
 class MDIHistory(QListWidget, CMDWidget):
@@ -98,6 +100,10 @@ class MDIHistory(QListWidget, CMDWidget):
         """Toggle queue pause.
         Starting point is the queue is active.
         """
+        sender = self.sender()
+        if sender is not None and hasattr(sender, 'setText'):
+            sender.setText('RESUME' if toggle else 'PAUSE')
+
         if toggle:
             self.heart_beat_timer.stop()
         else:
@@ -109,10 +115,12 @@ class MDIHistory(QListWidget, CMDWidget):
         if self.mdi_listorder_natural:
             list_length = list(range(self.count()))
         else:
-            list_length = list(range(self.count()-1, 0, -1))
+            list_length = list(range(self.count()-1, -1, -1))
 
         for list_item in list_length:
             row_item = self.item(list_item)
+            if row_item is None:
+                continue
             row_item_data = row_item.data(MDIHistory.MDQQ_ROLE)
 
             if row_item_data == MDIHistory.MDIQ_TODO:
@@ -156,14 +164,23 @@ class MDIHistory(QListWidget, CMDWidget):
     @Slot()
     def runFromSelection(self):
         """Start running MDI from the selected row back to correct end."""
+        if self.count() == 0:
+            return
+
+        current_row = self.currentRow()
+        if current_row < 0 or current_row >= self.count():
+            return
+
         if self.mdi_listorder_natural:
-            row_list = list(range(self.currentRow(), self.count(), 1))
+            row_list = list(range(current_row, self.count(), 1))
         else:
-            row_list = list(range(self.currentRow(), -1, -1))
+            row_list = list(range(current_row, -1, -1))
 
         # from selected row loop back to top/bottom and set ready for run
         for row in row_list:
             row_item = self.item(row)
+            if row_item is None:
+                continue
             row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
             row_item.setIcon(self.icon_waiting)
 
@@ -171,8 +188,13 @@ class MDIHistory(QListWidget, CMDWidget):
     def runSelection(self):
         """Run the selected row only."""
         row = self.currentRow()
+        if row < 0 or row >= self.count():
+            return
+
         # from selected row loop back to top and set ready for run
         row_item = self.item(row)
+        if row_item is None:
+            return
         row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
         row_item.setIcon(self.icon_waiting)
 
@@ -180,8 +202,15 @@ class MDIHistory(QListWidget, CMDWidget):
     def submit(self):
         """Put a new command on the queue for later execution.
         """
+        if self.mdi_entry_widget is None:
+            LOG.warning("MDI submit ignored: entry widget is not configured")
+            return
+
         # put the new command on the queue
         cmd = str(self.mdi_entry_widget.text()).strip()
+        if not cmd:
+            return
+
         row_item = QListWidgetItem()
         row_item.setText(cmd)
         row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
@@ -222,9 +251,11 @@ class MDIHistory(QListWidget, CMDWidget):
     @Slot()
     def moveRowItemUp(self):
         row = self.currentRow()
-        if row == 0:
+        if row <= 0 or row >= self.count():
             return
         item = self.takeItem(row)
+        if item is None:
+            return
         self.insertItem(row-1, item)
         self.setCurrentRow(row-1)
         if not self.mdi_listorder_natural:
@@ -237,9 +268,11 @@ class MDIHistory(QListWidget, CMDWidget):
     @Slot()
     def moveRowItemDown(self):
         row = self.currentRow()
-        if row == self.count()-1:
+        if row < 0 or row >= self.count()-1:
             return
         item = self.takeItem(row)
+        if item is None:
+            return
         self.insertItem(row+1, item)
         self.setCurrentRow(row+1)
         if not self.mdi_listorder_natural:
@@ -274,7 +307,6 @@ class MDIHistory(QListWidget, CMDWidget):
     def setHistory(self, items_list):
         """Clear and reset the history in the list.
         item_list is a list of strings."""
-        print('Clear and load history to list')
         self.clear()
         
         # check that there is anything do to
@@ -308,10 +340,12 @@ class MDIHistory(QListWidget, CMDWidget):
         if self.mdi_listorder_natural:
             list_length = list(range(self.count()))
         else:
-            list_length = list(range(self.count()-1, 0, -1))
+            list_length = list(range(self.count()-1, -1, -1))
         
         for list_item in list_length:
             row_item = self.item(list_item)
+            if row_item is None:
+                continue
             row_item_data = row_item.data(MDIHistory.MDQQ_ROLE)
 
             if row_item_data == MDIHistory.MDIQ_RUNNING:
@@ -323,9 +357,18 @@ class MDIHistory(QListWidget, CMDWidget):
                 self.clearSelection()
                 self.setCurrentItem(row_item)
                 cmd = str(row_item.text()).strip()
+                if not cmd:
+                    row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_DONE)
+                    row_item.setIcon(QIcon())
+                    continue
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_RUNNING)
                 row_item.setIcon(self.icon_run)
-                issue_mdi(cmd)
+                try:
+                    issue_mdi(cmd)
+                except Exception:
+                    row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_DONE)
+                    row_item.setIcon(QIcon())
+                    LOG.exception("Failed to issue MDI command from history queue: %s", cmd)
                 break
 
     def initialize(self):
