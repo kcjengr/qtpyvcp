@@ -87,8 +87,6 @@ class PointsSurfaceActor(vtkActor):
             num_points_x = len(self.probe_results)
             num_points_y = len(self.probe_results[0])
 
-            print(num_points_x, num_points_y)
-
             # Define the original range of X and Y coordinates
             x_range = np.linspace(0, 1, num_points_x)
             y_range = np.linspace(0, 1, num_points_y)
@@ -102,9 +100,6 @@ class PointsSurfaceActor(vtkActor):
                     # Calculate the Z-coordinate (elevation) using a simple function
                     z = self.probe_results[i][j]
                     points_array[i * num_points_y + j] = [x_range[i], y_range[j], z]
-
-            # Print the points array
-            print(points_array)
 
             # Create a vtkPoints object and add the points
             vtk_points = vtkPoints()

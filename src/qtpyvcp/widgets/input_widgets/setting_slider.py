@@ -74,9 +74,9 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             val = self._setting.getValue()
 
             validator = None
-            if type(val) == int:
+            if isinstance(val, int):
                 validator = QIntValidator()
-            elif type(val) == float:
+            elif isinstance(val, float):
                 validator = QDoubleValidator()
 
             self.setValidator(validator)
@@ -110,7 +110,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             setting = SETTINGS.get(self._setting_name)
             if setting:
                 try:
-                    test_str = text_fmt.format(setting.getValue())
+                    _ = text_fmt.format(setting.getValue())  # Validate format
                 except Exception as e:
                     LOG.warning(f"Invalid textFormat '{text_fmt}' for setting '{self._setting_name}': {e}")
 
@@ -251,7 +251,7 @@ class VCPSettingsCheckBox(QCheckBox, VCPAbstractSettingsWidget):
 
 
 class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
-    """Settings PushButton"""
+    """Settings PushButton with configurable output type and fail-fast validation"""
 
     DEFAULT_RULE_PROPERTY = 'Enable'
     RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
@@ -264,11 +264,72 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
         super(VCPSettingsPushButton, self).__init__(parent=parent)
         self.setCheckable(True)
         self.setEnabled(False)
+        # Property to control output type
+        self._output_as_int = False
+
+    @Property(bool)
+    def outputAsInt(self):
+        """If True, value() returns 0/1 integers. If False (default), returns True/False booleans."""
+        return self._output_as_int
+
+    @outputAsInt.setter
+    def outputAsInt(self, use_int):
+        self._output_as_int = bool(use_int)
 
     def setDisplayChecked(self, checked):
         self.blockSignals(True)
         self.setChecked(checked)
         self.blockSignals(False)
+
+    # Provide value() method with configurable output type
+    def value(self):
+        """Return the current checked state as boolean or integer based on outputAsInt property"""
+        checked_state = self.isChecked()
+        if self._output_as_int:
+            return 1 if checked_state else 0  # Return integer 0/1
+        else:
+            return checked_state  # Return boolean True/False
+
+    # Provide setValue() method that handles both int and bool inputs
+    def setValue(self, value):
+        """Set the checked state from a boolean, integer, or compatible value with fail-fast validation"""
+        if isinstance(value, bool):
+            self.setChecked(value)
+        elif isinstance(value, (int, float)):
+            # Handle both 0/1 integers and boolean conversion
+            self.setChecked(bool(value))
+        elif isinstance(value, str):
+            # Handle string representations of both boolean and integer values
+            value_lower = value.lower()
+            if value_lower in ['true', '1', 'yes', 'on']:
+                self.setChecked(True)
+            elif value_lower in ['false', '0', 'no', 'off']:
+                self.setChecked(False)
+            else:
+                # Fail fast: string must be convertible to integer
+                int_value = int(value)  # Let this raise ValueError if invalid
+                self.setChecked(bool(int_value))
+        else:
+            self.setChecked(bool(value))
+
+    # Override text() to return numeric value as string when outputAsInt is enabled
+    def text(self):
+        """Return string representation of value for parameter collection"""
+        if self._output_as_int:
+            return str(self.value())  # Returns "0" or "1"
+        else:
+            # Return the actual button text for normal buttons
+            return super(VCPSettingsPushButton, self).text()
+
+    # Settings persistence with proper type handling
+    def getSettingsValue(self):
+        """Get value for settings persistence using configured output type"""
+        return self.value()  # Uses the configurable output type
+
+    def setSettingsValue(self, value):
+        """Set value from settings persistence"""
+        # Use the setValue method which handles all input types
+        self.setValue(value)
 
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
@@ -277,11 +338,22 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
 
             value = self._setting.getValue()
 
-            self.setDisplayChecked(value)
-            self.toggled.emit(value)
+            # Convert value to bool for setDisplayChecked
+            self.setDisplayChecked(bool(value))
+            # Emit the value in the configured output type
+            self.toggled.emit(self.value())
 
-            self._setting.notify(self.setDisplayChecked)
-            self.toggled.connect(self._setting.setValue)
+            # Use wrapper for settings notification to handle type conversion
+            self._setting.notify(lambda v: self.setDisplayChecked(bool(v)))
+            # Connect to a wrapper that uses the configured output type
+            self.toggled.connect(self._onToggled)
+
+    # Wrapper method to emit the correct value type to settings
+    def _onToggled(self, checked):
+        """Internal method to emit the correct value type based on outputAsInt property"""
+        if self._setting is not None:
+            value_to_store = self.value()  # Uses the configurable output type
+            self._setting.setValue(value_to_store)
 
 
 class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):

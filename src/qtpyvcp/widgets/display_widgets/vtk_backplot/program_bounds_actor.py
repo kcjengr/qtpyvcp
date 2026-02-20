@@ -1,10 +1,8 @@
 import os
 
 import vtk.qt
-from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.settings import getSetting
 
-LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
 
@@ -14,22 +12,6 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor2D):
 
         self.path_actor = path_actor
 
-        """
-        for k, v in VTKBackPlot.__dict__.items():
-            if "function" in str(v):
-                LOG.debug(k)
-
-        for attr_name in dir(VTKBackPlot):
-            attr_value = getattr(VTKBackPlot, attr_name)
-            LOG.debug(attr_name, attr_value, callable(attr_value))
-        
-        LOG.debug(dir(VTKBackPlot))
-        testit = getattr(VTKBackPlot, '_enableProgramTicks')
-        LOG.debug('enableProgramTicks {}'.format(testit))
-        """
-        
-        
-        
         self.SetCamera(camera)
         
         self.SetNumberOfLabels(3)

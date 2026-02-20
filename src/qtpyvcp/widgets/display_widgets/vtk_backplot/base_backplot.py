@@ -82,7 +82,7 @@ class BaseBackPlot(object):
             # abort generating the backplot
             pass
         except Exception as e:
-            LOG.debug(f"CANON ERROR {e}")
+            LOG.warning(f"CANON ERROR {e}")
         # clean up temp var file and the backup
         os.unlink(self.temp_parameter_file)
         os.unlink(self.temp_parameter_file + '.bak')
