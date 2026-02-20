@@ -72,6 +72,7 @@ class MDIHistory(QListWidget, CMDWidget):
         self.icon_run = QIcon.fromTheme(self.icon_run_name)
         self.icon_waiting_name = 'media-playback-pause'
         self.icon_waiting = QIcon.fromTheme(self.icon_waiting_name)
+        self._last_non_idle_state = None
 
         #self.returnPressed.connect(self.submit)
 
@@ -331,10 +332,52 @@ class MDIHistory(QListWidget, CMDWidget):
         Issue the command and if success mark command as being active.
         Mark last command as done.
         """
+        # do not advance queue while paused/feedhold is active and interpreter is non-idle.
+        # This avoids deadlocking startup when feedhold is latched while idle.
+        blocking_hold = (STAT.feed_hold_enabled or STAT.paused) and STAT.interp_state != linuxcnc.INTERP_IDLE
+        if blocking_hold:
+            state_tuple = (
+                STAT.state,
+                STAT.task_mode,
+                STAT.interp_state,
+                STAT.paused,
+                STAT.feed_hold_enabled,
+            )
+            if state_tuple != self._last_non_idle_state:
+                LOG.debug(
+                    "MDI queue blocked (pause/feed hold): state=%s mode=%s interp=%s paused=%s feed_hold=%s",
+                    STAT.state,
+                    STAT.task_mode,
+                    STAT.interp_state,
+                    STAT.paused,
+                    STAT.feed_hold_enabled,
+                )
+                self._last_non_idle_state = state_tuple
+            return
+
         # check if machine is idle and ready to run another command
         if STAT.interp_state != linuxcnc.INTERP_IDLE:
+            state_tuple = (
+                STAT.state,
+                STAT.task_mode,
+                STAT.interp_state,
+                STAT.paused,
+                STAT.feed_hold_enabled,
+            )
+            if state_tuple != self._last_non_idle_state:
+                LOG.debug(
+                    "MDI queue waiting: state=%s mode=%s interp=%s paused=%s feed_hold=%s",
+                    STAT.state,
+                    STAT.task_mode,
+                    STAT.interp_state,
+                    STAT.paused,
+                    STAT.feed_hold_enabled,
+                )
+                self._last_non_idle_state = state_tuple
             # RS274NGC interpreter not in a state to execute, bail
             return
+
+        self._last_non_idle_state = None
 
         # scan for the next command to execute from bottom up.
         if self.mdi_listorder_natural:
@@ -364,7 +407,11 @@ class MDIHistory(QListWidget, CMDWidget):
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_RUNNING)
                 row_item.setIcon(self.icon_run)
                 try:
-                    issue_mdi(cmd)
+                    issued = issue_mdi(cmd)
+                    if not issued:
+                        row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
+                        row_item.setIcon(self.icon_waiting)
+                        LOG.warning("MDI queue dispatch rejected, keeping command queued: %s", cmd)
                 except Exception:
                     row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_DONE)
                     row_item.setIcon(QIcon())

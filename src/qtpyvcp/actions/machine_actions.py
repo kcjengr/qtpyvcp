@@ -272,13 +272,17 @@ def issue_mdi(command, reset=True):
         # Clear PREVIOUS_MODE to prevent any automatic reset
         PREVIOUS_MODE = None
 
-    if setTaskMode(linuxcnc.MODE_MDI):
+    mode_ready = STAT.task_mode == linuxcnc.MODE_MDI or setTaskMode(linuxcnc.MODE_MDI)
+
+    if mode_ready:
         # issue multiple MDI commands separated by ';'
         for cmd in command.strip().split(';'):
             LOG.info("Issuing MDI command: %s", cmd)
             CMD.mdi(cmd)
+        return True
     else:
         LOG.error("Failed to issue MDI command: {}".format(command))
+        return False
 
 def _issue_mdi_ok(mdi_cmd='', widget=None):
     if STAT.task_state == linuxcnc.STATE_ON \

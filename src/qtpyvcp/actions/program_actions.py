@@ -101,10 +101,48 @@ def run(start_line=0):
     Args:
         start_line (int, optional) : The line to start program from. Defaults to 0.
     """
-    if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
+    interp_paused = (STAT.interp_state == linuxcnc.INTERP_PAUSED)
+    mdi_exec = STAT.state == linuxcnc.RCS_EXEC and STAT.task_mode == linuxcnc.MODE_MDI
+
+    LOG.debug(
+        "program.run requested: start_line=%s state=%s mode=%s interp=%s paused=%s feed_hold=%s",
+        start_line,
+        STAT.state,
+        STAT.task_mode,
+        STAT.interp_state,
+        STAT.paused,
+        STAT.feed_hold_enabled,
+    )
+
+    # MDI exception path: cycle-start is often used by operators as "resume" while
+    # running queued MDI lines; in this case prefer clearing feed hold over AUTO start.
+    if STAT.task_mode == linuxcnc.MODE_MDI and STAT.feed_hold_enabled:
+        LOG.debug("program.run: clearing feed hold in MDI mode")
+        CMD.set_feed_hold(0)
+        if mdi_exec and (STAT.paused or interp_paused):
+            CMD.auto(linuxcnc.AUTO_RESUME)
+        return
+
+    if mdi_exec and (STAT.paused or interp_paused):
+        LOG.debug("program.run: attempting MDI resume path")
         CMD.auto(linuxcnc.AUTO_RESUME)
+    elif STAT.state == linuxcnc.RCS_EXEC and (STAT.paused or interp_paused):
+        LOG.debug("program.run: attempting AUTO resume path")
+        CMD.auto(linuxcnc.AUTO_RESUME)
+    elif STAT.file == "":
+        LOG.warning("program.run: no file loaded, skipping AUTO start")
     elif setTaskMode(linuxcnc.MODE_AUTO):
+        LOG.debug("program.run: starting AUTO run at line %s", start_line)
         CMD.auto(linuxcnc.AUTO_RUN, start_line)
+    else:
+        LOG.warning(
+            "program.run: no action taken; state=%s mode=%s interp=%s paused=%s feed_hold=%s",
+            STAT.state,
+            STAT.task_mode,
+            STAT.interp_state,
+            STAT.paused,
+            STAT.feed_hold_enabled,
+        )
 
 def _run_ok(widget=None):
     """Checks if it is OK to run a program.
@@ -117,6 +155,12 @@ def _run_ok(widget=None):
     Returns:
         bool : True if Ok, else False.
     """
+    interp_paused = STAT.interp_state == linuxcnc.INTERP_PAUSED
+    mdi_resume_ready = (
+        STAT.task_mode == linuxcnc.MODE_MDI
+        and (STAT.feed_hold_enabled or STAT.paused or interp_paused)
+    )
+
     if STAT.estop:
         ok = False
         msg = "Can't run program when in E-Stop"
@@ -126,7 +170,10 @@ def _run_ok(widget=None):
     elif not STATUS.allHomed():
         ok = False
         msg = "Can't run program when not homed"
-    elif not STAT.paused and not STAT.interp_state == linuxcnc.INTERP_IDLE:
+    elif mdi_resume_ready:
+        ok = True
+        msg = "Resume MDI command"
+    elif not STAT.paused and STAT.interp_state not in (linuxcnc.INTERP_IDLE, linuxcnc.INTERP_PAUSED):
         ok = False
         msg = "Can't run program when already running"
     elif STAT.file == "":
@@ -199,7 +246,14 @@ def pause():
         program.pause
 
     """
-    LOG.debug("Pausing program execution")
+    LOG.debug(
+        "program.pause requested: state=%s mode=%s interp=%s paused=%s feed_hold=%s",
+        STAT.state,
+        STAT.task_mode,
+        STAT.interp_state,
+        STAT.paused,
+        STAT.feed_hold_enabled,
+    )
     CMD.auto(linuxcnc.AUTO_PAUSE)
 
 def _pause_ok(widget=None):
@@ -250,7 +304,14 @@ def resume():
         program.resume
 
     """
-    LOG.debug("Resuming program execution")
+    LOG.debug(
+        "program.resume requested: state=%s mode=%s interp=%s paused=%s feed_hold=%s",
+        STAT.state,
+        STAT.task_mode,
+        STAT.interp_state,
+        STAT.paused,
+        STAT.feed_hold_enabled,
+    )
     CMD.auto(linuxcnc.AUTO_RESUME)
 
 def _resume_ok(widget):
