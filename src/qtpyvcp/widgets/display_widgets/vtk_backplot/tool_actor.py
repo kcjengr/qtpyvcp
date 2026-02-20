@@ -23,18 +23,43 @@ from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
 
 LOG = logger.getLogger(__name__)
 
+
+def _resolve_active_tool(tool_table, datasource):
+    status = getattr(datasource, '_status', None)
+    stat = getattr(status, 'stat', None)
+    active_tool = getattr(stat, 'tool_in_spindle', 0)
+
+    if isinstance(tool_table, dict):
+        if active_tool in tool_table:
+            return tool_table[active_tool]
+        if 0 in tool_table:
+            return tool_table[0]
+        values = list(tool_table.values())
+        return values[0] if values else None
+
+    try:
+        if active_tool is not None and 0 <= int(active_tool) < len(tool_table):
+            return tool_table[int(active_tool)]
+    except Exception:
+        pass
+
+    try:
+        return tool_table[0]
+    except Exception:
+        return None
+
 class ToolActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
         super(ToolActor, self).__init__()
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
+        self.tool = _resolve_active_tool(self._tool_table, self._datasource)
 
         back_tool_val = (self._datasource._inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
         self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
 
         self.session = Session()
 
-        tool = self._tool_table[0]
         colors = vtkNamedColors()
 
         if self._datasource.isMachineMetric():
@@ -71,7 +96,10 @@ class ToolActor(vtk.vtkActor):
         elif self._datasource.isMachineJet():
             mapper = vtk.vtkPolyDataMapper()
         else:
-            if tool.id == 0 or tool.diameter < .05:
+            tool_id = getattr(self.tool, 'id', 0)
+            tool_diameter = getattr(self.tool, 'diameter', 0.0)
+
+            if tool_id == 0 or tool_diameter < .05:
                 transform = vtk.vtkTransform()
 
                 source = vtk.vtkConeSource()
@@ -98,7 +126,7 @@ class ToolActor(vtk.vtkActor):
                 mapper = vtk.vtkPolyDataMapper()
 
                 if isinstance(tool_table_plugin, DBToolTable):
-                    tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool.id).first()
+                    tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool_id).first()
 
                     if tool_data:
 
@@ -144,7 +172,9 @@ class ToolBitActor(vtk.vtkActor):
         self.foam_z = 0.0
         self.foam_w = 0.0
 
-        self.tool = self._tool_table[0]
+        self.tool = _resolve_active_tool(self._tool_table, self._datasource)
+        if self.tool is None:
+            self.tool = self._tool_table[0]
 
         if self._datasource.isMachineMetric():
             self.unit_scale = 25.4
@@ -308,13 +338,6 @@ class ToolBitActor(vtk.vtkActor):
 
                     p2_x_pos = p2_x * ba_x_pol
                     p2_z_pos = p2_z * ba_z_pol
-
-                    LOG.debug("Drawing Lathe tool id {}".format(self.tool.id))
-
-                    LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}"
-                              .format(float(self.tool.frontangle), p1_x_pos, p1_z_pos))
-                    LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}"
-                              .format(float(self.tool.backangle), p2_x_pos, p2_z_pos))
 
                     # Setup three points
                     points = vtk.vtkPoints()

@@ -278,11 +278,7 @@ class MachinePartsASM(vtk.vtkAssembly):
         self.part_axis = None
         self.part_joint = None
         self.part_color = None
-        
-        #print("########")
-        #print("NEW Machine")
-        
-        # print(f"{parts}")
+
         previous_asm = None
         
         parts_dict = OrderedDict()
@@ -292,9 +288,6 @@ class MachinePartsASM(vtk.vtkAssembly):
         # for depth, part_root, part_data in self.items_recursive(parts):
         for part in self.items_recursive(parts, self):
             pass
-            #print(f"{part}")
-            
-        #print(f"vtkAssembly: {self}")
 
 
     def get_part_pos(self):
@@ -311,14 +304,6 @@ class MachinePartsASM(vtk.vtkAssembly):
         self.part_joint = data.get("joint")
         self.part_color = data.get("color")
         self.part_power = data.get("power")
-        
-        # print(f"part_id:\t\t{self.part_id}")
-        # print(f"part_model:\t\t{self.part_model}")
-        # print(f"part_type:\t\t{self.part_type}")
-        # print(f"part_position:\t\t{self.part_position}")
-        # print(f"part_origin:\t\t{self.part_origin}")
-        # print(f"part_axis:\t\t{self.part_axis}")
-        # print(f"part_joint:\t\t{self.part_joint}")
         
         part_source = vtk.vtkSTLReader()
         part_source.SetFileName(self.part_model)

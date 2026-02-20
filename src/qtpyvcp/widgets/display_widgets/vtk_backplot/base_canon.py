@@ -275,7 +275,6 @@ class BaseCanon(QObject):
         self.add_path_point('user', self.last_pos, self.last_pos)
 
     def dwell(self, arg):
-        LOG.debug(f"--------- dwell: {arg}s ---------")
         if self.suppress > 0:
             return
 
@@ -338,45 +337,41 @@ class StatCanon(BaseCanon):
 
 class PrintCanon(BaseCanon):
     def set_g5x_offset(self, *args):
-        print(("set_g5x_offset", args))
+        pass
 
     def set_g92_offset(self, *args):
-        print(("set_g92_offset", args))
+        pass
 
     def next_line(self, state):
-        print(("next_line", state.sequence_number))
         self.state = state
 
     def set_plane(self, plane):
-        print(("set plane", plane))
+        pass
 
     def set_feed_rate(self, arg):
-        print(("set feed rate", arg))
+        pass
 
     def comment(self, arg):
-        print(("#", arg))
+        pass
 
     def straight_traverse(self, *args):
-        print(("straight_traverse %.4g %.4g %.4g  %.4g %.4g %.4g   %.4g %.4g %.4g" % args))
+        pass
 
     def straight_feed(self, *args):
-        print(("straight_feed %.4g %.4g %.4g  %.4g %.4g %.4g  %.4g %.4g %.4g" % args))
+        pass
 
     def dwell(self, arg):
-        if arg < .1:
-            print(("dwell %f ms" % (1000 * arg)))
-        else:
-            print(("dwell %f seconds" % arg))
+        pass
 
     def arc_feed(self, *args):
-        print(("arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g  %.4g %.4g %.4g" % args))
+        pass
 
     def get_axis_mask(self):
         return 7  # XYZ
 
 
     def change_tool(self, pocket):
-        print(("pocket", pocket))
+        pass
 
     def next_line(self, st):
         # state attributes
@@ -384,7 +379,4 @@ class PrintCanon(BaseCanon):
         # 'flood', 'gcodes', 'mcodes', 'mist', 'motion_mode', 'origin', 'units',
         # 'overrides', 'path_mode', 'plane', 'retract_mode', 'sequence_number',
         # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
-        print(("state", st))
-        print(("seq", st.sequence_number))
-        print(("MCODES", st.mcodes))
-        print(("TOOLCHANGE", st.toolchange))
+        self.state = st

@@ -1,4 +1,3 @@
-import sys
 from collections import OrderedDict
 
 import math
@@ -28,7 +27,6 @@ COLOR_MAP = {
 class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
-        LOG.debug("VTKCanon --- Init ---")
         self._datasource = LinuxCncDataSource()
 
         self.path_colors = colors
@@ -39,10 +37,6 @@ class VTKCanon(StatCanon):
         self.paths_start_point = OrderedDict()
         self.paths_angle_point = OrderedDict()
         self.paths_end_point = OrderedDict()
-
-        self.path_start_point = OrderedDict()
-        self.paths_angle_points = OrderedDict()
-        self.path_end_point = OrderedDict()
         self.path_segments = list()
         self.offset_transitions = list()
 
@@ -51,19 +45,16 @@ class VTKCanon(StatCanon):
         self.tool_offset = self._datasource.getToolOffset()
 
         g5x = self._datasource.getActiveWcsOffsets()
-        LOG.debug(f" G5x offsets = {g5x}")
-        LOG.debug(f"XY Rotation = {self.active_rotation}")
 
         # ensure Canon has correct starting offsets per var file
-        super().set_g5x_offset(self.active_wcs_index, g5x[0],g5x[1],g5x[2],g5x[3],g5x[4],g5x[5],g5x[6],g5x[7],g5x[8])
+        # set_g5x_offset() receives LinuxCNC's canonical index where G53 is 0,
+        # while active_wcs_index is already zero-based from G54.
+        super().set_g5x_offset(self.active_wcs_index + 1, g5x[0],g5x[1],g5x[2],g5x[3],g5x[4],g5x[5],g5x[6],g5x[7],g5x[8])
         
         self.foam_z = 0.0
         self.foam_w = 0.0
 
-        LOG.debug("VTKCanon --- Init Done ---")
-
     def comment(self, comment):
-        LOG.debug("G-code Comment: {}".format(comment))
         items = comment.lower().split(',', 1)
         if len(items) > 0 and items[0] in ['axis', 'backplot']:
             cmd = items[1].strip()
@@ -81,19 +72,13 @@ class VTKCanon(StatCanon):
                 self.foam_w = float(cmd.split(',')[1])
 
     def message(self, msg):
-        LOG.debug("G-code Message: {}".format(msg))
+        pass
         
     
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
         # ensure the passed values get set on 'self' via super
-        LOG.debug("----------------------------------")
-        LOG.debug("--------- set_g5x_offset ---------")
-        LOG.debug("----------------------------------")
         super().set_g5x_offset(index, x, y, z, a, b, c, u, v, w)
         new_wcs = index - 1  # this index counts also G53 so we need to do -1
-        LOG.debug("---------received wcs change: {}".format(new_wcs))
-        LOG.debug("--------- wcs values: x, y, z, a, b, c, u, v, w")
-        LOG.debug(f"--------- wcs values: {x}, {y}, {z}, {a}, {b}, {c}, {u}, {v}, {w}")
         
         if new_wcs not in list(self.path_points.keys()):
             #self.path_actors[new_wcs] = PathActor(self._datasource)
@@ -113,15 +98,10 @@ class VTKCanon(StatCanon):
 
 
     def add_path_point(self, line_type, start_point, end_point):
-        # LOG.debug("----------------------------------")
-        # LOG.debug("--------- add_path_point ---------")
-        # LOG.debug("----------------------------------")
         # As the points come through with the active wcs offsets baked in
         # remove them to allow vtk setusertransforms to work correctly.
         # These transforms apply wcs offsets for us in VTK
-        # LOG.debug(f"--------- wcs values to back out: {self.initial_wcs_offsets[self.active_wcs_index]}")
-        # LOG.debug(f"--------- Raw line_type={line_type}, start={start_point}, end={end_point}")
-        #try:
+
         adj_start_point = list(start_point)
         adj_end_point = list(end_point)
 
@@ -148,23 +128,17 @@ class VTKCanon(StatCanon):
         line = [tuple(adj_start_point), tuple(adj_end_point)]
         self.path_points.get(self.active_wcs_index).append((line_type, line))
         self.path_segments[-1]['lines'].append((line_type, line))
-        # LOG.debug(f"--------- Adjusted line_type={line_type}, start={adj_start_point}, end={adj_end_point}")
-        #except Exception as error:
-        #    LOG.debug(f"add_path_point - Exception raised: {type(error).__name__} - {error}")
 
     def draw_lines(self):
         # Used to draw the lines of the loaded program
-        LOG.debug("------------------------------")
-        LOG.debug("--------- draw_lines ---------")
-        LOG.debug("------------------------------")
-        LOG.debug("--------- path points size: {}".format(sys.getsizeof(self.path_points)))
-        LOG.debug("--------- path points length: {}".format(len(self.path_points)))
-
         # Metric programs require this scale factor so VTK path points render in machine units.
         multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
 
-        paths_count = 0
-        prev_wcs_index = 0
+        first_cut_wcs_index = None
+        for segment in self.path_segments:
+            if any(line_type != "traverse" for line_type, _ in segment['lines']):
+                first_cut_wcs_index = segment['wcs_index']
+                break
 
         for wcs_index, data in self.path_points.items():
 
@@ -219,21 +193,9 @@ class VTKCanon(StatCanon):
                         point_count += 2
 
                     else:
-                        # LOG.debug(f"--------- Points:")
                         if len(self.path_actors) > 1:
-                            # skip rapids from original path offsets. This actually means previous wcs
-                            # >1 path_actors means more than one g5x in use in the file.
-                            if (paths_count > 0) and (point_count == 0) and (line_type == "traverse"):
+                            if (point_count == 0) and (line_type == "traverse") and (wcs_index != first_cut_wcs_index):
                                 continue
-
-                            if point_count == 0:
-                                position = [start_point[0] * multiplication_factor,
-                                            start_point[1] * multiplication_factor,
-                                            start_point[2] * multiplication_factor]
-
-                                # Get start point for a transition line between different WCS
-                                self.path_start_point[prev_wcs_index] = position
-                                # LOG.debug(f"--------- Point position if point_count==0: {position} ; wcs index: {prev_wcs_index}")
 
                         path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
                                                           end_point[1] * multiplication_factor,
@@ -242,8 +204,6 @@ class VTKCanon(StatCanon):
                         path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
                                                           start_point[1] * multiplication_factor,
                                                           start_point[2] * multiplication_factor)
-                        # LOG.debug(f"--------- Path Actor Start Point : {start_point[0] * multiplication_factor} {start_point[1] * multiplication_factor} {start_point[2] * multiplication_factor}")
-                        # LOG.debug(f"--------- Path Actor End Point : {end_point[0] * multiplication_factor} {end_point[1] * multiplication_factor} {end_point[2] * multiplication_factor}")
 
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
 
@@ -257,22 +217,6 @@ class VTKCanon(StatCanon):
 
                     last_point = end_point
 
-                # LOG.debug(f"Length of path_actors {len(self.path_actors)}")
-                # LOG.debug(f"last_point: {last_point}")
-                
-                if (len(self.path_actors) > 1) and (last_point is not None):
-                    # Store the last point of the part as first point of the rapid line
-
-                    position = [last_point[0] * multiplication_factor,
-                                last_point[1] * multiplication_factor,
-                                last_point[2] * multiplication_factor]
-
-                    # LOG.debug(f"--------- Path Actor Last Point : {last_point[0] * multiplication_factor} {last_point[1] * multiplication_factor} {last_point[2] * multiplication_factor}")
-                    # Get end point for a transition line between different WCS
-                    self.path_end_point[wcs_index] = position
-                else:
-                    self.path_end_point[wcs_index] = None
-
                 # free up memory, lots of it for big files
 
                 self.path_points[wcs_index].clear()
@@ -285,15 +229,7 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
 
-                # LOG.debug(f"-------- Path Actor Matrix :  {path_actor.GetMatrix()}")
-
-            paths_count += 1
-
-            prev_wcs_index = wcs_index
-
         self.offset_transitions = list()
-        self.path_start_point.clear()
-        self.path_end_point.clear()
 
         if (not self._datasource.isMachineFoam()) and (len(self.path_segments) > 1):
             segment_summaries = list()
@@ -304,10 +240,14 @@ class VTKCanon(StatCanon):
                 segment_start = None
                 segment_end = None
                 segment_point_count = 0
+                segment_has_cut_motion = False
 
                 for segment_line_type, segment_line_data in segment_data:
                     segment_start_point = segment_line_data[0]
                     segment_end_point = segment_line_data[1]
+
+                    if segment_line_type != "traverse":
+                        segment_has_cut_motion = True
 
                     if (segment_index > 0) and (segment_point_count == 0) and (segment_line_type == "traverse"):
                         continue
@@ -326,20 +266,21 @@ class VTKCanon(StatCanon):
                     ]
                     segment_point_count += 2
 
-                segment_summaries.append((segment_wcs_index, segment_start, segment_end))
+                segment_summaries.append((segment_wcs_index, segment_start, segment_end, segment_has_cut_motion))
 
             for transition_index in range(1, len(segment_summaries)):
-                prev_wcs_index, _, prev_end = segment_summaries[transition_index - 1]
-                next_wcs_index, next_start, _ = segment_summaries[transition_index]
+                prev_wcs_index, _, prev_end, prev_has_cut_motion = segment_summaries[transition_index - 1]
+                next_wcs_index, next_start, _, next_has_cut_motion = segment_summaries[transition_index]
 
                 if prev_end is None or next_start is None:
+                    continue
+
+                if not prev_has_cut_motion or not next_has_cut_motion:
                     continue
 
                 if prev_wcs_index == next_wcs_index:
                     continue
 
-                self.path_start_point[prev_wcs_index] = next_start
-                self.path_end_point[prev_wcs_index] = prev_end
                 self.offset_transitions.append({
                     'from_wcs': prev_wcs_index,
                     'to_wcs': next_wcs_index,
@@ -347,20 +288,8 @@ class VTKCanon(StatCanon):
                     'to_start': next_start,
                 })
 
-        LOG.debug("----------------------------------")
-        LOG.debug("--------- draw_lines END ---------")
-        LOG.debug("----------------------------------")
-
     def get_path_actors(self):
         return self.path_actors
-
-    # Methods get_offsets_start_point and get_offsets_end_point provide
-    # the start and end points for a transition line between different WCS
-    def get_offsets_start_point(self):
-        return self.path_start_point
-
-    def get_offsets_end_point(self):
-        return self.path_end_point
 
     def get_foam(self):
         return self.foam_z, self.foam_w
