@@ -17,13 +17,14 @@
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import math
 
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Qt, Slot, Property
 from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 
 from qtpyvcp.utilities.info import Info
-from qtpyvcp.actions.machine_actions import jog
+from qtpyvcp.actions.machine_actions import parseJogIncrement
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting, setSetting
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
@@ -43,12 +44,11 @@ class JogIncrementWidget(QWidget):
         self._ledDiameter = 15
         self._ledColor = QColor('green')
         self._alignment = Qt.AlignTop | Qt.AlignRight
+        self._buttons_by_value = []
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
         if parent is None and not standalone:
             return
-
-        enable_default = True
 
         increments = INFO.getIncrements()
         for increment in increments:
@@ -62,22 +62,43 @@ class JogIncrementWidget(QWidget):
 
             if increment != 0:
                 raw_increment = increment.strip()
-                # print('[', raw_increment, ']')
                 button.setText(raw_increment)
                 button.clicked.connect(self.setJogIncrement)
 
-                if enable_default:
-                    enable_default = False
-
-                    button.setDefault(True)
-                    button.setChecked(True)
+                parsed_increment = parseJogIncrement(raw_increment)
+                self._buttons_by_value.append((button, parsed_increment))
 
                 hBox.addWidget(button)
 
+            self._sync_checked_button_with_setting()
         self.placeLed()
 
     def setJogIncrement(self):
         setSetting('machine.jog.increment', self.sender().text())
+
+    def _sync_checked_button_with_setting(self):
+        if len(self._buttons_by_value) == 0:
+            return
+
+        setting = getSetting('machine.jog.increment')
+        if setting is None:
+            self._buttons_by_value[0][0].setDefault(True)
+            self._buttons_by_value[0][0].setChecked(True)
+            return
+
+        active_increment = parseJogIncrement(setting.getValue())
+
+        selected_button = None
+        for button, button_increment in self._buttons_by_value:
+            if math.isclose(button_increment, active_increment, rel_tol=1e-9, abs_tol=1e-9):
+                selected_button = button
+                break
+
+        if selected_button is None:
+            selected_button = self._buttons_by_value[0][0]
+
+        selected_button.setDefault(True)
+        selected_button.setChecked(True)
 
     def layoutWidgets(self, layout):
         return (layout.itemAt(i) for i in range(layout.count()))
