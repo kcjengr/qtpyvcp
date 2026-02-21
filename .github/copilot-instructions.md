@@ -70,8 +70,8 @@ How an AI agent should behave here (do/don't)
 - Do: avoid editing generated files (e.g., `_version.py`), and prefer updating source code that drives generation or the build metadata.
 - Do: keep running notes current for every meaningful Probe Basic or QtPyVCP change:
 
-  - Update `probe_basic/docs_src/source/running_notes.rst` for cross-repo sessions and Probe Basic-side work.
-  - Update `qtpyvcp/docs/source/development/running_notes.rst` for QtPyVCP-side work.
+  - Update `../probe_basic/audit_reports/running_notes.rst` for cross-repo sessions and Probe Basic-side work.
+  - Update `audit_reports/running_notes.rst` for QtPyVCP-side work.
   - Record concise release-note-ready entries with date, area, summary, changes, validation, and touched files.
 - Don't: assume tests exist — there is no standard pytest suite; rely on example scripts and `video_tests` for manual verification.
 

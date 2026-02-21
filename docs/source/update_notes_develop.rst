@@ -3,7 +3,7 @@ Develop Update Release Notes
 ============================
 
 Maintainer drafting note: for in-progress session tracking before publishing here,
-use the internal running notes file at ``docs/source/development/running_notes.rst``.
+use the internal running notes file at ``audit_reports/running_notes.rst``.
 
 February 20, 2026 - 5.0.9-13 Develop Release Notes
 ---------------------------------------------------
