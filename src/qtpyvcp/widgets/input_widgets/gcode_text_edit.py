@@ -13,7 +13,7 @@ from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
 
 from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
-                        QTextCharFormat, QTextCursor)
+                        QTextCharFormat, QTextCursor, QPalette)
 
 from qtpy.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
@@ -266,6 +266,10 @@ class GcodeTextEdit(QPlainTextEdit):
 
             self.search_term = ""
             self.replace_term = ""
+        
+        # For highlighting matches
+        self.highlight_selections = []
+        self._find_palette_backup = None
 
         # context menu
         self.menu = QMenu(self)
@@ -274,10 +278,8 @@ class GcodeTextEdit(QPlainTextEdit):
         self.menu.addAction(self.tr('Cut'), self.cut)
         self.menu.addAction(self.tr('Copy'), self.copy)
         self.menu.addAction(self.tr('Paste'), self.paste)
-        self.menu.addAction(self.tr('Find'), self.findForward)
-        self.menu.addAction(self.tr('Find All'), self.findAll)
-        self.menu.addAction(self.tr('Replace'), self.replace)
-        self.menu.addAction(self.tr('Replace All'), self.replace)
+        self.menu.addSeparator()
+        self.menu.addAction(self.tr('Find / Replace...'), self.findDialog)
 
         # FixMe: Picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
@@ -318,6 +320,486 @@ class GcodeTextEdit(QPlainTextEdit):
         LOG.debug(f"Find whole words :{enabled}")
         self.find_words = enabled
 
+    # ========================================================================
+    # Enhanced Find/Replace Methods with Regex Support
+    # ========================================================================
+    
+    def _buildFindFlags(self, case_sensitive, whole_words, backward=False):
+        """Build QTextDocument find flags from parameters."""
+        flags = QTextDocument.FindFlag(0)
+        
+        if case_sensitive:
+            flags |= QTextDocument.FindCaseSensitively
+        if whole_words:
+            flags |= QTextDocument.FindWholeWords
+        if backward:
+            flags |= QTextDocument.FindBackward
+            
+        return flags
+    
+    def _findInDocument(self, text, case_sensitive, whole_words, use_regex, backward=False, start_cursor=None):
+        """
+        Find text in document with support for regex.
+        Returns QTextCursor with selection if found, otherwise null cursor.
+        """
+        if not text:
+            return QTextCursor()
+        
+        cursor = start_cursor if start_cursor else self.textCursor()
+        
+        if use_regex:
+            # Use QRegularExpression for regex search
+            pattern_options = QRegularExpression.PatternOption(0)
+            if not case_sensitive:
+                pattern_options |= QRegularExpression.CaseInsensitiveOption
+                
+            regex = QRegularExpression(text, pattern_options)
+            if not regex.isValid():
+                LOG.warning(f"Invalid regex pattern: {text}")
+                return QTextCursor()
+            
+            # Search using regex
+            if backward:
+                result_cursor = self.document().find(regex, cursor, QTextDocument.FindBackward)
+            else:
+                result_cursor = self.document().find(regex, cursor)
+        else:
+            # Plain text search
+            flags = self._buildFindFlags(case_sensitive, whole_words, backward)
+            result_cursor = self.document().find(text, cursor, flags)
+        
+        return result_cursor
+    
+    def findNext(self, text, case_sensitive=False, whole_words=False, use_regex=False, wrap=True):
+        """
+        Find next occurrence of text.
+        Returns True if found, False otherwise.
+        """
+        if not text:
+            return False
+        
+        # Try to find from current position
+        result_cursor = self._findInDocument(text, case_sensitive, whole_words, use_regex, backward=False)
+        
+        if not result_cursor.isNull():
+            self.setTextCursor(result_cursor)
+            self.ensureCursorVisible()
+            return True
+        elif wrap:
+            # Wrap around to beginning
+            cursor = QTextCursor(self.document())
+            cursor.movePosition(QTextCursor.Start)
+            result_cursor = self._findInDocument(text, case_sensitive, whole_words, use_regex, 
+                                                 backward=False, start_cursor=cursor)
+            if not result_cursor.isNull():
+                self.setTextCursor(result_cursor)
+                self.ensureCursorVisible()
+                return True
+        
+        return False
+    
+    def findPrevious(self, text, case_sensitive=False, whole_words=False, use_regex=False, wrap=True):
+        """
+        Find previous occurrence of text.
+        Returns True if found, False otherwise.
+        """
+        if not text:
+            return False
+        
+        # Try to find from current position
+        result_cursor = self._findInDocument(text, case_sensitive, whole_words, use_regex, backward=True)
+        
+        if not result_cursor.isNull():
+            self.setTextCursor(result_cursor)
+            self.ensureCursorVisible()
+            return True
+        elif wrap:
+            # Wrap around to end
+            cursor = QTextCursor(self.document())
+            cursor.movePosition(QTextCursor.End)
+            result_cursor = self._findInDocument(text, case_sensitive, whole_words, use_regex, 
+                                                 backward=True, start_cursor=cursor)
+            if not result_cursor.isNull():
+                self.setTextCursor(result_cursor)
+                self.ensureCursorVisible()
+                return True
+        
+        return False
+    
+    def replaceCurrent(self, search_text, replace_text, case_sensitive=False, whole_words=False, use_regex=False):
+        """
+        Replace the currently selected text if it matches the search text.
+        Returns True if replaced, False otherwise.
+        """
+        if not search_text:
+            return False
+        
+        cursor = self.textCursor()
+        if not cursor.hasSelection():
+            return False
+        
+        selected_text = cursor.selectedText()
+        
+        # Check if selection matches search text
+        matches = False
+        if use_regex:
+            pattern_options = QRegularExpression.PatternOption(0)
+            if not case_sensitive:
+                pattern_options |= QRegularExpression.CaseInsensitiveOption
+            regex = QRegularExpression(search_text, pattern_options)
+            if regex.isValid():
+                match = regex.match(selected_text)
+                matches = match.hasMatch() and match.capturedStart() == 0 and match.capturedLength() == len(selected_text)
+                if matches and match.lastCapturedIndex() > 0:
+                    # Handle regex capture groups in replacement
+                    for i in range(match.lastCapturedIndex() + 1):
+                        replace_text = replace_text.replace(f"\\{i}", match.captured(i))
+        else:
+            if case_sensitive:
+                matches = selected_text == search_text
+            else:
+                matches = selected_text.lower() == search_text.lower()
+        
+        if matches:
+            cursor.beginEditBlock()
+            cursor.insertText(replace_text)
+            cursor.endEditBlock()
+            return True
+        
+        return False
+
+    def replaceCurrentWithUndo(self, search_text, replace_text, case_sensitive=False, whole_words=False, use_regex=False):
+        """
+        Replace the current selection and return undo data for that replacement.
+        Returns a dict with position and text info, or None if no replacement.
+        """
+        if not search_text:
+            return None
+
+        cursor = self.textCursor()
+        if not cursor.hasSelection():
+            return None
+
+        original_text = cursor.selectedText()
+        matches = False
+        new_text = replace_text
+
+        if use_regex:
+            pattern_options = QRegularExpression.PatternOption(0)
+            if not case_sensitive:
+                pattern_options |= QRegularExpression.CaseInsensitiveOption
+            regex = QRegularExpression(search_text, pattern_options)
+            if regex.isValid():
+                match = regex.match(original_text)
+                matches = match.hasMatch() and match.capturedStart() == 0 and match.capturedLength() == len(original_text)
+                if matches and match.lastCapturedIndex() > 0:
+                    new_text = replace_text
+                    for i in range(match.lastCapturedIndex() + 1):
+                        new_text = new_text.replace(f"\\{i}", match.captured(i))
+        else:
+            if case_sensitive:
+                matches = original_text == search_text
+            else:
+                matches = original_text.lower() == search_text.lower()
+
+        if not matches:
+            return None
+
+        start_pos = cursor.selectionStart()
+        cursor.beginEditBlock()
+        cursor.insertText(new_text)
+        cursor.endEditBlock()
+
+        return {
+            "pos": start_pos,
+            "original": original_text,
+            "new_text": new_text,
+        }
+
+    def replaceAllWithUndo(self, search_text, replace_text, case_sensitive=False, whole_words=False, use_regex=False):
+        """
+        Replace all occurrences and return undo data for those replacements.
+        Returns a list of dicts with position and text info.
+        """
+        if not search_text:
+            return []
+
+        records = []
+        cursor = QTextCursor(self.document())
+        cursor.beginEditBlock()
+        cursor.movePosition(QTextCursor.Start)
+
+        while True:
+            if use_regex:
+                pattern_options = QRegularExpression.PatternOption(0)
+                if not case_sensitive:
+                    pattern_options |= QRegularExpression.CaseInsensitiveOption
+                regex = QRegularExpression(search_text, pattern_options)
+                if not regex.isValid():
+                    break
+                result_cursor = self.document().find(regex, cursor)
+            else:
+                flags = self._buildFindFlags(case_sensitive, whole_words)
+                result_cursor = self.document().find(search_text, cursor, flags)
+
+            if result_cursor.isNull():
+                break
+
+            original_text = result_cursor.selectedText()
+            new_text = replace_text
+            if use_regex and result_cursor.hasSelection():
+                pattern_options = QRegularExpression.PatternOption(0)
+                if not case_sensitive:
+                    pattern_options |= QRegularExpression.CaseInsensitiveOption
+                regex = QRegularExpression(search_text, pattern_options)
+                match = regex.match(original_text)
+                if match.hasMatch() and match.lastCapturedIndex() > 0:
+                    new_text = replace_text
+                    for i in range(match.lastCapturedIndex() + 1):
+                        new_text = new_text.replace(f"\\{i}", match.captured(i))
+
+            start_pos = result_cursor.selectionStart()
+            result_cursor.insertText(new_text)
+            records.append({
+                "pos": start_pos,
+                "original": original_text,
+                "new_text": new_text,
+            })
+
+            cursor = result_cursor
+
+        cursor.endEditBlock()
+        self.clearHighlights()
+
+        return records
+    
+    def replaceAll(self, search_text, replace_text, case_sensitive=False, whole_words=False, use_regex=False):
+        """
+        Replace all occurrences of search_text with replace_text.
+        Returns the count of replacements made.
+        """
+        if not search_text:
+            return 0
+        
+        count = 0
+        cursor = QTextCursor(self.document())
+        cursor.beginEditBlock()
+        
+        # Start from beginning
+        cursor.movePosition(QTextCursor.Start)
+        
+        while True:
+            if use_regex:
+                pattern_options = QRegularExpression.PatternOption(0)
+                if not case_sensitive:
+                    pattern_options |= QRegularExpression.CaseInsensitiveOption
+                regex = QRegularExpression(search_text, pattern_options)
+                if not regex.isValid():
+                    break
+                result_cursor = self.document().find(regex, cursor)
+            else:
+                flags = self._buildFindFlags(case_sensitive, whole_words)
+                result_cursor = self.document().find(search_text, cursor, flags)
+            
+            if result_cursor.isNull():
+                break
+            
+            # Handle regex capture groups if needed
+            actual_replace = replace_text
+            if use_regex and result_cursor.hasSelection():
+                selected = result_cursor.selectedText()
+                pattern_options = QRegularExpression.PatternOption(0)
+                if not case_sensitive:
+                    pattern_options |= QRegularExpression.CaseInsensitiveOption
+                regex = QRegularExpression(search_text, pattern_options)
+                match = regex.match(selected)
+                if match.hasMatch() and match.lastCapturedIndex() > 0:
+                    actual_replace = replace_text
+                    for i in range(match.lastCapturedIndex() + 1):
+                        actual_replace = actual_replace.replace(f"\\{i}", match.captured(i))
+            
+            result_cursor.insertText(actual_replace)
+            cursor = result_cursor
+            count += 1
+        
+        cursor.endEditBlock()
+        
+        # Clear any highlights
+        self.clearHighlights()
+        
+        return count
+    
+    def getMatchCount(self, text, case_sensitive=False, whole_words=False, use_regex=False):
+        """
+        Count the total number of matches in the document.
+        """
+        if not text:
+            return 0
+        
+        count = 0
+        cursor = QTextCursor(self.document())
+        cursor.movePosition(QTextCursor.Start)
+        
+        while True:
+            if use_regex:
+                pattern_options = QRegularExpression.PatternOption(0)
+                if not case_sensitive:
+                    pattern_options |= QRegularExpression.CaseInsensitiveOption
+                regex = QRegularExpression(text, pattern_options)
+                if not regex.isValid():
+                    break
+                cursor = self.document().find(regex, cursor)
+            else:
+                flags = self._buildFindFlags(case_sensitive, whole_words)
+                cursor = self.document().find(text, cursor, flags)
+            
+            if cursor.isNull():
+                break
+            count += 1
+        
+        return count
+    
+    def getCurrentMatchIndex(self, text, case_sensitive=False, whole_words=False, use_regex=False):
+        """
+        Get the index of the current match (1-based).
+        Returns 0 if no current selection or selection doesn't match.
+        """
+        if not text:
+            return 0
+        
+        current_cursor = self.textCursor()
+        if not current_cursor.hasSelection():
+            return 0
+        
+        # Count matches before current position
+        index = 0
+        cursor = QTextCursor(self.document())
+        cursor.movePosition(QTextCursor.Start)
+        
+        while True:
+            if use_regex:
+                pattern_options = QRegularExpression.PatternOption(0)
+                if not case_sensitive:
+                    pattern_options |= QRegularExpression.CaseInsensitiveOption
+                regex = QRegularExpression(text, pattern_options)
+                if not regex.isValid():
+                    break
+                cursor = self.document().find(regex, cursor)
+            else:
+                flags = self._buildFindFlags(case_sensitive, whole_words)
+                cursor = self.document().find(text, cursor, flags)
+            
+            if cursor.isNull():
+                break
+            
+            index += 1
+            
+            # Check if this match is the current selection
+            if cursor.selectionStart() == current_cursor.selectionStart() and \
+               cursor.selectionEnd() == current_cursor.selectionEnd():
+                return index
+        
+        return 0
+    
+    def highlightAllMatches(self, text, case_sensitive=False, whole_words=False, use_regex=False, highlight_current=True):
+        """
+        Highlight all matches in the document, with an optional distinct highlight
+        for the current match.
+        """
+        self.clearHighlights()
+        
+        if not text:
+            return
+        
+        # Create highlight formats
+        highlight_format = QTextCharFormat()
+        highlight_format.setBackground(QColor("#8691FF"))
+        current_format = QTextCharFormat()
+        current_format.setBackground(QColor("#1402FC"))
+        current_format.setForeground(QColor("#FFFFFF"))
+        current_format.setFontWeight(QFont.Bold)
+        
+        # Find all matches
+        cursor = QTextCursor(self.document())
+        cursor.movePosition(QTextCursor.Start)
+        
+        selections = []
+        match_found = False
+        while True:
+            if use_regex:
+                pattern_options = QRegularExpression.PatternOption(0)
+                if not case_sensitive:
+                    pattern_options |= QRegularExpression.CaseInsensitiveOption
+                regex = QRegularExpression(text, pattern_options)
+                if not regex.isValid():
+                    break
+                cursor = self.document().find(regex, cursor)
+            else:
+                flags = self._buildFindFlags(case_sensitive, whole_words)
+                cursor = self.document().find(text, cursor, flags)
+            
+            if cursor.isNull():
+                break
+            
+            # Create selection for this match
+            selection = QTextEdit.ExtraSelection()
+            selection.format = highlight_format
+            selection.cursor = cursor
+            selections.append(selection)
+            match_found = True
+        
+        if highlight_current and match_found:
+            current_cursor = self.textCursor()
+            if current_cursor.hasSelection():
+                selected_text = current_cursor.selectedText()
+                matches_selection = False
+                if use_regex:
+                    pattern_options = QRegularExpression.PatternOption(0)
+                    if not case_sensitive:
+                        pattern_options |= QRegularExpression.CaseInsensitiveOption
+                    regex = QRegularExpression(text, pattern_options)
+                    if regex.isValid():
+                        match = regex.match(selected_text)
+                        matches_selection = match.hasMatch() and match.capturedStart() == 0 and match.capturedLength() == len(selected_text)
+                else:
+                    if case_sensitive:
+                        matches_selection = selected_text == text
+                    else:
+                        matches_selection = selected_text.lower() == text.lower()
+
+                if matches_selection:
+                    if self._find_palette_backup is None:
+                        self._find_palette_backup = self.palette()
+                    find_palette = self.palette()
+                    find_palette.setColor(QPalette.Highlight, QColor("#1402FC"))
+                    find_palette.setColor(QPalette.HighlightedText, QColor("#FFFFFF"))
+                    self.setPalette(find_palette)
+
+                    current_selection = QTextEdit.ExtraSelection()
+                    current_selection.format = current_format
+                    current_selection.cursor = current_cursor
+                    selections.append(current_selection)
+
+        if not selections:
+            self.clearHighlights()
+            return
+
+        self.highlight_selections = selections
+        self.setExtraSelections(selections)
+    
+    def clearHighlights(self):
+        """Clear all search highlights."""
+        self.highlight_selections = []
+        self.setExtraSelections([])  # Explicitly clear editor's extra selections
+        if self._find_palette_backup is not None:
+            self.setPalette(self._find_palette_backup)
+            self._find_palette_backup = None
+        self.onCursorChanged()
+
+    # ========================================================================
+    # Legacy Methods (kept for backward compatibility)
+    # ========================================================================
+    
     def findAllText(self, text):
         flags = QTextDocument.FindFlag(0)
 
@@ -407,45 +889,6 @@ class GcodeTextEdit(QPlainTextEdit):
                 cursor.endEditBlock();
             else:
                 searching = False
-
-    @Slot()
-    def findAll(self):
-
-        text = self.search_term
-        LOG.debug(f"Find all text :{text}")
-        self.findAllText(text)
-
-    @Slot()
-    def findForward(self):
-        text = self.search_term
-        LOG.debug(f"Find forward :{text}")
-        self.findForwardText(text)
-
-    @Slot()
-    def findBackward(self):
-        text = self.search_term
-        LOG.debug(f"Find backwards :{text}")
-        self.findBackwardText(text)
-
-    @Slot()
-    def replace(self):
-
-        search_text = self.search_term
-        replace_text = self.replace_term
-
-        LOG.debug(f"Replace text :{search_text} with {replace_text}")
-
-        self.replaceText(search_text, replace_text)
-
-    @Slot()
-    def replaceAll(self):
-
-        search_text = self.search_term
-        replace_text = self.replace_term
-
-        LOG.debug(f"Replace all text :{search_text} with {replace_text}")
-
-        self.replaceAllText(search_text, replace_text)
 
     @Slot()
     def saveFile(self, save_file_name = None):
@@ -660,6 +1103,18 @@ class GcodeTextEdit(QPlainTextEdit):
             program_actions.load(save_file)
 
     def keyPressEvent(self, event):
+        # Handle keyboard shortcuts
+        if event.matches(Qt.StandardKey.Find) or (event.key() == Qt.Key_F and event.modifiers() & Qt.ControlModifier):
+            # Ctrl+F - Open find dialog
+            self.findDialog()
+            event.accept()
+            return
+        elif event.key() == Qt.Key_H and event.modifiers() & Qt.ControlModifier:
+            # Ctrl+H - Open find dialog (focused on replace)
+            self.findDialog()
+            event.accept()
+            return
+        
         # keep the cursor centered
         if event.key() == Qt.Key_Up:
             self.moveCursor(QTextCursor.Up)
@@ -837,7 +1292,10 @@ class GcodeTextEdit(QPlainTextEdit):
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
             selection.cursor.clearSelection()
-            self.setExtraSelections([selection])
+            selections = [selection]
+            if self.highlight_selections:
+                selections.extend(self.highlight_selections)
+            self.setExtraSelections(selections)
 
         # emit signals for backplot etc.
         self.focused_line = block_number + 1
