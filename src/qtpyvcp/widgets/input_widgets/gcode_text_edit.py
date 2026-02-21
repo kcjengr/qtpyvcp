@@ -13,7 +13,7 @@ from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
 
 from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
-                        QTextCharFormat, QTextCursor, QPalette)
+                        QTextCharFormat, QTextCursor, QPalette, QKeySequence)
 
 from qtpy.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
@@ -1104,7 +1104,7 @@ class GcodeTextEdit(QPlainTextEdit):
 
     def keyPressEvent(self, event):
         # Handle keyboard shortcuts
-        if event.matches(Qt.StandardKey.Find) or (event.key() == Qt.Key_F and event.modifiers() & Qt.ControlModifier):
+        if event.matches(QKeySequence.Find) or (event.key() == Qt.Key_F and event.modifiers() & Qt.ControlModifier):
             # Ctrl+F - Open find dialog
             self.findDialog()
             event.accept()
