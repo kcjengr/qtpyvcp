@@ -21,7 +21,7 @@ vcp:
 data_plugins:
   status:
     kwargs:
-      cycle_time: {{ ini.display.cycle_time }}
+      cycle_time: {{ ini.DISPLAY.cycle_time }}
 
   clock:
     provider: qtpyvcp.plugins.clock:Clock
@@ -34,8 +34,8 @@ windows:
   mainwindow:
     provider: mini:MiniVCP
     kwargs:
-      title: ( vcp.name ) ( vcp.version ) on {{ ini.machine.name }}
-      ui_file: {{ file.dir }}/mini.ui  # ui file to load the window from
+      title: ( vcp.name ) ( vcp.version ) on {{ ini.EMC.machine }}
+      ui_file: {{ file.dir }}/mini.ui
       confirm_exit: no
 
 #  secondarywindow:
