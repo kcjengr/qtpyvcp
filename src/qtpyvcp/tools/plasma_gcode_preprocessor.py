@@ -1366,6 +1366,10 @@ class PreProcessor:
             
         # marking_voltage = hal.get_value('qtpyvcp.spot-threshold.out')
         marking_delay = hal.get_value('qtpyvcp.spot-delay.out')
+        
+        # only look for hidef if qtpyvcp.plasma-use-hidef.checked is true
+        use_hidef = hal.get_value('qtpyvcp.plasma-use-hidef.checked')
+        
         LOG.debug("Got all info from HAL pins")
         
         # old school loop so we can easily peek forward or back of the current
@@ -1417,7 +1421,7 @@ class PreProcessor:
                         circumferance = diameter * pi
                         
                         # see if can find hidef data for this hole scenario
-                        if self.active_materialid is not None:
+                        if self.active_materialid is not None and use_hidef:
                             LOG.debug(f"Look for HiDef data on this machine/material/thickness {(self.active_machineid, self.active_materialid, self.active_thicknessid)}")
                             hidef_data = PLASMADB.hidef_holes(self.active_machineid, self.active_materialid, self.active_thicknessid)
                         else:
