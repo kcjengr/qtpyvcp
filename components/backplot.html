@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VTK Backplot &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Containers" href="containers.html" />
+    <link rel="prev" title="Action Sliders" href="action_sliders.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Components</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="action_buttons.html">Action Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="action_sliders.html">Action Sliders</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">VTK Backplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stacked_widget.html">VCP Stacked Widget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status_items.html">Status Items</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subcallbutton.html">Sub Call Button</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Components</a></li>
+      <li class="breadcrumb-item active">VTK Backplot</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/components/backplot.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vtk-backplot">
+<h1>VTK Backplot<a class="headerlink" href="#vtk-backplot" title="Link to this heading"></a></h1>
+<p>The VTK Backplot is a very fast plot renderer and is the recommended one to use.</p>
+<p>This example is using the <a class="reference internal" href="../tutorials/vcp_template.html"><span class="doc">VCP Template</span></a> to create a blank
+screen.</p>
+<img alt="../_images/backplot-01.png" class="align-center" src="../_images/backplot-01.png" />
+<p>Add a <cite>Frame</cite> and select frameShape <cite>Box</cite> then drag another <cite>Frame</cite> inside the
+first one and select frameShape <cite>Box</cite> and drag a <cite>VTKBackPlot</cite> into the first
+frame and save your work.</p>
+<img alt="../_images/backplot-02.png" class="align-center" src="../_images/backplot-02.png" />
+<p>Drag a couple of <cite>Push Buttons</cite> into the second frame. Right click inside the
+first frame and select <cite>Lay Out Vertically</cite>.</p>
+<img alt="../_images/backplot-03.png" class="align-center" src="../_images/backplot-03.png" />
+<p>Double click on the first button and change the name to <cite>P</cite>, next change the
+objectName to <cite>plotP</cite>. In the Signal/Slot Editor tab left click on the green
+plus symbol to create a new Signal/Slot.</p>
+<img alt="../_images/backplot-04.png" class="align-center" src="../_images/backplot-04.png" />
+<p>Set the sender to <cite>plotP</cite>, set the Signal to <cite>clicked()</cite>, set the Receiver to
+<cite>vtkbackplot</cite> and set the Slot to <cite>setViewP()</cite>. Now when we run the example
+the first button will set the view to Isometric Projection.</p>
+<img alt="../_images/backplot-05.png" class="align-center" src="../_images/backplot-05.png" />
+<p>Controlling the display of the boundries and axes information can be done in the
+configuration ini file located in <cite>username/linuxcnc/configs/configuration_name</cite>.
+Descriptions of the options for the ini file are in
+<a class="reference internal" href="../configuration/ini_options.html"><span class="doc">INI Options</span></a>.</p>
+<p>Turning off everything except <cite>machine boundry</cite> in the ini file.</p>
+<img alt="../_images/backplot-06.png" class="align-center" src="../_images/backplot-06.png" />
+<p>And the result.</p>
+<img alt="../_images/backplot-07.png" class="align-center" src="../_images/backplot-07.png" />
+<p>In the same mannor as before we can drag more buttons into the frame and set the
+views for <cite>X, Y, Z and Path</cite>.</p>
+<img alt="../_images/backplot-08.png" class="align-center" src="../_images/backplot-08.png" />
+<p>Touch screens only have the left mouse button and the default action for the
+left mouse button is to roll the disply. In order to pan the display we need to
+add a button for Pan/Roll. Make sure to check off <cite>checkable</cite> so the function
+will work.</p>
+<p>The big difference with this buttons signal is it must be <cite>clicked(bool)</cite> for
+the <cite>enable_panning</cite> slot to show up.</p>
+<p>To change the text of the button to reflect the current status we need to do a
+bit of python. Open the
+<cite>username/configuration_name/configuration_name/mainwindow.py</cite> file. Add the
+<cite>connect</cite> line to tie the clicked action to the function. Then add the
+<cite>toggleRollPan</cite> function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyMainWindow</span><span class="p">(</span><span class="n">VCPMainWindow</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Main window class for the VCP.&quot;&quot;&quot;</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">(</span><span class="n">MyMainWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">plotRPBtn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">toggleRollPan</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">toggleRollPan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotRPBtn</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">plotRPBtn</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Pan&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">plotRPBtn</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;Roll&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add a new signal with the sender plotRPBtn, signal clicked(bool), receiver
+vtkbqackplot, slot enable_panning(bool).</p>
+<img alt="../_images/backplot-09.png" class="align-center" src="../_images/backplot-09.png" />
+<p>When we run the example and click or press the <cite>Roll</cite> button it toggles to the
+<cite>Pan</cite> function and using a touch screen you can now pan the backplot.</p>
+<img alt="../_images/backplot-10.png" class="align-center" src="../_images/backplot-10.png" />
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="containers.html" class="btn btn-neutral float-right" title="Containers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="action_sliders.html" class="btn btn-neutral float-left" title="Action Sliders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

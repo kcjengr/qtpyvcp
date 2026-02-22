@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Widgets &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Base Widgets" href="base_widget.html" />
+    <link rel="prev" title="Tool Actions" href="../actions/tool_actions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Widgets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html">Base Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.ChanList"><code class="docutils literal notranslate"><span class="pre">ChanList</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget"><code class="docutils literal notranslate"><span class="pre">VCPPrimitiveWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget"><code class="docutils literal notranslate"><span class="pre">VCPBaseWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPWidget"><code class="docutils literal notranslate"><span class="pre">VCPWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.CMDWidget"><code class="docutils literal notranslate"><span class="pre">CMDWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.HALWidget"><code class="docutils literal notranslate"><span class="pre">HALWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPButton"><code class="docutils literal notranslate"><span class="pre">VCPButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buttons/index.html">Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html">HAL Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html">Recent Files Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#homing-menu">Homing Menu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Widgets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="widgets">
+<h1>Widgets<a class="headerlink" href="#widgets" title="Link to this heading"></a></h1>
+<p>QtPyVCP custom widget documentation.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="base_widget.html">Base Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.ChanList"><code class="docutils literal notranslate"><span class="pre">ChanList</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget"><code class="docutils literal notranslate"><span class="pre">VCPPrimitiveWidget</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget.initialize"><code class="docutils literal notranslate"><span class="pre">VCPPrimitiveWidget.initialize()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget.terminate"><code class="docutils literal notranslate"><span class="pre">VCPPrimitiveWidget.terminate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget"><code class="docutils literal notranslate"><span class="pre">VCPBaseWidget</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget.setStyleClass"><code class="docutils literal notranslate"><span class="pre">VCPBaseWidget.setStyleClass()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPWidget"><code class="docutils literal notranslate"><span class="pre">VCPWidget</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.CMDWidget"><code class="docutils literal notranslate"><span class="pre">CMDWidget</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.HALWidget"><code class="docutils literal notranslate"><span class="pre">HALWidget</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPButton"><code class="docutils literal notranslate"><span class="pre">VCPButton</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPButton.mousePressEvent"><code class="docutils literal notranslate"><span class="pre">VCPButton.mousePressEvent()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPButton.mouseReleaseEvent"><code class="docutils literal notranslate"><span class="pre">VCPButton.mouseReleaseEvent()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input/index.html">Input Widgets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.jog_increment.JogIncrementWidget"><code class="docutils literal notranslate"><span class="pre">JogIncrementWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox"><code class="docutils literal notranslate"><span class="pre">RemovableDeviceComboBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.file_system.QtpyVCPQFileSystemModel"><code class="docutils literal notranslate"><span class="pre">QtpyVCPQFileSystemModel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable"><code class="docutils literal notranslate"><span class="pre">FileSystemTable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.mdientry_widget.Validator"><code class="docutils literal notranslate"><span class="pre">Validator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry"><code class="docutils literal notranslate"><span class="pre">MDIEntry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider"><code class="docutils literal notranslate"><span class="pre">ActionSlider</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate"><code class="docutils literal notranslate"><span class="pre">ItemDelegate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel"><code class="docutils literal notranslate"><span class="pre">OffsetModel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable"><code class="docutils literal notranslate"><span class="pre">OffsetTable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#drolineedit">DROLineEdit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit"><code class="docutils literal notranslate"><span class="pre">DROLineEdit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.action_dial.ActionDial"><code class="docutils literal notranslate"><span class="pre">ActionDial</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.recent_file_combobox.RecentFileComboBox"><code class="docutils literal notranslate"><span class="pre">RecentFileComboBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate"><code class="docutils literal notranslate"><span class="pre">ItemDelegate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.tool_table.ToolModel"><code class="docutils literal notranslate"><span class="pre">ToolModel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.tool_table.ToolTable"><code class="docutils literal notranslate"><span class="pre">ToolTable</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#gcodetextedit">GcodeTextEdit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate"><code class="docutils literal notranslate"><span class="pre">ColumnFormatterDelegate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_text_edit.format_date"><code class="docutils literal notranslate"><span class="pre">format_date()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_text_edit.format_size"><code class="docutils literal notranslate"><span class="pre">format_size()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter"><code class="docutils literal notranslate"><span class="pre">GcodeSyntaxHighlighter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit"><code class="docutils literal notranslate"><span class="pre">GcodeTextEdit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin"><code class="docutils literal notranslate"><span class="pre">NumberMargin</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer"><code class="docutils literal notranslate"><span class="pre">GcodeLexer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase"><code class="docutils literal notranslate"><span class="pre">EditorBase</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor"><code class="docutils literal notranslate"><span class="pre">GcodeEditor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.FindReplaceDialog"><code class="docutils literal notranslate"><span class="pre">FindReplaceDialog</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory"><code class="docutils literal notranslate"><span class="pre">MDIHistory</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#line-edit">Line Edit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit"><code class="docutils literal notranslate"><span class="pre">VCPLineEdit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox"><code class="docutils literal notranslate"><span class="pre">ActionComboBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.setting_slider.VCPAbstractSettingsWidget"><code class="docutils literal notranslate"><span class="pre">VCPAbstractSettingsWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit"><code class="docutils literal notranslate"><span class="pre">VCPSettingsLineEdit</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider"><code class="docutils literal notranslate"><span class="pre">VCPSettingsSlider</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox"><code class="docutils literal notranslate"><span class="pre">VCPSettingsSpinBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox"><code class="docutils literal notranslate"><span class="pre">VCPSettingsDoubleSpinBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox"><code class="docutils literal notranslate"><span class="pre">VCPSettingsCheckBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton"><code class="docutils literal notranslate"><span class="pre">VCPSettingsPushButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox"><code class="docutils literal notranslate"><span class="pre">VCPSettingsComboBox</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="buttons/index.html">Buttons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="buttons/index.html#qtpyvcp.widgets.button_widgets.action_button.ActionButton"><code class="docutils literal notranslate"><span class="pre">ActionButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="buttons/index.html#qtpyvcp.widgets.button_widgets.action_checkbox.ActionCheckBox"><code class="docutils literal notranslate"><span class="pre">ActionCheckBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="buttons/index.html#qtpyvcp.widgets.button_widgets.action_spinbox.ActionSpinBox"><code class="docutils literal notranslate"><span class="pre">ActionSpinBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="buttons/index.html#qtpyvcp.widgets.button_widgets.dialog_button.DialogButton"><code class="docutils literal notranslate"><span class="pre">DialogButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="buttons/index.html#qtpyvcp.widgets.button_widgets.mdi_button.MDIButton"><code class="docutils literal notranslate"><span class="pre">MDIButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="buttons/index.html#qtpyvcp.widgets.button_widgets.subcall_button.SubCallButton"><code class="docutils literal notranslate"><span class="pre">SubCallButton</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="containers/index.html">Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="containers/index.html#qtpyvcp.widgets.containers.frame.VCPFrame"><code class="docutils literal notranslate"><span class="pre">VCPFrame</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers/index.html#qtpyvcp.widgets.containers.widget.VCPWidget"><code class="docutils literal notranslate"><span class="pre">VCPWidget</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hal/index.html">HAL Widgets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_button.HalButton"><code class="docutils literal notranslate"><span class="pre">HalButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_plot.HalPlot"><code class="docutils literal notranslate"><span class="pre">HalPlot</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_spinbox.HalQSpinBox"><code class="docutils literal notranslate"><span class="pre">HalQSpinBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_groupbox.HalGroupBox"><code class="docutils literal notranslate"><span class="pre">HalGroupBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_slider.HalSlider"><code class="docutils literal notranslate"><span class="pre">HalSlider</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_checkbox.HalCheckBox"><code class="docutils literal notranslate"><span class="pre">HalCheckBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_lcd.HalLCDNumber"><code class="docutils literal notranslate"><span class="pre">HalLCDNumber</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_double_spinbox.HalDoubleSpinBox"><code class="docutils literal notranslate"><span class="pre">HalDoubleSpinBox</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_led.HalLedIndicator"><code class="docutils literal notranslate"><span class="pre">HalLedIndicator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton"><code class="docutils literal notranslate"><span class="pre">HALLEDButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_label.HalLabel"><code class="docutils literal notranslate"><span class="pre">HalLabel</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html#qtpyvcp.widgets.hal_widgets.hal_bar_indicator.HalBarIndicator"><code class="docutils literal notranslate"><span class="pre">HalBarIndicator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dialogs/index.html">Dialogs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html#qtpyvcp.widgets.dialogs.base_dialog.BaseDialog"><code class="docutils literal notranslate"><span class="pre">BaseDialog</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html#qtpyvcp.widgets.dialogs.about_dialog.AboutDialog"><code class="docutils literal notranslate"><span class="pre">AboutDialog</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html#qtpyvcp.widgets.dialogs.error_dialog.ErrorDialog"><code class="docutils literal notranslate"><span class="pre">ErrorDialog</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html#qtpyvcp.widgets.dialogs.offsets_dialog.OffsetsDialog"><code class="docutils literal notranslate"><span class="pre">OffsetsDialog</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html#qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog"><code class="docutils literal notranslate"><span class="pre">OpenFileDialog</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html#qtpyvcp.widgets.dialogs.probesim_dialog.ProbeSim"><code class="docutils literal notranslate"><span class="pre">ProbeSim</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html#qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog"><code class="docutils literal notranslate"><span class="pre">ToolChangeDialog</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rules.html">Widget Rules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rules.html#expressions">Expressions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="menus">
+<h2>Menus<a class="headerlink" href="#menus" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="menus.html">Recent Files Menu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="menus.html#homing-menu">Homing Menu</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="base_widget.html" class="btn btn-neutral float-right" title="Base Widgets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../actions/tool_actions.html" class="btn btn-neutral float-left" title="Tool Actions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

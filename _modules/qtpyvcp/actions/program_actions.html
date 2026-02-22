@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.actions.program_actions &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../actions.html">qtpyvcp.actions</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.actions.program_actions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.actions.program_actions</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">linuxcnc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="c1"># Set up logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">getPlugin</span>
+
+<span class="n">STATUS</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="n">STAT</span> <span class="o">=</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">stat</span>
+<span class="n">INFO</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+<span class="n">CMD</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.actions.base_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">setTaskMode</span>
+
+
+<span class="c1">#==============================================================================</span>
+<span class="c1"># Program actions</span>
+<span class="c1">#==============================================================================</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">add_to_recents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">isreload</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fname</span><span class="p">:</span>
+        <span class="c1"># load a blank file. Maybe should load [DISPLAY] OPEN_FILE</span>
+        <span class="n">clear</span><span class="p">()</span>
+
+    <span class="c1">#setTaskMode(linuxcnc.MODE_AUTO)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">isreload</span><span class="p">:</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">addLock</span><span class="p">()</span>
+    
+    <span class="n">filter_prog</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getFilterProgram</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">filter_prog</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Loading NC program: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">program_open</span><span class="p">(</span><span class="n">fname</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">wait_complete</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Loading file with filter program: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+        <span class="n">openFilterProgram</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">filter_prog</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">add_to_recents</span><span class="p">:</span>
+        <span class="n">addToRecents</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    
+    <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">removeLock</span><span class="p">)</span>
+
+<span class="n">load</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="kc">True</span>
+<span class="n">load</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="reload">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.reload">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reload</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reload the currently loaded NC program</span>
+
+<span class="sd">    ActionButton syntax::</span>
+
+<span class="sd">        program.reload</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">stat</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
+    <span class="n">stat</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">file</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+        <span class="n">load</span><span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="n">add_to_recents</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">isreload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<span class="n">reload</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="kc">True</span>
+<span class="n">reload</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="clear">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.clear">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clear the loaded NC program</span>
+
+<span class="sd">    ActionButton syntax::</span>
+
+<span class="sd">        program.clear</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">blankfile</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;new_program_&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.ngc&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">blankfile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;(New Program)</span><span class="se">\n\n\n</span><span class="s2">M30&quot;</span><span class="p">)</span>
+    <span class="n">load</span><span class="p">(</span><span class="n">blankfile</span><span class="p">,</span> <span class="n">add_to_recents</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<span class="n">clear</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="kc">True</span>
+<span class="n">clear</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="kc">True</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">addToRecents</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">recent_files</span><span class="o">.</span><span class="n">getValue</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">files</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">recent_files</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">files</span><span class="p">[:</span><span class="n">STATUS</span><span class="o">.</span><span class="n">max_recent_files</span><span class="p">])</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># program RUN action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="run">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">start_line</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Runs the loaded program, optionally starting from a specific line.</span>
+
+<span class="sd">    ActionButton syntax::</span>
+
+<span class="sd">        program.run</span>
+<span class="sd">        program.run:line</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        start_line (int, optional) : The line to start program from. Defaults to 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">interp_paused</span> <span class="o">=</span> <span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_PAUSED</span><span class="p">)</span>
+    <span class="n">mdi_exec</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_EXEC</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span>
+
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="s2">&quot;program.run requested: start_line=</span><span class="si">%s</span><span class="s2"> state=</span><span class="si">%s</span><span class="s2"> mode=</span><span class="si">%s</span><span class="s2"> interp=</span><span class="si">%s</span><span class="s2"> paused=</span><span class="si">%s</span><span class="s2"> feed_hold=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">start_line</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># MDI exception path: cycle-start is often used by operators as &quot;resume&quot; while</span>
+    <span class="c1"># running queued MDI lines; in this case prefer clearing feed hold over AUTO start.</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;program.run: clearing feed hold in MDI mode&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_feed_hold</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mdi_exec</span> <span class="ow">and</span> <span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">paused</span> <span class="ow">or</span> <span class="n">interp_paused</span><span class="p">):</span>
+            <span class="n">CMD</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">AUTO_RESUME</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">mdi_exec</span> <span class="ow">and</span> <span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">paused</span> <span class="ow">or</span> <span class="n">interp_paused</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;program.run: attempting MDI resume path&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">AUTO_RESUME</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_EXEC</span> <span class="ow">and</span> <span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">paused</span> <span class="ow">or</span> <span class="n">interp_paused</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;program.run: attempting AUTO resume path&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">AUTO_RESUME</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">file</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;program.run: no file loaded, skipping AUTO start&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">setTaskMode</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_AUTO</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;program.run: starting AUTO run at line </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">start_line</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">AUTO_RUN</span><span class="p">,</span> <span class="n">start_line</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;program.run: no action taken; state=</span><span class="si">%s</span><span class="s2"> mode=</span><span class="si">%s</span><span class="s2"> interp=</span><span class="si">%s</span><span class="s2"> paused=</span><span class="si">%s</span><span class="s2"> feed_hold=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+            <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">,</span>
+            <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">,</span>
+            <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">,</span>
+            <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_run_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if it is OK to run a program.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget (QWidget, optional) : If a widget is supplied it will be</span>
+<span class="sd">            enabled/disabled according to the result, and will have it&#39;s</span>
+<span class="sd">            statusTip property set to the reason the action is disabled.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool : True if Ok, else False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">interp_paused</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_PAUSED</span>
+    <span class="n">mdi_resume_ready</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span>
+        <span class="ow">and</span> <span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span> <span class="ow">or</span> <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span> <span class="ow">or</span> <span class="n">interp_paused</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">estop</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Can&#39;t run program when in E-Stop&quot;</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">STAT</span><span class="o">.</span><span class="n">enabled</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Can&#39;t run program when not enabled&quot;</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">allHomed</span><span class="p">():</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Can&#39;t run program when not homed&quot;</span>
+    <span class="k">elif</span> <span class="n">mdi_resume_ready</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Resume MDI command&quot;</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">,</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_PAUSED</span><span class="p">):</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Can&#39;t run program when already running&quot;</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">file</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Can&#39;t run program when no file loaded&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Run program&quot;</span>
+
+    <span class="n">_run_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_run_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">estop</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_run_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">enabled</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_run_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_run_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_run_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_run_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">run</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_run_ok</span>
+<span class="n">run</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_run_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># program RUN from LINE action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_from_line</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># TODO: This might should show a popup to select start line,</span>
+    <span class="c1">#       or it could get the start line from the gcode view or</span>
+    <span class="c1">#       even from the backplot.</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Run from line not implemented yet.&#39;</span><span class="p">)</span>
+
+
+<span class="n">run_from_line</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_run_ok</span>
+<span class="n">run_from_line</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_run_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># program STEP action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="step">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.step">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Steps program line by line</span>
+
+<span class="sd">    ActionButton syntax::</span>
+
+<span class="sd">        program.step</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_EXEC</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">AUTO_STEP</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">setTaskMode</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_AUTO</span><span class="p">):</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">AUTO_STEP</span><span class="p">)</span></div>
+
+
+<span class="n">step</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_run_ok</span>
+<span class="n">step</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_run_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># program PAUSE action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="pause">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.pause">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pause</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pause executing program</span>
+
+
+<span class="sd">    ActionButton syntax::</span>
+
+<span class="sd">        program.pause</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="s2">&quot;program.pause requested: state=</span><span class="si">%s</span><span class="s2"> mode=</span><span class="si">%s</span><span class="s2"> interp=</span><span class="si">%s</span><span class="s2"> paused=</span><span class="si">%s</span><span class="s2"> feed_hold=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">AUTO_PAUSE</span><span class="p">)</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pause_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if it is OK to pause the program.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget (QWidget, optional) : If a widget is supplied it will be</span>
+<span class="sd">            enabled/disabled according to the result, and will have it&#39;s</span>
+<span class="sd">            statusTip property set to the reason the action is disabled.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool : True if Ok, else False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_EXEC</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Pause program execution&quot;</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Program is already paused&quot;</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No program running to pause&quot;</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="n">_pause_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_pause_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_pause_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">paused</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_pause_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">pause</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_pause_ok</span>
+<span class="n">pause</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_pause_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># program RESUME action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="resume">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.resume">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">resume</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resume a previously paused program</span>
+
+<span class="sd">    ActionButton syntax::</span>
+
+<span class="sd">        program.resume</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="s2">&quot;program.resume requested: state=</span><span class="si">%s</span><span class="s2"> mode=</span><span class="si">%s</span><span class="s2"> interp=</span><span class="si">%s</span><span class="s2"> paused=</span><span class="si">%s</span><span class="s2"> feed_hold=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">,</span>
+        <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">AUTO_RESUME</span><span class="p">)</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resume_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if it is OK to resume a paused program.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget (QWidget, optional) : If a widget is supplied it will be</span>
+<span class="sd">            enabled/disabled according to the result, and will have it&#39;s</span>
+<span class="sd">            statusTip property set to the reason the action is disabled.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool : True if Ok, else False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_EXEC</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Resume program execution&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No paused program to resume&quot;</span>
+
+    <span class="n">_resume_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resume_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">paused</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_resume_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_resume_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">resume</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_resume_ok</span>
+<span class="n">resume</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_resume_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># program ABORT action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="abort">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.abort">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">abort</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aborts any currently executing program, MDI command or homing operation.</span>
+
+<span class="sd">    ActionButton syntax::</span>
+
+<span class="sd">        program.abort</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Aborting program&quot;</span><span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">abort</span><span class="p">()</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_abort_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if it is OK to abort current operation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget (QWidget, optional) : If a widget is supplied it will be</span>
+<span class="sd">            enabled/disabled according to the result, and will have it&#39;s</span>
+<span class="sd">            statusTip property set to the reason the action is disabled.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool : True if Ok, else False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_EXEC</span> <span class="ow">or</span> <span class="n">STAT</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_ERROR</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Nothing to abort&quot;</span>
+
+    <span class="n">_abort_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_abort_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_abort_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">abort</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_abort_ok</span>
+<span class="n">abort</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_abort_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># BLOCK DELETE actions</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="block_delete">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.block_delete">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">block_delete</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Block Delete Group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="block_delete.on">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.block_delete.on">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start ignoring lines beginning with &#39;/&#39;.</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            program.block-delete.on</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting block delete green&lt;ON&gt;&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_block_delete</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="block_delete.off">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.block_delete.off">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">off</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop ignoring lines beginning with &#39;/&#39;.</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            program.block-delete.off</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting block delete red&lt;OFF&gt;&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_block_delete</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="block_delete.toggle">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.block_delete.toggle">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggle ignoring lines beginning with &#39;/&#39;.</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            program.block-delete.toggle</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">block_delete</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">block_delete</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">block_delete</span><span class="o">.</span><span class="n">on</span><span class="p">()</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_block_delete_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if it is OK to set block_delete.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget (QWidget, optional) : If a widget is supplied it will be</span>
+<span class="sd">            enabled/disabled according to the result, and will have it&#39;s</span>
+<span class="sd">            statusTip property set to the reason the action is disabled.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool : True if Ok, else False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON to set Block Del&quot;</span>
+
+    <span class="n">_block_delete_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_block_delete_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">block_delete</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_block_delete_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">block_delete</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+<span class="n">block_delete</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">block_delete</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">block_delete</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_block_delete_ok</span>
+<span class="n">block_delete</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">block_delete</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">block_delete</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_block_delete_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># OPTIONAL STOP actions</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="optional_stop">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.optional_stop">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">optional_stop</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optional Stop Group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="optional_stop.on">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.optional_stop.on">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Pause when a line beginning with M1 is encountered</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            program.optional-stop.on</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting optional stop green&lt;ON&gt;&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_optional_stop</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="optional_stop.off">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.optional_stop.off">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">off</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Don&#39;t pause when a line beginning with M1 is encountered</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            program.option-stop.off</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting optional stop red&lt;OFF&gt;&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_optional_stop</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="optional_stop.toggle">
+<a class="viewcode-back" href="../../../actions/program_actions.html#qtpyvcp.actions.program_actions.optional_stop.toggle">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggle pause when a line beginning with M1 is encountered</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            program.optional-stop.toggle</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">optional_stop</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">optional_stop</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">optional_stop</span><span class="o">.</span><span class="n">on</span><span class="p">()</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_optional_stop_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if it is OK to set optional_stop.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        widget (QWidget, optional) : If a widget is supplied it will be</span>
+<span class="sd">            enabled/disabled according to the result, and will have it&#39;s</span>
+<span class="sd">            statusTip property set to the reason the action is disabled.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool : True if Ok, else False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON to set Opt Stop&quot;</span>
+
+    <span class="n">_optional_stop_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_optional_stop_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">block_delete</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_optional_stop_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">optional_stop</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+<span class="n">optional_stop</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">optional_stop</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">optional_stop</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_optional_stop_ok</span>
+<span class="n">optional_stop</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">optional_stop</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">optional_stop</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">bindOk</span>  <span class="o">=</span> <span class="n">_optional_stop_bindOk</span>
+
+<span class="n">optional_skip</span> <span class="o">=</span> <span class="n">block_delete</span>
+
+<span class="c1">#==============================================================================</span>
+<span class="c1"># Program preprocessing handlers</span>
+<span class="c1">#==============================================================================</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">select</span><span class="o">,</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">atexit</span><span class="o">,</span><span class="w"> </span><span class="nn">shutil</span>
+
+<span class="n">FILTER_TEMP</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">openFilterProgram</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">):</span>
+    <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">_mktemp</span><span class="p">()</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">infile</span><span class="p">))</span>
+    <span class="c1">#FilterProgram(prog_name, infile, outfile, lambda r: r or _loadFilterResult(outfile))</span>
+    <span class="n">FilterProgram</span><span class="p">(</span><span class="n">prog_name</span><span class="p">,</span> <span class="n">infile</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">program_open</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Linuxcnc Command - program_open&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_loadFilterResult</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">fname</span><span class="p">:</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">program_open</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mktemp</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">FILTER_TEMP</span>
+    <span class="k">if</span> <span class="n">FILTER_TEMP</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FILTER_TEMP</span>
+    <span class="n">FILTER_TEMP</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;emcflt-&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.d&#39;</span><span class="p">)</span>
+    <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">FILTER_TEMP</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">FILTER_TEMP</span>
+
+<span class="c1"># slightly reworked code from gladevcp</span>
+<span class="c1"># loads a filter program and collects the result</span>
+<span class="n">progress_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">&quot;^FILTER_PROGRESS=(</span><span class="se">\\</span><span class="s2">d*)$&quot;</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FilterProgram</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prog_name</span><span class="p">,</span> <span class="n">infile</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+        <span class="n">outfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">infile</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&#39;</span><span class="se">\\</span><span class="s2">&#39;&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">env</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+        <span class="n">env</span><span class="p">[</span><span class="s1">&#39;AXIS_PROGRESS_BAR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prog_name</span><span class="p">,</span> <span class="n">infile</span><span class="p">)],</span>
+                                  <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                                  <span class="n">stdout</span><span class="o">=</span><span class="n">outfile</span><span class="p">,</span>
+                                  <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                                  <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+                                  <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stderr_text</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">program_filter</span> <span class="o">=</span> <span class="n">prog_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="c1">#self.gid = STATUS.onValueChanged(&#39;periodic&#39;, self.update)</span>
+        <span class="c1">#progress = Progress(1, 100)</span>
+        <span class="c1">#progress.set_text(_(&quot;Filtering...&quot;))</span>
+        <span class="c1"># force file load until know what to do about update/finish</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gid</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">stderr</span><span class="p">],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">stderr_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">progress_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">stderr_line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1">#progress.update(int(m.group(1)), 1)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stderr_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stderr_line</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">stderr_line</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># .. might be something left on stderr</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">progress_re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stderr_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">returncode</span>
+        <span class="k">if</span> <span class="n">r</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stderr_text</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exitcode</span><span class="p">,</span> <span class="n">stderr</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Error loading filter program!&quot;</span><span class="p">)</span>
+        <span class="c1"># dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_CLOSE,</span>
+        <span class="c1">#         _(&quot;The program %(program)r exited with code %(code)d.  &quot;</span>
+        <span class="c1">#         &quot;Any error messages it produced are shown below:&quot;)</span>
+        <span class="c1">#             % {&#39;program&#39;: self.program_filter, &#39;code&#39;: exitcode})</span>
+        <span class="c1"># diaLOG.format_secondary_text(stderr)</span>
+        <span class="c1"># diaLOG.run()</span>
+        <span class="c1"># diaLOG.destroy()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine Buttons &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MDI" href="mdi.html" />
+    <link rel="prev" title="DRO Tutorial" href="dro_tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../basic_vcp/index.html">Basic VCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dro_tutorial.html">DRO Tutorial</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Machine Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mdi.html">MDI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="touch_screen.html">Touch Screens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overrides.html">Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="button_groups.html">Button Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vcp_template.html">VCP Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../first_vcp.html">Making your first VCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../widget_rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc.html">Tips &amp; Tricks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="index.html">&lt;no title&gt;</a></li>
+      <li class="breadcrumb-item active">Machine Buttons</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorials/components/machine_buttons.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="machine-buttons">
+<h1>Machine Buttons<a class="headerlink" href="#machine-buttons" title="Link to this heading"></a></h1>
+<p>Lets create some jog buttons by adding some <cite>ActionButtons</cite> to a group box. Set
+the minimum height to 50 and put the following into the <cite>actionName</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">x</span><span class="p">,</span><span class="n">pos</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">x</span><span class="p">,</span><span class="n">neg</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">y</span><span class="p">,</span><span class="n">pos</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">y</span><span class="p">,</span><span class="n">neg</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">z</span><span class="p">,</span><span class="n">pos</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">z</span><span class="p">,</span><span class="n">neg</span>
+</pre></div>
+</div>
+<p>Now when we run the configuration we can jog and set work offsets.</p>
+<a class="reference internal image-reference" href="../../_images/vcp1run-12.png"><img alt="../../_images/vcp1run-12.png" class="align-center" height="506" src="../../_images/vcp1run-12.png" width="650" />
+</a>
+<p>Lets add a <cite>Home All</cite> <cite>ActionButton</cite> with the <cite>actionName</cite> <cite>machine.home.all</cite>.</p>
+<a class="reference internal image-reference" href="../../_images/vcp1run-13.png"><img alt="../../_images/vcp1run-13.png" class="align-center" height="506" src="../../_images/vcp1run-13.png" width="650" />
+</a>
+<p>Lets create a <cite>Rule</cite> for the Home button to change the text based on if all the
+axes are homed or not. Double click on the Home button to open the Rules Editor.
+Select the <cite>Text</cite> property and give the rule a name. Add three channels, one for
+each axis and check trigger.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">status</span><span class="p">:</span><span class="n">joint</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">homed</span>
+<span class="n">status</span><span class="p">:</span><span class="n">joint</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">homed</span>
+<span class="n">status</span><span class="p">:</span><span class="n">joint</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">homed</span>
+</pre></div>
+</div>
+<p>The <cite>Channel Type</cite> is the output type of that channel, in this case it is a
+<cite>bool</cite> which is a true or false output. So now we need a valid <cite>Expression</cite>. The
+expression syntax is <code class="docutils literal notranslate"><span class="pre">Do</span> <span class="pre">This</span> <span class="pre">If</span> <span class="pre">This</span> <span class="pre">is</span> <span class="pre">True</span> <span class="pre">Else</span> <span class="pre">Do</span> <span class="pre">That</span></code>. So we want to
+change the text of the button if the machine is homed so the expression is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;Homed&#39;</span> <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ch</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;Home&#39;</span>
+<span class="s1">&#39;Homed&#39;</span> <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">ch</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;Home All&#39;</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/home-rule1.png"><img alt="../../_images/home-rule1.png" class="align-center" height="348" src="../../_images/home-rule1.png" width="591" />
+</a>
+<p>Notice that the button now has some text in it and it came from the rule.</p>
+<p>Now we want to add another rule to change the color of the button when all the
+axes are homed so we have a quick visual that the machine is homed. But first we
+need to use a quick shortcut to get a valid markup string. So drag a text label
+(it can be a regular text label) into the main window and open the <cite>Style Sheet</cite>
+editor and add <code class="docutils literal notranslate"><span class="pre">background-color:</span></code> then click on the <cite>Add Color</cite> and pick a
+color. Now make sure the validator in the lower left corner is green and says
+<cite>Valid Style Sheet</cite>, now you know your markup is valid. Copy that string to the
+clipboard.</p>
+<a class="reference internal image-reference" href="../../_images/home-rule2-ss.png"><img alt="../../_images/home-rule2-ss.png" class="align-center" height="250" src="../../_images/home-rule2-ss.png" width="349" />
+</a>
+<p>Now open back up the Home button <cite>Rules Editor</cite> and add a new rule with the same
+three channels. Pick <cite>Style Sheet</cite> as the property to change.</p>
+<p>The expression is:
+<code class="docutils literal notranslate"><span class="pre">&quot;background-color:rgb(138,</span> <span class="pre">226,</span> <span class="pre">52)&quot;</span> <span class="pre">if</span> <span class="pre">ch[0]</span> <span class="pre">and</span> <span class="pre">ch[1]</span> <span class="pre">and</span> <span class="pre">ch[2]</span> <span class="pre">else</span> <span class="pre">''</span></code>.
+This reads change the background color if all axes are homed else do nothing.</p>
+<a class="reference internal image-reference" href="../../_images/home-rule2.png"><img alt="../../_images/home-rule2.png" class="align-center" height="350" src="../../_images/home-rule2.png" width="692" />
+</a>
+<a class="reference internal image-reference" href="../../_images/home-rule2-ss.png"><img alt="../../_images/home-rule2-ss.png" class="align-center" height="250" src="../../_images/home-rule2-ss.png" width="349" />
+</a>
+<p>Now open back up the Home button <cite>Rules Editor</cite> and add a new rule with the same
+three channels. Pick <cite>Style Sheet</cite> as the property to change.</p>
+<p>The expression is:
+<code class="docutils literal notranslate"><span class="pre">&quot;background-color:rgb(138,</span> <span class="pre">226,</span> <span class="pre">52)&quot;</span> <span class="pre">if</span> <span class="pre">ch[0]</span> <span class="pre">and</span> <span class="pre">ch[1]</span> <span class="pre">and</span> <span class="pre">ch[2]</span> <span class="pre">else</span> <span class="pre">''</span></code>.
+This reads change the background color if all axes are homed else do nothing.</p>
+<a class="reference internal image-reference" href="../../_images/home-rule2.png"><img alt="../../_images/home-rule2.png" class="align-center" height="350" src="../../_images/home-rule2.png" width="692" />
+</a>
+<p>Run the VCP and see the effects of the rules on the Home All button and the DRO
+status labels.</p>
+<a class="reference internal image-reference" href="../../_images/vcp1run-14.png"><img alt="../../_images/vcp1run-14.png" class="align-center" height="506" src="../../_images/vcp1run-14.png" width="650" />
+</a>
+<p>Now we need to be able to start and stop the program so add some <cite>ActionButtons</cite>
+to a group box with the following <cite>actionNames</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">run</span>
+<span class="n">program</span><span class="o">.</span><span class="n">pause</span>
+<span class="n">program</span><span class="o">.</span><span class="n">resume</span>
+<span class="n">program</span><span class="o">.</span><span class="n">abort</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/vcp1run-15.png"><img alt="../../_images/vcp1run-15.png" class="align-center" height="506" src="../../_images/vcp1run-15.png" width="650" />
+</a>
+<p>At this point you have a minimal functioning VCP, next we’ll add the MDI Entry.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mdi.html" class="btn btn-neutral float-right" title="MDI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dro_tutorial.html" class="btn btn-neutral float-left" title="DRO Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

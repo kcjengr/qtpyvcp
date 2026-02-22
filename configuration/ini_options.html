@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INI Options &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="YAML Config Files" href="yml_config.html" />
+    <link rel="prev" title="Configuration" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Configuration</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">INI Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yml_config.html">YAML Config Files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Configuration</a></li>
+      <li class="breadcrumb-item active">INI Options</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/configuration/ini_options.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ini-options">
+<h1>INI Options<a class="headerlink" href="#ini-options" title="Link to this heading"></a></h1>
+<p>To get a list of current INI file options run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qtpyvcp<span class="w"> </span>-h
+</pre></div>
+</div>
+<p>Command line options are lower case and use the dash, INI file options are upper
+case and use the underscore. Example: <code class="docutils literal notranslate"><span class="pre">--hide-menu-bar</span></code> &gt;&gt; <code class="docutils literal notranslate"><span class="pre">HIDE_MENU_BAR</span></code>.</p>
+<p>Options available in the INI file are:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[DISPLAY]</span>
+<span class="c1"># Name of the VCP to use, or a .ui or .yml file</span>
+<span class="na">VCP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">name</span>
+
+<span class="c1"># The Qt theme to use, fusion, windows etc</span>
+<span class="na">THEME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">theme</span>
+
+<span class="c1"># Path to QSS style sheet file</span>
+<span class="na">STYLESHEET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">style.qss</span>
+
+<span class="c1"># Initial size of the window in pixels</span>
+<span class="na">SIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;W&gt;x&lt;H&gt;</span>
+
+<span class="c1"># Initial position of the window in pixels</span>
+<span class="na">POSITION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;X&gt;x&lt;Y&gt;</span>
+
+<span class="c1"># Flag to start with window fullscreen</span>
+<span class="na">FULLSCREEN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Flag to start with window maximized</span>
+<span class="na">MAXIMIZE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Hides the menu bar, if present</span>
+<span class="na">HIDE_MENU_BAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Hides the status bar, if present</span>
+<span class="na">HIDE_STATUS_BAR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Hides the cursor for touchscreen VCPs</span>
+<span class="na">HIDE_CURSOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span>
+
+<span class="c1"># Whether to show dialog to confirm exit</span>
+<span class="na">CONFIRM_EXIT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># One of DEBUG, INFO, WARN, ERROR or CRITICAL</span>
+<span class="na">LOG_LEVEL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">level</span>
+
+<span class="c1"># Specifies the log file</span>
+<span class="na">LOG_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
+
+<span class="c1"># Specifies a machine specific YML config file</span>
+<span class="na">CONFIG_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
+
+<span class="c1"># Specifies the preference file</span>
+<span class="na">PREF_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
+
+<span class="c1"># Monitor and log system performance</span>
+<span class="na">PERFMON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Qt Python binding to use, pyqt5 or pyside2</span>
+<span class="na">QT_API</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">api</span>
+
+<span class="c1"># Additional args passed to the QtApplication.</span>
+<span class="na">COMMAND_LINE_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;args&gt;</span>
+
+<span class="c1"># Maximum, Minimum and Default angular/linear jog velcoity in units per second.</span>
+<span class="na">DEFAULT_LINEAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+<span class="na">MAX_LINEAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+<span class="na">MIN_LINEAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+<span class="na">DEFAULT_ANGULAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+<span class="na">MAX_ANGULAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+<span class="na">MIN_ANGULAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+
+
+<span class="c1"># Provide user defined G code Syntax file</span>
+<span class="na">GCODE_SYNTAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
+
+<span class="c1"># VTK_BackPlot Options</span>
+<span class="k">[VTK]</span>
+<span class="c1"># Boolean False to hide the machine boundry</span>
+<span class="na">MACHINE_BOUNDRY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Boolean False to hide the machine boundry ticks</span>
+<span class="na">MACHINE_TICKS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Boolean False to hide the machine labels</span>
+<span class="na">MACHINE_LABELS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Boolean False to hide the program boundry</span>
+<span class="na">PROGRAM_BOUNDRY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Boolean False to hide the program boundry ticks</span>
+<span class="na">PROGRAM_TICKS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Boolean False to hide the program labels</span>
+<span class="na">PROGRAM_LABELS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+</pre></div>
+</div>
+<p>Boolean values can be one of <code class="docutils literal notranslate"><span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> for <strong>True</strong>,
+and one of <code class="docutils literal notranslate"><span class="pre">false</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, <code class="docutils literal notranslate"><span class="pre">no</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span></code> for <strong>False</strong>.</p>
+<p>File paths can be relative to the config dir, relative to the users home, or
+absolute. Environment variables are expanded.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># File Paths:</span>
+<span class="c1">#   File paths can be relative to the config dir:</span>
+<span class="c1">#     LOG_FILE = qtpyvcp.log</span>
+
+<span class="c1">#   Or relative to $HOME: (May not be compatible with other GUIs!)</span>
+<span class="c1">#     LOG_FILE = ~/qtpyvcp.log</span>
+
+<span class="c1">#   Or at an absolute location:</span>
+<span class="c1">#     LOG_FILE = /home/&lt;USER&gt;/qtpyvcp.log</span>
+
+<span class="c1">#   Enviroment vars are also expanded:</span>
+<span class="c1">#     LOG_FILE = $CONFIG_DIR/qtpyvcp.log</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="yml_config.html" class="btn btn-neutral float-right" title="YAML Config Files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

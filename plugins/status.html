@@ -1,0 +1,646 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Machine Positions" href="positions.html" />
+    <link rel="prev" title="Base Plugins" href="base_plugins.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base_plugins.html">Base Plugins</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="positions.html">Machine Positions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool_table.html">Tool Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Notifications Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html#qtpyvcp.plugins.notifications.Notifications"><code class="docutils literal notranslate"><span class="pre">Notifications</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="clock.html">Clock</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Plugins</a></li>
+      <li class="breadcrumb-item active">Status</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/plugins/status.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="status">
+<h1>Status<a class="headerlink" href="#status" title="Link to this heading"></a></h1>
+<p>To see a quick overview of all available datachannels from the status plugin, please check <a class="reference internal" href="../components/status_items.html"><span class="doc">Status Items</span></a></p>
+<dl class="py class" id="module-qtpyvcp.plugins.status">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.plugins.status.</span></span><span class="sig-name descname"><span class="pre">Status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cycle_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.recent_files">
+<span class="sig-name descname"><span class="pre">recent_files</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.recent_files" title="Link to this definition"></a></dt>
+<dd><p>List of recently loaded files</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.loadMdiHistory">
+<span class="sig-name descname"><span class="pre">loadMdiHistory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status.loadMdiHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status.loadMdiHistory" title="Link to this definition"></a></dt>
+<dd><p>Load MDI history from file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.saveMdiHistory">
+<span class="sig-name descname"><span class="pre">saveMdiHistory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status.saveMdiHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status.saveMdiHistory" title="Link to this definition"></a></dt>
+<dd><p>Write MDI history to file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.axis_mask">
+<span class="sig-name descname"><span class="pre">axis_mask</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.axis_mask" title="Link to this definition"></a></dt>
+<dd><p>Axes as configured in the [TRAJ]COORDINATES INI option.</p>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:axis_mask
+status:axis_mask?string
+status:axis_mask?list
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the configured axes</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, list, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.mdi_history">
+<span class="sig-name descname"><span class="pre">mdi_history</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.mdi_history" title="Link to this definition"></a></dt>
+<dd><p>List of recently issued MDI commands.
+Commands are stored in reverse chronological order, with the
+newest command at the front of the list, and oldest at the end.
+When the list exceeds the length given by MAX_MDI_COMMANDS the
+oldest entries will be dropped.</p>
+<p>Duplicate commands will not be removed, so that MDI History
+can be replayed via the queue meachanisim from a point in
+the history forward. The most recently issued
+command will always be at the front of the list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.mdi_remove_entry">
+<span class="sig-name descname"><span class="pre">mdi_remove_entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mdi_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status.mdi_remove_entry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status.mdi_remove_entry" title="Link to this definition"></a></dt>
+<dd><p>Remove the indicated cmd by index reference</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.mdi_swap_entries">
+<span class="sig-name descname"><span class="pre">mdi_swap_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status.mdi_swap_entries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status.mdi_swap_entries" title="Link to this definition"></a></dt>
+<dd><p>Switch two entries about.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.mdi_remove_all">
+<span class="sig-name descname"><span class="pre">mdi_remove_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status.mdi_remove_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status.mdi_remove_all" title="Link to this definition"></a></dt>
+<dd><p>Remove all entries in mdi history</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.on">
+<span class="sig-name descname"><span class="pre">on</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.on" title="Link to this definition"></a></dt>
+<dd><p>True if machine power is ON.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.file">
+<span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.file" title="Link to this definition"></a></dt>
+<dd><p>Currently loaded file including path</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.state" title="Link to this definition"></a></dt>
+<dd><p>Current command execution status</p>
+<ol class="arabic simple">
+<li><p>Done</p></li>
+<li><p>Exec</p></li>
+<li><p>Error</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:state?string
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current command execution state</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.exec_state">
+<span class="sig-name descname"><span class="pre">exec_state</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.exec_state" title="Link to this definition"></a></dt>
+<dd><p>Current task execution state</p>
+<ol class="arabic simple">
+<li><p>Error</p></li>
+<li><p>Done</p></li>
+<li><p>Waiting for Motion</p></li>
+<li><p>Waiting for Motion Queue</p></li>
+<li><p>Waiting for Pause</p></li>
+<li><p>–</p></li>
+<li><p>Waiting for Motion and IO</p></li>
+<li><p>Waiting for Delay</p></li>
+<li><p>Waiting for system CMD</p></li>
+<li><p>Waiting for spindle orient</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:exec_state?string
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current task execution error</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.interp_state">
+<span class="sig-name descname"><span class="pre">interp_state</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.interp_state" title="Link to this definition"></a></dt>
+<dd><p>Current state of RS274NGC interpreter</p>
+<ol class="arabic simple">
+<li><p>Idle</p></li>
+<li><p>Reading</p></li>
+<li><p>Paused</p></li>
+<li><p>Waiting</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:interp_state?string
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>RS274 interpreter state</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.interpreter_errcode">
+<span class="sig-name descname"><span class="pre">interpreter_errcode</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.interpreter_errcode" title="Link to this definition"></a></dt>
+<dd><p>Current RS274NGC interpreter return code</p>
+<ol class="arabic simple" start="0">
+<li><p>Ok</p></li>
+<li><p>Exit</p></li>
+<li><p>Finished</p></li>
+<li><p>Endfile</p></li>
+<li><p>File not open</p></li>
+<li><p>Error</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:interpreter_errcode?string
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>interp error code</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.task_state">
+<span class="sig-name descname"><span class="pre">task_state</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.task_state" title="Link to this definition"></a></dt>
+<dd><p>Current status of task</p>
+<ol class="arabic simple">
+<li><p>E-Stop</p></li>
+<li><p>Reset</p></li>
+<li><p>Off</p></li>
+<li><p>On</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:task_state?string
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current task state</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.task_mode">
+<span class="sig-name descname"><span class="pre">task_mode</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.task_mode" title="Link to this definition"></a></dt>
+<dd><p>Current task mode</p>
+<ol class="arabic simple">
+<li><p>Manual</p></li>
+<li><p>Auto</p></li>
+<li><p>MDI</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:task_mode?string
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current task mode</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.motion_mode">
+<span class="sig-name descname"><span class="pre">motion_mode</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.motion_mode" title="Link to this definition"></a></dt>
+<dd><p>Current motion controller mode</p>
+<ol class="arabic simple">
+<li><p>Free</p></li>
+<li><p>Coord</p></li>
+<li><p>Teleop</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:motion_mode?string
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current motion mode</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.motion_type">
+<span class="sig-name descname"><span class="pre">motion_type</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.motion_type" title="Link to this definition"></a></dt>
+<dd><p>Motion type</p>
+<ol class="arabic simple" start="0">
+<li><p>None</p></li>
+<li><p>Traverse</p></li>
+<li><p>Linear Feed</p></li>
+<li><p>Arc Feed</p></li>
+<li><p>Tool Change</p></li>
+<li><p>Probing</p></li>
+<li><p>Rotary Index</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:motion_type?string
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current motion type</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.program_units">
+<span class="sig-name descname"><span class="pre">program_units</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.program_units" title="Link to this definition"></a></dt>
+<dd><p>Program units</p>
+<p>Available as an integer, or in short or long string formats.</p>
+<ol class="arabic simple">
+<li><p>in, Inches</p></li>
+<li><p>mm, Millimeters</p></li>
+<li><p>cm, Centimeters</p></li>
+</ol>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:program_units
+status:program_units?string
+status:program_units?string&amp;format=long
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current program units</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.linear_units">
+<span class="sig-name descname"><span class="pre">linear_units</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.linear_units" title="Link to this definition"></a></dt>
+<dd><p>Machine linear units</p>
+<p>Available as float (units/mm), or in short or long string formats.</p>
+<p>To return the string in a status label:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:linear_units
+status:linear_units?string
+status:linear_units?string&amp;format=long
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>machine linear units</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.gcodes">
+<span class="sig-name descname"><span class="pre">gcodes</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.gcodes" title="Link to this definition"></a></dt>
+<dd><p>G-codes</p>
+<p>active G-codes for each modal group</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:gcodes</span></code> returns tuple of strings</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:gcodes?raw</span></code> returns tuple of integers</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:gcodes?string</span></code> returns str</div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.mcodes">
+<span class="sig-name descname"><span class="pre">mcodes</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.mcodes" title="Link to this definition"></a></dt>
+<dd><p>M-codes</p>
+<p>active M-codes for each modal group</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:mcodes</span></code> returns tuple of strings</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:mcodes?raw</span></code> returns tuple of integers</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:mcodes?string</span></code> returns str</div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.rotation_xy">
+<span class="sig-name descname"><span class="pre">rotation_xy</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.rotation_xy" title="Link to this definition"></a></dt>
+<dd><p>Current G5x Rotation</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:rotation_xy</span></code> returns float</div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.g5x_index">
+<span class="sig-name descname"><span class="pre">g5x_index</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.g5x_index" title="Link to this definition"></a></dt>
+<dd><p>Current G5x work coord system</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:g5x_index</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:g5x_index?string</span></code> returns str</div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.settings">
+<span class="sig-name descname"><span class="pre">settings</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.settings" title="Link to this definition"></a></dt>
+<dd><p>Interpreter Settings</p>
+<dl class="simple">
+<dt>Available Items:</dt><dd><ol class="arabic simple" start="0">
+<li><p>sequence_number</p></li>
+<li><p>feed</p></li>
+<li><p>speed</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>interpreter settings</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple, int, float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.homed">
+<span class="sig-name descname"><span class="pre">homed</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.homed" title="Link to this definition"></a></dt>
+<dd><p>Axis homed status</p>
+<p>If no axis number is specified returns a tuple of integers.
+If <code class="docutils literal notranslate"><span class="pre">anum</span></code> is specified returns True if the axis is homed, else False.</p>
+<p>Rules syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:homed
+status:homed?anum=0
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>anum</strong> (<em>int</em><em>, </em><em>optional</em>) – the axis number to return the homed state of.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>axis homed states</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple, bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.all_axes_homed">
+<span class="sig-name descname"><span class="pre">all_axes_homed</span></span><a class="headerlink" href="#qtpyvcp.plugins.status.Status.all_axes_homed" title="Link to this definition"></a></dt>
+<dd><p>All axes homed status</p>
+<p>True if all axes are homed or if [TRAJ]NO_FORCE_HOMING set in INI.</p>
+<p>If [TRAJ]NO_FORCE_HOMING is set in the INI the value will be come
+true as soon as the machine is turned on and the signal will be emitted,
+otherwise the signal will be emitted once all the axes defined in the
+INI have been homed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>all homed</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.forceUpdateStaticChannelMembers">
+<span class="sig-name descname"><span class="pre">forceUpdateStaticChannelMembers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status.forceUpdateStaticChannelMembers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status.forceUpdateStaticChannelMembers" title="Link to this definition"></a></dt>
+<dd><p>Static items need a force update to operate properly with the
+gui rules.  This needs to be done with consideration to the
+data structure so as to not “break” things.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.initialise">
+<span class="sig-name descname"><span class="pre">initialise</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status.initialise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status.initialise" title="Link to this definition"></a></dt>
+<dd><p>Start the periodic update timer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.Status.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#Status.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.Status.terminate" title="Link to this definition"></a></dt>
+<dd><p>Save persistent data on terminate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.JointStatus">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.plugins.status.</span></span><span class="sig-name descname"><span class="pre">JointStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#JointStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.JointStatus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.plugins.status.SpindleStatus">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.plugins.status.</span></span><span class="sig-name descname"><span class="pre">SpindleStatus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/status.html#SpindleStatus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.plugins.status.SpindleStatus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="positions.html" class="btn btn-neutral float-right" title="Machine Positions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="base_plugins.html" class="btn btn-neutral float-left" title="Base Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

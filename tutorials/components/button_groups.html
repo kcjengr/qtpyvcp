@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Button Groups &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="VCP Template" href="../vcp_template.html" />
+    <link rel="prev" title="Overrides" href="overrides.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../basic_vcp/index.html">Basic VCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dro_tutorial.html">DRO Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="machine_buttons.html">Machine Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mdi.html">MDI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="touch_screen.html">Touch Screens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overrides.html">Overrides</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Button Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vcp_template.html">VCP Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../first_vcp.html">Making your first VCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../widget_rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc.html">Tips &amp; Tricks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="index.html">&lt;no title&gt;</a></li>
+      <li class="breadcrumb-item active">Button Groups</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorials/components/button_groups.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="button-groups">
+<h1>Button Groups<a class="headerlink" href="#button-groups" title="Link to this heading"></a></h1>
+<p>A Button Group is a very powerful and flexible way to have a touch screen
+keyboard. You add push buttons to the panel then select them all and add them to
+a button group. The button group will emit a signal any time a button is
+pressed.</p>
+<p>Once you <cite>connect</cite> the button group to a function when a button is pressed it
+sends the button pressed to the function so every property is available to use.
+Then you can use the properties of the button like <cite>button.text()</cite> to get the
+text of the button.</p>
+<p>For this tutorial I’ll clone a copy of the vcp template as shown in the <a class="reference internal" href="../vcp_template.html"><span class="doc">VCP Template</span></a>
+page and name the VCP <code class="docutils literal notranslate"><span class="pre">button_group</span></code> and copy the
+LinuxCNC Configuration Files so we can test the VCP as we go along.</p>
+<p>Now open a terminal and edit the vcp with <code class="docutils literal notranslate"><span class="pre">editvcp</span></code> and select
+<cite>~button_group/button_group/config.yml</cite>.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-01.png"><img alt="../../_images/btn-grp-designer-01.png" class="align-center" height="354" src="../../_images/btn-grp-designer-01.png" width="518" />
+</a>
+<p>Now we have the blank template to work with.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-02.png"><img alt="../../_images/btn-grp-designer-02.png" class="align-center" height="302" src="../../_images/btn-grp-designer-02.png" width="581" />
+</a>
+<p>Lets start by adding some buttons to create a number keypad. First drag a <cite>Grid
+Layout</cite> into the main window and right click on it and morph it into a <cite>Group
+Box</cite>. Next drag some buttons into the group box like so.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-03.png"><img alt="../../_images/btn-grp-designer-03.png" class="align-center" height="302" src="../../_images/btn-grp-designer-03.png" width="581" />
+</a>
+<p>This is a touch screen example so lets make the buttons big enough to touch. In
+the Main Window open the <cite>stylesheet</cite> and add the following style to set the
+minimum height and width and set the font size.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QPushButton</span> <span class="p">{</span>
+<span class="nb">min</span><span class="o">-</span><span class="n">height</span><span class="p">:</span> <span class="mi">50</span><span class="n">px</span><span class="p">;</span>
+<span class="nb">min</span><span class="o">-</span><span class="n">width</span><span class="p">:</span> <span class="mi">50</span><span class="n">px</span><span class="p">;</span>
+<span class="n">font</span><span class="p">:</span> <span class="mi">14</span><span class="n">pt</span> <span class="s2">&quot;DejaVu Sans&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-04.png"><img alt="../../_images/btn-grp-designer-04.png" class="align-center" height="303" src="../../_images/btn-grp-designer-04.png" width="581" />
+</a>
+<p>Now we can see the buttons are large enough to use with a touch screen.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-05.png"><img alt="../../_images/btn-grp-designer-05.png" class="align-center" height="302" src="../../_images/btn-grp-designer-05.png" width="581" />
+</a>
+<p>Next we need to add the buttons into a group Ctrl left click on each button to
+select it then right click on any button and select <cite>Assign to button group</cite>
+<cite>New button group</cite></p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-06.png"><img alt="../../_images/btn-grp-designer-06.png" class="align-center" height="302" src="../../_images/btn-grp-designer-06.png" width="581" />
+</a>
+<p>Change the objectName of the button group to <code class="docutils literal notranslate"><span class="pre">numberGroup</span></code> and change the text
+of the buttons like this.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-07.png"><img alt="../../_images/btn-grp-designer-07.png" class="align-center" height="302" src="../../_images/btn-grp-designer-07.png" width="581" />
+</a>
+<p>Now add a label and stretch it so it spans the width of the group box and change
+the objectName to <code class="docutils literal notranslate"><span class="pre">displayLabel</span></code>. I added a box to the label and changed the
+font to alignRight and the font size to 14.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-08.png"><img alt="../../_images/btn-grp-designer-08.png" class="align-center" height="302" src="../../_images/btn-grp-designer-08.png" width="581" />
+</a>
+<p>If you run the button group you can see the buttons but they won’t do anything.
+Open <cite>~button_group/button_group/mainwindow.py</cite> and you will see the following.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.widgets.form_widgets.main_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">VCPMainWindow</span>
+
+<span class="c1"># Setup logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;qtpyvcp.&#39;</span> <span class="o">+</span> <span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyMainWindow</span><span class="p">(</span><span class="n">VCPMainWindow</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main window class for the VCP.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MyMainWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># add any custom methods here</span>
+</pre></div>
+</div>
+<p>Indentation in Python is strict so use spaces in this file so they remain the
+same. In the <cite>__init__</cite> function we need to connect the button group to a
+function. We do this with a <cite>connect</cite> function. We connect the buttonClicked
+that is passed by the button group to the function.</p>
+<p>The syntax is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">buttonGroupName</span><span class="o">.</span><span class="n">buttonClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">functionName</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So add the following to mainwindow.py in the <cite>__init__</cite> function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">numberGroup</span><span class="o">.</span><span class="n">buttonClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numberKeys</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We also need to create the function <cite>numberKeys</cite> and for now it will do nothing.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">numberKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The file will look like this now.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.widgets.form_widgets.main_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">VCPMainWindow</span>
+
+<span class="c1"># Setup logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;qtpyvcp.&#39;</span> <span class="o">+</span> <span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyMainWindow</span><span class="p">(</span><span class="n">VCPMainWindow</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main window class for the VCP.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MyMainWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numberGroup</span><span class="o">.</span><span class="n">buttonClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numberKeys</span><span class="p">)</span>
+
+    <span class="c1"># add any custom methods here</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">numberKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>You can test run and it should load without any errors, if you get an error
+check for typo’s or an indentation problem.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-run-01.png"><img alt="../../_images/btn-grp-run-01.png" class="align-center" height="380" src="../../_images/btn-grp-run-01.png" width="487" />
+</a>
+<p>Delete the text from the displayLabel so it’s blank and add to the numberKeys
+function the following code.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">numberKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># copy the label text to the variable</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># if there is something in the label</span>
+        <span class="n">text</span> <span class="o">+=</span> <span class="n">button</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># add the button text to the text variable</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># if the label is empty</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">button</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># assign the button text to the text variable</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="c1"># set the text in label</span>
+</pre></div>
+</div>
+<p>Now when we run the VCP we can add the text from each button to the label.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-run-02.png"><img alt="../../_images/btn-grp-run-02.png" class="align-center" height="380" src="../../_images/btn-grp-run-02.png" width="487" />
+</a>
+<p>Now for some correction keys add a couple of push buttons below the numbers and
+name one <code class="docutils literal notranslate"><span class="pre">Backspace</span></code> and the other one <code class="docutils literal notranslate"><span class="pre">Clear</span></code> and change the objectNames to
+<code class="docutils literal notranslate"><span class="pre">backspaceButton</span></code> and <code class="docutils literal notranslate"><span class="pre">clearButton</span></code>.</p>
+<p>We will do the easy one first, add a new signal/slot and set it up like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Sender</span>     <span class="n">clearButton</span>
+<span class="n">Signal</span>     <span class="n">clicked</span><span class="p">()</span>
+<span class="n">Receiver</span>   <span class="n">displayLabel</span>
+<span class="n">Slot</span>       <span class="n">Clear</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-09.png"><img alt="../../_images/btn-grp-designer-09.png" class="align-center" height="302" src="../../_images/btn-grp-designer-09.png" width="581" />
+</a>
+<p>Now you can clear the entry so lets do the backspace button. Open up
+mainwindow.py and add a new connection. Notice that the button emits a <cite>clicked</cite>
+signal not a <cite>buttonClicked</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">backspaceButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numberKeyBackspace</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create the function and notice the <cite>[:-1]</cite> which removes the last character from
+the text.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">numberKeyBackspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">text</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># assign all but the last char to text</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And the mainwindow.py file looks like this now.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.widgets.form_widgets.main_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">VCPMainWindow</span>
+
+<span class="c1"># Setup logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;qtpyvcp.&#39;</span> <span class="o">+</span> <span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyMainWindow</span><span class="p">(</span><span class="n">VCPMainWindow</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main window class for the VCP.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MyMainWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numberGroup</span><span class="o">.</span><span class="n">buttonClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numberKeys</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backspaceButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numberKeyBackspace</span><span class="p">)</span>
+
+    <span class="c1"># add any custom methods here</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">numberKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># copy the label text to the variable</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># if there is something in the label</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="n">button</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># add the button text to the text variable</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># if the label is empty</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">button</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># assign the button text to the text variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="c1"># set the text in label</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">numberKeyBackspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">text</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># assign all but the last char to text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now when you run the VCP you can put numbers in the label and remove or clear
+them. If the label was a mdiEntry we could issue the MDI command with a signal
+slot connection like the Clear() was used on the label.</p>
+<p><strong>Properties</strong></p>
+<p>If you need to send something longer like a preamble or a rapid to home G code
+to a mdiEntry having a button like <cite>G53 G0 X0 Y0 Z0</cite> might take up too much
+space so for that we will use a <cite>Dynamic Property</cite> to our buttons.</p>
+<p>Drag a Grid Layout below the number key group box and morph into a group box.
+Add a <cite>mdiEntry</cite> and a couple of buttons. Name them <code class="docutils literal notranslate"><span class="pre">Preamble</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Rapid\nHome</span></code>. Select them and add them to a new button group and name the
+button group <code class="docutils literal notranslate"><span class="pre">mdiGroup</span></code>.</p>
+<p>Open up the mainwindow.py file and add a connection for the mdiGroup to the
+<code class="docutils literal notranslate"><span class="pre">mdiKeys</span></code> function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">mdiGroup</span><span class="o">.</span><span class="n">buttonClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mdiKeys</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create the mdiKeys funtion with a pass for now.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">mdiKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Lets start with the Preamble button and add two Dynamic Properties by clicking
+on the green plus sign in the Property Editor and selecting <cite>String</cite>. Put
+<code class="docutils literal notranslate"><span class="pre">gcode</span></code> as the <cite>Property Name</cite>. Add a second one as string with the property
+name of <code class="docutils literal notranslate"><span class="pre">action</span></code>.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-10.png"><img alt="../../_images/btn-grp-designer-10.png" class="align-center" height="302" src="../../_images/btn-grp-designer-10.png" width="581" />
+</a>
+<p>In the gcode dynamic property of the Preamble button put
+<code class="docutils literal notranslate"><span class="pre">G20</span> <span class="pre">G17</span> <span class="pre">G40</span> <span class="pre">G49</span> <span class="pre">G64</span> <span class="pre">P0.005</span> <span class="pre">G80</span> <span class="pre">G90</span> <span class="pre">G92.1</span> <span class="pre">G94</span></code> and in the action dynamic
+property put <code class="docutils literal notranslate"><span class="pre">replace</span></code>.</p>
+<p>In the gcode dynamic property of the Rapid Home button put <code class="docutils literal notranslate"><span class="pre">G53</span> <span class="pre">G0</span> <span class="pre">X0</span> <span class="pre">Y0</span> <span class="pre">Z0</span></code>
+and in the action dynamic property put <code class="docutils literal notranslate"><span class="pre">replace</span></code>.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-11.png"><img alt="../../_images/btn-grp-designer-11.png" class="align-center" height="302" src="../../_images/btn-grp-designer-11.png" width="581" />
+</a>
+<p>Now add the code for a button action of <cite>replace</cite> to the mdiKeys function</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;replace&#39;</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">mdiEntry</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;gcode&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>So now the mainwindow.py file should look like this</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.widgets.form_widgets.main_window</span><span class="w"> </span><span class="kn">import</span> <span class="n">VCPMainWindow</span>
+
+<span class="c1"># Setup logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;qtpyvcp.&#39;</span> <span class="o">+</span> <span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyMainWindow</span><span class="p">(</span><span class="n">VCPMainWindow</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main window class for the VCP.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MyMainWindow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numberGroup</span><span class="o">.</span><span class="n">buttonClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numberKeys</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backspaceButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numberKeyBackspace</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdiGroup</span><span class="o">.</span><span class="n">buttonClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mdiKeys</span><span class="p">)</span>
+
+    <span class="c1"># add any custom methods here</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">numberKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># copy the label text to the variable</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># if there is something in the label</span>
+            <span class="n">text</span> <span class="o">+=</span> <span class="n">button</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># add the button text to the text variable</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># if the label is empty</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">button</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="c1"># assign the button text to the text variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="c1"># set the text in label</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">numberKeyBackspace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">text</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># assign all but the last char to text</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">displayLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdiKeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;replace&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mdiEntry</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;gcode&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now when we run the VCP and click on the two buttons you can see how the text in
+the gcode dynamic property is placed into the mdiEntry.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-run-03.png"><img alt="../../_images/btn-grp-run-03.png" class="align-center" height="380" src="../../_images/btn-grp-run-03.png" width="487" />
+</a>
+<p>To show how the action Dynamic Property can work lets add some more buttons.
+Select them all and add two Dynamic Properties like before but to all of them at
+once.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-12.png"><img alt="../../_images/btn-grp-designer-12.png" class="align-center" height="303" src="../../_images/btn-grp-designer-12.png" width="581" />
+</a>
+<p>With all 4 buttons still selected add <code class="docutils literal notranslate"><span class="pre">append</span></code> to the action dynamic property
+and right click on one button and assign them to the mdiGroup. Now select each
+button one at a time and add the following to the gcode dynamic property.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rapid</span> <span class="n">G53</span>       <span class="n">G53</span> <span class="n">G0</span>
+<span class="n">X0</span>              <span class="n">X0</span>
+<span class="n">Y0</span>              <span class="n">Y0</span>
+<span class="n">Z0</span>              <span class="n">Z0</span>
+</pre></div>
+</div>
+<p>Now add the following to the mdiKeys function in the mainwindow.py file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">button</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">))</span> <span class="o">==</span> <span class="s1">&#39;append&#39;</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdiEntry</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+    <span class="n">text</span> <span class="o">+=</span> <span class="n">button</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;gcode&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">mdiEntry</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now add a Clear button and add a signal linking it to the mdiEntry Clear().</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-designer-13.png"><img alt="../../_images/btn-grp-designer-13.png" class="align-center" height="302" src="../../_images/btn-grp-designer-13.png" width="581" />
+</a>
+<p>When we run the example we can see the gcode added to or replaced in the MDI
+entry. If we had a fully running example a Send button connected to the mdiEntry
+submit() slot would send the G code to LinuxCNC.</p>
+<a class="reference internal image-reference" href="../../_images/btn-grp-run-04.png"><img alt="../../_images/btn-grp-run-04.png" class="align-center" height="380" src="../../_images/btn-grp-run-04.png" width="487" />
+</a>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../vcp_template.html" class="btn btn-neutral float-right" title="VCP Template" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="overrides.html" class="btn btn-neutral float-left" title="Overrides" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

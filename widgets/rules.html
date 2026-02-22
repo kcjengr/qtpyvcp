@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Widget Rules &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Recent Files Menu" href="menus.html" />
+    <link rel="prev" title="Dialogs" href="dialogs/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html">Base Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.ChanList"><code class="docutils literal notranslate"><span class="pre">ChanList</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget"><code class="docutils literal notranslate"><span class="pre">VCPPrimitiveWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget"><code class="docutils literal notranslate"><span class="pre">VCPBaseWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPWidget"><code class="docutils literal notranslate"><span class="pre">VCPWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.CMDWidget"><code class="docutils literal notranslate"><span class="pre">CMDWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.HALWidget"><code class="docutils literal notranslate"><span class="pre">HALWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPButton"><code class="docutils literal notranslate"><span class="pre">VCPButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/index.html">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buttons/index.html">Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hal/index.html">HAL Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html">Recent Files Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menus.html#homing-menu">Homing Menu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Widgets</a></li>
+      <li class="breadcrumb-item active">Widget Rules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/widgets/rules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="widget-rules">
+<h1>Widget Rules<a class="headerlink" href="#widget-rules" title="Link to this heading"></a></h1>
+<p>One of the most powerful features of QtPyVCP are the Widget Rules. Widget
+Rules are a flexible way of making widgets respond to changes in external data.</p>
+<p>Rules can be used for things as simple as making a label display the current
+machine position, or as complicated as hiding, showing and rearranging widgets
+and layouts.</p>
+<p>Each widget can have multiple rules applied to it, and each rule can make use
+of data from multiple sources.</p>
+<p>A <cite>rule</cite> is used to define some behaviour of the widget. Each <cite>rule</cite>
+consists of the follwing components.</p>
+<ul class="simple">
+<li><p><strong>Rule Name:</strong> Used to tell rules apart and is optional.</p></li>
+<li><p><strong>Property:</strong> The widget property the rule works on like text, enable, style sheet etc.</p></li>
+<li><p><strong>Channel:</strong> The status or setting to monitor.</p></li>
+<li><p><strong>Exp Type</strong>: The type of variable the expression requires.</p></li>
+<li><p><strong>Expression:</strong> What to do when the <cite>Channel</cite> changes.</p></li>
+</ul>
+<p>Start building a rule by double clicking on the QtPyVCP widget and this
+screen pops up.</p>
+<img alt="../_images/rules-01.png" class="align-center" src="../_images/rules-01.png" />
+<p>The first thing is to left click on <cite>Add Rule</cite> to get a new rule started.
+Now you can see that everything is enabled for that new rule.</p>
+<img alt="../_images/rules-02.png" class="align-center" src="../_images/rules-02.png" />
+<p>Now give the rule a name to remind you what that rule does.</p>
+<img alt="../_images/rules-03.png" class="align-center" src="../_images/rules-03.png" />
+<p>Select the <cite>Property</cite> that the rule will be applied to, in this case we
+are changing the background color of the widget depending on the condition
+of the channel. The Style Sheet is where you set colors and fonts etc.</p>
+<img alt="../_images/rules-041.png" class="align-center" src="../_images/rules-041.png" />
+<p>Next we need to select a channel for our rule. Most of the channels are
+status channels and a list of them is see <a class="reference internal" href="../components/status_items.html"><span class="doc">Status Items</span></a>
+Start by left clicking on <cite>Add Channel</cite> and you will see a new channel
+appears.</p>
+<p>From left to right each channel has</p>
+<ul class="simple">
+<li><p><strong>Channel Number</strong>: The start at 0 and you reference a channel by <cite>ch[0]</cite></p></li>
+<li><p><strong>Channel</strong>: The channel selected to monitor</p></li>
+<li><p><strong>Trigger</strong>: You can select the channel to trigger the <cite>Expression</cite> when it changes</p></li>
+<li><dl class="simple">
+<dt><strong>Type</strong>: This is the variable type of the channel</dt><dd><ul>
+<li><p><cite>str</cite> is string of text</p></li>
+<li><p><cite>int</cite> is a whole number integer</p></li>
+<li><p><cite>float</cite> is a floating point number with a decimal point</p></li>
+<li><p><cite>bool</cite> is True or False</p></li>
+<li><p><cite>long</cite> is a bigger int</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<img alt="../_images/rules-05.png" class="align-center" src="../_images/rules-05.png" />
+<p>Channels are grouped by function</p>
+<ul class="simple">
+<li><p><strong>Notifications</strong>: Error channel notifications</p></li>
+<li><p><strong>Offset Table</strong>: Current offsets</p></li>
+<li><p><strong>Position</strong>: Current positions</p></li>
+<li><p><strong>Settings</strong>: Machine settings</p></li>
+<li><p><strong>Status</strong>: All the status items</p></li>
+</ul>
+<p>To select a channel start typing in the first letter and a list will
+show up and you can select the one you need. In this case I’ve selected
+<cite>status:all_axes_homed</cite> and after left clicking into the <cite>Expression</cite>
+box you can see that the <cite>type</cite> is bool which is True or False. Note
+that python True and False uses a capitol first letter.</p>
+<img alt="../_images/rules-06.png" class="align-center" src="../_images/rules-06.png" />
+<p>The first thing you need to notice is the variable type of the <cite>channel</cite>
+is a <cite>bool</cite> (True/False) and the variable type of the <cite>expression</cite> is
+<cite>str</cite> (string of text). So when you are making the expression you must
+end up with a variable type of <cite>str</cite>. If the types match often you can
+just have ch[0] as the expression.</p>
+<p>I’m going to show a little trick here, I’ll start off by putting an
+expression in as a place holder so I can save the rule and use the
+built in stylesheet to get my color syntax.</p>
+<p>The expression reads put what is in the first set of quotes into the
+widget stylesheet if channel 0 is True else put what is in the last set
+of quotes into the widget stylesheet.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+<p>Make sure your wiget is selected then left click on the ellipse
+(three dots) in the stylesheet box located int the <cite>Property Editor</cite>.</p>
+<img alt="../_images/rules-08.png" class="align-center" src="../_images/rules-08.png" />
+<p>This will bring up the color selector, left click on the down arrow next
+to the color selector and select background-color.</p>
+<img alt="../_images/rules-09.png" class="align-center" src="../_images/rules-09.png" />
+<p>Now pick a color and left click on <cite>Select</cite> and the stylesheet code can
+be cut and pasted into the rule. Make sure you delete the color code from
+the stylesheet.</p>
+<img alt="../_images/rules-10.png" class="align-center" src="../_images/rules-10.png" />
+<p>I picked green so now my <cite>Expression</cite> is this which reads put the code
+to set the background color of green into my widget if channel 0 is true
+and do nothing if it is not true.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;background-color: rgb(138, 226, 52);&#39;</span> <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+<img alt="../_images/rules-11.png" class="align-center" src="../_images/rules-11.png" />
+<p>If I wanted a color to show when the channel is false I would put it
+into the last set of quotes.</p>
+<section id="expressions">
+<h2>Expressions<a class="headerlink" href="#expressions" title="Link to this heading"></a></h2>
+<p>Any valid Python expression will work in the <cite>Expression</cite> box.</p>
+<p>Decisions can use if/else type of python expressions. Syntax for rules
+is do this if channel is true else to that. You could use that to set
+a button label text or a status label.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;On&#39;</span> <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;Off&#39;</span>
+</pre></div>
+</div>
+<p>Some examples:</p>
+<p>To change a number variable from channel 0 to a string we use the python
+<cite>str()</cite> function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">str</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>To compare if a number is not 0 and change that to a bool
+This reads if channel 0 is not equal to 0 then apply True else apply False.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kc">True</span> <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="menus.html" class="btn btn-neutral float-right" title="Recent Files Menu" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dialogs/index.html" class="btn btn-neutral float-left" title="Dialogs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

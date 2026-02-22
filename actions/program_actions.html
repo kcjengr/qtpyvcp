@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Actions &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Spindle Actions" href="spindle_actions.html" />
+    <link rel="prev" title="Machine Actions" href="machine_actions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Actions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="action_helpers.html">Action Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="machine_actions.html">Machine Actions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Program Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spindle_actions.html">Spindle Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coolant_actions.html">Coolant Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool_actions.html">Tool Actions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Actions</a></li>
+      <li class="breadcrumb-item active">Program Actions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/actions/program_actions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-qtpyvcp.actions.program_actions">
+<span id="program-actions"></span><h1>Program Actions<a class="headerlink" href="#module-qtpyvcp.actions.program_actions" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.reload">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">reload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#reload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.reload" title="Link to this definition"></a></dt>
+<dd><p>Reload the currently loaded NC program</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">reload</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.clear">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.clear" title="Link to this definition"></a></dt>
+<dd><p>Clear the loaded NC program</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">clear</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.run">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.run" title="Link to this definition"></a></dt>
+<dd><p>Runs the loaded program, optionally starting from a specific line.</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">run</span>
+<span class="n">program</span><span class="o">.</span><span class="n">run</span><span class="p">:</span><span class="n">line</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>start_line</strong> (<em>int</em><em>, </em><em>optional</em>) – The line to start program from. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.step">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.step" title="Link to this definition"></a></dt>
+<dd><p>Steps program line by line</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">step</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.pause">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">pause</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#pause"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.pause" title="Link to this definition"></a></dt>
+<dd><p>Pause executing program</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">pause</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.resume">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">resume</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#resume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.resume" title="Link to this definition"></a></dt>
+<dd><p>Resume a previously paused program</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">resume</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.abort">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">abort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#abort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.abort" title="Link to this definition"></a></dt>
+<dd><p>Aborts any currently executing program, MDI command or homing operation.</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">abort</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.block_delete">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">block_delete</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#block_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.block_delete" title="Link to this definition"></a></dt>
+<dd><p>Block Delete Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.block_delete.on">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#block_delete.on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.block_delete.on" title="Link to this definition"></a></dt>
+<dd><p>Start ignoring lines beginning with ‘/’.</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">block</span><span class="o">-</span><span class="n">delete</span><span class="o">.</span><span class="n">on</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.block_delete.off">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">off</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#block_delete.off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.block_delete.off" title="Link to this definition"></a></dt>
+<dd><p>Stop ignoring lines beginning with ‘/’.</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">block</span><span class="o">-</span><span class="n">delete</span><span class="o">.</span><span class="n">off</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.block_delete.toggle">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toggle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#block_delete.toggle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.block_delete.toggle" title="Link to this definition"></a></dt>
+<dd><p>Toggle ignoring lines beginning with ‘/’.</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">block</span><span class="o">-</span><span class="n">delete</span><span class="o">.</span><span class="n">toggle</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.optional_stop">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">optional_stop</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#optional_stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.optional_stop" title="Link to this definition"></a></dt>
+<dd><p>Optional Stop Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.optional_stop.on">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#optional_stop.on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.optional_stop.on" title="Link to this definition"></a></dt>
+<dd><p>Pause when a line beginning with M1 is encountered</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">optional</span><span class="o">-</span><span class="n">stop</span><span class="o">.</span><span class="n">on</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.optional_stop.off">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">off</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#optional_stop.off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.optional_stop.off" title="Link to this definition"></a></dt>
+<dd><p>Don’t pause when a line beginning with M1 is encountered</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">option</span><span class="o">-</span><span class="n">stop</span><span class="o">.</span><span class="n">off</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.optional_stop.toggle">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toggle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/program_actions.html#optional_stop.toggle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.program_actions.optional_stop.toggle" title="Link to this definition"></a></dt>
+<dd><p>Toggle pause when a line beginning with M1 is encountered</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">optional</span><span class="o">-</span><span class="n">stop</span><span class="o">.</span><span class="n">toggle</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.actions.program_actions.optional_skip">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.program_actions.</span></span><span class="sig-name descname"><span class="pre">optional_skip</span></span><a class="headerlink" href="#qtpyvcp.actions.program_actions.optional_skip" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#qtpyvcp.actions.program_actions.block_delete" title="qtpyvcp.actions.program_actions.block_delete"><code class="xref py py-class docutils literal notranslate"><span class="pre">block_delete</span></code></a></p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="spindle_actions.html" class="btn btn-neutral float-right" title="Spindle Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="machine_actions.html" class="btn btn-neutral float-left" title="Machine Actions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

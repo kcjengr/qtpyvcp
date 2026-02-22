@@ -1,0 +1,750 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.input_widgets.file_system &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.input_widgets.file_system</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.input_widgets.file_system</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">linuxcnc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psutil</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dateutil.parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyudev.pyqt5</span><span class="w"> </span><span class="kn">import</span> <span class="n">MonitorObserver</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyudev</span><span class="w"> </span><span class="kn">import</span> <span class="n">Context</span><span class="p">,</span> <span class="n">Monitor</span><span class="p">,</span> <span class="n">Devices</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">QFile</span><span class="p">,</span> <span class="n">QFileInfo</span><span class="p">,</span> <span class="n">QDir</span><span class="p">,</span> <span class="n">QIODevice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFileSystemModel</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QTableView</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> \
+    <span class="n">QApplication</span><span class="p">,</span> <span class="n">QAbstractItemView</span><span class="p">,</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">getPlugin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.actions.program_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span> <span class="k">as</span> <span class="n">loadProgram</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.encode_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">allEncodings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.lib.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">deprecated</span>
+
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">IN_DESIGNER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TableType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">Local</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Remote</span> <span class="o">=</span> <span class="mi">1</span>
+
+
+<div class="viewcode-block" id="RemovableDeviceComboBox">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RemovableDeviceComboBox</span><span class="p">(</span><span class="n">QComboBox</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ComboBox for choosing from a list of removable devices.&quot;&quot;&quot;</span>
+    <span class="n">usbPresent</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">currentPathChanged</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">currentDeviceEjectable</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RemovableDeviceComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_first_show</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSizeAdjustPolicy</span><span class="p">(</span><span class="n">QComboBox</span><span class="o">.</span><span class="n">AdjustToContents</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_locations</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;file_locations&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_locations</span><span class="o">.</span><span class="n">removable_devices</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onRemovableDevicesChanged</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_locations</span><span class="o">.</span><span class="n">new_device</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onNewDeviceAdded</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_program_prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">getProgramPrefix</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentTextChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onCurrentTextChanged</span><span class="p">)</span>
+
+        <span class="c1"># initialize device list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">onRemovableDevicesChanged</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_locations</span><span class="o">.</span><span class="n">removable_devices</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RemovableDeviceComboBox.showEvent">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox.showEvent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_show</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_first_show</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_locations</span><span class="o">.</span><span class="n">default_location</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentData</span><span class="p">()</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentDeviceEjectable</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;removable&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RemovableDeviceComboBox</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">showEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">onCurrentTextChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentData</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentPathChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentDeviceEjectable</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;removable&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">onRemovableDevicesChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">devices</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_locations</span><span class="o">.</span><span class="n">local_locations</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;path&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">path</span><span class="p">)})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">insertSeparator</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">devices</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">devices_node</span><span class="p">,</span> <span class="n">device_data</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">devices</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">device_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">),</span> <span class="n">device_data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">onNewDeviceAdded</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_locations</span><span class="o">.</span><span class="n">default_location</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ejectDevice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentData</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_locations</span><span class="o">.</span><span class="n">ejectDevice</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;device&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="QtpyVCPQFileSystemModel">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.QtpyVCPQFileSystemModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">QtpyVCPQFileSystemModel</span><span class="p">(</span><span class="n">QFileSystemModel</span><span class="p">):</span>
+    
+<div class="viewcode-block" id="QtpyVCPQFileSystemModel.data">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.QtpyVCPQFileSystemModel.data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">):</span>
+        <span class="c1"># Column nº 3 is date, align it to right</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">QFileSystemModel</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">date</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                    <span class="n">formatted_date</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">date</span><span class="si">:</span><span class="s2">%m/%d/%y   %I:%M  %p</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="k">return</span> <span class="n">formatted_date</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">TextAlignmentRole</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span>
+    
+        <span class="k">return</span> <span class="n">QFileSystemModel</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="FileSystemTable">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FileSystemTable</span><span class="p">(</span><span class="n">QTableView</span><span class="p">,</span> <span class="n">TableType</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Q_ENUMS</span>
+        <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">TableType</span><span class="p">)</span>
+
+    <span class="n">gcodeFileSelected</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">filePreviewText</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">fileNamePreviewText</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">transferFileRequest</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">rootChanged</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">atDeviceRoot</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FileSystemTable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_type</span> <span class="o">=</span> <span class="n">TableType</span><span class="o">.</span><span class="n">Local</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hidden_columns</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name_columns_width</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_name_column</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># This prevents doing unneeded initialization</span>
+        <span class="c1"># when QtDesginer loads the plugin.</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected_row</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clipboard</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">clipboard</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">QtpyVCPQFileSystemModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setFilter</span><span class="p">(</span><span class="n">QDir</span><span class="o">.</span><span class="n">AllDirs</span> <span class="o">|</span> <span class="n">QDir</span><span class="o">.</span><span class="n">NoDotAndDotDot</span> <span class="o">|</span> <span class="n">QDir</span><span class="o">.</span><span class="n">AllEntries</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verticalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAlternatingRowColors</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSelectionBehavior</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">SelectRows</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selection_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selection_model</span><span class="o">.</span><span class="n">selectionChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onSelectionChanged</span><span class="p">)</span>
+
+        <span class="c1"># open selected item on double click or enter pressed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">openSelectedItem</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nc_file_editor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">getEditor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nc_file_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">getProgramPrefix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nc_file_exts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">getProgramExtentions</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nc_file_dir</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">rootPathChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onRootPathChanged</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FileSystemTable.showEvent">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.showEvent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">showEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">root_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">rootPath</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atDeviceRoot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">ismount</span><span class="p">(</span><span class="n">root_path</span><span class="p">))</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">onRootPathChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atDeviceRoot</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">ismount</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">onSelectionChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">deselected</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="n">selected</span><span class="o">.</span><span class="n">indexes</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gcodeFileSelected</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">encodings</span> <span class="o">=</span> <span class="n">allEncodings</span><span class="p">()</span>
+            <span class="n">enc</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">enc</span> <span class="ow">in</span> <span class="n">encodings</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>  <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">enc</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                        <span class="k">break</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c1"># LOG.debug(e)</span>
+                    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File encoding doesn&#39;t match </span><span class="si">{</span><span class="n">enc</span><span class="si">}</span><span class="s2">, trying others&quot;</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File encoding: </span><span class="si">{</span><span class="n">enc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filePreviewText</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fileNamePreviewText</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gcodeFileSelected</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filePreviewText</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fileNamePreviewText</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FileSystemTable.openSelectedItem">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.openSelectedItem">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">openSelectedItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If ngc file, opens in LinuxCNC, if dir displays dir.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">selection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootIndex</span><span class="p">())</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="n">absolute_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">file_info</span> <span class="o">=</span> <span class="n">QFileInfo</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_info</span><span class="o">.</span><span class="n">isDir</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRootIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rootChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">file_info</span><span class="o">.</span><span class="n">isFile</span><span class="p">():</span>
+            <span class="c1"># if file_info.completeSuffix() not in self.nc_file_exts:</span>
+            <span class="c1">#     LOG.warn(&quot;Unsuported NC program type with extention .%s&quot;,</span>
+            <span class="c1">#              file_info.completeSuffix())</span>
+            <span class="n">loadProgram</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FileSystemTable.editSelectedFile">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.editSelectedFile">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">editSelectedFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Open the selected file in editor.&quot;&quot;&quot;</span>
+        <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="n">selection</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">nc_file_editor</span><span class="p">,</span> <span class="n">path</span><span class="p">])</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="FileSystemTable.loadSelectedFile">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.loadSelectedFile">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loadSelectedFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If ngc file, opens in LinuxCNC, if dir displays dir.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">selection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootIndex</span><span class="p">())</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+        <span class="n">absolute_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">file_info</span> <span class="o">=</span> <span class="n">QFileInfo</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_info</span><span class="o">.</span><span class="n">isDir</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRootIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rootChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">file_info</span><span class="o">.</span><span class="n">isFile</span><span class="p">():</span>
+            <span class="c1"># if file_info.completeSuffix() not in self.nc_file_exts:</span>
+            <span class="c1">#     LOG.warn(&quot;Unsuported NC program type with extention .%s&quot;,</span>
+            <span class="c1">#              file_info.completeSuffix())</span>
+            <span class="n">loadProgram</span><span class="p">(</span><span class="n">absolute_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FileSystemTable.selectPrevious">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectPrevious">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">selectPrevious</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select the previous item in the view.&quot;&quot;&quot;</span>
+        <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># select last item in view</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectRow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">rowCount</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootIndex</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectRow</span><span class="p">(</span><span class="n">selection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="FileSystemTable.selectNext">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectNext">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">selectNext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select the next item in the view.&quot;&quot;&quot;</span>
+        <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSelection</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">selection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># select first item in view</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectRow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">selectRow</span><span class="p">(</span><span class="n">selection</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="FileSystemTable.rename">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.rename">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;renames the selected file or folder&quot;&quot;&quot;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">file_info</span> <span class="o">=</span> <span class="n">QFileInfo</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">file_info</span><span class="o">.</span><span class="n">isFile</span><span class="p">():</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rename_dialog</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+                    <span class="n">q_file</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                    <span class="n">file_info</span><span class="o">.</span><span class="n">absolutePath</span><span class="p">()</span>
+                    <span class="n">new_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file_info</span><span class="o">.</span><span class="n">absolutePath</span><span class="p">(),</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+                    <span class="n">q_file</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">file_info</span><span class="o">.</span><span class="n">isDir</span><span class="p">():</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rename_dialog</span><span class="p">(</span><span class="s2">&quot;directory&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+                    <span class="n">directory</span> <span class="o">=</span> <span class="n">QDir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                    <span class="n">file_info</span><span class="o">.</span><span class="n">absolutePath</span><span class="p">()</span>
+                    <span class="n">new_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">file_info</span><span class="o">.</span><span class="n">absolutePath</span><span class="p">(),</span> <span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+                    <span class="n">directory</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">new_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FileSystemTable.newFile">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.newFile">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">newFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new empty file&quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootIndex</span><span class="p">())</span>
+        <span class="n">new_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;New File.ngc&quot;</span><span class="p">)</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">new_file_path</span><span class="p">):</span>
+            <span class="n">new_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;New File </span><span class="si">{}</span><span class="s2">.ngc&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">count</span><span class="p">))</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">new_file</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="n">new_file_path</span><span class="p">)</span>
+        <span class="n">new_file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">.</span><span class="n">ReadWrite</span><span class="p">)</span>
+        <span class="n">new_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;(New Program)</span><span class="se">\n\n\n</span><span class="s2">M30&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">))</span></div>
+
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">newFolder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootIndex</span><span class="p">())</span>
+
+        <span class="n">new_name</span> <span class="o">=</span> <span class="s1">&#39;New Folder&#39;</span>
+
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)):</span>
+            <span class="n">new_name</span> <span class="o">=</span> <span class="s2">&quot;New Folder </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">QDir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">directory</span><span class="o">.</span><span class="n">mkpath</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+        <span class="n">directory</span><span class="o">.</span><span class="n">setPath</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="n">replaced_by</span><span class="o">=</span><span class="s1">&#39;newFolder&#39;</span><span class="p">,</span>
+                <span class="n">reason</span><span class="o">=</span><span class="s1">&#39;for consistency with newFile method name&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">createDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newFolder</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FileSystemTable.deleteItem">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.deleteItem">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deleteItem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete the selected item (either a file or folder).&quot;&quot;&quot;</span>
+        <span class="c1"># ToDo: use Move2Trash, instead of deleting the file</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">file_info</span> <span class="o">=</span> <span class="n">QFileInfo</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">file_info</span><span class="o">.</span><span class="n">isFile</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_dialog</span><span class="p">(</span><span class="s2">&quot;Do you want to delete the selected file?&quot;</span><span class="p">):</span>
+                    <span class="k">return</span>
+                <span class="n">q_file</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">q_file</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
+            <span class="k">elif</span> <span class="n">file_info</span><span class="o">.</span><span class="n">isDir</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_dialog</span><span class="p">(</span><span class="s2">&quot;Do you want to delete the selected directory?&quot;</span><span class="p">):</span>
+                    <span class="k">return</span>
+                <span class="n">directory</span> <span class="o">=</span> <span class="n">QDir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">directory</span><span class="o">.</span><span class="n">removeRecursively</span><span class="p">()</span></div>
+
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="n">replaced_by</span><span class="o">=</span><span class="s1">&#39;deleteItem&#39;</span><span class="p">,</span>
+                <span class="n">reason</span><span class="o">=</span><span class="s1">&#39;because of unclear method name&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deleteFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deleteItem</span><span class="p">()</span>
+
+<div class="viewcode-block" id="FileSystemTable.setRootPath">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.setRootPath">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setRootPath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the currently displayed path.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="n">root_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRootIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">root_path</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="FileSystemTable.viewParentDirectory">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.viewParentDirectory">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">viewParentDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;View the parent directory of the current view.&quot;&quot;&quot;</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootIndex</span><span class="p">())</span>
+
+        <span class="n">file_info</span> <span class="o">=</span> <span class="n">QFileInfo</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">file_info</span><span class="o">.</span><span class="n">dir</span><span class="p">()</span>
+        <span class="n">new_path</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">absolutePath</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">ismount</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">currentRoot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootIndex</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRootIndex</span><span class="p">(</span><span class="n">currentRoot</span><span class="o">.</span><span class="n">parent</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span></div>
+
+
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="nd">@deprecated</span><span class="p">(</span><span class="n">replaced_by</span><span class="o">=</span><span class="s1">&#39;viewParentDirectory&#39;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">goUP</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viewParentDirecotry</span><span class="p">()</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">viewHomeDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/&#39;</span><span class="p">))</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">viewNCFilesDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ToDo: Make preset user definable</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nc_files_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">viewPresetDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># ToDo: Make preset user definable</span>
+        <span class="n">preset</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nc_files_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="n">preset</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">doFileTransfer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transferFileRequest</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transferFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
+        <span class="n">dest_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">filePath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rootIndex</span><span class="p">())</span>
+
+        <span class="n">src_file</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">()</span>
+        <span class="n">src_file</span><span class="o">.</span><span class="n">setFileName</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
+
+        <span class="n">src_file_info</span> <span class="o">=</span> <span class="n">QFileInfo</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
+
+        <span class="n">dst_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dest_path</span><span class="p">,</span> <span class="n">src_file_info</span><span class="o">.</span><span class="n">fileName</span><span class="p">())</span>
+
+        <span class="n">src_file</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dst_path</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FileSystemTable.getSelection">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.getSelection">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getSelection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns list of selected indexes, or None.&quot;&quot;&quot;</span>
+        <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selection_model</span><span class="o">.</span><span class="n">selectedIndexes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selection</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">selection</span></div>
+
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCurrentDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">rootPath</span><span class="p">()</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">TableType</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tableType</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_type</span>
+
+    <span class="nd">@tableType</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tableType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_type</span> <span class="o">=</span> <span class="n">table_type</span>
+        <span class="k">if</span> <span class="n">table_type</span> <span class="o">==</span> <span class="n">TableType</span><span class="o">.</span><span class="n">Local</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nc_file_dir</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRootPath</span><span class="p">(</span><span class="s1">&#39;/media/&#39;</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hiddenColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;String of comma separated column numbers to hide.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hidden_columns</span>
+
+    <span class="nd">@hiddenColumns</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hiddenColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">col_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hidden_columns</span> <span class="o">=</span> <span class="n">columns</span>
+
+        <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">col_list</span><span class="p">:</span>
+                <span class="n">header</span><span class="o">.</span><span class="n">hideSection</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">header</span><span class="o">.</span><span class="n">showSection</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fixedNameColumn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Allows to set a fixed width defined in the nameColumnsWidth property&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_name_column</span>
+
+    <span class="nd">@fixedNameColumn</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fixedNameColumn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_name_column</span> <span class="o">=</span> <span class="n">value</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_name_column</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_name_column</span><span class="p">)</span>
+            
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nameColumnsWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If the fixedNameColumn is enabled sets its width.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_columns_width</span>
+
+    <span class="nd">@nameColumnsWidth</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nameColumnsWidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name_columns_width</span> <span class="o">=</span> <span class="n">width</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_name_column</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColumnWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_columns_width</span><span class="p">)</span>
+        
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">ask_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
+                                   <span class="s1">&#39;Are you sure?&#39;</span><span class="p">,</span>
+                                   <span class="n">message</span><span class="p">,</span>
+                                   <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">,</span>
+                                   <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">box</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">rename_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+        <span class="n">text</span><span class="p">,</span> <span class="n">ok_pressed</span> <span class="o">=</span> <span class="n">QInputDialog</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;Rename&quot;</span><span class="p">,</span> <span class="s2">&quot;New </span><span class="si">{}</span><span class="s2"> name:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_type</span><span class="p">),</span>
+                                                <span class="n">QLineEdit</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ok_pressed</span> <span class="ow">and</span> <span class="n">text</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">text</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

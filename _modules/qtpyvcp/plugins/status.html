@@ -1,0 +1,1015 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.plugins.status &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../plugins.html">qtpyvcp.plugins</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.plugins.status</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.plugins.status</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">linuxcnc</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">QFileSystemWatcher</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QApplication</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.app.runtime_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">RuntimeConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataPlugin</span><span class="p">,</span> <span class="n">DataChannel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+
+<span class="n">INFO</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">STAT</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
+<span class="n">CMD</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+
+
+<span class="n">IN_DESIGNER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Status">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Status</span><span class="p">(</span><span class="n">DataPlugin</span><span class="p">):</span>
+
+    <span class="n">stat</span> <span class="o">=</span> <span class="n">STAT</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cycle_time</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Status</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_force_homing</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">noForceHoming</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># recent files</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_recent_files</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">with</span> <span class="n">RuntimeConfig</span><span class="p">(</span><span class="s1">&#39;~/.axis_preferences&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rc</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;DEFAULT&#39;</span><span class="p">,</span> <span class="s1">&#39;recentfiles&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recent_files</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+
+        <span class="c1"># MDI history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_mdi_history_length</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mdi_history_file</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getMDIHistoryFile</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadMdiHistory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mdi_history_file</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">jog_increment</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># jog</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_jog_increment</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getIncrements</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jog_mode</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear_jog_velocity</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getJogVelocity</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">angular_jog_velocity</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getJogVelocity</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span><span class="s2">&quot;Unable to poll status channel&quot;</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">Debug</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="n">excluded_items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="s1">&#39;joint&#39;</span><span class="p">,</span> <span class="s1">&#39;spindle&#39;</span><span class="p">,</span> <span class="s1">&#39;poll&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">old</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># initialize data channels</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">STAT</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">old</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">STAT</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">item</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">STAT</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">excluded_items</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">old</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">STAT</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+                <span class="n">chan</span> <span class="o">=</span> <span class="n">DataChannel</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+                <span class="n">chan</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">STAT</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">chan</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">chan</span><span class="p">)</span>
+
+        <span class="c1"># add joint status channels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">JointStatus</span><span class="p">(</span><span class="n">jnum</span><span class="p">)</span> <span class="k">for</span> <span class="n">jnum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">joint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">chan</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">joint</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="s1">&#39;joint.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">joint</span><span class="o">.</span><span class="n">jnum</span><span class="p">,</span> <span class="n">chan</span><span class="p">)]</span> <span class="o">=</span> <span class="n">obj</span>
+
+        <span class="c1"># add spindle status channels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spindle</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">SpindleStatus</span><span class="p">(</span><span class="n">snum</span><span class="p">)</span> <span class="k">for</span> <span class="n">snum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">spindle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spindle</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">chan</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">spindle</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="s1">&#39;spindle.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spindle</span><span class="o">.</span><span class="n">snum</span><span class="p">,</span> <span class="n">chan</span><span class="p">)]</span> <span class="o">=</span> <span class="n">obj</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">homed</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">setValue</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enabled</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">setValue</span><span class="p">)</span>
+
+        <span class="c1"># Set up the periodic update timer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cycle_time</span> <span class="o">=</span> <span class="n">cycle_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_periodic</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">settable</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ts</span><span class="p">:</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">ts</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">))</span>
+
+        <span class="c1"># Set default UI locking counter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">recent_files</span> <span class="o">=</span> <span class="n">DataChannel</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="s1">&#39;List of recently loaded files&#39;</span><span class="p">,</span> <span class="n">settable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">isLocked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">addLock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">setOverrideCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">BusyCursor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Add lock. Total = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">removeLock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">restoreOverrideCursor</span><span class="p">()</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;---- Remove lock: restoreOverrideCursor&quot;</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Remove lock. Total = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">locking_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Status.loadMdiHistory">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status.loadMdiHistory">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loadMdiHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load MDI history from file.&quot;&quot;&quot;</span>
+        <span class="n">mdi_history</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">mdi_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="n">mdi_history</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdi_history</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">mdi_history</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Status.saveMdiHistory">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status.saveMdiHistory">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">saveMdiHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write MDI history to file.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">cmds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_history</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">cmds</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cmd</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">axis_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;int&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axes as configured in the [TRAJ]COORDINATES INI option.</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:axis_mask</span>
+<span class="sd">            status:axis_mask?string</span>
+<span class="sd">            status:axis_mask?list</span>
+
+<span class="sd">        :returns: the configured axes</span>
+<span class="sd">        :rtype: int, list, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">:</span>
+
+            <span class="n">mask</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:09b}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stat</span><span class="o">.</span><span class="n">axis_mask</span> <span class="ow">or</span> <span class="mi">7</span><span class="p">)</span>
+
+            <span class="n">axis_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">anum</span><span class="p">,</span> <span class="n">enabled</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mask</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">enabled</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+                    <span class="n">axis_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">anum</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">axis_list</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stat</span><span class="o">.</span><span class="n">axis_mask</span>
+
+    <span class="nd">@axis_mask</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">axis_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">anum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis_mask</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">):</span>
+            <span class="n">axes</span> <span class="o">+=</span> <span class="s1">&#39;XYZABCUVW&#39;</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">axes</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdi_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List of recently issued MDI commands.</span>
+<span class="sd">            Commands are stored in reverse chronological order, with the</span>
+<span class="sd">            newest command at the front of the list, and oldest at the end.</span>
+<span class="sd">            When the list exceeds the length given by MAX_MDI_COMMANDS the</span>
+<span class="sd">            oldest entries will be dropped.</span>
+
+<span class="sd">            Duplicate commands will not be removed, so that MDI History</span>
+<span class="sd">            can be replayed via the queue meachanisim from a point in</span>
+<span class="sd">            the history forward. The most recently issued</span>
+<span class="sd">            command will always be at the front of the list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@mdi_history</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdi_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---------set mdi_history: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chan</span><span class="p">,</span> <span class="n">new_value</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">chan</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">new_value</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_mdi_history_length</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">new_value</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">cmds</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---------cmd: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---------cmds: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmds</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
+               <span class="n">cmds</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+            <span class="n">cmds</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+            <span class="n">chan</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">cmds</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_mdi_history_length</span><span class="p">]</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---------chan.value: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+
+        <span class="n">chan</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Status.mdi_remove_entry">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status.mdi_remove_entry">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdi_remove_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mdi_index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the indicated cmd by index reference&quot;&quot;&quot;</span>
+        <span class="c1"># TODO: This has some potential code redundancy. Follow above pattern</span>
+        <span class="n">chan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_history</span>
+        <span class="n">cmds</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+        <span class="c1"># only attempt to delete if index is in range.</span>
+        <span class="k">if</span> <span class="n">mdi_index</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">mdi_index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">cmds</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">cmds</span><span class="p">[</span><span class="n">mdi_index</span><span class="p">]</span>
+            <span class="n">chan</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---------mdi history delete attempt index out of range&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Status.mdi_swap_entries">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status.mdi_swap_entries">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdi_swap_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index1</span><span class="p">,</span> <span class="n">index2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Switch two entries about.&quot;&quot;&quot;</span>
+        <span class="n">chan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_history</span>
+        <span class="n">cmds</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">cmds</span><span class="p">[</span><span class="n">index2</span><span class="p">],</span> <span class="n">cmds</span><span class="p">[</span><span class="n">index1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmds</span><span class="p">[</span><span class="n">index1</span><span class="p">],</span> <span class="n">cmds</span><span class="p">[</span><span class="n">index2</span><span class="p">]</span>
+        <span class="n">chan</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Status.mdi_remove_all">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status.mdi_remove_all">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdi_remove_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all entries in mdi history&quot;&quot;&quot;</span>
+        <span class="n">chan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_history</span>
+        <span class="n">cmds</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">cmds</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">chan</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span></div>
+
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True if machine power is ON.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Currently loaded file including path&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="s1">&#39;No file loaded&#39;</span>
+
+    <span class="nd">@file</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span> \
+                <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">call_level</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">files</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">removePath</span><span class="p">(</span><span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">addPath</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+            <span class="n">chan</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">fname</span>
+            <span class="n">chan</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">updateFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Reloading edited G-Code file: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">CMD</span><span class="o">.</span><span class="n">program_open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;G-Code file changed, won&#39;t reload: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current command execution status</span>
+
+<span class="sd">        1) Done</span>
+<span class="sd">        2) Exec</span>
+<span class="sd">        3) Error</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:state?string</span>
+
+<span class="sd">        :returns: current command execution state</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">state</span>
+
+    <span class="nd">@state</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_DONE</span><span class="p">:</span> <span class="s2">&quot;Done&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_EXEC</span><span class="p">:</span> <span class="s2">&quot;Exec&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">RCS_ERROR</span><span class="p">:</span> <span class="s2">&quot;Error&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">states</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">exec_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current task execution state</span>
+
+<span class="sd">        1) Error</span>
+<span class="sd">        2) Done</span>
+<span class="sd">        3) Waiting for Motion</span>
+<span class="sd">        4) Waiting for Motion Queue</span>
+<span class="sd">        5) Waiting for Pause</span>
+<span class="sd">        6) --</span>
+<span class="sd">        7) Waiting for Motion and IO</span>
+<span class="sd">        8) Waiting for Delay</span>
+<span class="sd">        9) Waiting for system CMD</span>
+<span class="sd">        10) Waiting for spindle orient</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:exec_state?string</span>
+
+<span class="sd">        :returns: current task execution error</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">exec_state</span>
+
+    <span class="nd">@exec_state</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">exec_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">exec_states</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_ERROR</span><span class="p">:</span> <span class="s2">&quot;Error&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_DONE</span><span class="p">:</span> <span class="s2">&quot;Done&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_WAITING_FOR_MOTION</span><span class="p">:</span> <span class="s2">&quot;Waiting for Motion&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_WAITING_FOR_MOTION_QUEUE</span><span class="p">:</span> <span class="s2">&quot;Waiting for Motion Queue&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_WAITING_FOR_IO</span><span class="p">:</span> <span class="s2">&quot;Waiting for Pause&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_WAITING_FOR_MOTION_AND_IO</span><span class="p">:</span> <span class="s2">&quot;Waiting for Motion and IO&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_WAITING_FOR_DELAY</span><span class="p">:</span> <span class="s2">&quot;Waiting for Delay&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_WAITING_FOR_SYSTEM_CMD</span><span class="p">:</span> <span class="s2">&quot;Waiting for system CMD&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">EXEC_WAITING_FOR_SPINDLE_ORIENTED</span><span class="p">:</span> <span class="s2">&quot;Waiting for spindle orient&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">exec_states</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">exec_state</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interp_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current state of RS274NGC interpreter</span>
+
+<span class="sd">        1) Idle</span>
+<span class="sd">        2) Reading</span>
+<span class="sd">        3) Paused</span>
+<span class="sd">        4) Waiting</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:interp_state?string</span>
+
+<span class="sd">        :returns: RS274 interpreter state</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span>
+
+    <span class="nd">@interp_state</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interp_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">interp_states</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                            <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">:</span> <span class="s2">&quot;Idle&quot;</span><span class="p">,</span>
+                            <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_READING</span><span class="p">:</span> <span class="s2">&quot;Reading&quot;</span><span class="p">,</span>
+                            <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_PAUSED</span><span class="p">:</span> <span class="s2">&quot;Paused&quot;</span><span class="p">,</span>
+                            <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_WAITING</span><span class="p">:</span> <span class="s2">&quot;Waiting&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">interp_states</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">]</span>
+
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interpreter_errcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current RS274NGC interpreter return code</span>
+
+<span class="sd">        0) Ok</span>
+<span class="sd">        1) Exit</span>
+<span class="sd">        2) Finished</span>
+<span class="sd">        3) Endfile</span>
+<span class="sd">        4) File not open</span>
+<span class="sd">        5) Error</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:interpreter_errcode?string</span>
+
+<span class="sd">        :returns: interp error code</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interpreter_errcode</span>
+
+    <span class="nd">@interpreter_errcode</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interpreter_errcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">interpreter_errcodes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Ok&quot;</span><span class="p">,</span>
+                                <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Exit&quot;</span><span class="p">,</span>
+                                <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Finished&quot;</span><span class="p">,</span>
+                                <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Endfile&quot;</span><span class="p">,</span>
+                                <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;File not open&quot;</span><span class="p">,</span>
+                                <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Error&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">interpreter_errcodes</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">interpreter_errcode</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">task_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current status of task</span>
+
+<span class="sd">        1) E-Stop</span>
+<span class="sd">        2) Reset</span>
+<span class="sd">        3) Off</span>
+<span class="sd">        4) On</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:task_state?string</span>
+
+<span class="sd">        :returns: current task state</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span>
+
+    <span class="nd">@task_state</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">task_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">task_states</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ESTOP</span><span class="p">:</span> <span class="s2">&quot;E-Stop&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ESTOP_RESET</span><span class="p">:</span> <span class="s2">&quot;Reset&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span> <span class="s2">&quot;On&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_OFF</span><span class="p">:</span> <span class="s2">&quot;Off&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">task_states</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">task_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current task mode</span>
+
+<span class="sd">        1) Manual</span>
+<span class="sd">        2) Auto</span>
+<span class="sd">        3) MDI</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:task_mode?string</span>
+
+<span class="sd">        :returns: current task mode</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span>
+
+    <span class="nd">@task_mode</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">task_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">task_modes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MANUAL</span><span class="p">:</span> <span class="s2">&quot;Manual&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_AUTO</span><span class="p">:</span> <span class="s2">&quot;Auto&quot;</span><span class="p">,</span>
+                       <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span><span class="p">:</span> <span class="s2">&quot;MDI&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">task_modes</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">motion_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current motion controller mode</span>
+
+<span class="sd">        1) Free</span>
+<span class="sd">        2) Coord</span>
+<span class="sd">        3) Teleop</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:motion_mode?string</span>
+
+<span class="sd">        :returns: current motion mode</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">motion_mode</span>
+
+    <span class="nd">@motion_mode</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">motion_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                  <span class="n">linuxcnc</span><span class="o">.</span><span class="n">TRAJ_MODE_COORD</span><span class="p">:</span> <span class="s2">&quot;Coord&quot;</span><span class="p">,</span>
+                  <span class="n">linuxcnc</span><span class="o">.</span><span class="n">TRAJ_MODE_FREE</span><span class="p">:</span> <span class="s2">&quot;Free&quot;</span><span class="p">,</span>
+                  <span class="n">linuxcnc</span><span class="o">.</span><span class="n">TRAJ_MODE_TELEOP</span><span class="p">:</span> <span class="s2">&quot;Teleop&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">modes</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">motion_mode</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">motion_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Motion type</span>
+
+<span class="sd">        0) None</span>
+<span class="sd">        1) Traverse</span>
+<span class="sd">        2) Linear Feed</span>
+<span class="sd">        3) Arc Feed</span>
+<span class="sd">        4) Tool Change</span>
+<span class="sd">        5) Probing</span>
+<span class="sd">        6) Rotary Index</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:motion_type?string</span>
+
+<span class="sd">        :returns:  current motion type</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">motion_type</span>
+
+    <span class="nd">@motion_type</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">motion_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="n">motion_types</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MOTION_TYPE_TRAVERSE</span><span class="p">:</span> <span class="s2">&quot;Traverse&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MOTION_TYPE_FEED</span><span class="p">:</span> <span class="s2">&quot;Linear Feed&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MOTION_TYPE_ARC</span><span class="p">:</span> <span class="s2">&quot;Arc Feed&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MOTION_TYPE_TOOLCHANGE</span><span class="p">:</span> <span class="s2">&quot;Tool Change&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MOTION_TYPE_PROBING</span><span class="p">:</span> <span class="s2">&quot;Probing&quot;</span><span class="p">,</span>
+                        <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MOTION_TYPE_INDEXROTARY</span><span class="p">:</span> <span class="s2">&quot;Rotary Index&quot;</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">motion_types</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">motion_type</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">program_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Program units</span>
+
+<span class="sd">        Available as an integer, or in short or long string formats.</span>
+
+<span class="sd">        1) in, Inches</span>
+<span class="sd">        2) mm, Millimeters</span>
+<span class="sd">        3) cm, Centimeters</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:program_units</span>
+<span class="sd">            status:program_units?string</span>
+<span class="sd">            status:program_units?string&amp;format=long</span>
+
+<span class="sd">        :returns: current program units</span>
+<span class="sd">        :rtype: int, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">program_units</span>
+
+    <span class="nd">@program_units</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">program_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;short&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;N/A&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;mm&quot;</span><span class="p">,</span> <span class="s2">&quot;cm&quot;</span><span class="p">][</span><span class="n">STAT</span><span class="o">.</span><span class="n">program_units</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;N/A&quot;</span><span class="p">,</span> <span class="s2">&quot;Inches&quot;</span><span class="p">,</span> <span class="s2">&quot;Millimeters&quot;</span><span class="p">,</span> <span class="s2">&quot;Centimeters&quot;</span><span class="p">][</span><span class="n">STAT</span><span class="o">.</span><span class="n">program_units</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">linear_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Machine linear units</span>
+
+<span class="sd">        Available as float (units/mm), or in short or long string formats.</span>
+
+<span class="sd">        To return the string in a status label::</span>
+
+<span class="sd">            status:linear_units</span>
+<span class="sd">            status:linear_units?string</span>
+<span class="sd">            status:linear_units?string&amp;format=long</span>
+
+<span class="sd">        :returns: machine linear units</span>
+<span class="sd">        :rtype: float, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">linear_units</span>
+
+    <span class="nd">@linear_units</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">linear_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;short&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;short&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">:</span> <span class="s2">&quot;mm&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">25.4</span><span class="p">:</span> <span class="s2">&quot;in&quot;</span><span class="p">}[</span><span class="n">STAT</span><span class="o">.</span><span class="n">linear_units</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="mf">0.0</span><span class="p">:</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">:</span> <span class="s2">&quot;Millimeters&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">25.4</span><span class="p">:</span> <span class="s2">&quot;Inches&quot;</span><span class="p">}[</span><span class="n">STAT</span><span class="o">.</span><span class="n">linear_units</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gcodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;G-codes</span>
+
+<span class="sd">        active G-codes for each modal group</span>
+
+<span class="sd">        | syntax ``status:gcodes`` returns tuple of strings</span>
+<span class="sd">        | syntax ``status:gcodes?raw`` returns tuple of integers</span>
+<span class="sd">        | syntax ``status:gcodes?string`` returns str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;raw&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">gcodes</span>
+        <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@gcodes</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gcodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@gcodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gcodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">gcodes</span><span class="p">):</span>
+        <span class="n">chan</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="s2">&quot;G</span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="mf">10.</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">gcodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">chan</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gcodes</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mcodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;M-codes</span>
+
+<span class="sd">        active M-codes for each modal group</span>
+
+<span class="sd">        | syntax ``status:mcodes`` returns tuple of strings</span>
+<span class="sd">        | syntax ``status:mcodes?raw`` returns tuple of integers</span>
+<span class="sd">        | syntax ``status:mcodes?string`` returns str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;raw&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">mcodes</span>
+        <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@mcodes</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mcodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@mcodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mcodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">gcodes</span><span class="p">):</span>
+        <span class="n">chan</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="s2">&quot;M</span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">gcode</span> <span class="k">for</span> <span class="n">gcode</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">gcodes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="n">gcode</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">chan</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotation_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current G5x Rotation</span>
+
+<span class="sd">        | syntax ``status:rotation_xy`` returns float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">rotation_xy</span>
+    
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">g5x_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current G5x work coord system</span>
+
+<span class="sd">        | syntax ``status:g5x_index`` returns int</span>
+<span class="sd">        | syntax ``status:g5x_index?string`` returns str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">g5x_index</span>
+    
+    <span class="nd">@g5x_index</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">g5x_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;G53&quot;</span><span class="p">,</span> <span class="s2">&quot;G54&quot;</span><span class="p">,</span> <span class="s2">&quot;G55&quot;</span><span class="p">,</span> <span class="s2">&quot;G56&quot;</span><span class="p">,</span> <span class="s2">&quot;G57&quot;</span><span class="p">,</span> <span class="s2">&quot;G58&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;G59&quot;</span><span class="p">,</span> <span class="s2">&quot;G59.1&quot;</span><span class="p">,</span> <span class="s2">&quot;G59.2&quot;</span><span class="p">,</span> <span class="s2">&quot;G59.3&quot;</span><span class="p">][</span><span class="n">STAT</span><span class="o">.</span><span class="n">g5x_index</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Interpreter Settings</span>
+
+<span class="sd">        Available Items:</span>
+<span class="sd">            0) sequence_number</span>
+<span class="sd">            1) feed</span>
+<span class="sd">            2) speed</span>
+
+<span class="sd">        :return: interpreter settings</span>
+<span class="sd">        :rtype: tuple, int, float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">settings</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">settings</span><span class="p">[{</span><span class="s1">&#39;sequence_number&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;feed&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}[</span><span class="n">item</span><span class="p">]]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">homed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">anum</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis homed status</span>
+
+<span class="sd">        If no axis number is specified returns a tuple of integers.</span>
+<span class="sd">        If ``anum`` is specified returns True if the axis is homed, else False.</span>
+
+<span class="sd">        Rules syntax::</span>
+
+<span class="sd">            status:homed</span>
+<span class="sd">            status:homed?anum=0</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">         anum (int, optional) : the axis number to return the homed state of.</span>
+
+<span class="sd">        :returns: axis homed states</span>
+<span class="sd">        :rtype: tuple, bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">anum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">homed</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">anum</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">AXIS_LETTER_LIST</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># looking for a ui element axis that machine does not have</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Homed axis anum=</span><span class="si">{</span><span class="n">anum</span><span class="si">}</span><span class="s1"> will be outside INFO.AXIS_LETTER_LIST index range: 0 to </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">AXIS_LETTER_LIST</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">axis_ltr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis_mask</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;string&#39;</span><span class="p">)[</span><span class="n">anum</span><span class="p">]</span>
+        <span class="n">is_homed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">INFO</span><span class="o">.</span><span class="n">ALETTER_JNUM_DICT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">axis_ltr</span> <span class="o">==</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">axis_num</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">ALETTER_JNUM_DICT</span><span class="p">[</span><span class="n">ax</span><span class="p">]</span>
+                <span class="n">is_homed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">homed</span><span class="p">[</span><span class="n">axis_num</span><span class="p">])</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">is_homed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="c1">#return bool(STAT.homed[int(anum)])</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">all_axes_homed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;All axes homed status</span>
+
+<span class="sd">        True if all axes are homed or if [TRAJ]NO_FORCE_HOMING set in INI.</span>
+
+<span class="sd">        If [TRAJ]NO_FORCE_HOMING is set in the INI the value will be come</span>
+<span class="sd">        true as soon as the machine is turned on and the signal will be emitted,</span>
+<span class="sd">        otherwise the signal will be emitted once all the axes defined in the</span>
+<span class="sd">        INI have been homed.</span>
+
+<span class="sd">        :returns: all homed</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@all_axes_homed</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">all_axes_homed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">homed</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_force_homing</span><span class="p">:</span>
+            <span class="n">all_homed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">anum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axis_mask</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">))):</span>
+                <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">homed</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">all_homed</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">all_homed</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">all_homed</span> <span class="o">!=</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">chan</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">all_homed</span>
+            <span class="n">chan</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+
+    <span class="c1"># this is used by File &quot;qtpyvcp/qtpyvcp/actions/program_actions.py&quot;,</span>
+    <span class="c1"># line 83, in _run_ok elif not STATUS.allHomed():</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">allHomed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_force_homing</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">jnum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axis_mask</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">))):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">STAT</span><span class="o">.</span><span class="n">joint</span><span class="p">[</span><span class="n">jnum</span><span class="p">][</span><span class="s1">&#39;homed&#39;</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Status.forceUpdateStaticChannelMembers">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status.forceUpdateStaticChannelMembers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forceUpdateStaticChannelMembers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Static items need a force update to operate properly with the</span>
+<span class="sd">        gui rules.  This needs to be done with consideration to the</span>
+<span class="sd">        data structure so as to not &quot;break&quot; things.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: add to this list as needed. Possible to externalise via yaml?</span>
+        <span class="k">pass</span></div>
+
+        <span class="c1"># axes not in stat chanel</span>
+        <span class="c1"># self.old[&#39;axes&#39;] = None</span>
+
+<div class="viewcode-block" id="Status.initialise">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status.initialise">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start the periodic update timer.&quot;&quot;&quot;</span>
+
+        <span class="c1"># watch the gcode file for changes and reload as needed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span> <span class="o">=</span> <span class="n">QFileSystemWatcher</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">addPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">fileChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateFile</span><span class="p">)</span>
+
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Starting periodic updates with </span><span class="si">%i</span><span class="s2">ms cycle time&quot;</span><span class="p">,</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">_cycle_time</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cycle_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">forceUpdateStaticChannelMembers</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Status.terminate">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.Status.terminate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save persistent data on terminate.&quot;&quot;&quot;</span>
+
+        <span class="c1"># save recent files</span>
+        <span class="k">with</span> <span class="n">RuntimeConfig</span><span class="p">(</span><span class="s1">&#39;~/.axis_preferences&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rc</span><span class="p">:</span>
+            <span class="n">rc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;DEFAULT&#39;</span><span class="p">,</span> <span class="s1">&#39;recentfiles&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">recent_files</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># save MDI history</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveMdiHistory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mdi_history_file</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_periodic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># s = time.time()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">STAT</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Status polling failed, is LinuxCNC running?&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="k">return</span>
+
+        <span class="c1"># status updates</span>
+        <span class="k">for</span> <span class="n">item</span><span class="p">,</span> <span class="n">old_val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">old</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">new_val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">STAT</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">new_val</span> <span class="o">!=</span> <span class="n">old_val</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">old</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">item</span><span class="p">]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">new_val</span><span class="p">)</span>
+
+        <span class="c1"># joint status updates</span>
+        <span class="k">for</span> <span class="n">joint</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint</span><span class="p">:</span>
+            <span class="n">joint</span><span class="o">.</span><span class="n">_update</span><span class="p">()</span>
+
+        <span class="c1"># spindle status updates</span>
+        <span class="k">for</span> <span class="n">spindle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spindle</span><span class="p">:</span>
+            <span class="n">spindle</span><span class="o">.</span><span class="n">_update</span><span class="p">()</span></div>
+
+
+        <span class="c1"># print(time.time() - s)</span>
+
+
+<div class="viewcode-block" id="JointStatus">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.JointStatus">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">JointStatus</span><span class="p">(</span><span class="n">DataPlugin</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jnum</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">JointStatus</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">jnum</span> <span class="o">=</span> <span class="n">jnum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jstat</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">joint</span><span class="p">[</span><span class="n">jnum</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jstat</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">chan</span> <span class="o">=</span> <span class="n">DataChannel</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">chan</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">chan</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Periodic joint item updates.&quot;&quot;&quot;</span>
+
+        <span class="n">jstat</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">joint</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">jnum</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">changed_items</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">jstat</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jstat</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">changed_items</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;JOINT_</span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">: </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jnum</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">jstat</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">jstat</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SpindleStatus">
+<a class="viewcode-back" href="../../../plugins/status.html#qtpyvcp.plugins.status.SpindleStatus">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SpindleStatus</span><span class="p">(</span><span class="n">DataPlugin</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snum</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SpindleStatus</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">snum</span> <span class="o">=</span> <span class="n">snum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sstat</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">snum</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sstat</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">chan</span> <span class="o">=</span> <span class="n">DataChannel</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">chan</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">chan</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Periodic spindle item updates.&quot;&quot;&quot;</span>
+
+        <span class="n">sstat</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">snum</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">changed_items</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sstat</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sstat</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">changed_items</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Spindle_</span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">: </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">snum</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sstat</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sstat</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

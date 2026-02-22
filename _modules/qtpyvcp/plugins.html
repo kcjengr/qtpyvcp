@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.plugins &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.plugins</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.plugins</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">QtPyVCP Plugins</span>
+<span class="sd">---------------</span>
+
+<span class="sd">These package level functions provide methods for registering and initializing</span>
+<span class="sd">plugins, as well as retrieving them for use and terminating them in the proper</span>
+<span class="sd">order.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins.base_plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">Plugin</span><span class="p">,</span> <span class="n">DataPlugin</span><span class="p">,</span> <span class="n">DataChannel</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">_PLUGINS</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>  <span class="c1"># Ordered dict so we can initialize/terminate in order</span>
+
+
+<div class="viewcode-block" id="registerPlugin">
+<a class="viewcode-back" href="../../plugins/index.html#qtpyvcp.plugins.registerPlugin">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">registerPlugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">,</span> <span class="n">plugin_inst</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a Plugin instance.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        plugin_id (str) : The unique name to register the plugin under.</span>
+<span class="sd">        plugin_inst(plugin_inst) : The plugin instance to register.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">plugin_id</span> <span class="ow">in</span> <span class="n">_PLUGINS</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Replacing </span><span class="si">{}</span><span class="s2"> with </span><span class="si">{}</span><span class="s2"> for use with &#39;</span><span class="si">{}</span><span class="s2">&#39; plugin&quot;</span>
+                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_PLUGINS</span><span class="p">[</span><span class="n">plugin_id</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">plugin_inst</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">))</span>
+
+    <span class="n">_PLUGINS</span><span class="p">[</span><span class="n">plugin_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">plugin_inst</span></div>
+
+
+
+<div class="viewcode-block" id="registerPluginFromClass">
+<a class="viewcode-back" href="../../plugins/index.html#qtpyvcp.plugins.registerPluginFromClass">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">registerPluginFromClass</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">,</span> <span class="n">plugin_cls</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[],</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register a plugin from a class.</span>
+
+<span class="sd">    This is primarily used for registering plugins defined in the YAML config.</span>
+
+<span class="sd">    .. code-block:: yaml</span>
+
+<span class="sd">        data_plugins:</span>
+<span class="sd">          my_plugin:</span>
+<span class="sd">            provider: my_package.my_module:MyPluginClass</span>
+<span class="sd">            args:</span>
+<span class="sd">              - 10</span>
+<span class="sd">              - False</span>
+<span class="sd">            kwargs:</span>
+<span class="sd">              my_number: 75</span>
+<span class="sd">              my_string: A string argument</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        plugin_id (str) : A unique name to register the plugin under.</span>
+<span class="sd">        plugin_cls (class, str) : A :py:class:`.Plugin` subclass, or a fully</span>
+<span class="sd">            qualified class spec of format ``package.module:Class`` specifying</span>
+<span class="sd">            the location of an importable :py:class:`.Plugin` subclass.</span>
+<span class="sd">        args (list) : Arguments to pass to the plugin&#39;s __init__ method.</span>
+<span class="sd">        kwargs (dict) : Keyword argument to pass to the plugin&#39;s __init__ method.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The plugin instance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plugin_cls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading plugin &#39;</span><span class="si">{}</span><span class="s2">&#39; from &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">,</span> <span class="n">plugin_cls</span><span class="p">))</span>
+
+        <span class="n">modname</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">clsname</span> <span class="o">=</span> <span class="n">plugin_cls</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">plugin_cls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">modname</span><span class="p">),</span> <span class="n">clsname</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Failed to import data plugin.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+    <span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">plugin_cls</span><span class="p">,</span> <span class="n">Plugin</span><span class="p">),</span> <span class="s2">&quot;Not a valid plugin, must be a qtpyvcp.plugins.Plugin subclass.&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">inst</span> <span class="o">=</span> <span class="n">plugin_cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">registerPlugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">,</span> <span class="n">inst</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">inst</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Error initializing plugin: </span><span class="si">{}</span><span class="s2">(*</span><span class="si">{}</span><span class="s2">, **</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin_cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">raise</span></div>
+
+
+
+<div class="viewcode-block" id="getPlugin">
+<a class="viewcode-back" href="../../plugins/index.html#qtpyvcp.plugins.getPlugin">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">getPlugin</span><span class="p">(</span><span class="n">plugin_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get plugin instance from ID.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        plugin_id (str) : The ID of the plugin to retrieve.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A plugin instance, or None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_PLUGINS</span><span class="p">[</span><span class="n">plugin_id</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to find plugin with ID &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">iterPlugins</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns an iterator for the plugins dict.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_PLUGINS</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+
+<div class="viewcode-block" id="initialisePlugins">
+<a class="viewcode-back" href="../../plugins/index.html#qtpyvcp.plugins.initialisePlugins">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialisePlugins</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initializes all registered plugins.</span>
+
+<span class="sd">        Plugins are initialized in the order they were registered in.</span>
+<span class="sd">        Plugins defined in the YAML file are registered in the order they</span>
+<span class="sd">        were defined.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">plugin_id</span><span class="p">,</span> <span class="n">plugin_inst</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">_PLUGINS</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Initializing &#39;</span><span class="si">%s</span><span class="s2">&#39; plugin&quot;</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">)</span>
+        <span class="n">plugin_inst</span><span class="o">.</span><span class="n">initialise</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="postGuiInitialisePlugins">
+<a class="viewcode-back" href="../../plugins/index.html#qtpyvcp.plugins.postGuiInitialisePlugins">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">postGuiInitialisePlugins</span><span class="p">(</span><span class="n">main_window</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initializes all registered plugins after main window is shown.</span>
+
+<span class="sd">        Plugins are initialized in the order they were registered in.</span>
+<span class="sd">        Plugins defined in the YAML file are registered in the order they</span>
+<span class="sd">        were defined.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">plugin_id</span><span class="p">,</span> <span class="n">plugin_inst</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">_PLUGINS</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Post GUI Initializing &#39;</span><span class="si">%s</span><span class="s2">&#39; plugin&quot;</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">)</span>
+        <span class="n">plugin_inst</span><span class="o">.</span><span class="n">postGuiInitialise</span><span class="p">(</span><span class="n">main_window</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="terminatePlugins">
+<a class="viewcode-back" href="../../plugins/index.html#qtpyvcp.plugins.terminatePlugins">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">terminatePlugins</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Terminates all registered plugins.</span>
+
+<span class="sd">        Plugins are terminated in the reverse order they were registered in.</span>
+<span class="sd">        If an error is encountered while terminating a plugin it will be ignored</span>
+<span class="sd">        and the remaining plugins will still be terminated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># terminate in reverse order, this is to prevent problems</span>
+    <span class="c1"># when terminating plugins that make use of other plugins.</span>
+    <span class="k">for</span> <span class="n">plugin_id</span><span class="p">,</span> <span class="n">plugin_inst</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">_PLUGINS</span><span class="o">.</span><span class="n">items</span><span class="p">())):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Terminating &#39;</span><span class="si">%s</span><span class="s2">&#39; plugin&quot;</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># try so that other plugins are terminated properly</span>
+            <span class="c1"># even if one of them fails.</span>
+            <span class="n">plugin_inst</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Error terminating &#39;</span><span class="si">%s</span><span class="s2">&#39; plugin&quot;</span><span class="p">,</span> <span class="n">plugin_id</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

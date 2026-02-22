@@ -1,0 +1,635 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.input_widgets.mdihistory_widget &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.input_widgets.mdihistory_widget</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.input_widgets.mdihistory_widget</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;QtPyVCP MDI History Widget</span>
+
+<span class="sd">This widget implements the following key elements:</span>
+<span class="sd">[1] A history display of MDI commands issued with the latest</span>
+<span class="sd">command at the top of the list and the oldest at the bottom</span>
+<span class="sd">of the list.</span>
+
+<span class="sd">[2] A queue system of commands that have been entered</span>
+<span class="sd">but have not yet been executed. This allows the rapid entry</span>
+<span class="sd">of MDI commands to be executed without having to wait for any</span>
+<span class="sd">running commands to complete.</span>
+
+<span class="sd">ToDo:</span>
+<span class="sd">    * add/test for styling based on the class queue codes</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QIcon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QListWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QListWidgetItem</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">qtpyvcp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">getPlugin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.actions.machine_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">issue_mdi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.actions.program_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">load</span> <span class="k">as</span> <span class="n">loadProgram</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.widgets.base_widgets.base_widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">CMDWidget</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">linuxcnc</span>
+
+
+<span class="n">STATUS</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="n">STAT</span> <span class="o">=</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">stat</span>
+<span class="n">INFO</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MDIHistory">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MDIHistory</span><span class="p">(</span><span class="n">QListWidget</span><span class="p">,</span> <span class="n">CMDWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MDI History and Queuing Widget.</span>
+
+<span class="sd">    This widget implements a visual view of the MDI command</span>
+<span class="sd">    history.  It also implements a command queuing startegy</span>
+<span class="sd">    so that commands can be entered and queued up for execution.</span>
+<span class="sd">    Visual style is used to identify items that have been completed,</span>
+<span class="sd">    are running and are yet to run.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># MDI Queue status constants</span>
+    <span class="n">MDIQ_DONE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">MDIQ_RUNNING</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">MDIQ_TODO</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">MDQQ_ROLE</span> <span class="o">=</span> <span class="mi">256</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MDIHistory</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="c1"># name and widget handle for MDI cmd entry widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entryline_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entry_widget</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># List order direction where Natural is latest at bottom.</span>
+        <span class="c1"># Default is Natural = False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">heart_beat_timer</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">icon_run_name</span> <span class="o">=</span> <span class="s1">&#39;media-playback-start&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">icon_run</span> <span class="o">=</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">fromTheme</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_run_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">icon_waiting_name</span> <span class="o">=</span> <span class="s1">&#39;media-playback-pause&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">icon_waiting</span> <span class="o">=</span> <span class="n">QIcon</span><span class="o">.</span><span class="n">fromTheme</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_waiting_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_non_idle_state</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">#self.returnPressed.connect(self.submit)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdiEntrylineName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return name of entry object to Designer&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entryline_name</span>
+
+    <span class="nd">@mdiEntrylineName</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdiEntrylineName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the name for Designer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entryline_name</span> <span class="o">=</span> <span class="n">object_name</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdiListOrderNatural</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return if list order is Natural - True/False&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span>
+    
+    <span class="nd">@mdiListOrderNatural</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdiListOrderNatural</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_flag</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Order flag for Designer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span> <span class="o">=</span> <span class="n">order_flag</span>
+
+<div class="viewcode-block" id="MDIHistory.toggleQueue">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.toggleQueue">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggleQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toggle</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggle queue pause.</span>
+<span class="sd">        Starting point is the queue is active.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sender</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">sender</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="s1">&#39;setText&#39;</span><span class="p">):</span>
+            <span class="n">sender</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;RESUME&#39;</span> <span class="k">if</span> <span class="n">toggle</span> <span class="k">else</span> <span class="s1">&#39;PAUSE&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">toggle</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">heart_beat_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">heart_beat_timer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.clearQueue">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.clearQueue">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clearQueue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear queue items pending run state for items yet to be run.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+            <span class="n">list_length</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">list_length</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">list_item</span> <span class="ow">in</span> <span class="n">list_length</span><span class="p">:</span>
+            <span class="n">row_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">list_item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">row_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">row_item_data</span> <span class="o">=</span> <span class="n">row_item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">row_item_data</span> <span class="o">==</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_TODO</span><span class="p">:</span>
+                <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_DONE</span><span class="p">)</span>
+                <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.removeSelectedItem">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.removeSelectedItem">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">removeSelectedItem</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the selected lines&quot;&quot;&quot;</span>
+        <span class="n">selItems</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selItems</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+                <span class="n">firstItemRow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">selItems</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">firstItemRow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">selItems</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">selItems</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">selItems</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">takeItem</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+                    <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_remove_entry</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># The order of MDI is latest LAST in the list.</span>
+                    <span class="c1"># framework mdi history is latest FIRST in the list.</span>
+                    <span class="n">history_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_history</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                    <span class="n">history_target_row</span> <span class="o">=</span> <span class="n">history_length</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">row</span> 
+                    <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_remove_entry</span><span class="p">(</span><span class="n">history_target_row</span><span class="p">)</span>
+            <span class="c1"># select an item that makes sense for the case of a single</span>
+            <span class="c1"># item having been selected and deleted.</span>
+            <span class="k">if</span> <span class="n">firstItemRow</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">firstItemRow</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentRow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+            
+<div class="viewcode-block" id="MDIHistory.removeAll">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.removeAll">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">removeAll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all items from list and from history&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_remove_all</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.runFromSelection">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runFromSelection">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">runFromSelection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start running MDI from the selected row back to correct end.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">current_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentRow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">current_row</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">current_row</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+            <span class="n">row_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">row_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">current_row</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># from selected row loop back to top/bottom and set ready for run</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">row_list</span><span class="p">:</span>
+            <span class="n">row_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">row_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_TODO</span><span class="p">)</span>
+            <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_waiting</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.runSelection">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runSelection">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">runSelection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the selected row only.&quot;&quot;&quot;</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentRow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="c1"># from selected row loop back to top and set ready for run</span>
+        <span class="n">row_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">row_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_TODO</span><span class="p">)</span>
+        <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_waiting</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.submit">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.submit">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Put a new command on the queue for later execution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entry_widget</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;MDI submit ignored: entry widget is not configured&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># put the new command on the queue</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mdi_entry_widget</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">row_item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+        <span class="n">row_item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_TODO</span><span class="p">)</span>
+        <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_waiting</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">row_item</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">insertItem</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">row_item</span><span class="p">)</span>
+        
+        <span class="c1"># Set the recently added item as the &quot;current&quot; item</span>
+        <span class="c1"># if the queue is not paused this will quickly get overridden</span>
+        <span class="c1"># to the executing item highlight mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clearSelection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentItem</span><span class="p">(</span><span class="n">row_item</span><span class="p">)</span>
+
+        <span class="c1"># put the command onto the status channel mdi history</span>
+        <span class="c1"># This always adds this item at position Zero on the channel</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_history</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+        <span class="c1"># now clear down the mdi entry text ready for new input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entry_widget</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.rowClicked">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.rowClicked">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rowClicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Item row clicked.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copySelectionToGcodeEditor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;/tmp/mdi_gcode.ngc&#39;</span>
+        <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">selection</span><span class="p">:</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cmd</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;M2</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">loadProgram</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">moveRowItemUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentRow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">takeItem</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">insertItem</span><span class="p">(</span><span class="n">row</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentRow</span><span class="p">(</span><span class="n">row</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_swap_entries</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">history_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_history</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">history_target_row</span> <span class="o">=</span> <span class="n">history_length</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">row</span> 
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_swap_entries</span><span class="p">(</span><span class="n">history_target_row</span><span class="p">,</span> <span class="n">history_target_row</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">moveRowItemDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentRow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">row</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">takeItem</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">insertItem</span><span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentRow</span><span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_swap_entries</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">history_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_history</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">history_target_row</span> <span class="o">=</span> <span class="n">history_length</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">row</span> 
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_swap_entries</span><span class="p">(</span><span class="n">history_target_row</span><span class="p">,</span> <span class="n">history_target_row</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="MDIHistory.keyPressEvent">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.keyPressEvent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Key movement processing.</span>
+<span class="sd">        Arrow keys move the selected list item up/down</span>
+<span class="sd">        Return key generates a submit situation by making the item as</span>
+<span class="sd">        the next available command to processes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentRow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Up</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_Down</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">MDIHistory</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">keyPressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentRow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+
+    <span class="c1">#def focusInEvent(self, event):</span>
+    <span class="c1">#    super(MDIHistory, self).focusInEvent(event)</span>
+    <span class="c1">#    pass</span>
+
+<div class="viewcode-block" id="MDIHistory.setHistory">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.setHistory">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items_list</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear and reset the history in the list.</span>
+<span class="sd">        item_list is a list of strings.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        
+        <span class="c1"># check that there is anything do to</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">items_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> 
+        
+        <span class="c1"># load the history based on natural order or not</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+            <span class="n">items_list</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items_list</span><span class="p">:</span>
+            <span class="n">row_item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+            <span class="n">row_item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_DONE</span><span class="p">)</span>
+            <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">row_item</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.heartBeat">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.heartBeat">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">heartBeat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Supports heart beat on the MDI History execution queue.</span>
+<span class="sd">        Issue the next command from the queue.</span>
+<span class="sd">        Double check machine is in ok state to accept next command.</span>
+<span class="sd">        Issue the command and if success mark command as being active.</span>
+<span class="sd">        Mark last command as done.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># do not advance queue while paused/feedhold is active and interpreter is non-idle.</span>
+        <span class="c1"># This avoids deadlocking startup when feedhold is latched while idle.</span>
+        <span class="n">blocking_hold</span> <span class="o">=</span> <span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span> <span class="ow">or</span> <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">)</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span>
+        <span class="k">if</span> <span class="n">blocking_hold</span><span class="p">:</span>
+            <span class="n">state_tuple</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">,</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">,</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">,</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">state_tuple</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_non_idle_state</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;MDI queue blocked (pause/feed hold): state=</span><span class="si">%s</span><span class="s2"> mode=</span><span class="si">%s</span><span class="s2"> interp=</span><span class="si">%s</span><span class="s2"> paused=</span><span class="si">%s</span><span class="s2"> feed_hold=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_non_idle_state</span> <span class="o">=</span> <span class="n">state_tuple</span>
+            <span class="k">return</span>
+
+        <span class="c1"># check if machine is idle and ready to run another command</span>
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">:</span>
+            <span class="n">state_tuple</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">,</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">,</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">,</span>
+                <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">state_tuple</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_non_idle_state</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;MDI queue waiting: state=</span><span class="si">%s</span><span class="s2"> mode=</span><span class="si">%s</span><span class="s2"> interp=</span><span class="si">%s</span><span class="s2"> paused=</span><span class="si">%s</span><span class="s2"> feed_hold=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">paused</span><span class="p">,</span>
+                    <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_last_non_idle_state</span> <span class="o">=</span> <span class="n">state_tuple</span>
+            <span class="c1"># RS274NGC interpreter not in a state to execute, bail</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_non_idle_state</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># scan for the next command to execute from bottom up.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_listorder_natural</span><span class="p">:</span>
+            <span class="n">list_length</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">list_length</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        
+        <span class="k">for</span> <span class="n">list_item</span> <span class="ow">in</span> <span class="n">list_length</span><span class="p">:</span>
+            <span class="n">row_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">list_item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">row_item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">row_item_data</span> <span class="o">=</span> <span class="n">row_item</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">row_item_data</span> <span class="o">==</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_RUNNING</span><span class="p">:</span>
+                <span class="c1"># machine is in idle state so the running command is done</span>
+                <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_DONE</span><span class="p">)</span>
+                <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
+
+            <span class="k">elif</span> <span class="n">row_item_data</span> <span class="o">==</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_TODO</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clearSelection</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentItem</span><span class="p">(</span><span class="n">row_item</span><span class="p">)</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd</span><span class="p">:</span>
+                    <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_DONE</span><span class="p">)</span>
+                    <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
+                    <span class="k">continue</span>
+                <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_RUNNING</span><span class="p">)</span>
+                <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_run</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">issued</span> <span class="o">=</span> <span class="n">issue_mdi</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">issued</span><span class="p">:</span>
+                        <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_TODO</span><span class="p">)</span>
+                        <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">icon_waiting</span><span class="p">)</span>
+                        <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;MDI queue dispatch rejected, keeping command queued: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">row_item</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDQQ_ROLE</span><span class="p">,</span> <span class="n">MDIHistory</span><span class="o">.</span><span class="n">MDIQ_DONE</span><span class="p">)</span>
+                    <span class="n">row_item</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QIcon</span><span class="p">())</span>
+                    <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Failed to issue MDI command from history queue: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+                <span class="k">break</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.initialize">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.initialize">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load up starting data and set signal connections.&quot;&quot;&quot;</span>
+        <span class="c1"># get a proper copy of the list so changes to it are contained.</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">mdi_history</span><span class="o">.</span><span class="n">value</span><span class="p">[:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setHistory</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowClicked</span><span class="p">)</span>
+
+        <span class="c1"># Get handle to windows list and search through them</span>
+        <span class="c1"># for the widget referenced in mdi_entryline_name</span>
+        <span class="k">for</span> <span class="n">win_name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">qtpyvcp</span><span class="o">.</span><span class="n">WINDOWS</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mdi_entryline_name</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entry_widget</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entryline_name</span><span class="p">)</span>
+                <span class="c1"># Use the handle to supress the widgets Rtn key behaviour</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mdi_entry_widget</span><span class="o">.</span><span class="n">supress_rtn_key_behaviour</span><span class="p">()</span>
+                <span class="k">break</span>
+        <span class="c1"># Setup the basic timer system as a heart beat on the queue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heart_beat_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># use a sub-second second timer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heart_beat_timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mi">250</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heart_beat_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heartBeat</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MDIHistory.terminate">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.terminate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Teardown processing.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heart_beat_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

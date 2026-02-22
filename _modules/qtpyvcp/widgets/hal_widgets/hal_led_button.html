@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.hal_widgets.hal_led_button &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.hal_widgets.hal_led_button</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.hal_widgets.hal_led_button</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QPushButton</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">QSize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QColor</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.obj_status</span><span class="w"> </span><span class="kn">import</span> <span class="n">HALStatus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.widgets.base_widgets.led_widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">LEDWidget</span>
+
+<span class="n">hal_status</span> <span class="o">=</span> <span class="n">HALStatus</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="HALLEDButton">
+<a class="viewcode-back" href="../../../../widgets/hal/index.html#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HALLEDButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HAL Led Button</span>
+
+<span class="sd">    Button for displaying HAL pin values.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HALLEDButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoFocus</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pin_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_pin_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="c1"># self.setCheckable(True)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span> <span class="o">=</span> <span class="n">LEDWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">setDiameter</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+        <span class="c1"># self.toggled.connect(self.updateState)</span>
+        <span class="c1"># self.updateState()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">placeLed</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">placeLed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">alignment</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span>
+        <span class="n">ledDiameter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">getDiameter</span><span class="p">()</span>
+        <span class="n">halfLed</span> <span class="o">=</span> <span class="n">ledDiameter</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">quarterLed</span> <span class="o">=</span> <span class="n">ledDiameter</span> <span class="o">/</span><span class="mi">4</span> <span class="c1"># cheap hueristic to avoid borders</span>
+
+        <span class="k">if</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">quarterLed</span>
+        <span class="k">elif</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span> <span class="o">-</span> <span class="n">ledDiameter</span> <span class="o">-</span> <span class="n">quarterLed</span>
+        <span class="k">elif</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignHCenter</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">halfLed</span>
+        <span class="k">elif</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignJustify</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">quarterLed</span>
+        <span class="k">elif</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignBottom</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span> <span class="o">-</span> <span class="n">ledDiameter</span> <span class="o">-</span> <span class="n">quarterLed</span>
+        <span class="k">elif</span> <span class="n">alignment</span> <span class="o">&amp;</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignVCenter</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">halfLed</span>
+        <span class="c1"># print(x, y)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateGeometry</span><span class="p">()</span>
+
+<div class="viewcode-block" id="HALLEDButton.resizeEvent">
+<a class="viewcode-back" href="../../../../widgets/hal/index.html#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.resizeEvent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resizeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">placeLed</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HALLEDButton.update">
+<a class="viewcode-back" href="../../../../widgets/hal/index.html#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.update">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">placeLed</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HALLEDButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">updateState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">setState</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">updateFlashing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flashing</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">setFlashing</span><span class="p">(</span><span class="n">flashing</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HALLEDButton.sizeHint">
+<a class="viewcode-back" href="../../../../widgets/hal/index.html#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.sizeHint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sizeHint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QSize</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">getLedDiameter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">getDiameter</span><span class="p">()</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setLedDiameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">setDiameter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">placeLed</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">getLedColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">getColor</span><span class="p">()</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setLedColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">led</span><span class="o">.</span><span class="n">setColor</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">getAlignment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Alignment</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setAlignment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alignment</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Alignment</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+    <span class="n">diameter</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">getLedDiameter</span><span class="p">,</span> <span class="n">setLedDiameter</span><span class="p">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">,</span> <span class="n">getLedColor</span><span class="p">,</span> <span class="n">setLedColor</span><span class="p">)</span>
+    <span class="n">alignment</span> <span class="o">=</span> <span class="n">Property</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Alignment</span><span class="p">,</span> <span class="n">getAlignment</span><span class="p">,</span> <span class="n">setAlignment</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flashPinName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `actionName` property for setting the action the button</span>
+<span class="sd">            should trigger from within QtDesigner.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str : The action name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_pin_name</span>
+
+    <span class="nd">@flashPinName</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">flashPinName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flash_pin_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the name of the action the button should trigger and</span>
+<span class="sd">            binds the widget to that action.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action_name (str) : A fully qualified action name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_pin_name</span> <span class="o">=</span> <span class="n">flash_pin_name</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">hal_pin</span> <span class="o">=</span> <span class="n">hal_status</span><span class="o">.</span><span class="n">getHALPin</span><span class="p">(</span><span class="n">flash_pin_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">hal_pin</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateState</span><span class="p">)</span>
+
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pinName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `actionName` property for setting the action the button</span>
+<span class="sd">            should trigger from within QtDesigner.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str : The action name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pin_name</span>
+
+    <span class="nd">@pinName</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pinName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pin_name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the name of the action the button should trigger and</span>
+<span class="sd">            binds the widget to that action.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action_name (str) : A fully qualified action name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pin_name</span> <span class="o">=</span> <span class="n">pin_name</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">hal_pin</span> <span class="o">=</span> <span class="n">hal_status</span><span class="o">.</span><span class="n">getHALPin</span><span class="p">(</span><span class="n">pin_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">hal_pin</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateState</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

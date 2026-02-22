@@ -1,0 +1,1573 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.actions.machine_actions &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../actions.html">qtpyvcp.actions</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.actions.machine_actions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.actions.machine_actions</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">linuxcnc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QComboBox</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">setting</span>
+
+<span class="c1"># Set up logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractstaticmethod</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.actions.base_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">setTaskMode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">getPlugin</span>
+
+<span class="n">STATUS</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="n">STAT</span> <span class="o">=</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">stat</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+<span class="n">INFO</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+<span class="n">CMD</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># E-STOP action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="estop">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.estop">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">estop</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;E-Stop action group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="estop.activate">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.estop.activate">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">activate</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set E-Stop active</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.estop.activate</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting state red&lt;ESTOP&gt;&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ESTOP</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="estop.reset">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.estop.reset">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets E-Stop</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.estop.reset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting state green&lt;ESTOP_RESET&gt;&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ESTOP_RESET</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="estop.toggle">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.estop.toggle">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggles E-Stop state</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.estop.toggle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">estop</span><span class="o">.</span><span class="n">is_activated</span><span class="p">():</span>
+            <span class="n">estop</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">estop</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="estop.is_activated">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.estop.is_activated">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_activated</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if E_Stop is activated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool : True if E-Stop is active, else False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">estop</span><span class="p">)</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_estop_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># E-Stop is ALWAYS ok, but provide this method for consistency</span>
+    <span class="n">_estop_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_estop_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">estop</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ESTOP</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">estop</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="ow">not</span> <span class="n">v</span><span class="p">))</span>
+
+<span class="n">estop</span><span class="o">.</span><span class="n">activate</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">estop</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">estop</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_estop_ok</span>
+<span class="n">estop</span><span class="o">.</span><span class="n">activate</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">estop</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">estop</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_estop_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># POWER action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="power">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.power">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">power</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Power action group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="power.on">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.power.on">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Turns machine power On</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.power.on</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting state green&lt;ON&gt;&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="power.off">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.power.off">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">off</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Turns machine power Off</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.power.off</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting state red&lt;OFF&gt;&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">state</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_OFF</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="power.toggle">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.power.toggle">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggles machine power On/Off</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.power.toggle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">power</span><span class="o">.</span><span class="n">is_on</span><span class="p">():</span>
+            <span class="n">power</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">power</span><span class="o">.</span><span class="n">on</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="power.is_on">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.power.is_on">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_on</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if power is on.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool : True if power is on, else False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_power_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ESTOP_RESET</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Can&#39;t turn machine ON until out of E-Stop&quot;</span>
+
+    <span class="n">_power_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_power_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">_power_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">)</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">estop</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_power_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+<span class="n">power</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">power</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">power</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_power_ok</span>
+<span class="n">power</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">power</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">power</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_power_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># MDI action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+<span class="n">PREVIOUS_MODE</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">G96_MAX_RPM</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Track the last G96 D value (max RPM limit)</span>
+<span class="n">G96_SURFACE_SPEED</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Track the last G96 S value (surface speed in ft/min or m/min)</span>
+<span class="n">G97_SPINDLE_RPM</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Track the last G97 S value (spindle RPM)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resetMode</span><span class="p">(</span><span class="n">interp_state</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">PREVIOUS_MODE</span>
+    <span class="k">if</span>  <span class="n">PREVIOUS_MODE</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">setTaskMode</span><span class="p">(</span><span class="n">PREVIOUS_MODE</span><span class="p">):</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully reset task_mode after MDI&quot;</span><span class="p">)</span>
+        <span class="n">PREVIOUS_MODE</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="n">_resetMode</span><span class="p">)</span>
+
+<div class="viewcode-block" id="issue_mdi">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.issue_mdi">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">issue_mdi</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Issue an MDI command.</span>
+
+<span class="sd">        An MDI command can be issued any time the machine is homed (if not</span>
+<span class="sd">        NO_FORCE_HOMING in the INI) and the interpreter is IDLE.  The task</span>
+<span class="sd">        mode will automatically be switched to MDI prior to issuing the command</span>
+<span class="sd">        and will be returned to the previous mode when the interpreter becomes IDLE.</span>
+
+<span class="sd">        ActionButton syntax to issue G0 X5:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            machine.issue_mdi:G0X5</span>
+
+<span class="sd">        It is simpler to use the MDIButton, examples in the Widgets section.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        command (str) : A valid RS274 gcode command string. Multiple MDI commands</span>
+<span class="sd">            can be separated with a ``;`` and will be issued sequentially.</span>
+<span class="sd">        reset (bool, optional): Whether to reset the Task Mode to the state</span>
+<span class="sd">            the machine was in prior to issuing the MDI command.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Track G96/G97 parameters if this command contains them</span>
+    <span class="k">global</span> <span class="n">G96_MAX_RPM</span><span class="p">,</span> <span class="n">G96_SURFACE_SPEED</span><span class="p">,</span> <span class="n">G97_SPINDLE_RPM</span>
+    <span class="n">cmd_upper</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    
+    <span class="c1"># Track G96 parameters (D = max RPM, S = surface speed in ft/min or m/min)</span>
+    <span class="k">if</span> <span class="s1">&#39;G96&#39;</span> <span class="ow">in</span> <span class="n">cmd_upper</span><span class="p">:</span>
+        <span class="c1"># Extract D value (max RPM limit)</span>
+        <span class="k">if</span> <span class="s1">&#39;D&#39;</span> <span class="ow">in</span> <span class="n">cmd_upper</span><span class="p">:</span>
+            <span class="n">d_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;D\s*(\d+(?:\.\d+)?)&#39;</span><span class="p">,</span> <span class="n">cmd_upper</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">d_match</span><span class="p">:</span>
+                <span class="n">G96_MAX_RPM</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">d_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Captured G96 D value (max RPM): </span><span class="si">{</span><span class="n">G96_MAX_RPM</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Extract S value (surface speed in ft/min or m/min)</span>
+        <span class="k">if</span> <span class="s1">&#39;S&#39;</span> <span class="ow">in</span> <span class="n">cmd_upper</span><span class="p">:</span>
+            <span class="n">s_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;S\s*(\d+(?:\.\d+)?)&#39;</span><span class="p">,</span> <span class="n">cmd_upper</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">s_match</span><span class="p">:</span>
+                <span class="n">G96_SURFACE_SPEED</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Captured G96 S value (surface speed): </span><span class="si">{</span><span class="n">G96_SURFACE_SPEED</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Track G97 parameters (S = RPM - completely different from G96 S!)</span>
+    <span class="k">elif</span> <span class="s1">&#39;G97&#39;</span> <span class="ow">in</span> <span class="n">cmd_upper</span> <span class="ow">and</span> <span class="s1">&#39;S&#39;</span> <span class="ow">in</span> <span class="n">cmd_upper</span><span class="p">:</span>
+        <span class="n">s_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;S\s*(\d+(?:\.\d+)?)&#39;</span><span class="p">,</span> <span class="n">cmd_upper</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">s_match</span><span class="p">:</span>
+            <span class="n">G97_SPINDLE_RPM</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Captured G97 S value (spindle RPM): </span><span class="si">{</span><span class="n">G97_SPINDLE_RPM</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Check if we&#39;re in G96 mode and this command might affect it</span>
+    <span class="n">in_g96_mode</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">g96_params</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">spindle_mode</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">gcodes</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">gcodes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">13</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">in_g96_mode</span> <span class="o">=</span> <span class="p">(</span><span class="n">spindle_mode</span> <span class="o">==</span> <span class="mi">960</span><span class="p">)</span>
+        
+        <span class="c1"># If in G96 mode, use tracked D and S values from last G96 command</span>
+        <span class="k">if</span> <span class="n">in_g96_mode</span><span class="p">:</span>
+            <span class="c1"># Use the last captured values, or fall back to status/defaults</span>
+            <span class="n">d_value</span> <span class="o">=</span> <span class="n">G96_MAX_RPM</span> <span class="k">if</span> <span class="n">G96_MAX_RPM</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1000</span>
+            <span class="n">s_value</span> <span class="o">=</span> <span class="n">G96_SURFACE_SPEED</span> <span class="k">if</span> <span class="n">G96_SURFACE_SPEED</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">STAT</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">g96_params</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;G96 D</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">d_value</span><span class="p">)</span><span class="si">}</span><span class="s2"> S</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">s_value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Will prepend G96 params: D=</span><span class="si">{</span><span class="n">d_value</span><span class="si">}</span><span class="s2">, S=</span><span class="si">{</span><span class="n">s_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error checking G96 mode: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># If in G96 mode, prepend G96 to commands to restore it after synch()</span>
+    <span class="c1"># This is necessary because LinuxCNC calls synch() before each MDI command,</span>
+    <span class="c1"># and synch() resets spindle_mode to CONSTANT_RPM (G97)</span>
+    <span class="c1"># Protect all commands except those explicitly setting G97 or already containing G96</span>
+    <span class="k">if</span> <span class="n">in_g96_mode</span> <span class="ow">and</span> <span class="s1">&#39;G96&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmd_upper</span> <span class="ow">and</span> <span class="s1">&#39;G97&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmd_upper</span><span class="p">:</span>
+        <span class="c1"># Check if command contains an O-word subroutine call (must be on separate line)</span>
+        <span class="c1"># Pattern matches: o&lt;name&gt; call or O&lt;name&gt; call (with optional spaces)</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[oO]\s*&lt;[^&gt;]+&gt;\s*call&#39;</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+            <span class="c1"># Use &#39;;&#39; separator for O-word calls (they must be on their own line)</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g96_params</span><span class="si">}</span><span class="s2">; </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Use space separator for regular G-code (allows &#39;;&#39; comments in manual MDI)</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g96_params</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prepending G96 to preserve CSS mode: </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Keep users in sync with their original mode when issuing MDI from</span>
+        <span class="c1"># MANUAL/AUTO, but preserve the no-reset optimization when already in MDI.</span>
+        <span class="c1"># This avoids leaving manual users stranded in MDI after subroutine/tool commands.</span>
+        <span class="k">if</span> <span class="s1">&#39;G10&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmd_upper</span> <span class="ow">and</span> <span class="s1">&#39;G92&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cmd_upper</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span><span class="p">:</span>
+            <span class="n">reset</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    <span class="k">global</span> <span class="n">PREVIOUS_MODE</span>
+    <span class="k">if</span> <span class="n">reset</span><span class="p">:</span>
+        <span class="c1"># save the previous mode</span>
+        <span class="n">PREVIOUS_MODE</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span>
+        <span class="c1"># Force `interp_state` update on next status cycle. This is needed because</span>
+        <span class="c1"># some commands might take less than `cycle_time` (50ms) to complete,</span>
+        <span class="c1"># so status would not even notice that the interp_state had changed and the</span>
+        <span class="c1"># reset mode method would not be called.</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">old</span><span class="p">[</span><span class="s1">&#39;interp_state&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Clear PREVIOUS_MODE to prevent any automatic reset</span>
+        <span class="n">PREVIOUS_MODE</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">mode_ready</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span> <span class="ow">or</span> <span class="n">setTaskMode</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode_ready</span><span class="p">:</span>
+        <span class="c1"># issue multiple MDI commands separated by &#39;;&#39;</span>
+        <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">command</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">):</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Issuing MDI command: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cmd</span><span class="p">)</span>
+            <span class="n">CMD</span><span class="o">.</span><span class="n">mdi</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to issue MDI command: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="p">))</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_issue_mdi_ok</span><span class="p">(</span><span class="n">mdi_cmd</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span> \
+                          <span class="ow">and</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">allHomed</span><span class="p">()</span> \
+                          <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">:</span>
+
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Can&#39;t issue MDI unless machine is ON, HOMED and IDLE&quot;</span>
+
+    <span class="n">_issue_mdi_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_issue_mdi_bindOk</span><span class="p">(</span><span class="n">mdi_cmd</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">_issue_mdi_ok</span><span class="p">(</span><span class="n">mdi_cmd</span><span class="o">=</span><span class="n">mdi_cmd</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_issue_mdi_ok</span><span class="p">(</span><span class="n">mdi_cmd</span><span class="o">=</span><span class="n">mdi_cmd</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_issue_mdi_ok</span><span class="p">(</span><span class="n">mdi_cmd</span><span class="o">=</span><span class="n">mdi_cmd</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">homed</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_issue_mdi_ok</span><span class="p">(</span><span class="n">mdi_cmd</span><span class="o">=</span><span class="n">mdi_cmd</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">issue_mdi</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_issue_mdi_ok</span>
+<span class="n">issue_mdi</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_issue_mdi_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># WORK COORDINATES action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">set_work_coord</span><span class="p">(</span><span class="n">coord</span><span class="p">):</span>
+    <span class="n">issue_mdi</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_set_work_coord_bindOk</span><span class="p">(</span><span class="n">coord</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">coord</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="n">_issue_mdi_bindOk</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">):</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">STATUS</span><span class="o">.</span><span class="n">g5x_index</span><span class="o">.</span><span class="n">getString</span><span class="p">())</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">g5x_index</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span> <span class="n">g5x</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setCurrentText</span><span class="p">(</span><span class="n">g5x</span><span class="p">),</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STATUS</span><span class="o">.</span><span class="n">g5x_index</span><span class="o">.</span><span class="n">getString</span><span class="p">()</span> <span class="o">==</span> <span class="n">coord</span><span class="p">)</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">g5x_index</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span> <span class="n">g5x</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">g5x</span> <span class="o">==</span> <span class="n">coord</span><span class="p">),</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span>
+
+<span class="n">set_work_coord</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_issue_mdi_ok</span>
+<span class="n">set_work_coord</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_set_work_coord_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># FEED HOLD action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="feedhold">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feedhold">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">feedhold</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Feed Hold action Group&quot;&quot;&quot;</span>
+
+    <span class="c1"># FIXME: Not sure what feedhold does, or how to turn it ON/OFF, if it even can be.</span>
+
+<div class="viewcode-block" id="feedhold.enable">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feedhold.enable">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Enables Feed Hold&quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Setting feedhold ENABLED&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_feed_hold</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="feedhold.disable">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feedhold.disable">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disable</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Disables Feed Hold&quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Setting feedhold DISABLED&quot;</span><span class="p">)</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_feed_hold</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="feedhold.toggle">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feedhold.toggle">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggles Feed Hold state&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">:</span>
+            <span class="n">feedhold</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">feedhold</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_feed_hold_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_feed_hold_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">)</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">feed_hold_enabled</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">)</span>
+
+<span class="n">feedhold</span><span class="o">.</span><span class="n">enable</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">feedhold</span><span class="o">.</span><span class="n">disable</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">feedhold</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_feed_hold_ok</span>
+<span class="n">feedhold</span><span class="o">.</span><span class="n">enable</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">feedhold</span><span class="o">.</span><span class="n">disable</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">feedhold</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_feed_hold_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># FEED OVERRIDE actions</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="feed_override">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feed_override">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">feed_override</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Feed Override Group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="feed_override.enable">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feed_override.enable">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">enable</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Feed Override Enable&quot;&quot;&quot;</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_feed_override</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="feed_override.disable">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feed_override.disable">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">disable</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Feed Override Disable&quot;&quot;&quot;</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">set_feed_override</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="feed_override.toggle_enable">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feed_override.toggle_enable">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle_enable</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Feed Override Enable Toggle&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">feed_override_enabled</span><span class="p">:</span>
+            <span class="n">feed_override</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">feed_override</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="feed_override.set">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feed_override.set">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Feed Override Set Value&quot;&quot;&quot;</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">feedrate</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="feed_override.reset">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.feed_override.reset">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Feed Override Reset&quot;&quot;&quot;</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">feedrate</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_feed_override_enable_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span> \
+        <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON and IDLE to enable/disable feed override&quot;</span>
+
+    <span class="n">_feed_override_enable_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_feed_override_enable_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_feed_override_enable_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_feed_override_enable_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">feed_override_enabled</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_feed_override_ok</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">feed_override_enabled</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON to set feed override&quot;</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">feed_override_enabled</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Feed override is not enabled&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Feed override can not be changed&quot;</span>
+
+    <span class="n">_feed_override_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_feed_override_bindOk</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="c1"># This will work for any widget</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_feed_override_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">feed_override_enabled</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_feed_override_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># these will only work for QSlider or QSpinBox</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">maxFeedOverride</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">feedrate</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)))</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">feedrate</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)))</span>
+
+        <span class="n">feed_override</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Error in feed_override bindOk&#39;</span><span class="p">)</span>
+
+<span class="n">feed_override</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">feed_override</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_feed_override_ok</span>
+<span class="n">feed_override</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">feed_override</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_feed_override_bindOk</span>
+<span class="n">feed_override</span><span class="o">.</span><span class="n">enable</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">feed_override</span><span class="o">.</span><span class="n">disable</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">feed_override</span><span class="o">.</span><span class="n">toggle_enable</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_feed_override_enable_ok</span>
+<span class="n">feed_override</span><span class="o">.</span><span class="n">enable</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">feed_override</span><span class="o">.</span><span class="n">disable</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">feed_override</span><span class="o">.</span><span class="n">toggle_enable</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_feed_override_enable_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># RAPID OVERRIDE actions</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="rapid_override">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.rapid_override">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">rapid_override</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rapid Override Group&quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">rapidrate</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">():</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">rapidrate</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_rapid_override_ok</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON to set rapid override&quot;</span>
+
+    <span class="n">_rapid_override_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_rapid_override_bindOk</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="c1"># This will work for any widget</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_rapid_override_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># these will only work for QSlider or QSpinBox</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">rapidrate</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)))</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">rapidrate</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+        <span class="n">rapid_override</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Error in rapid_override bindOk&#39;</span><span class="p">)</span>
+
+<span class="n">rapid_override</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">rapid_override</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_rapid_override_ok</span>
+<span class="n">rapid_override</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">rapid_override</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_rapid_override_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># MAX VEL OVERRIDE actions</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="max_velocity">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.max_velocity">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">max_velocity</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Max Velocity Group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="max_velocity.set">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.max_velocity.set">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Max Velocity Override Set Value&quot;&quot;&quot;</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">maxvel</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="max_velocity.reset">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.max_velocity.reset">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Max Velocity Override Reset Value&quot;&quot;&quot;</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">maxvel</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">maxVelocity</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_max_velocity_ok</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON to set max velocity&quot;</span>
+
+    <span class="n">_max_velocity_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_max_velocity_bindOk</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+    <span class="c1"># This will work for any widget</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_max_velocity_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># these will only work for QSlider or QSpinBox</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">maxVelocity</span><span class="p">()))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">maxVelocity</span><span class="p">()))</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">max_velocity</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)))</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">maxVelocity</span><span class="p">())</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">max_velocity</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">60</span><span class="p">))</span>
+
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Error in max_velocity bindOk&#39;</span><span class="p">)</span>
+
+<span class="n">max_velocity</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">max_velocity</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_max_velocity_ok</span>
+<span class="n">max_velocity</span><span class="o">.</span><span class="n">set</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">max_velocity</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_max_velocity_bindOk</span>
+
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># set MODE actions</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="mode">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.mode">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">mode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mode action group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="mode.manual">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.mode.manual">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">manual</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change mode to Manual</span>
+
+<span class="sd">        ActionButton syntax:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            machine.mode.manual</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">setTaskMode</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MANUAL</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mode.auto">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.mode.auto">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">auto</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change mode to Auto</span>
+
+<span class="sd">        ActionButton syntax:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            machine.mode.auto</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">setTaskMode</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_AUTO</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mode.mdi">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.mode.mdi">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mdi</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change mode to MDI</span>
+
+<span class="sd">        ActionButton syntax:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            machine.mode.mdi</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">setTaskMode</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span><span class="p">)</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mode_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span> <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Can&#39;t set mode when not ON and IDLE&quot;</span>
+
+    <span class="n">_mode_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_manual_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MANUAL</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_mode_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_mode_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_mode</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MANUAL</span><span class="p">))</span>
+
+<span class="n">mode</span><span class="o">.</span><span class="n">manual</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_mode_ok</span>
+<span class="n">mode</span><span class="o">.</span><span class="n">manual</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_manual_bindOk</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_auto_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_AUTO</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_mode_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_mode_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_mode</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_AUTO</span><span class="p">))</span>
+
+<span class="n">mode</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_mode_ok</span>
+<span class="n">mode</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_auto_bindOk</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mdi_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_mode_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_mode_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_mode</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">m</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MDI</span><span class="p">))</span>
+
+<span class="n">mode</span><span class="o">.</span><span class="n">mdi</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_mode_ok</span>
+<span class="n">mode</span><span class="o">.</span><span class="n">mdi</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_mdi_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># HOME actions</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="home">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.home">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">home</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Homing actions group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="home.all">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.home.all">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">all</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Homes all axes</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.home.all</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Homing all axes&quot;</span><span class="p">)</span>
+        <span class="n">_home_joint</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="home.axis">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.home.axis">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">axis</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Home a specific axis</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            axis (int | str) : one of (xyzabcuvw or 012345678)</span>
+
+<span class="sd">        ActionButton syntax to home the X axis::</span>
+
+<span class="sd">            machine.home.axis:x</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">getAxisLetter</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">axis</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+            <span class="n">home</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="n">jnum</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">COORDINATES</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Homing Axis: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="o">.</span><span class="n">upper</span><span class="p">()))</span>
+        <span class="n">_home_joint</span><span class="p">(</span><span class="n">jnum</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="home.joint">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.home.joint">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">joint</span><span class="p">(</span><span class="n">jnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Home a specific joint</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            jnum (int) : one of (012345678)</span>
+
+<span class="sd">        ActionButton syntax to home joint 0::</span>
+
+<span class="sd">            machine.home.joint:0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Homing joint: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jnum</span><span class="p">))</span>
+        <span class="n">_home_joint</span><span class="p">(</span><span class="n">jnum</span><span class="p">)</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_home_ok</span><span class="p">(</span><span class="n">jnum</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># TODO: Check if homing a specific joint is OK</span>
+    <span class="k">if</span> <span class="n">power</span><span class="o">.</span><span class="n">is_on</span><span class="p">():</span> <span class="c1"># and not STAT.homed[jnum]:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be on to home&quot;</span>
+
+    <span class="n">_home_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_home_all_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_home_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">homed</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_home_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">home</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_home_ok</span>
+<span class="n">home</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_home_all_bindOk</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_home_joint_bindOk</span><span class="p">(</span><span class="n">jnum</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_home_ok</span><span class="p">(</span><span class="n">jnum</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">homed</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_home_ok</span><span class="p">(</span><span class="n">jnum</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">home</span><span class="o">.</span><span class="n">joint</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_home_ok</span>
+<span class="n">home</span><span class="o">.</span><span class="n">joint</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_home_joint_bindOk</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_home_axis_bindOk</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+    <span class="n">aletter</span> <span class="o">=</span> <span class="n">getAxisLetter</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">aletter</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">INFO</span><span class="o">.</span><span class="n">AXIS_LETTER_LIST</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Machine has no </span><span class="si">{}</span><span class="s1"> axis&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aletter</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">jnum</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">AXIS_LETTER_LIST</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_home_ok</span><span class="p">(</span><span class="n">jnum</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">home</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_home_ok</span>
+<span class="n">home</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_home_axis_bindOk</span>
+
+
+<div class="viewcode-block" id="unhome">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.unhome">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">unhome</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unhoming actions group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="unhome.all">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.unhome.all">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">all</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unhome all the axes</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.unhome.all</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unhoming all Axes&quot;</span><span class="p">)</span>
+        <span class="n">_unhome_joint</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="unhome.axis">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.unhome.axis">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">axis</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unhome a specific axis</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            axis (int | str) : one of (xyzabcuvw or 012345678)</span>
+
+<span class="sd">        ActionButton syntax to unhome the X axis::</span>
+
+<span class="sd">            machine.unhome.axis:x</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">getAxisLetter</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">axis</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span> <span class="c1"># not sure what this is copied from home</span>
+            <span class="n">unhome</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="c1">#jnum = INFO.COORDINATES.index(axis)</span>
+        <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">INFO</span><span class="o">.</span><span class="n">ALETTER_JNUM_DICT</span><span class="p">:</span>
+            <span class="c1">#LOG.info(&#39;Unhoming Axis: {}&#39;.format(axis.upper()))</span>
+            <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Unhoming Axis: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">upper</span><span class="p">()))</span>
+                <span class="n">_unhome_joint</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">ALETTER_JNUM_DICT</span><span class="p">[</span><span class="n">ax</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="unhome.joint">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.unhome.joint">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">joint</span><span class="p">(</span><span class="n">jnum</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unhome a specific joint</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            jnum (int) : The number of the joint to home.</span>
+
+<span class="sd">        ActionButton syntax to unhome the joint 0::</span>
+
+<span class="sd">            machine.unhome.joint:0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unhoming joint: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jnum</span><span class="p">))</span>
+        <span class="n">_unhome_joint</span><span class="p">(</span><span class="n">jnum</span><span class="p">)</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_home_joint</span><span class="p">(</span><span class="n">jnum</span><span class="p">):</span>
+    <span class="n">setTaskMode</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MANUAL</span><span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">teleop_enable</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">home</span><span class="p">(</span><span class="n">jnum</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_unhome_joint</span><span class="p">(</span><span class="n">jnum</span><span class="p">):</span>
+    <span class="n">setTaskMode</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MANUAL</span><span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">teleop_enable</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">unhome</span><span class="p">(</span><span class="n">jnum</span><span class="p">)</span>
+
+<span class="c1"># Homing helper functions</span>
+
+<div class="viewcode-block" id="getAxisLetter">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.getAxisLetter">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">getAxisLetter</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes an axis letter or number and returns the axis letter.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        axis (int | str) : Either a axis letter or an axis number.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str : The axis letter, `all` for an input of -1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">axis</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="getAxisNumber">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.getAxisNumber">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">getAxisNumber</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes an axis letter or number and returns the axis number.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        axis (int | str) : Either a axis letter or an axis number.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int : The axis number, -1 for an input of `all`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">axis</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">axis</span></div>
+
+
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># OVERRIDE LIMITS action</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">override_limits</span><span class="p">():</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Setting override limits&quot;</span><span class="p">)</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">override_limits</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_override_limits_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">mgs</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">anum</span> <span class="ow">in</span> <span class="n">INFO</span><span class="o">.</span><span class="n">AXIS_NUMBER_LIST</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">limit</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">aaxis</span> <span class="o">=</span> <span class="n">getAxisLetter</span><span class="p">(</span><span class="n">anum</span><span class="p">)</span>
+            <span class="n">aletter</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">COORDINATES</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">aaxis</span><span class="p">)</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Axis </span><span class="si">{}</span><span class="s2"> on limit&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aletter</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Axis must be on limit to override&quot;</span>
+
+    <span class="n">_override_limits_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_override_limits_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">limit</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_override_limits_ok</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span>
+
+<span class="n">override_limits</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_override_limits_ok</span>
+<span class="n">override_limits</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_override_limits_bindOk</span>
+
+<span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># JOG actions</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+<span class="n">DEFAULT_JOG_SPEED</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getJogVelocity</span><span class="p">()</span>
+<span class="n">MAX_JOG_SPEED</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getMaxJogVelocity</span><span class="p">()</span>
+<span class="n">DEFAULT_JOG_ANGULAR_SPEED</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getJogAngularVelocity</span><span class="p">()</span>
+<span class="n">MAX_JOG_ANGULAR_SPEED</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getMaxJogAngularVelocity</span><span class="p">()</span>
+
+<span class="nd">@setting</span><span class="p">(</span><span class="s1">&#39;machine.jog.linear-speed&#39;</span><span class="p">,</span>
+         <span class="n">default_value</span><span class="o">=</span><span class="n">DEFAULT_JOG_SPEED</span><span class="p">,</span>
+         <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+         <span class="n">max_value</span><span class="o">=</span><span class="n">MAX_JOG_SPEED</span><span class="p">,</span>
+         <span class="n">persistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_linear_speed</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
+
+<span class="nd">@jog_linear_speed</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_linear_speed</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+    <span class="n">obj</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">clampValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">jog_linear_speed</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting jog linear speed: </span><span class="si">%4.1f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="n">percentage</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">MAX_JOG_SPEED</span><span class="p">)</span>
+    <span class="n">jog_linear_speed_percentage</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">percentage</span>
+    <span class="n">jog_linear_speed_percentage</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">percentage</span><span class="p">)</span>
+
+
+<span class="nd">@setting</span><span class="p">(</span><span class="s1">&#39;machine.jog.linear-speed-percentage&#39;</span><span class="p">,</span>
+         <span class="n">default_value</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">DEFAULT_JOG_SPEED</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">MAX_JOG_SPEED</span><span class="p">),</span>
+         <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+         <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+         <span class="n">persistent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_linear_speed_percentage</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
+
+<span class="nd">@jog_linear_speed_percentage</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_linear_speed_percentage</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">percentage</span><span class="p">):</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting jog linear speed percentage: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">percentage</span><span class="p">)</span>
+    <span class="n">jog_linear_speed</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">MAX_JOG_SPEED</span> <span class="o">*</span> <span class="n">percentage</span> <span class="o">/</span> <span class="mi">100</span><span class="p">))</span>
+
+
+<span class="nd">@setting</span><span class="p">(</span><span class="s1">&#39;machine.jog.angular-speed&#39;</span><span class="p">,</span>
+         <span class="n">default_value</span><span class="o">=</span><span class="n">DEFAULT_JOG_ANGULAR_SPEED</span><span class="p">,</span>
+         <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+         <span class="n">max_value</span><span class="o">=</span><span class="n">MAX_JOG_ANGULAR_SPEED</span><span class="p">,</span>
+         <span class="n">persistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_angular_speed</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
+
+<span class="nd">@jog_angular_speed</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_angular_speed</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">clampValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">jog_angular_speed</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting Jog Angular Speed: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="n">percentage</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">MAX_JOG_ANGULAR_SPEED</span><span class="p">)</span>
+    <span class="n">jog_angular_speed_percentage</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">percentage</span>
+    <span class="n">jog_angular_speed_percentage</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">percentage</span><span class="p">)</span>
+
+<span class="nd">@setting</span><span class="p">(</span><span class="s1">&#39;machine.jog.angular-speed-percentage&#39;</span><span class="p">,</span>
+         <span class="n">default_value</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">DEFAULT_JOG_ANGULAR_SPEED</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">MAX_JOG_ANGULAR_SPEED</span><span class="p">),</span>
+         <span class="n">min_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+         <span class="n">max_value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+         <span class="n">persistent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_angular_speed_percentage</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
+
+<span class="nd">@jog_angular_speed_percentage</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_angular_speed_percentage</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">percentage</span><span class="p">):</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting jog angular speed percentage: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">percentage</span><span class="p">)</span>
+    <span class="n">jog_angular_speed</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">MAX_JOG_ANGULAR_SPEED</span> <span class="o">*</span> <span class="n">percentage</span> <span class="o">/</span> <span class="mi">100</span><span class="p">))</span>
+
+
+<span class="nd">@setting</span><span class="p">(</span><span class="s1">&#39;machine.jog.mode-incremental&#39;</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_mode_incremental</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
+
+<span class="nd">@jog_mode_incremental</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_mode_incremental</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting jog mode incremental: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fromInternalLinearUnits</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">linear_units</span>
+    <span class="n">lu</span> <span class="o">=</span> <span class="p">(</span><span class="n">unit</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">25.4</span>
+    <span class="k">return</span> <span class="n">v</span> <span class="o">*</span> <span class="n">lu</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parseJogIncrement</span><span class="p">(</span><span class="n">jogincr</span><span class="p">):</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jogincr</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">jogincr</span> <span class="o">=</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;mm&quot;</span><span class="p">):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">fromInternalLinearUnits</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">25.4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;cm&quot;</span><span class="p">):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">fromInternalLinearUnits</span><span class="p">(</span><span class="mi">10</span> <span class="o">/</span> <span class="mf">25.4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;um&quot;</span><span class="p">):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">fromInternalLinearUnits</span><span class="p">(</span><span class="mf">.001</span> <span class="o">/</span> <span class="mf">25.4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;inch&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">fromInternalLinearUnits</span><span class="p">(</span><span class="mf">1.</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;mil&quot;</span><span class="p">):</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">fromInternalLinearUnits</span><span class="p">(</span><span class="mf">.001</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">jogincr</span> <span class="o">=</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot; inchmuil&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">jogincr</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">jogincr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+                <span class="n">jogincr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">jogincr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">jogincr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">jogincr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">jogincr</span> <span class="o">*</span> <span class="n">scale</span>
+
+<span class="nd">@setting</span><span class="p">(</span><span class="s1">&#39;machine.jog.increment&#39;</span><span class="p">,</span> <span class="n">parseJogIncrement</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">getIncrements</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_increment</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Linear jog increment.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        jogincr (str, int, float) : The desired jog increment. Can be passed</span>
+<span class="sd">            as a string including an optional units specifier. Valid unit</span>
+<span class="sd">            specifiers include ``mm``, ``cm``, ``um``, ``in``, ``inch``, ``&quot;``,</span>
+<span class="sd">            and ``mil``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">value</span>
+
+<span class="nd">@jog_increment</span><span class="o">.</span><span class="n">setter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jog_increment</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">jogincr</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">parseJogIncrement</span><span class="p">(</span><span class="n">jogincr</span><span class="p">)</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Setting jog increment: </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%2.4f</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">jogincr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="jog">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">jog</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Jog Actions Group&quot;&quot;&quot;</span>
+
+    <span class="n">max_linear_speed</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getMaxJogVelocity</span><span class="p">()</span>
+    <span class="n">max_angular_speed</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getMaxJogAngularVelocity</span><span class="p">()</span>
+    <span class="n">angular_speed</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getJogAngularVelocity</span><span class="p">()</span>
+    <span class="n">continuous</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">increment</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getIncrements</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="jog.axis">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog.axis">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Jog an axis.</span>
+
+<span class="sd">        Action Button Syntax to jog the X axis in the positive direction::</span>
+
+<span class="sd">            machine.jog.axis:x,pos</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            axis (str | int) : Either the letter or number of the axis to jog.</span>
+<span class="sd">            direction (str | int) : pos or +1 for positive, neg or -1 for negative.</span>
+<span class="sd">            speed (float, optional) : Desired jog vel in machine_units/s.</span>
+<span class="sd">            distance (float, optional) : Desired jog distance, continuous if 0.00.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># check if it even makes sense to try to jog</span>
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span> <span class="ow">or</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_MANUAL</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;neg&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">direction</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">getAxisNumber</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+
+        <span class="c1"># must be in teleoperating mode to jog.</span>
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">motion_mode</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">TRAJ_MODE_TELEOP</span><span class="p">:</span>
+            <span class="n">CMD</span><span class="o">.</span><span class="n">teleop_enable</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">speed</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">CMD</span><span class="o">.</span><span class="n">jog</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">JOG_STOP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">speed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+                    <span class="n">speed</span> <span class="o">=</span> <span class="n">jog_angular_speed</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="mf">60.0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">speed</span> <span class="o">=</span> <span class="n">jog_linear_speed</span><span class="o">.</span><span class="n">value</span> <span class="o">/</span> <span class="mf">60.0</span>
+
+            <span class="k">if</span> <span class="n">distance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">jog_mode_incremental</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                    <span class="n">distance</span> <span class="o">=</span> <span class="n">jog_increment</span><span class="o">.</span><span class="n">value</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">distance</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">velocity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span> <span class="o">*</span> <span class="n">direction</span>
+
+            <span class="k">if</span> <span class="n">distance</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">CMD</span><span class="o">.</span><span class="n">jog</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">JOG_CONTINUOUS</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">CMD</span><span class="o">.</span><span class="n">jog</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">JOG_INCREMENT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">velocity</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="jog.set_jog_continuous">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog.set_jog_continuous">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_jog_continuous</span><span class="p">(</span><span class="n">continuous</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Jog Continuous&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">continuous</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting jog mode to continuous&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting jog mode to incremental&quot;</span><span class="p">)</span>
+        <span class="n">jog</span><span class="o">.</span><span class="n">jog_mode_incremental</span> <span class="o">=</span> <span class="n">continuous</span></div>
+
+
+<div class="viewcode-block" id="jog.set_increment">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog.set_increment">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_increment</span><span class="p">(</span><span class="n">raw_increment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Jog Increment&quot;&quot;&quot;</span>
+        <span class="n">jog_increment</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">raw_increment</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="jog.set_linear_speed">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog.set_linear_speed">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_linear_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Jog Linear Speed</span>
+
+<span class="sd">        ActionSlider syntax::</span>
+
+<span class="sd">            machine.jog.set-linear-speed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">jog_linear_speed</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">speed</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="jog.set_angular_speed">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog.set_angular_speed">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_angular_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Jog Angular Speed&quot;&quot;&quot;</span>
+        <span class="n">jog_angular_speed</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">speed</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="jog.set_linear_speed_percentage">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog.set_linear_speed_percentage">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_linear_speed_percentage</span><span class="p">(</span><span class="n">percentage</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Jog Linear Speed Percentage&quot;&quot;&quot;</span>
+        <span class="n">jog_linear_speed_percentage</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">percentage</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="jog.set_angular_speed_percentage">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog.set_angular_speed_percentage">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_angular_speed_percentage</span><span class="p">(</span><span class="n">percentage</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Jog Angular Speed Percentage&quot;&quot;&quot;</span>
+        <span class="n">jog_angular_speed_percentage</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">percentage</span><span class="p">)</span></div>
+</div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_jog_speed_slider_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># these will only work for QSlider or QSpinBox</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">((</span><span class="n">jog</span><span class="o">.</span><span class="n">linear_speed</span><span class="o">.</span><span class="n">getValue</span><span class="p">()</span> <span class="o">/</span> <span class="n">jog</span><span class="o">.</span><span class="n">max_linear_speed</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+        <span class="c1"># jog.linear_speed.connect(lambda v: widget.setValue(v * 100))</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_jog_angular_speed_slider_bindOk</span><span class="p">(</span><span class="n">widget</span><span class="p">):</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># these will only work for QSlider or QSpinBox</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">((</span><span class="n">jog</span><span class="o">.</span><span class="n">angular_speed</span><span class="o">.</span><span class="n">getValue</span><span class="p">()</span> <span class="o">/</span> <span class="n">jog</span><span class="o">.</span><span class="n">max_angular_speed</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+        <span class="c1"># jog.linear_speed.connect(lambda v: widget.setValue(v * 100))</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+
+<span class="n">jog</span><span class="o">.</span><span class="n">set_linear_speed</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">jog</span><span class="o">.</span><span class="n">set_angular_speed</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="kc">True</span>
+<span class="n">jog</span><span class="o">.</span><span class="n">set_linear_speed</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">jog</span><span class="o">.</span><span class="n">set_angular_speed</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="kc">True</span>
+
+<span class="n">jog</span><span class="o">.</span><span class="n">set_linear_speed_percentage</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="kc">True</span>
+<span class="n">jog</span><span class="o">.</span><span class="n">set_linear_speed_percentage</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_jog_speed_slider_bindOk</span>
+
+<span class="n">jog</span><span class="o">.</span><span class="n">set_angular_speed_percentage</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="kc">True</span>
+<span class="n">jog</span><span class="o">.</span><span class="n">set_angular_speed_percentage</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_jog_angular_speed_slider_bindOk</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_jog_axis_ok</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">axisnum</span> <span class="o">=</span> <span class="n">getAxisNumber</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">jnum</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">COORDINATES</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span> \
+            <span class="ow">and</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span> \
+            <span class="ow">and</span> <span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">limit</span><span class="p">[</span><span class="n">axisnum</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">STAT</span><span class="o">.</span><span class="n">joint</span><span class="p">[</span><span class="n">jnum</span><span class="p">][</span><span class="s1">&#39;override_limits&#39;</span><span class="p">]):</span>
+        <span class="c1"># and STAT.homed[axisnum] == 1 \</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON and in IDLE to jog&quot;</span>
+
+    <span class="n">_jog_axis_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_jog_axis_bindOk</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+    <span class="n">aletter</span> <span class="o">=</span> <span class="n">getAxisLetter</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">aletter</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">INFO</span><span class="o">.</span><span class="n">AXIS_LETTER_LIST</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Machine has no </span><span class="si">{}</span><span class="s1"> axis&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">aletter</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">limit</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_jog_axis_ok</span><span class="p">(</span><span class="n">aletter</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">homed</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_jog_axis_ok</span><span class="p">(</span><span class="n">aletter</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_jog_axis_ok</span><span class="p">(</span><span class="n">aletter</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_jog_axis_ok</span><span class="p">(</span><span class="n">aletter</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">widget</span><span class="p">))</span>
+
+<span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_jog_axis_ok</span>
+<span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_jog_axis_bindOk</span>
+
+
+<div class="viewcode-block" id="jog_mode">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog_mode">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">jog_mode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Jog Mode Group&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="jog_mode.continuous">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog_mode.continuous">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">continuous</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Jog Continuous</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.jog-mode.continuous</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">jog_mode_incremental</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="jog_mode.incremental">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog_mode.incremental">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">incremental</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set Jog Incremental</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.jog-mode.incremental</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">jog_mode_incremental</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="jog_mode.toggle">
+<a class="viewcode-back" href="../../../actions/machine_actions.html#qtpyvcp.actions.machine_actions.jog_mode.toggle">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Jog Mode Toggle</span>
+
+<span class="sd">        ActionButton syntax::</span>
+
+<span class="sd">            machine.jog-mode.toggle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">jog_mode_incremental</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="ow">not</span> <span class="n">jog_mode_incremental</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
+</div>
+
+
+<span class="n">jog_mode</span><span class="o">.</span><span class="n">incremental</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">jog_mode</span><span class="o">.</span><span class="n">continuous</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="kc">True</span>
+<span class="n">jog_mode</span><span class="o">.</span><span class="n">incremental</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">jog_mode</span><span class="o">.</span><span class="n">continuous</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="kc">True</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

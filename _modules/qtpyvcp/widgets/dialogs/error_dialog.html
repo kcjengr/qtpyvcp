@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.dialogs.error_dialog &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.dialogs.error_dialog</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.dialogs.error_dialog</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">traceback</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_exception</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">uic</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Slot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QDialog</span><span class="p">,</span> <span class="n">QApplication</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.widgets.dialogs.base_dialog</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseDialog</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">IGNORE_LIST</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="ErrorDialog">
+<a class="viewcode-back" href="../../../../widgets/dialogs/index.html#qtpyvcp.widgets.dialogs.error_dialog.ErrorDialog">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ErrorDialog</span><span class="p">(</span><span class="n">BaseDialog</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_info</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ErrorDialog</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">stay_on_top</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">uic</span><span class="o">.</span><span class="n">loadUi</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;error_dialog.ui&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">exc_info</span> <span class="o">=</span> <span class="n">exc_info</span>
+        <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_msg</span><span class="p">,</span> <span class="n">exc_tb</span> <span class="o">=</span> <span class="n">exc_info</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">exc_typ</span> <span class="o">=</span> <span class="n">exc_type</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exc_msg</span> <span class="o">=</span> <span class="n">exc_msg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exc_tb</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">format_exception</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">))</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;orange&#39;</span> <span class="k">if</span> <span class="s1">&#39;warning&#39;</span><span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">exc_typ</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;red&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errorType</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;&lt;font color=&#39;</span><span class="si">{}</span><span class="s2">&#39;&gt;</span><span class="si">{}</span><span class="s2">:&lt;/font&gt;&quot;</span>
+                               <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exc_typ</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errorValue</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc_msg</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Unhandled Exception - </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exc_typ</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracebackText</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exc_tb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_quitApp_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QApplication</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_ignoreException_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignoreCheckBox</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;User selected to ignore future occurrences of exception.&quot;</span><span class="p">,</span>
+                     <span class="n">exc_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exc_info</span><span class="p">)</span>
+            <span class="n">IGNORE_LIST</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exc_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exc_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">exc_info</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tb_lineno</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">IGNORE_LIST</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_reportIssue_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qtpy</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span><span class="o">,</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="o">,</span><span class="w"> </span><span class="nn">urllib.error</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">webbrowser</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">linuxcnc</span>
+        <span class="c1"># import hiyapyco</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">qtpyvcp</span>
+        <span class="n">issue_title</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exc_typ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exc_msg</span><span class="p">)</span>
+        <span class="n">issue_body</span> <span class="o">=</span> <span class="n">ISSUE_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">tracback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exc_tb</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+            <span class="n">qt_version</span><span class="o">=</span><span class="n">qtpy</span><span class="o">.</span><span class="n">QT_VERSION</span><span class="p">,</span>
+            <span class="n">qt_api</span><span class="o">=</span><span class="n">qtpy</span><span class="o">.</span><span class="n">API_NAME</span><span class="p">,</span>
+            <span class="n">api_version</span><span class="o">=</span><span class="n">qtpy</span><span class="o">.</span><span class="n">PYQT_VERSION</span> <span class="ow">or</span> <span class="n">qtpy</span><span class="o">.</span><span class="n">PYSIDE_VERSION</span><span class="p">,</span>
+            <span class="n">dist</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s1">&#39;lsb_release&#39;</span><span class="p">,</span> <span class="s1">&#39;-d&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+            <span class="n">kernel</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s1">&#39;uname&#39;</span><span class="p">,</span> <span class="s1">&#39;-r&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+            <span class="n">lcnc_version</span><span class="o">=</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+            <span class="n">qtpyvcp_version</span><span class="o">=</span><span class="n">qtpyvcp</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+            <span class="c1"># config=hiyapyco.dump(qtpyvcp.CONFIG, default_flow_style=False),</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">qtpyvcp</span><span class="o">.</span><span class="n">OPTIONS</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">log_file</span><span class="o">=</span><span class="n">qtpyvcp</span><span class="o">.</span><span class="n">OPTIONS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;log_file&#39;</span><span class="p">),</span>
+            <span class="n">config_file</span><span class="o">=</span><span class="n">qtpyvcp</span><span class="o">.</span><span class="n">OPTIONS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;config_file&#39;</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="n">new_issue_url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/kcjengr/qtpyvcp/issues/new?&quot;</span> \
+                        <span class="s2">&quot;title=</span><span class="si">{title}</span><span class="s2">&amp;body=</span><span class="si">{body}</span><span class="s2">&amp;&amp;labels=bug,auto+generated&quot;</span>\
+                        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">issue_title</span><span class="p">),</span>
+                                <span class="n">body</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">issue_body</span><span class="p">))</span>
+
+        <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">new_issue_url</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">autoraise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<span class="n">ISSUE_TEMPLATE</span> <span class="o">=</span> \
+<span class="sd">&quot;&quot;&quot;(Please fill in this issue template with as much information as you can about the </span>
+<span class="sd">circumstances under which the issue occurred, and the steps needed to reproduce it.)</span>
+
+<span class="sd">## Steps to reproduce the problem</span>
+
+<span class="sd">(provide as detailed a step by step as you can) </span>
+
+<span class="sd"> 1.</span>
+<span class="sd"> 2.</span>
+<span class="sd"> 3.</span>
+
+<span class="sd">## This is what I expected to happen</span>
+
+<span class="sd">(explain what you thought should have happened)</span>
+
+<span class="sd">## This is what happened instead</span>
+
+<span class="sd">(explain what happened instead)</span>
+
+<span class="sd">## It worked properly before this</span>
+
+<span class="sd">(did it work before? what changed?)</span>
+
+<span class="sd">## Traceback</span>
+
+<span class="sd">```python</span>
+<span class="sd">{tracback}</span>
+<span class="sd">```</span>
+
+<span class="sd">## Options</span>
+
+<span class="sd">```json</span>
+<span class="sd">{options}</span>
+<span class="sd">```</span>
+
+<span class="sd">## System Info</span>
+<span class="sd">```</span>
+<span class="sd"> * {dist}</span>
+<span class="sd"> * Kernel: {kernel}</span>
+<span class="sd"> * Qt version: v{qt_version}</span>
+<span class="sd"> * Qt bindings: {qt_api} v{api_version}</span>
+<span class="sd"> * LinuxCNC version: v{lcnc_version}</span>
+<span class="sd"> * QtPyVCP version: {qtpyvcp_version}</span>
+<span class="sd">```</span>
+
+<span class="sd">## Attachments</span>
+
+<span class="sd">Please also find and attach the following files, along with any others that may be helpful:</span>
+<span class="sd">* {log_file}</span>
+<span class="sd">* {config_file}</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine Actions &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Program Actions" href="program_actions.html" />
+    <link rel="prev" title="Action Helpers" href="action_helpers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Actions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="action_helpers.html">Action Helpers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Machine Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="program_actions.html">Program Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spindle_actions.html">Spindle Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coolant_actions.html">Coolant Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool_actions.html">Tool Actions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Actions</a></li>
+      <li class="breadcrumb-item active">Machine Actions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/actions/machine_actions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-qtpyvcp.actions.machine_actions">
+<span id="machine-actions"></span><h1>Machine Actions<a class="headerlink" href="#module-qtpyvcp.actions.machine_actions" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.estop">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">estop</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#estop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.estop" title="Link to this definition"></a></dt>
+<dd><p>E-Stop action group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.estop.activate">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">activate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#estop.activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.estop.activate" title="Link to this definition"></a></dt>
+<dd><p>Set E-Stop active</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">estop</span><span class="o">.</span><span class="n">activate</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.estop.reset">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#estop.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.estop.reset" title="Link to this definition"></a></dt>
+<dd><p>Resets E-Stop</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">estop</span><span class="o">.</span><span class="n">reset</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.estop.toggle">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toggle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#estop.toggle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.estop.toggle" title="Link to this definition"></a></dt>
+<dd><p>Toggles E-Stop state</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">estop</span><span class="o">.</span><span class="n">toggle</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.estop.is_activated">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_activated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#estop.is_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.estop.is_activated" title="Link to this definition"></a></dt>
+<dd><p>Checks if E_Stop is activated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if E-Stop is active, else False.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.power">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">power</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.power" title="Link to this definition"></a></dt>
+<dd><p>Power action group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.power.on">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#power.on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.power.on" title="Link to this definition"></a></dt>
+<dd><p>Turns machine power On</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">on</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.power.off">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">off</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#power.off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.power.off" title="Link to this definition"></a></dt>
+<dd><p>Turns machine power Off</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">off</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.power.toggle">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toggle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#power.toggle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.power.toggle" title="Link to this definition"></a></dt>
+<dd><p>Toggles machine power On/Off</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">toggle</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.power.is_on">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">is_on</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#power.is_on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.power.is_on" title="Link to this definition"></a></dt>
+<dd><p>Checks if power is on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if power is on, else False.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.issue_mdi">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">issue_mdi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#issue_mdi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.issue_mdi" title="Link to this definition"></a></dt>
+<dd><p>Issue an MDI command.</p>
+<blockquote>
+<div><p>An MDI command can be issued any time the machine is homed (if not
+NO_FORCE_HOMING in the INI) and the interpreter is IDLE.  The task
+mode will automatically be switched to MDI prior to issuing the command
+and will be returned to the previous mode when the interpreter becomes IDLE.</p>
+<p>ActionButton syntax to issue G0 X5:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">issue_mdi</span><span class="p">:</span><span class="n">G0X5</span>
+</pre></div>
+</div>
+<p>It is simpler to use the MDIButton, examples in the Widgets section.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<em>str</em>) – A valid RS274 gcode command string. Multiple MDI commands
+can be separated with a <code class="docutils literal notranslate"><span class="pre">;</span></code> and will be issued sequentially.</p></li>
+<li><p><strong>reset</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to reset the Task Mode to the state
+the machine was in prior to issuing the MDI command.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feedhold">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">feedhold</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feedhold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feedhold" title="Link to this definition"></a></dt>
+<dd><p>Feed Hold action Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feedhold.enable">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feedhold.enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feedhold.enable" title="Link to this definition"></a></dt>
+<dd><p>Enables Feed Hold</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feedhold.disable">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feedhold.disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feedhold.disable" title="Link to this definition"></a></dt>
+<dd><p>Disables Feed Hold</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feedhold.toggle">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toggle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feedhold.toggle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feedhold.toggle" title="Link to this definition"></a></dt>
+<dd><p>Toggles Feed Hold state</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feed_override">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">feed_override</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feed_override"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feed_override" title="Link to this definition"></a></dt>
+<dd><p>Feed Override Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feed_override.enable">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feed_override.enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feed_override.enable" title="Link to this definition"></a></dt>
+<dd><p>Feed Override Enable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feed_override.disable">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">disable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feed_override.disable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feed_override.disable" title="Link to this definition"></a></dt>
+<dd><p>Feed Override Disable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feed_override.toggle_enable">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toggle_enable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feed_override.toggle_enable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feed_override.toggle_enable" title="Link to this definition"></a></dt>
+<dd><p>Feed Override Enable Toggle</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feed_override.set">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feed_override.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feed_override.set" title="Link to this definition"></a></dt>
+<dd><p>Feed Override Set Value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.feed_override.reset">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#feed_override.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.feed_override.reset" title="Link to this definition"></a></dt>
+<dd><p>Feed Override Reset</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.rapid_override">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">rapid_override</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#rapid_override"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.rapid_override" title="Link to this definition"></a></dt>
+<dd><p>Rapid Override Group</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.max_velocity">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">max_velocity</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#max_velocity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.max_velocity" title="Link to this definition"></a></dt>
+<dd><p>Max Velocity Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.max_velocity.set">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#max_velocity.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.max_velocity.set" title="Link to this definition"></a></dt>
+<dd><p>Max Velocity Override Set Value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.max_velocity.reset">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#max_velocity.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.max_velocity.reset" title="Link to this definition"></a></dt>
+<dd><p>Max Velocity Override Reset Value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.mode">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">mode</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.mode" title="Link to this definition"></a></dt>
+<dd><p>Mode action group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.mode.manual">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">manual</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#mode.manual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.mode.manual" title="Link to this definition"></a></dt>
+<dd><p>Change mode to Manual</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">manual</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.mode.auto">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">auto</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#mode.auto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.mode.auto" title="Link to this definition"></a></dt>
+<dd><p>Change mode to Auto</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">auto</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.mode.mdi">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mdi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#mode.mdi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.mode.mdi" title="Link to this definition"></a></dt>
+<dd><p>Change mode to MDI</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">mdi</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.home">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">home</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.home" title="Link to this definition"></a></dt>
+<dd><p>Homing actions group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.home.all">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#home.all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.home.all" title="Link to this definition"></a></dt>
+<dd><p>Homes all axes</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">all</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.home.axis">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#home.axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.home.axis" title="Link to this definition"></a></dt>
+<dd><p>Home a specific axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em><em> | </em><em>str</em>) – one of (xyzabcuvw or 012345678)</p>
+</dd>
+</dl>
+<p>ActionButton syntax to home the X axis:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">x</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.home.joint">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#home.joint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.home.joint" title="Link to this definition"></a></dt>
+<dd><p>Home a specific joint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>jnum</strong> (<em>int</em>) – one of (012345678)</p>
+</dd>
+</dl>
+<p>ActionButton syntax to home joint 0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">joint</span><span class="p">:</span><span class="mi">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.unhome">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">unhome</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#unhome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.unhome" title="Link to this definition"></a></dt>
+<dd><p>Unhoming actions group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.unhome.all">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#unhome.all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.unhome.all" title="Link to this definition"></a></dt>
+<dd><p>Unhome all the axes</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">unhome</span><span class="o">.</span><span class="n">all</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.unhome.axis">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#unhome.axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.unhome.axis" title="Link to this definition"></a></dt>
+<dd><p>Unhome a specific axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em><em> | </em><em>str</em>) – one of (xyzabcuvw or 012345678)</p>
+</dd>
+</dl>
+<p>ActionButton syntax to unhome the X axis:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">unhome</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">x</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.unhome.joint">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">joint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jnum</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#unhome.joint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.unhome.joint" title="Link to this definition"></a></dt>
+<dd><p>Unhome a specific joint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>jnum</strong> (<em>int</em>) – The number of the joint to home.</p>
+</dd>
+</dl>
+<p>ActionButton syntax to unhome the joint 0:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">unhome</span><span class="o">.</span><span class="n">joint</span><span class="p">:</span><span class="mi">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.getAxisLetter">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">getAxisLetter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#getAxisLetter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.getAxisLetter" title="Link to this definition"></a></dt>
+<dd><p>Takes an axis letter or number and returns the axis letter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em><em> | </em><em>str</em>) – Either a axis letter or an axis number.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The axis letter, <cite>all</cite> for an input of -1.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.getAxisNumber">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">getAxisNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#getAxisNumber"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.getAxisNumber" title="Link to this definition"></a></dt>
+<dd><p>Takes an axis letter or number and returns the axis number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em><em> | </em><em>str</em>) – Either a axis letter or an axis number.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The axis number, -1 for an input of <cite>all</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">jog</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog" title="Link to this definition"></a></dt>
+<dd><p>Jog Actions Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog.axis">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog.axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog.axis" title="Link to this definition"></a></dt>
+<dd><p>Jog an axis.</p>
+<p>Action Button Syntax to jog the X axis in the positive direction:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">axis</span><span class="p">:</span><span class="n">x</span><span class="p">,</span><span class="n">pos</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis</strong> (<em>str</em><em> | </em><em>int</em>) – Either the letter or number of the axis to jog.</p></li>
+<li><p><strong>direction</strong> (<em>str</em><em> | </em><em>int</em>) – pos or +1 for positive, neg or -1 for negative.</p></li>
+<li><p><strong>speed</strong> (<em>float</em><em>, </em><em>optional</em>) – Desired jog vel in machine_units/s.</p></li>
+<li><p><strong>distance</strong> (<em>float</em><em>, </em><em>optional</em>) – Desired jog distance, continuous if 0.00.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog.set_jog_continuous">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_jog_continuous</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">continuous</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog.set_jog_continuous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog.set_jog_continuous" title="Link to this definition"></a></dt>
+<dd><p>Set Jog Continuous</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog.set_increment">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_increment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_increment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog.set_increment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog.set_increment" title="Link to this definition"></a></dt>
+<dd><p>Set Jog Increment</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog.set_linear_speed">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_linear_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog.set_linear_speed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog.set_linear_speed" title="Link to this definition"></a></dt>
+<dd><p>Set Jog Linear Speed</p>
+<p>ActionSlider syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">set</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">speed</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog.set_angular_speed">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_angular_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog.set_angular_speed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog.set_angular_speed" title="Link to this definition"></a></dt>
+<dd><p>Set Jog Angular Speed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog.set_linear_speed_percentage">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_linear_speed_percentage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percentage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog.set_linear_speed_percentage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog.set_linear_speed_percentage" title="Link to this definition"></a></dt>
+<dd><p>Set Jog Linear Speed Percentage</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog.set_angular_speed_percentage">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">set_angular_speed_percentage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percentage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog.set_angular_speed_percentage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog.set_angular_speed_percentage" title="Link to this definition"></a></dt>
+<dd><p>Set Jog Angular Speed Percentage</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog_mode">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.machine_actions.</span></span><span class="sig-name descname"><span class="pre">jog_mode</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog_mode" title="Link to this definition"></a></dt>
+<dd><p>Jog Mode Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog_mode.continuous">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">continuous</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog_mode.continuous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog_mode.continuous" title="Link to this definition"></a></dt>
+<dd><p>Set Jog Continuous</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">-</span><span class="n">mode</span><span class="o">.</span><span class="n">continuous</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog_mode.incremental">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">incremental</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog_mode.incremental"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog_mode.incremental" title="Link to this definition"></a></dt>
+<dd><p>Set Jog Incremental</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">-</span><span class="n">mode</span><span class="o">.</span><span class="n">incremental</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.machine_actions.jog_mode.toggle">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toggle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/machine_actions.html#jog_mode.toggle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.machine_actions.jog_mode.toggle" title="Link to this definition"></a></dt>
+<dd><p>Jog Mode Toggle</p>
+<p>ActionButton syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">-</span><span class="n">mode</span><span class="o">.</span><span class="n">toggle</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="program_actions.html" class="btn btn-neutral float-right" title="Program Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="action_helpers.html" class="btn btn-neutral float-left" title="Action Helpers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

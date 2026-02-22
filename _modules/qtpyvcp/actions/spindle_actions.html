@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.actions.spindle_actions &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../actions.html">qtpyvcp.actions</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.actions.spindle_actions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.actions.spindle_actions</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">linuxcnc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="c1"># Set up logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">getPlugin</span>
+
+<span class="n">STATUS</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="n">STAT</span> <span class="o">=</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">stat</span>
+<span class="n">INFO</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+
+<span class="n">SPINDLES</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">spindles</span><span class="p">()))</span>
+<span class="n">DEFAULT_SPEED</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">defaultSpindleSpeed</span><span class="p">()</span>
+
+<span class="n">CMD</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.actions.base_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">setTaskMode</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spindle_exists</span><span class="p">(</span><span class="n">spindle</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">spindle</span> <span class="ow">in</span> <span class="n">SPINDLES</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spindle_ok</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">spindle</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SPINDLES</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No spindle No. </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spindle</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Power must be ON&quot;</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_mode</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">MODE_AUTO</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Mode must be MAN or MDI&quot;</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">rules</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># check if widget has enable rules</span>
+        <span class="c1"># print(widget)</span>
+        <span class="n">rule_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">rules</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rule_list</span><span class="p">:</span>
+            <span class="c1"># print(rule)</span>
+            <span class="k">if</span> <span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;property&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Enable&quot;</span><span class="p">:</span>
+
+                <span class="n">channels</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;channels&quot;</span><span class="p">)</span>
+                <span class="n">expression</span> <span class="o">=</span> <span class="n">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
+
+                <span class="n">plugin_name</span><span class="p">,</span> <span class="n">data_channel_name</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+
+                <span class="n">channel_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="k">if</span> <span class="s1">&#39;?&#39;</span> <span class="ow">in</span> <span class="n">data_channel_name</span><span class="p">:</span>
+                    <span class="n">data_channel</span><span class="p">,</span> <span class="n">channel_name</span> <span class="o">=</span> <span class="n">data_channel_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">data_channel</span> <span class="o">=</span> <span class="n">data_channel_name</span>
+
+                <span class="n">plugin</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="n">plugin_name</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">plugin</span><span class="p">,</span> <span class="n">data_channel</span><span class="p">):</span>
+                    <span class="n">function</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">plugin</span><span class="p">,</span> <span class="n">data_channel</span><span class="p">)</span>
+
+                    <span class="n">ch</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+                    <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">ch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="n">channel_name</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">ch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="p">())</span>
+
+                    <span class="n">ok</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expression&quot;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">msh</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">msh</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">_spindle_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spindle_bindOk</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_spindle_exists</span><span class="p">(</span><span class="n">spindle</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_spindle_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_mode</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_spindle_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="forward">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.forward">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn a spindle ON in the *FORWARD* direction.</span>
+
+<span class="sd">    ActionButton syntax to start spindle 0 CW (spindle 0 is default)</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.forward</span>
+
+<span class="sd">    ActionButton syntax to start spindle 1 CW</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.1.forward</span>
+
+
+<span class="sd">    ActionButton syntax to start spindle 0 CW at 1800 RPM</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.forward:1800</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        speed (int, optional) : The requested speed to spin the spindle at.</span>
+<span class="sd">            If ``speed`` is not specified the current interpreter speed setting</span>
+<span class="sd">            (as set by the last S word) is used, taking into account the</span>
+<span class="sd">            value of the spindle override if it is enabled.</span>
+<span class="sd">        spindle (int, optional) : The number of the spindle to turn ON. If</span>
+<span class="sd">            ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">speed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">speed</span> <span class="o">=</span> <span class="n">getSpeed</span><span class="p">()</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">spindle</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">SPINDLE_FORWARD</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spindle_forward_bindOk</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_spindle_exists</span><span class="p">(</span><span class="n">spindle</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_spindle_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_mode</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_spindle_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">]</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">d</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">forward</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_spindle_ok</span>
+<span class="n">forward</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_spindle_forward_bindOk</span>
+
+
+<div class="viewcode-block" id="reverse">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.reverse">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reverse</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn a spindle ON in the *REVERSE* direction.</span>
+
+<span class="sd">    ActionButton syntax to start spindle 0 CCW (spindle 0 is default)</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.reverse</span>
+
+<span class="sd">    ActionButton syntax to start spindle 1 CCW</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.1.reverse</span>
+
+
+<span class="sd">    ActionButton syntax to start spindle 0 CCW at 1800 RPM</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.reverse:1800</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        speed (float, optional) : The requested speed to spin the spindle at.</span>
+<span class="sd">            If ``speed`` is not specified the current interpreter speed setting</span>
+<span class="sd">            (as set by the last S word) is used, taking into account the</span>
+<span class="sd">            value of the spindle override if it is enabled.</span>
+<span class="sd">        spindle (int, optional) : The number of the spindle to turn ON. If</span>
+<span class="sd">            ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">speed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">speed</span> <span class="o">=</span> <span class="n">getSpeed</span><span class="p">()</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">spindle</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">SPINDLE_REVERSE</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spindle_reverse_bindOk</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_spindle_exists</span><span class="p">(</span><span class="n">spindle</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">widget</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_spindle_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_mode</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_spindle_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">]</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">d</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">reverse</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_spindle_ok</span>
+<span class="n">reverse</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_spindle_reverse_bindOk</span>
+
+
+<div class="viewcode-block" id="off">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.off">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">off</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn a spindle OFF.</span>
+
+<span class="sd">    ActionButton syntax to stop spindle 0 (spindle 0 is default)</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.off</span>
+
+<span class="sd">    ActionButton syntax to stop spindle 1</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.1.off</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        spindle (int, optional) : The number of the spindle to turn OFF. If</span>
+<span class="sd">            ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">spindle</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">SPINDLE_OFF</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span></div>
+
+
+<span class="n">off</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_spindle_ok</span>
+<span class="n">off</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_spindle_bindOk</span>
+
+
+<div class="viewcode-block" id="faster">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.faster">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">faster</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Increase spindle speed by 100rpm.</span>
+
+<span class="sd">    ActionButton syntax to increase spindle 0 speed (spindle 0 is default)</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.faster</span>
+
+<span class="sd">    ActionButton syntax to increase spindle 1</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.1.faster</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        spindle (int, optional) : The number of the spindle to increase the</span>
+<span class="sd">            speed of. If ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">spindle</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">SPINDLE_INCREASE</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span></div>
+
+
+<span class="n">faster</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_spindle_ok</span>
+<span class="n">faster</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_spindle_bindOk</span>
+
+
+<div class="viewcode-block" id="slower">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.slower">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">slower</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decrease spindle speed by 100rpm.</span>
+
+<span class="sd">    ActionButton syntax to decrease spindle 0 speed (spindle 0 is default)</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.slower</span>
+
+<span class="sd">    ActionButton syntax to decrease spindle 1 speed</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        spindle.1.slower</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        spindle (int, optional) : The number of the spindle to decrease the</span>
+<span class="sd">            speed of. If ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">spindle</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">SPINDLE_DECREASE</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span></div>
+
+
+<span class="n">slower</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_spindle_ok</span>
+<span class="n">slower</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_spindle_bindOk</span>
+
+
+<span class="c1"># Spindle CONSTANT</span>
+<div class="viewcode-block" id="constant">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.constant">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">constant</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Unclear&quot;&quot;&quot;</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">spindle</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">SPINDLE_CONSTANT</span><span class="p">)</span></div>
+
+
+<span class="n">constant</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_spindle_ok</span>
+<span class="n">constant</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_spindle_bindOk</span>
+
+
+<div class="viewcode-block" id="getSpeed">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.getSpeed">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">getSpeed</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the interpreter&#39;s speed setting for the specified spindle.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        spindle (int, optional) : The number of the spindle to get the speed</span>
+<span class="sd">            of. If ``spindle`` is not specified spindle 0 is assumed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The interpreter speed setting, with any override applied if</span>
+<span class="sd">        override enabled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">raw_speed</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">raw_speed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">raw_speed</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">DEFAULT_SPEED</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">raw_speed</span></div>
+
+
+<span class="c1">#==============================================================================</span>
+<span class="c1"># Spindle Override</span>
+<span class="c1">#==============================================================================</span>
+
+<div class="viewcode-block" id="override">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.override">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">override</span><span class="p">(</span><span class="n">override</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set spindle override percentage.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        override (float) : The desired spindle override in percent.</span>
+<span class="sd">        spindle (float, optional) : The number of the spindle to apply the</span>
+<span class="sd">            override to. If ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">spindleoverride</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">override</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_or_reset</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">spindleoverride</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_or_enable</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">set_spindle_override</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_or_disable</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">CMD</span><span class="o">.</span><span class="n">set_spindle_override</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_or_toggle_enable</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">][</span><span class="s1">&#39;override_enabled&#39;</span><span class="p">]:</span>
+        <span class="n">override</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">override</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+
+<span class="n">override</span><span class="o">.</span><span class="n">reset</span> <span class="o">=</span> <span class="n">_or_reset</span>
+<span class="n">override</span><span class="o">.</span><span class="n">enable</span> <span class="o">=</span> <span class="n">_or_enable</span>
+<span class="n">override</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="n">_or_disable</span>
+<span class="n">override</span><span class="o">.</span><span class="n">toggle_enable</span> <span class="o">=</span> <span class="n">_or_toggle_enable</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_or_ok</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">spindle</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SPINDLES</span><span class="p">:</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No spindle No. </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spindle</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON&quot;</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;override_enabled&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Override not enabled&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">_or_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_or_bindOk</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_spindle_exists</span><span class="p">(</span><span class="n">spindle</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="c1"># This will work for any widget</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_or_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">]</span><span class="o">.</span><span class="n">override_enabled</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_or_ok</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># these will only work for QSlider or QSpinBox</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">minSpindleOverride</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">INFO</span><span class="o">.</span><span class="n">maxSpindleOverride</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">]</span><span class="o">.</span><span class="n">override</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)))</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">]</span><span class="o">.</span><span class="n">override</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)))</span>
+
+        <span class="n">override</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Error in spindle.override bindOk&#39;</span><span class="p">)</span>
+
+<span class="n">override</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">override</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_or_ok</span>
+<span class="n">override</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">override</span><span class="o">.</span><span class="n">reset</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_or_bindOk</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_or_enable_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">spindle</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SPINDLES</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No spindle No. </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spindle</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">task_state</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be ON&quot;</span>
+    <span class="k">elif</span> <span class="n">STAT</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">!=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Machine must be IDLE&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">_or_enable_ok</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="n">ok</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setStatusTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ok</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_or_enable_bindOk</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_spindle_exists</span><span class="p">(</span><span class="n">spindle</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_or_enable_ok</span><span class="p">(</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">interp_state</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_or_enable_ok</span><span class="p">(</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">]</span><span class="o">.</span><span class="n">override_enabled</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">)</span>
+
+<span class="n">override</span><span class="o">.</span><span class="n">enable</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">override</span><span class="o">.</span><span class="n">disable</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">override</span><span class="o">.</span><span class="n">toggle_enable</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_or_enable_ok</span>
+<span class="n">override</span><span class="o">.</span><span class="n">enable</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">override</span><span class="o">.</span><span class="n">disable</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">override</span><span class="o">.</span><span class="n">toggle_enable</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_or_enable_bindOk</span>
+
+<span class="c1">#==============================================================================</span>
+<span class="c1"># Spindle Brake</span>
+<span class="c1">#==============================================================================</span>
+
+<div class="viewcode-block" id="brake">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.brake">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">brake</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Spindle brake Group&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="brake.on">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.brake.on">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set spindle brake ON.</span>
+
+<span class="sd">        ActionButton syntax to engage spindle 0 brake (spindle 0 is default)</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            spindle.brake.on</span>
+
+<span class="sd">        ActionButton syntax to engage spindle 1 brake</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            spindle.1.brake.on</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            spindle (int, optional) : The number of the spindle to apply the</span>
+<span class="sd">                override to. If ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">brake</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">BRAKE_ENGAGE</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="brake.off">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.brake.off">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">off</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set spindle brake OFF.</span>
+
+<span class="sd">        ActionButton syntax to disengage spindle 0 brake (spindle 0 is default)</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            spindle.brake.off</span>
+
+<span class="sd">        ActionButton syntax to disengage spindle 1 brake</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            spindle.1.brake.off</span>
+
+
+<span class="sd">        Args:</span>
+<span class="sd">            spindle (int, optional) : The number of the spindle to apply the</span>
+<span class="sd">                override to. If ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">CMD</span><span class="o">.</span><span class="n">brake</span><span class="p">(</span><span class="n">linuxcnc</span><span class="o">.</span><span class="n">BRAKE_RELEASE</span><span class="p">,</span> <span class="n">spindle</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="brake.toggle">
+<a class="viewcode-back" href="../../../actions/spindle_actions.html#qtpyvcp.actions.spindle_actions.brake.toggle">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">toggle</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Toggle spindle brake ON/OFF.</span>
+
+<span class="sd">        ActionButton syntax to toggle spindle 0 brake (spindle 0 is default)</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            spindle.brake.toggle</span>
+
+<span class="sd">        ActionButton syntax to toggle spindle 1 brake</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            spindle.1.brake.toggle</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            spindle (int, optional) : The number of the spindle to apply the</span>
+<span class="sd">                override to. If ``spindle`` is not specified spindle 0 is assumed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">brake</span><span class="o">.</span><span class="n">is_on</span><span class="p">():</span>
+            <span class="n">brake</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">brake</span><span class="o">.</span><span class="n">on</span><span class="p">()</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_on</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">][</span><span class="s1">&#39;brake&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">BRAKE_ENGAGE</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_brake_is_on</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">STAT</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">][</span><span class="s1">&#39;brake&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">BRAKE_ENGAGE</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_brake_bind_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_spindle_exists</span><span class="p">(</span><span class="n">spindle</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_spindle_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">task_mode</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_spindle_ok</span><span class="p">(</span><span class="n">spindle</span><span class="o">=</span><span class="n">spindle</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">))</span>
+    <span class="n">STATUS</span><span class="o">.</span><span class="n">spindle</span><span class="p">[</span><span class="n">spindle</span><span class="p">]</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">setChecked</span><span class="p">)</span>
+
+<span class="n">brake</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">brake</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">brake</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">ok</span> <span class="o">=</span> <span class="n">_spindle_ok</span>
+<span class="n">brake</span><span class="o">.</span><span class="n">on</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">brake</span><span class="o">.</span><span class="n">off</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">brake</span><span class="o">.</span><span class="n">toggle</span><span class="o">.</span><span class="n">bindOk</span> <span class="o">=</span> <span class="n">_brake_bind_ok</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

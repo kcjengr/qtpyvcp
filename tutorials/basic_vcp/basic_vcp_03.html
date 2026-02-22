@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine Controls &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Jog and DRO" href="basic_vcp_04.html" />
+    <link rel="prev" title="Setup the Layout" href="basic_vcp_02.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Basic VCP</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic_vcp_01.html">Clone and Prepare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basic_vcp_02.html">Setup the Layout</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Machine Controls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basic_vcp_04.html">Jog and DRO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basic_vcp_05.html">Back Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basic_vcp_06.html">File Navigator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basic_vcp_07.html">MDI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basic_vcp_08.html">Offsets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../components/dialogs.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../components/dro_tutorial.html">DRO Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../components/machine_buttons.html">Machine Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../components/mdi.html">MDI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../components/touch_screen.html">Touch Screens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../components/overrides.html">Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../components/button_groups.html">Button Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vcp_template.html">VCP Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../first_vcp.html">Making your first VCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../widget_rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc.html">Tips &amp; Tricks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Tutorials</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Basic VCP</a></li>
+      <li class="breadcrumb-item active">Machine Controls</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorials/basic_vcp/basic_vcp_03.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="machine-controls">
+<h1>Machine Controls<a class="headerlink" href="#machine-controls" title="Link to this heading"></a></h1>
+<p>We want all <cite>ActionButtons</cite> in VCP to have a minimum height and width of 50
+pixels and the font size to be 14pt so in the stylesheet for the <cite>QMainWindow</cite>
+put the following.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ActionButton</span> <span class="p">{</span>
+<span class="nb">min</span><span class="o">-</span><span class="n">height</span><span class="p">:</span> <span class="mi">50</span><span class="n">px</span><span class="p">;</span>
+<span class="nb">min</span><span class="o">-</span><span class="n">width</span><span class="p">:</span> <span class="mi">50</span><span class="n">px</span><span class="p">;</span>
+<span class="n">font</span><span class="p">:</span> <span class="mi">14</span><span class="n">pt</span> <span class="s2">&quot;DejaVu Sans&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/vcp1-designer-08.png"><img alt="../../_images/vcp1-designer-08.png" class="align-center" height="300" src="../../_images/vcp1-designer-08.png" width="580" />
+</a>
+<p>Now add three action buttons in the bottom frame and from left to right add the
+following to the <cite>actionName</cite> of each button.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">estop</span><span class="o">.</span><span class="n">toggle</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">toggle</span>
+<span class="n">machine</span><span class="o">.</span><span class="n">home</span><span class="o">.</span><span class="n">all</span>
+</pre></div>
+</div>
+<p>Name the left button <cite>E Stop</cite> and the middle button <cite>Power</cite>. The <cite>Home All</cite>
+button will get its name from the rule.</p>
+<p>Make sure you check off the <cite>checkable</cite> box for E Stop and Power buttons, this
+makes them a toggle button.</p>
+<p>Now we need to add a couple of rules to the <cite>Home</cite> button. The first rule will
+set the text of the button based on if all the joints are homed or not. Double
+click on the button to open the <cite>Rules Editor</cite> and add a new rule. The
+<cite>Property</cite> is Text. Click in the blue channel box and type <cite>s</cite> now pick
+<cite>status:all_axes_homed</cite> from the list. Notice the type is <cite>bool</cite> which is a true
+false type and that is what we want for this.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">status</span><span class="p">:</span><span class="n">all_axes_homed</span>
+</pre></div>
+</div>
+<p>The expression to change the text of the button is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;Homed&#39;</span> <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;Home</span><span class="se">\n</span><span class="s1">All&#39;</span>
+</pre></div>
+</div>
+<p>Notice that ‘Home\nAll’ has a new line character <cite>\n</cite> in it.</p>
+<a class="reference internal image-reference" href="../../_images/vcp1-designer-09.png"><img alt="../../_images/vcp1-designer-09.png" class="align-center" height="257" src="../../_images/vcp1-designer-09.png" width="404" />
+</a>
+<p>The second rule will have the same channel but the property will be for the
+<cite>Style Sheet</cite> with the following expression:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;background-color:rgb(138, 226, 52)&#39;</span> <span class="k">if</span> <span class="n">ch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="k">else</span> <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/vcp1-designer-10.png"><img alt="../../_images/vcp1-designer-10.png" class="align-center" height="257" src="../../_images/vcp1-designer-10.png" width="437" />
+</a>
+<p>Now when we run the VCP you can see the buttons in action.</p>
+<a class="reference internal image-reference" href="../../_images/vcp1-run-04.png"><img alt="../../_images/vcp1-run-04.png" class="align-center" height="380" src="../../_images/vcp1-run-04.png" width="487" />
+</a>
+<p>To see the styles for <cite>machine.estop</cite> and <cite>machine.power</cite> buttons look in
+<cite>vcp1/vcp1/ui/style.css and you can see the how the styles are applied using the
+style.qss file. For example the style for the E Stop button is applied with the
+following. Notice that the type of widget is an `ActionButton</cite> and the specfic
+button has the <cite>actionName</cite> machine.estop.toggle. and the state is <cite>checked</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ActionButton</span><span class="p">[</span><span class="n">actionName</span><span class="o">=</span><span class="s2">&quot;machine.estop.toggle&quot;</span><span class="p">]:</span><span class="n">checked</span><span class="p">{</span>
+    <span class="n">background</span><span class="p">:</span> <span class="n">rgb</span><span class="p">(</span><span class="mi">239</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">41</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now lets add the rest of the machine buttons so add five more <cite>ActionButtons</cite> to
+the right of the Home button and name them Run, Step, Pause, Resume, and Abort.</p>
+<p>The <cite>actionNames</cite> are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span><span class="o">.</span><span class="n">run</span>
+<span class="n">program</span><span class="o">.</span><span class="n">step</span>
+<span class="n">program</span><span class="o">.</span><span class="n">pause</span>
+<span class="n">program</span><span class="o">.</span><span class="n">resume</span>
+<span class="n">program</span><span class="o">.</span><span class="n">abort</span>
+</pre></div>
+</div>
+<p>Now we have the machine buttons complete.</p>
+<a class="reference internal image-reference" href="../../_images/vcp1-run-05.png"><img alt="../../_images/vcp1-run-05.png" class="align-center" height="380" src="../../_images/vcp1-run-05.png" width="487" />
+</a>
+<p>The program buttons will not be enabled until we load a program.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="basic_vcp_04.html" class="btn btn-neutral float-right" title="Jog and DRO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="basic_vcp_02.html" class="btn btn-neutral float-left" title="Setup the Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

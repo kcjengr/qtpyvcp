@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Action Helpers &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Machine Actions" href="machine_actions.html" />
+    <link rel="prev" title="Actions" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Actions</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Action Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="machine_actions.html">Machine Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="program_actions.html">Program Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spindle_actions.html">Spindle Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coolant_actions.html">Coolant Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool_actions.html">Tool Actions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Actions</a></li>
+      <li class="breadcrumb-item active">Action Helpers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/actions/action_helpers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-qtpyvcp.actions">
+<span id="action-helpers"></span><h1>Action Helpers<a class="headerlink" href="#module-qtpyvcp.actions" title="Link to this heading"></a></h1>
+<dl class="py exception">
+<dt class="sig sig-object py" id="qtpyvcp.actions.InvalidAction">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.</span></span><span class="sig-name descname"><span class="pre">InvalidAction</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions.html#InvalidAction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.InvalidAction" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.bindWidget">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.</span></span><span class="sig-name descname"><span class="pre">bindWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions.html#bindWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.bindWidget" title="Link to this definition"></a></dt>
+<dd><p>Binds a widget to an action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<em>QWidget</em>) – The widget to bind the action too. Typically <cite>widget</cite>
+is a QPushButton, QCheckBox, QComboBox, QSlider or QAction instance.</p></li>
+<li><p><strong>action</strong> (<em>str</em>) – The string identifier of the action to bind the widget
+to, in the format <code class="docutils literal notranslate"><span class="pre">action_class.action_name:arg1,</span> <span class="pre">arg2</span> <span class="pre">...</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>A QPushButton or QCheckBox would typically be bound to an action
+that does not take an argument, for example <code class="docutils literal notranslate"><span class="pre">machine.power.toggle</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bindWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s1">&#39;machine.power.toggle&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>But it is possible to specify an argument by appending an ‘:’ followed
+by the argument value. For example we can bind a QPushButton so that it
+homes the X axis when the button is pressed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bindWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s1">&#39;machine.home.axis:x&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Widgets such as QSliders and QComboBoxs that have a value associated
+with them can also be bound to a action, and the value will
+automatically be passed to the action. For example we can bind
+a QSLider to the <code class="docutils literal notranslate"><span class="pre">spindle.0.override</span></code> action:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bindWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="s1">&#39;spindle.0.override&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function" id="module-qtpyvcp.actions.base_actions">
+<dt class="sig sig-object py" id="qtpyvcp.actions.base_actions.setTaskMode">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.base_actions.</span></span><span class="sig-name descname"><span class="pre">setTaskMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/base_actions.html#setTaskMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.base_actions.setTaskMode" title="Link to this definition"></a></dt>
+<dd><p>Sets task mode, if possible</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_mode</strong> (<em>int</em>) – linuxcnc.MODE_MANUAL, linuxcnc.MODE_MDI or linuxcnc.MODE_AUTO</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.base_actions.isRunning">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.base_actions.</span></span><span class="sig-name descname"><span class="pre">isRunning</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/base_actions.html#isRunning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.base_actions.isRunning" title="Link to this definition"></a></dt>
+<dd><p>Returns TRUE if machine is moving due to MDI, program execution, etc.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="machine_actions.html" class="btn btn-neutral float-right" title="Machine Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Actions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

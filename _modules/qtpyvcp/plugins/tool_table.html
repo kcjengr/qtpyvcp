@@ -1,0 +1,632 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.plugins.tool_table &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../plugins.html">qtpyvcp.plugins</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.plugins.tool_table</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.plugins.tool_table</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Tool Table data plugin.</span>
+
+<span class="sd">Exposes all the info available in the tool table. Watches the</span>
+<span class="sd">tool table file for changes and re-loads as needed.</span>
+
+<span class="sd">Tool Table YAML configuration:</span>
+
+<span class="sd">.. code-block:: yaml</span>
+
+<span class="sd">    data_plugins:</span>
+<span class="sd">      tooltable:</span>
+<span class="sd">        kwargs:</span>
+<span class="sd">          # specify the columns that should be read and writen to the</span>
+<span class="sd">          # tooltable file. To use all columns set to: TPXYZABCUVWDIJQR</span>
+<span class="sd">          columns: PTDZR</span>
+<span class="sd">          # specify text to be added before the tool table data</span>
+<span class="sd">          file_header_template: |</span>
+<span class="sd">            LinuxCNC Tool Table</span>
+<span class="sd">            -------------------</span>
+
+<span class="sd">            QtPyVCP will preserve comments before the opening semicolon.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">takewhile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">linuxcnc</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFileSystemWatcher</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Signal</span><span class="p">,</span> <span class="n">Slot</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">qtpyvcp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.actions.machine_actions</span><span class="w"> </span><span class="kn">import</span> <span class="n">issue_mdi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataPlugin</span><span class="p">,</span> <span class="n">DataChannel</span><span class="p">,</span> <span class="n">getPlugin</span>
+
+<span class="n">CMD</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">STATUS</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="n">STAT</span> <span class="o">=</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">stat</span>
+<span class="n">INFO</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+
+<span class="n">IN_DESIGNER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="merge">
+<a class="viewcode-back" href="../../../plugins/tool_table.html#qtpyvcp.plugins.tool_table.merge">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shallow merge two dictionaries&quot;&quot;&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span></div>
+
+
+
+<span class="n">DEFAULT_TOOL</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;J&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;Z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">NO_TOOL</span> <span class="o">=</span> <span class="n">merge</span><span class="p">(</span><span class="n">DEFAULT_TOOL</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;No Tool Loaded&#39;</span><span class="p">})</span>
+
+<span class="c1"># FILE_HEADER = &quot;&quot;&quot;</span>
+<span class="c1"># LinuxCNC Tool Table</span>
+<span class="c1"># -------------------</span>
+<span class="c1">#</span>
+<span class="c1"># (QtPyVCP will preserve any comments before this separator.)</span>
+<span class="c1"># ---</span>
+<span class="c1"># Generated by: QtPyVCP ToolTable plugin ({version})</span>
+<span class="c1"># Generated on: {datetime:%x %I:%M:%S %p}</span>
+<span class="c1">#</span>
+<span class="c1"># &quot;&quot;&quot;</span>
+
+<span class="n">COLUMN_LABELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;A Offset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="s1">&#39;B Offset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="s1">&#39;C Offset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;Diameter&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="s1">&#39;Fnt Ang&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;J&#39;</span><span class="p">:</span> <span class="s1">&#39;Bak Ang&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="s1">&#39;Pocket&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="s1">&#39;Orient&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;Remark&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="s1">&#39;Tool&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="s1">&#39;U Offset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="s1">&#39;V Offset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;W&#39;</span><span class="p">:</span> <span class="s1">&#39;W Offset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="s1">&#39;X Offset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;Y Offset&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Z&#39;</span><span class="p">:</span> <span class="s1">&#39;Z Offset&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Column formats when writing tool table</span>
+<span class="n">INT_COLUMN_WIDTH</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">FLOAT_COLUMN_WIDTH</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">FLOAT_DECIMAL_PLACES</span> <span class="o">=</span> <span class="mi">6</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">makeLorumIpsumToolTable</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">merge</span><span class="p">(</span><span class="n">DEFAULT_TOOL</span><span class="p">,</span>
+                     <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;Lorum Ipsum &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)})</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+
+
+<div class="viewcode-block" id="ToolTable">
+<a class="viewcode-back" href="../../../plugins/tool_table.html#qtpyvcp.plugins.tool_table.ToolTable">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ToolTable</span><span class="p">(</span><span class="n">DataPlugin</span><span class="p">):</span>
+
+    <span class="n">TOOL_TABLE</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">NO_TOOL</span><span class="p">}</span>
+    <span class="n">DEFAULT_TOOL</span> <span class="o">=</span> <span class="n">DEFAULT_TOOL</span>
+    <span class="n">COLUMN_LABELS</span> <span class="o">=</span> <span class="n">COLUMN_LABELS</span>
+
+    <span class="n">tool_table_changed</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;TPXYZABCUVWDIJQR&#39;</span><span class="p">,</span> <span class="n">file_header_template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">remember_tool_in_spindle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ToolTable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">db_prog</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">ini</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;EMCIO&#39;</span><span class="p">,</span><span class="s1">&#39;DB_PROGRAM&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fs_watcher</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_header_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_header_template</span> <span class="o">=</span> <span class="n">file_header_template</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remember_tool_in_spindle</span> <span class="o">=</span> <span class="n">remember_tool_in_spindle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validateColumns</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s1">&#39;TPXYZABCUVWDIJQR&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_manager</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;persistent_data_manager&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentToolNumber</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool_table_file</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getToolTableFile</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool_table_file</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_prog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadToolTable</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_tool</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TOOL_TABLE</span><span class="p">[</span><span class="n">STATUS</span><span class="o">.</span><span class="n">tool_in_spindle</span><span class="o">.</span><span class="n">getValue</span><span class="p">()])</span>
+
+        <span class="c1"># update signals</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">tool_in_spindle</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setCurrentToolNumber</span><span class="p">)</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">tool_table</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadToolTable</span><span class="p">())</span>
+
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reload_tool</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reload_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remember_tool_in_spindle</span> <span class="ow">and</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">enabled</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">tnum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_manager</span><span class="o">.</span><span class="n">getData</span><span class="p">(</span><span class="s1">&#39;tool-in-spindle&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;reload_tool: tool in spindle: </span><span class="si">%i</span><span class="s2"> new tool: </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">STAT</span><span class="o">.</span><span class="n">tool_in_spindle</span><span class="p">,</span> <span class="n">tnum</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">tool_in_spindle</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">tnum</span> <span class="o">!=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">tool_in_spindle</span><span class="p">:</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reloading tool in spindle: </span><span class="si">%i</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">tnum</span><span class="p">)</span>
+                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;M61 Q</span><span class="si">{0}</span><span class="s2"> G43&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tnum</span><span class="p">)</span>
+                <span class="c1"># give LinuxCNC time to switch modes</span>
+                <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">issue_mdi</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">current_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Current Tool Info</span>
+
+<span class="sd">        Available items:</span>
+
+<span class="sd">        * T -- tool number</span>
+<span class="sd">        * P -- pocket number</span>
+<span class="sd">        * X -- x offset</span>
+<span class="sd">        * Y -- y offset</span>
+<span class="sd">        * Z -- z offset</span>
+<span class="sd">        * A -- a offset</span>
+<span class="sd">        * B -- b offset</span>
+<span class="sd">        * C -- c offset</span>
+<span class="sd">        * U -- u offset</span>
+<span class="sd">        * V -- v offset</span>
+<span class="sd">        * W -- w offset</span>
+<span class="sd">        * I -- front angle</span>
+<span class="sd">        * J -- back angle</span>
+<span class="sd">        * Q -- orientation</span>
+<span class="sd">        * R -- remark</span>
+
+<span class="sd">        Rules channel syntax::</span>
+
+<span class="sd">            tooltable:current_tool</span>
+<span class="sd">            tooltable:current_tool?X</span>
+<span class="sd">            tooltable:current_tool?x_offset</span>
+
+<span class="sd">        :param item: the name of the tool data item to get</span>
+<span class="sd">        :return: dict, int, float, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOOL_TABLE</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">tool_in_spindle</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOOL_TABLE</span><span class="p">[</span><span class="n">STAT</span><span class="o">.</span><span class="n">tool_in_spindle</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+
+<div class="viewcode-block" id="ToolTable.initialise">
+<a class="viewcode-back" href="../../../plugins/tool_table.html#qtpyvcp.plugins.tool_table.ToolTable.initialise">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_prog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fs_watcher</span> <span class="o">=</span> <span class="n">QFileSystemWatcher</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fs_watcher</span><span class="o">.</span><span class="n">addPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool_table_file</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fs_watcher</span><span class="o">.</span><span class="n">fileChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">onToolTableFileChanged</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fs_watcher</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="ToolTable.terminate">
+<a class="viewcode-back" href="../../../plugins/tool_table.html#qtpyvcp.plugins.tool_table.ToolTable.terminate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_manager</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="s1">&#39;tool-in-spindle&#39;</span><span class="p">,</span> <span class="n">STAT</span><span class="o">.</span><span class="n">tool_in_spindle</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ToolTable.validateColumns">
+<a class="viewcode-back" href="../../../plugins/tool_table.html#qtpyvcp.plugins.tool_table.ToolTable.validateColumns">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validateColumns</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate display column specification.</span>
+
+<span class="sd">        The user can specify columns in multiple ways, method is used to make</span>
+<span class="sd">        sure that that data is validated and converted to a consistent format.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            columns (str | list) : A string or list of the column IDs</span>
+<span class="sd">                that should be shown in the tooltable.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            None if not valid, else a list of uppercase column IDs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">return</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="s1">&#39;TPXYZABCUVWDIJQR&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ToolTable.newTool">
+<a class="viewcode-back" href="../../../plugins/tool_table.html#qtpyvcp.plugins.tool_table.ToolTable.newTool">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">newTool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tnum</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dict of default tool values for a new tool.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tnum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tnum</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TOOL_TABLE</span><span class="p">)</span>
+        <span class="n">new_tool</span> <span class="o">=</span> <span class="n">DEFAULT_TOOL</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_tool</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="n">tnum</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;New Tool&#39;</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">new_tool</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">onToolTableFileChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Tool Table file changed: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="c1"># ToolEdit deletes the file and then rewrites it, so wait</span>
+        <span class="c1"># a bit to ensure the new data has been writen out.</span>
+        <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reloadToolTable</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">setCurrentToolNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_num</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_tool</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TOOL_TABLE</span><span class="p">[</span><span class="n">tool_num</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reloadToolTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># rewatch the file if it stop being watched because it was deleted</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_table_file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs_watcher</span><span class="o">.</span><span class="n">files</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_prog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fs_watcher</span><span class="o">.</span><span class="n">addPath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool_table_file</span><span class="p">)</span>
+
+        <span class="c1"># reload with the new data</span>
+        <span class="n">tool_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loadToolTable</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool_table_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">tool_table</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">iterTools</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">tool_table</span> <span class="o">=</span> <span class="n">tool_table</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOOL_TABLE</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validateColumns</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+        <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tool_table</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">tool_data</span> <span class="o">=</span> <span class="n">tool_table</span><span class="p">[</span><span class="n">tool</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="n">tool_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">loadToolTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">tool_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tool_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_table_file</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tool_file</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_prog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+                <span class="n">lorum_tooltable</span> <span class="o">=</span> <span class="n">makeLorumIpsumToolTable</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_tool</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">lorum_tooltable</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">lorum_tooltable</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Tool table file does not exist: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tool_file</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_prog</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tool_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+
+            <span class="c1"># find opening colon, and get header data so it can be restored</span>
+            <span class="k">for</span> <span class="n">rlnum</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">):</span>
+                    <span class="n">lnum</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">-</span> <span class="n">rlnum</span>
+                    <span class="n">raw_header</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[:</span><span class="n">lnum</span><span class="p">]</span>
+                    <span class="n">lines</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">lnum</span><span class="p">:]</span>
+    
+                    <span class="bp">self</span><span class="o">.</span><span class="n">orig_header_lines</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">takewhile</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span>
+                                            <span class="ow">not</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;---&#39;</span> <span class="ow">and</span>
+                                            <span class="ow">not</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;;Tool&#39;</span><span class="p">),</span> <span class="n">raw_header</span><span class="p">))</span>
+                    <span class="k">break</span>
+
+            <span class="n">table</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">NO_TOOL</span><span class="p">,}</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+    
+                <span class="n">data</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+                <span class="n">items</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([A-Z]+[0-9.+-]+)&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+    
+                <span class="n">tool</span> <span class="o">=</span> <span class="n">DEFAULT_TOOL</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                    <span class="n">descriptor</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="s1">&#39;TPXYZABCUVWDIJQR&#39;</span><span class="p">:</span>
+                        <span class="n">value</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                        <span class="k">if</span> <span class="n">descriptor</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">):</span>
+    
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">tool</span><span class="p">[</span><span class="n">descriptor</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                            <span class="k">except</span><span class="p">:</span>
+                                <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Error converting value to int: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                                <span class="k">break</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="n">tool</span><span class="p">[</span><span class="n">descriptor</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                            <span class="k">except</span><span class="p">:</span>
+                                <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Error converting value to float: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                                <span class="k">break</span>
+    
+                <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    
+                <span class="n">tnum</span> <span class="o">=</span> <span class="n">tool</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">tnum</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="k">continue</span>
+    
+                <span class="c1"># add the tool to the table</span>
+                <span class="n">table</span><span class="p">[</span><span class="n">tnum</span><span class="p">]</span> <span class="o">=</span> <span class="n">tool</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># build tool table from linxcnc status object</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">NO_TOOL</span><span class="p">,}</span>
+            <span class="n">lcnc_tools</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">tool_table</span>
+            <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">lcnc_tools</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">newtool</span> <span class="o">=</span> <span class="n">DEFAULT_TOOL</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="c1"># build up new tool</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lcnc_tools</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">tool</span><span class="p">))</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">xoffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">yoffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">zoffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">aoffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">boffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">coffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">uoffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">voffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">woffset</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">diameter</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">frontangle</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">backangle</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;Q&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
+                    <span class="n">newtool</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Database tool&#39;</span>
+                    <span class="n">table</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">id</span><span class="p">)]</span> <span class="o">=</span> <span class="n">newtool</span>
+
+        <span class="c1"># update tooltablec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">TOOL_TABLE</span> <span class="o">=</span> <span class="n">table</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_tool</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">TOOL_TABLE</span><span class="p">[</span><span class="n">STATUS</span><span class="o">.</span><span class="n">tool_in_spindle</span><span class="o">.</span><span class="n">getValue</span><span class="p">()])</span>
+
+        <span class="c1"># import json</span>
+        <span class="c1"># print(json.dumps(table, sort_keys=True, indent=4))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool_table_changed</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">table</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">getToolTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOOL_TABLE</span>
+
+<div class="viewcode-block" id="ToolTable.saveToolTable">
+<a class="viewcode-back" href="../../../plugins/tool_table.html#qtpyvcp.plugins.tool_table.ToolTable.saveToolTable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">saveToolTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tool_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write tooltable data to file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tool_table (dict) : Dictionary of dictionaries containing</span>
+<span class="sd">                the tool data to write to the file.</span>
+<span class="sd">            columns (str | list) : A list of data columns to write.</span>
+<span class="sd">                If `None` will use the value of ``self.columns``.</span>
+<span class="sd">            tool_file (str) : Path to write the tooltable too.</span>
+<span class="sd">                Defaults to ``self.tool_table_file``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_prog</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Tool Table Plugin trying to write to DB Data Storage - ignoring request.&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validateColumns</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
+
+        <span class="k">if</span> <span class="n">tool_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tool_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_table_file</span>
+
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">header_lines</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># restore file header</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_header_template</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">header_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_header_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                    <span class="n">version</span><span class="o">=</span><span class="n">qtpyvcp</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+                                    <span class="n">datetime</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+                <span class="n">header_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>  <span class="c1"># extra new line before table header</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_header_lines</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">orig_header_lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">header_lines</span><span class="p">[</span><span class="n">header_lines</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;---&#39;</span><span class="p">):])</span>
+                <span class="n">header_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_header_lines</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">header_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_header_lines</span>
+
+        <span class="n">lines</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">header_lines</span><span class="p">)</span>
+
+        <span class="c1"># create the table header</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="s1">&#39;P&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="n">columns</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="n">INT_COLUMN_WIDTH</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="s1">&#39;TPQ&#39;</span> <span class="k">else</span> <span class="n">FLOAT_COLUMN_WIDTH</span><span class="p">)</span> <span class="o">-</span> \
+                <span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;{:&lt;</span><span class="si">{w}</span><span class="s1">}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">COLUMN_LABELS</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">))</span>
+
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Remark&#39;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;;&#39;</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+
+        <span class="c1"># add the tools</span>
+        <span class="k">for</span> <span class="n">tool_num</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tool_table</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">tool_data</span> <span class="o">=</span> <span class="n">tool_table</span><span class="p">[</span><span class="n">tool_num</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="s1">&#39;TPQ&#39;</span><span class="p">:</span>
+                    <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{col}</span><span class="s1">{val:&lt;</span><span class="si">{w}</span><span class="s1">}&#39;</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
+                                         <span class="n">val</span><span class="o">=</span><span class="n">tool_data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span>
+                                         <span class="n">w</span><span class="o">=</span><span class="n">INT_COLUMN_WIDTH</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{col}</span><span class="s1">{val:&lt;+</span><span class="si">{w}</span><span class="s1">.</span><span class="si">{d}</span><span class="s1">f}&#39;</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
+                                         <span class="n">val</span><span class="o">=</span><span class="n">tool_data</span><span class="p">[</span><span class="n">col</span><span class="p">],</span>
+                                         <span class="n">w</span><span class="o">=</span><span class="n">FLOAT_COLUMN_WIDTH</span><span class="p">,</span>
+                                         <span class="n">d</span><span class="o">=</span><span class="n">FLOAT_DECIMAL_PLACES</span><span class="p">))</span>
+
+            <span class="n">comment</span> <span class="o">=</span> <span class="n">tool_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">comment</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;; &#39;</span> <span class="o">+</span> <span class="n">comment</span><span class="p">)</span>
+
+
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+
+        <span class="c1"># for line in lines:</span>
+        <span class="c1">#     print(line)</span>
+
+        <span class="c1"># write to file</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tool_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">))</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># new line at end of file</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">fsync</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
+
+        <span class="n">CMD</span><span class="o">.</span><span class="n">load_tool_table</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

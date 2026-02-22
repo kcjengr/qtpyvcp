@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dialogs &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Widget Rules" href="../rules.html" />
+    <link rel="prev" title="HAL Widgets" href="../hal/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html">Base Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.ChanList"><code class="docutils literal notranslate"><span class="pre">ChanList</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget"><code class="docutils literal notranslate"><span class="pre">VCPPrimitiveWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget"><code class="docutils literal notranslate"><span class="pre">VCPBaseWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPWidget"><code class="docutils literal notranslate"><span class="pre">VCPWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.CMDWidget"><code class="docutils literal notranslate"><span class="pre">CMDWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.HALWidget"><code class="docutils literal notranslate"><span class="pre">HALWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPButton"><code class="docutils literal notranslate"><span class="pre">VCPButton</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buttons/index.html">Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hal/index.html">HAL Widgets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html">Recent Files Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html#homing-menu">Homing Menu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Widgets</a></li>
+      <li class="breadcrumb-item active">Dialogs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/widgets/dialogs/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-qtpyvcp.widgets.dialogs.base_dialog">
+<span id="dialogs"></span><h1>Dialogs<a class="headerlink" href="#module-qtpyvcp.widgets.dialogs.base_dialog" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.base_dialog.BaseDialog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.dialogs.base_dialog.</span></span><span class="sig-name descname"><span class="pre">BaseDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ui_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">popup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frameless</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stay_on_top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/base_dialog.html#BaseDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.base_dialog.BaseDialog" title="Link to this definition"></a></dt>
+<dd><p>Base Dialog</p>
+<p>Base QtPyVCP dialog class.</p>
+<p>This is intended to be used as a base class for custom dialogs, as well
+as a provider for use in YAML config files. This allows loading custom
+dialogs from .ui files without needing to write any python code.</p>
+<p>You can launch dialogs using a
+<a class="reference internal" href="../buttons/index.html"><span class="doc">Dialog Button</span></a> or
+from a window menu item.</p>
+<p class="rubric">Example</p>
+<p>YAML config for loading a custom dialog called <cite>my_dialog</cite> from a .ui
+file named <code class="docutils literal notranslate"><span class="pre">my_diloag.ui</span></code> located in the same dir as the .yml file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dialogs</span><span class="p">:</span>
+  <span class="n">my_dialog</span><span class="p">:</span>
+    <span class="n">provider</span><span class="p">:</span> <span class="n">qtpyvcp</span><span class="o">.</span><span class="n">widgets</span><span class="o">.</span><span class="n">dialogs</span><span class="o">.</span><span class="n">base_dialog</span><span class="p">:</span><span class="n">BaseDialog</span>
+    <span class="n">kwargs</span><span class="p">:</span>
+      <span class="n">ui_file</span><span class="p">:</span> <span class="p">{{</span> <span class="n">file</span><span class="o">.</span><span class="n">dir</span> <span class="p">}}</span><span class="o">/</span><span class="n">my_dialog</span><span class="o">.</span><span class="n">ui</span>
+      <span class="n">title</span><span class="p">:</span> <span class="n">My</span> <span class="n">Dialog</span> <span class="n">Title</span>    <span class="c1"># optional, set the dialog title</span>
+      <span class="n">modal</span><span class="p">:</span> <span class="n">false</span>              <span class="c1"># optional, whether the dialog is modal</span>
+      <span class="n">popup</span><span class="p">:</span> <span class="n">false</span>              <span class="c1"># optional, whether the dialog is a popup</span>
+      <span class="n">frameless</span><span class="p">:</span> <span class="n">false</span>          <span class="c1"># optional, whether the dialog is frameless</span>
+      <span class="n">stay_on_top</span><span class="p">:</span> <span class="n">true</span>         <span class="c1"># optional, whether the dialog stays on top</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – The dialog’s parent window, or None.</p></li>
+<li><p><strong>ui_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The path of a .ui file to load the dialog
+from. The ui base widget should be a QDialog.</p></li>
+<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) – The title to use for the dialog. This will
+override any title property set in QtDesigner.</p></li>
+<li><p><strong>modal</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the dialog should be application modal.
+This will override any modality hints set in QtDesigner.</p></li>
+<li><p><strong>frameless</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the window has a frame or not.
+If the window does not have a frame you will need some way to
+close it, like an Ok or Cancel button.</p></li>
+<li><p><strong>popup</strong> – (bool, optional) : Makes the dialog use a frame less window
+that automatically hides when it looses focus.</p></li>
+<li><p><strong>stay_on_top</strong> (<em>bool</em><em>, </em><em>optional</em>) – Sets the stay on top hint window flag.
+This overrides any window flags set in QtDesiger.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.base_dialog.BaseDialog.loadUiFile">
+<span class="sig-name descname"><span class="pre">loadUiFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ui_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/base_dialog.html#BaseDialog.loadUiFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.base_dialog.BaseDialog.loadUiFile" title="Link to this definition"></a></dt>
+<dd><p>Load dialog from a .ui file.</p>
+<p>The .ui file base class should be a QDialog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ui_file</strong> (<em>str</em>) – path to the .ui file to load.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.base_dialog.BaseDialog.setWindowFlag">
+<span class="sig-name descname"><span class="pre">setWindowFlag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/base_dialog.html#BaseDialog.setWindowFlag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.base_dialog.BaseDialog.setWindowFlag" title="Link to this definition"></a></dt>
+<dd><p>BackPort QWidget.setWindowFlag() implementation from Qt 5.9</p>
+<p>This method was introduced in Qt 5.9 so is not present
+in Qt 5.7.1 which is standard on Debian 9 (stretch), so
+add our own implementation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.dialogs.about_dialog">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.about_dialog.AboutDialog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.dialogs.about_dialog.</span></span><span class="sig-name descname"><span class="pre">AboutDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/about_dialog.html#AboutDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.about_dialog.AboutDialog" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.dialogs.error_dialog">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.error_dialog.ErrorDialog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.dialogs.error_dialog.</span></span><span class="sig-name descname"><span class="pre">ErrorDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/error_dialog.html#ErrorDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.error_dialog.ErrorDialog" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.dialogs.offsets_dialog">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.offsets_dialog.OffsetsDialog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.dialogs.offsets_dialog.</span></span><span class="sig-name descname"><span class="pre">OffsetsDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/offsets_dialog.html#OffsetsDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.offsets_dialog.OffsetsDialog" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.dialogs.open_file_dialog">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.dialogs.open_file_dialog.</span></span><span class="sig-name descname"><span class="pre">OpenFileDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/open_file_dialog.html#OpenFileDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog" title="Link to this definition"></a></dt>
+<dd><p>NGC file chooser dialog.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog.accept">
+<span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/open_file_dialog.html#OpenFileDialog.accept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog.accept" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/open_file_dialog.html#OpenFileDialog.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/open_file_dialog.html#OpenFileDialog.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.open_file_dialog.OpenFileDialog.terminate" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application ends.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.dialogs.probesim_dialog">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.probesim_dialog.ProbeSim">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.dialogs.probesim_dialog.</span></span><span class="sig-name descname"><span class="pre">ProbeSim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/probesim_dialog.html#ProbeSim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.probesim_dialog.ProbeSim" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.probesim_dialog.ProbeSim.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/probesim_dialog.html#ProbeSim.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.probesim_dialog.ProbeSim.close" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.dialogs.toolchange_dialog">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.dialogs.toolchange_dialog.</span></span><span class="sig-name descname"><span class="pre">ToolChangeDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/toolchange_dialog.html#ToolChangeDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog" title="Link to this definition"></a></dt>
+<dd><p>Tool Change Dialog</p>
+<p>Manual tool changing dialog component</p>
+<p>This is a qtpyvcp replacement of axis’ <cite>hal_manualtoolchange</cite>. It
+uses the same pin names in the same way, but the HAL component they
+are under is called <cite>qtpyvcp_manualtoolchange</cite> instead.</p>
+<p class="rubric">Example</p>
+<p>Remove any references in .hal to <code class="docutils literal notranslate"><span class="pre">hal_manualtoolchange</span></code>
+and remove <code class="docutils literal notranslate"><span class="pre">net</span> <span class="pre">tool-change-loop</span></code> if you have it.</p>
+<p>To your main <cite>.hal</cite> add:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#  ---manual tool change signals---</span>
+<span class="n">net</span> <span class="n">tool</span><span class="o">-</span><span class="n">change</span><span class="o">-</span><span class="n">request</span>    <span class="o">&lt;=</span> <span class="n">iocontrol</span><span class="mf">.0</span><span class="o">.</span><span class="n">tool</span><span class="o">-</span><span class="n">change</span>
+<span class="n">net</span> <span class="n">tool</span><span class="o">-</span><span class="n">change</span><span class="o">-</span><span class="n">confirmed</span>  <span class="o">=&gt;</span> <span class="n">iocontrol</span><span class="mf">.0</span><span class="o">.</span><span class="n">tool</span><span class="o">-</span><span class="n">changed</span>
+<span class="n">net</span> <span class="n">tool</span><span class="o">-</span><span class="n">number</span>            <span class="o">&lt;=</span> <span class="n">iocontrol</span><span class="mf">.0</span><span class="o">.</span><span class="n">tool</span><span class="o">-</span><span class="n">prep</span><span class="o">-</span><span class="n">number</span>
+
+<span class="c1">#  ---ignore tool prepare requests---</span>
+<span class="n">net</span> <span class="n">tool</span><span class="o">-</span><span class="n">prepare</span><span class="o">-</span><span class="n">loopback</span>   <span class="n">iocontrol</span><span class="mf">.0</span><span class="o">.</span><span class="n">tool</span><span class="o">-</span><span class="n">prepare</span>      <span class="o">=&gt;</span>  <span class="n">iocontrol</span><span class="mf">.0</span><span class="o">.</span><span class="n">tool</span><span class="o">-</span><span class="n">prepared</span>
+</pre></div>
+</div>
+<p>and to you <cite>*postgui.hal</cite> add:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#  ---manual tool change signals---</span>
+<span class="n">net</span> <span class="n">tool</span><span class="o">-</span><span class="n">change</span><span class="o">-</span><span class="n">request</span>     <span class="o">=&gt;</span>  <span class="n">qtpyvcp_manualtoolchange</span><span class="o">.</span><span class="n">change</span>
+<span class="n">net</span> <span class="n">tool</span><span class="o">-</span><span class="n">change</span><span class="o">-</span><span class="n">confirmed</span>   <span class="o">&lt;=</span>  <span class="n">qtpyvcp_manualtoolchange</span><span class="o">.</span><span class="n">changed</span>
+<span class="n">net</span> <span class="n">tool</span><span class="o">-</span><span class="n">number</span>             <span class="o">=&gt;</span>  <span class="n">qtpyvcp_manualtoolchange</span><span class="o">.</span><span class="n">number</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog.timerEvent">
+<span class="sig-name descname"><span class="pre">timerEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QTimerEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/toolchange_dialog.html#ToolChangeDialog.timerEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog.timerEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog.reject">
+<span class="sig-name descname"><span class="pre">reject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/toolchange_dialog.html#ToolChangeDialog.reject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog.reject" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog.accept">
+<span class="sig-name descname"><span class="pre">accept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/dialogs/toolchange_dialog.html#ToolChangeDialog.accept"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.dialogs.toolchange_dialog.ToolChangeDialog.accept" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../rules.html" class="btn btn-neutral float-right" title="Widget Rules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../hal/index.html" class="btn btn-neutral float-left" title="HAL Widgets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

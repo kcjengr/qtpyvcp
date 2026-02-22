@@ -1,0 +1,1108 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input Widgets &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Buttons" href="../buttons/index.html" />
+    <link rel="prev" title="Base Widgets" href="../base_widget.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html">Base Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.ChanList"><code class="docutils literal notranslate"><span class="pre">ChanList</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget"><code class="docutils literal notranslate"><span class="pre">VCPPrimitiveWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget"><code class="docutils literal notranslate"><span class="pre">VCPBaseWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPWidget"><code class="docutils literal notranslate"><span class="pre">VCPWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.CMDWidget"><code class="docutils literal notranslate"><span class="pre">CMDWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.HALWidget"><code class="docutils literal notranslate"><span class="pre">HALWidget</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPButton"><code class="docutils literal notranslate"><span class="pre">VCPButton</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buttons/index.html">Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hal/index.html">HAL Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html">Recent Files Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html#homing-menu">Homing Menu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Widgets</a></li>
+      <li class="breadcrumb-item active">Input Widgets</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/widgets/input/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-qtpyvcp.widgets.input_widgets.jog_increment">
+<span id="input-widgets"></span><h1>Input Widgets<a class="headerlink" href="#module-qtpyvcp.widgets.input_widgets.jog_increment" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.jog_increment.JogIncrementWidget">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.jog_increment.</span></span><span class="sig-name descname"><span class="pre">JogIncrementWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standalone</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/jog_increment.html#JogIncrementWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.jog_increment.JogIncrementWidget" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.file_system">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.file_system.</span></span><span class="sig-name descname"><span class="pre">RemovableDeviceComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#RemovableDeviceComboBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox" title="Link to this definition"></a></dt>
+<dd><p>ComboBox for choosing from a list of removable devices.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox.showEvent">
+<span class="sig-name descname"><span class="pre">showEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QShowEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#RemovableDeviceComboBox.showEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox.showEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.QtpyVCPQFileSystemModel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.file_system.</span></span><span class="sig-name descname"><span class="pre">QtpyVCPQFileSystemModel</span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#QtpyVCPQFileSystemModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.QtpyVCPQFileSystemModel" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.QtpyVCPQFileSystemModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.ItemDataRole.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#QtpyVCPQFileSystemModel.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.QtpyVCPQFileSystemModel.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.file_system.</span></span><span class="sig-name descname"><span class="pre">FileSystemTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.showEvent">
+<span class="sig-name descname"><span class="pre">showEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QShowEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.showEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.showEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.openSelectedItem">
+<span class="sig-name descname"><span class="pre">openSelectedItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.openSelectedItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.openSelectedItem" title="Link to this definition"></a></dt>
+<dd><p>If ngc file, opens in LinuxCNC, if dir displays dir.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.editSelectedFile">
+<span class="sig-name descname"><span class="pre">editSelectedFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.editSelectedFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.editSelectedFile" title="Link to this definition"></a></dt>
+<dd><p>Open the selected file in editor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.loadSelectedFile">
+<span class="sig-name descname"><span class="pre">loadSelectedFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.loadSelectedFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.loadSelectedFile" title="Link to this definition"></a></dt>
+<dd><p>If ngc file, opens in LinuxCNC, if dir displays dir.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectPrevious">
+<span class="sig-name descname"><span class="pre">selectPrevious</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.selectPrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectPrevious" title="Link to this definition"></a></dt>
+<dd><p>Select the previous item in the view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectNext">
+<span class="sig-name descname"><span class="pre">selectNext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.selectNext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectNext" title="Link to this definition"></a></dt>
+<dd><p>Select the next item in the view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.rename">
+<span class="sig-name descname"><span class="pre">rename</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.rename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.rename" title="Link to this definition"></a></dt>
+<dd><p>renames the selected file or folder</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.newFile">
+<span class="sig-name descname"><span class="pre">newFile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.newFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.newFile" title="Link to this definition"></a></dt>
+<dd><p>Create a new empty file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.deleteItem">
+<span class="sig-name descname"><span class="pre">deleteItem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.deleteItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.deleteItem" title="Link to this definition"></a></dt>
+<dd><p>Delete the selected item (either a file or folder).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.setRootPath">
+<span class="sig-name descname"><span class="pre">setRootPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.setRootPath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.setRootPath" title="Link to this definition"></a></dt>
+<dd><p>Sets the currently displayed path.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.viewParentDirectory">
+<span class="sig-name descname"><span class="pre">viewParentDirectory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.viewParentDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.viewParentDirectory" title="Link to this definition"></a></dt>
+<dd><p>View the parent directory of the current view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.getSelection">
+<span class="sig-name descname"><span class="pre">getSelection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.getSelection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.getSelection" title="Link to this definition"></a></dt>
+<dd><p>Returns list of selected indexes, or None.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.mdientry_widget">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdientry_widget.Validator">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.mdientry_widget.</span></span><span class="sig-name descname"><span class="pre">Validator</span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#Validator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.Validator" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdientry_widget.Validator.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">QValidator.State</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#Validator.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.Validator.validate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.mdientry_widget.</span></span><span class="sig-name descname"><span class="pre">MDIEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry" title="Link to this definition"></a></dt>
+<dd><p>MDI Entry</p>
+<p>Input any valid g Code. Enter sends the g Code.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.keyPressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.focusInEvent">
+<span class="sig-name descname"><span class="pre">focusInEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QFocusEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry.focusInEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.focusInEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.terminate" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application ends.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.action_slider">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_slider.ActionSlider">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.action_slider.</span></span><span class="sig-name descname"><span class="pre">ActionSlider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_slider.html#ActionSlider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider" title="Link to this definition"></a></dt>
+<dd><p>docstring for ActionSlider.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.mouseDoubleClickEvent">
+<span class="sig-name descname"><span class="pre">mouseDoubleClickEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_slider.html#ActionSlider.mouseDoubleClickEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.mouseDoubleClickEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.mousePressEvent">
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_slider.html#ActionSlider.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.mousePressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.mouseReleaseEvent">
+<span class="sig-name descname"><span class="pre">mouseReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_slider.html#ActionSlider.mouseReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.mouseReleaseEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_slider.html#ActionSlider.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.keyPressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.keyReleaseEvent">
+<span class="sig-name descname"><span class="pre">keyReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_slider.html#ActionSlider.keyReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.keyReleaseEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.offset_table">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.offset_table.</span></span><span class="sig-name descname"><span class="pre">ItemDelegate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#ItemDelegate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate.displayText">
+<span class="sig-name descname"><span class="pre">displayText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QLocale</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#ItemDelegate.displayText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate.displayText" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate.createEditor">
+<span class="sig-name descname"><span class="pre">createEditor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QWidget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QStyleOptionViewItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QWidget</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#ItemDelegate.createEditor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate.createEditor" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.offset_table.</span></span><span class="sig-name descname"><span class="pre">OffsetModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.headerData">
+<span class="sig-name descname"><span class="pre">headerData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Qt.Orientation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.headerData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.headerData" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.columnCount">
+<span class="sig-name descname"><span class="pre">columnCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.columnCount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.columnCount" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.rowCount">
+<span class="sig-name descname"><span class="pre">rowCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.rowCount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.rowCount" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.flags">
+<span class="sig-name descname"><span class="pre">flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Qt.ItemFlags</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.flags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.flags" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.setData">
+<span class="sig-name descname"><span class="pre">setData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.EditRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.setData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.setData" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetTable">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.offset_table.</span></span><span class="sig-name descname"><span class="pre">OffsetTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.deleteSelectedOffset">
+<span class="sig-name descname"><span class="pre">deleteSelectedOffset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetTable.deleteSelectedOffset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.deleteSelectedOffset" title="Link to this definition"></a></dt>
+<dd><p>Delete the currently selected item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.clearOffsetTable">
+<span class="sig-name descname"><span class="pre">clearOffsetTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confirm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetTable.clearOffsetTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.clearOffsetTable" title="Link to this definition"></a></dt>
+<dd><p>Remove all items from the model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.selectedRow">
+<span class="sig-name descname"><span class="pre">selectedRow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetTable.selectedRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.selectedRow" title="Link to this definition"></a></dt>
+<dd><p>Returns the row number of the currently selected row, or 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="drolineedit">
+<span id="module-qtpyvcp.widgets.input_widgets.dro_line_edit"></span><h2>DROLineEdit<a class="headerlink" href="#drolineedit" title="Link to this heading"></a></h2>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.dro_line_edit.</span></span><span class="sig-name descname"><span class="pre">DROLineEdit</span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/dro_line_edit.html#DROLineEdit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit" title="Link to this definition"></a></dt>
+<dd><p>DRO that supports typing in desired position to set work coordinate offset.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit.updateValue">
+<span class="sig-name descname"><span class="pre">updateValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/dro_line_edit.html#DROLineEdit.updateValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit.updateValue" title="Link to this definition"></a></dt>
+<dd><p>Update the displayed position.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/dro_line_edit.html#DROLineEdit.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit.keyPressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.action_dial">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_dial.ActionDial">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.action_dial.</span></span><span class="sig-name descname"><span class="pre">ActionDial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_dial.html#ActionDial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_dial.ActionDial" title="Link to this definition"></a></dt>
+<dd><p>docstring for ActionDial.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_dial.ActionDial.mousePressEvent">
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">me</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_dial.html#ActionDial.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_dial.ActionDial.mousePressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_dial.ActionDial.mouseReleaseEvent">
+<span class="sig-name descname"><span class="pre">mouseReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">me</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_dial.html#ActionDial.mouseReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_dial.ActionDial.mouseReleaseEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_dial.ActionDial.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ev</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_dial.html#ActionDial.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_dial.ActionDial.keyPressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_dial.ActionDial.keyReleaseEvent">
+<span class="sig-name descname"><span class="pre">keyReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_dial.html#ActionDial.keyReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_dial.ActionDial.keyReleaseEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.recent_file_combobox">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.recent_file_combobox.RecentFileComboBox">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.recent_file_combobox.</span></span><span class="sig-name descname"><span class="pre">RecentFileComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/recent_file_combobox.html#RecentFileComboBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.recent_file_combobox.RecentFileComboBox" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.tool_table">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.tool_table.</span></span><span class="sig-name descname"><span class="pre">ItemDelegate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ItemDelegate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate.displayText">
+<span class="sig-name descname"><span class="pre">displayText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QLocale</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ItemDelegate.displayText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate.displayText" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate.createEditor">
+<span class="sig-name descname"><span class="pre">createEditor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QWidget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QStyleOptionViewItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QWidget</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ItemDelegate.createEditor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate.createEditor" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.tool_table.</span></span><span class="sig-name descname"><span class="pre">ToolModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.headerData">
+<span class="sig-name descname"><span class="pre">headerData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Qt.Orientation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.headerData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.headerData" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.columnCount">
+<span class="sig-name descname"><span class="pre">columnCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.columnCount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.columnCount" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.rowCount">
+<span class="sig-name descname"><span class="pre">rowCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.rowCount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.rowCount" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.flags">
+<span class="sig-name descname"><span class="pre">flags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Qt.ItemFlags</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.flags"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.flags" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.setData">
+<span class="sig-name descname"><span class="pre">setData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.EditRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.setData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.setData" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.toolDataFromRow">
+<span class="sig-name descname"><span class="pre">toolDataFromRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.toolDataFromRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.toolDataFromRow" title="Link to this definition"></a></dt>
+<dd><p>Returns dictionary of tool data</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.tool_table.</span></span><span class="sig-name descname"><span class="pre">ToolTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.deleteSelectedTool">
+<span class="sig-name descname"><span class="pre">deleteSelectedTool</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.deleteSelectedTool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.deleteSelectedTool" title="Link to this definition"></a></dt>
+<dd><p>Delete the currently selected item</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectPrevious">
+<span class="sig-name descname"><span class="pre">selectPrevious</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.selectPrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectPrevious" title="Link to this definition"></a></dt>
+<dd><p>Select the previous item in the view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectNext">
+<span class="sig-name descname"><span class="pre">selectNext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.selectNext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectNext" title="Link to this definition"></a></dt>
+<dd><p>Select the next item in the view.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.clearToolTable">
+<span class="sig-name descname"><span class="pre">clearToolTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confirm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.clearToolTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.clearToolTable" title="Link to this definition"></a></dt>
+<dd><p>Remove all items from the model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.addTool">
+<span class="sig-name descname"><span class="pre">addTool</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.addTool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.addTool" title="Link to this definition"></a></dt>
+<dd><p>Appends a new item to the model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.loadSelectedTool">
+<span class="sig-name descname"><span class="pre">loadSelectedTool</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.loadSelectedTool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.loadSelectedTool" title="Link to this definition"></a></dt>
+<dd><p>Loads the currently selected tool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectedRow">
+<span class="sig-name descname"><span class="pre">selectedRow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.selectedRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectedRow" title="Link to this definition"></a></dt>
+<dd><p>Returns the row number of the currently selected row, or 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="gcodetextedit">
+<span id="module-qtpyvcp.widgets.input_widgets.gcode_text_edit"></span><h2>GcodeTextEdit<a class="headerlink" href="#gcodetextedit" title="Link to this heading"></a></h2>
+<p>QPlainTextEdit based G-code editor with syntax highlighting.</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_text_edit.</span></span><span class="sig-name descname"><span class="pre">ColumnFormatterDelegate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#ColumnFormatterDelegate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate" title="Link to this definition"></a></dt>
+<dd><p>Flexible delegate for column formatting with configurable alignment, padding, and text formatting.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate.displayText">
+<span class="sig-name descname"><span class="pre">displayText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#ColumnFormatterDelegate.displayText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate.displayText" title="Link to this definition"></a></dt>
+<dd><p>Format the display text using the custom formatter if provided.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate.initStyleOption">
+<span class="sig-name descname"><span class="pre">initStyleOption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#ColumnFormatterDelegate.initStyleOption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate.initStyleOption" title="Link to this definition"></a></dt>
+<dd><p>Set the alignment and padding for this column.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate.sizeHint">
+<span class="sig-name descname"><span class="pre">sizeHint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#ColumnFormatterDelegate.sizeHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.ColumnFormatterDelegate.sizeHint" title="Link to this definition"></a></dt>
+<dd><p>Return size hint including margin and padding.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.format_date">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_text_edit.</span></span><span class="sig-name descname"><span class="pre">format_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#format_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.format_date" title="Link to this definition"></a></dt>
+<dd><p>Format dates as MM/DD/YY   HH:MM  AM/PM</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.format_size">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_text_edit.</span></span><span class="sig-name descname"><span class="pre">format_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#format_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.format_size" title="Link to this definition"></a></dt>
+<dd><p>Format file sizes with two-letter abbreviations.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_text_edit.</span></span><span class="sig-name descname"><span class="pre">GcodeSyntaxHighlighter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeSyntaxHighlighter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter.highlightBlock">
+<span class="sig-name descname"><span class="pre">highlightBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeSyntaxHighlighter.highlightBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter.highlightBlock" title="Link to this definition"></a></dt>
+<dd><p>Apply syntax highlighting to the given block of text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_text_edit.</span></span><span class="sig-name descname"><span class="pre">GcodeTextEdit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit" title="Link to this definition"></a></dt>
+<dd><p>G-code Text Edit</p>
+<p>QPlainTextEdit based G-code editor with syntax heightening.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.findNext">
+<span class="sig-name descname"><span class="pre">findNext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.findNext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.findNext" title="Link to this definition"></a></dt>
+<dd><p>Find next occurrence of text.
+Returns True if found, False otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.findPrevious">
+<span class="sig-name descname"><span class="pre">findPrevious</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.findPrevious"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.findPrevious" title="Link to this definition"></a></dt>
+<dd><p>Find previous occurrence of text.
+Returns True if found, False otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.replaceCurrent">
+<span class="sig-name descname"><span class="pre">replaceCurrent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.replaceCurrent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.replaceCurrent" title="Link to this definition"></a></dt>
+<dd><p>Replace the currently selected text if it matches the search text.
+Returns True if replaced, False otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.replaceCurrentWithUndo">
+<span class="sig-name descname"><span class="pre">replaceCurrentWithUndo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.replaceCurrentWithUndo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.replaceCurrentWithUndo" title="Link to this definition"></a></dt>
+<dd><p>Replace the current selection and return undo data for that replacement.
+Returns a dict with position and text info, or None if no replacement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.replaceAllWithUndo">
+<span class="sig-name descname"><span class="pre">replaceAllWithUndo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.replaceAllWithUndo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.replaceAllWithUndo" title="Link to this definition"></a></dt>
+<dd><p>Replace all occurrences and return undo data for those replacements.
+Returns a list of dicts with position and text info.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.replaceAll">
+<span class="sig-name descname"><span class="pre">replaceAll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.replaceAll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.replaceAll" title="Link to this definition"></a></dt>
+<dd><p>Replace all occurrences of search_text with replace_text.
+Returns the count of replacements made.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.getMatchCount">
+<span class="sig-name descname"><span class="pre">getMatchCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.getMatchCount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.getMatchCount" title="Link to this definition"></a></dt>
+<dd><p>Count the total number of matches in the document.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.getCurrentMatchIndex">
+<span class="sig-name descname"><span class="pre">getCurrentMatchIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.getCurrentMatchIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.getCurrentMatchIndex" title="Link to this definition"></a></dt>
+<dd><p>Get the index of the current match (1-based).
+Returns 0 if no current selection or selection doesn’t match.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.highlightAllMatches">
+<span class="sig-name descname"><span class="pre">highlightAllMatches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whole_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highlight_current</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.highlightAllMatches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.highlightAllMatches" title="Link to this definition"></a></dt>
+<dd><p>Highlight all matches in the document, with an optional distinct highlight
+for the current match.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.clearHighlights">
+<span class="sig-name descname"><span class="pre">clearHighlights</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.clearHighlights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.clearHighlights" title="Link to this definition"></a></dt>
+<dd><p>Clear all search highlights.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.keyPressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.changeEvent">
+<span class="sig-name descname"><span class="pre">changeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.changeEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.changeEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.syntaxHighlightingOnOff">
+<span class="sig-name descname"><span class="pre">syntaxHighlightingOnOff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.syntaxHighlightingOnOff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.syntaxHighlightingOnOff" title="Link to this definition"></a></dt>
+<dd><p>Toggle syntax highlighting on/off</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.setPlainText">
+<span class="sig-name descname"><span class="pre">setPlainText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.setPlainText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.setPlainText" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.EditorReadOnly">
+<span class="sig-name descname"><span class="pre">EditorReadOnly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.EditorReadOnly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.EditorReadOnly" title="Link to this definition"></a></dt>
+<dd><p>Set to Read Only to disable editing</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.EditorReadWrite">
+<span class="sig-name descname"><span class="pre">EditorReadWrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.EditorReadWrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.EditorReadWrite" title="Link to this definition"></a></dt>
+<dd><p>Set to Read Only to disable editing</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.contextMenuEvent">
+<span class="sig-name descname"><span class="pre">contextMenuEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QContextMenuEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.contextMenuEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.contextMenuEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.resizeEvent">
+<span class="sig-name descname"><span class="pre">resizeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QResizeEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.resizeEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.resizeEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_text_edit.</span></span><span class="sig-name descname"><span class="pre">NumberMargin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#NumberMargin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin.paintEvent">
+<span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QPaintEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#NumberMargin.paintEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin.paintEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.gcode_editor">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_editor.</span></span><span class="sig-name descname"><span class="pre">GcodeLexer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standalone</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeLexer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeLexer.description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.defaultColor">
+<span class="sig-name descname"><span class="pre">defaultColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeLexer.defaultColor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.defaultColor" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">defaultColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QColor</span></span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.styleText">
+<span class="sig-name descname"><span class="pre">styleText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeLexer.styleText"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.styleText" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_editor.</span></span><span class="sig-name descname"><span class="pre">EditorBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#EditorBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase.find_text_occurences">
+<span class="sig-name descname"><span class="pre">find_text_occurences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#EditorBase.find_text_occurences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase.find_text_occurences" title="Link to this definition"></a></dt>
+<dd><p>Return byte positions of start and end of all ‘text’ occurences in the document</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_editor.</span></span><span class="sig-name descname"><span class="pre">GcodeEditor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeEditor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.gcode_editor.FindReplaceDialog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.gcode_editor.</span></span><span class="sig-name descname"><span class="pre">FindReplaceDialog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#FindReplaceDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.FindReplaceDialog" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<p id="module-qtpyvcp.widgets.input_widgets.mdihistory_widget">QtPyVCP MDI History Widget</p>
+<p>This widget implements the following key elements:
+[1] A history display of MDI commands issued with the latest
+command at the top of the list and the oldest at the bottom
+of the list.</p>
+<p>[2] A queue system of commands that have been entered
+but have not yet been executed. This allows the rapid entry
+of MDI commands to be executed without having to wait for any
+running commands to complete.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<ul class="simple">
+<li><p>add/test for styling based on the class queue codes</p></li>
+</ul>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.mdihistory_widget.</span></span><span class="sig-name descname"><span class="pre">MDIHistory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory" title="Link to this definition"></a></dt>
+<dd><p>MDI History and Queuing Widget.</p>
+<p>This widget implements a visual view of the MDI command
+history.  It also implements a command queuing startegy
+so that commands can be entered and queued up for execution.
+Visual style is used to identify items that have been completed,
+are running and are yet to run.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.toggleQueue">
+<span class="sig-name descname"><span class="pre">toggleQueue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">toggle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.toggleQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.toggleQueue" title="Link to this definition"></a></dt>
+<dd><p>Toggle queue pause.
+Starting point is the queue is active.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.clearQueue">
+<span class="sig-name descname"><span class="pre">clearQueue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.clearQueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.clearQueue" title="Link to this definition"></a></dt>
+<dd><p>Clear queue items pending run state for items yet to be run.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.removeSelectedItem">
+<span class="sig-name descname"><span class="pre">removeSelectedItem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.removeSelectedItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.removeSelectedItem" title="Link to this definition"></a></dt>
+<dd><p>Remove the selected lines</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.removeAll">
+<span class="sig-name descname"><span class="pre">removeAll</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.removeAll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.removeAll" title="Link to this definition"></a></dt>
+<dd><p>Remove all items from list and from history</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runFromSelection">
+<span class="sig-name descname"><span class="pre">runFromSelection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.runFromSelection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runFromSelection" title="Link to this definition"></a></dt>
+<dd><p>Start running MDI from the selected row back to correct end.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runSelection">
+<span class="sig-name descname"><span class="pre">runSelection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.runSelection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runSelection" title="Link to this definition"></a></dt>
+<dd><p>Run the selected row only.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.submit" title="Link to this definition"></a></dt>
+<dd><p>Put a new command on the queue for later execution.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.rowClicked">
+<span class="sig-name descname"><span class="pre">rowClicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.rowClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.rowClicked" title="Link to this definition"></a></dt>
+<dd><p>Item row clicked.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.keyPressEvent" title="Link to this definition"></a></dt>
+<dd><p>Key movement processing.
+Arrow keys move the selected list item up/down
+Return key generates a submit situation by making the item as
+the next available command to processes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.setHistory">
+<span class="sig-name descname"><span class="pre">setHistory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.setHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.setHistory" title="Link to this definition"></a></dt>
+<dd><p>Clear and reset the history in the list.
+item_list is a list of strings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.heartBeat">
+<span class="sig-name descname"><span class="pre">heartBeat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.heartBeat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.heartBeat" title="Link to this definition"></a></dt>
+<dd><p>Supports heart beat on the MDI History execution queue.
+Issue the next command from the queue.
+Double check machine is in ok state to accept next command.
+Issue the command and if success mark command as being active.
+Mark last command as done.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.initialize" title="Link to this definition"></a></dt>
+<dd><p>Load up starting data and set signal connections.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.terminate" title="Link to this definition"></a></dt>
+<dd><p>Teardown processing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="line-edit">
+<span id="module-qtpyvcp.widgets.input_widgets.line_edit"></span><h2>Line Edit<a class="headerlink" href="#line-edit" title="Link to this heading"></a></h2>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.line_edit.</span></span><span class="sig-name descname"><span class="pre">VCPLineEdit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/line_edit.html#VCPLineEdit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit" title="Link to this definition"></a></dt>
+<dd><p>VCP Entry Widget</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/line_edit.html#VCPLineEdit.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/line_edit.html#VCPLineEdit.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.terminate" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application ends.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.action_combobox">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.action_combobox.</span></span><span class="sig-name descname"><span class="pre">ActionComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_combobox.html#ActionComboBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox" title="Link to this definition"></a></dt>
+<dd><p>General purpose combobox for triggering QtPyVCP actions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parent</strong> (<em>QWidget</em>) – The parent widget of the combobox, or None.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox._action_name">
+<span class="sig-name descname"><span class="pre">_action_name</span></span><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox._action_name" title="Link to this definition"></a></dt>
+<dd><p>The fully qualified name of the action the
+combobox triggers when the selection is changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.mousePressEvent">
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_combobox.html#ActionComboBox.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.mousePressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.mouseReleaseEvent">
+<span class="sig-name descname"><span class="pre">mouseReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_combobox.html#ActionComboBox.mouseReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.mouseReleaseEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.keyPressEvent">
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_combobox.html#ActionComboBox.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.keyPressEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.keyReleaseEvent">
+<span class="sig-name descname"><span class="pre">keyReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QKeyEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_combobox.html#ActionComboBox.keyReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.keyReleaseEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.setting_slider">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPAbstractSettingsWidget">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.setting_slider.</span></span><span class="sig-name descname"><span class="pre">VCPAbstractSettingsWidget</span></span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPAbstractSettingsWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPAbstractSettingsWidget" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.setting_slider.</span></span><span class="sig-name descname"><span class="pre">VCPSettingsLineEdit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsLineEdit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit" title="Link to this definition"></a></dt>
+<dd><p>Settings LineEdit</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsLineEdit.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.setting_slider.</span></span><span class="sig-name descname"><span class="pre">VCPSettingsSlider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSlider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider" title="Link to this definition"></a></dt>
+<dd><p>Settings Slider</p>
+<p>Set action options like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">linear</span><span class="o">-</span><span class="n">speed</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider.mouseDoubleClickEvent">
+<span class="sig-name descname"><span class="pre">mouseDoubleClickEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSlider.mouseDoubleClickEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider.mouseDoubleClickEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSlider.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.setting_slider.</span></span><span class="sig-name descname"><span class="pre">VCPSettingsSpinBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSpinBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox" title="Link to this definition"></a></dt>
+<dd><p>Settings SpinBox</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSpinBox.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.setting_slider.</span></span><span class="sig-name descname"><span class="pre">VCPSettingsDoubleSpinBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsDoubleSpinBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox" title="Link to this definition"></a></dt>
+<dd><p>Settings DoubleSpinBox</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsDoubleSpinBox.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.setting_slider.</span></span><span class="sig-name descname"><span class="pre">VCPSettingsCheckBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsCheckBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox" title="Link to this definition"></a></dt>
+<dd><p>Settings CheckBox</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsCheckBox.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.setting_slider.</span></span><span class="sig-name descname"><span class="pre">VCPSettingsPushButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton" title="Link to this definition"></a></dt>
+<dd><p>Settings PushButton with configurable output type and fail-fast validation</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.value" title="Link to this definition"></a></dt>
+<dd><p>Return the current checked state as boolean or integer based on outputAsInt property</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.setValue">
+<span class="sig-name descname"><span class="pre">setValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton.setValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.setValue" title="Link to this definition"></a></dt>
+<dd><p>Set the checked state from a boolean, integer, or compatible value with fail-fast validation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.text">
+<span class="sig-name descname"><span class="pre">text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton.text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.text" title="Link to this definition"></a></dt>
+<dd><p>Return string representation of value for parameter collection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.getSettingsValue">
+<span class="sig-name descname"><span class="pre">getSettingsValue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton.getSettingsValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.getSettingsValue" title="Link to this definition"></a></dt>
+<dd><p>Get value for settings persistence using configured output type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.setSettingsValue">
+<span class="sig-name descname"><span class="pre">setSettingsValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton.setSettingsValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.setSettingsValue" title="Link to this definition"></a></dt>
+<dd><p>Set value from settings persistence</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.setting_slider.</span></span><span class="sig-name descname"><span class="pre">VCPSettingsComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsComboBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox" title="Link to this definition"></a></dt>
+<dd><p>Settings ComboBox</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsComboBox.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox.initialize" title="Link to this definition"></a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../buttons/index.html" class="btn btn-neutral float-right" title="Buttons" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../base_widget.html" class="btn btn-neutral float-left" title="Base Widgets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1575 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status plugin &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Notifications plugin" href="notifications.html" />
+    <link rel="prev" title="Plugins" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Status plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Notifications plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="position.html">Position plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool_table.html">Tooltable plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clock.html">Clock plugin</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Plugins</a></li>
+      <li class="breadcrumb-item active">Status plugin</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/designer/plugins/status.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="status-plugin">
+<h1>Status plugin<a class="headerlink" href="#status-plugin" title="Link to this heading"></a></h1>
+<p>The status plugin interfaces and extends the capabilities of the default
+linuxcnc.stat python module.</p>
+<section id="available-datachannels">
+<h2><em>Available datachannels</em><a class="headerlink" href="#available-datachannels" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#status-plugin-acceleration"><span class="std std-ref">acceleration</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-active-queue"><span class="std std-ref">active queue</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-actual-position"><span class="std std-ref">actual position</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-adaptive-feed-enabled"><span class="std std-ref">adaptive feed enabled</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-ain"><span class="std std-ref">analog inputs</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-all-axes-homed"><span class="std std-ref">all axes homed</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-angular-units"><span class="std std-ref">angular units</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-aout"><span class="std std-ref">analog outputs</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-axes"><span class="std std-ref">axes configured</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-axis-mask"><span class="std std-ref">axis mask</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-block-delete"><span class="std std-ref">block delete</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-call-level"><span class="std std-ref">o word call level</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-current-line"><span class="std std-ref">currently executing line</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-current-vel"><span class="std std-ref">current velocity</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-cycle-time"><span class="std std-ref">cycle time</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-delay-left"><span class="std std-ref">G4 delay left</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-din"><span class="std std-ref">digital inputs</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-distance-to-go"><span class="std std-ref">distance to go</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-dout"><span class="std std-ref">digital outputs</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-dtg"><span class="std std-ref">distance to go by axis</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-echo-serial-number"><span class="std std-ref">serial number</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-enabled"><span class="std std-ref">enabled</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-estop"><span class="std std-ref">estop</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-exec-state"><span class="std std-ref">task execution state</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-feed-hold-enabled"><span class="std std-ref">feed hold</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-feed-override-enabled"><span class="std std-ref">feed override enabled</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-feedrate"><span class="std std-ref">feedrate override</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-file"><span class="std std-ref">filename</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-flood"><span class="std std-ref">flood</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-g5x-index"><span class="std std-ref">G5x index</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-g5x-offset"><span class="std std-ref">G5x offset</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-g92-offset"><span class="std std-ref">G92 offset</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-gcodes"><span class="std std-ref">gcodes</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-homed"><span class="std std-ref">homed</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-id"><span class="std std-ref">id</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-inpos"><span class="std std-ref">in position</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-input-timeout"><span class="std std-ref">input timer</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-interp-state"><span class="std std-ref">interpreter state</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-interpreter-errcode"><span class="std std-ref">interpreter return code</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-backlash"><span class="std std-ref">joint n backlash</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-enabled"><span class="std std-ref">joint n enabled</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-fault"><span class="std std-ref">joint n fault</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-ferror-current"><span class="std std-ref">joint n following error</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-ferror-highmark"><span class="std std-ref">joint n maximum following error</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-homed"><span class="std std-ref">joint n homed</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-homing"><span class="std std-ref">joint n homing</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-inpos"><span class="std std-ref">joint n in position</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-input"><span class="std std-ref">joint n input position</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-jointtype"><span class="std std-ref">joint n type of axis</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-max-ferror"><span class="std std-ref">joint n maximum following error rapid</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-max-hard-limit"><span class="std std-ref">joint n maximum hard limit</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-max-position-limit"><span class="std std-ref">joint n maximum soft limit setting</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-max-soft-limit"><span class="std std-ref">joint n maximum soft limit</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-min-ferror"><span class="std std-ref">joint n maximum following error feed</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-min-hard-limit"><span class="std std-ref">joint n minimum hard limit</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-min-position-limit"><span class="std std-ref">joint n minimum soft limit</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-min-soft-limit"><span class="std std-ref">joint n minimum soft limit exceeded</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-output"><span class="std std-ref">joint n commanded output position</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-override-limits"><span class="std std-ref">joint n override limits</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-units"><span class="std std-ref">joint n units</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-n-velocity"><span class="std std-ref">joint n velocity</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-actual-position"><span class="std std-ref">joint actual positions</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joint-position"><span class="std std-ref">commanded joint positions</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-joints"><span class="std std-ref">joints</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-kinematics-type"><span class="std std-ref">kinematics type</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-limit"><span class="std std-ref">limit masks</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-linear-units"><span class="std std-ref">linear units</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-lube"><span class="std std-ref">lube status</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-lube-level"><span class="std std-ref">lube level</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-max-acceleration"><span class="std std-ref">maximum acceleration</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-max-velocity"><span class="std std-ref">maximum velocity</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-mcodes"><span class="std std-ref">m codes</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-mist"><span class="std std-ref">mist status</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-motion-line"><span class="std std-ref">motion line</span></a></p></li>
+<li><p><a class="reference internal" href="../../components/status_items.html#motion-mode"><span class="std std-ref">motion mode</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-motion-type"><span class="std std-ref">motion type</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-on"><span class="std std-ref">machine power</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-optional-stop"><span class="std std-ref">optional stop</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-paused"><span class="std std-ref">motion paused</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-pocket-prepped"><span class="std std-ref">pocket prepped</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-position"><span class="std std-ref">trajectory position</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-probe-tripped"><span class="std std-ref">probe tripped</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-probe-val"><span class="std std-ref">probe input value</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-probed-position"><span class="std std-ref">probed position</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-probing"><span class="std std-ref">probing status</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-program-units"><span class="std std-ref">program units</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-queue"><span class="std std-ref">trajectory planner queue</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-queue-full"><span class="std std-ref">trajectory planner queue full</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-queued-mdi-commands"><span class="std std-ref">queued mdi commands</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-rapidrate"><span class="std std-ref">rapid override scale</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-read-line"><span class="std std-ref">interperter read line</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-recent-files"><span class="std std-ref">recent files</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-rotation-xy"><span class="std std-ref">rotation XY</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-settings"><span class="std std-ref">interpreter settings</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-brake"><span class="std std-ref">spindle brake</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-direction"><span class="std std-ref">spindle direction</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-enabled"><span class="std std-ref">spindle enabled</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-homed"><span class="std std-ref">spindle homed</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-orient-fault"><span class="std std-ref">spindle orient fault</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-orient-state"><span class="std std-ref">spindle n orient state</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-override"><span class="std std-ref">spindle speed override</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-override-enabled"><span class="std std-ref">spindle speed override enabled</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindle-n-speed"><span class="std std-ref">spindle speed</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-spindles"><span class="std std-ref">spindles</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-state"><span class="std std-ref">command execution status</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-task-mode"><span class="std std-ref">task mode</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-task-paused"><span class="std std-ref">task paused</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-task-state"><span class="std std-ref">task state</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-tool-in-spindle"><span class="std std-ref">tool in spindle</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-tool-offset"><span class="std std-ref">tool offset</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-tool-table"><span class="std std-ref">tool table</span></a></p></li>
+<li><p><a class="reference internal" href="#status-plugin-velocity"><span class="std std-ref">velocity</span></a></p></li>
+</ul>
+<dl id="status-plugin-acceleration">
+<dt>acceleration</dt><dd><p>default acceleration, ini parameter [TRAJ]DEFAULT_ACCELERATION</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:acceleration</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:acceleration?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-active-queue">
+<dt>active_queue</dt><dd><p>number of motions blending</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:active_queue</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:active_queue?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-actual-position">
+<dt>actual_position</dt><dd><p>current trajectory position, (x y z a b c u v w) in machine units</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:actual_position</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:actual_position?string</span></code> returns tuple of str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-adaptive-feed-enabled">
+<dt>adaptive_feed_enabled</dt><dd><p>status of adaptive feedrate override</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:adaptive_feed_enabled</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:adaptive_feed_enabled?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-ain">
+<dt>ain</dt><dd><p>current value of the analog input pins</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:ain</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:ain?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-all-axes-homed">
+<dt>all_axes_homed</dt><dd><p>current status of all axes homed, if any axis is not homed it is false</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:all_axes_homed</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:all_axes_homed?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-angular-units">
+<dt>angular_units</dt><dd><p>machine angular units per deg, ini parameter [TRAJ]ANGULAR_UNITS</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:angular_units</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:angular_units?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-aout">
+<dt>aout</dt><dd><p>current value of the analog output pins</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:aout</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:aout?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-axes">
+<dt>axes</dt><dd><p>number of axes. derived from [TRAJ]COORDINATES ini parameter</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:axes</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:axes?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-axis-mask">
+<dt>axis_mask</dt><dd><p>axes as configured in the [TRAJ]COORDINATES INI parameter</p>
+<div class="line-block">
+<div class="line">the sum of the axes X=1, Y=2, Z=4, A=8, B=16, C=32, U=64, V=128, W=256</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:axis_mask</span></code> returns int bit mask</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:axis_mask?list</span></code> returns list of axis numbers <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code></div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:axis_mask?string</span></code> returns string of axis letters <code class="docutils literal notranslate"><span class="pre">XYZ</span></code></div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-block-delete">
+<dt>block_delete</dt><dd><p>block delete curren status</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:block_delete</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:block_delete?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-call-level">
+<dt>call_level</dt><dd><p>current nesting level of O-word procedures</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:call_level</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:call_level?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-current-line">
+<dt>current_line</dt><dd><p>currently executing line</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:current_line</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:current_line?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-current-vel">
+<dt>current_vel</dt><dd><p>current velocity in user units per second</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:current_vel</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:current_vel?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-cycle-time">
+<dt>cycle_time</dt><dd><p>thread period</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:cycle_time</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:cycle_time?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-delay-left">
+<dt>delay_left</dt><dd><p>remaining time on the G4 dwell command, seconds</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:delay_left</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:delay_left?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-din">
+<dt>din</dt><dd><p>current value of the digital input pins</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:din</span></code> returns tuple of integers</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:din?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-distance-to-go">
+<dt>distance_to_go</dt><dd><p>remaining distance of current move, as reported by trajectory planner</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:distance_to_go</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:distance_to_go?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-dout">
+<dt>dout</dt><dd><p>current value of the digital output pins</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:dout</span></code> returns tuple of integers</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:dout?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-dtg">
+<dt>dtg</dt><dd><p>remaining distance of current move for each axis, as reported by trajectory planner</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:dtg</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:dtg?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-echo-serial-number">
+<dt>echo_serial_number</dt><dd><p>The serial number of the last completed command sent by a UI to task</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:echo_serial_number</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:echo_serial_number?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-enabled">
+<dt>enabled</dt><dd><p>trajectory planner enabled flag</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:enabled</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:enabled?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-estop">
+<dt>estop</dt><dd><p>status of E Stop, 1 for enabled and 0 for not enabled</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:estop</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:estop?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-exec-state">
+<dt>exec_state</dt><dd><p>task execution state</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>str</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Error</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Done</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Waiting for Motion</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Waiting for Motion Queue</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>Waiting for Pause</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>Not used by LinuxCNC</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>Waiting for Motion and IO</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>Waiting for Delay</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>Waiting for system CMD</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>Waiting for spindle orient</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:exec_state</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:exec_state?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-feed-hold-enabled">
+<dt>feed_hold_enabled</dt><dd><p>status of feed hold</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:feed_hold_enabled</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:feed_hold_enabled?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-feed-override-enabled">
+<dt>feed_override_enabled</dt><dd><p>status of feed override</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:feed_override_enabled</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:feed_override_enabled?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-feedrate">
+<dt>feedrate</dt><dd><p>current feedrate override, 1.0 = 100%</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:feedrate</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:feedrate?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-file">
+<dt>file</dt><dd><p>currently loaded gcode filename with path</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:file</span></code> returns str</div>
+<div class="line">for just the file name use this expression <code class="docutils literal notranslate"><span class="pre">ch[0].split('/')[-1]</span></code></div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-flood">
+<dt>flood</dt><dd><p>current flood status 0 for off, 1 for on</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:flood</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:flood?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-g5x-index">
+<dt>g5x_index</dt><dd><p>currently active coordinate system</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>string</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>G53</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>G54</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>G55</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>G56</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>G57</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>G58</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>G59</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>G59.1</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>G59.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>G59.3</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:g5x_index</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:g5x_index?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-g5x-offset">
+<dt>g5x_offset</dt><dd><p>offsets of the currently active coordinate system</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:g5x_offset</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:g5x_offset?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-g92-offset">
+<dt>g92_offset</dt><dd><p>current g92 offsets</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:g92_offset</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:g92_offset?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-gcodes">
+<dt>gcodes</dt><dd><p>active G-codes for each modal group</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:gcodes</span></code> returns tuple of integers</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:gcodes?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-homed">
+<dt>homed</dt><dd><p>currently homed joints, 0 = not homed, 1 = homed</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:homed</span></code> returns tuple of integers</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:homed?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-id">
+<dt>id</dt><dd><p>currently executing motion id</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:id</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:id?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-inpos">
+<dt>inpos</dt><dd><p>status machine in position</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:inpos</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:inpos?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-input-timeout">
+<dt>input_timeout</dt><dd><p>flag for M66 timer in progress</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:input_timeout</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:input_timeout?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-interp-state">
+<dt>interp_state</dt><dd><p>current state of RS274NGC interpreter</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>str</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>Idle</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Reading</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>Paused</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>Waiting</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:interp_state</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:interp_state?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-interpreter-errcode">
+<dt>interpreter_errcode</dt><dd><p>current RS274NGC interpreter return code</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>str</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Ok</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Exit</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Finished</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Endfile</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>File not open</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Error</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:interpreter_errcode</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:interpreter_errcode?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-backlash">
+<dt>joint.n.backlash</dt><dd><p>backlash in machine units, ini parameter [JOINT_n]BACKLASH (<cite>n</cite> is joint number)</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.backlash</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.backlash?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-enabled">
+<dt>joint.n.enabled</dt><dd><p>status of joint n enabled, 0 not enabled 1 enabled</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.enabled</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.enabled?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-fault">
+<dt>joint.n.fault</dt><dd><p>status of joint n fault, 0 not faulted 1 faulted</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.fault</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.fault?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-ferror-current">
+<dt>joint.n.ferror_current</dt><dd><p>current joint n following error</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.ferror_current</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.ferror_current?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-ferror-highmark">
+<dt>joint.n.ferror_highmark</dt><dd><p>joint n magnitude of maximum following error</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.ferror_highmark</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.ferror_highmark?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-homed">
+<dt>joint.n.homed</dt><dd><p>status of joint n homed, 0 not homed 1 homed</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.homed</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.homed?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-homing">
+<dt>joint.n.homing</dt><dd><p>status of joint n homing in progress, 0 not homing 1 homing</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.homing</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.homing?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-inpos">
+<dt>joint.n.inpos</dt><dd><p>status of joint n in position, 0 not in position 1 in position</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.inpos</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.inpos?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-input">
+<dt>joint.n.input</dt><dd><p>joint n current input position</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.input</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.input?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-jointtype">
+<dt>joint.n.jointType</dt><dd><p>joint n type of axis, ini parameter [JOINT_n]TYPE</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.jointType</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.jointType?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-max-ferror">
+<dt>joint.n.max_ferror</dt><dd><p>joint n maximum following error rapid, ini parameter [JOINT_n]FERROR</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.max_ferror</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.max_ferror?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-max-hard-limit">
+<dt>joint.n.max_hard_limit</dt><dd><p>status of joint n maximum hard limit, 0 not exceeded 1 exceeded</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.max_hard_limit</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.max_hard_limit?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-max-position-limit">
+<dt>joint.n.max_position_limit</dt><dd><p>joint n maximum soft limit, ini parameter [JOINT_n]MAX_LIMIT</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.max_position_limit</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.max_position_limit?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-max-soft-limit">
+<dt>joint.n.max_soft_limit</dt><dd><p>status of joint n maximum soft limit, 0 not exceeded 1 exceeded</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.max_soft_limit</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.max_soft_limit?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-min-ferror">
+<dt>joint.n.min_ferror</dt><dd><p>maximum following error feed, ini parameter [JOINT_n]MIN_FERROR</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.min_ferror</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.min_ferror?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-min-hard-limit">
+<dt>joint.n.min_hard_limit</dt><dd><p>non-zero means min hard limit exceeded</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.min_hard_limit</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.min_hard_limit?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-min-position-limit">
+<dt>joint.n.min_position_limit</dt><dd><p>minimum soft limit ini parameter [JOINT_n]MIN_LIMIT</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.min_position_limit</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.min_position_limit?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-min-soft-limit">
+<dt>joint.n.min_soft_limit</dt><dd><p>non-zero means min_position_limit was exceeded</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.min_soft_limit</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.min_soft_limit?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-output">
+<dt>joint.n.output</dt><dd><p>commanded output position</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.output</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.output?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-override-limits">
+<dt>joint.n.override_limits</dt><dd><p>non-zero means limits are overridden</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.override_limits</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.override_limits?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-units">
+<dt>joint.n.units</dt><dd><p>joint units</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.units</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.units?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-n-velocity">
+<dt>joint.n.velocity</dt><dd><p>current velocity</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.velocity</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint.n.velocity?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-actual-position">
+<dt>joint_actual_position</dt><dd><p>joint actual positions</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint_actual_position</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint_actual_position?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joint-position">
+<dt>joint_position</dt><dd><p>commanded joint positions</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint_position</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joint_position?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-joints">
+<dt>joints</dt><dd><p>number of joints, ini parameter [KINS]JOINTS</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joints</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:joints?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-kinematics-type">
+<dt>kinematics_type</dt><dd><p>kinematics type</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:kinematics_type</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:kinematics_type?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-limit">
+<dt>limit</dt><dd><p>axis limit masks</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:limit</span></code> returns tuple of integers</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:limit?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-linear-units">
+<dt>linear_units</dt><dd><p>machine linear units,  ini parameter [TRAJ]LINEAR_UNITS</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:linear_units</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:linear_units?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-lube">
+<dt>lube</dt><dd><p>lube status</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:lube</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:lube?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-lube-level">
+<dt>lube_level</dt><dd><p>status of iocontrol.0.lube_level</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:lube_level</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:lube_level?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-max-acceleration">
+<dt>max_acceleration</dt><dd><p>maximum acceleration,  ini parameter [TRAJ]MAX_ACCELERATION</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:max_acceleration</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:max_acceleration?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-max-velocity">
+<dt>max_velocity</dt><dd><p>maximum velocity,  ini parameter [TRAJ]MAX_VELOCITY</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:max_velocity</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:max_velocity?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-mcodes">
+<dt>mcodes</dt><dd><p>currently active M codes</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:mcodes</span></code> returns tuple of integers</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:mcodes?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-mist">
+<dt>mist</dt><dd><p>mist status</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:mist</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:mist?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-motion-line">
+<dt>motion_line</dt><dd><p>source line number motion is currently executing</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:motion_line</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:motion_line?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-motion-mode">
+<dt>motion_mode</dt><dd><p>mode of the motion controller</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>string</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Free</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Coord</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Teleop</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:motion_mode</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:motion_mode?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-motion-type">
+<dt>motion_type</dt><dd><p>motion type of move currently executing</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>string</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Traverse</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Linear Feed</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Arc Feed</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Tool Change</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Probing</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Rotary Index</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:motion_type</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:motion_type?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-on">
+<dt>on</dt><dd><p>status of machine power</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:on</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:on?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-optional-stop">
+<dt>optional_stop</dt><dd><p>status of optional stop</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:optional_stop</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:optional_stop?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-paused">
+<dt>paused</dt><dd><p>motion paused</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">pstatus:aused</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:paused?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-pocket-prepped">
+<dt>pocket_prepped</dt><dd><p>pocket prepped from last Tn commaned</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:pocket_prepped</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:pocket_prepped?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-position">
+<dt>position</dt><dd><p>trajectory position</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:position</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:position?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-probe-tripped">
+<dt>probe_tripped</dt><dd><p>probe tripped</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:probe_tripped</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:probe_tripped?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-probe-val">
+<dt>probe_val</dt><dd><p>value of the motion.probe-input pin</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:probe_val</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:probe_val?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-probed-position">
+<dt>probed_position</dt><dd><p>position where probe tripped</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:probed_position</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:probed_position?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-probing">
+<dt>probing</dt><dd><p>probe operation is in progress</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:probing</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:probing?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-program-units">
+<dt>program_units</dt><dd><p>program units</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>short</p></th>
+<th class="head"><p>long</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>in</p></td>
+<td><p>Inches</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>mm</p></td>
+<td><p>Millimeters</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>cm</p></td>
+<td><p>Centimeters</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:program_units</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:rogram_units?string</span></code> returns short str</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:rogram_units?string&amp;format=long</span></code> returns long str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-queue">
+<dt>queue</dt><dd><p>current size of the trajectory planner queue</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:queue</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:queue?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-queue-full">
+<dt>queue_full</dt><dd><p>status of the trajectory planner queue</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:queue_full</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:queue_full?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-queued-mdi-commands">
+<dt>queued_mdi_commands</dt><dd><p>queued mdi commands</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:queued_mdi_commands</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:queued_mdi_commands?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-rapidrate">
+<dt>rapidrate</dt><dd><p>rapid override scale</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:rapidrate</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:rapidrate?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-read-line">
+<dt>read_line</dt><dd><p>current line the interperter is reading</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:read_line</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:read_line?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-recent-files">
+<dt>recent_files</dt><dd><p>recent files opened including file path</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:recent_files</span></code> returns list</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:recent_files?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-rotation-xy">
+<dt>rotation_xy</dt><dd><p>current XY rotation angle around Z axis</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:rotation_xy</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:rotation_xy?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-settings">
+<dt>settings</dt><dd><p>current interpreter settings</p>
+<p>returns a tuple of floats</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>index</p></th>
+<th class="head"><p>value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>sequence number</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>F word value (feed)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>S word value (speed)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>G64 P value (blend tolerance)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>G64 Q value (naive CAM tolerance)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:settings</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:settings?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-brake">
+<dt>spindle.n.brake</dt><dd><p>status of spindle n brake</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.brake</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.brake?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-direction">
+<dt>spindle.n.direction</dt><dd><p>rotational direction of the spindle. forward=1, reverse=-1</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.direction</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.direction?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-enabled">
+<dt>spindle.n.enabled</dt><dd><p>spindle enabled status</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.enabled</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.enabled?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-homed">
+<dt>spindle.n.homed</dt><dd><p>spindle n homed</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.homed</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.homed?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-orient-fault">
+<dt>spindle.n.orient_fault</dt><dd><p>spindle n orient fault status</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.orient_fault</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.orient_fault?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-orient-state">
+<dt>spindle.n.orient_state</dt><dd><p>unknown</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.orient_state</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.orient_state?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-override">
+<dt>spindle.n.override</dt><dd><p>spindle n speed override scale</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.override</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.override?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-override-enabled">
+<dt>spindle.n.override_enabled</dt><dd><p>spindle n override enabled</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.override_enabled</span></code> returns bool</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.override_enabled?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindle-n-speed">
+<dt>spindle.n.speed</dt><dd><p>spindle n speed rpm, &gt; 0 clockwise, &lt; 0 counterclockwise</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.speed</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindle.n.speed?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-spindles">
+<dt>spindles</dt><dd><p>number of spindles, ini parameter [TRAJ]SPINDLES</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindles</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:spindles?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-state">
+<dt>state</dt><dd><p>current command execution status</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:state</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:state?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-task-mode">
+<dt>task_mode</dt><dd><p>current task mode</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>string</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Manual</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Auto</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>MDI</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:task_mode</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:task_mode?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-task-paused">
+<dt>task_paused</dt><dd><p>task paused status</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:task_paused</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:task_paused?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-task-state">
+<dt>task_state</dt><dd><p>current task state</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>int</p></th>
+<th class="head"><p>string</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>E-Stop</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Reset</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Off</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>On</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:task_state</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:task_state?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-tool-in-spindle">
+<dt>tool_in_spindle</dt><dd><p>current tool number</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:tool_in_spindle</span></code> returns int</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:tool_in_spindle?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-tool-offset">
+<dt>tool_offset</dt><dd><p>offset values of the current tool</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:tool_offset</span></code> returns tuple of floats</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:tool_offset?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-tool-table">
+<dt>tool_table</dt><dd><p>list of tool entries</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:tool_table</span></code> returns tuple of tool_results</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:tool_table?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+<dl id="status-plugin-velocity">
+<dt>velocity</dt><dd><p>This property is defined, but it does not have a useful interpretation</p>
+<div class="line-block">
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:velocity</span></code> returns float</div>
+<div class="line">syntax <code class="docutils literal notranslate"><span class="pre">status:velocity?string</span></code> returns str</div>
+</div>
+</dd>
+</dl>
+<p><a class="reference internal" href="../../components/status_items.html#status-list"><span class="std std-ref">return to the status items list</span></a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="notifications.html" class="btn btn-neutral float-right" title="Notifications plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

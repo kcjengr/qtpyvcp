@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spindle Actions &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Coolant Actions" href="coolant_actions.html" />
+    <link rel="prev" title="Program Actions" href="program_actions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Actions</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="action_helpers.html">Action Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="machine_actions.html">Machine Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="program_actions.html">Program Actions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Spindle Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coolant_actions.html">Coolant Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool_actions.html">Tool Actions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Actions</a></li>
+      <li class="breadcrumb-item active">Spindle Actions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/actions/spindle_actions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-qtpyvcp.actions.spindle_actions">
+<span id="spindle-actions"></span><h1>Spindle Actions<a class="headerlink" href="#module-qtpyvcp.actions.spindle_actions" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.forward">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.forward" title="Link to this definition"></a></dt>
+<dd><p>Turn a spindle ON in the <em>FORWARD</em> direction.</p>
+<p>ActionButton syntax to start spindle 0 CW (spindle 0 is default)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">forward</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to start spindle 1 CW</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="mf">.1</span><span class="o">.</span><span class="n">forward</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to start spindle 0 CW at 1800 RPM</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">forward</span><span class="p">:</span><span class="mi">1800</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>speed</strong> (<em>int</em><em>, </em><em>optional</em>) – The requested speed to spin the spindle at.
+If <code class="docutils literal notranslate"><span class="pre">speed</span></code> is not specified the current interpreter speed setting
+(as set by the last S word) is used, taking into account the
+value of the spindle override if it is enabled.</p></li>
+<li><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to turn ON. If
+<code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.reverse">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#reverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.reverse" title="Link to this definition"></a></dt>
+<dd><p>Turn a spindle ON in the <em>REVERSE</em> direction.</p>
+<p>ActionButton syntax to start spindle 0 CCW (spindle 0 is default)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">reverse</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to start spindle 1 CCW</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="mf">.1</span><span class="o">.</span><span class="n">reverse</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to start spindle 0 CCW at 1800 RPM</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">reverse</span><span class="p">:</span><span class="mi">1800</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>speed</strong> (<em>float</em><em>, </em><em>optional</em>) – The requested speed to spin the spindle at.
+If <code class="docutils literal notranslate"><span class="pre">speed</span></code> is not specified the current interpreter speed setting
+(as set by the last S word) is used, taking into account the
+value of the spindle override if it is enabled.</p></li>
+<li><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to turn ON. If
+<code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.off">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.off" title="Link to this definition"></a></dt>
+<dd><p>Turn a spindle OFF.</p>
+<p>ActionButton syntax to stop spindle 0 (spindle 0 is default)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">off</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to stop spindle 1</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="mf">.1</span><span class="o">.</span><span class="n">off</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to turn OFF. If
+<code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.faster">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">faster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#faster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.faster" title="Link to this definition"></a></dt>
+<dd><p>Increase spindle speed by 100rpm.</p>
+<p>ActionButton syntax to increase spindle 0 speed (spindle 0 is default)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">faster</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to increase spindle 1</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="mf">.1</span><span class="o">.</span><span class="n">faster</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to increase the
+speed of. If <code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.slower">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">slower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#slower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.slower" title="Link to this definition"></a></dt>
+<dd><p>Decrease spindle speed by 100rpm.</p>
+<p>ActionButton syntax to decrease spindle 0 speed (spindle 0 is default)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">slower</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to decrease spindle 1 speed</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="mf">.1</span><span class="o">.</span><span class="n">slower</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to decrease the
+speed of. If <code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.constant">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#constant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.constant" title="Link to this definition"></a></dt>
+<dd><p>Unclear</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.getSpeed">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">getSpeed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#getSpeed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.getSpeed" title="Link to this definition"></a></dt>
+<dd><p>Gets the interpreter’s speed setting for the specified spindle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to get the speed
+of. If <code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The interpreter speed setting, with any override applied if
+override enabled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.override">
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">override</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">override</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#override"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.override" title="Link to this definition"></a></dt>
+<dd><p>Set spindle override percentage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>override</strong> (<em>float</em>) – The desired spindle override in percent.</p></li>
+<li><p><strong>spindle</strong> (<em>float</em><em>, </em><em>optional</em>) – The number of the spindle to apply the
+override to. If <code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.brake">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.actions.spindle_actions.</span></span><span class="sig-name descname"><span class="pre">brake</span></span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#brake"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.brake" title="Link to this definition"></a></dt>
+<dd><p>Spindle brake Group</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.brake.on">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#brake.on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.brake.on" title="Link to this definition"></a></dt>
+<dd><p>Set spindle brake ON.</p>
+<p>ActionButton syntax to engage spindle 0 brake (spindle 0 is default)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">on</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to engage spindle 1 brake</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="mf">.1</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">on</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to apply the
+override to. If <code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.brake.off">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#brake.off"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.brake.off" title="Link to this definition"></a></dt>
+<dd><p>Set spindle brake OFF.</p>
+<p>ActionButton syntax to disengage spindle 0 brake (spindle 0 is default)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">off</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to disengage spindle 1 brake</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="mf">.1</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">off</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to apply the
+override to. If <code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.actions.spindle_actions.brake.toggle">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">toggle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spindle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/actions/spindle_actions.html#brake.toggle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.actions.spindle_actions.brake.toggle" title="Link to this definition"></a></dt>
+<dd><p>Toggle spindle brake ON/OFF.</p>
+<p>ActionButton syntax to toggle spindle 0 brake (spindle 0 is default)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">toggle</span>
+</pre></div>
+</div>
+<p>ActionButton syntax to toggle spindle 1 brake</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spindle</span><span class="mf">.1</span><span class="o">.</span><span class="n">brake</span><span class="o">.</span><span class="n">toggle</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>spindle</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of the spindle to apply the
+override to. If <code class="docutils literal notranslate"><span class="pre">spindle</span></code> is not specified spindle 0 is assumed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="coolant_actions.html" class="btn btn-neutral float-right" title="Coolant Actions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="program_actions.html" class="btn btn-neutral float-left" title="Program Actions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

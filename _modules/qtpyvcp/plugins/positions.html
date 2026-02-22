@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.plugins.positions &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../plugins.html">qtpyvcp.plugins</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.plugins.positions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.plugins.positions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Smart Axis and Join positions plugin.</span>
+
+<span class="sd">Calculates Absolute, Relative, and Distance-To-Go values for each axis.</span>
+<span class="sd">Configurable to report actual or commanded positions and values in either</span>
+<span class="sd">machine or program units.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    Example syntax to use in Widget Rules Editor::</span>
+
+<span class="sd">        position:abs?string&amp;axis=x        # returns X axis absolute position</span>
+<span class="sd">        position:rel?string&amp;axis=x        # returns X axis relative position</span>
+<span class="sd">        position:dtg?string&amp;axis=x        # returns X axis DTG value</span>
+
+
+<span class="sd">YAML configuration:</span>
+
+<span class="sd">This goes in your config.yml file in the `data_plugins` section.</span>
+
+<span class="sd">.. code-block:: yaml</span>
+
+<span class="sd">    data_plugins:</span>
+<span class="sd">      position:</span>
+<span class="sd">        kwargs:</span>
+<span class="sd">          # whether to report actual or commanded pos</span>
+<span class="sd">          report_actual_pos: False</span>
+<span class="sd">          # whether to report program or machine units</span>
+<span class="sd">          use_program_units: True</span>
+<span class="sd">          # format used for metric units</span>
+<span class="sd">          metric_format: &quot;%9.3f&quot;</span>
+<span class="sd">          # format used for imperial units</span>
+<span class="sd">          imperial_format: &quot;%8.4f&quot;</span>
+
+<span class="sd">ToDO:</span>
+<span class="sd">    Add joint positions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataPlugin</span><span class="p">,</span> <span class="n">DataChannel</span><span class="p">,</span> <span class="n">getPlugin</span>
+
+<span class="n">STATUS</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="n">STAT</span> <span class="o">=</span> <span class="n">STATUS</span><span class="o">.</span><span class="n">stat</span>
+<span class="n">INFO</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+
+<span class="c1"># Set up logging</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">MACHINE_COORDS</span> <span class="o">=</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getCoordinates</span><span class="p">()</span>
+<span class="n">MACHINE_UNITS</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">INFO</span><span class="o">.</span><span class="n">getIsMachineMetric</span><span class="p">()</span> <span class="k">else</span> <span class="mi">1</span>
+
+<span class="c1"># Set the conversions used for changing the DRO units</span>
+<span class="c1"># Only convert linear axes (XYZUVW), use factor of unity for ABC</span>
+<span class="k">if</span> <span class="n">MACHINE_UNITS</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="c1"># List of factors for converting from mm to inches</span>
+    <span class="n">CONVERSION_FACTORS</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">25.4</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">25.4</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># List of factors for converting from inches to mm</span>
+    <span class="n">CONVERSION_FACTORS</span> <span class="o">=</span> <span class="p">[</span><span class="mf">25.4</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="p">[</span><span class="mf">25.4</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+
+
+<div class="viewcode-block" id="Position">
+<a class="viewcode-back" href="../../../plugins/positions.html#qtpyvcp.plugins.positions.Position">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Position</span><span class="p">(</span><span class="n">DataPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Positions Plugin&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report_actual_pos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_program_units</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">metric_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%9.3f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">imperial_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%8.4f</span><span class="s1">&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Position</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_actual_pos</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_use_program_units</span> <span class="o">=</span> <span class="n">use_program_units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metric_format</span> <span class="o">=</span> <span class="n">metric_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_imperial_format</span> <span class="o">=</span> <span class="n">imperial_format</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imperial_format</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">()</span>
+
+        <span class="c1"># all these should cause the positions to update</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">)</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">g5x_offset</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">)</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">g92_offset</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">)</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">tool_offset</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">)</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">program_units</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateUnits</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">report_actual_pos</span> <span class="o">=</span> <span class="n">report_actual_pos</span>
+
+<div class="viewcode-block" id="Position.getChannel">
+<a class="viewcode-back" href="../../../plugins/positions.html#qtpyvcp.plugins.positions.Position.getChannel">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getChannel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get data channel from URL.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str) : The URL of the channel to get.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple : (chan_obj, chan_exp)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">chan</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">query</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">)</span>
+        <span class="n">raw_args</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&amp;&#39;</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">raw_args</span> <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="s1">&#39;=&#39;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chan_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">[</span><span class="n">chan</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="s1">&#39;axis&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;anum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;anum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;xyzabcuvw&#39;</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;str&#39;</span><span class="p">):</span>
+                <span class="n">chan_exp</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">chan_obj</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">chan_exp</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">chan_obj</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">SyntaxError</span><span class="p">):</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Error getting channel&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">chan_obj</span><span class="p">,</span> <span class="n">chan_exp</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">updateUnits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canon_units</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s1">&#39;updating units&#39;</span><span class="p">,</span> <span class="n">canon_units</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">canon_units</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metric_format</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current_format</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_imperial_format</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">()</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">anum</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The current relative axis positions including all offsets</span>
+
+<span class="sd">        To get a single axis pass string and the axis letter::</span>
+
+<span class="sd">            position:rel?string&amp;axis=x</span>
+
+<span class="sd">        To get a tuple of all the axes pass only string::</span>
+
+<span class="sd">            position:rel?</span>
+
+<span class="sd">        :returns: current relative axis positions including all offsets</span>
+<span class="sd">        :rtype: tuple, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">anum</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span>
+
+    <span class="nd">@rel</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">anum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_format</span> <span class="o">%</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span>
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">anum</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The current absolute axis positions</span>
+
+<span class="sd">        To get a single axis pass string and the axis letter::</span>
+
+<span class="sd">            position:abs?string&amp;axis=x</span>
+
+<span class="sd">        To get a tuple of all the axes pass only string::</span>
+
+<span class="sd">            position:abs?</span>
+
+<span class="sd">        :returns: current absolute axis positions</span>
+<span class="sd">        :rtype: tuple, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">anum</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span>
+
+    <span class="nd">@abs</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">anum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_format</span> <span class="o">%</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span>
+
+
+    <span class="nd">@DataChannel</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dtg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">anum</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The remaining distance-to-go for the current move</span>
+
+<span class="sd">        To get a single axis pass string and the axis letter::</span>
+
+<span class="sd">            position:dtg?string&amp;axis=x</span>
+
+<span class="sd">        To get a tuple of all the axes pass only string::</span>
+
+<span class="sd">            position:dtg?</span>
+
+<span class="sd">        :returns: remaining distance-to-go for the current move</span>
+<span class="sd">        :rtype: tuple, str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">anum</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span>
+
+    <span class="nd">@dtg</span><span class="o">.</span><span class="n">tostring</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dtg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">,</span> <span class="n">anum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_format</span> <span class="o">%</span> <span class="n">chan</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span>
+
+    <span class="c1"># aliases</span>
+    <span class="n">Relative</span> <span class="o">=</span> <span class="n">rel</span>
+    <span class="n">Absolute</span> <span class="o">=</span> <span class="nb">abs</span>
+    <span class="n">DistanceToGo</span> <span class="o">=</span> <span class="n">dtg</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">report_actual_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether to report the actual position. Default True.</span>
+
+<span class="sd">        See the YAML configuration.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_actual_pos</span>
+
+    <span class="nd">@report_actual_pos</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">report_actual_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">report_actual_pos</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">report_actual_pos</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_actual_pos</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_report_actual_pos</span> <span class="o">=</span> <span class="n">report_actual_pos</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_actual_pos</span><span class="p">:</span>
+            <span class="c1"># disconnect commanded pos update signals</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">)</span>
+            <span class="c1"># STATUS.joint_position.signal.disconnect(self._update)</span>
+            <span class="c1"># connect actual pos update signals</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">actual_position</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">)</span>
+            <span class="c1"># STATUS.joint_actual_position.signal.connect(self.joint._update)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># disconnect actual pos update signals</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">actual_position</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">)</span>
+            <span class="c1"># STATUS.joint_actual_position.signal.disconnect(self._update)</span>
+            <span class="c1"># connect commanded pos update signals</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_update</span><span class="p">)</span>
+            <span class="c1"># STATUS.joint_position.signal.connect(self._update)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_report_actual_pos</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">actual_position</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">position</span>
+
+        <span class="n">dtg</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">dtg</span>
+        <span class="n">g5x_offset</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">g5x_offset</span>
+        <span class="n">g92_offset</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">g92_offset</span>
+        <span class="n">tool_offset</span> <span class="o">=</span> <span class="n">STAT</span><span class="o">.</span><span class="n">tool_offset</span>
+
+        <span class="n">rel</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">9</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">INFO</span><span class="o">.</span><span class="n">AXIS_NUMBER_LIST</span><span class="p">:</span>
+            <span class="n">rel</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">g5x_offset</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">tool_offset</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">rotation_xy</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="o">-</span><span class="n">STAT</span><span class="o">.</span><span class="n">rotation_xy</span><span class="p">)</span>
+            <span class="n">xr</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">rel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="n">yr</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">rel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="n">rel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span>
+            <span class="n">rel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">yr</span>
+
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">INFO</span><span class="o">.</span><span class="n">AXIS_NUMBER_LIST</span><span class="p">:</span>
+            <span class="n">rel</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-=</span> <span class="n">g92_offset</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">STAT</span><span class="o">.</span><span class="n">program_units</span> <span class="o">!=</span> <span class="n">MACHINE_UNITS</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_program_units</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="o">*</span> <span class="n">CONVERSION_FACTORS</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="k">for</span> <span class="n">anum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)]</span>
+            <span class="n">rel</span> <span class="o">=</span> <span class="p">[</span><span class="n">rel</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="o">*</span> <span class="n">CONVERSION_FACTORS</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="k">for</span> <span class="n">anum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)]</span>
+            <span class="n">dtg</span> <span class="o">=</span> <span class="p">[</span><span class="n">dtg</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="o">*</span> <span class="n">CONVERSION_FACTORS</span><span class="p">[</span><span class="n">anum</span><span class="p">]</span> <span class="k">for</span> <span class="n">anum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rel</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">rel</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">abs</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtg</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">dtg</span><span class="p">))</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

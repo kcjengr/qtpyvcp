@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Making your first VCP &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Widget Rules" href="widget_rules.html" />
+    <link rel="prev" title="VCP Template" href="vcp_template.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_vcp/index.html">Basic VCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/dialogs.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/dro_tutorial.html">DRO Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/machine_buttons.html">Machine Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/mdi.html">MDI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/touch_screen.html">Touch Screens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/overrides.html">Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/button_groups.html">Button Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vcp_template.html">VCP Template</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Making your first VCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="widget_rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Tips &amp; Tricks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Making your first VCP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/first_vcp.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="making-your-first-vcp">
+<h1>Making your first VCP<a class="headerlink" href="#making-your-first-vcp" title="Link to this heading"></a></h1>
+<p>After installing and testing QtPyVCP clone the <cite>vcp-template</cite> then make a copy.</p>
+<p>To copy the example template in a terminal run <cite>copy.sh</cite> and use a new name that
+contains only letters, numbers and the underscore _.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/kcjengr/vcp-template.git
+<span class="nb">cd</span><span class="w"> </span>vcp-template
+./copy.sh
+</pre></div>
+</div>
+<p>To edit the new template created from the vcp-template run the following. In
+this example the copied vcp-template was named <cite>vcp1</cite>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>editvcp<span class="w"> </span>vcp1
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/vcp1-01.png"><img alt="../_images/vcp1-01.png" class="align-center" height="420" src="../_images/vcp1-01.png" width="672" />
+</a>
+<p>Now we have a very basic VCP with only a few items in it. You can either delete
+everything but the main window and central widget and start from scratch or just
+add to the vcp-template. In this tutorial I’m going to start with a blank slate
+so we don’t miss any important details.</p>
+<p>This example has to work on a small touch screen with a resolution of 800x600 so
+I set the main window size and the vertical and horzontal policy to fixed.</p>
+<a class="reference internal image-reference" href="../_images/vcp1-02.png"><img alt="../_images/vcp1-02.png" class="align-center" height="336" src="../_images/vcp1-02.png" width="597" />
+</a>
+<p>Testing the VCP</p>
+<p>To test your vcp start LinuxCNC and pick a configuration from sim.qtpyvcp</p>
+<a class="reference internal image-reference" href="../_images/config-selector.png"><img alt="../_images/config-selector.png" class="align-center" height="308" src="../_images/config-selector.png" width="475" />
+</a>
+<p>then pick your VCP from the Installed VCPs.</p>
+<a class="reference internal image-reference" href="../_images/vcp-chooser1.png"><img alt="../_images/vcp-chooser1.png" class="align-center" height="326" src="../_images/vcp-chooser1.png" width="415" />
+</a>
+<p>Now you can see a blank VCP with a menu added.</p>
+<a class="reference internal image-reference" href="../_images/vcp1run-01.png"><img alt="../_images/vcp1run-01.png" class="align-center" height="475" src="../_images/vcp1run-01.png" width="609" />
+</a>
+<p>Navigate to the new vcp location and open the <cite>config.yml</cite> file with a text
+editor. Here you can change the author, version, description.</p>
+<p>The <cite>mainwindow.py</cite> is the file to add any custom methods.</p>
+<p>The <cite>style.qss</cite> is a place to put css styles. In the following example it is for
+an <cite>ActionButton</cite> with the <cite>actionName</cite> of machine.estop.toggle and when it is
+checked change the background color to red. The important thing to note is the
+<cite>checked</cite>, by default an action button is not checkable so for this to work you
+must select that in the <cite>Property Editor</cite>.</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">ActionButton</span><span class="o">[</span><span class="nt">actionName</span><span class="o">=</span><span class="s2">&quot;machine.estop.toggle&quot;</span><span class="o">]</span><span class="p">:</span><span class="nd">checked</span><span class="p">{</span>
+<span class="w">    </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="nb">rgb</span><span class="p">(</span><span class="mi">239</span><span class="p">,</span><span class="w"> </span><span class="mi">41</span><span class="p">,</span><span class="w"> </span><span class="mi">41</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To make testing a bit faster in the <cite>~/linuxcnc/configs/sim.qtpyvcp</cite> directory
+make a copy of xyz.ini and rename it vcp1.ini. In the [DISPLAY] section add
+<cite>VCP = vcp1</cite>. Now run the LinuxCNC configuration selector and pick <cite>vcp1</cite> and
+check <cite>Create Desktop Shortcut</cite>. Now we can launch vcp1 with a single mouse
+click.</p>
+<p>First Buttons</p>
+<p>I added a tab widget to the central widget then added a Grid Layout. Right click
+on the Grid Layout and morph it into a QGroupBox. Now drag an ActionButton into
+the group box, add text and make it checkable. Now in the <cite>actionName</cite> add
+<code class="docutils literal notranslate"><span class="pre">machine.estop.toggle</span></code> and save.</p>
+<a class="reference internal image-reference" href="../_images/vcp1-03.png"><img alt="../_images/vcp1-03.png" class="align-center" height="336" src="../_images/vcp1-03.png" width="597" />
+</a>
+<p>Now run the vcp. When you toggle the E Stop button it should turn red when on
+and original color when off.</p>
+<a class="reference internal image-reference" href="../_images/vcp1run-02.png"><img alt="../_images/vcp1run-02.png" class="align-center" height="475" src="../_images/vcp1run-02.png" width="609" />
+</a>
+<p>Now add a second button for machine power to the group box. This may be a bit
+tricky to figure out at first but when you drag something into a layout either a
+blue line or a red box will indicate where the widget will be placed.</p>
+<a class="reference internal image-reference" href="../_images/vcp1-04.png"><img alt="../_images/vcp1-04.png" class="align-center" height="138" src="../_images/vcp1-04.png" width="228" />
+</a>
+<p>In the <cite>actionName</cite> put <code class="docutils literal notranslate"><span class="pre">machine.power.toggle</span></code> and make sure checkable is
+selected then save. When you run the vcp you can see the colors change on the
+buttons as you toggle them. The styles that change the colors are in the
+styles.qss file.</p>
+<a class="reference internal image-reference" href="../_images/vcp1run-03.png"><img alt="../_images/vcp1run-03.png" class="align-center" height="475" src="../_images/vcp1run-03.png" width="609" />
+</a>
+<p>Now because this is for a touch screen lets make the button size large enough to
+use with your fingers. In the property editor change the <cite>minimumSize Width and
+Height</cite> to 50 and save.</p>
+<a class="reference internal image-reference" href="../_images/vcp1run-04.png"><img alt="../_images/vcp1run-04.png" class="align-center" height="475" src="../_images/vcp1run-04.png" width="609" />
+</a>
+<p>Now because this is a touch screen VCP we want to hide the main menu bar. In the
+[DISPLAY] section add <cite>HIDE_MENU_BAR = True</cite>. See the
+<a class="reference internal" href="../configuration/ini_options.html"><span class="doc">INI options page</span></a> for more info.</p>
+<p>Or you can edit the config.yml file and change <code class="docutils literal notranslate"><span class="pre">menu</span> <span class="pre">=</span> <span class="pre">(</span> <span class="pre">default</span> <span class="pre">)</span></code> to
+<code class="docutils literal notranslate"><span class="pre">menu</span> <span class="pre">=</span> <span class="pre">null</span></code> which is what I did for this tutorial. Now when you run the vcp
+you can see the menu is gone.</p>
+<a class="reference internal image-reference" href="../_images/vcp1run-05.png"><img alt="../_images/vcp1run-05.png" class="align-center" height="475" src="../_images/vcp1run-05.png" width="609" />
+</a>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="widget_rules.html" class="btn btn-neutral float-right" title="Widget Rules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vcp_template.html" class="btn btn-neutral float-left" title="VCP Template" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Widget Rules &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tips &amp; Tricks" href="misc.html" />
+    <link rel="prev" title="Making your first VCP" href="first_vcp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_vcp/index.html">Basic VCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/dialogs.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/dro_tutorial.html">DRO Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/machine_buttons.html">Machine Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/mdi.html">MDI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/touch_screen.html">Touch Screens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/overrides.html">Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="components/button_groups.html">Button Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vcp_template.html">VCP Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first_vcp.html">Making your first VCP</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Tips &amp; Tricks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Widget Rules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/widget_rules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="widget-rules">
+<h1>Widget Rules<a class="headerlink" href="#widget-rules" title="Link to this heading"></a></h1>
+<p>One of the most powerful features of QtPyVCP are the Widget Rules. Widget
+Rules are a flexible way of making widgets respond to changes in external data.</p>
+<p>Rules can be used for things as simple as making a label display the current
+machine position, or as complicated as hiding, showing and rearranging widgets
+and layouts.</p>
+<p>Each widget can have multiple rules applied to it, and each rule can make use
+of data from multiple sources.</p>
+<section id="terms">
+<h2>Terms<a class="headerlink" href="#terms" title="Link to this heading"></a></h2>
+<p>Here are some definitions of terms that will be used on this page. They probably
+won’t make much sense at this point but don’t worry about that now. It will all
+come together after a few examples.</p>
+<p><strong>Rule</strong>: <em>A rule defines how one aspect of the widget changes in response to
+external data.</em> For example a rule might be used to set the text in a label, to
+enable or disable a button. A widget may have many rules applied to it.</p>
+<p><strong>Data Source</strong>: <em>A data source is something the provides data channels.</em> Examples
+of a data source are <code class="docutils literal notranslate"><span class="pre">status</span></code> which provides machine status updates, and
+<code class="docutils literal notranslate"><span class="pre">tooltable</span></code> which provides data on the tools in the tool table.</p>
+<p><strong>Data Channel</strong>: <em>A data channel provides a single set of data which can be used
+in the rules expression.</em> Examples of data channels are <code class="docutils literal notranslate"><span class="pre">status:tool_in_spindle</span></code>
+and <code class="docutils literal notranslate"><span class="pre">tooltable:current_tool?comment</span></code>.</p>
+<p><strong>Rules Expression</strong>: <em>A rules expression is a python expression which you can use
+to manipulate the data from the data channels.*</em></p>
+<section id="creating-rules">
+<h3>Creating Rules<a class="headerlink" href="#creating-rules" title="Link to this heading"></a></h3>
+<p>Rules are created and edited using a special <strong>Rules Editor</strong> dialog in QtDesigner.</p>
+<p>On the left side of the dialog is a list of all the rules applied to the widget.
+On the right side is where you edit the rules by selecting what aspect of the widget
+they affect, what data channels to source data from, and the expression which brings
+is all together.</p>
+<figure class="align-default" id="id1">
+<img alt="../_images/rules_editor.png" src="../_images/rules_editor.png" />
+<figcaption>
+<p><span class="caption-text">Rules Editor</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<section id="opening-the-editor">
+<h4>Opening the Editor<a class="headerlink" href="#opening-the-editor" title="Link to this heading"></a></h4>
+<p>With a VCP open in designer, right-click on a widget and in the Task Menu
+select the <strong>Edit Widget Rules…</strong> option. You may also be able to double
+click on the widget to open the rules editor.</p>
+<p>Here is a step-by-step on how to open the <strong>Rules Editor</strong>.</p>
+<figure class="align-default" id="id2">
+<img alt="../_images/open_editor.gif" src="../_images/open_editor.gif" />
+<figcaption>
+<p><span class="caption-text">Opening the Rules Editor</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="adding-a-new-rule">
+<h4>Adding A New Rule<a class="headerlink" href="#adding-a-new-rule" title="Link to this heading"></a></h4>
+<p>With the <em>Rules Editor</em> open, add a rule by clicking on the <strong>Add Rule</strong> button
+on the top left or delete a rule by clicking on the <strong>Remove Rule</strong> button.</p>
+<ul>
+<li><dl class="simple">
+<dt><strong>Set the Rule Name</strong></dt><dd><p>The rule name can be anything you like, but it should be something meaningful and
+make it clear to others what the rule does.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Select the Property</strong></dt><dd><p>The property combo box will display a list of widget properties that the rule can
+control. Select the property you would like to have the rule change. Notice that
+that the blue <strong>Exp. Type</strong> value at the bottom of the window changes depending on
+the property you select. This indicate the type of value the Expression should return.</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Channels</strong></dt><dd><p>Add at least one channel to be used to trigger the rule and provide a value
+for use in the expression. To do this click at the <strong>Add Channel</strong> button on
+top of the table and fill in the channel address. The channel address format
+is <code class="docutils literal notranslate"><span class="pre">datasource:channel_name?query</span></code>. Type the first letter of the <cite>Data
+Plugin</cite> to get a list of channels for that plugin.</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>status:paused                       # bool, whether the machine is paused or not
+status:joint[0].homed               # bool, whether joint No. 0 is homed
+position:abs?string&amp;axis=x          # string, current absolute position of the X axis
+tootlable:current_tool              # dict, dictionary of current tool data
+tootlable:current_tool?diameter     # float, query diameter of the currently loaded tool
+tootlable:current_tool?comment      # string, query comment for the currently loaded tool
+</pre></div>
+</div>
+<p>If a query is not explicitly given it will default to <code class="docutils literal notranslate"><span class="pre">?value</span></code>. Example: <code class="docutils literal notranslate"><span class="pre">status:paused</span></code>
+is equivalent to <code class="docutils literal notranslate"><span class="pre">status:paused?value</span></code>.</p>
+<p>The <strong>Trigger</strong> option defines if the expression will be evaluated or not when
+that channel’s value changes. At least one channel must be marked as a <strong>Trigger</strong>.</p>
+<p>With the channel(s) added it is time to create the expression.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<ul id="expression">
+<li><dl>
+<dt><strong>Expression</strong></dt><dd><p>To use data from the <strong>channels</strong> in the expression you used the special
+function <code class="docutils literal notranslate"><span class="pre">ch[chan_num]</span></code>, where <code class="docutils literal notranslate"><span class="pre">chan_num</span></code> is the number that is shown in
+the left column of the channels list. For example, <code class="docutils literal notranslate"><span class="pre">ch[0]</span></code> in an expression
+will be replaced with that channels value when the expression is evaluated.</p>
+<p>When the user selects a property, the <strong>Expected Type</strong> label is updated with
+the data type the expression should return.</p>
+<p>It is the user responsibility to cast the data properly and ensure that the
+proper data type (or equivalent) is the result of the evaluation. If you make
+a mistake a warning box will pop up when saving the rule giving you a chance to
+go back and fix it.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h3>
+<section id="set-text-in-label">
+<h4>Set text in label<a class="headerlink" href="#set-text-in-label" title="Link to this heading"></a></h4>
+<p>Here is a basic rule which will set the text in a label to “X Homed” if
+joint 0 is homed (ch[0] is True), or to “X Unhomed” if joint 0 is not homed
+(ch[0] is False). Channel 0 data type is <cite>bool</cite> which means it is either true or
+false. The expression reads like this <cite>set the label text to X Homed if channel
+0 is true else set the text label to X Unhomed</cite>.</p>
+<figure class="align-default" id="id3">
+<img alt="../_images/homed_label_example.png" src="../_images/homed_label_example.png" />
+<figcaption>
+<p><span class="caption-text">Rule to set label text according to homed status.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="style-class">
+<h4>Style Class<a class="headerlink" href="#style-class" title="Link to this heading"></a></h4>
+<p>To use the Style Class create a style in the css file and use the rule to set
+or unset that style. The following is placed in the ui/style.css file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">StatusLabel</span><span class="p">[</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;red_text&#39;</span><span class="p">]{</span>
+  <span class="n">color</span><span class="p">:</span><span class="n">red</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">StatusLabel</span><span class="p">[</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;green_text&#39;</span><span class="p">]{</span>
+  <span class="n">color</span><span class="p">:</span><span class="n">green</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id4">
+<img alt="../_images/rules-04.png" src="../_images/rules-04.png" />
+<figcaption>
+<p><span class="caption-text">Rule to set the text color based on the homed status of axis 0</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="misc.html" class="btn btn-neutral float-right" title="Tips &amp; Tricks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="first_vcp.html" class="btn btn-neutral float-left" title="Making your first VCP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

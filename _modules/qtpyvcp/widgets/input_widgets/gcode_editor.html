@@ -1,0 +1,839 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.input_widgets.gcode_editor &mdash; QtPyVCP 5.1.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=682924ec"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.input_widgets.gcode_editor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.input_widgets.gcode_editor</h1><div class="highlight"><pre>
+<span></span><span class="c1">#    Gcode display / edit widget for QT_VCP</span>
+<span class="c1">#    Copyright 2016 Chris Morley</span>
+<span class="c1">#</span>
+<span class="c1">#    This program is free software; you can redistribute it and/or modify</span>
+<span class="c1">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c1">#    the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1">#    (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1">#    This program is distributed in the hope that it will be useful,</span>
+<span class="c1">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">#    GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#    You should have received a copy of the GNU General Public License</span>
+<span class="c1">#    along with this program; if not, write to the Free Software</span>
+<span class="c1">#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</span>
+
+<span class="c1"># This was based on</span>
+<span class="c1"># QScintilla sample with PyQt</span>
+<span class="c1"># Eli Bendersky (eliben@gmail.com)</span>
+<span class="c1"># Which is code in the public domain</span>
+<span class="c1">#</span>
+<span class="c1"># See also:</span>
+<span class="c1"># http://pyqt.sourceforge.net/Docs/QScintilla2/index.html</span>
+<span class="c1"># https://qscintilla.com/</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">QFile</span><span class="p">,</span> <span class="n">QFileInfo</span><span class="p">,</span> <span class="n">QTextStream</span><span class="p">,</span> <span class="n">Signal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtGui</span><span class="w"> </span><span class="kn">import</span> <span class="n">QFont</span><span class="p">,</span> <span class="n">QFontMetrics</span><span class="p">,</span> <span class="n">QColor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpy.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">QInputDialog</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QDialog</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QCheckBox</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">getPlugin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qtpyvcp.utilities.info</span><span class="w"> </span><span class="kn">import</span> <span class="n">Info</span>
+
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">PyQt5.Qsci</span><span class="w"> </span><span class="kn">import</span> <span class="n">QsciScintilla</span><span class="p">,</span> <span class="n">QsciLexerCustom</span>
+<span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s2">&quot;Can&#39;t import QsciScintilla - is package python-pyqt5.qsci installed?&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">STATUS</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="n">INFO</span> <span class="o">=</span> <span class="n">Info</span><span class="p">()</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Simple custom lexer for Gcode</span>
+<span class="c1"># ==============================================================================</span>
+<div class="viewcode-block" id="GcodeLexer">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GcodeLexer</span><span class="p">(</span><span class="n">QsciLexerCustom</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">standalone</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GcodeLexer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="c1"># This prevents doing unneeded initialization</span>
+        <span class="c1"># when QtDesginer loads the plugin.</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">standalone</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_styles</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;Default&#39;</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;Comment&#39;</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;Key&#39;</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;Assignment&#39;</span><span class="p">,</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;Value&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_styles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">()</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setFamily</span><span class="p">(</span><span class="s1">&#39;Courier&#39;</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setFixedPitch</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setBold</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Paper sets the background color of each style of text</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setPaperBackground</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">style</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setPaper</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setPaper</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GcodeLexer.description">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.description">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_styles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">style</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GcodeLexer.defaultColor">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.defaultColor">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">defaultColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Default</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;#000000&#39;</span><span class="p">)</span>  <span class="c1"># black</span>
+        <span class="k">elif</span> <span class="n">style</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Comment</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;#000000&#39;</span><span class="p">)</span>  <span class="c1"># black</span>
+        <span class="k">elif</span> <span class="n">style</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Key</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;#0000CC&#39;</span><span class="p">)</span>  <span class="c1"># blue</span>
+        <span class="k">elif</span> <span class="n">style</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Assignment</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;#CC0000&#39;</span><span class="p">)</span>  <span class="c1"># red</span>
+        <span class="k">elif</span> <span class="n">style</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Value</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;#00CC00&#39;</span><span class="p">)</span>  <span class="c1"># green</span>
+        <span class="k">return</span> <span class="n">QsciLexerCustom</span><span class="o">.</span><span class="n">defaultColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GcodeLexer.styleText">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.styleText">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">styleText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+        <span class="n">editor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">editor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># scintilla works with encoded bytes, not decoded characters.</span>
+        <span class="c1"># this matters if the source contains non-ascii characters and</span>
+        <span class="c1"># a multi-byte encoding is used (e.g. utf-8)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">editor</span><span class="o">.</span><span class="n">length</span><span class="p">():</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">start</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">hexversion</span> <span class="o">&gt;=</span> <span class="mh">0x02060000</span><span class="p">:</span>
+                <span class="c1"># faster when styling big files, but needs python 2.6</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+                <span class="n">editor</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span>
+                    <span class="n">editor</span><span class="o">.</span><span class="n">SCI_GETTEXTRANGE</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">editor</span><span class="o">.</span><span class="n">text</span><span class="p">())</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># the line index will also be needed to implement folding</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">editor</span><span class="o">.</span><span class="n">SCI_LINEFROMPOSITION</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># the previous state may be needed for multi-line styling</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span>
+                <span class="n">editor</span><span class="o">.</span><span class="n">SCI_GETLINEENDPOSITION</span><span class="p">,</span> <span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">editor</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">editor</span><span class="o">.</span><span class="n">SCI_GETSTYLEAT</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Default</span>
+
+        <span class="n">set_style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">setStyling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startStyling</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="mh">0x1f</span><span class="p">)</span>
+
+        <span class="c1"># scintilla always asks to style whole lines</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+            <span class="c1"># print(line)</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">graymode</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;msg&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;debug&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="c1"># print(char)</span>
+                <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">:</span>
+                    <span class="n">graymode</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">set_style</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
+                    <span class="n">graymode</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">set_style</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">graymode</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">msg</span> <span class="ow">and</span> <span class="n">char</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">):</span>
+                        <span class="n">set_style</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Assignment</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;,&#39;</span><span class="p">:</span> <span class="n">msg</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">set_style</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Comment</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">):</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Assignment</span>
+                <span class="k">elif</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;]&#39;</span><span class="p">):</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Value</span>
+                <span class="k">elif</span> <span class="n">char</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Key</span>
+                <span class="k">elif</span> <span class="n">char</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Default</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Default</span>
+                <span class="n">set_style</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+
+            <span class="c1"># folding implementation goes here</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span></div>
+</div>
+
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Base editor class</span>
+<span class="c1"># ==============================================================================</span>
+<div class="viewcode-block" id="EditorBase">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EditorBase</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="p">):</span>
+    <span class="n">ARROW_MARKER_NUM</span> <span class="o">=</span> <span class="mi">8</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">EditorBase</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="c1"># linuxcnc defaults</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idle_line_reset</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># don&#39;t allow editing by default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Set the default font</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="n">QFont</span><span class="p">()</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setFamily</span><span class="p">(</span><span class="s1">&#39;Courier&#39;</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setFixedPitch</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">font</span><span class="o">.</span><span class="n">setPointSize</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarginsFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+
+        <span class="c1"># Margin 0 is used for line numbers</span>
+        <span class="n">fontmetrics</span> <span class="o">=</span> <span class="n">QFontMetrics</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarginsFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarginWidth</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fontmetrics</span><span class="o">.</span><span class="n">width</span><span class="p">(</span><span class="s2">&quot;0000&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarginLineNumbers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarginsBackgroundColor</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;#cccccc&quot;</span><span class="p">))</span>
+
+        <span class="c1"># Clickable margin 1 for showing markers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarginSensitivity</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># setting marker margin width to zero make the marker highlight line</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarginWidth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">marginClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_margin_clicked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">markerDefine</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">RightArrow</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">ARROW_MARKER_NUM</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarkerBackgroundColor</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;#ffe4e4&quot;</span><span class="p">),</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">ARROW_MARKER_NUM</span><span class="p">)</span>
+
+        <span class="c1"># Brace matching: enable for a brace immediately before or after</span>
+        <span class="c1"># the current position</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setBraceMatching</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SloppyBraceMatch</span><span class="p">)</span>
+
+        <span class="c1"># Current line visible with special background color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCaretLineVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCaretLineBackgroundColor</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="s2">&quot;#ffe4e4&quot;</span><span class="p">))</span>
+
+        <span class="c1"># Set custom gcode lexer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lexer</span> <span class="o">=</span> <span class="n">GcodeLexer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">setDefaultFont</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLexer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lexer</span><span class="p">)</span>
+
+        <span class="c1"># default gray background</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_background_color</span><span class="p">(</span><span class="s1">&#39;#C0C0C0&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlit</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># not too small</span>
+        <span class="c1"># self.setMinimumSize(200, 100)</span>
+
+<div class="viewcode-block" id="EditorBase.find_text_occurences">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase.find_text_occurences">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_text_occurences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return byte positions of start and end of all &#39;text&#39; occurences in the document&quot;&quot;&quot;</span>
+
+        <span class="n">text_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">end_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_GETLENGTH</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETTARGETSTART</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETTARGETEND</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">)</span>
+
+        <span class="n">occurences</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SEARCHINTARGET</span><span class="p">,</span> <span class="n">text_len</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">match</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">match_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_GETTARGETEND</span><span class="p">)</span>
+            <span class="n">occurences</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">match</span><span class="p">,</span> <span class="n">match_end</span><span class="p">))</span>
+            <span class="c1"># -- if there&#39;s a match, the target is modified so we shift its start</span>
+            <span class="c1"># -- and restore its end --</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETTARGETSTART</span><span class="p">,</span> <span class="n">match_end</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETTARGETEND</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">)</span>
+            <span class="c1"># -- find it again in the new (reduced) target --</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SEARCHINTARGET</span><span class="p">,</span> <span class="n">text_len</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">occurences</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">highlight_occurences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+
+        <span class="n">occurences</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_text_occurences</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">text_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETSTYLEBITS</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">occs</span> <span class="ow">in</span> <span class="n">occurences</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETINDICATORCURRENT</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_INDICATORFILLRANGE</span><span class="p">,</span>
+                               <span class="n">occs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">text_len</span><span class="p">)</span>
+
+            <span class="c1"># -- this is somewhat buggy : it was meant to change the color</span>
+            <span class="c1"># -- but somewhy the colouring suddenly changes colour.</span>
+
+            <span class="c1"># self.SendScintilla(Qsci.QsciScintilla.SCI_STARTSTYLING, occs[0], 0xFF)</span>
+            <span class="c1"># self.SendScintilla(Qsci.QsciScintilla.SCI_SETSTYLING,</span>
+            <span class="c1">#                    textLen,</span>
+            <span class="c1">#                    styles[&quot;HIGHLIGHT&quot;][0])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlit</span> <span class="o">=</span> <span class="n">occurences</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear_highlights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">occs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlit</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETINDICATORCURRENT</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_INDICATORCLEARRANGE</span><span class="p">,</span>
+                               <span class="n">occs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">occs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">occs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlit</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">text_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">from_start</span><span class="p">,</span> <span class="n">highlight_all</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">cs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">forward</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">line</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">highlight_all</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_highlights</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">highlight_occurences</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">from_start</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCursorPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findFirst</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="p">,</span> <span class="n">cs</span><span class="p">,</span> <span class="n">wo</span><span class="p">,</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">forward</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">show</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">text_replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">sub</span><span class="p">,</span> <span class="n">from_start</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                     <span class="n">cs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">forward</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                     <span class="n">line</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">sub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_highlights</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">highlight_occurences</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">from_start</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setCursorPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findFirst</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="p">,</span> <span class="n">cs</span><span class="p">,</span> <span class="n">wo</span><span class="p">,</span> <span class="n">wrap</span><span class="p">,</span> <span class="n">forward</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">show</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">text_replace_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">sub</span><span class="p">,</span> <span class="n">from_start</span><span class="p">,</span> <span class="n">re</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                         <span class="n">cs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">wrap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">forward</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">line</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">sub</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_highlights</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETTARGETSTART</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">end_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_GETLENGTH</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SETTARGETEND</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_SEARCHINTARGET</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">text</span><span class="p">)))</span>
+
+            <span class="c1"># match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)</span>
+            <span class="c1"># if match:</span>
+            <span class="c1">#     self.replace(sub)</span>
+
+    <span class="c1"># must set lexer paper background color _and_ editor background color it seems</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_STYLESETBACK</span><span class="p">,</span> <span class="n">QsciScintilla</span><span class="o">.</span><span class="n">STYLE_DEFAULT</span><span class="p">,</span> <span class="n">QColor</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lexer</span><span class="o">.</span><span class="n">setPaperBackground</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_margin_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMarginsBackgroundColor</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_margin_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nmargin</span><span class="p">,</span> <span class="n">nline</span><span class="p">,</span> <span class="n">modifiers</span><span class="p">):</span>
+        <span class="c1"># Toggle marker for the line the margin was clicked on</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">markersAtLine</span><span class="p">(</span><span class="n">nline</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">markerDelete</span><span class="p">(</span><span class="n">nline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARROW_MARKER_NUM</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">markerAdd</span><span class="p">(</span><span class="n">nline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARROW_MARKER_NUM</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Gcode widget</span>
+<span class="c1"># ==============================================================================</span>
+<div class="viewcode-block" id="GcodeEditor">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GcodeEditor</span><span class="p">(</span><span class="n">EditorBase</span><span class="p">,</span> <span class="n">QObject</span><span class="p">):</span>
+    <span class="n">ARROW_MARKER_NUM</span> <span class="o">=</span> <span class="mi">8</span>
+
+    <span class="n">somethingHasChanged</span> <span class="o">=</span> <span class="n">Signal</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GcodeEditor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_filename</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_show_mdi</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_line</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># self.setEolVisibility(True)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_editor</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_before_edit</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span> <span class="o">=</span> <span class="n">FindReplaceDialog</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># QSS Hack</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">backgroundcolor</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">marginbackgroundcolor</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="c1"># register with the status:task_mode channel to</span>
+        <span class="c1"># drive the mdi auto show behaviour</span>
+        <span class="c1">#STATUS.task_mode.notify(self.onMdiChanged)</span>
+        <span class="c1">#self.prev_taskmode = STATUS.task_mode</span>
+
+        <span class="c1">#self.cursorPositionChanged.connect(self.line_changed)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">somethingHasChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setEditable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">state</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCaretLineVisible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_before_edit</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">text_before_edit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">somethingHasChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setReadOnly</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setCaretLineVisible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">somethingHasChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_before_edit</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setFilename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">path</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">save_file</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">STATUS</span><span class="o">.</span><span class="n">file</span><span class="p">))</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">save_file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">QFile</span><span class="o">.</span><span class="n">WriteOnly</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---self.text(): </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+            <span class="n">save_stream</span> <span class="o">=</span> <span class="n">QTextStream</span><span class="p">(</span><span class="n">save_file</span><span class="p">)</span>
+            <span class="n">save_stream</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="n">save_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_before_edit</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">somethingHasChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---save error&quot;</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">saveAs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_as_dialog</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">file_name</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;saveAs file name error&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">STATUS</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="n">original_file</span> <span class="o">=</span> <span class="n">QFileInfo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">original_file</span><span class="o">.</span><span class="n">path</span><span class="p">()</span>
+
+        <span class="n">new_absolute_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+        <span class="n">new_file</span> <span class="o">=</span> <span class="n">QFile</span><span class="p">(</span><span class="n">new_absolute_path</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">new_file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">QFile</span><span class="o">.</span><span class="n">WriteOnly</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">save_stream</span> <span class="o">=</span> <span class="n">QTextStream</span><span class="p">(</span><span class="n">new_file</span><span class="p">)</span>
+            <span class="n">save_stream</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="n">new_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_before_edit</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">somethingHasChanged</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_replace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">find_text</span><span class="p">,</span> <span class="n">highlight_all</span><span class="p">):</span>
+        <span class="n">from_start</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">find_text</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_search</span><span class="p">(</span><span class="n">find_text</span><span class="p">,</span> <span class="n">from_start</span><span class="p">,</span> <span class="n">highlight_all</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">find_text</span><span class="p">,</span> <span class="n">replace_text</span><span class="p">):</span>
+        <span class="n">from_start</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">find_text</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">replace_text</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_replace</span><span class="p">(</span><span class="n">find_text</span><span class="p">,</span> <span class="n">replace_text</span><span class="p">,</span> <span class="n">from_start</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace_all_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">find_text</span><span class="p">,</span> <span class="n">replace_text</span><span class="p">):</span>
+        <span class="n">from_start</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">find_text</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">replace_text</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_replace_all</span><span class="p">(</span><span class="n">find_text</span><span class="p">,</span> <span class="n">find_text</span><span class="p">,</span> <span class="n">from_start</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_editor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_editor</span>
+
+    <span class="nd">@is_editor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_editor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enabled</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_editor</span> <span class="o">=</span> <span class="n">enabled</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_editor</span><span class="p">:</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_program</span><span class="p">)</span>
+            <span class="n">STATUS</span><span class="o">.</span><span class="n">motion_line</span><span class="o">.</span><span class="n">onValueChanged</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlight_line</span><span class="p">)</span>
+
+            <span class="c1"># STATUS.connect(&#39;line-changed&#39;, self.highlight_line)</span>
+            <span class="c1"># if self.idle_line_reset:</span>
+            <span class="c1">#     STATUS.connect(&#39;interp_idle&#39;, lambda w: self.set_line_number(None, 0))</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">backgroundcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property to set the background color of the GCodeEditor (str).</span>
+
+<span class="sd">        sets the background color of the GCodeEditor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backgroundcolor</span>
+
+    <span class="nd">@backgroundcolor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">backgroundcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backgroundcolor</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_background_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">marginbackgroundcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Property to set the background color of the GCodeEditor margin (str).</span>
+
+<span class="sd">        sets the background color of the GCodeEditor margin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_marginbackgroundcolor</span>
+
+    <span class="nd">@marginbackgroundcolor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">marginbackgroundcolor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_marginbackgroundcolor</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_margin_background_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_program</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_filename</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_filename</span> <span class="o">=</span> <span class="n">fname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_text</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="c1"># self.zoomTo(6)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCursorPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;File path is not valid: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_line</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensureCursorVisible</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_VERTICALCENTRECARET</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">highlight_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+        <span class="c1"># if STATUS.is_auto_running():</span>
+        <span class="c1">#     if not STATUS.old[&#39;file&#39;] == self._last_filename:</span>
+        <span class="c1">#         LOG.debug(&#39;should reload the display&#39;)</span>
+        <span class="c1">#         self.load_text(STATUS.old[&#39;file&#39;])</span>
+        <span class="c1">#         self._last_filename = STATUS.old[&#39;file&#39;]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">markerAdd</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARROW_MARKER_NUM</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_line</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">markerDelete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ARROW_MARKER_NUM</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCursorPosition</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ensureCursorVisible</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SendScintilla</span><span class="p">(</span><span class="n">QsciScintilla</span><span class="o">.</span><span class="n">SCI_VERTICALCENTRECARET</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_line</span> <span class="o">=</span> <span class="n">line</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_line_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">select_lineup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCursorPosition</span><span class="p">()</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCursorPosition</span><span class="p">(</span><span class="n">line</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_line</span><span class="p">(</span><span class="n">line</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">select_linedown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">line</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCursorPosition</span><span class="p">()</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCursorPosition</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_line</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+
+    <span class="c1"># simple input dialog for save as</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_as_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="n">text</span><span class="p">,</span> <span class="n">ok_pressed</span> <span class="o">=</span> <span class="n">QInputDialog</span><span class="o">.</span><span class="n">getText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Save as&quot;</span><span class="p">,</span> <span class="s2">&quot;New name:&quot;</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="o">.</span><span class="n">Normal</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ok_pressed</span> <span class="ow">and</span> <span class="n">text</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">text</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<span class="c1"># more complex dialog required by find replace</span>
+<div class="viewcode-block" id="FindReplaceDialog">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.gcode_editor.FindReplaceDialog">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FindReplaceDialog</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FindReplaceDialog</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Find Replace&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedSize</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+        <span class="n">main_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+
+        <span class="n">find_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">replace_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">options_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">buttons_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+
+        <span class="n">find_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="n">find_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Find:&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">find_input</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+
+        <span class="n">find_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">find_label</span><span class="p">)</span>
+        <span class="n">find_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">find_input</span><span class="p">)</span>
+
+        <span class="n">replace_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="n">replace_label</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Replace:&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace_input</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+
+        <span class="n">replace_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">replace_label</span><span class="p">)</span>
+        <span class="n">replace_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_input</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Close&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">find_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">find_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Find&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Replace&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_button</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Replace All&quot;</span><span class="p">)</span>
+
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="p">)</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">find_button</span><span class="p">)</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_button</span><span class="p">)</span>
+        <span class="n">buttons_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_button</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_result</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">highlight_result</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;highlight results&quot;</span><span class="p">)</span>
+
+        <span class="n">options_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">highlight_result</span><span class="p">)</span>
+
+        <span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">find_layout</span><span class="p">)</span>
+        <span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">replace_layout</span><span class="p">)</span>
+        <span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">options_layout</span><span class="p">)</span>
+        <span class="n">main_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">buttons_layout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">main_layout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">find_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">find_text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replace_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">replace_all_text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_dialog</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">find_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_input</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">highlight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_result</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">search_text</span><span class="p">(</span><span class="n">find_text</span><span class="p">,</span> <span class="n">highlight</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">find_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_input</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">replace_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_input</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">replace_text</span><span class="p">(</span><span class="n">find_text</span><span class="p">,</span> <span class="n">replace_text</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace_all_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">find_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_input</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">replace_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_input</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">find_text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">replace_all_text</span><span class="p">(</span><span class="n">find_text</span><span class="p">,</span> <span class="n">replace_text</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">hide_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># For testing</span>
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c1">#     from qtpy.QtGui import QApplication</span>
+<span class="c1">#</span>
+<span class="c1">#     app = QApplication(sys.argv)</span>
+<span class="c1">#     editor = GcodeEditor(standalone=True)</span>
+<span class="c1">#     editor.show()</span>
+<span class="c1">#</span>
+<span class="c1">#     editor.setText(open(sys.argv[0]).read())</span>
+<span class="c1">#     app.exec_()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
