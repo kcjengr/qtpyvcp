@@ -724,6 +724,10 @@ class HoleBuilder:
         return {
             "code": "G90"
         }
+    
+    def reset_feed(self):
+        return {
+            "code": "F#<_hal[plasmac.cut-feed-rate]>"}
 
     def element_to_gcode_line(self, e):
         if PRECISION == 4:
@@ -1083,8 +1087,9 @@ class HoleBuilder:
             self.elements.append(self.create_cut_on_off_gcode(False))
         # turn on the THC
         self.elements.append(self.create_thc_on_synch())
-        # rest feed rate
-        self.elements.append(self.create_feed(feed_rate))
+        # reset feed rate
+        # self.elements.append(self.create_feed(feed_rate))
+        self.elements.append(self.reset_feed())
         if line.active_g_modal_groups[4] == 'G91.1':
             self.elements.append(self.create_relative_arc())
 
