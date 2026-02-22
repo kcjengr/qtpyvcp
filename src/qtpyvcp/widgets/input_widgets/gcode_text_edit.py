@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
 
 from dateutil.parser import parse as parse_date
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class ColumnFormatterDelegate(QStyledItemDelegate):
     """Flexible delegate for column formatting with configurable alignment, padding, and text formatting."""

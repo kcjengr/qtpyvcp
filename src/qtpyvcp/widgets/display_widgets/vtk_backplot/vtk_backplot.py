@@ -2279,12 +2279,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.SetBackground(color.getRgbF()[:3])
         self._request_render()
 
-    @backgroundColor.reset
-    def backgroundColor(self):
-        self._background_color = QColor(0, 0, 0)
-
-        self.renderer.GradientBackgroundOff()
-        self._request_render()
+    # @backgroundColor.reset
+    # def backgroundColor(self):
+    #     self._background_color = QColor(0, 0, 0)
+    #
+    #     self.renderer.GradientBackgroundOff()
+    #     self._request_render()
 
 
     @Property(QColor)
@@ -2299,12 +2299,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.SetBackground2(color2.getRgbF()[:3])
         self._request_render()
 
-    @backgroundColor2.reset
-    def backgroundColor2(self):
-        self._background_color2 = QColor(0, 0, 0)
-
-        self.renderer.GradientBackgroundOff()
-        self._request_render()
+    # @backgroundColor2.reset
+    # def backgroundColor2(self):
+    #     self._background_color2 = QColor(0, 0, 0)
+    #
+    #     self.renderer.GradientBackgroundOff()
+    #     self._request_render()
 
     @Property(bool)
     def enableProgramTicks(self):

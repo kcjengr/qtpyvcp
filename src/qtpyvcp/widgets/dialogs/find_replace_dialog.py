@@ -1,9 +1,15 @@
+import os
+
+
+from PySide6.QtCore import (Qt, QSize)
+from PySide6.QtGui import (QFont, QIcon, QPalette)
 
 from PySide6.QtWidgets import (QLineEdit, QHBoxLayout,
-                            QVBoxLayout, QLabel, QPushButton, QCheckBox)
+                            QVBoxLayout, QLabel, QPushButton, QCheckBox, QLayout,
+                            QSizePolicy)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
-
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 # Simple find/replace dialog
 class FindReplaceDialog(BaseDialog):

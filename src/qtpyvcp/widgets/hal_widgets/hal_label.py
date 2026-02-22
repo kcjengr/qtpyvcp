@@ -4,7 +4,7 @@ from PySide6.QtCore import Property, QEnum
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
 
-#from . import HalType
+from qtpyvcp.widgets.hal_widgets import HalType
 
 # Setup logging
 from qtpyvcp.utilities.logger import getLogger
