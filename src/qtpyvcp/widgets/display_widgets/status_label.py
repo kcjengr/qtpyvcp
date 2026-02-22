@@ -1,5 +1,6 @@
-from qtpy.QtWidgets import QLabel
-from qtpy.QtCore import Property, Slot
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtWidgets import QLabel
+from PySide6.QtCore import Property, Slot
 
 from qtpyvcp.widgets import VCPWidget
 

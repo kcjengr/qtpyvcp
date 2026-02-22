@@ -8,7 +8,7 @@ import os
 
 import psutil
 
-from pyudev.pyqt5 import MonitorObserver
+from pyudev import MonitorObserver
 from pyudev import Context, Monitor
 
 from qtpyvcp.widgets.dialogs import askQuestion
@@ -46,7 +46,7 @@ class FileLocations(DataPlugin):
     def new_device(self, chan):
         return chan.value or {}
 
-    def _onDeviceEvent(self, device):
+    def _onDeviceEvent(self, action, device):
 
         if device.action == "add":
             if device['DEVTYPE'] == 'partition':
@@ -121,10 +121,16 @@ class FileLocations(DataPlugin):
 
         self.monitor = Monitor.from_netlink(self.context)
         self.monitor.filter_by(subsystem='block')
+        
+        def print_device_event(action, device):
+            if 'ID_FS_TYPE' in device and device.get('ID_FS_UUID') == '123-UUIDEXAMPLE':
+                print('{0}, {1}'.format(device.action, device.get('ID_FS_UUID')))
+        
+        print('Starting Disk Monitor...')       
+        
+        self.observer = MonitorObserver(self.monitor, self._onDeviceEvent, name='monitor-observer')
 
-        self.observer = MonitorObserver(self.monitor)
-        self.observer.deviceEvent.connect(self._onDeviceEvent)
-        self.monitor.start()
+        self.observer.start()
 
         self.updateRemovableDevices()
 

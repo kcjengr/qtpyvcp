@@ -19,9 +19,9 @@
 import os
 import math
 
-from qtpy.QtGui import QColor
-from qtpy.QtCore import Qt, Slot, Property
-from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
+from PySide6.QtGui import QColor
+from PySide6.QtCore import Qt, Slot, Property
+from PySide6.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import parseJogIncrement
@@ -29,7 +29,9 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting, setSetting
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
 
-STATUS = getPlugin('status')
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
 INFO = Info()
 
 
@@ -163,7 +165,7 @@ class JogIncrementWidget(QWidget):
 
 if __name__ == "__main__":
     import sys
-    from qtpy.QtWidgets import QApplication
+    from PySide6.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = JogIncrementWidget(standalone=True)
     w.show()

@@ -1,3 +1,4 @@
+import os
 import linuxcnc
 import json
 # Set up logging
@@ -7,8 +8,10 @@ LOG = logger.getLogger(__name__)
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import getPlugin
 
-STATUS = getPlugin('status')
-STAT = STATUS.stat
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
 INFO = Info()
 
 SPINDLES = list(range(INFO.spindles()))
@@ -312,18 +315,22 @@ override.disable = _or_disable
 override.toggle_enable = _or_toggle_enable
 
 def _or_ok(value=100, spindle=0, widget=None):
-    if spindle not in SPINDLES:
+    if not IN_DESIGNER:
+        if spindle not in SPINDLES:
+                ok = False
+                msg = "No spindle No. {}".format(spindle)
+        elif STAT.task_state != linuxcnc.STATE_ON:
             ok = False
-            msg = "No spindle No. {}".format(spindle)
-    elif STAT.task_state != linuxcnc.STATE_ON:
-        ok = False
-        msg = "Machine must be ON"
-    elif STAT.spindle[0]['override_enabled'] != 1:
-        ok = False
-        msg = "Override not enabled"
+            msg = "Machine must be ON"
+        elif STAT.spindle[0]['override_enabled'] != 1:
+            ok = False
+            msg = "Override not enabled"
+        else:
+            ok = True
+            msg = ""
     else:
-        ok = True
-        msg = ""
+        ok = False
+        msg = "Designer Active"
 
     _or_ok.msg = msg
 
@@ -335,6 +342,8 @@ def _or_ok(value=100, spindle=0, widget=None):
     return ok
 
 def _or_bindOk(value=100, spindle=0, widget=None):
+    if IN_DESIGNER:
+        return
     if not _spindle_exists(spindle):
         return
 
@@ -368,19 +377,23 @@ override.ok = override.reset.ok = _or_ok
 override.bindOk = override.reset.bindOk = _or_bindOk
 
 def _or_enable_ok(spindle=0, widget=None):
-    if spindle not in SPINDLES:
-        ok = False
-        msg = "No spindle No. {}".format(spindle)
-    elif STAT.task_state != linuxcnc.STATE_ON:
-        ok = False
-        msg = "Machine must be ON"
-    elif STAT.interp_state != linuxcnc.INTERP_IDLE:
-        ok = False
-        msg = "Machine must be IDLE"
+    if not IN_DESIGNER:
+        if spindle not in SPINDLES:
+            ok = False
+            msg = "No spindle No. {}".format(spindle)
+        elif STAT.task_state != linuxcnc.STATE_ON:
+            ok = False
+            msg = "Machine must be ON"
+        elif STAT.interp_state != linuxcnc.INTERP_IDLE:
+            ok = False
+            msg = "Machine must be IDLE"
+        else:
+            ok = True
+            msg = ""
     else:
-        ok = True
-        msg = ""
-
+        ok = False
+        msg = "In Designer"
+        
     _or_enable_ok.msg = msg
 
     if widget is not None:
@@ -391,6 +404,8 @@ def _or_enable_ok(spindle=0, widget=None):
     return ok
 
 def _or_enable_bindOk(spindle=0, widget=None):
+    if IN_DESIGNER:
+        return
     if not _spindle_exists(spindle):
         return
 

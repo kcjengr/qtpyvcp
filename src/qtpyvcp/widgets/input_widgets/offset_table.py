@@ -16,16 +16,21 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
-from qtpy.QtGui import QStandardItemModel, QColor, QBrush
-from qtpy.QtWidgets import QTableView, QHeaderView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
+import os
+
+from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
+from PySide6.QtGui import QStandardItemModel, QColor, QBrush
+from PySide6.QtWidgets import QTableView, QHeaderView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import connectSetting, getSetting
 
-STATUS = getPlugin('status')
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
 LOG = getLogger(__name__)
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 
 class ItemDelegate(QStyledItemDelegate):
@@ -79,6 +84,9 @@ class OffsetModel(QStandardItemModel):
         self.current_row_color = QColor(Qt.darkGreen)
         self.current_row_bg = None  # Add this line
 
+        if IN_DESIGNER:
+            return 
+        
         self._columns = self.ot.columns
         self._rows = self.ot.rows
 
@@ -99,6 +107,10 @@ class OffsetModel(QStandardItemModel):
 
     def updateModel(self, offset_table):
         # update model with new data
+        if len(offset_table) == 0:
+            LOG.warn("Offset Table update is zero length - skip it")
+            return
+        
         self.beginResetModel()
         self._offset_table = offset_table
         self.endResetModel()
@@ -116,16 +128,20 @@ class OffsetModel(QStandardItemModel):
         return QStandardItemModel.headerData(self, section, orientation, role)
 
     def columnCount(self, parent=None):
+        if IN_DESIGNER:
+            return 0
         return len(self._columns)
 
     def rowCount(self, parent=None):
+        if IN_DESIGNER:
+            return 0
         return len(self._rows)
 
     def flags(self, index):
         return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
 
     def data(self, index, role=Qt.DisplayRole):
-        if role == Qt.DisplayRole or role == Qt.EditRole:
+        if (role == Qt.DisplayRole or role == Qt.EditRole) and len(self._offset_table) > 0:
             columns_index = index.column()
             rows_index = index.row()
 
@@ -137,7 +153,7 @@ class OffsetModel(QStandardItemModel):
         elif role == Qt.TextAlignmentRole:
             return Qt.AlignVCenter | Qt.AlignRight
 
-        elif role == Qt.TextColorRole:
+        elif role == Qt.ForegroundRole:
 
             offset = index.row() + 1
 
@@ -210,8 +226,6 @@ class OffsetTable(QTableView):
         self.offset_model = OffsetModel(self)
 
         # Properties
-        self._columns = self.offset_model._columns
-        self._confirm_actions = False
         self._current_row_color = QColor('sage')
         self._current_row_bg = None  # Add this line
 
@@ -219,8 +233,9 @@ class OffsetTable(QTableView):
         self.proxy_model.setFilterKeyColumn(0)
         self.proxy_model.setSourceModel(self.offset_model)
 
-        self.item_delegate = ItemDelegate(columns=self._columns)
-        self.setItemDelegate(self.item_delegate)
+        if not IN_DESIGNER:
+            self.item_delegate = ItemDelegate(columns=self._columns)
+            self.setItemDelegate(self.item_delegate)
 
         self.setModel(self.proxy_model)
 
@@ -233,6 +248,8 @@ class OffsetTable(QTableView):
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
+        if IN_DESIGNER:
+            return
         STATUS.all_axes_homed.notify(self.handle_home_signal)
 
     def handle_home_signal(self, all_axes):
@@ -340,3 +357,4 @@ class OffsetTable(QTableView):
     @currentRowBackground.setter 
     def currentRowBackground(self, color):
         self.offset_model.current_row_bg = color
+

@@ -3165,7 +3165,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../resources/brender.qrc"/>
  </resources>
  <connections/>
  <designerdata>

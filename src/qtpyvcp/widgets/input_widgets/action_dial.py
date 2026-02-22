@@ -1,5 +1,7 @@
-from qtpy.QtWidgets import QDial
-from qtpy.QtCore import Property
+import os
+
+from PySide6.QtWidgets import QDial
+from PySide6.QtCore import Property
 
 from qtpyvcp.actions import bindWidget
 from qtpyvcp.utilities.logger import getLogger
@@ -7,7 +9,10 @@ from qtpyvcp.plugins import getPlugin
 
 
 LOG = getLogger(__name__)
-STATUS = getPlugin('status')
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
 
 
 class ActionDial(QDial):

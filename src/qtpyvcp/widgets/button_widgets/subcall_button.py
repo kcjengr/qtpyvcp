@@ -1,8 +1,7 @@
 import os
 import re
-
-from qtpy.QtWidgets import qApp, QApplication
-from qtpy.QtCore import Property
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Property
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
@@ -55,7 +54,7 @@ class SubCallButton(VCPButton):
         self.clicked.connect(self.callSub)
 
     def callSub(self):
-        window = qApp.activeWindow()
+        window = QApplication().activeWindow()
 
         subfile = None
         for dir in SUBROUTINE_SEARCH_DIRS:
@@ -130,8 +129,9 @@ class SubCallButton(VCPButton):
 
 if __name__ == "__main__":
     import sys
-    from qtpy.QtWidgets import QApplication
+    from PySide6.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = SubCallButton()
     w.show()
     sys.exit(app.exec_())
+

@@ -6,11 +6,11 @@ import psutil
 
 
 from dateutil.parser import parse
-from pyudev.pyqt5 import MonitorObserver
+# from pyudev.pyqt5 import MonitorObserver
 from pyudev import Context, Monitor, Devices
 
-from qtpy.QtCore import Qt, Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
-from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
+from PySide6.QtCore import Qt, Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice, QEnum
+from PySide6.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
     QApplication, QAbstractItemView, QInputDialog, QLineEdit
 
 from qtpyvcp.plugins import getPlugin
@@ -24,7 +24,6 @@ from qtpyvcp.lib.decorators import deprecated
 LOG = getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
-
 
 class TableType(object):
     Local = 0
@@ -123,10 +122,6 @@ class QtpyVCPQFileSystemModel(QFileSystemModel):
         return QFileSystemModel.data(self, index, role)
 
 class FileSystemTable(QTableView, TableType):
-
-    if IN_DESIGNER:
-        from PyQt5.QtCore import Q_ENUMS
-        Q_ENUMS(TableType)
 
     gcodeFileSelected = Signal(bool)
     filePreviewText = Signal(str)

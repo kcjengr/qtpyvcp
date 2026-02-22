@@ -28,7 +28,7 @@ data_plugins:
 
 dialogs:
   test_dialog:
-    provider: qtpy.QtWidgets:QDialog
+    provider: PySide6.QtWidgets:QDialog
 
 windows:
   mainwindow:
@@ -39,5 +39,12 @@ windows:
       confirm_exit: no
 
 #  secondarywindow:
-#    provider: qtpy.QtWidgets:QWidget
+#    provider: PySide6.QtWidgets:QWidget
 #    show: True
+
+settings:
+  touch-probe.calibration.x:
+    default_value: .123123
+    persistent: true
+    min_value: 0
+    max_value: 1

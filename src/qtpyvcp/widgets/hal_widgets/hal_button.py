@@ -1,6 +1,6 @@
 
-from qtpy.QtCore import Property, QTimer
-from qtpy.QtWidgets import QPushButton
+from PySide6.QtCore import Property, QTimer
+from PySide6.QtWidgets import QPushButton
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
@@ -152,3 +152,4 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
             self.pulse_timer = QTimer()
             self.pulse_timer.setSingleShot(True)
             self.pulse_timer.timeout.connect(self.onRelease)
+

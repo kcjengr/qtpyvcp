@@ -1,10 +1,12 @@
 
 import os
-from qtpy import uic
-from qtpy.QtCore import Slot
-from qtpy.QtWidgets import QDialog, QDialogButtonBox, QApplication
 
-from qtpy.QtDesigner import QDesignerFormWindowInterface
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QDialog, QDialogButtonBox, QApplication
+
+from PySide6.QtDesigner import QDesignerFormWindowInterface
 
 
 from qtpyvcp.widgets.qtdesigner import _PluginExtension
@@ -31,18 +33,24 @@ class DroEditor(QDialog):
         self.widget = widget
         self.app = QApplication.instance()
 
-        uic.loadUi(UI_FILE, self)
+        file_path = os.path.join(os.path.dirname(__file__), UI_FILE)
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
 
-        self.axisCombo.setCurrentIndex(self.widget.axisNumber)
-        self.refTypCombo.setCurrentIndex(self.widget.referenceType)
+        loader = QUiLoader()
+        self.ui = loader.load(ui_file, self)
+        self.ui.show()
 
-        self.inFmtEntry.setText(self.widget.inchFormat)
-        self.mmFmtEntry.setText(self.widget.millimeterFormat)
-        self.degFmtEntry.setText(self.widget.degreeFormat)
+        self.ui.axisCombo.setCurrentIndex(self.widget.axisNumber)
+        self.ui.refTypCombo.setCurrentIndex(self.widget.referenceType)
 
-        self.latheModeCombo.setCurrentIndex(self.widget.latheMode)
+        self.ui.inFmtEntry.setText(self.widget.inchFormat)
+        self.ui.mmFmtEntry.setText(self.widget.millimeterFormat)
+        self.ui.degFmtEntry.setText(self.widget.degreeFormat)
 
-        bb = self.buttonBox
+        self.ui.latheModeCombo.setCurrentIndex(self.widget.latheMode)
+
+        bb = self.ui.buttonBox
         bb.button(QDialogButtonBox.Apply).setDefault(True)
         bb.button(QDialogButtonBox.Cancel).setDefault(False)
         bb.button(QDialogButtonBox.Apply).clicked.connect(self.accept)
@@ -51,16 +59,16 @@ class DroEditor(QDialog):
     def accept(self):
         """Commit changes"""
         # general options
-        self.setCursorProperty('axisNumber', self.axisCombo.currentIndex())
-        self.setCursorProperty('referenceType', self.refTypCombo.currentIndex())
+        self.setCursorProperty('axisNumber', self.ui.axisCombo.currentIndex())
+        self.setCursorProperty('referenceType', self.ui.refTypCombo.currentIndex())
 
         # format options
-        self.setCursorProperty('inchFormat', self.inFmtEntry.text())
-        self.setCursorProperty('millimeterFormat', self.mmFmtEntry.text())
-        self.setCursorProperty('degreeFormat', self.degFmtEntry.text())
+        self.setCursorProperty('inchFormat', self.ui.inFmtEntry.text())
+        self.setCursorProperty('millimeterFormat', self.ui.mmFmtEntry.text())
+        self.setCursorProperty('degreeFormat', self.ui.degFmtEntry.text())
 
         # lathe options
-        self.setCursorProperty('latheMode', self.latheModeCombo.currentIndex())
+        self.setCursorProperty('latheMode', self.ui.latheModeCombo.currentIndex())
 
         self.close()
 

@@ -8,14 +8,14 @@ QPlainTextEdit based G-code editor with syntax highlighting.
 import os
 import yaml
 
-from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
-                         Property, QFile, QTextStream, QSize)
+from PySide6.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
+                         Property, QFile, QTextStream)
 
-from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
+from PySide6.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
                         QTextCharFormat, QTextCursor, QPalette, QKeySequence)
 
-from qtpy.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
+from PySide6.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
                             QPlainTextDocumentLayout, QFileDialog,
                             QStyledItemDelegate, QTreeView, QListView)
@@ -248,7 +248,7 @@ class GcodeTextEdit(QPlainTextEdit):
 
         self.block_number = None
         self.focused_line = 1
-        self.current_line_background = QColor(self.palette().alternateBase())
+        self.current_line_background = QColor(self.palette().alternateBase().color())
         self.readonly = False
         self.syntax_highlighting = False
 
@@ -283,6 +283,8 @@ class GcodeTextEdit(QPlainTextEdit):
 
         # FixMe: Picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
+        if IN_DESIGNER:
+            return
         self.run_action.setEnabled(program_actions.run_from_line.ok())
         program_actions.run_from_line.bindOk(self.run_action)
 
@@ -1333,7 +1335,7 @@ class NumberMargin(QWidget):
 
     def getWidth(self):
         blocks = self.parent.blockCount()
-        return self.parent.fontMetrics().width(str(blocks)) + 5
+        return self.parent.fontMetrics().horizontalAdvance(str(blocks)) + 5
 
     def updateWidth(self):  # check the number column width and adjust
         width = self.getWidth()
@@ -1351,6 +1353,9 @@ class NumberMargin(QWidget):
             self.updateWidth()
 
     def paintEvent(self, event):  # this puts the line numbers in the margin
+        if IN_DESIGNER:
+            QWidget.paintEvent(self, event)
+            return 
         painter = QPainter(self)
         painter.fillRect(event.rect(), self.background)
         block = self.parent.firstVisibleBlock()
@@ -1386,3 +1391,4 @@ class NumberMargin(QWidget):
 
         painter.end()
         QWidget.paintEvent(self, event)
+

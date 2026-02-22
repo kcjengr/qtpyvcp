@@ -1,12 +1,13 @@
 import os
 from traceback import format_exception
 
-from qtpy import uic
-from qtpy.QtCore import Slot
-from qtpy.QtWidgets import QDialog, QApplication
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import Slot, QFile
+from PySide6.QtWidgets import QDialog, QApplication
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 LOG = getLogger(__name__)
 
@@ -16,8 +17,17 @@ IGNORE_LIST = []
 class ErrorDialog(BaseDialog):
     def __init__(self, exc_info):
         super(ErrorDialog, self).__init__(stay_on_top=True)
-
-        uic.loadUi(os.path.join(os.path.dirname(__file__), 'error_dialog.ui'), self)
+        
+        file_path = os.path.join(os.path.dirname(__file__), 'error_dialog.ui')
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
+        
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
+        #self.ui.show()
+        form_class, base_class = PySide6Ui(file_path).load()
+        self.ui = form_class()
+        self.ui.setupUi(self)
 
         self.exc_info = exc_info
         exc_type, exc_msg, exc_tb = exc_info
@@ -26,11 +36,11 @@ class ErrorDialog(BaseDialog):
         self.exc_msg = exc_msg
         self.exc_tb = "".join(format_exception(*exc_info))
         color = 'orange' if 'warning'in self.exc_typ.lower() else 'red'
-        self.errorType.setText("<font color='{}'>{}:</font>"
+        self.ui.errorType.setText("<font color='{}'>{}:</font>"
                                .format(color, self.exc_typ))
-        self.errorValue.setText(str(exc_msg))
+        self.ui.errorValue.setText(str(exc_msg))
         self.setWindowTitle('Unhandled Exception - {}'.format(self.exc_typ))
-        self.tracebackText.setText(self.exc_tb)
+        self.ui.tracebackText.setText(self.exc_tb)
         self.show()
 
     @Slot()
@@ -42,7 +52,7 @@ class ErrorDialog(BaseDialog):
 
     @Slot()
     def on_ignoreException_clicked(self):
-        if self.ignoreCheckBox.isChecked():
+        if self.ui.ignoreCheckBox.isChecked():
             LOG.warn("User selected to ignore future occurrences of exception.",
                      exc_info=self.exc_info)
             IGNORE_LIST.append((str(self.exc_info[0]),
@@ -53,7 +63,7 @@ class ErrorDialog(BaseDialog):
 
     @Slot()
     def on_reportIssue_clicked(self):
-        import qtpy
+        import PySide6
         import urllib.request, urllib.parse, urllib.error
         import webbrowser
         import subprocess
@@ -64,9 +74,9 @@ class ErrorDialog(BaseDialog):
         issue_title = "{}: {}".format(self.exc_typ, self.exc_msg)
         issue_body = ISSUE_TEMPLATE.format(
             tracback=self.exc_tb.strip(),
-            qt_version=qtpy.QT_VERSION,
-            qt_api=qtpy.API_NAME,
-            api_version=qtpy.PYQT_VERSION or qtpy.PYSIDE_VERSION,
+            qt_version=PySide6.QT_VERSION,
+            qt_api=PySide6.API_NAME,
+            api_version= PySide6.PYSIDE_VERSION,
             dist=subprocess.check_output(['lsb_release', '-d']).strip(),
             kernel=subprocess.check_output(['uname', '-r']).strip(),
             lcnc_version=linuxcnc.version,

@@ -8,10 +8,9 @@ import importlib as imp
 import inspect
 from pkg_resources import iter_entry_points
 
-from qtpy import API
-from qtpy.QtGui import QFontDatabase
-from qtpy.QtCore import QTimer, Slot, Qt
-from qtpy.QtWidgets import QApplication, QStyleFactory
+from PySide6.QtGui import QFontDatabase
+from PySide6.QtCore import QTimer, Slot, Qt
+from PySide6.QtWidgets import QApplication, QStyleFactory
 
 import qtpyvcp
 
@@ -25,13 +24,6 @@ from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 # this will initialise a base logger with default log level of DEBUG
 LOG = initBaseLogger('qtpyvcp')
 
-# Needed to silence this PySide2 warning:
-#    Qt WebEngine seems to be initialized from a plugin. Please set
-#    Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute
-#    before constructing QGuiApplication.
-if API == 'pyside2':
-    from qtpy.QtCore import Qt
-    QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
 
 class VCPApplication(QApplication):
@@ -67,7 +59,7 @@ class VCPApplication(QApplication):
         #     self.window.show()
 
         if opts.hide_cursor:
-            from qtpy.QtGui import QCursor
+            from PySide6.QtGui import QCursor
             self.setOverrideCursor(QCursor(Qt.BlankCursor))
 
         # Performance monitoring
@@ -155,7 +147,7 @@ class VCPApplication(QApplication):
         sys.path.append(module_dir)
 
         # Load the module. It's attributes can be accessed via `python_vcp.attr`
-        module = imp.load_source('python_vcp', pyfile)
+        module = importlib.import_module(name="python_vcp", package=pyfile)
 
         classes = [obj for name, obj in inspect.getmembers(module)
                    if inspect.isclass(obj)
@@ -187,7 +179,7 @@ class VCPApplication(QApplication):
             self.setStyleSheet("file:///" + path)
 
             if watch:
-                from qtpy.QtCore import QFileSystemWatcher
+                from PySide6.QtCore import QFileSystemWatcher
                 self.qss_file_watcher = QFileSystemWatcher()
                 self.qss_file_watcher.addPath(stylesheet)
                 self.qss_file_watcher.fileChanged.connect(load)
@@ -282,3 +274,4 @@ class VCPApplication(QApplication):
                     w.terminate()
                 except Exception:
                     LOG.exception('Error terminating %s widget', w)
+

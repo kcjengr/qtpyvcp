@@ -1,10 +1,12 @@
 import os
 
 import linuxcnc
-from qtpy import uic, QtWidgets
-from qtpy.QtCore import Slot, Qt, QEvent, QPoint
-from qtpy.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
-from qtpy.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
+
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import Slot, Qt, QEvent, QPoint, QFile
+from PySide6.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
+from PySide6.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 
 class VirtualInput(QWidget):
@@ -25,7 +27,17 @@ class VirtualInput(QWidget):
         self.caps_on = False
         self.focus_object = None
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.BypassWindowManagerHint)
-        uic.loadUi(ui_file, self)
+   
+        file_path = os.path.join(os.path.dirname(__file__), ui_file)
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
+        
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
+        #self.ui.show()
+        form_class, base_class = PySide6Ui(file_path).load()
+        self.ui = form_class()
+        self.ui.setupUi(self)
 
     @Slot(QAbstractButton)
     def on_buttonGroup_buttonPressed(self, btn):
@@ -34,62 +46,62 @@ class VirtualInput(QWidget):
         QGuiApplication.sendEvent(self.focus_object, event)
 
     @Slot()
-    def on_space_key_pressed(self):
+    def space_key_pressed(self):
         event = QInputMethodEvent()
         event.setCommitString(' ')
         QGuiApplication.sendEvent(self.focus_object, event)
 
     @Slot()
-    def on_enter_key_pressed(self):
+    def enter_key_pressed(self):
         self.send_key_(Qt.Key_Enter)
 
     @Slot()
-    def on_esc_key_pressed(self):
+    def esc_key_pressed(self):
         self.send_key_(Qt.Key_Escape)
         self.hide()
 
     @Slot()
-    def on_backspace_key_pressed(self):
+    def backspace_key_pressed(self):
         self.send_key_(Qt.Key_Backspace)
 
     @Slot()
-    def on_left_key_pressed(self):
+    def left_key_pressed(self):
         self.send_key_(Qt.Key_Left)
 
     @Slot()
-    def on_right_key_pressed(self):
+    def right_key_pressed(self):
         self.send_key_(Qt.Key_Right)
 
     @Slot()
-    def on_up_key_pressed(self):
+    def up_key_pressed(self):
         self.send_key_(Qt.Key_Up)
 
     @Slot()
-    def on_down_key_pressed(self):
+    def down_key_pressed(self):
         self.send_key_(Qt.Key_Down)
 
     @Slot()
-    def on_tab_key_pressed(self):
+    def tab_key_pressed(self):
         self.send_key_(Qt.Key_Tab)
 
     @Slot()
-    def on_home_key_pressed(self):
+    def home_key_pressed(self):
         self.send_key_(Qt.Key_Home)
 
     @Slot()
-    def on_end_key_pressed(self):
+    def end_key_pressed(self):
         self.send_key_(Qt.Key_End)
 
     @Slot()
-    def on_page_up_key_pressed(self):
+    def page_up_key_pressed(self):
         self.send_key_(Qt.Key_PageUp)
 
     @Slot()
-    def on_page_down_key_pressed(self):
+    def page_down_key_pressed(self):
         self.send_key_(Qt.Key_PageDown)
 
     @Slot()
-    def on_caps_key_pressed(self):
+    def caps_key_pressed(self):
         self.caps_on = not self.caps_on
         for btn in self.buttonGroup.buttons():
             if self.caps_on:

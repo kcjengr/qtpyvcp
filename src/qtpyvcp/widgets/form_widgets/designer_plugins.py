@@ -3,7 +3,7 @@ from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 from .main_window import VCPMainWindow
 class MainWindowPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return VCPMainWindow
+        return VCPMainWindow()
 
     def isContainer(self):
         return True
@@ -30,10 +30,14 @@ from qtpyvcp.widgets.form_widgets.probe_widget.probe import SubCaller
 
 class ProbePlugin(_DesignerPlugin):
     def pluginClass(self):
-        return SubCaller
+        return SubCaller()
 
     def toolTip(self):
         return "Probe widget"
 
     def isContainer(self):
         return True
+
+    def createWidget(self, parent):
+        t = SubCaller(parent)
+        return t

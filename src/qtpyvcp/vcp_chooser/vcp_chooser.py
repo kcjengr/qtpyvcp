@@ -1,13 +1,19 @@
 import os
 import yaml
-from pkg_resources import iter_entry_points
-from qtpy import uic
+from importlib.metadata import entry_points
 
-from qtpy.QtCore import Qt, Slot
-from qtpy.QtWidgets import QFileDialog, QApplication, QDialog, QTreeWidgetItem, \
-    QStyleFactory
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import (Qt, Slot, QFile)
+from PySide6.QtWidgets import (QFileDialog,
+                               QApplication,
+                               QDialog,
+                               QTreeWidgetItem,
+                               QStyleFactory)
 
 from qtpyvcp import TOP_DIR
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
+
+#from qtpyvcp.vcp_chooser.vcp_chooser_ui import Ui_Dialog
 
 CHOOSER_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -17,50 +23,67 @@ EXAMPLE_VCP_DIR = os.path.join(TOP_DIR, 'examples')
 class VCPChooser(QDialog):
     def __init__(self, opts):
         super(VCPChooser, self).__init__()
-        uic.loadUi(os.path.join(CHOOSER_DIR, 'vcp_chooser.ui'), self)
 
+        file_path = os.path.join(os.path.dirname(__file__), 'vcp_chooser.ui')
+        # ui_file = QFile(file_path)
+        # ui_file.open(QFile.ReadOnly)
+        #
+        # loader = QUiLoader()
+        # self.ui = loader.load(ui_file, self)
+
+        #self.ui = Ui_Dialog()
+        #self.ui.setupUi(self)
+        form_class, base_class = PySide6Ui(file_path).load()
+        self.ui = form_class()
+        self.ui.setupUi(self)
+        
         self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         self.opts = opts
         self._vcp_data = {}
 
-        self.selection = self.vcpTreeView.selectionModel()
+        self.selection = self.ui.vcpTreeView.selectionModel()
+        eps = entry_points()
 
         # example VCP section
-        category = QTreeWidgetItem(self.vcpTreeView)
+        category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Example VCPs')
         category.setFlags(Qt.ItemIsEnabled)
 
         # add example VCPs to the treeview
-        for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
+        example_vcps = eps.select(group='qtpyvcp.example_vcp')
+        for entry_point in example_vcps:
             child = QTreeWidgetItem(category)
             child.setText(0, self.get_vcp_data(entry_point))
 
         # test VCP section
-        category = QTreeWidgetItem(self.vcpTreeView)
+        category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Video Test VCPs')
         category.setFlags(Qt.ItemIsEnabled)
 
         # add example VCPs to the treeview
-        for entry_point in iter_entry_points(group='qtpyvcp.test_vcp'):
+        
+        test_vcps = eps.select(group='qtpyvcp.test_vcp')
+        for entry_point in test_vcps:
             child = QTreeWidgetItem(category)
             child.setText(0, self.get_vcp_data(entry_point))
 
 
         # installed VCP section
-        category = QTreeWidgetItem(self.vcpTreeView)
+        category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Installed VCPs')
         category.setFlags(Qt.ItemIsEnabled)
         category.setHidden(True)
 
         # add installed VCPs to the treeview
-        for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
+        vcps = eps.select(group='qtpyvcp.vcp')
+        for entry_point in vcps:
             child = QTreeWidgetItem(category)
             child.setText(0, self.get_vcp_data(entry_point))
             category.setHidden(False)
 
         if os.path.exists(CUSTOM_VCP_DIR):
-            category = QTreeWidgetItem(self.vcpTreeView)
+            category = QTreeWidgetItem(self.ui.vcpTreeView)
             category.setText(0, 'Custom VCPs')
             category.setFlags(Qt.ItemIsEnabled)
             for dir_name in os.listdir(CUSTOM_VCP_DIR):
@@ -69,8 +92,8 @@ class VCPChooser(QDialog):
                 child = QTreeWidgetItem(category)
                 child.setText(0, dir_name)
 
-        self.vcpTreeView.expandAll()
-        self.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
+        self.ui.vcpTreeView.expandAll()
+        self.ui.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
         self.selection.selectionChanged.connect(self.on_selection_changed)
 
     def get_vcp_data(self, entry_point):
@@ -108,7 +131,7 @@ class VCPChooser(QDialog):
         vcp_data = self._vcp_data[selection[0].data()]
 
         desc = vcp_data.get('description', '')
-        self.vcpDescription.setText(desc)
+        self.ui.vcpDescription.setText(desc)
 
 
     @Slot()

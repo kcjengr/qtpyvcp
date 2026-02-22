@@ -4,8 +4,8 @@ import time
 import importlib
 from pkg_resources import iter_entry_points
 
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QApplication
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication
 
 import qtpyvcp
 from qtpyvcp import hal
@@ -17,7 +17,7 @@ from qtpyvcp.utilities.info import Info
 
 LOG = getLogger(__name__)
 INFO = Info()
-
+IN_DESIGNER = os.getenv('DESIGNER', False)
 # Catch unhandled exceptions and display in dialog
 def excepthook(exc_type, exc_msg, exc_tb):
     try:
@@ -198,6 +198,7 @@ def _get_object_by_referance(object_ref):
 
 def _initialize_object_from_dict(object_dict, parent=None):
     """Initialize a python object from dict."""
+
     provider = object_dict['provider']
     args = object_dict.get('args') or []
     kwargs = object_dict.get('kwargs') or {}
@@ -211,6 +212,7 @@ def _initialize_object_from_dict(object_dict, parent=None):
 
 
 def loadPlugins(plugins):
+
     for plugin_id, plugin_dict in list(plugins.items()):
 
         try:
@@ -225,6 +227,7 @@ def loadPlugins(plugins):
 
 
 def loadWindows(windows):
+
     for window_id, window_dict in list(windows.items()):
 
         window = _initialize_object_from_dict(window_dict)

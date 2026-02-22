@@ -3,8 +3,8 @@ Tool Model Property fields
 ---------
 """
 
-from qtpy.QtCore import Slot
-from qtpy.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QPushButton, QFileDialog, QDialog, QLabel
+from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QPushButton, QFileDialog, QDialog, QLabel
 
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine

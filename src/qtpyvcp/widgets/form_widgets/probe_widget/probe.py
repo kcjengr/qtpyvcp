@@ -17,7 +17,9 @@ import os  # For file path manipulation
 import linuxcnc  # For commanding linuxcnc
 
 
-from qtpy import uic, QtWidgets
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import Qt, QFile
+from PySide6.QtWidgets import QWidget
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import getPlugin
@@ -34,7 +36,7 @@ CMD = linuxcnc.command()
 STAT = linuxcnc.stat()
 
 
-class SubCaller(QtWidgets.QWidget):
+class SubCaller(QWidget):
 
     def __init__(self, parent=None):
         super(SubCaller, self).__init__(parent)
@@ -44,7 +46,13 @@ class SubCaller(QtWidgets.QWidget):
         if parent is None:
             return
 
-        self.ui = uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
+        file_path = os.path.join(os.path.dirname(__file__), "probe.ui")
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
+
+        loader = QUiLoader()
+        self.ui = loader.load(ui_file, self)
+        self.ui.show()
 
         self.notification = NOTIFICATIONS
 

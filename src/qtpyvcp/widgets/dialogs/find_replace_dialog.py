@@ -1,9 +1,6 @@
 
-from qtpy.QtCore import Qt, QSize
-from qtpy.QtWidgets import (QLineEdit, QHBoxLayout,
-                            QVBoxLayout, QLabel, QPushButton,
-                            QLayout, QSizePolicy)
-from qtpy.QtGui import QPalette, QFont, QIcon, QTextCursor
+from PySide6.QtWidgets import (QLineEdit, QHBoxLayout,
+                            QVBoxLayout, QLabel, QPushButton, QCheckBox)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
@@ -333,3 +330,4 @@ class FindReplaceDialog(BaseDialog):
 
         self.undo_button.setEnabled(bool(self._replace_undo_stack))
         self._highlight_and_update(self.find_input.text())
+

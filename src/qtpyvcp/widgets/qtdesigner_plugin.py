@@ -1,11 +1,5 @@
 import os
 import sys
-import qtpy
-
-if qtpy.API != 'pyqt5':
-    print("ERROR: You must use the PyQt5 bindings in order to use the custom \n"
-          "widgets in QtDesigner.")
-    sys.exit()
 
 os.environ['DESIGNER'] = 'true'
 
@@ -24,7 +18,12 @@ from qtpyvcp.utilities.config_loader import load_config_files_from_env
 CONFIG.update(load_config_files_from_env())
 
 from qtpyvcp.app.launcher import loadPlugins
-loadPlugins(CONFIG['data_plugins'])
+if CONFIG.get('data_plugins'):
+    loadPlugins(CONFIG['data_plugins'])
+    from qtpyvcp.plugins import _PLUGINS
+    LOG.info(f"Loaded {len(_PLUGINS)} plugin(s) in designer: {', '.join(_PLUGINS.keys())}")
+else:
+    LOG.warning("No data_plugins found in config")
 
 from qtpyvcp.widgets.form_widgets.designer_plugins import *
 from qtpyvcp.widgets.button_widgets.designer_plugins import *

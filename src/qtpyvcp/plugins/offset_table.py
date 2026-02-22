@@ -38,7 +38,7 @@ import os
 
 import linuxcnc
 
-from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal
+from PySide6.QtCore import QFileSystemWatcher, QTimer, Signal
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
@@ -48,8 +48,10 @@ from qtpyvcp.actions.machine_actions import issue_mdi
 
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
-STATUS = getPlugin('status')
-STAT = STATUS.stat
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
 INFO = Info()
 
 
@@ -114,8 +116,7 @@ class OffsetTable(DataPlugin):
 
         self.fs_watcher = None
 
-        self.command = linuxcnc.command()
-        self.status = STATUS
+        #self.command = linuxcnc.command()
 
         self.columns = self.validateColumns(columns) or [c for c in 'XYZABCUVWR']
         self.rows = self.ROW_LABELS
@@ -166,17 +167,21 @@ class OffsetTable(DataPlugin):
 
         # print(f"X: {self.x_column}\nY: {self.y_column}\nZ: {self.z_column}\nA: {self.a_column}\nB: {self.b_column}\nC: {self.c_column}\nU: {self.u_column}\nV: {self.v_column}\nW: {self.w_column}\nZ: {self.r_column}")
 
+
         for i in range(9):
             for j in range(len(self.columns)):
                 self.DEFAULT_OFFSET.get(i).insert(j, 0.0)
+
+        if IN_DESIGNER:
+            return
 
         self.setCurrentOffsetNumber(1)
 
         self.g5x_offset_table = self.DEFAULT_OFFSET.copy()
         self.current_index = STATUS.stat.g5x_index
 
+        self.status = STATUS
         self.loadOffsetTable()
-
         self.status.g5x_index.notify(self.setCurrentOffsetNumber)
 
     @DataChannel
@@ -608,4 +613,5 @@ class OffsetTable(DataPlugin):
             mdi_commands = f"{mdi_commands};{mdi_command}"
             
         issue_mdi(mdi_commands)
+
 

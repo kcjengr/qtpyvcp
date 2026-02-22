@@ -1,12 +1,14 @@
 import os
 import sys
+
+
 import linuxcnc
 
-from qtpy import uic
-from qtpy.QtGui import QKeySequence
-from qtpy.QtCore import Qt, Slot, QTimer
-from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QShortcut, QActionGroup
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
+from PySide6.QtCore import Qt, Slot, QTimer, QFile
+from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
+    QMenu, QMenuBar, QLineEdit, QVBoxLayout
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -16,6 +18,7 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 LOG = logger.getLogger(__name__)
 INFO = Info()
@@ -58,7 +61,7 @@ class VCPMainWindow(QMainWindow):
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
             self.loadUi(ui_file)
-            self.initUi()
+            # self.initUi()
 
         if menu is not None:
             try:
@@ -122,7 +125,20 @@ class VCPMainWindow(QMainWindow):
             ui_file (str) : Path to a .ui file to load.
         """
         # TODO: Check for compiled *_ui.py files and load from that if exists
-        uic.loadUi(ui_file, self)
+        file_path = os.path.join(os.path.dirname(__file__), ui_file)
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
+        # self.ui.initUi()
+        #self.setCentralWidget(self.ui)
+        #self.ui.show()
+        LOG.debug(f"UI file to load and convert: {file_path}")
+        form_class, base_class = PySide6Ui(file_path).load()
+        self.ui = form_class()
+        self.ui.setupUi(self)
+        
+        self.loadSplashGcode()
 
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied
@@ -537,3 +553,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = App()
     sys.exit(app.exec_())
+

@@ -1,10 +1,10 @@
-from qtpy.QtWidgets import QLabel
-from qtpy.QtCore import Property, Q_ENUMS
+from PySide6.QtWidgets import QLabel
+from PySide6.QtCore import Property, QEnum
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
 
-from . import HalType
+#from . import HalType
 
 # Setup logging
 from qtpyvcp.utilities.logger import getLogger
@@ -30,7 +30,9 @@ class HalLabel(QLabel, HALWidget, HalType, VCPWidget):
         qtpyvcp.label.in          selecatable in
         ========================= =========== =========
     """
-    Q_ENUMS(HalType)
+    #QEnum(HalType)
+
+    TYPE_MAP = ('bit', 'u32', 's32', 'float')
 
     def __init__(self, parent=None):
         super(HalLabel, self).__init__(parent)
@@ -70,18 +72,19 @@ class HalLabel(QLabel, HALWidget, HalType, VCPWidget):
         self._fmt = fmt
         self.setValue(self._value)
              
-    @Property(HalType)
+    @Property(str)
     def pinType(self):
-        return getattr(HalType, self._typ)
+        return self._typ
 
     @pinType.setter
     def pinType(self, typ_enum):
-        self._typ = HalType.toString(typ_enum)
-        try:
-            val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ]
-            self.setValue(val)
-        except Exception as ex:
-            LOG.debug(ex)
+        self._typ = typ_enum if typ_enum in self.TYPE_MAP else ''
+        # try:
+        #     val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ]
+        #     self.setValue(val)
+        # except Exception as ex:
+        #     LOG.debug(ex)
+
 
     def initialize(self):
         comp = hal.getComponent()
@@ -96,3 +99,4 @@ class HalLabel(QLabel, HALWidget, HalType, VCPWidget):
         self._in_pin = comp.addPin(f"{obj_name}.in", self._typ, "in")
         self.setValue(self._in_pin.value)
         self._in_pin.valueChanged.connect(self.setValue)
+

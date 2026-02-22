@@ -363,3 +363,4 @@ class MachinePartsASM(vtk.vtkAssembly):
                     yield tmp_part
         
                 
+

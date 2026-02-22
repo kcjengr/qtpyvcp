@@ -1,6 +1,7 @@
-from qtpy.QtCore import Qt, Slot, Signal, Property, QModelIndex, QSortFilterProxyModel
-from qtpy.QtGui import QStandardItemModel, QColor, QBrush
-from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
+from PySide6.QtCore import Qt, Slot, Signal, Property, QModelIndex, QSortFilterProxyModel
+from PySide6.QtGui import QStandardItemModel, QColor, QBrush
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
 
 from qtpyvcp.actions.machine_actions import issue_mdi
@@ -9,6 +10,7 @@ from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import connectSetting, getSetting
 from qtpyvcp.plugins.db_tool_table import DBToolTable
+from qtpyvcp.actions import IN_DESIGNER
 
 LOG = getLogger(__name__)
 
@@ -49,7 +51,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'TPQ':
             editor = QSpinBox(parent)
             editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
+            editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
             if col == 'Q':
                 editor.setMaximum(9)
             else:
@@ -59,7 +61,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'XYZABCUVWD':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
+            editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
             editor.setDecimals(4)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
@@ -77,7 +79,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'IJ':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
+            editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
             editor.setMaximum(360.0)
             editor.setMinimum(0.0)
             editor.setDecimals(4)
@@ -92,6 +94,8 @@ class ToolModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(ToolModel, self).__init__(parent)
 
+        if IN_DESIGNER:
+            return
         self.status = getPlugin('status')
         self.stat = self.status.stat
         self.tt = getPlugin('tooltable')
@@ -172,11 +176,11 @@ class ToolModel(QStandardItemModel):
         elif role == Qt.TextAlignmentRole:
             col = self._columns[index.column()]
             if col == 'R':      # Remark
-                return Qt.AlignVCenter | Qt.AlignLeft
+                return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
             elif col in 'TPQ':  # Integers (Tool, Pocket, Orient)
-                return Qt.AlignVCenter | Qt.AlignCenter
+                return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignCenter
             else:               # All the other floats
-                return Qt.AlignVCenter | Qt.AlignRight
+                return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight
 
         elif role == Qt.TextColorRole:
             tnum = sorted(self._tool_table)[index.row() + self.row_offset]
@@ -432,3 +436,4 @@ class ToolTable(QTableView):
         self.addTool()
         raise DeprecationWarning("insertToolBelow() will be removed in "
                                  "the future, use addTool() instead")
+

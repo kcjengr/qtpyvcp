@@ -45,9 +45,9 @@ import os
 
 from qtpy import uic
 
-from qtpy.QtCore import QByteArray, Qt, QTimer
-from qtpy.QtGui import QPalette, QPixmap
-from qtpy.QtWidgets import (QAction, QActionGroup, QApplication,
+from PySide6.QtCore import QByteArray, Qt, QTimer
+from PySide6.QtGui import QPalette, QPixmap
+from PySide6.QtWidgets import (QAction, QActionGroup, QApplication,
                              QWidget, QMessageBox)
 
 # Set up logging
@@ -56,7 +56,7 @@ LOG = logger.getLogger(__name__)
 
 multimedia_available = True
 try:
-    from qtpy.QtMultimedia import (QAudioEncoderSettings, QCamera,
+    from PySide6.QtMultimedia import (QAudioEncoderSettings, QCamera,
                                     QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
                                     QMediaRecorder, QVideoEncoderSettings)
 

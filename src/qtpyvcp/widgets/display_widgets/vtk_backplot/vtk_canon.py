@@ -7,8 +7,8 @@ import vtk.qt
 from .linuxcnc_datasource import LinuxCncDataSource
 from .path_actor import PathActor
 
-from qtpy.QtGui import QColor
-from qtpy.QtWidgets import QApplication
+from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QApplication
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
@@ -53,6 +53,7 @@ class VTKCanon(StatCanon):
         
         self.foam_z = 0.0
         self.foam_w = 0.0
+        LOG.debug("VTKCanon --- Init Done ---")
 
     def comment(self, comment):
         items = comment.lower().split(',', 1)
@@ -193,6 +194,7 @@ class VTKCanon(StatCanon):
                         point_count += 2
 
                     else:
+                        # LOG.debug(f"--------- Points:")
                         if len(self.path_actors) > 1:
                             if (point_count == 0) and (line_type == "traverse") and (wcs_index != first_cut_wcs_index):
                                 continue
@@ -204,6 +206,8 @@ class VTKCanon(StatCanon):
                         path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
                                                           start_point[1] * multiplication_factor,
                                                           start_point[2] * multiplication_factor)
+                        # LOG.debug(f"--------- Path Actor Start Point : {start_point[0] * multiplication_factor} {start_point[1] * multiplication_factor} {start_point[2] * multiplication_factor}")
+                        # LOG.debug(f"--------- Path Actor End Point : {end_point[0] * multiplication_factor} {end_point[1] * multiplication_factor} {end_point[2] * multiplication_factor}")
 
                         path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
 
@@ -228,6 +232,7 @@ class VTKCanon(StatCanon):
                 path_actor.data_mapper.SetInputData(path_actor.poly_data)
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)
+                # LOG.debug(f"-------- Path Actor Matrix :  {path_actor.GetMatrix()}")
 
         self.offset_transitions = list()
 
@@ -296,3 +301,4 @@ class VTKCanon(StatCanon):
 
     def get_offset_transitions(self):
         return self.offset_transitions
+

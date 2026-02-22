@@ -1,5 +1,6 @@
+import os
 
-from qtpy.QtWidgets import QSlider
+from PySide6.QtWidgets import QSlider
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
@@ -33,8 +34,9 @@ class HalSlider(QSlider, HALWidget, VCPWidget):
         self._float_value_pin = None
 
         self._signed_int = True
-
-        self.valueChanged.connect(self.onValueChanged)
+        
+        if not IN_DESIGNER:
+            self.valueChanged.connect(self.onValueChanged)
 
     def mousePressEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place
@@ -94,3 +96,4 @@ class HalSlider(QSlider, HALWidget, VCPWidget):
         # add slider.scale HAL pin
         self._float_value_pin = comp.addPin(obj_name + ".out-f", "float", "out")
         self._float_value_pin.value = self.value() / 100.0
+

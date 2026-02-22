@@ -34,14 +34,17 @@ ToDO:
     Add joint positions.
 """
 
+import os
 import math
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
-STATUS = getPlugin('status')
-STAT = STATUS.stat
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
 INFO = Info()
 
 # Set up logging
@@ -75,6 +78,8 @@ class Position(DataPlugin):
 
         self._update()
 
+        if IN_DESIGNER:
+            return
         # all these should cause the positions to update
         STATUS.position.signal.connect(self._update)
         STATUS.g5x_offset.signal.connect(self._update)
@@ -245,6 +250,9 @@ class Position(DataPlugin):
             # STATUS.joint_position.signal.connect(self._update)
 
     def _update(self):
+        # Skip updates in designer mode where STAT is not available
+        if IN_DESIGNER:
+            return
 
         if self._report_actual_pos:
             pos = STAT.actual_position

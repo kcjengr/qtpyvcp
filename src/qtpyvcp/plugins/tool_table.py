@@ -29,7 +29,7 @@ from datetime import datetime
 
 import linuxcnc
 
-from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
+from PySide6.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 
 import qtpyvcp
 from qtpyvcp.utilities.info import Info
@@ -39,11 +39,11 @@ from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
-STATUS = getPlugin('status')
-STAT = STATUS.stat
-INFO = Info()
-
 IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
+INFO = Info()
 
 
 def merge(a, b):
@@ -145,6 +145,9 @@ class ToolTable(DataPlugin):
 
         self.loadToolTable()
 
+        if IN_DESIGNER:
+            return
+        
         self.current_tool.setValue(self.TOOL_TABLE[STATUS.tool_in_spindle.getValue()])
 
         # update signals

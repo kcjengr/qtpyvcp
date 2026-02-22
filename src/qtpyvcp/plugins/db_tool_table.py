@@ -33,7 +33,7 @@ from deepdiff import DeepDiff
 
 from  linuxcnc import command
 
-from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
+from PySide6.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 
 import qtpyvcp
 
@@ -49,12 +49,11 @@ import pprint
 
 CMD = command()
 LOG = getLogger(__name__)
-STATUS = getPlugin('status')
-STAT = STATUS.stat
-INFO = Info()
-
 IN_DESIGNER = os.getenv('DESIGNER', False)
-
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
+INFO = Info()
 
 def merge(a, b):
     """Shallow merge two dictionaries"""

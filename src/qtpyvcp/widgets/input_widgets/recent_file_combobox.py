@@ -1,16 +1,19 @@
 import os
 
-from qtpy.QtWidgets import QComboBox
+from PySide6.QtWidgets import QComboBox
 
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets.dialogs import getDialog
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class RecentFileComboBox(QComboBox):
     def __init__(self, parent=None):
         super(RecentFileComboBox, self).__init__(parent)
 
+        if IN_DESIGNER:
+            return
         self.status = getPlugin('status')
 
         self.activated.connect(self.onItemActivated)

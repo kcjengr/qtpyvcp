@@ -29,3 +29,4 @@ class AxesActor(vtk.vtkAxesActor):
             self.SetTotalLength(self.axes_length, 0, self.axes_length)
         else:
             self.SetTotalLength(self.axes_length, self.axes_length, self.axes_length)
+

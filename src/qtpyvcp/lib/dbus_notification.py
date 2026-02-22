@@ -29,7 +29,7 @@ log = logger.getLogger(__name__)
 
 DBusQtMainLoop = None
 try:
-    from dbus.mainloop.pyqt5 import DBusQtMainLoop
+    from PySide6.QtDBus import QDBusConnection
 except ImportError:
     log.warning("Could not import DBusQtMainLoop, is package 'python-dbus.mainloop.pyqt5' installed?")
 
@@ -268,7 +268,7 @@ def onClose(n):
 
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtCore import QCoreApplication
+    from PySide6.QtCore import QCoreApplication
 
     app = QCoreApplication(sys.argv)
 

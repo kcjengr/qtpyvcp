@@ -1,5 +1,5 @@
 
-from qtpy.QtWidgets import QFrame
+from PySide6.QtWidgets import QFrame
 from qtpyvcp.widgets.base_widgets import VCPWidget
 
 

@@ -36,6 +36,8 @@ from qtpyvcp.utilities.config_loader import load_config_files
 
 PREPROC_VERSION = '00.30'
 
+PREPROC_VERSION = '00.30'
+
 INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
 preprocessor_log_name = normalizePath(path='gcode_preprocessor.log', base=os.getenv('CONFIG_DIR', '~/'))
 # Construct LOG from qtpyvcp standard logging framework
@@ -1720,3 +1722,4 @@ if __name__ == '__main__':
     # export CONFIG_DIR=`pwd`
     # export INI_FILE_NAME=`pwd`/xyz.ini
     main()
+

@@ -9,12 +9,14 @@ all other QtPyVCP widgets are based.
 import os
 import json
 
-from qtpy.QtCore import Property, Slot, Qt
-from qtpy.QtWidgets import QPushButton
+from PySide6.QtCore import Qt,Property, Slot
+from PySide6.QtWidgets import QPushButton
 
 from qtpyvcp import hal as qhal
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 LOG = getLogger(__name__)
 
@@ -225,6 +227,8 @@ class VCPBaseWidget(VCPPrimitiveWidget):
             # print(rule)
             ch = ChanList()
             triggers = []
+            if IN_DESIGNER:
+                return
             for chan in rule['channels']:
 
                 try:
@@ -278,7 +282,8 @@ class VCPWidget(VCPBaseWidget):
         # Risk is that VCPWidget maybe used as the base for
         # widgets that DO expect user interaction. So below would be a
         # breaking change until some cleaning is done. Test it?
-        self.setFocusPolicy(Qt.NoFocus)
+        # Causes issue under pyside6 with runtime error
+        #self.setFocusPolicy(Qt.NoFocus)
 
 
 class CMDWidget(VCPBaseWidget):
@@ -358,3 +363,4 @@ class VCPButton(QPushButton, CMDWidget):
             event.accept()
             return 
         super().mouseReleaseEvent(event)
+

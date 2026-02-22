@@ -17,12 +17,16 @@
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from qtpy import uic
-from qtpy.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel, QMenu, QAction
+
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel, QMenu
 
 from qtpyvcp import actions
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 class ShutDownDialog(BaseDialog):
     def __init__(self, *args, **kwargs):
@@ -32,7 +36,16 @@ class ShutDownDialog(BaseDialog):
 
         self.ui_file = kwargs.get('ui_file', default_ui)
 
-        self.ui = uic.loadUi(self.ui_file, self)
+        file_path = os.path.join(os.path.dirname(__file__), self.ui_file)
+        #ui_file = QFile(file_path)
+        #ui_file.open(QFile.ReadOnly)
+        
+        #loader = QUiLoader()
+        #self.ui = loader.load(ui_file, self)
+        form_class, base_class = PySide6Ui(file_path).load()
+        self.ui = form_class()
+        self.ui.setupUi(self)
+
 
     def reject(self):
         self.hide();

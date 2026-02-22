@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1411</width>
+    <height>1132</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>2000</width>
+    <height>2000</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QWidget" name="verticalWidget" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTabWidget" name="tabWidget">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tab">
+          <attribute name="title">
+           <string>Buttons and Inputs</string>
+          </attribute>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>20</y>
+             <width>167</width>
+             <height>300</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Action Controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="6" column="0">
+             <widget class="ActionComboBox" name="actioncombobox">
+              <property name="currentText">
+               <string>Action Combo Box</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>Action Combo Box</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="LEDButton" name="ledbutton">
+              <property name="text">
+               <string>LED Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="ActionButton" name="actionbutton">
+              <property name="text">
+               <string>Action Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="DialogButton" name="dialogbutton">
+              <property name="text">
+               <string>Dialog Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="ActionSpinBox" name="actionspinbox"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="ActionCheckBox" name="actioncheckbox">
+              <property name="text">
+               <string>Action Checkbox</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="SubCallButton" name="subcallbutton">
+              <property name="text">
+               <string>Sub Call Button</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="GcodeTextEdit" name="gcodetextedit">
+           <property name="geometry">
+            <rect>
+             <x>600</x>
+             <y>30</y>
+             <width>471</width>
+             <height>141</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label">
+           <property name="geometry">
+            <rect>
+             <x>470</x>
+             <y>40</y>
+             <width>111</width>
+             <height>18</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>GCode Text Edit</string>
+           </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="geometry">
+            <rect>
+             <x>200</x>
+             <y>20</y>
+             <width>235</width>
+             <height>135</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Various line edit controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="1">
+             <widget class="VCPLineEdit" name="lineedit"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>DRO Edit</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="DROLineEdit" name="dro_entry"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>VCP Line Edit</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_3">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>470</y>
+             <width>390</width>
+             <height>269</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>File System controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="1" column="0" colspan="2">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Removable Device Combo Box</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="RemovableDeviceComboBox" name="removabledevicecombobox"/>
+            </item>
+            <item row="0" column="1" colspan="2">
+             <widget class="FileSystemTable" name="filesystemtable"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>File System Table</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="RecentFileComboBox" name="recentfilecombobox"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Recent file combo box</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_4">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>800</y>
+             <width>554</width>
+             <height>193</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Visual / Graphical Controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="ActionDial" name="actiondial"/>
+            </item>
+            <item row="0" column="1">
+             <widget class="ActionSlider" name="actionslider">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Jog Increments</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="JogIncrementWidget" name="jogincrementwidget"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_5">
+           <property name="geometry">
+            <rect>
+             <x>200</x>
+             <y>170</y>
+             <width>308</width>
+             <height>259</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>VCP Settings Controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Settings Line Edit</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="VCPSettingsLineEdit" name="settings_lineedit"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Settings Slider</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="VCPSettingsSlider" name="settings_slider">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_14">
+              <property name="text">
+               <string>Settings Spin Box</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="VCPSettingsSpinBox" name="settings_spinbox"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Settings Double Spin Box</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="VCPSettingsDoubleSpinBox" name="settings_double_spinbox"/>
+            </item>
+            <item row="4" column="1">
+             <widget class="VCPSettingsCheckBox" name="settings_checkbox">
+              <property name="text">
+               <string>CheckBox</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="1">
+             <widget class="VCPSettingsPushButton" name="settings_pushbutton">
+              <property name="text">
+               <string>Settings Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Settings Combo Box</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="VCPSettingsComboBox" name="settingscombobox"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_6">
+           <property name="geometry">
+            <rect>
+             <x>520</x>
+             <y>180</y>
+             <width>352</width>
+             <height>325</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>MDI Related Controls</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Enttry</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="MDIEntry" name="mdientry"/>
+            </item>
+            <item row="1" column="1">
+             <widget class="MDIButton" name="mdibutton">
+              <property name="text">
+               <string>MDI Button</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="MDIHistory" name="mdihistory"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>History</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_7">
+           <property name="geometry">
+            <rect>
+             <x>520</x>
+             <y>520</y>
+             <width>351</width>
+             <height>237</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Offsets Table</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_7">
+            <item row="0" column="0">
+             <widget class="OffsetTable" name="offset_table"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_8">
+           <property name="geometry">
+            <rect>
+             <x>900</x>
+             <y>200</y>
+             <width>208</width>
+             <height>89</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Probe Sim</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="0" column="0">
+             <widget class="ProbeSim" name="probesim"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="ToolSTLField" name="toolstlfield">
+           <property name="geometry">
+            <rect>
+             <x>940</x>
+             <y>340</y>
+             <width>338</width>
+             <height>42</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_2">
+          <attribute name="title">
+           <string>Display</string>
+          </attribute>
+          <widget class="StatusLabel" name="statuslabel">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>20</y>
+             <width>141</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Status Label</string>
+           </property>
+          </widget>
+          <widget class="DROLabel" name="drolabel">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>60</y>
+             <width>171</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>DRO Label</string>
+           </property>
+          </widget>
+          <widget class="NotificationWidget" name="notificationwidget">
+           <property name="geometry">
+            <rect>
+             <x>800</x>
+             <y>40</y>
+             <width>528</width>
+             <height>262</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_9">
+           <property name="geometry">
+            <rect>
+             <x>800</x>
+             <y>350</y>
+             <width>511</width>
+             <height>101</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>GCode Properties</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_9">
+            <item row="0" column="0">
+             <widget class="GCodeProperties" name="gcodeproperties"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_10">
+           <property name="geometry">
+            <rect>
+             <x>800</x>
+             <y>480</y>
+             <width>511</width>
+             <height>441</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Active GCodes</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_10">
+            <item row="0" column="0">
+             <widget class="ActiveGcodesTable" name="activegcodestable"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_11">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>330</y>
+             <width>581</width>
+             <height>431</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>VTK</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_11">
+            <item row="0" column="0">
+             <widget class="VTKBackPlot" name="vtkbackplot"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_12">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>240</y>
+             <width>120</width>
+             <height>80</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Status LED</string>
+           </property>
+           <widget class="StatusLED" name="statusled">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>30</y>
+              <width>30</width>
+              <height>30</height>
+             </rect>
+            </property>
+           </widget>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_13">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>100</y>
+             <width>301</width>
+             <height>121</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>Bar Indicator</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_12">
+            <item row="0" column="0">
+             <widget class="BarIndicator" name="barindicator"/>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+         <widget class="QWidget" name="tab_3">
+          <attribute name="title">
+           <string>HAL</string>
+          </attribute>
+          <widget class="HalBarIndicator" name="halbarindicator">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>40</y>
+             <width>301</width>
+             <height>30</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="HalButton" name="halbutton">
+           <property name="geometry">
+            <rect>
+             <x>50</x>
+             <y>100</y>
+             <width>82</width>
+             <height>24</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="HalCheckBox" name="halcheckbox">
+           <property name="geometry">
+            <rect>
+             <x>50</x>
+             <y>170</y>
+             <width>181</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>HAL Checkbox</string>
+           </property>
+          </widget>
+          <widget class="HalDoubleSpinBox" name="haldoublespinbox_2">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>220</y>
+             <width>211</width>
+             <height>24</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="HalGroupBox" name="halgroupbox">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>290</y>
+             <width>201</width>
+             <height>131</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>HAL Group Box</string>
+           </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_14">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>440</y>
+             <width>53</width>
+             <height>58</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>HAL Label</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_13">
+            <item row="0" column="0">
+             <widget class="HalLabel" name="hallabel"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="HalLCDNumber" name="hallcdnumber">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>530</y>
+             <width>73</width>
+             <height>23</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="HalLedIndicator" name="halledindicator">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>580</y>
+             <width>30</width>
+             <height>30</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="HALLEDButton" name="halledbutton">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>640</y>
+             <width>151</width>
+             <height>30</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>HAL LED Button</string>
+           </property>
+          </widget>
+          <widget class="QGroupBox" name="groupBox_15">
+           <property name="geometry">
+            <rect>
+             <x>670</x>
+             <y>20</y>
+             <width>671</width>
+             <height>591</height>
+            </rect>
+           </property>
+           <property name="title">
+            <string>HAL Plot</string>
+           </property>
+          </widget>
+          <widget class="HalSlider" name="halslider">
+           <property name="geometry">
+            <rect>
+             <x>390</x>
+             <y>20</y>
+             <width>16</width>
+             <height>271</height>
+            </rect>
+           </property>
+          </widget>
+          <widget class="HalQSpinBox" name="halqspinbox">
+           <property name="geometry">
+            <rect>
+             <x>20</x>
+             <y>710</y>
+             <width>191</width>
+             <height>24</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="exitBtn">
+         <property name="text">
+          <string>Quit</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionOPEN">
+   <property name="text">
+    <string>oPEN</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_button</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_checkbox</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>SubCallButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>LEDButton</class>
+   <extends>ActionButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.led_button</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
+  </customwidget>
+  <customwidget>
+   <class>DialogButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolSTLField</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.db_widgets.tool_model</header>
+  </customwidget>
+  <customwidget>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+  <customwidget>
+   <class>DROLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.dro_label</header>
+  </customwidget>
+  <customwidget>
+   <class>BarIndicator</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.bar_indicator</header>
+  </customwidget>
+  <customwidget>
+   <class>StatusLED</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_led</header>
+  </customwidget>
+  <customwidget>
+   <class>VTKBackPlot</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>NotificationWidget</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.notification_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>ActiveGcodesTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.display_widgets.active_gcodes_table</header>
+  </customwidget>
+  <customwidget>
+   <class>GCodeProperties</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.gcode_properties</header>
+  </customwidget>
+  <customwidget>
+   <class>HalBarIndicator</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_bar_indicator</header>
+  </customwidget>
+  <customwidget>
+   <class>HalButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_button</header>
+  </customwidget>
+  <customwidget>
+   <class>HalCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_checkbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_groupbox</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>HalLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_label</header>
+  </customwidget>
+  <customwidget>
+   <class>HalLCDNumber</class>
+   <extends>QLCDNumber</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_lcd</header>
+  </customwidget>
+  <customwidget>
+   <class>HalLedIndicator</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_led</header>
+  </customwidget>
+  <customwidget>
+   <class>HALLEDButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_led_button</header>
+  </customwidget>
+  <customwidget>
+   <class>HalSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>HalQSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.action_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionDial</class>
+   <extends>QDial</extends>
+   <header>qtpyvcp.widgets.input_widgets.action_dial</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>DROLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.dro_line_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>FileSystemTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
+   <class>RemovableDeviceComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
+   <class>GcodeTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.gcode_text_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>JogIncrementWidget</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.line_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIHistory</class>
+   <extends>QListWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdihistory_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>OffsetTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.offset_table</header>
+  </customwidget>
+  <customwidget>
+   <class>ProbeSim</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.probesim_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>RecentFileComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsPushButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

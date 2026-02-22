@@ -1,7 +1,7 @@
 import linuxcnc
 import os
 
-from qtpy.QtCore import Signal, QObject
+from PySide6.QtCore import Signal, QObject
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 
@@ -76,7 +76,19 @@ class LinuxCncDataSource(QObject):
 
     def __handleG5xOffsetChange(self, offset):
         # the received parameter, its missing the rotation of the current wcs
+        LOG.debug("__handleG5xOffsetChange --- Start")
+        emitted_offset = list(offset)
+        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+        #
+        LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
+        LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
+        #
+        # # emitted_offset.append(self.__getRotationOfActiveWcs())
+        # LOG.debug("--------correct_offset: {}".format(emitted_offset))
+        result = tuple(emitted_offset)
+        LOG.debug("--------result: {} {}".format(type(result), result))
         self.g5xOffsetChanged.emit(offset)
+        LOG.debug("__handleG5xOffsetChange --- End")
 
     def __handleG92OffsetChange(self, offset):
         self.g92OffsetChanged.emit(offset)
@@ -88,6 +100,12 @@ class LinuxCncDataSource(QObject):
         self.rotationXYChanged.emit(value)
 
     def __handleOffsetTableChanged(self, offset_table):
+        #LOG.debug("__handleOffsetTableChanged: {}".format(type(offset_table)))
+        if len(offset_table) == 0:
+            # this must be an error condition as offset table should always have something in it.
+            # Therefore we force a reread before propogating
+            self.getWcsOffsets()
+        
         self.offsetTableChanged.emit(offset_table)
         
         # offset = offset_table[self.getActiveWcsIndex()]
@@ -181,3 +199,4 @@ class LinuxCncDataSource(QObject):
     
     def getOffsetColumns(self):
         return self._offsettable.column_labels
+

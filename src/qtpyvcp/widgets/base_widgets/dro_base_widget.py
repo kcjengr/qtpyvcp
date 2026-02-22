@@ -4,9 +4,10 @@ DROBaseWidget
 
 """
 
+import os
 from enum import IntEnum
 
-from qtpy.QtCore import Slot, Property
+from PySide6.QtCore import Slot, Property
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting
@@ -16,6 +17,7 @@ from qtpyvcp.utilities import logger
 
 from qtpyvcp.utilities.info import Info
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 LOG = logger.getLogger(__name__)
 INFO = Info()
 
@@ -79,7 +81,12 @@ class DROBaseWidget(VCPWidget):
         self._fmt = self._in_fmt
         self._input_type = 'number:float'
 
-        self.updateValue()
+        if IN_DESIGNER:
+            return
+        
+        # Calling updateValue here under pyside is causing
+        # super not called errors.
+        #self.updateValue()
 
         self.status.program_units.notify(self.updateUnits, 'string')
 
@@ -96,6 +103,9 @@ class DROBaseWidget(VCPWidget):
             self._fmt = self._deg_fmt
 
         else:
+            if IN_DESIGNER:
+                self._fmt = self._mm_fmt
+                return
             if units is None:
                 units = str(self.status.program_units)
 
@@ -136,6 +146,8 @@ class DROBaseWidget(VCPWidget):
 
     def updateValue(self, pos=None):
         """Update the displayed position."""
+        if IN_DESIGNER:
+            return
         if pos is None:
             pos = getattr(self.pos, self._ref_typ.name).getValue()
 

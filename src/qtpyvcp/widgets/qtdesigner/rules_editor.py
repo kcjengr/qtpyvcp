@@ -14,12 +14,18 @@ import json
 import functools
 import webbrowser
 
-from qtpy import uic
-from qtpy import QtWidgets, QtCore, QtDesigner
+# Force qtpy to use PySide6
+os.environ['QT_API'] = 'pyside6'
+
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtCore import QFile
+from PySide6 import QtWidgets, QtCore, QtDesigner
 
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins
 from qtpyvcp.utilities.settings import Setting
 from .plugin_extension import _PluginExtension
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -49,7 +55,13 @@ class ChanInfoDialog(QtWidgets.QDialog):
         super(ChanInfoDialog, self).__init__(parent)
         ui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                "channel_info_dialog.ui")
-        uic.loadUi(ui_file, self)
+        file_path = os.path.join(os.path.dirname(__file__), ui_file)
+        ui_file = QFile(file_path)
+        ui_file.open(QFile.ReadOnly)
+
+        loader = QUiLoader()
+        self.ui = loader.load(ui_file, self)
+        self.ui.show()
 
         ch_obj, ch_exp, ch_val, ch_doc = info
 
@@ -123,6 +135,9 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.widget = widget
         self.app = QtWidgets.QApplication.instance()
+
+        if IN_DESIGNER:
+            getPlugin('status')  # trigger designer plugin initialization
 
         self.lst_rule_item = None
         self.loading_data = False
@@ -439,9 +454,9 @@ class RulesEditor(QtWidgets.QDialog):
 
         # Make the first entry be checked as suggestion
         if self.tbl_channels.rowCount() == 0:
-            state = QtCore.Qt.Checked
+            state = True
         else:
-            state = QtCore.Qt.Unchecked
+            state = False
 
         self.tbl_channels.insertRow(self.tbl_channels.rowCount())
         row = self.tbl_channels.rowCount() - 1

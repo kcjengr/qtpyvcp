@@ -27,9 +27,9 @@
 import sys
 import os
 
-from qtpy.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
-from qtpy.QtGui import QFont, QFontMetrics, QColor
-from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
+from PySide6.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
+from PySide6.QtGui import QFont, QFontMetrics, QColor
+from PySide6.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
@@ -39,12 +39,14 @@ from qtpyvcp.utilities.info import Info
 LOG = logger.getLogger(__name__)
 
 try:
-    from PyQt5.Qsci import QsciScintilla, QsciLexerCustom
+    from PySide6.Qsci import QsciScintilla, QsciLexerCustom
 except ImportError as e:
     LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
     sys.exit(1)
-
-STATUS = getPlugin('status')
+    
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
 INFO = Info()
 
 
@@ -656,7 +658,7 @@ class FindReplaceDialog(QDialog):
 # For testing
 # ==============================================================================
 # if __name__ == "__main__":
-#     from qtpy.QtGui import QApplication
+#     from PySide6.QtGui import QApplication
 #
 #     app = QApplication(sys.argv)
 #     editor = GcodeEditor(standalone=True)

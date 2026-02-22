@@ -98,3 +98,4 @@ def process_templates(files):
 def load_config_files_from_env():
     files = os.getenv('VCP_CONFIG_FILES', '').split(':')
     return load_config_files(*files)
+

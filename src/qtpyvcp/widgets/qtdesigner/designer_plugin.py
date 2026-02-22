@@ -1,12 +1,13 @@
-from qtpy.QtGui import QIcon
-from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
+from PySide6.QtGui import QIcon
+from PySide6.QtDesigner import QDesignerCustomWidgetInterface
 
 from .plugin_extension import ExtensionFactory, Q_TYPEID
 from .designer_hooks import DesignerHooks
 
 from .rules_editor import RulesEditorExtension
 
-class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
+
+class _DesignerPlugin(QDesignerCustomWidgetInterface):
 
     group_name = None
 
@@ -14,6 +15,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
         super(_DesignerPlugin, self).__init__(parent=parent)
         self.initialized = False
         self.manager = None
+        self._form_editor = None
 
     # This MUST be overridden to return the widget class
     def pluginClass(self):
@@ -61,8 +63,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     # Override to set initial QtDesigner property values
     def domXml(self):
-        return '<widget class="{}" name="{}">\n</widget>\n'.format(
-            self.name(), self.objectName())
+        return f"<ui language='c++'>\n<widget class='{self.name()}' name='{self.objectName()}'>\n</widget>\n</ui>"
 
 #==============================================================================
 #  These methods should not need to be overridden
@@ -74,6 +75,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
         designer_hooks = DesignerHooks()
         designer_hooks.form_editor = form_editor
+        self._form_editor = form_editor
 
         self.manager = form_editor.extensionManager()
 
@@ -85,7 +87,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
         self.initialized = True
 
     def isInitialized(self):
-        return self.initialized
+        return self._form_editor is not None
 
     def createWidget(self, parent):
         w = self.pluginClass()(parent)

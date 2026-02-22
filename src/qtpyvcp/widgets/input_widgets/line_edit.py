@@ -3,8 +3,8 @@ Line Edit
 ---------
 """
 
-from qtpy.QtCore import Property
-from qtpy.QtWidgets import QLineEdit
+from PySide6.QtCore import Property
+from PySide6.QtWidgets import QLineEdit
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget

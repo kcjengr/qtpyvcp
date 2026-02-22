@@ -1,8 +1,9 @@
+import os
 import sys
 import linuxcnc
 import tempfile
 
-from qtpy.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -10,8 +11,10 @@ LOG = logger.getLogger(__name__)
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import getPlugin
 
-STATUS = getPlugin('status')
-STAT = STATUS.stat
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
+    STAT = STATUS.stat
 INFO = Info()
 CMD = linuxcnc.command()
 
@@ -33,11 +36,11 @@ def load(fname, add_to_recents=True, isreload=False):
     
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:
-        LOG.debug('Loading NC program: %s', fname)
+        LOG.debug(f"Loading NC program: {fname}")
         CMD.program_open(fname.encode('utf-8'))
         CMD.wait_complete()
     else:
-        LOG.debug('Loading file with filter program: %s', fname)
+        LOG.debug(f"Loading file with filter program: {fname}")
         openFilterProgram(fname, filter_prog)
 
     if add_to_recents:
@@ -155,6 +158,9 @@ def _run_ok(widget=None):
     Returns:
         bool : True if Ok, else False.
     """
+    if IN_DESIGNER:
+        return 
+    
     interp_paused = STAT.interp_state == linuxcnc.INTERP_PAUSED
     mdi_resume_ready = (
         STAT.task_mode == linuxcnc.MODE_MDI
@@ -654,3 +660,4 @@ class FilterProgram:
         # diaLOG.format_secondary_text(stderr)
         # diaLOG.run()
         # diaLOG.destroy()
+

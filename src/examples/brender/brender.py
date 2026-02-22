@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from qtpy.QtCore import Slot
+from PySide6.QtCore import Slot
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # Setup logging
@@ -19,8 +19,8 @@ class MainWindow(VCPMainWindow):
         #  Add/Override methods and slots below to customize the main window
         # ==========================================================================
 
-        actions.bindWidget(self.flood, action='coolant.flood.toggle')
-        actions.bindWidget(self.floodCheckBox, action="coolant.flood.toggle")
+        actions.bindWidget(self.ui.flood, action='coolant.flood.toggle')
+        actions.bindWidget(self.ui.floodCheckBox, action="coolant.flood.toggle")
 
     # This slot will be automatically connected to a menu item named 'Test'
     # created in QtDesigner.

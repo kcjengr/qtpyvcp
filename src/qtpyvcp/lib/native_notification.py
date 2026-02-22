@@ -22,11 +22,11 @@ import sys
 
 from datetime import datetime
 
-from qtpy.QtCore import Qt, Signal
-from qtpy.QtGui import QIcon
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QIcon
 
-from qtpy.QtWidgets import (QWidget, QHBoxLayout, QLabel, QPushButton,
-                            QDesktopWidget, QVBoxLayout, QApplication,
+from PySide6.QtWidgets import (QWidget, QHBoxLayout, QLabel, QPushButton,
+                            QVBoxLayout, QApplication,
                             QDialog, QScrollArea, QPlainTextEdit, QSizePolicy)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog

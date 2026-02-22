@@ -1,14 +1,17 @@
+import os
 
-from qtpy.QtCore import Qt, Slot, Property, QStringListModel
-from qtpy.QtGui import QValidator
-from qtpy.QtWidgets import QLineEdit, QListWidgetItem, QCompleter
+from PySide6.QtCore import Qt, Slot, Property, QStringListModel
+from PySide6.QtGui import QValidator
+from PySide6.QtWidgets import QLineEdit, QListWidgetItem, QCompleter
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
-STATUS = getPlugin('status')
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
 INFO = Info()
 
 

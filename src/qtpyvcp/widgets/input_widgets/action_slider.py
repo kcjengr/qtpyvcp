@@ -1,6 +1,8 @@
+import os
 import linuxcnc
-from qtpy.QtWidgets import QSlider
-from qtpy.QtCore import Slot, Property
+
+from PySide6.QtWidgets import QSlider
+from PySide6.QtCore import Slot, Property
 
 from qtpyvcp.actions import bindWidget
 from qtpyvcp.utilities.logger import getLogger
@@ -8,7 +10,10 @@ from qtpyvcp.plugins import getPlugin
 
 
 LOG = getLogger(__name__)
-STATUS = getPlugin('status')
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    STATUS = getPlugin('status')
 
 
 class ActionSlider(QSlider):

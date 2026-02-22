@@ -1,6 +1,7 @@
 import os
 import sys
-from qtpy.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox, QDial
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox, QDial
 
 from . import machine_actions as machine
 from . import program_actions as program
@@ -54,6 +55,10 @@ def bindWidget(widget, action):
 
     prev_item = ''
     method = sys.modules[__name__]
+    
+    if IN_DESIGNER:
+        return
+    
     for item in action.split('.'):
         if item.isdigit():
             kwargs[prev_item] = int(item)
@@ -100,7 +105,7 @@ def bindWidget(widget, action):
         widget.valueChanged.connect(method)
 
     elif isinstance(widget, QComboBox):
-        widget.activated[str].connect(method)
+        widget.activated[int].connect(method)
 
     else:
         raise InvalidAction('Can\'t bind action "{}" to unsupported widget type "{}"'

@@ -1,8 +1,8 @@
 
 import re
 
-from qtpy.QtCore import Property
-from qtpy.QtWidgets import QApplication
+from PySide6.QtCore import Property
+from PySide6.QtWidgets import QApplication
 
 from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions.machine_actions import issue_mdi

@@ -1,4 +1,4 @@
-from qtpy.QtWidgets import QApplication, QMessageBox
+from PySide6.QtWidgets import QApplication, QMessageBox
 
 from qtpyvcp import DIALOGS
 from qtpyvcp.utilities.logger import getLogger

@@ -26,20 +26,25 @@ from collections import OrderedDict
 import time
 
 import vtk
-import vtk.qt
+
 from vtkmodules.vtkCommonCore import (
     VTK_VERSION_NUMBER,
     vtkVersion
 )
-from qtpy.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
-from qtpy.QtGui import QColor
+from PySide6.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
+from PySide6.QtWidgets import QApplication, QWidget
+from PySide6.QtGui import QColor
 
-from qtpyvcp.actions import machine_actions
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
-# Fix polygons not drawing correctly on some GPU
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
 
-vtk.qt.QVTKRWIBase = "QGLWidget"
+if not IN_DESIGNER:
+    from vtkmodules.qt import QVTKRWIBase
+    QVTKRWIBase = "QGLWidget"  # Fix poligons not drawing correctly on some GPU
+    from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+else:
+    QVTKRenderWindowInteractor = QWidget
 
 # Fix end
 
@@ -66,18 +71,17 @@ from .linuxcnc_datasource import LinuxCncDataSource
 
 LOG = logger.getLogger(__name__)
 
-IN_DESIGNER = os.getenv('DESIGNER', False)
 NUMBER_OF_WCS = 9
 EXTENTS_PADDING = 1.1
 
+# TODO: check this with PySide6
 
 # turn on antialiasing
-from qtpy.QtOpenGL import QGLFormat
-f = QGLFormat()
-f.setSampleBuffers(True)
-f.setSamples(8)  # Request 8x antialiasing (adjustable)
-
-QGLFormat.setDefaultFormat(f)
+# from PySide6.QtOpenGL import Forma
+# f = QGLFormat()
+# f.setSampleBuffers(True)
+# f.setSamples(8)  # Request 8x antialiasing (adjustable)
+# QGLFormat.setDefaultFormat(f)
 
 
 def vtk_version_ok(major, minor):
@@ -329,12 +333,83 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._feed_color = self._default_feed_color
         self._dwel_color = self._default_dwell_color
         self._user_color = self._default_user_color
+        
+        if IN_DESIGNER:
+            return
 
-        self.active_wcs_index = self._datasource.getActiveWcsIndex()
-        self.wcs_offsets = self._datasource.getWcsOffsets()
-        self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
-        self.g92_offset = self._datasource.getG92_offset()
-        self.active_rotation = self._datasource.getRotationOfActiveWcs()
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        LOG.debug("@@@@@@@@@@  VTKBackPlot __init__  @@@@@@@@@")
+        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        # LOG.debug("---------using refactored vtk code")
+
+        self._datasource = LinuxCncDataSource()
+
+        # TODO: for some reason, we need to multiply for metric, find out why!
+        self.multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
+
+        # print(self._datasource.getKeyboardJog())
+        
+        
+        # Keyboard jogging is handled at the global level.
+        if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
+            if self._datasource.getKeyboardJogLock().lower() in ['true', '1', 't', 'y', 'yes']:
+                event_filter = InteractorEventFilter(self, True)
+            else:
+                event_filter = InteractorEventFilter(self)
+            self.installEventFilter(event_filter)
+
+        self.current_time = round(time.time() * 1000)
+        self.plot_interval = 1000/self._datasource.getFPS()  # 1 second / 30 fps
+        self.prev_plot_time = 0
+        
+        self.parent = parent
+        self.ploter_enabled = True
+        self.touch_enabled = False
+        # provide a control to UI builders to suppress when line "breadcrumbs" are plotted
+        self.breadcrumbs_plotted = True
+        if not IN_DESIGNER:
+            view_default_setting = getSetting("backplot.view").value
+            view_options_setting = getSetting("backplot.view").enum_options
+            view_options = list()
+            self.machine_ext_scale = getSetting("backplot.machine-ext-scale").value
+                
+            for option in view_options_setting:
+                view_options.append(option.split(':')[0])
+                
+            print(view_options_setting)
+            print(view_options)
+                
+            self.default_view = view_options[view_default_setting]
+
+        
+        self.program_view_when_loading_program = False
+        self.program_view_when_loading_program_view = 'p'
+        self.pan_mode = False
+        self.line = None
+        self._last_filename = str()
+        self.rotating = 0
+        self.panning = 0
+        self.zooming = 0
+        
+        self.machine_parts = None
+        self.machine_parts_data = None
+        
+        # assume that we are standing upright and compute azimuth around that axis
+        self.natural_view_up = (0, 0, 1)
+        
+        #used to set the perspective view direction
+        self.view_x_vec = 1
+        self.view_y_vec = -1
+        self.view_z_vec = 1
+
+
+
+        if not IN_DESIGNER:
+            self.active_wcs_index = self._datasource.getActiveWcsIndex()
+            self.wcs_offsets = self._datasource.getWcsOffsets()
+            self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
+            self.g92_offset = self._datasource.getG92_offset()
+            self.active_rotation = self._datasource.getRotationOfActiveWcs()
         
         self.rotation_xy_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
@@ -345,7 +420,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
         
-        self.joints = self._datasource._status.joint
+        if not IN_DESIGNER:
+            self.joints = self._datasource._status.joint
 
         self.foam_offset = [0.0, 0.0]
 
@@ -577,6 +653,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             # self.setViewP()
             # self.renderer.ResetCamera()
+            if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
+                print("NAV 2")
+                # Enable the widget.
+                self.cam_orient_manipulator.On()
 
     def button_event(self, obj, event):
 
@@ -638,6 +718,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def keypress(self, obj, event):
         key = obj.GetKeySym()
+        LOG.debug("VTK - keypress for w or s")
         if key == 'w' or key == 's':
             self._setRepresentation(key)
 
@@ -1122,7 +1203,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 axes_transform.Scale(1.5, 1.5, 1.5)  # Make active WCS axes 50% larger
 
             axes_actor.SetUserTransform(axes_transform)
+            #LOG.debug(f"-------- Path Actor Matrix BEFORE User transform:  {path_actor.GetMatrix()}")
+            #LOG.debug(f"-------- Path Actor User transform BEFORE apply new:  {path_actor.GetUserTransform()}")
             path_actor.SetUserTransform(actor_transform)
+            #LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
+            #LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
 
             self._sync_program_bounds_actor(wcs_index, path_actor)
         
@@ -2033,6 +2118,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.breadcrumbs_plotted = enable
 
     @Slot(bool)
+    def enableBreadcrumbs(self, enable):
+        self.breadcrumbs_plotted = enable
+
+    @Slot(bool)
     def enable_panning(self, enabled):
         self.pan_mode = enabled
 
@@ -2076,6 +2165,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def showSurface(self, surface):
         self.points_surface_actor.showSurface(surface)
         self._request_render()
+
+    @Slot(bool)
+    @Slot(object)
+    def showSurface(self, surface):
+        LOG.debug('show surface')
+        self.points_surface_actor.showSurface(surface)
+        self.renderer_window.Render()
 
     @Slot(bool)
     @Slot(object)
@@ -2228,9 +2324,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def traverseColor(self, color):
         self._traverse_color = color
 
-    @traverseColor.reset
-    def traverseColor(self):
-        self._traverse_color = self._default_traverse_color
+    # PySide6.QtCore.Property has no reset attribute
+    # @traverseColor.reset
+    # def traverseColor(self):
+    #     self._traverse_color = self._default_traverse_color
 
     # Arcfeed color property
 
@@ -2242,9 +2339,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def arcfeedColor(self, color):
         self._arcfeed_color = color
 
-    @arcfeedColor.reset
-    def arcfeedColor(self):
-        self._arcfeed_color = self._default_arcfeed_color
+    # PySide6.QtCore.Property has no reset attribute
+    # @arcfeedColor.reset
+    # def arcfeedColor(self):
+    #     self._arcfeed_color = self._default_arcfeed_color
 
     # Feed color property
 
@@ -2256,9 +2354,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def feedColor(self, color):
         self._feed_color = color
 
-    @feedColor.reset
-    def feedColor(self):
-        self._feed_color = self._default_feed_color
+    # PySide6.QtCore.Property has no reset attribute
+    # @feedColor.reset
+    # def feedColor(self):
+    #     self._feed_color = self._default_feed_color
 
     # Dwell color property
 
@@ -2270,9 +2369,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def dwellColor(self, color):
         self._dwel_color = color
 
-    @dwellColor.reset
-    def dwellColor(self):
-        self._dwel_color = self._default_dwell_color
+    # PySide6.QtCore.Property has no reset attribute
+    # @dwellColor.reset
+    # def dwellColor(self):
+    #     self._dwel_color = self._default_dwell_color
 
     # User color property
 
@@ -2284,6 +2384,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def userColor(self, color):
         self._user_color = color
 
-    @userColor.reset
-    def userColor(self):
-        self._user_color = self._default_user_color
+    # PySide6.QtCore.Property has no reset attribute
+    # @userColor.reset
+    # def userColor(self):
+    #     self._user_color = self._default_user_color
+

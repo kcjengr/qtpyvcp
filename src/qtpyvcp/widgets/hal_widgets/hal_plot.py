@@ -1,9 +1,9 @@
 
 import os
 
-from qtpy.QtGui import QColor
-from qtpy.QtWidgets import *
-from qtpy.QtCore import Property, Signal, Slot, QTime, QTimer, Qt
+from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QWidget, QVBoxLayout
+from PySide6.QtCore import Property, Signal, Slot, QTime, QElapsedTimer, QTimer, Qt
 from collections import deque
 
 import pyqtgraph as pg
@@ -50,7 +50,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._timeWindow = 600      # seconds
 
         # Internal timestamp for x-axis - data values are ms from when "timestamp" was started
-        self.timestamp = QTime()
+        self.timestamp = QElapsedTimer()
         self.timestamp.start()
 
         self._legend = False

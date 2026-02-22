@@ -1,15 +1,18 @@
-from qtpy.QtCore import Property
-from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
-from qtpy.QtGui import QIntValidator, QDoubleValidator
+import os
+from PySide6.QtCore import Property
+from PySide6.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
+from PySide6.QtGui import QIntValidator, QDoubleValidator
 
 from qtpyvcp import SETTINGS
 from qtpyvcp.widgets import VCPWidget
 
 from qtpyvcp.utilities import logger
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
 LOG = logger.getLogger(__name__)
 
 class VCPAbstractSettingsWidget(VCPWidget):
-    def __init__(self):
+    def __init__(self,parent=None):
         super(VCPAbstractSettingsWidget, self).__init__()
         self._setting = None
         self._setting_name = ''

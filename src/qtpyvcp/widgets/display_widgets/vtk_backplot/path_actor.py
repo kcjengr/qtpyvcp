@@ -50,3 +50,4 @@ class PathActor(vtk.vtkActor):
 
     def get_axes_actor(self):
         return self.axes_actor
+

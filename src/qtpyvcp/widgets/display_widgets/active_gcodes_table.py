@@ -1,10 +1,11 @@
-
-from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
-from qtpy.QtGui import QStandardItemModel, QColor, QBrush
-from qtpy.QtWidgets import QTableView
+import os
+from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
+from PySide6.QtGui import QStandardItemModel, QColor, QBrush
+from PySide6.QtWidgets import QTableView
 
 from qtpyvcp.plugins import getPlugin
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 TABLE_DATA = """
 G0: Rapid positioning
@@ -57,7 +58,6 @@ class ActiveGcodesModel(QStandardItemModel):
         super(ActiveGcodesModel, self).__init__(parent)
 
         self.status = getPlugin('status')
-        self.gcodes = self.status.gcodes.getValue('list')
 
         self.active_code_color = QColor(Qt.darkGreen)
         self.active_code_bg = None
@@ -67,6 +67,9 @@ class ActiveGcodesModel(QStandardItemModel):
         self.setColumnCount(self.columnCount())
         self.setRowCount(self.rowCount())
 
+        if IN_DESIGNER:
+            return
+        self.gcodes = self.status.gcodes.getValue('list')
         self.status.gcodes.notify(self.refreshModel)
 
     def refreshModel(self):
@@ -109,7 +112,7 @@ class ActiveGcodesModel(QStandardItemModel):
                     return data['description'].format()
                 return data['description']
 
-        elif role == Qt.TextColorRole:
+        elif role == Qt.ForegroundRole:
             if DATA[row]['code'] in self.gcodes:
                 return QBrush(self.active_code_color)
 
