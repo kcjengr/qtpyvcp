@@ -88,4 +88,4 @@ if __name__ == "__main__":
     # connect the listener to the input pin
     comp.addListener('in', onInChanged)
 
-    app.exec_()
+    app.exec()

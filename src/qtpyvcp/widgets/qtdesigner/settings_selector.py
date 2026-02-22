@@ -24,7 +24,7 @@ class SettingSelectorExtension(_PluginExtension):
         self.addTaskMenuAction("Select Setting ...", self.editAction)
 
     def editAction(self, state):
-        SettingSelector(self.widget, parent=None).exec_()
+        SettingSelector(self.widget, parent=None).exec()
 
 
 class SettingSelector(QDialog, Ui_Dialog):
@@ -62,9 +62,9 @@ class SettingSelector(QDialog, Ui_Dialog):
                 self.settingsCombo.setCurrentIndex(0)
 
         bb = self.buttonBox
-        bb.button(QDialogButtonBox.Apply).setDefault(True)
-        bb.button(QDialogButtonBox.Cancel).setDefault(False)
-        bb.button(QDialogButtonBox.Apply).clicked.connect(self.accept)
+        bb.button(QDialogButtonBox.StandardButton.Apply).setDefault(True)
+        bb.button(QDialogButtonBox.StandardButton.Cancel).setDefault(False)
+        bb.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.accept)
 
     @Slot()
     def accept(self):

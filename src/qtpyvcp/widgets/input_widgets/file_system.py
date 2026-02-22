@@ -100,11 +100,11 @@ class RemovableDeviceComboBox(QComboBox):
 
 class QtpyVCPQFileSystemModel(QFileSystemModel):
     
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         # Column nº 3 is date, align it to right
         col = index.column()
         
-        if role == Qt.DisplayRole:
+        if role == Qt.ItemDataRole.DisplayRole:
             data = QFileSystemModel.data(self, index, role)
             if col == 3:
                 try:
@@ -115,9 +115,9 @@ class QtpyVCPQFileSystemModel(QFileSystemModel):
                     pass
                 return f"{data}"
 
-        if role == Qt.TextAlignmentRole:
+        if role == Qt.ItemDataRole.TextAlignmentRole:
             if col == 3:
-                return Qt.AlignVCenter | Qt.AlignRight
+                return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight
     
         return QFileSystemModel.data(self, index, role)
 
@@ -528,16 +528,16 @@ class FileSystemTable(QTableView, TableType):
         box = QMessageBox.question(self.parent,
                                    'Are you sure?',
                                    message,
-                                   QMessageBox.Yes,
-                                   QMessageBox.No)
-        if box == QMessageBox.Yes:
+                                   QMessageBox.StandardButton.Yes,
+                                   QMessageBox.StandardButton.No)
+        if box == QMessageBox.StandardButton.Yes:
             return True
         else:
             return False
 
     def rename_dialog(self, data_type):
         text, ok_pressed = QInputDialog.getText(self.parent, "Rename", "New {} name:".format(data_type),
-                                                QLineEdit.Normal, "")
+                                                QLineEdit.EchoMode.Normal, "")
 
         if ok_pressed and text != '':
             return text

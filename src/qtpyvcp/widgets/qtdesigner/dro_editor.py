@@ -21,7 +21,7 @@ class DroEditorExtension(_PluginExtension):
         self.addTaskMenuAction("Edit DRO Settings ...", self.editAction)
 
     def editAction(self, state):
-        DroEditor(self.widget, parent=None).exec_()
+        DroEditor(self.widget, parent=None).exec()
 
 
 class DroEditor(QDialog):
@@ -51,9 +51,9 @@ class DroEditor(QDialog):
         self.ui.latheModeCombo.setCurrentIndex(self.widget.latheMode)
 
         bb = self.ui.buttonBox
-        bb.button(QDialogButtonBox.Apply).setDefault(True)
-        bb.button(QDialogButtonBox.Cancel).setDefault(False)
-        bb.button(QDialogButtonBox.Apply).clicked.connect(self.accept)
+        bb.button(QDialogButtonBox.StandardButton.Apply).setDefault(True)
+        bb.button(QDialogButtonBox.StandardButton.Cancel).setDefault(False)
+        bb.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.accept)
 
     @Slot()
     def accept(self):

@@ -289,4 +289,4 @@ if __name__ == "__main__":
            "notifies you that notifications are working.",
            timeout=3000)
 
-    app.exec_()
+    app.exec()

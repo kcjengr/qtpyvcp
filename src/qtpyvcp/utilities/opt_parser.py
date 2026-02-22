@@ -182,7 +182,7 @@ def apply_opts(opts):
         from qtpyvcp.vcp_chooser import VCPChooser
         from PySide6.QtWidgets import QApplication
         app = QApplication([])
-        result = VCPChooser(opts).exec_()
+        result = VCPChooser(opts).exec()
         if result == VCPChooser.Rejected:
             sys.exit()
 

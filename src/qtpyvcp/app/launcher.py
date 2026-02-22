@@ -45,7 +45,7 @@ def excepthook(exc_type, exc_msg, exc_tb):
         app = QApplication([])
 
     error_dialog = ErrorDialog(exc_info=(exc_type, exc_msg, exc_tb))
-    error_dialog.exec_()
+    error_dialog.exec()
 
 sys.excepthook = excepthook
 
@@ -107,7 +107,7 @@ def launch_application(opts, config):
     # suppress QtQuick warnings
     app.setAttribute(Qt.AA_DontCreateNativeWidgetSiblings)
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 def load_vcp(opts):

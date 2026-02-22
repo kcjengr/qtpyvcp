@@ -89,7 +89,7 @@ class NativeNotification(BaseDialog):
 
         current_time = "{}:{}".format(time.hour, time.minute)
 
-        self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowSystemMenuHint)
+        self.setWindowFlags(Qt.WindowType.Tool | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.WindowSystemMenuHint)
 
         self.resolution = QApplication.primaryScreen()
         self.screenWidth = self.resolution.size().width()
@@ -108,7 +108,7 @@ class NativeNotification(BaseDialog):
                 
         m = Message(title, message, self)
         self.mainLayout.insertWidget(0, m)
-        self.mainLayout.setAlignment(Qt.AlignRight)
+        self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignRight)
         
         m.buttonClose.clicked.connect(self.onClicked)
         self.nMessages += 1
@@ -176,4 +176,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     w = Example()
     w.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

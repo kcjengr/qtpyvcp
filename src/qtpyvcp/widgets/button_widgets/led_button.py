@@ -16,7 +16,7 @@ class LEDButton(ActionButton):
     def __init__(self, parent=None):
         super(LEDButton, self).__init__(parent)
 
-        self._alignment = Qt.AlignRight | Qt.AlignTop
+        self._alignment = Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop
         self.led = LEDWidget(self)
         self.led.setDiameter(14)
         self.placeLed()
@@ -29,20 +29,20 @@ class LEDButton(ActionButton):
         halfLed = ledDiameter / 2
         quarterLed = ledDiameter / 4 # cheap hueristic to avoid borders
 
-        if alignment & Qt.AlignLeft:
+        if alignment & Qt.AlignmentFlag.AlignLeft:
             x = quarterLed
-        elif alignment & Qt.AlignRight:
+        elif alignment & Qt.AlignmentFlag.AlignRight:
             x = self.width() - ledDiameter - quarterLed
-        elif alignment & Qt.AlignHCenter:
+        elif alignment & Qt.AlignmentFlag.AlignHCenter:
             x = (self.width()/2) - halfLed
-        elif alignment & Qt.AlignJustify:
+        elif alignment & Qt.AlignmentFlag.AlignJustify:
             x = 0
 
-        if alignment & Qt.AlignTop:
+        if alignment & Qt.AlignmentFlag.AlignTop:
             y = quarterLed
-        elif alignment & Qt.AlignBottom:
+        elif alignment & Qt.AlignmentFlag.AlignBottom:
             y = self.height() - ledDiameter - quarterLed
-        elif alignment & Qt.AlignVCenter:
+        elif alignment & Qt.AlignmentFlag.AlignVCenter:
             y = self.height()/2 - halfLed
         # print(x, y)
         self.led.move(int(x), int(y))

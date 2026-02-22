@@ -47,7 +47,7 @@ class RulesEditorExtension(_PluginExtension):
         self.addTaskMenuAction("Edit Widget Rules...", self.editAction)
 
     def editAction(self, state):
-        RulesEditor(self.widget, parent=None).exec_()
+        RulesEditor(self.widget, parent=None).exec()
 
 
 class ChanInfoDialog(QtWidgets.QDialog):
@@ -92,7 +92,7 @@ class TableCheckButton(QtWidgets.QWidget):
         self.chk_bx.setChecked(checked)
         lay_out = QtWidgets.QHBoxLayout(self)
         lay_out.addWidget(self.chk_bx)
-        lay_out.setAlignment(QtCore.Qt.AlignCenter)
+        lay_out.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         lay_out.setContentsMargins(0, 0, 0, 0)
         self.setLayout(lay_out)
 
@@ -112,7 +112,7 @@ class CompleterDelegate(QtWidgets.QStyledItemDelegate):
 
         self.completer = QtWidgets.QCompleter(sorted(items))
         self.completer.setCompletionColumn(0)
-        self.completer.setCompletionRole(QtCore.Qt.EditRole)
+        self.completer.setCompletionRole(QtCore.Qt.ItemDataRole.EditRole)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
 
     def createEditor(self, parent, option, index):
@@ -175,8 +175,8 @@ class RulesEditor(QtWidgets.QDialog):
         list_frame.setMinimumHeight(300)
         list_frame.setMinimumWidth(240)
         list_frame.setLineWidth(1)
-        list_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        list_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        list_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        list_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         lf_layout = QtWidgets.QVBoxLayout()
         list_frame.setLayout(lf_layout)
 
@@ -202,7 +202,7 @@ class RulesEditor(QtWidgets.QDialog):
         lf_layout.addLayout(lf_btn_layout)
 
         self.lst_rules = QtWidgets.QListWidget()
-        self.lst_rules.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding))
+        self.lst_rules.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding))
         self.lst_rules.itemSelectionChanged.connect(self.load_from_list)
         lf_layout.addWidget(self.lst_rules)
 
@@ -242,8 +242,8 @@ class RulesEditor(QtWidgets.QDialog):
         self.frm_edit = QtWidgets.QFrame()
         self.frm_edit.setEnabled(False)
         self.frm_edit.setLineWidth(1)
-        self.frm_edit.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frm_edit.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frm_edit.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frm_edit.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
 
         frm_edit_layout = QtWidgets.QVBoxLayout()
         self.frm_edit.setLayout(frm_edit_layout)
@@ -294,10 +294,10 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setColumnCount(len(headers))
         self.tbl_channels.setHorizontalHeaderLabels(headers)
         header = self.tbl_channels.horizontalHeader()
-        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        # header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
         self.tbl_channels.setColumnWidth(3, 8)
 
         frm_edit_layout.addWidget(self.tbl_channels)
@@ -378,7 +378,7 @@ class RulesEditor(QtWidgets.QDialog):
             self.tbl_channels.setCellWidget(row, 1, tr_chk)
 
             typ_lbl = QtWidgets.QLabel()
-            typ_lbl.setAlignment(QtCore.Qt.AlignCenter)
+            typ_lbl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
             if ch_val is None:
                 typ_lbl.setText("<font color='red'>error</font>")
@@ -439,10 +439,10 @@ class RulesEditor(QtWidgets.QDialog):
             name)
         reply = QtWidgets.QMessageBox().question(self, 'Message',
                                              confirm_message,
-                                             QtWidgets.QMessageBox.Yes,
-                                             QtWidgets.QMessageBox.No)
+                                             QtWidgets.QMessageBox.StandardButton.Yes,
+                                             QtWidgets.QMessageBox.StandardButton.No)
 
-        if reply == QtWidgets.QMessageBox.Yes:
+        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
             self.lst_rules.takeItem(idx)
             self.lst_rules.clearSelection()
             self.rules.pop(idx)
@@ -464,7 +464,7 @@ class RulesEditor(QtWidgets.QDialog):
         checkBoxItem = TableCheckButton(checked=state)
         self.tbl_channels.setCellWidget(row, 1, checkBoxItem)
         typ_lbl = QtWidgets.QLabel()
-        typ_lbl.setAlignment(QtCore.Qt.AlignCenter)
+        typ_lbl.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.tbl_channels.setCellWidget(row, 2, typ_lbl)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
@@ -481,10 +481,10 @@ class RulesEditor(QtWidgets.QDialog):
         confirm_message = "Delete the selected {}?".format(c)
         reply = QtWidgets.QMessageBox().question(self, 'Message',
                                              confirm_message,
-                                             QtWidgets.QMessageBox.Yes,
-                                             QtWidgets.QMessageBox.No)
+                                             QtWidgets.QMessageBox.StandardButton.Yes,
+                                             QtWidgets.QMessageBox.StandardButton.No)
 
-        if reply == QtWidgets.QMessageBox.Yes:
+        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
             for itm in reversed(items):
                 row = itm.row()
                 self.tbl_channels.removeRow(row)
@@ -518,7 +518,7 @@ class RulesEditor(QtWidgets.QDialog):
             model = self.tbl_channels.model()
             chan = model.data(model.index(row, 0))
             info = self.get_channel_data(chan)
-            ChanInfoDialog(info).exec_()
+            ChanInfoDialog(info).exec()
 
     def name_changed(self):
         """Callback executed when the rule name is changed."""
@@ -688,7 +688,7 @@ class RulesEditor(QtWidgets.QDialog):
             self.accept()
         else:
             QtWidgets.QMessageBox.critical(self, "Error Saving", message,
-                                       QtWidgets.QMessageBox.Ok)
+                                       QtWidgets.QMessageBox.StandardButton.Ok)
 
     @QtCore.Slot()
     def cancelChanges(self):

@@ -72,9 +72,9 @@ def askQuestion(title='', message='', parent=None):
     """
     parent = parent or QApplication.instance().activeWindow()
     reply = QMessageBox.question(parent, title, message,
-                                 QMessageBox.Yes,
-                                 QMessageBox.No)
-    if reply == QMessageBox.Yes:
+                                 QMessageBox.StandardButton.Yes,
+                                 QMessageBox.StandardButton.No)
+    if reply == QMessageBox.StandardButton.Yes:
         return True
-    elif reply == QMessageBox.No:
+    elif reply == QMessageBox.StandardButton.No:
         return False

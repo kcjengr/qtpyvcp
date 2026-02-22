@@ -319,8 +319,8 @@ class VCPMainWindow(QMainWindow):
         elif self.confirm_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = self.showModalDialog(QMessageBox.question, self, 'Exit LinuxCNC?',
-                                         quit_msg, QMessageBox.Yes, QMessageBox.No)
-            if reply == QMessageBox.Yes:
+                                         quit_msg, QMessageBox.StandardButton.Yes, QMessageBox.StandardButton.No)
+            if reply == QMessageBox.StandardButton.Yes:
                 QApplication.instance().quit()
             else:
                 event.ignore()
@@ -349,7 +349,7 @@ class VCPMainWindow(QMainWindow):
             LOG.debug(f"Focus widget = None")
 
         # Determine jog speed: Shift always means rapid jog
-        if event.modifiers() & Qt.ShiftModifier:
+        if event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
             speed = actions.machine.MAX_JOG_SPEED / 60
         elif self.rapid_jog:
             speed = actions.machine.MAX_JOG_SPEED / 60
@@ -361,7 +361,7 @@ class VCPMainWindow(QMainWindow):
         # Consistent jog safety logic
         if self._keyboard_jog_ctrl_off.lower() in ['true', '1', 't', 'y', 'yes']:
             jog_active = 1
-        elif event.modifiers() & Qt.ControlModifier:
+        elif event.modifiers() & Qt.KeyboardModifier.ControlModifier:
             jog_active = 1
         else:
             jog_active = 0
@@ -552,5 +552,5 @@ class VCPMainWindow(QMainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = App()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 

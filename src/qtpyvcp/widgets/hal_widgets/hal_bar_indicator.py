@@ -72,4 +72,4 @@ if __name__ == "__main__":
     w.initialize()
     w.show()
     w.setValue(65)
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

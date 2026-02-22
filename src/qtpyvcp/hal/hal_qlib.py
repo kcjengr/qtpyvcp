@@ -212,7 +212,7 @@ def main():
     c.getPin('input').valueChanged.connect(printChange)
     c.ready()
 
-    app.exec_()
+    app.exec()
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ class BarIndicatorBase(QWidget):
     """docstring for BarIndicator"""
     def __init__(self, parent=None):
         super(BarIndicatorBase, self).__init__(parent)
-        self.setFocusPolicy(Qt.NoFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         self._value = 100
         self._minimum = 0.0
@@ -29,7 +29,7 @@ class BarIndicatorBase(QWidget):
 
         self._painter = QPainter()
 
-        self._orientation = Qt.Horizontal
+        self._orientation = Qt.Orientation.Horizontal
         self._bar_width = self.height()
         self._bar_length = self.width()
 
@@ -53,13 +53,13 @@ class BarIndicatorBase(QWidget):
         """This method sets parameters for the widget transformations (needed
         for orientation, flipping and appearance inversion).
         """
-        if self._orientation == Qt.Horizontal:
+        if self._orientation == Qt.Orientation.Horizontal:
             self._bar_width = self.height()
             self._bar_length = self.width()
             self._painter_translation_y = 0
             self._painter_rotation = 0
 
-        elif self._orientation == Qt.Vertical:
+        elif self._orientation == Qt.Orientation.Vertical:
             # Invert dimensions for paintEvent()
             self._bar_width = self.width()
             self._bar_length = self.height()
@@ -92,7 +92,7 @@ class BarIndicatorBase(QWidget):
         self._painter.translate(0, self._flip_translation_y)    # Invert scale if needed
         self._painter.scale(1, self._flip_scale_y)
 
-        self._painter.setRenderHint(QPainter.Antialiasing)
+        self._painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
         self.drawBackground()
 
@@ -134,10 +134,10 @@ class BarIndicatorBase(QWidget):
         p.setPen(border_pen)
 
         # deal with orientation
-        if self._orientation == Qt.Horizontal:
+        if self._orientation == Qt.Orientation.Horizontal:
             rect = QRectF(bw / 2, bw / 2, self.width() - bw, self.height() - bw)
         else:
-            # must be Qt.Vertical
+            # must be Qt.Orientation.Vertical
             rect = QRectF(bw / 2, bw / 2, self.height() - bw, self.width() - bw)
 
         p.drawRoundedRect(rect, br, br)
@@ -147,7 +147,7 @@ class BarIndicatorBase(QWidget):
 
         # draw the load percentage text
         p.setPen(self._text_color)
-        if self.orientation == Qt.Vertical:
+        if self.orientation == Qt.Orientation.Vertical:
             p.drawText(0, 0, self.height(), self.width(), Qt.AlignmentFlag.AlignCenter, self.text())
         else:
             p.drawText(0, 0, self.width(), self.height(), Qt.AlignmentFlag.AlignCenter, self.text())
@@ -156,7 +156,7 @@ class BarIndicatorBase(QWidget):
         return QSize(30, 30)
 
     def resizeEvent(self, event):
-        if self._orientation == Qt.Horizontal:
+        if self._orientation == Qt.Orientation.Horizontal:
             self.gradient.setStart(0, 0)
             self.gradient.setFinalStop(self.width(), 0)
         else:
@@ -339,4 +339,4 @@ if __name__ == "__main__":
     #w.orientation = Qt.Vertical
     w.show()
     w.setValue(65)
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

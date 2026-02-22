@@ -130,7 +130,7 @@ class InteractorEventFilter(QObject):
 
     def get_jog_speed(self, event=None):
         # If Shift is held, use linuxcnc status max_velocity (units/sec)
-        if event is not None and event.modifiers() & Qt.ShiftModifier:
+        if event is not None and event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
             self._status.poll()
             max_vel = getattr(self._status, "max_velocity", None)
             if max_vel is not None:
@@ -143,7 +143,7 @@ class InteractorEventFilter(QObject):
             if event.isAutoRepeat():
                 return super().eventFilter(obj, event)
 
-            if event.modifiers() & Qt.ControlModifier:
+            if event.modifiers() & Qt.KeyboardModifier.ControlModifier:
                 jog_active = 1
             elif self._keyboard_jog_ctrl_off:
                 jog_active = 1
@@ -264,7 +264,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             event_filter = InteractorEventFilter(self, jog_safety_off)
             self.installEventFilter(event_filter)
             # Ensure this widget does not keep focus after mouse clicks
-            self.setFocusPolicy(Qt.NoFocus)
+            self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         self.current_time = round(time.time() * 1000)
         self.plot_interval = 1000/self._datasource.getFPS()  # 1 second / 30 fps

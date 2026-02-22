@@ -135,8 +135,8 @@ class ToolModel(QStandardItemModel):
         self._columns = columns
         self.setColumnCount(len(columns))
 
-    def headerData(self, section, orientation, role=Qt.DisplayRole):
-        if role == Qt.DisplayRole and orientation == Qt.Horizontal:
+    def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
+        if role == Qt.ItemDataRole.DisplayRole and orientation == Qt.Orientation.Horizontal:
             return self._column_labels[self._columns[section]]
 
         return QStandardItemModel.headerData(self, section, orientation, role)
@@ -153,27 +153,27 @@ class ToolModel(QStandardItemModel):
         row = index.row()
         col = index.column()
             
-        header_text = self.headerData(col, Qt.Horizontal, Qt.DisplayRole)
+        header_text = self.headerData(col, Qt.Orientation.Horizontal, Qt.DisplayRole)
         
         tnum = sorted(self._tool_table)[row + self.row_offset]
         
         # check tool in spindle and make Tool No. read-only
         if tnum == self.stat.tool_in_spindle and header_text == "Tool":
-            return Qt.ItemIsEnabled | Qt.ItemIsSelectable
+            return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable
         
-        return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
+        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEditable
     
 
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         
 
         
-        if role == Qt.DisplayRole or role == Qt.EditRole:
+        if role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole:
             key = self._columns[index.column()]
             tnum = sorted(self._tool_table)[index.row() +self.row_offset]
             return self._tool_table[tnum][key]
 
-        elif role == Qt.TextAlignmentRole:
+        elif role == Qt.ItemDataRole.TextAlignmentRole:
             col = self._columns[index.column()]
             if col == 'R':      # Remark
                 return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft
@@ -182,14 +182,14 @@ class ToolModel(QStandardItemModel):
             else:               # All the other floats
                 return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight
 
-        elif role == Qt.TextColorRole:
+        elif role == Qt.ItemDataRole.ForegroundRole:
             tnum = sorted(self._tool_table)[index.row() + self.row_offset]
             if self.stat.tool_in_spindle == tnum:
                 return QBrush(self.current_tool_color)
             else:
                 return QStandardItemModel.data(self, index, role)
 
-        elif role == Qt.BackgroundRole and self.current_tool_bg is not None:
+        elif role == Qt.ItemDataRole.BackgroundRole and self.current_tool_bg is not None:
             tnum = sorted(self._tool_table)[index.row() + self.row_offset]
             if self.stat.tool_in_spindle == tnum:
                 return QBrush(self.current_tool_bg)
@@ -317,7 +317,7 @@ class ToolTable(QTableView):
                               "Can't delete current tool!",
                               "Tool #{} is currently loaded in the spindle.\n"
                               "Please remove tool from spindle and try again.".format(tnum),
-                              QMessageBox.Ok,
+                              QMessageBox.StandardButton.Ok,
                               parent=self)
             box.show()
             return False
@@ -385,10 +385,10 @@ class ToolTable(QTableView):
         box = QMessageBox.question(self,
                                    'Confirm Action',
                                    message,
-                                   QMessageBox.Yes,
-                                   QMessageBox.No)
+                                   QMessageBox.StandardButton.Yes,
+                                   QMessageBox.StandardButton.No)
 
-        if box == QMessageBox.Yes:
+        if box == QMessageBox.StandardButton.Yes:
             return True
         else:
             return False

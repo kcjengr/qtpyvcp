@@ -58,7 +58,7 @@ class ItemDelegate(QStyledItemDelegate):
         if col in 'XYZABCUVWR':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
+            editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
             editor.setDecimals(4)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
@@ -119,10 +119,10 @@ class OffsetModel(QStandardItemModel):
         self._columns = columns
         self.setColumnCount(len(columns))
 
-    def headerData(self, section, orientation, role=Qt.DisplayRole):
-        if role == Qt.DisplayRole and orientation == Qt.Horizontal:
+    def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
+        if role == Qt.ItemDataRole.DisplayRole and orientation == Qt.Orientation.Horizontal:
             return self._columns[section]
-        elif role == Qt.DisplayRole and orientation == Qt.Vertical:
+        elif role == Qt.ItemDataRole.DisplayRole and orientation == Qt.Orientation.Vertical:
             return self._row_labels[section]
 
         return QStandardItemModel.headerData(self, section, orientation, role)
@@ -138,10 +138,10 @@ class OffsetModel(QStandardItemModel):
         return len(self._rows)
 
     def flags(self, index):
-        return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
+        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEditable
 
-    def data(self, index, role=Qt.DisplayRole):
-        if (role == Qt.DisplayRole or role == Qt.EditRole) and len(self._offset_table) > 0:
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
+        if (role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole) and len(self._offset_table) > 0:
             columns_index = index.column()
             rows_index = index.row()
 
@@ -150,10 +150,10 @@ class OffsetModel(QStandardItemModel):
 
             return self._offset_table[rows_index][columns_index]
 
-        elif role == Qt.TextAlignmentRole:
-            return Qt.AlignVCenter | Qt.AlignRight
+        elif role == Qt.ItemDataRole.TextAlignmentRole:
+            return Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight
 
-        elif role == Qt.ForegroundRole:
+        elif role == Qt.ItemDataRole.ForegroundRole:
 
             offset = index.row() + 1
 
@@ -165,7 +165,7 @@ class OffsetModel(QStandardItemModel):
 
                 return QStandardItemModel.data(self, index, role)
 
-        elif role == Qt.BackgroundRole and self.current_row_bg is not None:  # Add this block
+        elif role == Qt.ItemDataRole.BackgroundRole and self.current_row_bg is not None:  # Add this block
             offset = index.row() + 1
             if self.ot.current_index == offset:
                 return QBrush(self.current_row_bg)
@@ -246,7 +246,7 @@ class OffsetTable(QTableView):
         self.setSelectionMode(QTableView.SingleSelection)
         self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
-        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
         if IN_DESIGNER:
             return
@@ -319,9 +319,9 @@ class OffsetTable(QTableView):
         box = QMessageBox.question(self,
                                    'Confirm Action',
                                    message,
-                                   QMessageBox.Yes,
-                                   QMessageBox.No)
-        if box == QMessageBox.Yes:
+                                   QMessageBox.StandardButton.Yes,
+                                   QMessageBox.StandardButton.No)
+        if box == QMessageBox.StandardButton.Yes:
             return True
         else:
             return False

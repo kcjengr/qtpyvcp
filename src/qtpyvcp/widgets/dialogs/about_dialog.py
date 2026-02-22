@@ -52,7 +52,7 @@ class AboutDialog(BaseDialog):
             self.layout = QVBoxLayout()
             self.setLayout(self.layout)
 
-            self.button_box = QDialogButtonBox(QDialogButtonBox.Ok)
+            self.button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok)
             self.button_box.accepted.connect(self.close)
 
             self.about_text = QLabel()

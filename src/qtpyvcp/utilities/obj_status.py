@@ -504,4 +504,4 @@ if __name__ == '__main__':
     mainLayout.addWidget(flood_state_label, 2, 1)
 
     win.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

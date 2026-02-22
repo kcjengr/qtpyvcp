@@ -45,7 +45,7 @@ class JogIncrementWidget(QWidget):
         hBox.setContentsMargins(0, 0, 0, 0)
         self._ledDiameter = 15
         self._ledColor = QColor('green')
-        self._alignment = Qt.AlignTop | Qt.AlignRight
+        self._alignment = Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight
         self._buttons_by_value = []
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
@@ -58,8 +58,8 @@ class JogIncrementWidget(QWidget):
 
             button.setCheckable(True)
             button.setAutoExclusive(True)
-            button.setFocusPolicy(Qt.NoFocus)
-            button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
             button.setMinimumSize(50, 42)
 
             if increment != 0:
@@ -137,13 +137,13 @@ class JogIncrementWidget(QWidget):
 
     def getOrientation(self):
         if self._container.direction() == QBoxLayout.LeftToRight:
-            return Qt.Horizontal
+            return Qt.Orientation.Horizontal
         else:
-            return Qt.Vertical
+            return Qt.Orientation.Vertical
 
     @Slot(Qt.Orientation)
     def setOrientation(self, value):
-        if value == Qt.Horizontal:
+        if value == Qt.Orientation.Horizontal:
             self._container.setDirection(QBoxLayout.LeftToRight)
         else:
             self._container.setDirection(QBoxLayout.TopToBottom)
@@ -169,4 +169,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = JogIncrementWidget(standalone=True)
     w.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

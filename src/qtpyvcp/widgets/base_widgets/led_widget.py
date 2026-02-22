@@ -7,13 +7,13 @@ class LEDWidget(QWidget):
 
     def __init__(self, parent=None):
         super(LEDWidget, self).__init__(parent)
-        self.setFocusPolicy(Qt.NoFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         self._diamX = 0
         self._diamY = 0
         self._diameter = 30
         self._color = QColor("red")
-        self._alignment = Qt.AlignCenter
+        self._alignment = Qt.AlignmentFlag.AlignCenter
         self._state = True
         self._flashing = False
         self._flashRate = 200
@@ -27,20 +27,20 @@ class LEDWidget(QWidget):
         painter = QPainter()
         x = 0
         y = 0
-        if self._alignment & Qt.AlignLeft:
+        if self._alignment & Qt.AlignmentFlag.AlignLeft:
             x = 0
-        elif self._alignment & Qt.AlignRight:
+        elif self._alignment & Qt.AlignmentFlag.AlignRight:
             x = self.width() - self._diameter
-        elif self._alignment & Qt.AlignHCenter:
+        elif self._alignment & Qt.AlignmentFlag.AlignHCenter:
             x = (self.width() - self._diameter) / 2
-        elif self._alignment & Qt.AlignJustify:
+        elif self._alignment & Qt.AlignmentFlag.AlignJustify:
             x = 0
 
-        if self._alignment & Qt.AlignTop:
+        if self._alignment & Qt.AlignmentFlag.AlignTop:
             y = 0
-        elif self._alignment & Qt.AlignBottom:
+        elif self._alignment & Qt.AlignmentFlag.AlignBottom:
             y = self.height() - self._diameter
-        elif self._alignment & Qt.AlignVCenter:
+        elif self._alignment & Qt.AlignmentFlag.AlignVCenter:
             y = (self.height() - self._diameter) / 2
 
         gradient = QRadialGradient(x + self._diameter / 2, y + self._diameter / 2,
@@ -63,7 +63,7 @@ class LEDWidget(QWidget):
         painter.begin(self)
         brush = QBrush(gradient)
         painter.setPen(pen_color)
-        painter.setRenderHint(QPainter.Antialiasing, True)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, True)
         painter.setBrush(brush)
         painter.drawEllipse(int(x) + 1, int(y) + 1, int(self._diameter) - 2, int(self._diameter) - 2)
 
@@ -161,4 +161,4 @@ if __name__ == "__main__":
     led.setColor(QColor('green'))
     led.setDiameter(16)
     led.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

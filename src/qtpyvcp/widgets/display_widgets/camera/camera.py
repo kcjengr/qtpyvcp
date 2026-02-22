@@ -211,8 +211,8 @@ class Camera(QWidget):
         print(msg)
 
     def processCapturedImage(self, requestId, img):
-        scaledImage = img.scaled(self.ui.viewfinder.size(), Qt.KeepAspectRatio,
-                                 Qt.SmoothTransformation)
+        scaledImage = img.scaled(self.ui.viewfinder.size(), Qt.AspectRatioMode.KeepAspectRatio,
+                                 Qt.TransformationMode.SmoothTransformation)
 
         self.ui.lastImagePreviewLabel.setPixmap(QPixmap.fromImage(scaledImage))
 
@@ -230,7 +230,7 @@ class Camera(QWidget):
         settings_dialog.setFormat(self.videoContainerFormat)
         # settings_dialog.setStreamingSettings(self.streamingSettings)
 
-        if settings_dialog.exec_():
+        if settings_dialog.exec():
             self.imageSettings = settings_dialog.imageSettings()
             self.audioSettings = settings_dialog.audioSettings()
             self.videoSettings = settings_dialog.videoSettings()
@@ -277,7 +277,7 @@ class Camera(QWidget):
                 indicationColor = Qt.red
 
         palette = self.ui.lockButton.palette()
-        palette.setColor(QPalette.ButtonText, indicationColor)
+        palette.setColor(QPalette.ColorRole.ButtonText, indicationColor)
         self.ui.lockButton.setPalette(palette)
 
     def takeImage(self):
@@ -372,4 +372,4 @@ if __name__ == '__main__':
     camera = Camera(standalone=True)
     camera.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

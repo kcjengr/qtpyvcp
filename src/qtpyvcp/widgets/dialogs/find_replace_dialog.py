@@ -2,7 +2,7 @@ import os
 
 
 from PySide6.QtCore import (Qt, QSize)
-from PySide6.QtGui import (QFont, QIcon, QPalette)
+from PySide6.QtGui import (QFont, QIcon, QPalette, QTextCursor)
 
 from PySide6.QtWidgets import (QLineEdit, QHBoxLayout,
                             QVBoxLayout, QLabel, QPushButton, QCheckBox, QLayout,
@@ -49,7 +49,7 @@ class FindReplaceDialog(BaseDialog):
         self.find_input.setMinimumHeight(40)
         self.find_input.setFont(QFont("sans", 10))
         self.find_input.setMinimumWidth(260)
-        self.find_input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.find_input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         
         # Navigation arrows
         self.find_prev_arrow = QPushButton()
@@ -69,7 +69,7 @@ class FindReplaceDialog(BaseDialog):
         # Status label for match count
         self.status_label = QLabel("")
         self.status_label.setFixedWidth(110)
-        self.status_label.setAlignment(Qt.AlignCenter)
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet(
             "QLabel {"
             "  border-style: solid;"
@@ -158,8 +158,8 @@ class FindReplaceDialog(BaseDialog):
         # Store the original palette for status feedback
         self.default_palette = self.find_input.palette()
         self.error_palette = QPalette()
-        self.error_palette.setColor(QPalette.Base, Qt.red)
-        self.error_palette.setColor(QPalette.Text, Qt.white)
+        self.error_palette.setColor(QPalette.ColorRole.Base, Qt.red)
+        self.error_palette.setColor(QPalette.ColorRole.Text, Qt.white)
 
         self._replace_undo_stack = []
 
@@ -182,7 +182,7 @@ class FindReplaceDialog(BaseDialog):
         if event.key() == Qt.Key_Escape:
             self.hide_dialog()
         elif event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
-            if event.modifiers() & Qt.ShiftModifier:
+            if event.modifiers() & Qt.KeyboardModifier.ShiftModifier:
                 self.find_previous()
             else:
                 self.find_next()

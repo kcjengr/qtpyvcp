@@ -73,7 +73,7 @@ class NotificationWidget(QWidget, VCPWidget):
         self.button_layout.addWidget(self.clear_button)
 
         self.notification_name = QLabel()
-        self.notification_name.setAlignment(Qt.AlignCenter)
+        self.notification_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.notification_name.setText("All Notifications")
 
         self.all_notification_view = QListView()

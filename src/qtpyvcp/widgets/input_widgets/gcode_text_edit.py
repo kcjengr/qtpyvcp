@@ -9,7 +9,7 @@ import os
 import yaml
 
 from PySide6.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
-                         Property, QFile, QTextStream)
+                         Property, QFile, QTextStream, QSize)
 
 from PySide6.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
@@ -41,7 +41,7 @@ class ColumnFormatterDelegate(QStyledItemDelegate):
             text_padding: String to add as text padding (e.g., "  " for spaces)
         """
         super().__init__(parent)
-        self.alignment = alignment if alignment is not None else (Qt.AlignLeft | Qt.AlignVCenter)
+        self.alignment = alignment if alignment is not None else (Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         self.margin = margin or {'top': 0, 'right': 0, 'bottom': 0, 'left': 0}
         self.padding = padding or {'top': 0, 'right': 0, 'bottom': 0, 'left': 0}
         self.text_padding = text_padding or ""
@@ -720,7 +720,7 @@ class GcodeTextEdit(QPlainTextEdit):
         current_format = QTextCharFormat()
         current_format.setBackground(QColor("#1402FC"))
         current_format.setForeground(QColor("#FFFFFF"))
-        current_format.setFontWeight(QFont.Bold)
+        current_format.setFontWeight(QFont.Weight.Bold)
         
         # Find all matches
         cursor = QTextCursor(self.document())
@@ -774,8 +774,8 @@ class GcodeTextEdit(QPlainTextEdit):
                     if self._find_palette_backup is None:
                         self._find_palette_backup = self.palette()
                     find_palette = self.palette()
-                    find_palette.setColor(QPalette.Highlight, QColor("#1402FC"))
-                    find_palette.setColor(QPalette.HighlightedText, QColor("#FFFFFF"))
+                    find_palette.setColor(QPalette.ColorRole.Highlight, QColor("#1402FC"))
+                    find_palette.setColor(QPalette.ColorRole.HighlightedText, QColor("#FFFFFF"))
                     self.setPalette(find_palette)
 
                     current_selection = QTextEdit.ExtraSelection()
@@ -803,7 +803,9 @@ class GcodeTextEdit(QPlainTextEdit):
     # Legacy Methods (kept for backward compatibility)
     # ========================================================================
     
-    def findAllText(self, text):
+    def findAllText(self, text=None):
+        if text is None:
+            text = self.search_term
         flags = QTextDocument.FindFlag(0)
 
         if self.find_case:
@@ -824,7 +826,25 @@ class GcodeTextEdit(QPlainTextEdit):
         if cursor.hasSelection():
             self.setTextCursor(cursor)
 
-    def findForwardText(self, text):
+    def findAll(self):
+        """Find all occurrences - UI compatibility method."""
+        self.findAllText()
+
+    def findForward(self):
+        """Find forward - UI compatibility method."""
+        self.findForwardText()
+
+    def replaceAll(self):
+        """Replace all - UI compatibility method."""
+        self.replaceAllText()
+
+    def replace(self):
+        """Replace current - UI compatibility method."""
+        self.replaceText()
+
+    def findForwardText(self, text=None):
+        if text is None:
+            text = self.search_term
         flags = QTextDocument.FindFlag()
 
         if self.find_case:
@@ -839,7 +859,13 @@ class GcodeTextEdit(QPlainTextEdit):
         #     if cursor.position() > 0:
         #         self.setTextCursor(cursor)
 
-    def findBackwardText(self, text):
+    def findForward(self):
+        """Alias for findForwardText to maintain compatibility with UI files."""
+        self.findForwardText()
+
+    def findBackwardText(self, text=None):
+        if text is None:
+            text = self.search_term
         flags = QTextDocument.FindFlag()
         flags |= QTextDocument.FindBackward
 
@@ -855,7 +881,11 @@ class GcodeTextEdit(QPlainTextEdit):
         #     if cursor.position() > 0:
         #         self.setTextCursor(cursor)
 
-    def replaceText(self, search, replace):
+    def replaceText(self, search=None, replace=None):
+        if search is None:
+            search = self.search_term
+        if replace is None:
+            replace = self.replace_term
 
         flags = QTextDocument.FindFlag()
 
@@ -872,7 +902,15 @@ class GcodeTextEdit(QPlainTextEdit):
                 cursor.insertText(replace)
             cursor.endEditBlock();
 
-    def replaceAllText(self, search, replace):
+    def replace(self):
+        """Alias for replaceText to maintain compatibility with UI files."""
+        self.replaceText()
+
+    def replaceAllText(self, search=None, replace=None):
+        if search is None:
+            search = self.search_term
+        if replace is None:
+            replace = self.replace_term
 
         flags = QTextDocument.FindFlag()
 
@@ -892,6 +930,10 @@ class GcodeTextEdit(QPlainTextEdit):
                 cursor.endEditBlock();
             else:
                 searching = False
+
+    def replaceAll(self):
+        """Alias for replaceAllText to maintain compatibility with UI files."""
+        self.replaceAllText()
 
     @Slot()
     def saveFile(self, save_file_name = None):
@@ -969,7 +1011,7 @@ class GcodeTextEdit(QPlainTextEdit):
         
         column_configs = {
             0: {  # Name column
-                'alignment': Qt.AlignLeft | Qt.AlignVCenter,
+                'alignment': Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
                 'margin': {'top': 3, 'right': 0, 'bottom': 3, 'left': 0},  # Space between items
                 'padding': {'top': 0, 'right': 2, 'bottom': 0, 'left': 12},  # Text inset from highlight
                 'text_padding': None,  # String for text padding like "  "
@@ -977,7 +1019,7 @@ class GcodeTextEdit(QPlainTextEdit):
                 'min_width': 300  # Minimum width in pixels
             },
             1: {  # Size column
-                'alignment': Qt.AlignRight | Qt.AlignVCenter,
+                'alignment': Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter,
                 'margin': {'top': 8, 'right': 0, 'bottom': 8, 'left': 0},
                 'padding': {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
                 'text_padding': None,
@@ -985,7 +1027,7 @@ class GcodeTextEdit(QPlainTextEdit):
                 'min_width': 80
             },
             2: {  # Type column
-                'alignment': Qt.AlignRight | Qt.AlignVCenter,
+                'alignment': Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter,
                 'margin': {'top': 8, 'right': 0, 'bottom': 8, 'left': 0},
                 'padding': {'top': 0, 'right': 0, 'bottom': 0, 'left': 0},
                 'text_padding': None,
@@ -993,7 +1035,7 @@ class GcodeTextEdit(QPlainTextEdit):
                 'min_width': 80
             },
             3: {  # Date column
-                'alignment': Qt.AlignRight | Qt.AlignVCenter,
+                'alignment': Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter,
                 'margin': {'top': 8, 'right': 0, 'bottom': 8, 'left': 0},
                 'padding': {'top': 0, 'right': 12, 'bottom': 0, 'left': 0},
                 'text_padding': None,
@@ -1004,7 +1046,7 @@ class GcodeTextEdit(QPlainTextEdit):
         
         # View configuration - shared settings for both tree and list views
         view_font = QFont("sans", 10)
-        view_font.setWeight(QFont.Normal)
+        view_font.setWeight(QFont.Weight.Normal)
         
         view_min_width = 200  # Minimum width for the view widget
         
@@ -1074,7 +1116,7 @@ class GcodeTextEdit(QPlainTextEdit):
         dialog_width = sidebar_width + splitter_handle + columns_width + scrollbar_width + dialog_margins
         dialog.resize(dialog_width, 600)  # Width based on all components, height 600px
 
-        if dialog.exec_() == QFileDialog.Accepted:
+        if dialog.exec() == QFileDialog.DialogCode.Accepted:
             file_path = dialog.selectedFiles()[0]
             return file_path
 
@@ -1107,12 +1149,12 @@ class GcodeTextEdit(QPlainTextEdit):
 
     def keyPressEvent(self, event):
         # Handle keyboard shortcuts
-        if event.matches(QKeySequence.Find) or (event.key() == Qt.Key_F and event.modifiers() & Qt.ControlModifier):
+        if event.matches(QKeySequence.Find) or (event.key() == Qt.Key_F and event.modifiers() & Qt.KeyboardModifier.ControlModifier):
             # Ctrl+F - Open find dialog
             self.findDialog()
             event.accept()
             return
-        elif event.key() == Qt.Key_H and event.modifiers() & Qt.ControlModifier:
+        elif event.key() == Qt.Key_H and event.modifiers() & Qt.KeyboardModifier.ControlModifier:
             # Ctrl+H - Open find dialog (focused on replace)
             self.findDialog()
             event.accept()
@@ -1387,7 +1429,7 @@ class NumberMargin(QWidget):
             text_rec = QRect(0, int(block_top), self.width() -
                              4, self.parent.fontMetrics().height())
             painter.fillRect(paint_rec, background)
-            painter.drawText(text_rec, Qt.AlignRight, str(block_num + 1))
+            painter.drawText(text_rec, Qt.AlignmentFlag.AlignRight, str(block_num + 1))
             block = block.next()
 
         painter.end()

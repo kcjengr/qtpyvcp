@@ -105,4 +105,4 @@ if __name__ == "__main__":
 
     c.time.notify(onTimeChanged)
 
-    app.exec_()
+    app.exec()

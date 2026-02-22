@@ -77,11 +77,11 @@ class OffsetsDialog(BaseDialog):
         button_layout.addWidget(close_button)
         button_layout.addWidget(set_button)
 
-        main_layout.addWidget(self.axis_combo, alignment=Qt.AlignTop)
-        main_layout.addWidget(coords_msg, alignment=Qt.AlignLeft | Qt.AlignTop)
-        main_layout.addWidget(self.coords_input, alignment=Qt.AlignTop)
-        main_layout.addWidget(system_msg, alignment=Qt.AlignLeft | Qt.AlignTop)
-        main_layout.addWidget(self.system_combo, alignment=Qt.AlignBottom)
+        main_layout.addWidget(self.axis_combo, alignment=Qt.AlignmentFlag.AlignTop)
+        main_layout.addWidget(coords_msg, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+        main_layout.addWidget(self.coords_input, alignment=Qt.AlignmentFlag.AlignTop)
+        main_layout.addWidget(system_msg, alignment=Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+        main_layout.addWidget(self.system_combo, alignment=Qt.AlignmentFlag.AlignBottom)
         main_layout.addLayout(button_layout)
 
         self.setLayout(main_layout)

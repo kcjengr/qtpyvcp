@@ -556,7 +556,7 @@ class GcodeEditor(EditorBase, QObject):
 
     # simple input dialog for save as
     def save_as_dialog(self, filename):
-        text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
+        text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.EchoMode.Normal, filename)
 
         if ok_pressed and text != '':
             return text

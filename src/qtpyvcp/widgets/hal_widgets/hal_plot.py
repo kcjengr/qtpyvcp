@@ -64,28 +64,28 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s1name = "Series 1"
         self._s1colour = QColor('red')
         self._s1width = 1
-        self._s1style = Qt.SolidLine
+        self._s1style = Qt.PenStyle.SolidLine
         self._s1_pin = None
 
         self._s2enable = False
         self._s2name = "Series 2"
         self._s2colour = QColor('blue')
         self._s2width = 1
-        self._s2style = Qt.SolidLine
+        self._s2style = Qt.PenStyle.SolidLine
         self._s2_pin = None
 
         self._s3enable = False
         self._s3name = "Series 3"
         self._s3colour = QColor('green')
         self._s3width = 1
-        self._s3style = Qt.SolidLine
+        self._s3style = Qt.PenStyle.SolidLine
         self._s3_pin = None
 
         self._s4enable = False
         self._s4name = "Series 4"
         self._s4colour = QColor('yellow')
         self._s4width = 1
-        self._s4style = Qt.SolidLine
+        self._s4style = Qt.PenStyle.SolidLine
         self._s4_pin = None
 
         # PyQtGraph stuff

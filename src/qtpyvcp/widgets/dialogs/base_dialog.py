@@ -74,13 +74,13 @@ class BaseDialog(QDialog):
                 self.setWindowModality(Qt.NonModal)
 
         if popup is not None:
-            self.setWindowFlags(Qt.Popup)
+            self.setWindowFlags(Qt.WindowType.Popup)
 
         if frameless is not None:
-            self.setWindowFlag(Qt.FramelessWindowHint, frameless)
+            self.setWindowFlag(Qt.WindowType.FramelessWindowHint, frameless)
 
         if stay_on_top is not None:
-            self.setWindowFlag(Qt.WindowStaysOnTopHint, stay_on_top)
+            self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, stay_on_top)
 
     def loadUiFile(self, ui_file):
         """Load dialog from a .ui file.

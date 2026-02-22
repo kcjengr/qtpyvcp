@@ -131,4 +131,4 @@ if __name__ == '__main__':
     sub_caller = SubCaller()
     sub_caller.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

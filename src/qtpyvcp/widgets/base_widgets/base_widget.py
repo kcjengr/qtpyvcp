@@ -347,7 +347,7 @@ class VCPButton(QPushButton, CMDWidget):
         super(VCPButton, self).__init__(parent)
         self.status = getPlugin('status')
         # stop focus that will interfere with keyboard jog
-        self.setFocusPolicy(Qt.NoFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
     def mousePressEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place

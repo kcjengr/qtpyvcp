@@ -5,7 +5,7 @@ import linuxcnc
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import Slot, Qt, QEvent, QPoint, QFile
 from PySide6.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
-from PySide6.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
+from PySide6.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox, QApplication
 from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 
@@ -26,7 +26,7 @@ class VirtualInput(QWidget):
 
         self.caps_on = False
         self.focus_object = None
-        self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.BypassWindowManagerHint)
+        self.setWindowFlags(Qt.WindowType.Tool | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.BypassWindowManagerHint)
    
         file_path = os.path.join(os.path.dirname(__file__), ui_file)
         #ui_file = QFile(file_path)
@@ -118,7 +118,7 @@ class VirtualInput(QWidget):
         self.show()
 
     def position_keyboard_to_object(self, obj):
-        screen = QtWidgets.QDesktopWidget().screenGeometry()
+        screen = QApplication.primaryScreen().geometry()
         pos = obj.mapToGlobal(QPoint(0, obj.height()))
 
         if pos.y() + self.height() > screen.height():
@@ -131,8 +131,8 @@ class VirtualInput(QWidget):
         self.move(pos.x(), pos.y())
 
     def send_key_(self, key):
-        event = QKeyEvent(QEvent.KeyPress, key, Qt.NoModifier)
+        event = QKeyEvent(QEvent.KeyPress, key, Qt.KeyboardModifier.NoModifier)
         QGuiApplication.postEvent(self.focus_object, event)
 
-        event = QKeyEvent(QEvent.KeyRelease, key, Qt.NoModifier)
+        event = QKeyEvent(QEvent.KeyRelease, key, Qt.KeyboardModifier.NoModifier)
         QGuiApplication.postEvent(self.focus_object, event)

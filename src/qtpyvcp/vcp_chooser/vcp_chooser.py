@@ -48,7 +48,7 @@ class VCPChooser(QDialog):
         # example VCP section
         category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Example VCPs')
-        category.setFlags(Qt.ItemIsEnabled)
+        category.setFlags(Qt.ItemFlag.ItemIsEnabled)
 
         # add example VCPs to the treeview
         example_vcps = eps.select(group='qtpyvcp.example_vcp')
@@ -59,7 +59,7 @@ class VCPChooser(QDialog):
         # test VCP section
         category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Video Test VCPs')
-        category.setFlags(Qt.ItemIsEnabled)
+        category.setFlags(Qt.ItemFlag.ItemIsEnabled)
 
         # add example VCPs to the treeview
         
@@ -72,7 +72,7 @@ class VCPChooser(QDialog):
         # installed VCP section
         category = QTreeWidgetItem(self.ui.vcpTreeView)
         category.setText(0, 'Installed VCPs')
-        category.setFlags(Qt.ItemIsEnabled)
+        category.setFlags(Qt.ItemFlag.ItemIsEnabled)
         category.setHidden(True)
 
         # add installed VCPs to the treeview
@@ -85,7 +85,7 @@ class VCPChooser(QDialog):
         if os.path.exists(CUSTOM_VCP_DIR):
             category = QTreeWidgetItem(self.ui.vcpTreeView)
             category.setText(0, 'Custom VCPs')
-            category.setFlags(Qt.ItemIsEnabled)
+            category.setFlags(Qt.ItemFlag.ItemIsEnabled)
             for dir_name in os.listdir(CUSTOM_VCP_DIR):
                 if not os.path.isdir(os.path.join(CUSTOM_VCP_DIR, dir_name)):
                     continue
@@ -166,4 +166,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create('Windows'))
     launcher = VCPChooser()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

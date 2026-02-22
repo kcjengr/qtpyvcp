@@ -13,7 +13,7 @@ class ActionCheckBox(QCheckBox, CMDWidget):
     """
     def __init__(self, parent=None, action=None):
         super(ActionCheckBox, self).__init__(parent)
-        self.setFocusPolicy(Qt.NoFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         self._action_name = ''
         if action is not None:

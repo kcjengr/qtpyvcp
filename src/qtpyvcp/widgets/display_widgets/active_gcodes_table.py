@@ -85,7 +85,7 @@ class ActiveGcodesModel(QStandardItemModel):
         self.endResetModel()
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
-        if role == Qt.DisplayRole and orientation == Qt.Horizontal:
+        if role == Qt.DisplayRole and orientation == Qt.Orientation.Horizontal:
             return self._column_labels[section]
 
         return QStandardItemModel.headerData(self, section, orientation, role)
@@ -97,9 +97,9 @@ class ActiveGcodesModel(QStandardItemModel):
         return len(DATA) - 1
 
     def flags(self, index):
-        return Qt.ItemIsEnabled | Qt.NoItemFlags
+        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.NoItemFlags
 
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         row, col = index.row(), index.column()
 
         if role == Qt.DisplayRole or role == Qt.EditRole:

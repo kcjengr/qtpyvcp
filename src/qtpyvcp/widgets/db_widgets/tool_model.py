@@ -47,7 +47,7 @@ class ToolSTLField(QWidget):
         
         filename = None
         
-        if dialog.exec_() == QDialog.Accepted:
+        if dialog.exec() == QDialog.DialogCode.Accepted:
             filename = dialog.selectedFiles()
         
         if filename:
