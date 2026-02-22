@@ -6,7 +6,9 @@ import os
 import sys
 import importlib as imp
 import inspect
-from pkg_resources import iter_entry_points
+
+from importlib.metadata import entry_points
+
 
 from PySide6.QtGui import QFontDatabase
 from PySide6.QtCore import QTimer, Slot, Qt
@@ -22,6 +24,7 @@ from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 # initialize logging. If a base logger was already initialized in a startup
 # script (e.g. vcp_launcher.py), then that logger will be returned, otherwise
 # this will initialise a base logger with default log level of DEBUG
+
 LOG = initBaseLogger('qtpyvcp')
 
 
@@ -110,12 +113,12 @@ class VCPApplication(QApplication):
                 # TODO: Load from a directory if it has a __main__.py entry point
         else:
             try:
-                entry_points = {}
-                for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
-                    entry_points[entry_point.name] = entry_point
-                for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
-                    entry_points[entry_point.name] = entry_point
-                window = entry_points[vcp.lower()].load()
+                entry_point_data = {}
+                for entry_point in entry_points(group='qtpyvcp.example_vcp'):
+                    entry_point_data[entry_point.name] = entry_point
+                for entry_point in entry_points(group='qtpyvcp.vcp'):
+                    entry_point_data[entry_point.name] = entry_point
+                window = entry_point_data[vcp.lower()].load()
                 return window(opts=opts)
             except:
                 LOG.exception("Failed to load entry point")

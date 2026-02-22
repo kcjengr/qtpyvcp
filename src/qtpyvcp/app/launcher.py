@@ -2,7 +2,8 @@ import os
 import sys
 import time
 import importlib
-from pkg_resources import iter_entry_points
+
+from importlib.metadata import entry_points
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication
@@ -18,6 +19,7 @@ from qtpyvcp.utilities.info import Info
 LOG = getLogger(__name__)
 INFO = Info()
 IN_DESIGNER = os.getenv('DESIGNER', False)
+
 # Catch unhandled exceptions and display in dialog
 def excepthook(exc_type, exc_msg, exc_tb):
     try:
@@ -164,16 +166,16 @@ def _load_vcp_from_ui_file(ui_file, opts):
 
 
 def _load_vcp_from_entry_point(vcp_name, opts):
-    entry_points = {}
-    for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
-        entry_points[entry_point.name] = entry_point
-    for entry_point in iter_entry_points(group='qtpyvcp.test_vcp'):
-        entry_points[entry_point.name] = entry_point
-    for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
-        entry_points[entry_point.name] = entry_point
+    entry_point_data = {}
+    for entry_point in entry_points(group='qtpyvcp.example_vcp', name=vcp_name):
+        entry_point_data[entry_point.name] = entry_point
+    for entry_point in entry_points(group='qtpyvcp.test_vcp', name=vcp_name):
+        entry_point_data[entry_point.name] = entry_point
+    for entry_point in entry_points(group='qtpyvcp.vcp', name=vcp_name):
+        entry_point_data[entry_point.name] = entry_point
 
     try:
-        vcp = entry_points[vcp_name.lower()].load()
+        vcp = entry_point_data[vcp_name.lower()].load()
     except KeyError:
         LOG.exception("Failed to find entry point: {}".format(vcp_name))
     except Exception as e:
