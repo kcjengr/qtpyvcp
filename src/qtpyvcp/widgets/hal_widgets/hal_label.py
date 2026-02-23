@@ -4,13 +4,13 @@ from PySide6.QtCore import Property, QEnum
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
 
-from qtpyvcp.widgets.hal_widgets import HalType
+#from qtpyvcp.widgets.hal_widgets import HalType
 
 # Setup logging
 from qtpyvcp.utilities.logger import getLogger
 LOG = getLogger(__name__)
 
-class HalLabel(QLabel, HALWidget, HalType, VCPWidget):
+class HalLabel(QLabel, HALWidget, VCPWidget):
     """HAL Label
 
     Label for displaying HAL pin values.

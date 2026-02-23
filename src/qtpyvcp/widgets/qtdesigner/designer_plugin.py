@@ -90,9 +90,31 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
         return self._form_editor is not None
 
     def createWidget(self, parent):
-        w = self.pluginClass()(parent)
-        w.extensions = self.designerExtensions()
-        return w
+        try:
+            w = self.pluginClass()(parent)
+            w.extensions = self.designerExtensions()
+            return w
+        except Exception as e:
+            # In designer mode, show error on stdout but also try to return a placeholder
+            import traceback
+            print(f"Warning: Error creating widget {self.name()}: {e}")
+            print(traceback.format_exc())
+            
+            # Try to create a simple QWidget placeholder as fallback
+            try:
+                from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
+                from PySide6.QtCore import Qt
+                placeholder = QWidget()
+                layout = QVBoxLayout()
+                label = QLabel(f"{self.name()}\n(failed to load: {str(e)[:50]})")
+                label.SetAlignment(Qt.AlignmentFlag.AlignCenter)
+                layout.addWidget(label)
+                placeholder.setLayout(layout)
+                placeholder.setMinimumSize(100, 50)
+                return placeholder
+            except:
+                # If even the placeholder fails, return the parent (will show error)
+                return parent
 
     def name(self):
         return self.pluginClass().__name__

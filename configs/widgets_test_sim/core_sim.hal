@@ -1,0 +1,78 @@
+# Sim core HAL file for widgets_test_sim
+
+# Create simulation components
+loadrt [KINS]KINEMATICS
+loadrt motmod base_period_nsec=[EMCMOT]BASE_PERIOD servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
+
+# Axis 0 (X axis)
+loadrt pid names=pid.0
+addf pid.0.do-pid-calcs servo-thread
+setp pid.0.Kp [JOINT_0]P
+setp pid.0.Ki [JOINT_0]I
+setp pid.0.Kd [JOINT_0]D
+setp pid.0.FF0 [JOINT_0]FF0
+setp pid.0.FF1 [JOINT_0]FF1
+setp pid.0.FF2 [JOINT_0]FF2
+setp pid.0.deadband [JOINT_0]DEADBAND
+setp pid.0.maxoutput [JOINT_0]PID_MAX_VEL
+
+# Axis 1 (Y axis)
+loadrt pid names=pid.1
+addf pid.1.do-pid-calcs servo-thread
+setp pid.1.Kp [JOINT_1]P
+setp pid.1.Ki [JOINT_1]I
+setp pid.1.Kd [JOINT_1]D
+setp pid.1.FF0 [JOINT_1]FF0
+setp pid.1.FF1 [JOINT_1]FF1
+setp pid.1.FF2 [JOINT_1]FF2
+setp pid.1.deadband [JOINT_1]DEADBAND
+setp pid.1.maxoutput [JOINT_1]PID_MAX_VEL
+
+# Axis 2 (Z axis)
+loadrt pid names=pid.2
+addf pid.2.do-pid-calcs servo-thread
+setp pid.2.Kp [JOINT_2]P
+setp pid.2.Ki [JOINT_2]I
+setp pid.2.Kd [JOINT_2]D
+setp pid.2.FF0 [JOINT_2]FF0
+setp pid.2.FF1 [JOINT_2]FF1
+setp pid.2.FF2 [JOINT_2]FF2
+setp pid.2.deadband [JOINT_2]DEADBAND
+setp pid.2.maxoutput [JOINT_2]PID_MAX_VEL
+
+# Motion controller
+addf motion-command-handler servo-thread
+addf motion-controller servo-thread
+
+# Spindle
+loadrt pwmgen output_type=0 pwm_frequency=20000
+addf pwmgen.update servo-thread
+addf pwmgen.make-pulses base-thread
+
+# Create sim components for feedback (simulated encoders)
+loadrt sim_encoder num_chan=3
+addf sim-encoder-update base-thread
+
+# Wire up axis 0
+net J0pos-cmd joint.0.motor-pos-cmd => pid.0.command sim-encoder.0.velocity
+net J0pos-fb sim-encoder.0.position => joint.0.motor-pos-fb pid.0.feedback
+net J0enable joint.0.amp-enable-out => pid.0.enable
+net J0output pid.0.output => pwmgen.0.value
+
+# Wire up axis 1
+net J1pos-cmd joint.1.motor-pos-cmd => pid.1.command sim-encoder.1.velocity
+net J1pos-fb sim-encoder.1.position => joint.1.motor-pos-fb pid.1.feedback
+net J1enable joint.1.amp-enable-out => pid.1.enable
+net J1output pid.1.output => pwmgen.1.value
+
+# Wire up axis 2
+net J2pos-cmd joint.2.motor-pos-cmd => pid.2.command sim-encoder.2.velocity
+net J2pos-fb sim-encoder.2.position => joint.2.motor-pos-fb pid.2.feedback
+net J2enable joint.2.amp-enable-out => pid.2.enable
+net J2output pid.2.output => pwmgen.2.value
+
+# Spindle
+net spindle-cmd spindle.0.speed-out => pwmgen.0.width
+net spindle-enable spindle.0.on => pwmgen.0.enable
+
+start

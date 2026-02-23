@@ -36,10 +36,40 @@ class StatusLEDPlugin(_DesignerPlugin):
     def pluginClass(self):
         return StatusLED
 
-from .vtk_backplot.vtk_backplot import VTKBackPlot
+# VTK Widget - Cannot be instantiated in designer due to VTK dependencies
+# Create a placeholder class for designer mode only
+from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PySide6.QtCore import Qt
+
+class VTKBackPlot(QWidget):
+    """Placeholder for VTKBackPlot widget in designer mode.
+    
+    In runtime, this is replaced by the actual VTKBackPlot from vtk_backplot.py
+    but in designer we use this simplified version since VTK can't be initialized in designer.
+    The UI file header ensures the real VTKBackPlot is imported at runtime.
+    """
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        label = QLabel("VTK Backplot\n(3D visualization)")
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(label)
+        self.setLayout(layout)
+        self.setMinimumSize(400, 300)
+        self.setStyleSheet("background-color: #2a2a2a; color: #cccccc;")
+
 class VTKWidgetPlugin(_DesignerPlugin):
     def pluginClass(self):
+        # Return the placeholder for designer mode
         return VTKBackPlot
+    
+    def toolTip(self):
+        return "VTK 3D Backplot Widget (runtime only)"
+    
+    def whatsThis(self):
+        return "3D visualization of tool paths using VTK. Only functional at runtime."
+    
     def isContainer(self):
         return True
 

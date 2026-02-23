@@ -74,7 +74,8 @@ from qtpyvcp.widgets.input_widgets.setting_slider import (VCPSettingsLineEdit,  
 def main():
 
     from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
-
+    
+    print("DEBUG: register_widgets.main() called", flush=True)
 
     # Action Buttons
     from qtpyvcp.widgets.button_widgets.designer_plugins import (ActionButtonPlugin,
@@ -152,7 +153,14 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(DROLabel_Plugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(BarIndicatorPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLEDPlugin())
-    QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())
+    
+    # VTK Widget - may have metaclass conflicts in designer, so skip on error
+    try:
+        QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())
+    except Exception as e:
+        print(f"Warning: Could not load VTK widget plugin: {e}")
+        print("VTK widget will not be available in designer")
+    
     QPyDesignerCustomWidgetCollection.addCustomWidget(NotificationPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GcodeReferenceTablePlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GCodePropertiesPlugin())
@@ -196,6 +204,8 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsCheckBoxPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsPushButtonPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsComboBoxPlugin())
+    
+    print("DEBUG: All QtPyVCP custom widgets registered successfully", flush=True)
 
 if __name__ == '__main__':
     main()

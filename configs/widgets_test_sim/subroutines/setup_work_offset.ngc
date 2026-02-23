@@ -1,0 +1,17 @@
+o<setup_work_offset> sub
+(Setup subroutine for work offset)
+(Moves machine to specific position and sets G54 work offset)
+(This ensures test G-code files start at a known location)
+
+(Move to machine coordinates)
+G53 G0 Z0 (Z to safe position first)
+G53 G0 X8.0 Y-4.0 (Move to XY position in machine coordinates)
+
+(Set current machine position as work coordinate system zero)
+G10 L20 P1 X0 Y0 Z0 (P1 = G54, set this position as X0 Y0 Z0)
+
+(Activate G54)
+G54
+
+M2
+o<setup_work_offset> endsub

@@ -198,12 +198,22 @@ def launch_designer(opts=DotDict()) -> None:
     base = os.path.dirname(__file__)
     sys.path.insert(0, base)
     widgets_path =  os.path.join(base, "..", "widgets")
+    qtpyvcp_path = os.path.join(base, "..")
     
+    # Set environment for designer
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
     os.environ['QT_SELECT'] = 'qt6'
     os.environ['DESIGNER'] = '1'
     os.environ['PYSIDE_DESIGNER_PLUGINS'] = widgets_path
+    
+    # Add qtpyvcp paths to PYTHONPATH so pyside6-designer can import our modules
+    existing_pythonpath = os.environ.get('PYTHONPATH', '')
+    new_pythonpath = f"{widgets_path}:{qtpyvcp_path}/src:{existing_pythonpath}"
+    os.environ['PYTHONPATH'] = new_pythonpath
+    
+    # Add a Qt environment variable to preload our designer plugin
+    os.environ['QT_PLUGIN_PATH'] = widgets_path
 
 
     LOG.info("Starting QtDesigner ...")

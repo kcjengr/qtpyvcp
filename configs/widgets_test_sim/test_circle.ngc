@@ -1,0 +1,24 @@
+(Test G-Code Program - Circle)
+(Draws a circular pattern for testing backplot)
+
+G21 (Metric)
+G90 (Absolute)
+G17 (XY Plane)
+G64 P0.01 (Path blending)
+
+(Rapid to start)
+G0 X0 Y0 Z10
+F300 (Set feed rate)
+
+(Move to circle start)
+G0 X25 Y0 Z5
+G1 Z0
+
+(Draw 50mm diameter circle)
+G2 X25 Y0 I-25 J0
+
+(Lift and return)
+G0 Z10
+G0 X0 Y0
+
+M2

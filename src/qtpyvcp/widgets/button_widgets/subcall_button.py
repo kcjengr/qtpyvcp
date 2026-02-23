@@ -54,7 +54,7 @@ class SubCallButton(VCPButton):
         self.clicked.connect(self.callSub)
 
     def callSub(self):
-        window = QApplication().activeWindow()
+        window = QApplication.instance().activeWindow()
 
         subfile = None
         for dir in SUBROUTINE_SEARCH_DIRS:

@@ -48,8 +48,9 @@ else:
 
 # Fix end
 
-from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
+# Conditionally import VTK utilities only when VTK is available
+if not IN_DESIGNER:
+    from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
 
 from qtpyvcp import actions
 from qtpyvcp.widgets import VCPWidget
@@ -242,8 +243,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
         
-        # Disable VTK debug warnings
-        vtk.vtkObject.GlobalWarningDisplayOff()
+        # Disable VTK debug warnings (only if VTK is available)
+        if not IN_DESIGNER:
+            vtk.vtkObject.GlobalWarningDisplayOff()
 
         self._datasource = LinuxCncDataSource()
 
@@ -425,19 +427,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.foam_offset = [0.0, 0.0]
 
-        self.camera = vtk.vtkCamera()
-        self.camera.ParallelProjectionOn()
+        if not IN_DESIGNER:
+            self.camera = vtk.vtkCamera()
+            self.camera.ParallelProjectionOn()
         
-        self.path_actors = OrderedDict()
+            self.path_actors = OrderedDict()
 
-        self.path_end_point = OrderedDict()
-        self.path_angle_point = OrderedDict()
-        self.path_start_point = OrderedDict()
-        self.offset_transitions = list()
+            self.path_end_point = OrderedDict()
+            self.path_angle_point = OrderedDict()
+            self.path_start_point = OrderedDict()
+            self.offset_transitions = list()
 
-        self.offset_change_start_actor = OrderedDict()
-        self.offset_change_end_actor = OrderedDict()
-        self.offset_change_line_actor = OrderedDict()
+            self.offset_change_start_actor = OrderedDict()
+            self.offset_change_end_actor = OrderedDict()
+            self.offset_change_line_actor = OrderedDict()
         
         if self._datasource.isMachineMetric():
             self.position_mult = 1000 #500 here works for me

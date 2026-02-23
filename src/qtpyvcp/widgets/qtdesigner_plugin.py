@@ -34,3 +34,12 @@ from qtpyvcp.widgets.containers.designer_plugins import *
 from qtpyvcp.widgets.db_widgets.designer_plugins import *
 
 from qtpyvcp.widgets.external_widgets import *
+
+# Register all custom widgets with Qt Designer
+try:
+    from qtpyvcp.widgets import register_widgets
+    register_widgets.main()
+except Exception as e:
+    LOG.error(f"Failed to register custom widgets: {e}")
+    import traceback
+    LOG.error(traceback.format_exc())

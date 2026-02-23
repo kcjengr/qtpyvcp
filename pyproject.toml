@@ -46,17 +46,18 @@ widgets_test = "video_tests.widgets_test:main"
 
 [tool.poetry.plugins]
 
-
 [tool.poetry.plugins."qtpyvcp.example_vcp"]
 mini = "examples.mini"
 brender = "examples.brender"
 actions = "examples.actions"
 
-
 [tool.poetry.plugins."qtpyvcp.test_vcp"]
 vtk_test = "video_tests.vtk_test"
 qtpyvcp_test = "video_tests.qtpyvcp_test"
 widgets_test = "video_tests.widgets_test"
+
+[tool.poetry.plugins."pyside6.designer"]
+qtpyvcp_designer = "qtpyvcp.widgets:qtdesigner_plugin"
 
 
 [tool.versioneer]

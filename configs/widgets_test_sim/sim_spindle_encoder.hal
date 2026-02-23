@@ -1,0 +1,9 @@
+# Sim spindle encoder HAL file
+
+# Create spindle encoder simulation
+loadrt sim_encoder num_chan=1
+addf sim-encoder-update base-thread
+
+# Wire spindle feedback
+net spindle-speed spindle.0.speed-out => sim-encoder.0.velocity
+net spindle-fb sim-encoder.0.position => spindle.0.index-enable

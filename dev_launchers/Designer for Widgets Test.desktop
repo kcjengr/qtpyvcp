@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Designer for Widgets Test
+Comment=Qt Designer for QtPyVCP Widgets Test
+Exec=/home/g0704/Dev/qtpyvcp/dev_launchers/widgets_test_designer.sh
+Icon=qtpyvcp
+Path=/home/g0704/Dev/qtpyvcp/src/video_tests/widgets_test
+Terminal=false
+StartupNotify=false

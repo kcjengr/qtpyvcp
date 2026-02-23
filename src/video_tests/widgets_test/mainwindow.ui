@@ -100,6 +100,9 @@
               <property name="text">
                <string>Sub Call Button</string>
               </property>
+              <property name="filename" stdset="0">
+               <string>test_subcall.ngc</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -210,8 +213,8 @@
           <widget class="QGroupBox" name="groupBox_4">
            <property name="geometry">
             <rect>
-             <x>20</x>
-             <y>800</y>
+             <x>910</x>
+             <y>310</y>
              <width>554</width>
              <height>193</height>
             </rect>
@@ -338,6 +341,26 @@
             <string>MDI Related Controls</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_6">
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>History</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="MDIButton" name="mdibutton">
+              <property name="text">
+               <string>MDIButton Move To Program Origin</string>
+              </property>
+              <property name="MDICommand" stdset="0">
+               <string>G53 G0 X8.0 Y4.0 Z-8.0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="MDIHistory" name="mdihistory"/>
+            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label_7">
               <property name="text">
@@ -348,20 +371,13 @@
             <item row="0" column="1">
              <widget class="MDIEntry" name="mdientry"/>
             </item>
-            <item row="1" column="1">
-             <widget class="MDIButton" name="mdibutton">
-              <property name="text">
-               <string>MDI Button</string>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="1">
-             <widget class="MDIHistory" name="mdihistory"/>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_8">
+             <widget class="MDIButton" name="mdibutton_2">
               <property name="text">
-               <string>History</string>
+               <string>ZERO ALL MDI BUTTON</string>
+              </property>
+              <property name="MDICommand" stdset="0">
+               <string>G10 L20 P1 X0.0 Y0.0 Z0.0</string>
               </property>
              </widget>
             </item>
@@ -372,7 +388,7 @@
             <rect>
              <x>520</x>
              <y>520</y>
-             <width>351</width>
+             <width>661</width>
              <height>237</height>
             </rect>
            </property>
@@ -406,8 +422,8 @@
           <widget class="ToolSTLField" name="toolstlfield">
            <property name="geometry">
             <rect>
-             <x>940</x>
-             <y>340</y>
+             <x>1100</x>
+             <y>30</y>
              <width>338</width>
              <height>42</height>
             </rect>
@@ -806,7 +822,7 @@
   <customwidget>
    <class>VTKBackPlot</class>
    <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.designer_plugins</header>
    <container>1</container>
   </customwidget>
   <customwidget>

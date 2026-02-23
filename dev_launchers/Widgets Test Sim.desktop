@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Widgets Test Sim
+Comment=LinuxCNC Widgets Test Simulation
+Exec=/home/g0704/Dev/qtpyvcp/dev_launchers/widgets_test_sim_launcher.sh
+Icon=linuxcnc
+Path=/home/g0704/Dev/qtpyvcp/configs/widgets_test_sim
+Terminal=false
+StartupNotify=false

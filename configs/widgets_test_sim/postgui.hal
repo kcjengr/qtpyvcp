@@ -1,0 +1,12 @@
+# Post GUI HAL file
+# This file is loaded after the GUI is running
+
+# Enable all joints
+setp joint.0.is_homeable 1
+setp joint.1.is_homeable 1
+setp joint.2.is_homeable 1
+
+# Set home positions to 0
+setp joint.0.home 0
+setp joint.1.home 0
+setp joint.2.home 0

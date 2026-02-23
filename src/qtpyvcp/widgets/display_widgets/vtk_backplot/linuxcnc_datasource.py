@@ -4,7 +4,9 @@ import os
 from PySide6.QtCore import Signal, QObject
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities import logger
 
+LOG = logger.getLogger('qtpyvcp.' + __name__)
 INFO = Info()
 IN_DESIGNER = os.getenv('DESIGNER', False)
 """

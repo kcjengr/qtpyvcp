@@ -1,0 +1,5 @@
+# Shutdown HAL file
+# This file is loaded before LinuxCNC shuts down
+
+# Disable spindle on shutdown
+setp spindle.0.on 0

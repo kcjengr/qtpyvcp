@@ -1,0 +1,27 @@
+o<test_subcall> sub
+(Test subroutine for SubCallButton widget testing)
+(This draws a simple square pattern in inches)
+
+G20 (Inches)
+G90 (Absolute mode)
+G64 P0.01 (Path blending)
+
+(Move to work offset zero set by setup_work_offset subroutine)
+G54 (Select G54 work offset)
+G0 Z-0.2 (Safe Z height - work coordinates)
+G0 X0 Y0 (Move to work zero)
+
+(Rapid to start position)
+G0 X0 Y0 Z-0.2
+
+(Draw a 2" square)
+G1 Z-0.5 F10 (Move down)
+G1 X2 F30 (Line 1)
+G1 Y2 (Line 2)
+G1 X0 (Line 3)
+G1 Y0 (Line 4)
+G0 Z-0.2 (Lift up)
+G0 X0 Y0
+
+M2 (End program)
+o<test_subcall> endsub

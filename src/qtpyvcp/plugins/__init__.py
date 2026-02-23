@@ -20,6 +20,30 @@ _PLUGINS = OrderedDict()  # Ordered dict so we can initialize/terminate in order
 _DESIGNER_PLUGINS_LOADED = False  # Track if designer plugins have been initialized
 
 
+class NullPlugin:
+    """Placeholder plugin that responds to any method call with safe defaults.
+    
+    Used in designer mode when plugins aren't available to prevent AttributeErrors.
+    """
+    def __getattr__(self, name):
+        """Return a callable that returns False or empty data by default."""
+        def null_method(*args, **kwargs):
+            # Return False for boolean-like methods (is*, check*, etc)
+            if name.startswith(('is', 'check', 'has', 'get')):
+                return False
+            # Return None for other methods
+            return None
+        return null_method
+    
+    def __call__(self, *args, **kwargs):
+        """Allow calling the plugin itself."""
+        return False
+
+
+_NULL_PLUGIN = NullPlugin()
+
+
+
 def registerPlugin(plugin_id, plugin_inst):
     """Register a Plugin instance.
 
@@ -93,7 +117,7 @@ def getPlugin(plugin_id):
         plugin_id (str) : The ID of the plugin to retrieve.
 
     Returns:
-        A plugin instance, or None.
+        A plugin instance, or a NullPlugin instance in designer mode if not found.
     """
     try:
        return _PLUGINS[plugin_id]
@@ -104,11 +128,12 @@ def getPlugin(plugin_id):
             # Try again after loading designer plugins
             if plugin_id in _PLUGINS:
                 return _PLUGINS[plugin_id]
-            # If still not found, log at debug level
-            LOG.debug("Plugin '%s' not found (OK in designer mode)", plugin_id)
+            # If still not found, return a null plugin that won't crash
+            LOG.debug("Plugin '%s' not found, using null plugin for designer", plugin_id)
+            return _NULL_PLUGIN
         else:
             LOG.error("Failed to find plugin with ID '%s'", plugin_id)
-        return None
+            return None
 
 
 

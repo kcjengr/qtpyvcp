@@ -1,0 +1,54 @@
+(Test G-Code Program - Multi-Tool Pattern)
+(Tests tool changes, arcs, and various feeds)
+
+G21 (Metric)
+G90 (Absolute)
+G17 (XY Plane)
+G64 P0.01
+
+(Tool 1 - Drill)
+T1 M6 G43
+S1200 M3 (Spindle on CW)
+G0 X0 Y0 Z10
+G0 Z2
+G1 Z-5 F100 (Drill)
+G0 Z10
+
+(Tool 2 - End Mill)
+T2 M6 G43
+G0 X10 Y10 Z10
+F300
+
+(Mill a square with rounded corners)
+G0 Z2
+G1 Z-2
+G1 X40 (Side 1)
+G3 X45 Y15 I0 J5 (Corner arc)
+G1 Y35 (Side 2)
+G3 X40 Y40 I-5 J0 (Corner arc)
+G1 X15 (Side 3)
+G3 X10 Y35 I0 J-5 (Corner arc)
+G1 Y15 (Side 4)
+G3 X15 Y10 I5 J0 (Corner arc)
+G0 Z10
+
+(Tool 3 - Finish pass)
+T3 M6 G43
+G0 X25 Y25 Z10
+G0 Z2
+G1 Z-5 F150
+
+(Spiral pattern)
+G91 (Incremental)
+#1 = 0 (Loop counter)
+O100 while [#1 LT 10]
+  G2 I[5 + #1] J0 F200
+  #1 = [#1 + 1]
+O100 endwhile
+
+G90 (Absolute)
+G0 Z10
+G0 X0 Y0
+
+M5 (Spindle off)
+M2

@@ -8,6 +8,8 @@ from qtpyvcp.widgets import HALWidget, VCPWidget
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
+
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 

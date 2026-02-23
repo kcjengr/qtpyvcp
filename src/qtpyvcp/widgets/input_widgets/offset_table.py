@@ -226,8 +226,10 @@ class OffsetTable(QTableView):
         self.offset_model = OffsetModel(self)
 
         # Properties
+        self._columns = [c for c in 'XYZABCUVWR']  # Default columns
         self._current_row_color = QColor('sage')
         self._current_row_bg = None  # Add this line
+        self._confirm_actions = False  # Initialize confirm_actions property
 
         self.proxy_model = QSortFilterProxyModel()
         self.proxy_model.setFilterKeyColumn(0)

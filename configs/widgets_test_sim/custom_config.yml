@@ -1,0 +1,81 @@
+# Widgets Test VCP Configuration
+# Comprehensive test of all QtPyVCP custom widgets
+
+{% include "default_menubar.yml" %}
+
+vcp:
+  name: widgets_test_sim
+  version: v0.0.1
+  author: QtPyVCP Team
+  description: >
+    Comprehensive test of all QtPyVCP custom widgets.
+    This configuration showcases all 49+ custom widgets
+    for PySide6 compatibility testing and development.
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: 75
+
+settings:
+  # Test settings for VCPSettings widgets
+  test.lineedit:
+    default_value: "Test String"
+    value_type: str
+    persistent: true
+    
+  test.slider:
+    default_value: 50
+    min_value: 0
+    max_value: 100
+    persistent: true
+    
+  test.spinbox:
+    default_value: 42
+    min_value: 0
+    max_value: 100
+    persistent: true
+    
+  test.double-spinbox:
+    default_value: 3.14159
+    min_value: 0.0
+    max_value: 10.0
+    persistent: true
+    
+  test.checkbox:
+    default_value: true
+    persistent: true
+    
+  test.combobox:
+    default_value: 1
+    options:
+      - "Option 1"
+      - "Option 2"
+      - "Option 3"
+      - "Option 4"
+    persistent: true
+    
+  test.button-toggle:
+    default_value: false
+    persistent: true
+
+# Dialogs are inherited from default_config.yml
+# We can add custom dialogs here or override defaults
+# For testing, we'll use the default dialogs which include:
+# - open_file, set_work_offsets, tool_edit, probe_sim
+# - about_qtpyvcp, toolchange, shutdown
+
+windows:
+
+  mainwindow:
+    provider: video_tests.widgets_test.mainwindow:MyMainWindow
+
+    kwargs:
+      menu: ( default_menubar )
+      ui_file: /home/g0704/Dev/qtpyvcp/src/video_tests/widgets_test/mainwindow.ui
+      stylesheet: /home/g0704/Dev/qtpyvcp/src/video_tests/widgets_test/style.qss
+      title: QtPyVCP Widgets Test
+
+application:
+  kwargs:
+    stylesheet: {{ file.dir }}/style.qss
