@@ -97,6 +97,14 @@ class VTKWidgetPlugin(_DesignerPlugin):
     def isContainer(self):
         return True
 
+# Export a VTKBackPlot symbol so compiled UIs that import from this module succeed
+try:
+    from .vtk_backplot.vtk_backplot import VTKBackPlot as _VTKBackPlot
+except ImportError:
+    _VTKBackPlot = VTKBackPlotPlaceholder
+
+VTKBackPlot = _VTKBackPlot
+
 from .notification_widget import NotificationWidget
 class NotificationPlugin(_DesignerPlugin):
     def pluginClass(self):

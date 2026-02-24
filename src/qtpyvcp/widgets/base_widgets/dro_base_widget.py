@@ -81,6 +81,9 @@ class DROBaseWidget(VCPWidget):
         self._fmt = self._in_fmt
         self._input_type = 'number:float'
 
+        # diagnostics
+        self._logged_first_update = False
+
         if IN_DESIGNER:
             return
         
@@ -89,6 +92,29 @@ class DROBaseWidget(VCPWidget):
         #self.updateValue()
 
         self.status.program_units.notify(self.updateUnits, 'string')
+
+        # Wire position change signals immediately; initialize() is sometimes
+        # bypassed in designer-loaded widgets under Qt6/PySide6.
+        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
+
+        if self._is_lathe:
+            self.status.gcodes.notify(self.updateDiameterMode)
+
+        if self._use_global_fmt_settings:
+
+            self.in_fmt_setting = getSetting('dro.inch-format')
+            self.mm_fmt_setting = getSetting('dro.millimeter-format')
+            self.deg_fmt_setting = getSetting('dro.degree-format')
+            self.lathe_mode_setting = getSetting('dro.lathe-radius-mode')
+
+            try:
+                self.in_fmt_setting.notify(self.setInchFormat)
+                self.mm_fmt_setting.notify(self.setMillimeterFormat)
+                self.deg_fmt_setting.notify(self.setDegreeFormat)
+                self.lathe_mode_setting.notify(self.setLatheMode)
+
+            except AttributeError:  # settings not found
+                pass
 
     def updateUnits(self, units=None):
         """Force update of DRO display units.
@@ -118,6 +144,12 @@ class DROBaseWidget(VCPWidget):
         self.updateValue()
 
     def initialize(self):
+        LOG.info(
+            "DRO initialize axis=%s ref=%s use_global_fmt=%s",
+            getattr(self._anum, 'name', self._anum),
+            getattr(self._ref_typ, 'name', self._ref_typ),
+            self._use_global_fmt_settings,
+        )
         getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
         self.updateValue()
 
@@ -161,13 +193,24 @@ class DROBaseWidget(VCPWidget):
         else:
             self.setText(self._fmt % pos[self._anum])
 
+        if not self._logged_first_update:
+            LOG.info(
+                "DRO first update axis=%s ref=%s value=%s",
+                getattr(self._anum, 'name', self._anum),
+                getattr(self._ref_typ, 'name', self._ref_typ),
+                pos[self._anum],
+            )
+            self._logged_first_update = True
+
     @Property(int)
     def referenceType(self):
         return self._ref_typ
 
     @referenceType.setter
     def referenceType(self, ref_type):
+        # Rewire to the newly requested reference source (abs/rel/dtg).
         self._ref_typ = RefType(ref_type)
+        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
         self.updateValue()
 
     @Property(int)

@@ -136,12 +136,17 @@ class ToolModel(QStandardItemModel):
         # refresh model so current tool gets highlighted
         self.beginResetModel()
         self.endResetModel()
+        LOG.info("ToolModel refresh: tools=%s rows=%s", len(self._tool_table) - 1, self.rowCount())
 
     def updateModel(self, tool_table):
         # update model with new data
+        if not tool_table or len(tool_table) <= 1:
+            LOG.warning("ToolModel update skipped: empty tool table event")
+            return
         self.beginResetModel()
         self._tool_table = tool_table
         self.endResetModel()
+        LOG.info("ToolModel update: tools=%s rows=%s", len(tool_table) - 1, self.rowCount())
 
     def setColumns(self, columns):
         self._columns = columns
@@ -157,7 +162,7 @@ class ToolModel(QStandardItemModel):
         return len(self._columns)
 
     def rowCount(self, parent=None):
-        return len(self._tool_table) - 1
+        return max(0, len(self._tool_table) - 1)
 
 
     def flags(self, index):
@@ -273,6 +278,9 @@ class ToolTable(QTableView):
 
         self.tool_model = ToolModel(self)
 
+        # keep proxy/view in sync when the tool table reloads
+        self.tool_model.tt.tool_table_changed.connect(self._onToolTableChanged)
+
         self.item_delegate = ItemDelegate(columns=self.tool_model._columns)
         self.setItemDelegate(self.item_delegate)
 
@@ -296,6 +304,16 @@ class ToolTable(QTableView):
         self.setSelectionMode(QTableView.SingleSelection)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
+
+    @Slot(dict)
+    def _onToolTableChanged(self, table):
+        # force proxy to refresh after model reset; also re-apply sort
+        if not table or len(table) <= 1:
+            LOG.warning("ToolTable view refresh skipped: empty tool table event")
+            return
+        self.proxy_model.invalidate()
+        self.sortByColumn(0, Qt.AscendingOrder)
+        LOG.info("ToolTable view refresh: tools=%s rows=%s", len(table) - 1, self.tool_model.rowCount())
 
     @Slot()
     def saveToolTable(self):

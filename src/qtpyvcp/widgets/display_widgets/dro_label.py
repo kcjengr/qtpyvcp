@@ -16,3 +16,5 @@ class DROLabel(QLabel, DROBaseWidget):
 
     def __init__(self, parent=None):
         super(DROLabel, self).__init__(parent)
+        # Ensure DROBaseWidget initialises (QLabel.__init__ doesn't chain)
+        DROBaseWidget.__init__(self)

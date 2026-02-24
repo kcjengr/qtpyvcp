@@ -24,6 +24,8 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
 
     def __init__(self, parent=None):
         super(DROLineEdit, self).__init__(parent)
+        # Ensure DROBaseWidget initialises (EvalLineEdit.__init__ doesn't chain)
+        DROBaseWidget.__init__(self)
 
         self.returnPressed.connect(self.onReturnPressed)
         self.editingFinished.connect(self.onEditingFinished)

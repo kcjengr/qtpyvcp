@@ -214,7 +214,8 @@ class FileSystemTable(QTableView, TableType):
     @Slot()
     def openSelectedItem(self, index=None):
         """If ngc file, opens in LinuxCNC, if dir displays dir."""
-        if index is None:
+        # QPushButton.clicked(bool) can route a bool here; treat non-index as None
+        if index is None or not hasattr(index, 'model'):
             selection = self.getSelection()
             if selection is None:
                 return
@@ -249,7 +250,8 @@ class FileSystemTable(QTableView, TableType):
     @Slot()
     def loadSelectedFile(self, index=None):
         """If ngc file, opens in LinuxCNC, if dir displays dir."""
-        if index is None:
+        # QPushButton.clicked(bool) can route a bool here; treat non-index as None
+        if index is None or not hasattr(index, 'model'):
             selection = self.getSelection()
             if selection is None:
                 return

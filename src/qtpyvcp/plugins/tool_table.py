@@ -256,6 +256,7 @@ class ToolTable(DataPlugin):
 
         # reload with the new data
         tool_table = self.loadToolTable()
+        LOG.info("tool_table reload: path=%s tools=%s", self.tool_table_file, len(tool_table))
         self.tool_table_changed.emit(tool_table)
 
     def iterTools(self, tool_table=None, columns=None):
@@ -357,6 +358,12 @@ class ToolTable(DataPlugin):
         self.__class__.TOOL_TABLE = table
 
         self.current_tool.setValue(self.TOOL_TABLE[STATUS.tool_in_spindle.getValue()])
+
+        tool_count = len(table)
+        if tool_count == 0:
+            LOG.warning("Tool table is empty after load: path=%s", tool_file)
+        else:
+            LOG.info("Tool table loaded: path=%s tools=%s", tool_file, tool_count)
 
         # import json
         # print(json.dumps(table, sort_keys=True, indent=4))

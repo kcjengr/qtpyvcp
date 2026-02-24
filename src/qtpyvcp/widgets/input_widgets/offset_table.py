@@ -255,6 +255,12 @@ class OffsetTable(QTableView):
 
         self.setModel(self.proxy_model)
 
+        if not IN_DESIGNER:
+            # keep highlight/selection in sync with active work offset
+            self.offset_model.ot.active_offset_changed.connect(self._onActiveOffsetChanged)
+            # initial selection
+            self._onActiveOffsetChanged(self.offset_model.ot.current_index)
+
         # Appearance/Behaviour settings
         self.setSortingEnabled(False)
         self.setAlternatingRowColors(True)
@@ -273,6 +279,13 @@ class OffsetTable(QTableView):
             self.setEnabled(True)
         else:
             self.setEnabled(False)
+
+    @Slot(int)
+    def _onActiveOffsetChanged(self, offset_num):
+        # offset_num is 1-based (G54->1). Update row highlight and selection.
+        self.offset_model.refreshModel()
+        row = max(0, offset_num - 1)
+        self.selectRow(row)
 
     @Slot()
     def saveOffsetTable(self):

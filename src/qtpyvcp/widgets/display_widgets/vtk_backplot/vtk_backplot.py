@@ -339,80 +339,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if IN_DESIGNER:
             return
 
-        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        LOG.debug("@@@@@@@@@@  VTKBackPlot __init__  @@@@@@@@@")
-        LOG.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        # LOG.debug("---------using refactored vtk code")
+        self.active_wcs_index = self._datasource.getActiveWcsIndex()
+        self.wcs_offsets = self._datasource.getWcsOffsets()
+        self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
+        self.g92_offset = self._datasource.getG92_offset()
+        self.active_rotation = self._datasource.getRotationOfActiveWcs()
+        self.joints = self._datasource._status.joint
 
-        self._datasource = LinuxCncDataSource()
-
-        # TODO: for some reason, we need to multiply for metric, find out why!
-        self.multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
-
-        # print(self._datasource.getKeyboardJog())
-        
-        
-        # Keyboard jogging is handled at the global level.
-        if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
-            if self._datasource.getKeyboardJogLock().lower() in ['true', '1', 't', 'y', 'yes']:
-                event_filter = InteractorEventFilter(self, True)
-            else:
-                event_filter = InteractorEventFilter(self)
-            self.installEventFilter(event_filter)
-
-        self.current_time = round(time.time() * 1000)
-        self.plot_interval = 1000/self._datasource.getFPS()  # 1 second / 30 fps
-        self.prev_plot_time = 0
-        
-        self.parent = parent
-        self.ploter_enabled = True
-        self.touch_enabled = False
-        # provide a control to UI builders to suppress when line "breadcrumbs" are plotted
-        self.breadcrumbs_plotted = True
-        if not IN_DESIGNER:
-            view_default_setting = getSetting("backplot.view").value
-            view_options_setting = getSetting("backplot.view").enum_options
-            view_options = list()
-            self.machine_ext_scale = getSetting("backplot.machine-ext-scale").value
-                
-            for option in view_options_setting:
-                view_options.append(option.split(':')[0])
-                
-            print(view_options_setting)
-            print(view_options)
-                
-            self.default_view = view_options[view_default_setting]
-
-        
-        self.program_view_when_loading_program = False
-        self.program_view_when_loading_program_view = 'p'
-        self.pan_mode = False
-        self.line = None
-        self._last_filename = str()
-        self.rotating = 0
-        self.panning = 0
-        self.zooming = 0
-        
-        self.machine_parts = None
-        self.machine_parts_data = None
-        
-        # assume that we are standing upright and compute azimuth around that axis
-        self.natural_view_up = (0, 0, 1)
-        
-        #used to set the perspective view direction
-        self.view_x_vec = 1
-        self.view_y_vec = -1
-        self.view_z_vec = 1
-
-
-
-        if not IN_DESIGNER:
-            self.active_wcs_index = self._datasource.getActiveWcsIndex()
-            self.wcs_offsets = self._datasource.getWcsOffsets()
-            self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
-            self.g92_offset = self._datasource.getG92_offset()
-            self.active_rotation = self._datasource.getRotationOfActiveWcs()
-        
         self.rotation_xy_table = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
         self.original_g5x_offset = [0.0] * NUMBER_OF_WCS
@@ -609,7 +542,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actors = self.canon.get_path_actors()
 
             for wcs_index, path_actor in list(self.path_actors.items()):
-                current_offsets = self.wcs_offsets[wcs_index]
+                current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
 
                 actor_transform = vtk.vtkTransform()
                 actor_transform.Translate(*current_offsets[:3])
@@ -873,6 +806,32 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.canon.draw_lines()
 
         LOG.info("-------Draw time %s seconds ---" % (time.time() - start_time))
+
+        # Refresh WCS offsets and active index in case they changed since init.
+        # This makes sure newly loaded paths honor the current work offset.
+        self.wcs_offsets = self._datasource.getWcsOffsets()
+        self.active_wcs_index = self._datasource.getActiveWcsIndex()
+
+        if not self._offsets_ready():
+            LOG.warning(
+                "VTKBackPlot load_program: offset table not ready; skipping draw to avoid G53 placement"
+            )
+            self._datasource._status.removeLock()
+            return
+
+        active_offsets = self._safe_get_offsets(self.active_wcs_index, self._datasource.getOffsetColumns())
+        try:
+            offsets_len = len(self.wcs_offsets)
+        except Exception:
+            offsets_len = 'n/a'
+
+        LOG.info(
+            "VTKBackPlot load_program: active_wcs=%s offsets_len=%s active_offsets=%s",
+            self.active_wcs_index,
+            offsets_len,
+            active_offsets,
+        )
+
         self.path_actors = self.canon.get_path_actors()
         self.offset_transitions = self.canon.get_offset_transitions()
 
@@ -888,7 +847,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         offset_columns = self._datasource.getOffsetColumns()
 
         for wcs_index, actor in self.path_actors.items():
-            current_offsets = self.wcs_offsets[wcs_index]
+            current_offsets = self._safe_get_offsets(wcs_index, offset_columns)
             # rotation = self._datasource.getRotationOfActiveWcs()
 
             x_column = offset_columns.get('X')
@@ -988,10 +947,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         # Plots the movement of the tool and leaves a trace line
         
-        if 0 <= self.active_wcs_index < len(self.wcs_offsets):
-            active_wcs_offset = self.wcs_offsets[self.active_wcs_index]
-        else:
-            active_wcs_offset = (0.0, 0.0, 0.0)
+        active_wcs_offset = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
         if self._is_machine_jet:
             # update the position for JET machines so spindle/tool is
             # aligned to active WCS
@@ -1140,9 +1096,51 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.joints = joints
         
     def on_offset_table_changed(self, offset_table):
+        if not offset_table:
+            LOG.warning("VTKBackPlot: received empty offset table; keeping existing offsets")
+            return
+
         self.wcs_offsets = offset_table
 
         self.rotate_and_translate()
+
+    def _safe_get_offsets(self, wcs_index, offset_columns=None):
+        """Return offsets for a WCS index, defaulting to zeros when missing."""
+
+        offsets = None
+
+        if isinstance(self.wcs_offsets, dict):
+            offsets = self.wcs_offsets.get(wcs_index)
+        elif isinstance(self.wcs_offsets, (list, tuple)):
+            if 0 <= wcs_index < len(self.wcs_offsets):
+                offsets = self.wcs_offsets[wcs_index]
+
+        if offsets is None:
+            column_count = 9
+            if offset_columns:
+                try:
+                    column_count = max(offset_columns.values()) + 1
+                except ValueError:
+                    pass
+
+            offsets = [0.0] * column_count
+            LOG.warning("Missing WCS offsets for index %s, defaulting to zeros", wcs_index)
+
+        return offsets
+
+    def _offsets_ready(self):
+        """Check if wcs_offsets contains usable data (non-empty entries)."""
+
+        if not self.wcs_offsets:
+            return False
+
+        if isinstance(self.wcs_offsets, dict):
+            return any(self.wcs_offsets.values()) and all(len(v) > 0 for v in self.wcs_offsets.values())
+
+        if isinstance(self.wcs_offsets, (list, tuple)):
+            return len(self.wcs_offsets) > 0 and all(len(v) > 0 for v in self.wcs_offsets)
+
+        return False
         
     def update_rotation_xy(self, rot):
         self.active_rotation = rot
@@ -1165,7 +1163,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes_actor = path_actor.get_axes_actor()
         
             
-            current_offsets = self.wcs_offsets[wcs_index]
+            current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
 
             x_column = self.offsetTableColumnsIndex.get('X')
             y_column = self.offsetTableColumnsIndex.get('Y')
@@ -1226,6 +1224,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
     def update_g5x_index(self, index):
         self.active_wcs_index = index
+        if len(self.path_actors) > 0:
+            self.rotate_and_translate()
     
     def update_active_wcs(self, wcs_index):
         self.active_wcs_index = wcs_index
@@ -1245,7 +1245,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             for wcs_index, actor in list(self.path_actors.items()):
                 # determine change in g92 offset since path was drawn
 
-                new_path_position = list(map(add, self.wcs_offsets[wcs_index][:9], path_offset))
+                current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
+                new_path_position = list(map(add, current_offsets[:9], path_offset))
 
                 axes = actor.get_axes_actor()
 
@@ -1367,7 +1368,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
             self.active_wcs_index = 0
 
-        position = self.wcs_offsets[self.active_wcs_index]
+        position = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
         ot_columns_index = self.offsetTableColumnsIndex
         
         column_x = ot_columns_index.get('X')
@@ -1901,7 +1902,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
             self.active_wcs_index = 0
 
-        position = self.wcs_offsets[self.active_wcs_index]
+        position = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
         ot_columns_index = self.offsetTableColumnsIndex
 
         column_x = ot_columns_index.get('X')

@@ -197,6 +197,11 @@ class VCPMainWindow(QMainWindow):
                 loader.registerCustomWidget(GcodeTextEdit)
             except ImportError:
                 pass
+            try:
+                from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import VTKBackPlot
+                loader.registerCustomWidget(VTKBackPlot)
+            except ImportError:
+                pass
             
             self.ui = loader.load(ui_file_obj, self)
         
