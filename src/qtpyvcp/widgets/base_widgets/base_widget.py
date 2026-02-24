@@ -169,43 +169,50 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     #
 
     def setStyleClass(self, style_class):
-        """Set the QSS style class for the widget"""
+        """Set the QSS style class for the widget.
+
+        Sets the Qt dynamic property 'style' which can be used as a QSS
+        selector:  WidgetClass[style="error"] { color: red; }
+        """
+        self._style = style_class
         self.setProperty('style', style_class)
+        # Re-polish so QSS engine sees the property change
+        self.style().unpolish(self)
+        self.style().polish(self)
 
     @Property(str, designable=False)
-    def style(self):
+    def styleClass(self):
         """QSS style class selector property.
 
         This property can be changed dynamically to update the QSS style
-        applied to the widget.
+        applied to the widget.  The underlying Qt dynamic property is named
+        'style' so that QSS selectors like ``WidgetClass[style="error"]``
+        continue to work unchanged.
 
-        Example:
+        NOTE: This property is intentionally NOT named 'style' at the Python/
+        Qt-meta level because that name shadows QWidget::style() (which returns
+        the QStyle object), causing a segfault when Qt internally calls it.
 
-            The ``style`` property can be used as a selector in QSS to
-            apply different styles depending on the value.
+        Example::
 
-            ::
+            /* Applied when styleClass / dynamic property 'style' == "error" */
+            WidgetClass[style="error"] {
+                color: red;
+            }
 
-                /* This will be applied when the `style` is set to "error" */
-                WidgetClass[style="error"] {
-                    color: red;
-                }
-
-                /* This will be applied when the `style` is not set */
-                WidgetClass {
-                    color: black;
-                }
+            /* Applied when 'style' is not set */
+            WidgetClass {
+                color: black;
+            }
 
         Returns:
             str
         """
         return self._style
 
-    @style.setter
-    def style(self, style):
-        self._style = style
-        self.style().unpolish(self)
-        self.style().polish(self)
+    @styleClass.setter
+    def styleClass(self, style):
+        self.setStyleClass(style)
 
     @Property(str, designable=False)
     def rules(self):

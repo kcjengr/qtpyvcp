@@ -6,8 +6,17 @@ from qtpyvcp.plugins import getPlugin
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
-    STATUS = getPlugin('status')
-    STAT = STATUS.stat
+    _STATUS = getPlugin('status')
+    
+    def _get_stat():
+        if _STATUS is not None:
+            return _STATUS.stat
+        return None
+else:
+    _STATUS = None
+    
+    def _get_stat():
+        return None
 
 INFO = Info()
 CMD = linuxcnc.command()
@@ -31,13 +40,13 @@ def setTaskMode(new_mode):
     else:
         CMD.mode(new_mode)
         CMD.wait_complete()  # Wait for mode change to complete, like AXIS does
-        STAT.poll()  # Update status after mode change
+        _get_stat().poll()  # Update status after mode change
         return True
 
 def isRunning():
     """Returns TRUE if machine is moving due to MDI, program execution, etc."""
-    if STAT.state == linuxcnc.RCS_EXEC:
+    if _get_stat().state == linuxcnc.RCS_EXEC:
         return True
     else:
-        return STAT.task_mode == linuxcnc.MODE_AUTO \
-            and STAT.interp_state != linuxcnc.INTERP_IDLE
+        return _get_stat().task_mode == linuxcnc.MODE_AUTO \
+            and _get_stat().interp_state != linuxcnc.INTERP_IDLE

@@ -66,12 +66,16 @@ class ItemDelegate(QStyledItemDelegate):
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
 
-            min_range = getSetting('offset_table.min_range').value
-            max_range = getSetting('offset_table.max_range').value
+            try:
+                min_range = getSetting('offset_table.min_range').value
+                max_range = getSetting('offset_table.max_range').value
 
-            if min_range and max_range:
-                editor.setRange(min_range, max_range)
-            else:
+                if min_range and max_range:
+                    editor.setRange(min_range, max_range)
+                else:
+                    editor.setRange(-1000, 1000)
+            except:
+                # In designer mode or when settings aren't available
                 editor.setRange(-1000, 1000)
 
             return editor
@@ -95,7 +99,15 @@ class ToolModel(QStandardItemModel):
         super(ToolModel, self).__init__(parent)
 
         if IN_DESIGNER:
+            # In designer mode, set up dummy data to show the table structure
+            self._columns = ['T', 'P', 'X', 'Y', 'Z', 'A', 'B', 'C', 'U', 'V', 'W', 'D', 'I', 'J', 'Q', 'R']
+            self._column_labels = {'T': 'Tool', 'P': 'Pocket', 'X': 'X', 'Y': 'Y', 'Z': 'Z', 'A': 'A', 'B': 'B', 'C': 'C', 
+                                   'U': 'U', 'V': 'V', 'W': 'W', 'D': 'Diameter', 'I': 'Front Angle', 'J': 'Back Angle', 
+                                   'Q': 'Orientation', 'R': 'Comment'}
+            self.setColumnCount(len(self._columns))
+            self.setRowCount(10)  # Show 10 rows for designer preview
             return
+            
         self.status = getPlugin('status')
         self.stat = self.status.stat
         self.tt = getPlugin('tooltable')

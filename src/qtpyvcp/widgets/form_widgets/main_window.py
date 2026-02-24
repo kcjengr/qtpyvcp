@@ -1,6 +1,7 @@
 import os
 import sys
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 import linuxcnc
 
@@ -30,7 +31,21 @@ class VCPMainWindow(QMainWindow):
                  maximize=False, fullscreen=False, position=None, size=None,
                  confirm_exit=True, title=None, menu='default'):
 
+        print(f"DEBUG: VCPMainWindow.__init__ called, IN_DESIGNER={IN_DESIGNER}")
+
         super(VCPMainWindow, self).__init__(parent)
+
+        if IN_DESIGNER:
+            # In designer mode, do minimal initialization needed for proper display
+            if title is not None:
+                self.setWindowTitle(title)
+            if stylesheet is not None:
+                self.loadStylesheet(stylesheet)
+            # Also check for QSS_STYLESHEET environment variable (set by editvcp)
+            qss_env = os.getenv('QSS_STYLESHEET')
+            if qss_env is not None:
+                self.loadStylesheet(qss_env)
+            return
 
         if opts is None:
             opts = qtpyvcp.OPTIONS
@@ -124,19 +139,66 @@ class VCPMainWindow(QMainWindow):
         Args:
             ui_file (str) : Path to a .ui file to load.
         """
-        # TODO: Check for compiled *_ui.py files and load from that if exists
-        file_path = os.path.join(os.path.dirname(__file__), ui_file)
-        #ui_file = QFile(file_path)
-        #ui_file.open(QFile.ReadOnly)
-        #loader = QUiLoader()
-        #self.ui = loader.load(ui_file, self)
-        # self.ui.initUi()
-        #self.setCentralWidget(self.ui)
-        #self.ui.show()
-        LOG.debug(f"UI file to load and convert: {file_path}")
-        form_class, base_class = PySide6Ui(file_path).load()
-        self.ui = form_class()
-        self.ui.setupUi(self)
+        # Check for compiled *_ui.py files and load from that if exists
+        import os
+        ui_py_file = ui_file.replace('.ui', '_ui.py')
+        if os.path.exists(ui_py_file):
+            LOG.debug(f"Loading compiled UI file: {ui_py_file}")
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("ui_module", ui_py_file)
+            ui_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(ui_module)
+            form_class = ui_module.Ui_Form
+            self.ui = form_class()
+            self.ui.setupUi(self)
+            
+            # PySide6 doesn't set widget attributes like PyQt5 does, so we need to do it manually
+            from PySide6.QtWidgets import QWidget
+            for widget in self.findChildren(QWidget):
+                if hasattr(widget, 'objectName') and widget.objectName():
+                    name = widget.objectName()
+                    if not hasattr(self, name):  # Don't overwrite existing attributes
+                        setattr(self, name, widget)
+        else:
+            LOG.debug(f"Loading UI with QUiLoader: {ui_file}")
+            from PySide6.QtUiTools import QUiLoader
+            from PySide6.QtCore import QFile
+            
+            # Import all QtPyVCP widgets to ensure they're available
+            from qtpyvcp.widgets import register_widgets  # noqa: F401
+            
+            ui_file_obj = QFile(ui_file)
+            ui_file_obj.open(QFile.ReadOnly)
+            loader = QUiLoader()
+            
+            # Register essential QtPyVCP custom widgets
+            try:
+                from qtpyvcp.widgets.button_widgets.action_button import ActionButton
+                loader.registerCustomWidget(ActionButton)
+            except ImportError:
+                pass
+            try:
+                from qtpyvcp.widgets.display_widgets.status_label import StatusLabel
+                loader.registerCustomWidget(StatusLabel)
+            except ImportError:
+                pass
+            try:
+                from qtpyvcp.widgets.hal_widgets.hal_label import HalLabel
+                loader.registerCustomWidget(HalLabel)
+            except ImportError:
+                pass
+            try:
+                from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
+                loader.registerCustomWidget(FileSystemTable)
+            except ImportError:
+                pass
+            try:
+                from qtpyvcp.widgets.input_widgets.gcode_text_edit import GcodeTextEdit
+                loader.registerCustomWidget(GcodeTextEdit)
+            except ImportError:
+                pass
+            
+            self.ui = loader.load(ui_file_obj, self)
         
         self.loadSplashGcode()
 
@@ -147,6 +209,7 @@ class VCPMainWindow(QMainWindow):
         Args:
             stylesheet (str) : Path to a .qss stylesheet
         """
+        print(f"DEBUG: VCPMainWindow.loadStylesheet called with: {stylesheet}")
         LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
         self.setStyleSheet("file:///" + stylesheet)
 

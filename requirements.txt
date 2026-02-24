@@ -1,6 +1,7 @@
 docopt
 pyserial
 pyside6
+qtpy
 hiyapyco
 dbus-python
 psutil

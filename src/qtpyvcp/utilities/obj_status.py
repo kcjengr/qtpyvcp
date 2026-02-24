@@ -300,7 +300,10 @@ class HALPoller(QObject):
         self.hal_mutex = threading.Lock()
         self.hal_thread = threading.Thread(target=self.hal_poll_thread)
         self.hal_thread.daemon = True
-        self.hal_thread.start()
+        # Do not start the poll thread in Qt Designer — it emits Qt signals
+        # from a background thread which is illegal in Qt6 and causes SIGSEGV.
+        if not os.getenv('DESIGNER'):
+            self.hal_thread.start()
 
 
     # halcmd can take 200ms or more to run, so run poll updates in a thread so as not to slow the server

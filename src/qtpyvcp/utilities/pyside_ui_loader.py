@@ -1,6 +1,7 @@
 #import pydevd; pydevd.settrace()
 
 import subprocess
+import sys
 import xml.etree.ElementTree as xml
 class PySide6Ui:
     """
@@ -20,7 +21,15 @@ class PySide6Ui:
         self.__ui_file = ui_file
 
     def __getUi(self):
-        return subprocess.check_output(['pyside6-uic', self.__ui_file])
+        proc = subprocess.Popen(['pyside6-uic', self.__ui_file], 
+                               stdout=subprocess.PIPE, 
+                               stderr=subprocess.PIPE)
+        stdout, stderr = proc.communicate()
+        if proc.returncode != 0:
+            # Print warnings but continue if we got output
+            if stderr:
+                print(stderr.decode(), file=sys.stderr)
+        return stdout
 
     def toPy(self, py_file=None):
         py_file = py_file or self.__ui_file.replace('.ui','.py')

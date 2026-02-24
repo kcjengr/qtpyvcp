@@ -6,23 +6,23 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout
 from PySide6.QtCore import Property, Signal, Slot, QTime, QElapsedTimer, QTimer, Qt
 from collections import deque
 
-import pyqtgraph as pg
-import numpy as np
-
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
+if not IN_DESIGNER:
+    import pyqtgraph as pg
+    import numpy as np
 
-class TimeAxisItem(pg.AxisItem):
-    """Internal timestamp for x-axis"""
-    def __init__(self, *args, **kwargs):
-        super(TimeAxisItem, self).__init__(*args, **kwargs)
+    class TimeAxisItem(pg.AxisItem):
+        """Internal timestamp for x-axis"""
+        def __init__(self, *args, **kwargs):
+            super(TimeAxisItem, self).__init__(*args, **kwargs)
 
-    def tickStrings(self, values, scale, spacing):
-        """Function overloading the weak default version to provide timestamp"""
-        return [QTime().currentTime().addMSecs(int(value)).toString('mm:ss') for value in values]
+        def tickStrings(self, values, scale, spacing):
+            """Function overloading the weak default version to provide timestamp"""
+            return [QTime().currentTime().addMSecs(int(value)).toString('mm:ss') for value in values]
 
 
 class HalPlot(QWidget, HALWidget, VCPWidget):
@@ -88,6 +88,10 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s4style = Qt.PenStyle.SolidLine
         self._s4_pin = None
 
+        # PyQtGraph uses QOpenGLWidget which crashes Qt Designer - skip in designer mode
+        if IN_DESIGNER:
+            return
+
         # PyQtGraph stuff
         self.graph = pg.GraphicsLayoutWidget()
 
@@ -114,9 +118,6 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         # HAL stuff
         self._typ = "float"
         self._fmt = "%s"
-
-        if IN_DESIGNER:
-            return
 
         # QTimer
         self.updatetimer = QTimer(self)

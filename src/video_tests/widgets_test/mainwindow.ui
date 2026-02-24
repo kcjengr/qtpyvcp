@@ -76,6 +76,12 @@
               <property name="text">
                <string>Action Button</string>
               </property>
+              <property name="actionName" stdset="0">
+               <string>machine.power.toggle</string>
+              </property>
+              <property name="rules" stdset="0">
+               <string>[{"name": "test_rule2", "property": "Enable", "expression": "ch[0]", "channels": [{"url": "status:enabled", "trigger": true}]}]</string>
+              </property>
              </widget>
             </item>
             <item row="5" column="0">
@@ -102,6 +108,9 @@
               </property>
               <property name="filename" stdset="0">
                <string>test_subcall.ngc</string>
+              </property>
+              <property name="rules" stdset="0">
+               <string>[{"name": "test_rule", "property": "Enable", "expression": "ch[0]", "channels": [{"url": "status:enabled", "trigger": true}]}]</string>
               </property>
              </widget>
             </item>

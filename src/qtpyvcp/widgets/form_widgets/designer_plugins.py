@@ -1,9 +1,11 @@
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
 from .main_window import VCPMainWindow
+import os
+
 class MainWindowPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return VCPMainWindow()
+        return VCPMainWindow
 
     def isContainer(self):
         return True
@@ -23,6 +25,18 @@ class MainWindowPlugin(_DesignerPlugin):
                    </property>
                    <widget class="QWidget" name="centralwidget"/>
                   </widget>'''
+
+    def createWidget(self, parent):
+        # Create the widget using the base class method
+        widget = super().createWidget(parent)
+        
+        # In designer mode, load stylesheet from environment if available
+        if hasattr(widget, 'loadStylesheet'):
+            qss_env = os.getenv('QSS_STYLESHEET')
+            if qss_env is not None:
+                widget.loadStylesheet(qss_env)
+        
+        return widget
 
 
 from qtpyvcp.widgets.form_widgets.probe_widget.probe import SubCaller

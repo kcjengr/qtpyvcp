@@ -22,7 +22,12 @@ from qtpyvcp.widgets.display_widgets.gcode_properties import (GCodeProperties)  
 from qtpyvcp.widgets.display_widgets.notification_widget import (NotificationWidget)  # noqa: F401
 from qtpyvcp.widgets.display_widgets.status_label import (StatusLabel)  # noqa: F401
 from qtpyvcp.widgets.display_widgets.status_led import (StatusLED)  # noqa: F401
-from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import (VTKBackPlot)  # noqa: F401
+import os as _os
+if not _os.getenv('DESIGNER'):
+    from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import (VTKBackPlot)  # noqa: F401
+
+# Form Widgets
+from qtpyvcp.widgets.form_widgets.main_window import (VCPMainWindow)  # noqa: F401
 
 # HAL Widgets
 
@@ -71,10 +76,24 @@ from qtpyvcp.widgets.input_widgets.setting_slider import (VCPSettingsLineEdit,  
 
 
 
+def _safe_add(collection, plugin_cls, label):
+    """Add a custom widget plugin, printing before/after so the last line before
+    a segfault identifies the culprit."""
+    import sys
+    try:
+        instance = plugin_cls()
+        print(f"DEBUG: adding {label}", flush=True)
+        collection.addCustomWidget(instance)
+        print(f"DEBUG: OK    {label}", flush=True)
+    except Exception as e:
+        print(f"DEBUG: SKIP  {label}: {e}", file=sys.stderr, flush=True)
+
+
 def main():
 
     from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
-    
+    C = QPyDesignerCustomWidgetCollection
+
     print("DEBUG: register_widgets.main() called", flush=True)
 
     # Action Buttons
@@ -206,6 +225,15 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsComboBoxPlugin())
     
     print("DEBUG: All QtPyVCP custom widgets registered successfully", flush=True)
+
+def _safe_add(collection, plugin, label):
+    import sys
+    try:
+        print(f"DEBUG: addCustomWidget {label}", flush=True)
+        collection.addCustomWidget(plugin)
+        print(f"DEBUG: OK {label}", flush=True)
+    except Exception as e:
+        print(f"DEBUG: FAILED {label}: {e}", file=sys.stderr, flush=True)
 
 if __name__ == '__main__':
     main()

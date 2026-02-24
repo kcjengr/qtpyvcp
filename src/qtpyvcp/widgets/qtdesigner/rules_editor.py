@@ -681,7 +681,6 @@ class RulesEditor(QtWidgets.QDialog):
         is_valid, message = self.is_data_valid()
         if is_valid:
             data = json.dumps(self.rules)
-            print((json.dumps(self.rules, sort_keys=True, indent=4)))
             formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
             if formWindow:
                 formWindow.cursor().setProperty("rules", data)

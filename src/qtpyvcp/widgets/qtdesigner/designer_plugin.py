@@ -92,29 +92,34 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
     def createWidget(self, parent):
         try:
             w = self.pluginClass()(parent)
+            # Keep a Python-level reference to every widget we hand to Designer.
+            # PySide6 stores QMetaObject inside the Python wrapper's private data;
+            # if Python GC collects the wrapper (once only the C++ side holds it),
+            # the QMetaObject is freed while Designer still uses it → SIGSEGV in
+            # QMetaObject::indexOfProperty.  Storing refs here prevents that.
+            if not hasattr(self, '_created_widgets'):
+                self._created_widgets = []
+            self._created_widgets.append(w)
             w.extensions = self.designerExtensions()
             return w
         except Exception as e:
-            # In designer mode, show error on stdout but also try to return a placeholder
             import traceback
-            print(f"Warning: Error creating widget {self.name()}: {e}")
-            print(traceback.format_exc())
-            
-            # Try to create a simple QWidget placeholder as fallback
+            print(f"WARNING: Error creating widget {self.name()}: {e}", flush=True)
+            print(traceback.format_exc(), flush=True)
             try:
                 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
                 from PySide6.QtCore import Qt
-                placeholder = QWidget()
+                placeholder = QWidget(parent)
                 layout = QVBoxLayout()
-                label = QLabel(f"{self.name()}\n(failed to load: {str(e)[:50]})")
-                label.SetAlignment(Qt.AlignmentFlag.AlignCenter)
+                label = QLabel(f"{self.name()}\n(failed: {str(e)[:50]})")
+                label.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 layout.addWidget(label)
                 placeholder.setLayout(layout)
                 placeholder.setMinimumSize(100, 50)
                 return placeholder
-            except:
-                # If even the placeholder fails, return the parent (will show error)
-                return parent
+            except Exception as e2:
+                print(f"WARNING: fallback also failed for {self.name()}: {e2}", flush=True)
+                return QWidget(parent)
 
     def name(self):
         return self.pluginClass().__name__

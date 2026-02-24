@@ -243,34 +243,55 @@ class GcodeTextEdit(QPlainTextEdit):
 
         self.parent = parent
 
-        self.setCenterOnScroll(True)
-        self.setGeometry(50, 50, 800, 640)
-        self.setWordWrapMode(QTextOption.NoWrap)
-
+        # Set all instance variables with safe defaults first so that
+        # @Property getters always have a valid value to return.
         self.block_number = None
         self.focused_line = 1
         self.current_line_background = QColor(self.palette().alternateBase().color())
         self.readonly = False
         self.syntax_highlighting = False
-
         self.old_docs = []
+        self.gCodeHighlighter = None
+        self.find_case = None
+        self.find_words = None
+        self.search_term = ""
+        self.replace_term = ""
+        self.highlight_selections = []
+        self._find_palette_backup = None
+        self.menu = None
+        self.run_action = None
+        self.dialog = None
+
+        # In designer mode use a lightweight placeholder for self.margin so
+        # that the margin-related @Property getters work without creating a
+        # real QWidget child (which would connect signals and disturb Qt
+        # Designer's rendering pipeline).
+        class _MarginPlaceholder:
+            background = QColor('#e8e8e8')
+            highlight_background = QColor('#e8e8e8')
+            color = QColor('#717171')
+            highlight_color = QColor('#000000')
+            def update(self): pass
+            def getWidth(self): return 0
+            def setGeometry(self, *a): pass
+            def updateWidth(self): pass
+
+        if IN_DESIGNER:
+            self.margin = _MarginPlaceholder()
+            # Still create the real margin for visual display in designer
+            self.real_margin = NumberMargin(self)
+            self.real_margin.updateWidth()  # Ensure proper positioning
+            return
+
+        self.setCenterOnScroll(True)
+        self.setGeometry(50, 50, 800, 640)
+        self.setWordWrapMode(QTextOption.NoWrap)
+
         # set the custom margin
         self.margin = NumberMargin(self)
 
-        # set the syntax highlighter # Fixme un needed init here
-        self.gCodeHighlighter = None
-
         if parent is not None:
-
-            self.find_case = None
-            self.find_words = None
-
-            self.search_term = ""
-            self.replace_term = ""
-        
-        # For highlighting matches
-        self.highlight_selections = []
-        self._find_palette_backup = None
+            pass  # find_case / find_words already set above
 
         # context menu
         self.menu = QMenu(self)
@@ -284,8 +305,6 @@ class GcodeTextEdit(QPlainTextEdit):
 
         # FixMe: Picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
-        if IN_DESIGNER:
-            return
         self.run_action.setEnabled(program_actions.run_from_line.ok())
         program_actions.run_from_line.bindOk(self.run_action)
 
@@ -1396,9 +1415,6 @@ class NumberMargin(QWidget):
             self.updateWidth()
 
     def paintEvent(self, event):  # this puts the line numbers in the margin
-        if IN_DESIGNER:
-            QWidget.paintEvent(self, event)
-            return 
         painter = QPainter(self)
         painter.fillRect(event.rect(), self.background)
         block = self.parent.firstVisibleBlock()

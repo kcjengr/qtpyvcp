@@ -19,7 +19,11 @@ LOG = logger.getLogger(__name__)
 # if a group is not present it will be an empty string
 PARSE_POSITIONAL_ARGS = re.compile(r' *# *<([a-z0-9_-]+)> *= *#([0-9]+) *(?:\(= *([0-9.+-]+[0-9.]*?|) *(.*)\))?', re.I)
 
-SUBROUTINE_SEARCH_DIRS = INFO.getSubroutineSearchDirs()
+IN_DESIGNER = os.getenv('DESIGNER', False)
+if not IN_DESIGNER:
+    SUBROUTINE_SEARCH_DIRS = INFO.getSubroutineSearchDirs()
+else:
+    SUBROUTINE_SEARCH_DIRS = []
 
 class SubCallButton(VCPButton):
     """Button for calling ngc subroutines.
@@ -50,10 +54,15 @@ class SubCallButton(VCPButton):
 
         self._filename = filename
 
-        issue_mdi.bindOk(widget=self)
+        if not IN_DESIGNER:
+            issue_mdi.bindOk(widget=self)
+        
         self.clicked.connect(self.callSub)
 
     def callSub(self):
+        if IN_DESIGNER:
+            return
+        
         window = QApplication.instance().activeWindow()
 
         subfile = None

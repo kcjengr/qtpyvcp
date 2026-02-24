@@ -63,12 +63,16 @@ class ItemDelegate(QStyledItemDelegate):
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
 
-            min_range = getSetting('offset_table.min_range').value
-            max_range = getSetting('offset_table.max_range').value
+            try:
+                min_range = getSetting('offset_table.min_range').value
+                max_range = getSetting('offset_table.max_range').value
 
-            if min_range and max_range:
-                editor.setRange(min_range, max_range)
-            else:
+                if min_range and max_range:
+                    editor.setRange(min_range, max_range)
+                else:
+                    editor.setRange(-1000, 1000)
+            except:
+                # In designer mode or when settings aren't available
                 editor.setRange(-1000, 1000)
             return editor
 
@@ -85,6 +89,16 @@ class OffsetModel(QStandardItemModel):
         self.current_row_bg = None  # Add this line
 
         if IN_DESIGNER:
+            # In designer mode, set up dummy data to show the table structure
+            self._columns = [c for c in 'XYZABC']  # Default columns for designer
+            self._rows = list(range(1, 11))  # 10 rows for designer preview
+            self.setColumnCount(len(self._columns))
+            self.setRowCount(len(self._rows))
+            # Set headers
+            for i, col in enumerate(self._columns):
+                self.setHeaderData(i, Qt.Horizontal, col, Qt.DisplayRole)
+            for i, row in enumerate(self._rows):
+                self.setHeaderData(i, Qt.Vertical, f"G5{i+1}", Qt.DisplayRole)
             return 
         
         self._columns = self.ot.columns

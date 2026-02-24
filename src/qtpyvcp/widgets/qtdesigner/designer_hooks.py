@@ -9,6 +9,10 @@
 #   PyDM Project: https://github.com/slaclab/pydm
 #   PyDM Licence: https://github.com/slaclab/pydm/blob/master/LICENSE.md
 
+from PySide6.QtCore import QTimer
+
+from PySide6.QtWidgets import QWidget
+
 from . import stylesheet
 
 class DesignerHooks(object):
@@ -18,6 +22,7 @@ class DesignerHooks(object):
     __instance = None
 
     def __init__(self):
+        print("DEBUG: DesignerHooks.__init__ called")
         if self.__initialized:
             return
         self.__form_editor = None
@@ -41,6 +46,7 @@ class DesignerHooks(object):
         if not editor:
             return
 
+        print(f"DEBUG: Setting form_editor: {editor}")
         self.__form_editor = editor
         self.setup_hooks()
 
@@ -48,14 +54,45 @@ class DesignerHooks(object):
         self.__set_stylesheet_hook()
 
     def __set_stylesheet_hook(self):
+        print(f"DEBUG: Setting stylesheet hook, form_editor: {self.form_editor}")
         if self.form_editor:
             fwman = self.form_editor.formWindowManager()
+            print(f"DEBUG: Form window manager: {fwman}")
             if fwman:
-                fwman.formWindowAdded.connect(
-                    self.__new_form_added
-                )
+                print("DEBUG: Connecting formWindowAdded signal")
+                fwman.formWindowAdded.connect(self.__new_form_added)
 
     def __new_form_added(self, form_window_interface):
-        style_data = stylesheet._get_style_data(None)
-        widget = form_window_interface.formContainer()
-        widget.setStyleSheet(style_data)
+        # Apply stylesheet to the main container after a delay to ensure all widgets are loaded
+        print("DEBUG: New form added, scheduling stylesheet application to main container")
+        QTimer.singleShot(1000, lambda: self.__apply_stylesheet_to_main_container(form_window_interface))
+        # Apply again after 2 seconds to catch any late-created widgets
+        QTimer.singleShot(2000, lambda: self.__apply_stylesheet_to_main_container(form_window_interface))
+
+    def __apply_stylesheet_to_main_container(self, form_window_interface):
+        print("DEBUG: Applying stylesheet to main container")
+        import os
+        qss_env = os.getenv('QSS_STYLESHEET')
+        print(f"DEBUG: QSS_STYLESHEET env var: {qss_env}")
+        main_container = form_window_interface.mainContainer()
+        print(f"DEBUG: Main container: {main_container}, type: {type(main_container)}")
+        if main_container:
+            print(f"DEBUG: Main container children: {len(main_container.children())}")
+            # Debug: Print some widget info
+            for i, child in enumerate(main_container.children()[:10]):  # First 10 children
+                print(f"DEBUG: Child {i}: {child}, class: {child.__class__.__name__}")
+                if hasattr(child, 'actionName'):
+                    print(f"DEBUG: Child {i} has actionName: {child.actionName}")
+                if hasattr(child, 'property'):
+                    try:
+                        action_name = child.property('actionName')
+                        if action_name:
+                            print(f"DEBUG: Child {i} actionName property: {action_name}")
+                    except:
+                        pass
+            stylesheet.apply_stylesheet(widget=main_container)
+            print("DEBUG: Stylesheet applied to main container")
+
+    def __apply_stylesheet_to_app(self):
+        print("DEBUG: __apply_stylesheet_to_app called")
+        stylesheet.apply_stylesheet()

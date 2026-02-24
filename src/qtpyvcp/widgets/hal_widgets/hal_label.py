@@ -4,7 +4,7 @@ from PySide6.QtCore import Property, QEnum
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
 
-#from qtpyvcp.widgets.hal_widgets import HalType
+from qtpyvcp.widgets.hal_widgets import HalType
 
 # Setup logging
 from qtpyvcp.utilities.logger import getLogger
@@ -30,7 +30,13 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
         qtpyvcp.label.in          selecatable in
         ========================= =========== =========
     """
-    #QEnum(HalType)
+    QEnum(HalType)
+
+    # Add enum values as class attributes for Qt Designer compatibility
+    bit = HalType.bit
+    u32 = HalType.u32
+    s32 = HalType.s32
+    float = HalType.float
 
     TYPE_MAP = ('bit', 'u32', 's32', 'float')
 
