@@ -31,20 +31,15 @@ class VCPMainWindow(QMainWindow):
                  maximize=False, fullscreen=False, position=None, size=None,
                  confirm_exit=True, title=None, menu='default'):
 
-        print(f"DEBUG: VCPMainWindow.__init__ called, IN_DESIGNER={IN_DESIGNER}")
-
         super(VCPMainWindow, self).__init__(parent)
 
         if IN_DESIGNER:
             # In designer mode, do minimal initialization needed for proper display
             if title is not None:
                 self.setWindowTitle(title)
-            if stylesheet is not None:
-                self.loadStylesheet(stylesheet)
-            # Also check for QSS_STYLESHEET environment variable (set by editvcp)
-            qss_env = os.getenv('QSS_STYLESHEET')
-            if qss_env is not None:
-                self.loadStylesheet(qss_env)
+            # DON'T apply stylesheet to self in Designer mode - it would be saved to .ui file
+            # The designer_hooks will apply it at QApplication level for preview
+            # The QSS_STYLESHEET env var (set by editvcp) is handled by designer_hooks
             return
 
         if opts is None:
@@ -139,72 +134,70 @@ class VCPMainWindow(QMainWindow):
         Args:
             ui_file (str) : Path to a .ui file to load.
         """
-        # Check for compiled *_ui.py files and load from that if exists
-        import os
-        ui_py_file = ui_file.replace('.ui', '_ui.py')
-        if os.path.exists(ui_py_file):
-            LOG.debug(f"Loading compiled UI file: {ui_py_file}")
-            import importlib.util
-            spec = importlib.util.spec_from_file_location("ui_module", ui_py_file)
-            ui_module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(ui_module)
-            form_class = ui_module.Ui_Form
-            self.ui = form_class()
-            self.ui.setupUi(self)
-            
-            # PySide6 doesn't set widget attributes like PyQt5 does, so we need to do it manually
+        def _apply_widget_attributes():
             from PySide6.QtWidgets import QWidget
             for widget in self.findChildren(QWidget):
                 if hasattr(widget, 'objectName') and widget.objectName():
                     name = widget.objectName()
-                    if not hasattr(self, name):  # Don't overwrite existing attributes
+                    if not hasattr(self, name):
                         setattr(self, name, widget)
-        else:
-            LOG.debug(f"Loading UI with QUiLoader: {ui_file}")
-            from PySide6.QtUiTools import QUiLoader
-            from PySide6.QtCore import QFile
-            
-            # Import all QtPyVCP widgets to ensure they're available
-            from qtpyvcp.widgets import register_widgets  # noqa: F401
-            
-            ui_file_obj = QFile(ui_file)
-            ui_file_obj.open(QFile.ReadOnly)
-            loader = QUiLoader()
-            
-            # Register essential QtPyVCP custom widgets
-            try:
-                from qtpyvcp.widgets.button_widgets.action_button import ActionButton
-                loader.registerCustomWidget(ActionButton)
-            except ImportError:
-                pass
-            try:
-                from qtpyvcp.widgets.display_widgets.status_label import StatusLabel
-                loader.registerCustomWidget(StatusLabel)
-            except ImportError:
-                pass
-            try:
-                from qtpyvcp.widgets.hal_widgets.hal_label import HalLabel
-                loader.registerCustomWidget(HalLabel)
-            except ImportError:
-                pass
-            try:
-                from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
-                loader.registerCustomWidget(FileSystemTable)
-            except ImportError:
-                pass
-            try:
-                from qtpyvcp.widgets.input_widgets.gcode_text_edit import GcodeTextEdit
-                loader.registerCustomWidget(GcodeTextEdit)
-            except ImportError:
-                pass
-            try:
-                from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import VTKBackPlot
-                loader.registerCustomWidget(VTKBackPlot)
-            except ImportError:
-                pass
-            
-            self.ui = loader.load(ui_file_obj, self)
-        
+
+        # Prefer qtpy.uic.loadUi to match PyQt5 behavior and load live .ui edits
+        try:
+            from qtpy import uic
+            LOG.debug(f"Loading UI with qtpy.uic.loadUi: {ui_file}")
+            self.ui = uic.loadUi(ui_file, self)
+            _apply_widget_attributes()
+            self.loadSplashGcode()
+            return
+        except Exception:
+            LOG.exception("qtpy.uic.loadUi failed, falling back to QUiLoader")
+
+        LOG.debug(f"Loading UI with QUiLoader: {ui_file}")
+        from PySide6.QtUiTools import QUiLoader
+        from PySide6.QtCore import QFile
+
+        # Import all QtPyVCP widgets to ensure they're available
+        from qtpyvcp.widgets import register_widgets  # noqa: F401
+
+        ui_file_obj = QFile(ui_file)
+        ui_file_obj.open(QFile.ReadOnly)
+        loader = QUiLoader()
+
+        # Register essential QtPyVCP custom widgets
+        try:
+            from qtpyvcp.widgets.button_widgets.action_button import ActionButton
+            loader.registerCustomWidget(ActionButton)
+        except ImportError:
+            pass
+        try:
+            from qtpyvcp.widgets.display_widgets.status_label import StatusLabel
+            loader.registerCustomWidget(StatusLabel)
+        except ImportError:
+            pass
+        try:
+            from qtpyvcp.widgets.hal_widgets.hal_label import HalLabel
+            loader.registerCustomWidget(HalLabel)
+        except ImportError:
+            pass
+        try:
+            from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
+            loader.registerCustomWidget(FileSystemTable)
+        except ImportError:
+            pass
+        try:
+            from qtpyvcp.widgets.input_widgets.gcode_text_edit import GcodeTextEdit
+            loader.registerCustomWidget(GcodeTextEdit)
+        except ImportError:
+            pass
+        try:
+            from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import VTKBackPlot
+            loader.registerCustomWidget(VTKBackPlot)
+        except ImportError:
+            pass
+
+        self.ui = loader.load(ui_file_obj, self)
+        _apply_widget_attributes()
         self.loadSplashGcode()
 
     def loadStylesheet(self, stylesheet):
@@ -214,9 +207,18 @@ class VCPMainWindow(QMainWindow):
         Args:
             stylesheet (str) : Path to a .qss stylesheet
         """
-        print(f"DEBUG: VCPMainWindow.loadStylesheet called with: {stylesheet}")
         LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
-        self.setStyleSheet("file:///" + stylesheet)
+        
+        # Read the actual file contents instead of using file:/// reference
+        # This is required for Qt Designer preview to work
+        try:
+            with open(stylesheet, 'r', encoding='utf-8') as f:
+                qss_content = f.read()
+            self.setStyleSheet(qss_content)
+        except Exception as e:
+            LOG.error(f"Failed to load stylesheet {stylesheet}: {e}")
+            # Fallback to file:/// method (works at runtime but not in Designer)
+            self.setStyleSheet("file:///" + stylesheet)
 
     def stopAllJogAxes(self):
         # Stop all axes (X, Y, Z, and optionally A, B, C)

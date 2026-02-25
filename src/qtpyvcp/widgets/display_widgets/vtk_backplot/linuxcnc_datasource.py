@@ -24,7 +24,8 @@ class LinuxCncDataSource(QObject):
     rotationXYChanged = Signal(float)
     g92OffsetChanged = Signal(tuple)
     g5xIndexChanged = Signal(int)
-    offsetTableChanged = Signal(dict)
+    # Use a generic object signal so PySide6 can marshal the Python dict reliably.
+    offsetTableChanged = Signal(object)
     activeOffsetChanged = Signal(int)
     toolTableChanged = Signal(tuple)
     toolOffsetChanged = Signal(tuple)
@@ -103,10 +104,15 @@ class LinuxCncDataSource(QObject):
 
     def __handleOffsetTableChanged(self, offset_table):
         #LOG.debug("__handleOffsetTableChanged: {}".format(type(offset_table)))
-        if len(offset_table) == 0:
-            # this must be an error condition as offset table should always have something in it.
-            # Therefore we force a reread before propogating
-            self.getWcsOffsets()
+        if not offset_table:
+            # Offset table should not be empty; force a reread and propagate the fresh table.
+            offset_table = self.getWcsOffsets()
+            if not offset_table:
+                return
+
+        # Ensure a plain dict for PySide6 signal marshalling.
+        if isinstance(offset_table, dict):
+            offset_table = dict(offset_table)
         
         self.offsetTableChanged.emit(offset_table)
         

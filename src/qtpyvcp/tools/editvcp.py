@@ -189,6 +189,18 @@ def launch_designer(opts=DotDict()) -> None:
         cmd.append(fname)
 
         LOG.info(f"Loading UI file: {fname}")
+        
+        # Handle --qss-file option for standalone UI files
+        if opts.qss_file:
+            qss_file = opts.qss_file
+            if not os.path.isabs(qss_file):
+                # Make relative paths relative to UI file location
+                ui_dir = os.path.realpath(os.path.dirname(fname))
+                qss_file = os.path.join(ui_dir, qss_file)
+            os.environ['QSS_STYLESHEET'] = qss_file
+            LOG.info(f"Loading QSS file: {qss_file}")
+        else:
+            LOG.info("No QSS file specified.")
 
     else:
         LOG.error("""No valid file type selected.\n

@@ -340,7 +340,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             return
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
-        self.wcs_offsets = self._datasource.getWcsOffsets()
+        self._set_wcs_offsets(self._datasource.getWcsOffsets())
         self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
         self.g92_offset = self._datasource.getG92_offset()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
@@ -809,7 +809,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Refresh WCS offsets and active index in case they changed since init.
         # This makes sure newly loaded paths honor the current work offset.
-        self.wcs_offsets = self._datasource.getWcsOffsets()
+        self._set_wcs_offsets(self._datasource.getWcsOffsets())
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
 
         if not self._offsets_ready():
@@ -1096,13 +1096,34 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.joints = joints
         
     def on_offset_table_changed(self, offset_table):
-        if not offset_table:
-            LOG.warning("VTKBackPlot: received empty offset table; keeping existing offsets")
+        if offset_table is None:
+            LOG.warning("VTKBackPlot: received None offset table; keeping existing offsets")
             return
 
-        self.wcs_offsets = offset_table
+        # Accept whatever came in (including empty), matching PyQt5 flow.
+        self._set_wcs_offsets(offset_table)
 
         self.rotate_and_translate()
+
+    def _offsets_ready(self):
+        """Return True when we have any WCS offsets; mirrors old guard to avoid G53 placement."""
+
+        if self.wcs_offsets:
+            return True
+
+        LOG.warning("VTKBackPlot: offsets not ready; skipping draw to avoid G53 placement")
+        return False
+
+    def _set_wcs_offsets(self, offsets):
+        """Normalize incoming WCS offsets so lookups work regardless of key type."""
+
+        if isinstance(offsets, dict):
+            try:
+                self.wcs_offsets = {int(k): v for k, v in offsets.items()}
+            except Exception:
+                self.wcs_offsets = dict(offsets)
+        else:
+            self.wcs_offsets = offsets
 
     def _safe_get_offsets(self, wcs_index, offset_columns=None):
         """Return offsets for a WCS index, defaulting to zeros when missing."""
@@ -1128,20 +1149,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         return offsets
 
-    def _offsets_ready(self):
-        """Check if wcs_offsets contains usable data (non-empty entries)."""
-
-        if not self.wcs_offsets:
-            return False
-
-        if isinstance(self.wcs_offsets, dict):
-            return any(self.wcs_offsets.values()) and all(len(v) > 0 for v in self.wcs_offsets.values())
-
-        if isinstance(self.wcs_offsets, (list, tuple)):
-            return len(self.wcs_offsets) > 0 and all(len(v) > 0 for v in self.wcs_offsets)
-
-        return False
-        
     def update_rotation_xy(self, rot):
         self.active_rotation = rot
         self.rotation_xy_table[self.active_wcs_index] = rot
@@ -1150,7 +1157,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
     def update_g5x_offset(self, offset):
         self.active_wcs_offset = offset
-        
+
         self.rotate_and_translate()
         
         # Future optimization: add rapid-only recalculation path.
@@ -1226,9 +1233,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_wcs_index = index
         if len(self.path_actors) > 0:
             self.rotate_and_translate()
+        # Refresh offsets in case the table changed with the new active WCS.
+        self._set_wcs_offsets(self._datasource.getWcsOffsets())
     
     def update_active_wcs(self, wcs_index):
         self.active_wcs_index = wcs_index
+        # Keep offsets fresh when the active WCS changes.
+        self._set_wcs_offsets(self._datasource.getWcsOffsets())
         
         # Update the visual scale of axes to highlight the active WCS
         # This is done by calling rotate_and_translate which will rebuild

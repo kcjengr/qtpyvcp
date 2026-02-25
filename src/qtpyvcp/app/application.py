@@ -179,7 +179,15 @@ class VCPApplication(QApplication):
 
         def load(path):
             LOG.info("Loading global stylesheet: yellow<{}>".format(stylesheet))
-            self.setStyleSheet("file:///" + path)
+            # Read the actual file contents instead of using file:/// reference
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    qss_content = f.read()
+                self.setStyleSheet(qss_content)
+            except Exception as e:
+                LOG.error(f"Failed to load stylesheet {path}: {e}")
+                # Fallback to file:/// method (works at runtime but not in Designer)
+                self.setStyleSheet("file:///" + path)
 
             if watch:
                 from PySide6.QtCore import QFileSystemWatcher
