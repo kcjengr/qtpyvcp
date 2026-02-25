@@ -429,17 +429,17 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     @textFormat.setter
     def textFormat(self, text_fmt):
-        # textFormat is ignored when using display decimals formatting
-        if not hasattr(self, '_display_decimals'):
-            # Only use textFormat for legacy compatibility if displayDecimals not set
-            if self._setting_name != "":
-                setting = SETTINGS.get(self._setting_name)
-                if setting:
-                    # Fail fast: format string must be valid
-                    formatted_str = text_fmt.format(setting.getValue())  # Let this raise if invalid
-                else:
-                    return
+        # Always save the format first
         self._text_format = text_fmt
+        
+        # Validate the format if setting is already available
+        if self._setting_name != "":
+            setting = SETTINGS.get(self._setting_name)
+            if setting:
+                try:
+                    test_str = text_fmt.format(setting.getValue())
+                except Exception as e:
+                    LOG.warning(f"Invalid textFormat '{text_fmt}' for setting '{self._setting_name}': {e}")
 
 
 class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):

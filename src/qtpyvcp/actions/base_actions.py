@@ -27,6 +27,8 @@ def setTaskMode(new_mode):
         return False
     else:
         CMD.mode(new_mode)
+        CMD.wait_complete()  # Wait for mode change to complete, like AXIS does
+        STAT.poll()  # Update status after mode change
         return True
 
 def isRunning():

@@ -115,7 +115,7 @@ class SubCallButton(VCPButton):
 
         arg_str = ' '.join(args)
         sub_name = os.path.splitext(self._filename)[0]
-        cmd_str = "o<{}> call {}".format(sub_name, arg_str)
+        cmd_str = "O<{}> call {}".format(sub_name, arg_str)
 
         LOG.debug('Calling sub file: yellow<%s> with args blue<%s>', subfile, arg_str)
         issue_mdi(cmd_str)
