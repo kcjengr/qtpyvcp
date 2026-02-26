@@ -16,59 +16,47 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-import yaml
 import math
-
-import linuxcnc
 import os
+import time
 from collections import OrderedDict
 
-import time
-
+import linuxcnc
 import vtk
-
-from vtkmodules.vtkCommonCore import (
-    VTK_VERSION_NUMBER,
-    vtkVersion
-)
-from PySide6.QtCore import Qt, Property, Slot, QObject, QEvent, QTimer
-from PySide6.QtWidgets import QApplication, QWidget
+import yaml
+from PySide6.QtCore import QObject, Property, QEvent, Qt, QTimer, Slot
 from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QApplication, QWidget
+from vtkmodules.vtkCommonCore import VTK_VERSION_NUMBER, vtkVersion
 
-IN_DESIGNER = os.getenv('DESIGNER', False)
+IN_DESIGNER = os.getenv("DESIGNER", False)
 
-# https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
-
+# Qt6-friendly VTK widget setup: use QWidget base for the interactor
 if not IN_DESIGNER:
-    from vtkmodules.qt import QVTKRWIBase
-    QVTKRWIBase = "QGLWidget"  # Fix poligons not drawing correctly on some GPU
+    import vtkmodules.qt as vtk_qt
+
+    vtk_qt.QVTKRWIBase = "QWidget"
     from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+    from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
 else:
     QVTKRenderWindowInteractor = QWidget
 
-# Fix end
-
-# Conditionally import VTK utilities only when VTK is available
-if not IN_DESIGNER:
-    from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
-
 from qtpyvcp import actions
-from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.settings import connectSetting, getSetting
+from qtpyvcp.widgets import VCPWidget
 
-
-from .base_backplot import BaseBackPlot
 from .axes_actor import AxesActor
-from .tool_actor import ToolActor, ToolBitActor
-from .points_surface import PointsSurfaceActor
-from .table_actor import TableActor
-from .spindle_actor import SpindleActor
+from .base_backplot import BaseBackPlot
+from .linuxcnc_datasource import LinuxCncDataSource
 from .machine_actor import MachineCubeActor, MachineLineActor, MachinePartsASM
 from .path_cache_actor import PathCacheActor
+from .points_surface import PointsSurfaceActor
 from .program_bounds_actor import ProgramBoundsActor
-from .vtk_canon import VTKCanon, COLOR_MAP
-from .linuxcnc_datasource import LinuxCncDataSource
+from .spindle_actor import SpindleActor
+from .table_actor import TableActor
+from .tool_actor import ToolActor, ToolBitActor
+from .vtk_canon import COLOR_MAP, VTKCanon
 
 LOG = logger.getLogger(__name__)
 
@@ -109,7 +97,7 @@ def vtk_version_ok(major, minor):
 
 class InteractorEventFilter(QObject):
     def __init__(self, parent=None, jog_safety_off=True):
-        super(InteractorEventFilter, self).__init__(parent)
+        super().__init__(parent)
         self._keyboard_jog_ctrl_off = jog_safety_off
         self.slow_jog = False
         self.rapid_jog = True

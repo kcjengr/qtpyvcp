@@ -44,6 +44,20 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
         self.returnPressed.connect(self.onReturnPressed)
 
+    def value(self):
+        """Return the current value normalized to the setting type."""
+        if self._setting is not None:
+            return self._setting.normalizeValue(self.text())
+
+        # Fallback when setting not yet bound (e.g., before initialize)
+        try:
+            return int(self.text())
+        except ValueError:
+            try:
+                return float(self.text())
+            except ValueError:
+                return self.text()
+
     def formatValue(self, value):
         if self._setting.value_type in (int, float):
             return self._text_format.format(value)
@@ -378,10 +392,17 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
 
             value = self._setting.getValue()
 
+            # Backward compatibility: accept stored text and map to index
+            if isinstance(value, str):
+                idx = self.findText(value)
+                if idx != -1:
+                    value = idx
+
             options = self._setting.enum_options
-            if isinstance(options, list):
+            # Only inject options if the UI has not already provided them
+            if self.count() == 0 and isinstance(options, list):
                 for option in options:
-                    self.addItem(option)
+                    self.addItem(str(option))
 
             self.setDisplayIndex(value)
             self.currentIndexChanged.emit(value)

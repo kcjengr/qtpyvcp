@@ -141,7 +141,7 @@ class ToolModel(QStandardItemModel):
     def updateModel(self, tool_table):
         # update model with new data
         if not tool_table or len(tool_table) <= 1:
-            LOG.warning("ToolModel update skipped: empty tool table event")
+            LOG.debug("ToolModel update skipped: empty tool table event")
             return
         self.beginResetModel()
         self._tool_table = tool_table
@@ -309,7 +309,7 @@ class ToolTable(QTableView):
     def _onToolTableChanged(self, table):
         # force proxy to refresh after model reset; also re-apply sort
         if not table or len(table) <= 1:
-            LOG.warning("ToolTable view refresh skipped: empty tool table event")
+            LOG.debug("ToolTable view refresh skipped: empty tool table event")
             return
         self.proxy_model.invalidate()
         self.sortByColumn(0, Qt.AscendingOrder)

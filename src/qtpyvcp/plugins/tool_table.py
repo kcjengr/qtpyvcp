@@ -122,7 +122,7 @@ class ToolTable(DataPlugin):
     DEFAULT_TOOL = DEFAULT_TOOL
     COLUMN_LABELS = COLUMN_LABELS
 
-    tool_table_changed = Signal(dict)
+    tool_table_changed = Signal(object)
 
     def __init__(self, columns='TPXYZABCUVWDIJQR', file_header_template=None,
                  remember_tool_in_spindle=True):

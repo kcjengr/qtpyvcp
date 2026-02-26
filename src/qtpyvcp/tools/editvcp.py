@@ -89,9 +89,13 @@ if lcnc_version.startswith('2.7'):
     sys.exit(1)
 
 
+import re
+_ANSI_ESCAPE = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+
 def log_subprocess_output(stdout):
     for line in TextIOWrapper(stdout, encoding="utf-8"):
-        DESIGNER_LOG.info(line.rstrip('\n'))
+        clean = _ANSI_ESCAPE.sub('', line.rstrip('\n'))
+        DESIGNER_LOG.info(clean)
 
 
 def launch_designer(opts=DotDict()) -> None:

@@ -102,7 +102,7 @@ class OffsetTable(DataPlugin):
         'G59.3'
     ]
 
-    offset_table_changed = Signal(dict)
+    offset_table_changed = Signal(object)
     active_offset_changed = Signal(int)
 
     def __init__(self, columns='XYZABCUVWR', file_header_template=None):

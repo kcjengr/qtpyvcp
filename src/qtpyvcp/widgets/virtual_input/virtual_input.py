@@ -6,7 +6,20 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import Slot, Qt, QEvent, QPoint, QFile
 from PySide6.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
 from PySide6.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox, QApplication
-from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
+
+# Map .ui filenames to their pre-compiled Ui_Form classes (which use __file__-relative
+# image paths and don't require re-running pyside6-uic at runtime).
+_UI_CLASS_MAP = {}
+try:
+    from qtpyvcp.widgets.virtual_input.keyboard_ui import Ui_Form as _KeyboardUi
+    _UI_CLASS_MAP['keyboard.ui'] = _KeyboardUi
+except ImportError:
+    pass
+try:
+    from qtpyvcp.widgets.virtual_input.numpad_ui import Ui_Form as _NumpadUi
+    _UI_CLASS_MAP['numpad.ui'] = _NumpadUi
+except ImportError:
+    pass
 
 
 class VirtualInput(QWidget):
@@ -27,15 +40,17 @@ class VirtualInput(QWidget):
         self.caps_on = False
         self.focus_object = None
         self.setWindowFlags(Qt.WindowType.Tool | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.BypassWindowManagerHint)
-   
-        file_path = os.path.join(os.path.dirname(__file__), ui_file)
-        #ui_file = QFile(file_path)
-        #ui_file.open(QFile.ReadOnly)
-        
-        #loader = QUiLoader()
-        #self.ui = loader.load(ui_file, self)
-        #self.ui.show()
-        form_class, base_class = PySide6Ui(file_path).load()
+
+        ui_basename = os.path.basename(ui_file)
+        if ui_basename in _UI_CLASS_MAP:
+            # Use the pre-compiled _ui.py so image paths resolve against the
+            # package directory, not the (unknown) CWD at runtime.
+            form_class = _UI_CLASS_MAP[ui_basename]
+        else:
+            from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
+            file_path = os.path.join(os.path.dirname(__file__), ui_file)
+            form_class, _ = PySide6Ui(file_path).load()
+
         self.ui = form_class()
         self.ui.setupUi(self)
 

@@ -1,3 +1,4 @@
+from PySide6.QtCore import Slot
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # Setup logging
@@ -10,6 +11,7 @@ class MyMainWindow(VCPMainWindow):
         super(MyMainWindow, self).__init__(*args, **kwargs)
 
     # add any custom methods here
+    @Slot()
     def on_exitBtn_clicked(self):
         self.app.quit()
 

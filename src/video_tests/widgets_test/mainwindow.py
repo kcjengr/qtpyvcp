@@ -1,3 +1,4 @@
+from PySide6.QtCore import Slot
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 from PySide6.QtWidgets import QWidget
 
@@ -86,6 +87,7 @@ class MyMainWindow(VCPMainWindow):
             LOG.exception(f"Error replacing VTK placeholder: {e}")
 
     # add any custom methods here
+    @Slot()
     def on_exitBtn_clicked(self):
         self.app.quit()
 

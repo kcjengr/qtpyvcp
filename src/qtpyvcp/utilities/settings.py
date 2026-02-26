@@ -71,6 +71,12 @@ class Setting(QObject):
     def setValue(self, value):
         """Setting value set method."""
         if self.fset is None:
+            # If enum_options exist and a string value matches an option, map to index
+            if self.enum_options and isinstance(value, str):
+                idx = self.enum_options.index(value) if value in self.enum_options else None
+                if idx is not None:
+                    value = idx
+
             value = self.value_type(value)
             if self.value_type in (int, float):
                 self.value = self.clampValue(value)

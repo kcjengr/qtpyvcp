@@ -5,11 +5,30 @@ devices. It will be expanded to support network locations in the future.
 """
 
 import os
+import threading
 
 import psutil
 
-from pyudev import MonitorObserver
 from pyudev import Context, Monitor
+
+
+class _DeviceMonitorThread(threading.Thread):
+    """Daemon thread that polls a pyudev Monitor and dispatches device events.
+
+    Replaces the deprecated MonitorObserver(event_handler=...) API removed in
+    pyudev 1.0.  Monitor.poll() returns a Device; the action is device.action.
+    """
+    def __init__(self, monitor, callback):
+        super().__init__(name='monitor-observer', daemon=True)
+        self.monitor = monitor
+        self.callback = callback
+
+    def run(self):
+        for device in iter(self.monitor.poll, None):
+            try:
+                self.callback(device.action, device)
+            except Exception:
+                pass
 
 from qtpyvcp.widgets.dialogs import askQuestion
 from qtpyvcp.utilities.logger import getLogger
@@ -126,10 +145,10 @@ class FileLocations(DataPlugin):
             if 'ID_FS_TYPE' in device and device.get('ID_FS_UUID') == '123-UUIDEXAMPLE':
                 print('{0}, {1}'.format(device.action, device.get('ID_FS_UUID')))
         
-        print('Starting Disk Monitor...')       
-        
-        self.observer = MonitorObserver(self.monitor, self._onDeviceEvent, name='monitor-observer')
+        LOG.debug('Starting Disk Monitor...')
 
+        self.monitor.start()
+        self.observer = _DeviceMonitorThread(self.monitor, self._onDeviceEvent)
         self.observer.start()
 
         self.updateRemovableDevices()

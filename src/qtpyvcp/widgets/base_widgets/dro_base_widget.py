@@ -81,9 +81,6 @@ class DROBaseWidget(VCPWidget):
         self._fmt = self._in_fmt
         self._input_type = 'number:float'
 
-        # diagnostics
-        self._logged_first_update = False
-
         if IN_DESIGNER:
             return
         
@@ -144,14 +141,14 @@ class DROBaseWidget(VCPWidget):
         self.updateValue()
 
     def initialize(self):
-        LOG.info(
-            "DRO initialize axis=%s ref=%s use_global_fmt=%s",
-            getattr(self._anum, 'name', self._anum),
-            getattr(self._ref_typ, 'name', self._ref_typ),
-            self._use_global_fmt_settings,
-        )
         getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
         self.updateValue()
+        LOG.info(
+            "DRO initialized axis=%s ref=%s value=%s",
+            getattr(self._anum, 'name', self._anum),
+            getattr(self._ref_typ, 'name', self._ref_typ),
+            getattr(self.pos, self._ref_typ.name).getValue()[self._anum],
+        )
 
         if self._is_lathe:
             self.status.gcodes.notify(self.updateDiameterMode)
@@ -193,14 +190,7 @@ class DROBaseWidget(VCPWidget):
         else:
             self.setText(self._fmt % pos[self._anum])
 
-        if not self._logged_first_update:
-            LOG.info(
-                "DRO first update axis=%s ref=%s value=%s",
-                getattr(self._anum, 'name', self._anum),
-                getattr(self._ref_typ, 'name', self._ref_typ),
-                pos[self._anum],
-            )
-            self._logged_first_update = True
+
 
     @Property(int)
     def referenceType(self):

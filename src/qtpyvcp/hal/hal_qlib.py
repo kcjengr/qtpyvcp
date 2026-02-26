@@ -134,6 +134,7 @@ class QComponent(QObject):
         }
 
         self._comp = _hal.component(comp_name)
+        self._closed = False
 
         self._pins = {}
         self._params = {}
@@ -187,11 +188,27 @@ class QComponent(QObject):
         self._comp.ready()
 
     def exit(self, *a, **kw):
+        if self._closed or self._comp is None:
+            return None
+
         print(("Unloading '%s' HAL component ..." % self.name))
-        return self._comp.exit(*a, **kw)
+
+        try:
+            return self._comp.exit(*a, **kw)
+        except RuntimeError as err:
+            if "closed HAL component" in str(err):
+                LOG.debug("HAL component '%s' already closed", self.name)
+                return None
+            raise
+        finally:
+            self._closed = True
+            self._comp = None
 
     def signal_handler(self, signal, frame):
-        self.exit()
+        try:
+            self.exit()
+        except Exception:
+            LOG.debug("Ignoring HAL exit error during signal handling", exc_info=True)
 
     def __getitem__(self, item):
         return self._pins[item]

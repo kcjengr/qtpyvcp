@@ -122,7 +122,7 @@ class OffsetModel(QStandardItemModel):
     def updateModel(self, offset_table):
         # update model with new data
         if len(offset_table) == 0:
-            LOG.warn("Offset Table update is zero length - skip it")
+            LOG.debug("Offset Table update is zero length - skip it")
             return
         
         self.beginResetModel()

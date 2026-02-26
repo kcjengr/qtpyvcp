@@ -1,11 +1,13 @@
 import os
 import sys
 import time
+import warnings
+import subprocess
 import importlib
 
 from importlib.metadata import entry_points
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QtMsgType, qInstallMessageHandler
 from PySide6.QtWidgets import QApplication
 
 import qtpyvcp
@@ -18,6 +20,39 @@ from qtpyvcp.utilities.info import Info
 
 LOG = getLogger(__name__)
 INFO = Info()
+
+# Route Qt-native messages (qWarning, connectSlotsByName, etc.) into Python logger
+_QT_MSG_MAP = {
+    QtMsgType.QtDebugMsg:    LOG.debug,
+    QtMsgType.QtInfoMsg:     LOG.info,
+    QtMsgType.QtWarningMsg:  LOG.warning,
+    QtMsgType.QtCriticalMsg: LOG.error,
+    QtMsgType.QtFatalMsg:    LOG.critical,
+}
+
+def _qt_message_handler(msg_type, context, message):
+    log_fn = _QT_MSG_MAP.get(msg_type, LOG.warning)
+    location = ""
+    if context.file:
+        location = " [%s:%s]" % (context.file, context.line)
+    log_fn("Qt: %s%s", message, location)
+
+qInstallMessageHandler(_qt_message_handler)
+
+# Route Python warnings module into the logger
+def _warnings_to_log(message, category, filename, lineno, file=None, line=None):
+    LOG.warning("PyWarning %s: %s (%s:%s)", category.__name__, message, filename, lineno)
+
+warnings.showwarning = _warnings_to_log
+warnings.simplefilter("always")  # don't suppress repeated warnings
+
+# CPython/PySide6 can report benign uncollectable Property objects at interpreter
+# shutdown; suppress this known-noise warning in normal logs.
+warnings.filterwarnings(
+    "ignore",
+    message=r"gc: .*uncollectable objects at shutdown",
+    category=ResourceWarning,
+)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
 # Catch unhandled exceptions and display in dialog
@@ -99,10 +134,13 @@ def launch_application(opts, config):
 
         LOG.info('Loading POSTGUI_HALFILE: %s', postgui_halfile)
 
-        res = os.spawnvp(os.P_WAIT, "halcmd", ["halcmd", "-i", ini_path, "-f", postgui_halfile])
+        result = subprocess.run(
+            ["halcmd", "-i", ini_path, "-f", postgui_halfile],
+            check=False
+        )
 
-        if res:
-            raise SystemExit("Failed to load POSTGUI_HALFILE with error: %s" % res)
+        if result.returncode:
+            raise SystemExit("Failed to load POSTGUI_HALFILE with error: %s" % result.returncode)
 
     # suppress QtQuick warnings
     app.setAttribute(Qt.AA_DontCreateNativeWidgetSiblings)
