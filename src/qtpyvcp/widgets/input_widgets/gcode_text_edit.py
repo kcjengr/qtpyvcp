@@ -117,7 +117,7 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions import program_actions
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.utilities.encode_utils import allEncodings
+from qtpyvcp.utilities.encode_utils import encodingDetector
 
 from qtpyvcp.widgets.dialogs.find_replace_dialog import FindReplaceDialog
 
@@ -1321,16 +1321,15 @@ class GcodeTextEdit(QPlainTextEdit):
     @Slot(object)
     def loadProgramFile(self, fname=None):
         if fname:
-            encodings = allEncodings()
-            enc = None
-            for enc in encodings:
-                try:
-                    with open(fname,  'r', encoding=enc) as f:
-                        gcode = f.read()
-                        break
-                except Exception as e:
-                    # LOG.debug(e)
-                    LOG.info(f"File encoding doesn't match {enc}, trying others")
+            enc = encodingDetector(file=fname)
+            
+            try:
+                with open(fname,  'r', encoding=enc) as f:
+                    gcode = f.read()
+
+            except Exception as e:
+                # LOG.debug(e)
+                LOG.info(f"Error loading {f}")
             LOG.info(f"File encoding: {enc}")
             # set the syntax highlighter
             self.setPlainText(gcode)

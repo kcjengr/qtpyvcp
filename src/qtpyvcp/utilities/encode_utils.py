@@ -1,7 +1,22 @@
-import pkgutil
-import os
-import encodings
+from chardet.universaldetector import UniversalDetector
 
+
+def encodingDetector(file):
+    
+    detector = UniversalDetector()
+    detector.reset()
+    
+    with open(file, 'rb') as f:
+        for line in f:
+            detector.feed(line)
+            if detector.done:
+                break
+            
+    detector.close()
+    
+    enc = detector.result.get("encoding")
+    
+    return enc
 
 def allEncodings():
     enc = ['ascii',
