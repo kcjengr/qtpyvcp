@@ -53,6 +53,7 @@ building complex VCPs.
 
    development/contribution_guide
    development/dev_environment
+   architecture
    tools/index
 
 .. toctree::
