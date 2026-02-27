@@ -1183,7 +1183,7 @@ class HiDefHole:
             # 3. test if metric changes between hole bounds.  If not then no scaling and use bottom value. Else do #4
             # 4. result:  (target_hole_size - bottom_boundry_hole_size) x metric_delta + bottom_boundary_metric             
             if self.hole_list[i-1]['hole'] <= holesize and holesize <= self.hole_list[i]['hole']:
-                if attribute is 'straight_leadin':
+                if attribute == 'straight_leadin':
                     lr = self.hole_list[i][f'{attribute}']
                     LOG.debug(f'HiDefHole get_attribute: holesize={holesize}, attribute={attribute}, lr={lr}')
                     return lr
