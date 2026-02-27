@@ -248,6 +248,7 @@ class GcodeTextEdit(QPlainTextEdit):
         self.block_number = None
         self.focused_line = 1
         self.current_line_background = QColor(self.palette().alternateBase().color())
+        self.current_line_color = QColor(self.palette().text().color())
         self.readonly = False
         self.syntax_highlighting = False
         self.old_docs = []
@@ -1282,6 +1283,16 @@ class GcodeTextEdit(QPlainTextEdit):
         self.setCurrentLine(1)
 
     @Property(QColor)
+    def currentLineColor(self):
+        return self.current_line_color
+
+    @currentLineColor.setter
+    def currentLineColor(self, color):
+        self.current_line_color = color
+        self.setCurrentLine(2)
+        self.setCurrentLine(1)
+
+    @Property(QColor)
     def marginBackground(self):
         return self.margin.background
 
@@ -1353,6 +1364,7 @@ class GcodeTextEdit(QPlainTextEdit):
             self.block_number = block_number
             selection = QTextEdit.ExtraSelection()
             selection.format.setBackground(self.current_line_background)
+            selection.format.setForeground(self.current_line_color)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
             selection.cursor.clearSelection()

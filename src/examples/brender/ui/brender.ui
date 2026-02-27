@@ -1347,7 +1347,7 @@
           <string>coolant.mist.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_2">
+        <widget class="ActionButton" name="actionbutton_resume">
          <property name="geometry">
           <rect>
            <x>200</x>
@@ -2472,7 +2472,7 @@
         <property name="title">
          <string>GroupBox</string>
         </property>
-        <widget class="ActionButton" name="actionbutton_2">
+        <widget class="ActionButton" name="actionbutton_power">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -2501,7 +2501,7 @@
           <string>machine.power.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton">
+        <widget class="ActionButton" name="actionbutton_estop">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -2530,7 +2530,7 @@
           <string>machine.estop.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton">
+        <widget class="ActionButton" name="actionbutton_block_del">
          <property name="geometry">
           <rect>
            <x>100</x>

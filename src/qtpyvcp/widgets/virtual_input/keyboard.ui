@@ -84,7 +84,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>images/backspace-white-24dp.svg</normaloff>images/backspace-white-24dp.svg</iconset>
+           <normaloff>:/images/backspace-white-24dp.svg</normaloff>:/images/backspace-white-24dp.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -414,7 +414,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>images/keyboard_arrow_up-white-24dp.svg</normaloff>images/keyboard_arrow_up-white-24dp.svg</iconset>
+           <normaloff>:/images/keyboard_arrow_up-white-24dp.svg</normaloff>:/images/keyboard_arrow_up-white-24dp.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -443,7 +443,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>images/keyboard_arrow_left-white-24dp.svg</normaloff>images/keyboard_arrow_left-white-24dp.svg</iconset>
+           <normaloff>:/images/keyboard_arrow_left-white-24dp.svg</normaloff>:/images/keyboard_arrow_left-white-24dp.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -469,7 +469,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>images/keyboard_arrow_right-white-24dp.svg</normaloff>images/keyboard_arrow_right-white-24dp.svg</iconset>
+           <normaloff>:/images/keyboard_arrow_right-white-24dp.svg</normaloff>:/images/keyboard_arrow_right-white-24dp.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -495,7 +495,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>images/keyboard_arrow_down-white-24dp.svg</normaloff>images/keyboard_arrow_down-white-24dp.svg</iconset>
+           <normaloff>:/images/keyboard_arrow_down-white-24dp.svg</normaloff>:/images/keyboard_arrow_down-white-24dp.svg</iconset>
          </property>
          <property name="iconSize">
           <size>

@@ -38,7 +38,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>images/backspace-white-24dp.svg</normaloff>images/backspace-white-24dp.svg</iconset>
+         <normaloff>:/images/backspace-white-24dp.svg</normaloff>:/images/backspace-white-24dp.svg</iconset>
        </property>
        <property name="iconSize">
         <size>

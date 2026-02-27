@@ -383,9 +383,6 @@
        <property name="format" stdset="0">
         <string>&lt;b&gt;speed:&lt;/b&gt; {:.1f} rpm</string>
        </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
       </widget>
      </item>
      <item>
