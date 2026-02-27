@@ -157,7 +157,7 @@ class FileSystemTable(QTableView, TableType):
 
         self.verticalHeader().hide()
         self.horizontalHeader().setStretchLastSection(True)
-        self.setAlternatingRowColors(True)
+        self.setAlternatingRowColors(False)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
 
         self.selection_model = self.selectionModel()
