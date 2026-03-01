@@ -61,7 +61,6 @@ class ChanInfoDialog(QtWidgets.QDialog):
 
         loader = QUiLoader()
         self.ui = loader.load(ui_file, self)
-        self.ui.show()
 
         ch_obj, ch_exp, ch_val, ch_doc = info
 

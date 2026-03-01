@@ -217,6 +217,11 @@ class BaseCanon(QObject):
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
         if not self.first_move:
             self.add_path_point('traverse', self.last_pos, pos)
+        else:
+            # Suppress only the first discontinuity move (e.g. after tool
+            # change/tool offset), then resume normal rapid plotting so
+            # subsequent rapids stay visually connected.
+            self.first_move = False
 
         self.last_pos = pos
 
