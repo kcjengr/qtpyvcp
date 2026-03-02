@@ -1,5 +1,6 @@
 from PySide6.QtCore import QObject, Signal
 from qtpyvcp import SETTINGS
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 
 def getSetting(id, default=None):
@@ -136,11 +137,13 @@ class Setting(QObject):
 
     def notify(self, slot, update=True):
         # print('Connecting %s to slot %s' % (self._signal, slot))
-        self.signal.connect(slot)
+        owner = getattr(slot, '__self__', None)
+        wrapped = safe_qt_callback(owner, slot)
+        self.signal.connect(wrapped)
 
         if update:
             try:
-                slot(self.getValue())
+                wrapped(self.getValue())
             except:
                 pass
 

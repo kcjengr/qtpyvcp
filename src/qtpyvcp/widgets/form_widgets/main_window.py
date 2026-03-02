@@ -7,9 +7,9 @@ import linuxcnc
 
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
-from PySide6.QtCore import Qt, Slot, QTimer, QFile
+from PySide6.QtCore import Qt, Slot, QTimer, QFile, QObject
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QVBoxLayout
+    QMenu, QMenuBar, QLineEdit, QVBoxLayout, QButtonGroup
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -20,6 +20,8 @@ from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
 from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
+from qtpyvcp.utilities.encode_utils import allEncodings
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 LOG = logger.getLogger(__name__)
 INFO = Info()
@@ -135,14 +137,145 @@ class VCPMainWindow(QMainWindow):
             ui_file (str) : Path to a .ui file to load.
         """
         def _apply_widget_attributes():
-            from PySide6.QtWidgets import QWidget
-            for widget in self.findChildren(QWidget):
-                if hasattr(widget, 'objectName') and widget.objectName():
-                    name = widget.objectName()
+            for obj in self.findChildren(QObject):
+                if hasattr(obj, 'objectName') and obj.objectName():
+                    name = obj.objectName()
                     if not hasattr(self, name):
-                        setattr(self, name, widget)
+                        setattr(self, name, obj)
 
-        # Use QUiLoader so custom C++ widgets (e.g. GcodeEditor) can load at runtime.
+        def _wire_gcode_editor_status_hooks():
+            for obj in self.findChildren(QObject):
+                if obj.metaObject().className() not in ('GCodeEditor', 'GcodeEditor'):
+                    continue
+                if not hasattr(obj, 'setPlainText'):
+                    continue
+                if getattr(obj, '_qtpyvcp_status_wired', False):
+                    continue
+
+                def _load_program_file(fname=None, editor=obj):
+                    if not fname or not os.path.isfile(fname):
+                        return
+
+                    gcode_text = None
+                    used_encoding = None
+                    for encoding in allEncodings():
+                        try:
+                            with open(fname, 'r', encoding=encoding) as handle:
+                                gcode_text = handle.read()
+                            used_encoding = encoding
+                            break
+                        except Exception:
+                            continue
+
+                    if gcode_text is None:
+                        LOG.warning("Unable to decode program file for GCodeEditor: %s", fname)
+                        return
+
+                    LOG.info("GCodeEditor loaded file with encoding %s: %s", used_encoding, fname)
+                    editor.setPlainText(gcode_text)
+
+                def _set_current_line(line, editor=obj):
+                    try:
+                        line_number = max(0, int(line) - 1)
+                        block = editor.document().findBlockByLineNumber(line_number)
+                        if not block.isValid():
+                            return
+                        cursor = editor.textCursor()
+                        cursor.setPosition(block.position())
+                        editor.setTextCursor(cursor)
+                        if hasattr(editor, 'centerCursor'):
+                            editor.centerCursor()
+                    except Exception:
+                        LOG.debug("Unable to set current line for GCodeEditor", exc_info=True)
+
+                STATUS.file.notify(safe_qt_callback(obj, _load_program_file))
+                STATUS.motion_line.onValueChanged(safe_qt_callback(obj, _set_current_line))
+
+                current_file = str(STATUS.file)
+                if current_file:
+                    _load_program_file(current_file)
+
+                setattr(obj, '_qtpyvcp_status_wired', True)
+
+        def _wire_button_group_slots():
+            for group in self.findChildren(QButtonGroup):
+                group_name = group.objectName()
+                if not group_name:
+                    continue
+
+                slot_name = f'on_{group_name}_buttonClicked'
+                slot = getattr(self, slot_name, None)
+                if slot is None:
+                    continue
+
+                if getattr(group, '_qtpyvcp_button_group_wired', False):
+                    continue
+
+                try:
+                    group.buttonClicked.connect(slot)
+                    setattr(group, '_qtpyvcp_button_group_wired', True)
+                except Exception:
+                    LOG.exception("Failed wiring button group slot: %s", slot_name)
+
+        def _register_ui_custom_widgets(loader, path):
+            import importlib
+            import xml.etree.ElementTree as ET
+
+            try:
+                tree = ET.parse(path)
+                root = tree.getroot()
+            except Exception:
+                LOG.exception("Unable to parse UI for custom widget registration: %s", path)
+                return
+
+            customwidgets = root.find('customwidgets')
+            if customwidgets is None:
+                return
+
+            for customwidget in customwidgets.findall('customwidget'):
+                class_name = customwidget.findtext('class')
+                header = customwidget.findtext('header')
+
+                if not class_name or not header:
+                    continue
+
+                module_path = header.strip()
+
+                if module_path.endswith('.h'):
+                    continue
+
+                try:
+                    module = importlib.import_module(module_path)
+                    widget_class = getattr(module, class_name, None)
+                    if widget_class is not None:
+                        loader.registerCustomWidget(widget_class)
+                except Exception:
+                    LOG.debug("Skipping custom widget registration for %s from %s", class_name, module_path)
+
+        def _ui_uses_gcode_editor(path):
+            try:
+                with open(path, 'r', encoding='utf-8') as ui_file_handle:
+                    ui_xml = ui_file_handle.read()
+                return ('<class>GcodeEditor</class>' in ui_xml or
+                        '<widget class="GcodeEditor"' in ui_xml or
+                        '<class>GCodeEditor</class>' in ui_xml or
+                        '<widget class="GCodeEditor"' in ui_xml)
+            except Exception:
+                LOG.exception("Unable to inspect UI file for GcodeEditor usage: %s", path)
+                return False
+
+        if not _ui_uses_gcode_editor(ui_file):
+            try:
+                from qtpy import uic
+                LOG.debug(f"Loading UI with qtpy.uic.loadUi: {ui_file}")
+                self.ui = uic.loadUi(ui_file, self)
+                _apply_widget_attributes()
+                self.loadSplashGcode()
+                return
+            except Exception:
+                LOG.exception("qtpy.uic.loadUi failed, falling back to QUiLoader")
+
+        # Use QUiLoader when the UI requires custom C++ widgets (e.g. GcodeEditor).
 
         LOG.debug(f"Loading UI with QUiLoader: {ui_file}")
 
@@ -154,6 +287,7 @@ class VCPMainWindow(QMainWindow):
         ui_file_obj.open(QFile.ReadOnly)
         
         loader = QUiLoader()
+        _register_ui_custom_widgets(loader, ui_file)
 
         # Register essential QtPyVCP custom widgets
         try:
@@ -188,9 +322,44 @@ class VCPMainWindow(QMainWindow):
             pass
 
         
-        self.ui = loader.load(ui_file_obj, self)
+        loaded_ui = loader.load(ui_file_obj, self)
+
+        if isinstance(loaded_ui, QMainWindow) and loaded_ui is not self:
+            loaded_central = loaded_ui.centralWidget()
+            if loaded_central is not None:
+                loaded_central.setParent(None)
+                self.setCentralWidget(loaded_central)
+
+            loaded_status = loaded_ui.statusBar()
+            if loaded_status is not None:
+                loaded_status.setParent(None)
+                self.setStatusBar(loaded_status)
+
+            loaded_menu = loaded_ui.menuBar()
+            if loaded_menu is not None:
+                loaded_menu.setParent(None)
+                self.setMenuBar(loaded_menu)
+
+            for child in list(loaded_ui.children()):
+                if child in (loaded_central, loaded_status, loaded_menu):
+                    continue
+                if child.parent() is not loaded_ui:
+                    continue
+                if not isinstance(child, QButtonGroup):
+                    continue
+                try:
+                    child.setParent(self)
+                except Exception:
+                    LOG.debug("Unable to reparent loaded button group: %s", child, exc_info=True)
+
+            loaded_ui.deleteLater()
+            self.ui = self
+        else:
+            self.ui = loaded_ui
         
         _apply_widget_attributes()
+        _wire_button_group_slots()
+        _wire_gcode_editor_status_hooks()
         self.loadSplashGcode()
         
     def loadStylesheet(self, stylesheet):
@@ -265,7 +434,7 @@ class VCPMainWindow(QMainWindow):
                                 menu_action.setChecked(True)
 
                             menu_action.setData(num)
-                            setting.notify(lambda v: update(group, v))
+                            setting.notify(safe_qt_callback(menu_action, lambda v: update(group, v)))
 
                             menu_action.setActionGroup(group)
                             submenu.addAction(menu_action)
@@ -277,7 +446,7 @@ class VCPMainWindow(QMainWindow):
                         menu_action.setCheckable(True)
                         menu_action.triggered.connect(setting.setValue)
                         menu_action.setShortcut(shortcut)
-                        setting.notify(menu_action.setChecked)
+                        setting.notify(safe_qt_callback(menu_action, menu_action.setChecked))
                         menu.addAction(menu_action)
 
                     return

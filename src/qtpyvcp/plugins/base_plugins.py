@@ -2,6 +2,7 @@ import inspect
 
 from PySide6.QtCore import QObject, Signal
 from qtpyvcp.utilities.logger import getLogger, logLevelFromName
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 LOG = getLogger(__name__)
 
@@ -179,13 +180,19 @@ class DataChannel(QObject):
 
     def notify(self, slot, *args, **kwargs):
         # print('Connecting %s to slot %s' % (self._signal, slot))
+        owner = getattr(slot, '__self__', None)
+
         if len(args) == 0 and len(kwargs) == 0:
-            self.signal.connect(slot)
+            self.signal.connect(safe_qt_callback(owner, slot))
         else:
             if args[0] in ['string', 'str']:
-                self.signal.connect(lambda: slot(self.getString(*args[1:], **kwargs)))
+                self.signal.connect(
+                    safe_qt_callback(owner, lambda *sig_args, **sig_kwargs: slot(self.getString(*args[1:], **kwargs)))
+                )
             else:
-                self.signal.connect(lambda: slot(self.getValue(*args, **kwargs)))
+                self.signal.connect(
+                    safe_qt_callback(owner, lambda *sig_args, **sig_kwargs: slot(self.getValue(*args, **kwargs)))
+                )
 
     # fixme
     onValueChanged = notify

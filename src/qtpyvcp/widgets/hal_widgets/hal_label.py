@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QLabel
-from PySide6.QtCore import Property, QEnum
+from PySide6.QtCore import Property
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
@@ -18,7 +18,7 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
     Input pin type is selectable via the :class:`.pinType` property in designer,
     and can be any valid HAL type (bit, u32, s32, float).
 
-    The text format can be specified via the :class:`.textFormat` property in
+    The text format can be specified via the :class:`.valueFormat` property in
     designer and can be any valid python style format string.
 
     .. table:: Generated HAL Pins
@@ -30,14 +30,6 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
         qtpyvcp.label.in          selecatable in
         ========================= =========== =========
     """
-    QEnum(HalType)
-
-    # Add enum values as class attributes for Qt Designer compatibility
-    bit = HalType.bit
-    u32 = HalType.u32
-    s32 = HalType.s32
-    float = HalType.float
-
     TYPE_MAP = ('bit', 'u32', 's32', 'float')
 
     def __init__(self, parent=None):
@@ -64,33 +56,38 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
             
 
     @Property(str)
-    def textFormat(self):
-        """Text Format Property
-
-        Args:
-            fmt (str) : A valid python style format string. Defaults to ``%s``.
-        """
-        
+    def valueFormat(self):
+        """Value format property for HAL input display."""
         return self._fmt
 
-    @textFormat.setter
-    def textFormat(self, fmt):
+    @valueFormat.setter
+    def valueFormat(self, fmt):
         self._fmt = fmt
         self.setValue(self._value)
-             
+
     @Property(str)
     def pinType(self):
         return self._typ
 
     @pinType.setter
     def pinType(self, typ_enum):
-        self._typ = typ_enum if typ_enum in self.TYPE_MAP else ''
-        # try:
-        #     val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ]
-        #     self.setValue(val)
-        # except Exception as ex:
-        #     LOG.debug(ex)
+        if isinstance(typ_enum, HalType):
+            typ = typ_enum.name
+        elif isinstance(typ_enum, str):
+            typ = typ_enum.strip()
+        else:
+            try:
+                typ = HalType(typ_enum).name
+            except Exception:
+                typ = ''
 
+        self._typ = typ if typ in self.TYPE_MAP else 'float'
+
+        try:
+            val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ]
+            self.setValue(val)
+        except Exception as ex:
+            LOG.debug(ex)
 
     def initialize(self):
         comp = hal.getComponent()

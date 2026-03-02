@@ -9,6 +9,7 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 from qtpyvcp.plugins import getPlugin
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
@@ -199,11 +200,11 @@ def _run_ok(widget=None):
     return ok
 
 def _run_bindOk(widget):
-    STATUS.estop.onValueChanged(lambda: _run_ok(widget))
-    STATUS.enabled.onValueChanged(lambda: _run_ok(widget))
-    STATUS.all_axes_homed.onValueChanged(lambda: _run_ok(widget))
-    STATUS.interp_state.onValueChanged(lambda: _run_ok(widget))
-    STATUS.file.onValueChanged(lambda: _run_ok(widget))
+    STATUS.estop.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
+    STATUS.enabled.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
+    STATUS.all_axes_homed.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
+    STATUS.file.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
 
 run.ok = _run_ok
 run.bindOk = _run_bindOk
@@ -293,8 +294,8 @@ def _pause_ok(widget=None):
     return ok
 
 def _pause_bindOk(widget):
-    STATUS.state.onValueChanged(lambda: _pause_ok(widget))
-    STATUS.paused.onValueChanged(lambda: _pause_ok(widget))
+    STATUS.state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _pause_ok(widget)))
+    STATUS.paused.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _pause_ok(widget)))
 
 pause.ok = _pause_ok
 pause.bindOk = _pause_bindOk
@@ -348,8 +349,8 @@ def _resume_ok(widget):
     return ok
 
 def _resume_bindOk(widget):
-    STATUS.paused.onValueChanged(lambda: _resume_ok(widget))
-    STATUS.state.onValueChanged(lambda: _resume_ok(widget))
+    STATUS.paused.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _resume_ok(widget)))
+    STATUS.state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _resume_ok(widget)))
 
 resume.ok = _resume_ok
 resume.bindOk = _resume_bindOk
@@ -397,7 +398,7 @@ def _abort_ok(widget=None):
     return ok
 
 def _abort_bindOk(widget):
-    STATUS.state.onValueChanged(lambda: _abort_ok(widget))
+    STATUS.state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _abort_ok(widget)))
 
 abort.ok = _abort_ok
 abort.bindOk = _abort_bindOk
@@ -477,8 +478,8 @@ def _block_delete_ok(widget=None):
 
 def _block_delete_bindOk(widget):
     widget.setChecked(STAT.block_delete)
-    STATUS.task_state.onValueChanged(lambda: _block_delete_ok(widget))
-    STATUS.block_delete.onValueChanged(lambda s: widget.setChecked(s))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _block_delete_ok(widget)))
+    STATUS.block_delete.onValueChanged(safe_qt_callback(widget, lambda s: widget.setChecked(s)))
 
 block_delete.on.ok = block_delete.off.ok = block_delete.toggle.ok = _block_delete_ok
 block_delete.on.bindOk = block_delete.off.bindOk = block_delete.toggle.bindOk = _block_delete_bindOk
@@ -558,8 +559,8 @@ def _optional_stop_ok(widget=None):
 
 def _optional_stop_bindOk(widget):
     widget.setChecked(STAT.block_delete)
-    STATUS.task_state.onValueChanged(lambda: _optional_stop_ok(widget))
-    STATUS.optional_stop.onValueChanged(lambda s: widget.setChecked(s))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _optional_stop_ok(widget)))
+    STATUS.optional_stop.onValueChanged(safe_qt_callback(widget, lambda s: widget.setChecked(s)))
 
 optional_stop.on.ok = optional_stop.off.ok = optional_stop.toggle.ok = _optional_stop_ok
 optional_stop.on.bindOk = optional_stop.off.bindOk = optional_stop.toggle.bindOk  = _optional_stop_bindOk

@@ -261,8 +261,12 @@ def launch_designer(opts=DotDict()) -> None:
     new_pythonpath = f"{widgets_path}:{qtpyvcp_path}/src:{existing_pythonpath}"
     os.environ['PYTHONPATH'] = new_pythonpath
     
-    # Add a Qt environment variable to preload our designer plugin
-    os.environ['QT_PLUGIN_PATH'] = widgets_path
+    # Add our plugin path without clobbering existing Qt plugin paths.
+    existing_qt_plugin_path = os.environ.get('QT_PLUGIN_PATH', '')
+    if existing_qt_plugin_path:
+        os.environ['QT_PLUGIN_PATH'] = f"{widgets_path}:{existing_qt_plugin_path}"
+    else:
+        os.environ['QT_PLUGIN_PATH'] = widgets_path
 
 
     LOG.info("Starting QtDesigner ...")

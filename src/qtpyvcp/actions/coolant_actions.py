@@ -6,6 +6,7 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -123,14 +124,14 @@ def _coolant_ok(widget=None):
 def _flood_bindOk(widget):
     _coolant_ok(widget)
     widget.setChecked(STAT.flood == linuxcnc.FLOOD_ON)
-    STATUS.task_state.onValueChanged(lambda: _coolant_ok(widget))
-    STATUS.flood.onValueChanged(lambda s: widget.setChecked(s == linuxcnc.FLOOD_ON))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _coolant_ok(widget)))
+    STATUS.flood.onValueChanged(safe_qt_callback(widget, lambda s: widget.setChecked(s == linuxcnc.FLOOD_ON)))
 
 def _mist_bindOk(widget):
     _coolant_ok(widget)
     widget.setChecked(STAT.mist == linuxcnc.MIST_ON)
-    STATUS.task_state.onValueChanged(lambda: _coolant_ok(widget))
-    STATUS.mist.onValueChanged(lambda s: widget.setChecked(s == linuxcnc.MIST_ON))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _coolant_ok(widget)))
+    STATUS.mist.onValueChanged(safe_qt_callback(widget, lambda s: widget.setChecked(s == linuxcnc.MIST_ON)))
 
 flood.on.ok = flood.off.ok = flood.toggle.ok = _coolant_ok
 flood.on.bindOk = flood.off.bindOk = flood.toggle.bindOk = _flood_bindOk

@@ -91,7 +91,18 @@ class Notifications(DataPlugin):
     def captureMessage(self, m_type, msg):
 
         if self.enabled:
-            self.notification_dispatcher.setNotify(m_type, msg)
+            if self.notification_dispatcher is None:
+                if self.mode == "native":
+                    self.notification_dispatcher = NativeNotification()
+                    self.notification_dispatcher.maxMessages = self.max_messages
+                elif self.mode == "dbus":
+                    self.notification_dispatcher = DBusNotification("qtpyvcp")
+
+            if self.notification_dispatcher is not None:
+                try:
+                    self.notification_dispatcher.setNotify(m_type, msg)
+                except Exception:
+                    LOG.exception("Failed to dispatch notification popup: type=%s", m_type)
 
         self.messages.append({'timestamp': time.time(),
                               'message_type': m_type,
@@ -188,13 +199,14 @@ class Notifications(DataPlugin):
 
     def postGuiInitialise(self, main_window):
         if self.enabled:
-            if self.mode == "native":
+            if self.mode == "native" and self.notification_dispatcher is None:
                 self.notification_dispatcher = NativeNotification(parent=main_window)
                 self.notification_dispatcher.maxMessages = self.max_messages
-            elif self.mode == "dbus":
+            elif self.mode == "dbus" and self.notification_dispatcher is None:
                 self.notification_dispatcher = DBusNotification("qtpyvcp")
             else:
-                raise Exception("error notification mode {}".format(self.mode))
+                if self.mode not in ["native", "dbus"]:
+                    raise Exception("error notification mode {}".format(self.mode))
 
     def terminate(self):
         if self.persistent:

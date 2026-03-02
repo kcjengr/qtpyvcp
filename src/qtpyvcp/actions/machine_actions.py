@@ -18,6 +18,7 @@ if not IN_DESIGNER:
     STAT = STATUS.stat
 
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 INFO = Info()
 CMD = linuxcnc.command()
 
@@ -79,7 +80,7 @@ def _estop_ok(widget=None):
 
 def _estop_bindOk(widget):
     widget.setChecked(STAT.estop != linuxcnc.STATE_ESTOP)
-    STATUS.estop.onValueChanged(lambda v: widget.setChecked(not v))
+    STATUS.estop.onValueChanged(safe_qt_callback(widget, lambda v: widget.setChecked(not v)))
 
 estop.activate.ok = estop.reset.ok = estop.toggle.ok = _estop_ok
 estop.activate.bindOk = estop.reset.bindOk = estop.toggle.bindOk = _estop_bindOk
@@ -153,8 +154,8 @@ def _power_ok(widget=None):
 def _power_bindOk(widget):
     _power_ok(widget)
     widget.setChecked(STAT.task_state == linuxcnc.STATE_ON)
-    STATUS.estop.onValueChanged(lambda: _power_ok(widget))
-    STATUS.on.notify(lambda v: widget.setChecked(v))
+    STATUS.estop.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _power_ok(widget)))
+    STATUS.on.notify(safe_qt_callback(widget, lambda v: widget.setChecked(v)))
 
 power.on.ok = power.off.ok = power.toggle.ok = _power_ok
 power.on.bindOk = power.off.bindOk = power.toggle.bindOk = _power_bindOk
@@ -317,9 +318,9 @@ def _issue_mdi_bindOk(mdi_cmd='', widget=None):
     _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)
     if IN_DESIGNER:
         return
-    STATUS.task_state.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
-    STATUS.interp_state.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
-    STATUS.homed.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)))
+    STATUS.homed.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)))
 
 issue_mdi.ok = _issue_mdi_ok
 issue_mdi.bindOk = _issue_mdi_bindOk
@@ -337,11 +338,11 @@ def _set_work_coord_bindOk(coord='', widget=None):
     if isinstance(widget, QComboBox):
         widget.setCurrentText(coord)
         widget.setCurrentText(STATUS.g5x_index.getString())
-        STATUS.g5x_index.notify(lambda g5x: widget.setCurrentText(g5x), 'string')
+        STATUS.g5x_index.notify(safe_qt_callback(widget, lambda g5x: widget.setCurrentText(g5x)), 'string')
     else:
         widget.setCheckable(True)
         widget.setChecked(STATUS.g5x_index.getString() == coord)
-        STATUS.g5x_index.notify(lambda g5x: widget.setChecked(g5x == coord), 'string')
+        STATUS.g5x_index.notify(safe_qt_callback(widget, lambda g5x: widget.setChecked(g5x == coord)), 'string')
 
 set_work_coord.ok = _issue_mdi_ok
 set_work_coord.bindOk = _set_work_coord_bindOk
@@ -380,8 +381,8 @@ def _feed_hold_ok(widget=None):
 def _feed_hold_bindOk(widget):
     widget.setEnabled(STAT.task_state == linuxcnc.STATE_ON)
     widget.setChecked(STAT.feed_hold_enabled)
-    STATUS.task_state.notify(lambda s: widget.setEnabled(s == linuxcnc.STATE_ON))
-    STATUS.feed_hold_enabled.notify(widget.setChecked)
+    STATUS.task_state.notify(safe_qt_callback(widget, lambda s: widget.setEnabled(s == linuxcnc.STATE_ON)))
+    STATUS.feed_hold_enabled.notify(safe_qt_callback(widget, widget.setChecked))
 
 feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle.ok = _feed_hold_ok
 feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle.bindOk = _feed_hold_bindOk
@@ -445,9 +446,9 @@ def _feed_override_enable_ok(widget=None):
 def _feed_override_enable_bindOk(widget):
     if IN_DESIGNER:
         return
-    STATUS.task_state.onValueChanged(lambda: _feed_override_enable_ok(widget))
-    STATUS.interp_state.onValueChanged(lambda: _feed_override_enable_ok(widget))
-    STATUS.feed_override_enabled.onValueChanged(widget.setChecked)
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _feed_override_enable_ok(widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _feed_override_enable_ok(widget)))
+    STATUS.feed_override_enabled.onValueChanged(safe_qt_callback(widget, widget.setChecked))
 
 def _feed_override_ok(value=100, widget=None):
     if not IN_DESIGNER:
@@ -480,8 +481,8 @@ def _feed_override_bindOk(value=100, widget=None):
     if IN_DESIGNER:
         return
     # This will work for any widget
-    STATUS.task_state.onValueChanged(lambda: _feed_override_ok(widget=widget))
-    STATUS.feed_override_enabled.onValueChanged(lambda: _feed_override_ok(widget=widget))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _feed_override_ok(widget=widget)))
+    STATUS.feed_override_enabled.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _feed_override_ok(widget=widget)))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -491,12 +492,12 @@ def _feed_override_bindOk(value=100, widget=None):
         try:
             widget.setSliderPosition(100)
             STATUS.feedrate.onValueChanged(
-                lambda v: widget.setSliderPosition(int(v * 100)))
+                safe_qt_callback(widget, lambda v: widget.setSliderPosition(int(v * 100))))
 
         except AttributeError:
             widget.setValue(100)
             STATUS.feedrate.onValueChanged(
-                lambda v: widget.setValue(int(v * 100)))
+                safe_qt_callback(widget, lambda v: widget.setValue(int(v * 100))))
 
         feed_override.set(100)
 
@@ -549,7 +550,7 @@ def _rapid_override_bindOk(value=100, widget=None):
     if IN_DESIGNER:
         return
     # This will work for any widget
-    STATUS.task_state.onValueChanged(lambda: _rapid_override_ok(widget=widget))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _rapid_override_ok(widget=widget)))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -559,11 +560,11 @@ def _rapid_override_bindOk(value=100, widget=None):
         try:
             widget.setSliderPosition(100)
             STATUS.rapidrate.onValueChanged(
-                lambda v: widget.setSliderPosition(int(v * 100)))
+                safe_qt_callback(widget, lambda v: widget.setSliderPosition(int(v * 100))))
 
         except AttributeError:
             STATUS.rapidrate.onValueChanged(
-                lambda v: widget.setValue(v * 100))
+                safe_qt_callback(widget, lambda v: widget.setValue(v * 100)))
             widget.setValue(100)
 
         rapid_override.set(100)
@@ -617,7 +618,7 @@ def _max_velocity_bindOk(value=100, widget=None):
     if IN_DESIGNER:
         return
     # This will work for any widget
-    STATUS.task_state.onValueChanged(lambda: _max_velocity_ok(widget=widget))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _max_velocity_ok(widget=widget)))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -627,12 +628,12 @@ def _max_velocity_bindOk(value=100, widget=None):
         try:
             widget.setSliderPosition(int(INFO.maxVelocity()))
             STATUS.max_velocity.onValueChanged(
-                lambda v: widget.setSliderPosition(int(v * 60)))
+                safe_qt_callback(widget, lambda v: widget.setSliderPosition(int(v * 60))))
 
         except AttributeError:
             widget.setValue(INFO.maxVelocity())
             STATUS.max_velocity.onValueChanged(
-                lambda v: widget.setValue(v * 60))
+                safe_qt_callback(widget, lambda v: widget.setValue(v * 60)))
 
     except AttributeError:
         pass
@@ -710,9 +711,9 @@ def _manual_bindOk(widget):
     if IN_DESIGNER:
         return
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_MANUAL)
-    STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
-    STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
-    STATUS.task_mode.onValueChanged(lambda m: widget.setChecked(m == linuxcnc.MODE_MANUAL))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _mode_ok(widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _mode_ok(widget)))
+    STATUS.task_mode.onValueChanged(safe_qt_callback(widget, lambda m: widget.setChecked(m == linuxcnc.MODE_MANUAL)))
 
 mode.manual.ok = _mode_ok
 mode.manual.bindOk = _manual_bindOk
@@ -721,9 +722,9 @@ def _auto_bindOk(widget):
     if IN_DESIGNER:
         return 
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_AUTO)
-    STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
-    STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
-    STATUS.task_mode.onValueChanged(lambda m: widget.setChecked(m == linuxcnc.MODE_AUTO))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _mode_ok(widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _mode_ok(widget)))
+    STATUS.task_mode.onValueChanged(safe_qt_callback(widget, lambda m: widget.setChecked(m == linuxcnc.MODE_AUTO)))
 
 mode.auto.ok = _mode_ok
 mode.auto.bindOk = _auto_bindOk
@@ -732,9 +733,9 @@ def _mdi_bindOk(widget):
     if IN_DESIGNER:
         return
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_MDI)
-    STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
-    STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
-    STATUS.task_mode.onValueChanged(lambda m: widget.setChecked(m == linuxcnc.MODE_MDI))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _mode_ok(widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _mode_ok(widget)))
+    STATUS.task_mode.onValueChanged(safe_qt_callback(widget, lambda m: widget.setChecked(m == linuxcnc.MODE_MDI)))
 
 mode.mdi.ok = _mode_ok
 mode.mdi.bindOk = _mdi_bindOk
@@ -813,8 +814,8 @@ def _home_ok(jnum=-1, widget=None):
 def _home_all_bindOk(widget):
     if IN_DESIGNER:
         return 
-    STATUS.on.notify(lambda: _home_ok(widget=widget))
-    STATUS.homed.notify(lambda: _home_ok(widget=widget))
+    STATUS.on.notify(safe_qt_callback(widget, lambda *args, **kwargs: _home_ok(widget=widget)))
+    STATUS.homed.notify(safe_qt_callback(widget, lambda *args, **kwargs: _home_ok(widget=widget)))
 
 home.all.ok = _home_ok
 home.all.bindOk = _home_all_bindOk
@@ -822,8 +823,8 @@ home.all.bindOk = _home_all_bindOk
 def _home_joint_bindOk(jnum, widget):
     if IN_DESIGNER:
         return 
-    STATUS.on.notify(lambda: _home_ok(jnum, widget=widget))
-    STATUS.homed.notify(lambda: _home_ok(jnum, widget=widget))
+    STATUS.on.notify(safe_qt_callback(widget, lambda *args, **kwargs: _home_ok(jnum, widget=widget)))
+    STATUS.homed.notify(safe_qt_callback(widget, lambda *args, **kwargs: _home_ok(jnum, widget=widget)))
 
 home.joint.ok = _home_ok
 home.joint.bindOk = _home_joint_bindOk
@@ -840,7 +841,7 @@ def _home_axis_bindOk(axis, widget):
         return
 
     jnum = INFO.AXIS_LETTER_LIST.index(axis)
-    STATUS.on.notify(lambda: _home_ok(jnum, widget=widget))
+    STATUS.on.notify(safe_qt_callback(widget, lambda *args, **kwargs: _home_ok(jnum, widget=widget)))
 
 home.axis.ok = _home_ok
 home.axis.bindOk = _home_axis_bindOk
@@ -968,7 +969,7 @@ def _override_limits_ok(widget=None):
 def _override_limits_bindOk(widget):
     if IN_DESIGNER:
         return 
-    STATUS.limit.onValueChanged(lambda: _override_limits_ok(widget))
+    STATUS.limit.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _override_limits_ok(widget)))
 
 override_limits.ok = _override_limits_ok
 override_limits.bindOk = _override_limits_bindOk
@@ -1287,10 +1288,10 @@ def _jog_axis_bindOk(axis, direction, widget):
         widget.setStatusTip(msg)
         return
 
-    STATUS.limit.onValueChanged(lambda: _jog_axis_ok(aletter, direction, widget))
-    STATUS.homed.onValueChanged(lambda: _jog_axis_ok(aletter, direction, widget))
-    STATUS.task_state.onValueChanged(lambda: _jog_axis_ok(aletter, direction, widget))
-    STATUS.interp_state.onValueChanged(lambda: _jog_axis_ok(aletter, direction, widget))
+    STATUS.limit.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _jog_axis_ok(aletter, direction, widget)))
+    STATUS.homed.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _jog_axis_ok(aletter, direction, widget)))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _jog_axis_ok(aletter, direction, widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _jog_axis_ok(aletter, direction, widget)))
 
 jog.axis.ok = _jog_axis_ok
 jog.axis.bindOk = _jog_axis_bindOk
