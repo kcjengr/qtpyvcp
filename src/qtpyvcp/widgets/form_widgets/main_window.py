@@ -143,62 +143,67 @@ class VCPMainWindow(QMainWindow):
                         setattr(self, name, widget)
 
         # Prefer qtpy.uic.loadUi to match PyQt5 behavior and load live .ui edits
-        try:
-            from qtpy import uic
-            LOG.debug(f"Loading UI with qtpy.uic.loadUi: {ui_file}")
-            self.ui = uic.loadUi(ui_file, self)
-            _apply_widget_attributes()
-            self.loadSplashGcode()
-            return
-        except Exception:
-            LOG.exception("qtpy.uic.loadUi failed, falling back to QUiLoader")
+        # try:
+        #     from qtpy import uic
+        #     LOG.debug(f"Loading UI with qtpy.uic.loadUi: {ui_file}")
+        #     self.ui = uic.loadUi(ui_file, self)
+        #     _apply_widget_attributes()
+        #     self.loadSplashGcode()
+        #     return
+        # except Exception:
+        #     LOG.exception("qtpy.uic.loadUi failed, falling back to QUiLoader")
 
         LOG.debug(f"Loading UI with QUiLoader: {ui_file}")
-        from PySide6.QtUiTools import QUiLoader
-        from PySide6.QtCore import QFile
 
         # Import all QtPyVCP widgets to ensure they're available
-        from qtpyvcp.widgets import register_widgets  # noqa: F401
+        # from qtpyvcp.widgets import register_widgets  # noqa: F401
+
 
         ui_file_obj = QFile(ui_file)
         ui_file_obj.open(QFile.ReadOnly)
+        
         loader = QUiLoader()
 
-        # Register essential QtPyVCP custom widgets
-        try:
-            from qtpyvcp.widgets.button_widgets.action_button import ActionButton
-            loader.registerCustomWidget(ActionButton)
-        except ImportError:
-            pass
-        try:
-            from qtpyvcp.widgets.display_widgets.status_label import StatusLabel
-            loader.registerCustomWidget(StatusLabel)
-        except ImportError:
-            pass
-        try:
-            from qtpyvcp.widgets.hal_widgets.hal_label import HalLabel
-            loader.registerCustomWidget(HalLabel)
-        except ImportError:
-            pass
-        try:
-            from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
-            loader.registerCustomWidget(FileSystemTable)
-        except ImportError:
-            pass
-        try:
-            from qtpyvcp.widgets.input_widgets.gcode_text_edit import GcodeTextEdit
-            loader.registerCustomWidget(GcodeTextEdit)
-        except ImportError:
-            pass
-        try:
-            from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import VTKBackPlot
-            loader.registerCustomWidget(VTKBackPlot)
-        except ImportError:
-            pass
+        # # Register essential QtPyVCP custom widgets
+        # try:
+        #     from qtpyvcp.widgets.button_widgets.action_button import ActionButton
+        #     loader.registerCustomWidget(ActionButton)
+        # except ImportError:
+        #     pass
+        # try:
+        #     from qtpyvcp.widgets.display_widgets.status_label import StatusLabel
+        #     loader.registerCustomWidget(StatusLabel)
+        # except ImportError:
+        #     pass
+        # try:
+        #     from qtpyvcp.widgets.hal_widgets.hal_label import HalLabel
+        #     loader.registerCustomWidget(HalLabel)
+        # except ImportError:
+        #     pass
+        # try:
+        #     from qtpyvcp.widgets.input_widgets.file_system import FileSystemTable
+        #     loader.registerCustomWidget(FileSystemTable)
+        # except ImportError:
+        #     pass
+        # try:
+        #     from qtpyvcp.widgets.input_widgets.gcode_text_edit import GcodeTextEdit
+        #     loader.registerCustomWidget(GcodeTextEdit)
+        # except ImportError:
+        #     pass
+        # try:
+        #     from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import VTKBackPlot
+        #     loader.registerCustomWidget(VTKBackPlot)
+        # except ImportError:
+        #     pass
+        #
 
+        
         self.ui = loader.load(ui_file_obj, self)
+        
         _apply_widget_attributes()
         self.loadSplashGcode()
+        
+        self.ui.show()
 
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied
