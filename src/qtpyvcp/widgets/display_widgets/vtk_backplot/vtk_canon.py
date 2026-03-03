@@ -43,6 +43,7 @@ class VTKCanon(StatCanon):
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
         self.tool_offset = self._datasource.getToolOffset()
+        self.added_segments = 0
 
         g5x = self._datasource.getActiveWcsOffsets()
 
@@ -141,6 +142,8 @@ class VTKCanon(StatCanon):
                 first_cut_wcs_index = segment['wcs_index']
                 break
 
+        added_segment_count = 0
+
         for wcs_index, data in self.path_points.items():
 
             path_actor = self.path_actors.get(wcs_index)
@@ -150,7 +153,6 @@ class VTKCanon(StatCanon):
                 point_count = 0
 
                 for line_type, line_data in data:
-                    
                     start_point = line_data[0]
                     end_point = line_data[1]
 
@@ -174,6 +176,7 @@ class VTKCanon(StatCanon):
                         path_actor.lines.InsertNextCell(line)
 
                         point_count += 2
+                        added_segment_count += 1
 
                         path_actor.points.InsertNextPoint(start_point[6] * multiplication_factor,
                                                           start_point[7] * multiplication_factor,
@@ -192,6 +195,7 @@ class VTKCanon(StatCanon):
                         path_actor.lines.InsertNextCell(line2)
 
                         point_count += 2
+                        added_segment_count += 1
 
                     else:
                         # LOG.debug(f"--------- Points:")
@@ -218,6 +222,7 @@ class VTKCanon(StatCanon):
                         path_actor.lines.InsertNextCell(line)
 
                         point_count += 2
+                        added_segment_count += 1
 
                     last_point = end_point
 
@@ -292,6 +297,8 @@ class VTKCanon(StatCanon):
                     'from_end': prev_end,
                     'to_start': next_start,
                 })
+
+        self.added_segments = added_segment_count
 
     def get_path_actors(self):
         return self.path_actors

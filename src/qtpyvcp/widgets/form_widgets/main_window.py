@@ -22,6 +22,7 @@ from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
 from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 from qtpyvcp.utilities.encode_utils import allEncodings
+from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 LOG = logger.getLogger(__name__)
@@ -194,6 +195,12 @@ class VCPMainWindow(QMainWindow):
                         apply_ms,
                         total_ms,
                         fname,
+                    )
+
+                    PROGRAM_LOAD_PERF_SUMMARY.update_editor(
+                        fname,
+                        widget_name=editor_class,
+                        total_ms=total_ms,
                     )
 
                 def _set_current_line(line, editor=obj):

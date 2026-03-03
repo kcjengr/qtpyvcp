@@ -2,6 +2,7 @@ import os
 import sys
 import linuxcnc
 import tempfile
+from time import perf_counter
 
 from PySide6.QtCore import Qt, QTimer
 # Set up logging
@@ -11,6 +12,7 @@ LOG = logger.getLogger(__name__)
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -31,18 +33,64 @@ def load(fname, add_to_recents=True, isreload=False):
         # load a blank file. Maybe should load [DISPLAY] OPEN_FILE
         clear()
 
+    PROGRAM_LOAD_PERF_SUMMARY.start(fname)
+
+    abs_fname = os.path.abspath(fname) if fname else None
+    file_event_seen = {'done': False}
+
+    def _disconnect_file_signal():
+        try:
+            STATUS.file.signal.disconnect(_on_linuxcnc_file_loaded)
+        except Exception:
+            pass
+
+    def _on_linuxcnc_file_loaded(loaded_fname):
+        try:
+            loaded_abs = os.path.abspath(str(loaded_fname)) if loaded_fname else None
+        except Exception:
+            loaded_abs = None
+
+        if abs_fname and loaded_abs == abs_fname and not file_event_seen['done']:
+            file_event_seen['done'] = True
+            PROGRAM_LOAD_PERF_SUMMARY.mark_linuxcnc_file_loaded_event(fname)
+            _disconnect_file_signal()
+
+    try:
+        STATUS.file.signal.connect(_on_linuxcnc_file_loaded)
+    except Exception:
+        pass
+
     #setTaskMode(linuxcnc.MODE_AUTO)
     if not isreload:
         STATUS.addLock()
     
     filter_prog = INFO.getFilterProgram(fname)
-    if not filter_prog:
-        LOG.debug(f"Loading NC program: {fname}")
-        CMD.program_open(fname.encode('utf-8'))
-        CMD.wait_complete()
-    else:
-        LOG.debug(f"Loading file with filter program: {fname}")
-        openFilterProgram(fname, filter_prog)
+    interp_start = perf_counter()
+    PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='linuxcnc-open-wait-start', percent=10)
+    try:
+        if not filter_prog:
+            LOG.debug(f"Loading NC program: {fname}")
+            CMD.program_open(fname.encode('utf-8'))
+            CMD.wait_complete()
+        else:
+            LOG.debug(f"Loading file with filter program: {fname}")
+            openFilterProgram(fname, filter_prog)
+
+        try:
+            STAT.poll()
+            stat_file = os.path.abspath(str(STAT.file)) if STAT.file else None
+        except Exception:
+            stat_file = None
+
+        if abs_fname and stat_file == abs_fname and not file_event_seen['done']:
+            file_event_seen['done'] = True
+            PROGRAM_LOAD_PERF_SUMMARY.mark_linuxcnc_file_loaded_event(fname)
+
+        interp_ms = (perf_counter() - interp_start) * 1000.0
+        PROGRAM_LOAD_PERF_SUMMARY.add_linuxcnc_interp_time(fname, interp_ms=interp_ms)
+    finally:
+        if not file_event_seen['done']:
+            QTimer.singleShot(500, _disconnect_file_signal)
 
     if add_to_recents:
         addToRecents(fname)

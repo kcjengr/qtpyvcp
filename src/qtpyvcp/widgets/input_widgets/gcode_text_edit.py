@@ -119,6 +119,7 @@ from qtpyvcp.actions import program_actions
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.encode_utils import allEncodings
+from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 
 from qtpyvcp.widgets.dialogs.find_replace_dialog import FindReplaceDialog
 
@@ -1568,6 +1569,11 @@ class GcodeTextEdit(QTextEdit):
                 apply_ms,
                 total_ms,
                 fname,
+            )
+            PROGRAM_LOAD_PERF_SUMMARY.update_editor(
+                fname,
+                widget_name='GcodeTextEdit',
+                total_ms=total_ms,
             )
             # self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
 
