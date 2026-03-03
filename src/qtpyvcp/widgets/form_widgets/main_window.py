@@ -1,5 +1,6 @@
 import os
 import sys
+from time import perf_counter
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -62,6 +63,8 @@ class VCPMainWindow(QMainWindow):
         # Ctl   ctrl key needs to be pushed to enable jog
         self.slow_jog = False
         self.rapid_jog = False
+
+        self._explicit_window_title = title
 
         self.setWindowTitle(title)
 
@@ -156,13 +159,19 @@ class VCPMainWindow(QMainWindow):
                     if not fname or not os.path.isfile(fname):
                         return
 
+                    editor_class = editor.metaObject().className()
+                    t0 = perf_counter()
+
                     gcode_text = None
                     used_encoding = None
+                    decode_ms = 0.0
                     for encoding in allEncodings():
+                        dec_start = perf_counter()
                         try:
                             with open(fname, 'r', encoding=encoding) as handle:
                                 gcode_text = handle.read()
                             used_encoding = encoding
+                            decode_ms = (perf_counter() - dec_start) * 1000.0
                             break
                         except Exception:
                             continue
@@ -171,8 +180,21 @@ class VCPMainWindow(QMainWindow):
                         LOG.warning("Unable to decode program file for GCodeEditor: %s", fname)
                         return
 
-                    LOG.info("GCodeEditor loaded file with encoding %s: %s", used_encoding, fname)
+                    apply_start = perf_counter()
                     editor.setPlainText(gcode_text)
+                    apply_ms = (perf_counter() - apply_start) * 1000.0
+                    total_ms = (perf_counter() - t0) * 1000.0
+
+                    LOG.info(
+                        "[gcode-load-perf] widget=%s bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f file=%s",
+                        editor_class,
+                        len(gcode_text.encode('utf-8', errors='ignore')),
+                        used_encoding,
+                        decode_ms,
+                        apply_ms,
+                        total_ms,
+                        fname,
+                    )
 
                 def _set_current_line(line, editor=obj):
                     try:
@@ -325,6 +347,14 @@ class VCPMainWindow(QMainWindow):
         loaded_ui = loader.load(ui_file_obj, self)
 
         if isinstance(loaded_ui, QMainWindow) and loaded_ui is not self:
+            loaded_title = loaded_ui.windowTitle()
+            if self._explicit_window_title in (None, '') and loaded_title:
+                self.setWindowTitle(loaded_title)
+
+            loaded_icon = loaded_ui.windowIcon()
+            if loaded_icon is not None and not loaded_icon.isNull():
+                self.setWindowIcon(loaded_icon)
+
             loaded_central = loaded_ui.centralWidget()
             if loaded_central is not None:
                 loaded_central.setParent(None)

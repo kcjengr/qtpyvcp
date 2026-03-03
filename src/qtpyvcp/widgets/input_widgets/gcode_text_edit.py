@@ -7,6 +7,7 @@ QTextEdit based G-code editor with syntax highlighting.
 
 import os
 import yaml
+from time import perf_counter
 
 from PySide6.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
                          Property, QFile, QTextStream, QSize)
@@ -1535,19 +1536,39 @@ class GcodeTextEdit(QTextEdit):
     @Slot(object)
     def loadProgramFile(self, fname=None):
         if fname:
+            t0 = perf_counter()
             encodings = allEncodings()
             enc = None
+            gcode = None
+            decode_ms = 0.0
             for enc in encodings:
+                dec_start = perf_counter()
                 try:
                     with open(fname,  'r', encoding=enc) as f:
                         gcode = f.read()
+                        decode_ms = (perf_counter() - dec_start) * 1000.0
                         break
                 except Exception as e:
                     # LOG.debug(e)
                     LOG.info(f"File encoding doesn't match {enc}, trying others")
+            if gcode is None:
+                LOG.warning("Unable to decode program file for GcodeTextEdit: %s", fname)
+                return
             LOG.info(f"File encoding: {enc}")
             # set the syntax highlighter
+            apply_start = perf_counter()
             self.setPlainText(gcode)
+            apply_ms = (perf_counter() - apply_start) * 1000.0
+            total_ms = (perf_counter() - t0) * 1000.0
+            LOG.info(
+                "[gcode-load-perf] widget=GcodeTextEdit bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f file=%s",
+                len(gcode.encode('utf-8', errors='ignore')),
+                enc,
+                decode_ms,
+                apply_ms,
+                total_ms,
+                fname,
+            )
             # self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
 
     @Slot(int)
