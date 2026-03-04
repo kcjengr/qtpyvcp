@@ -42,6 +42,7 @@ else:
     QVTKRenderWindowInteractor = QWidget
 
 from qtpyvcp import actions
+from qtpyvcp.native.backplot_cpp import build_backplot_from_canon, cpp_backplot_available
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 from qtpyvcp.utilities.settings import connectSetting, getSetting
@@ -308,6 +309,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.view_z_vec = 1
 
         self._plot_machine = True
+        self._cpp_backplot_mode = False
+        self._cpp_backplot_available = cpp_backplot_available()
+
+        try:
+            self._cpp_backplot_mode = bool(getSetting("backplot.cpp-mode").value)
+        except Exception:
+            self._cpp_backplot_mode = False
         
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
@@ -475,6 +483,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             connectSetting('backplot.view', self.setView)
             connectSetting('backplot.multitool-colors', self.showMultiColorPath)
             connectSetting('backplot.show-machine-model', self.showMachine)
+            connectSetting('backplot.cpp-mode', self.setCppBackplotMode)
 
 
             self.path_colors = {'traverse': self._traverse_color,
@@ -748,6 +757,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
         self._datasource._status.addLock()
+        PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='vtk-load-program-enter', percent=48)
         perf_start = time.perf_counter()
         pre_backplot_interp_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
         parse_done_elapsed_ms = None
@@ -755,6 +765,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         parse_ms = 0.0
         draw_ms = 0.0
         actor_build_ms = 0.0
+        cpp_backplot_used = False
         try:
             for start_actor in self.offset_change_start_actor.values():
                 if start_actor:
@@ -791,7 +802,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if fname:
                 # create the object which handles the canonical motion callbacks
                 # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
-                self.canon = VTKCanon(colors=self.path_colors)
+                self.canon = VTKCanon(colors=self.path_colors, cpp_mode=self._cpp_backplot_mode)
                 parse_start = time.perf_counter()
                 self.load(fname)
                 parse_ms = (time.perf_counter() - parse_start) * 1000.0
@@ -800,8 +811,30 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 return
 
             draw_start = time.perf_counter()
-            self.canon.draw_lines()
-            draw_ms = (time.perf_counter() - draw_start) * 1000.0
+            cpp_result = None
+            if self._cpp_backplot_mode and self._cpp_backplot_available:
+                cpp_result = build_backplot_from_canon(self.canon, self._datasource, file_name=fname)
+
+            if cpp_result is not None:
+                self.path_actors = cpp_result.path_actors
+                self.offset_transitions = cpp_result.offset_transitions or list()
+                self.canon.added_segments = int(cpp_result.added_segments)
+                draw_ms = float(cpp_result.draw_ms)
+                if draw_ms <= 0.0:
+                    draw_ms = (time.perf_counter() - draw_start) * 1000.0
+                cpp_backplot_used = True
+            else:
+                if self._cpp_backplot_mode:
+                    LOG.warning("C++ backplot unavailable/failed; reparsing in Python mode for fallback draw")
+                    parse_retry_start = time.perf_counter()
+                    self.canon = VTKCanon(colors=self.path_colors, cpp_mode=False)
+                    self.load(fname)
+                    parse_ms += (time.perf_counter() - parse_retry_start) * 1000.0
+                    parse_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+                self.canon.draw_lines()
+                draw_ms = (time.perf_counter() - draw_start) * 1000.0
+                self.path_actors = self.canon.get_path_actors()
+                self.offset_transitions = self.canon.get_offset_transitions()
 
             LOG.info("-------Draw time %s seconds ---" % (draw_ms / 1000.0))
 
@@ -828,9 +861,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 offsets_len,
                 active_offsets,
             )
-
-            self.path_actors = self.canon.get_path_actors()
-            self.offset_transitions = self.canon.get_offset_transitions()
 
             if self._is_machine_foam:
 
@@ -913,12 +943,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             total_ms = (time.perf_counter() - perf_start) * 1000.0
             LOG.info(
-                "[backplot-perf] file=%s parse_ms=%.2f draw_ms=%.2f actor_build_ms=%.2f total_ms=%.2f",
+                "[backplot-perf] file=%s parse_ms=%.2f draw_ms=%.2f actor_build_ms=%.2f total_ms=%.2f cpp_requested=%s cpp_used=%s",
                 fname,
                 parse_ms,
                 draw_ms,
                 actor_build_ms,
                 total_ms,
+                self._cpp_backplot_mode,
+                cpp_backplot_used,
             )
             PROGRAM_LOAD_PERF_SUMMARY.update_backplot(
                 fname,
@@ -926,6 +958,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 interp_ms=parse_ms,
                 draw_ms=draw_ms,
                 actor_build_ms=actor_build_ms,
+                cpp_mode=cpp_backplot_used,
                 pre_backplot_interp_ms=pre_backplot_interp_ms,
                 parse_done_elapsed_ms=parse_done_elapsed_ms,
                 draw_done_elapsed_ms=draw_done_elapsed_ms,
@@ -941,6 +974,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def motion_type(self, value):
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
+
+    @Slot(bool)
+    @Slot(object)
+    def setCppBackplotMode(self, enabled):
+        self._cpp_backplot_mode = bool(enabled)
+        self._cpp_backplot_available = cpp_backplot_available()
+        if self._cpp_backplot_mode and not self._cpp_backplot_available:
+            LOG.warning("VTKBackPlot C++ mode requested but native bridge is unavailable; using Python path")
+        else:
+            LOG.info("VTKBackPlot C++ mode: requested=%s available=%s", self._cpp_backplot_mode, self._cpp_backplot_available)
 
    
     def get_asm_parts(self, parts):

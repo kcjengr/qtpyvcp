@@ -148,10 +148,120 @@ class VCPMainWindow(QMainWindow):
                         setattr(self, name, obj)
 
         def _wire_gcode_editor_status_hooks():
+            decode_cache = {
+                'fname': None,
+                'mtime': None,
+                'size': None,
+                'bytes_data': None,
+                'text': None,
+                'encoding': None,
+                'bytes': 0,
+            }
+            shared_doc_state = {
+                'active_file': None,
+                'source_editor': None,
+            }
+
+            def _share_document_from_source(target_editor, source_editor):
+                if source_editor is None or source_editor is target_editor:
+                    return False
+
+                try:
+                    if hasattr(target_editor, 'use_shared_document_from'):
+                        return bool(target_editor.use_shared_document_from(source_editor))
+
+                    if (
+                        hasattr(target_editor, 'setDocument')
+                        and hasattr(target_editor, 'document')
+                        and hasattr(source_editor, 'document')
+                    ):
+                        source_doc = source_editor.document()
+                        if source_doc is None:
+                            return False
+                        if target_editor.document() is source_doc:
+                            return True
+                        target_editor.setDocument(source_doc)
+                        return True
+                except Exception:
+                    LOG.debug("Unable to share editor document", exc_info=True)
+
+                return False
+
+            def _bytes_from_cache(fname):
+                try:
+                    stat = os.stat(fname)
+                except Exception:
+                    return None, 0.0, 0, False
+
+                cache_hit = (
+                    decode_cache['fname'] == fname and
+                    decode_cache['mtime'] == stat.st_mtime_ns and
+                    decode_cache['size'] == stat.st_size and
+                    decode_cache['bytes_data'] is not None
+                )
+                if cache_hit:
+                    return decode_cache['bytes_data'], 0.0, decode_cache['bytes'], True
+
+                read_start = perf_counter()
+                with open(fname, 'rb') as handle:
+                    data = handle.read()
+                read_ms = (perf_counter() - read_start) * 1000.0
+
+                decode_cache['fname'] = fname
+                decode_cache['mtime'] = stat.st_mtime_ns
+                decode_cache['size'] = stat.st_size
+                decode_cache['bytes_data'] = data
+                decode_cache['text'] = None
+                decode_cache['encoding'] = 'raw-bytes'
+                decode_cache['bytes'] = len(data)
+
+                return data, read_ms, len(data), False
+
+            def _decode_file_with_cache(fname):
+                try:
+                    stat = os.stat(fname)
+                except Exception:
+                    return None, None, 0.0, 0, False
+
+                cache_hit = (
+                    decode_cache['fname'] == fname and
+                    decode_cache['mtime'] == stat.st_mtime_ns and
+                    decode_cache['size'] == stat.st_size and
+                    decode_cache['text'] is not None
+                )
+                if cache_hit:
+                    return decode_cache['text'], decode_cache['encoding'], 0.0, decode_cache['bytes'], True
+
+                decode_ms = 0.0
+                gcode_text = None
+                used_encoding = None
+                for encoding in allEncodings():
+                    dec_start = perf_counter()
+                    try:
+                        with open(fname, 'r', encoding=encoding) as handle:
+                            gcode_text = handle.read()
+                        used_encoding = encoding
+                        decode_ms = (perf_counter() - dec_start) * 1000.0
+                        break
+                    except Exception:
+                        continue
+
+                if gcode_text is None:
+                    return None, None, decode_ms, 0, False
+
+                decode_cache['fname'] = fname
+                decode_cache['mtime'] = stat.st_mtime_ns
+                decode_cache['size'] = stat.st_size
+                decode_cache['text'] = gcode_text
+                decode_cache['encoding'] = used_encoding
+                decode_cache['bytes'] = len(gcode_text.encode('utf-8', errors='ignore'))
+
+                return gcode_text, used_encoding, decode_ms, decode_cache['bytes'], False
+
             for obj in self.findChildren(QObject):
                 if obj.metaObject().className() not in ('GCodeEditor', 'GcodeEditor'):
                     continue
-                if not hasattr(obj, 'setPlainText'):
+                if not (hasattr(obj, 'set_text_fast') or hasattr(obj, 'setText') or hasattr(obj, 'setPlainText')):
                     continue
                 if getattr(obj, '_qtpyvcp_status_wired', False):
                     continue
@@ -163,37 +273,82 @@ class VCPMainWindow(QMainWindow):
                     editor_class = editor.metaObject().className()
                     t0 = perf_counter()
 
-                    gcode_text = None
+                    if shared_doc_state['active_file'] != fname:
+                        shared_doc_state['active_file'] = fname
+                        shared_doc_state['source_editor'] = None
+
                     used_encoding = None
                     decode_ms = 0.0
-                    for encoding in allEncodings():
-                        dec_start = perf_counter()
-                        try:
-                            with open(fname, 'r', encoding=encoding) as handle:
-                                gcode_text = handle.read()
-                            used_encoding = encoding
-                            decode_ms = (perf_counter() - dec_start) * 1000.0
-                            break
-                        except Exception:
-                            continue
+                    bytes_len = 0
+                    cache_hit = False
 
-                    if gcode_text is None:
-                        LOG.warning("Unable to decode program file for GCodeEditor: %s", fname)
-                        return
+                    bytes_payload = None
+                    gcode_text = None
+
+                    source_editor = shared_doc_state.get('source_editor')
+                    if (
+                        source_editor is not None
+                        and source_editor is not editor
+                    ):
+                        _, _, bytes_len, cache_hit = _bytes_from_cache(fname)
+                        apply_start = perf_counter()
+                        shared_ok = _share_document_from_source(editor, source_editor)
+                        apply_ms = (perf_counter() - apply_start) * 1000.0
+                        if shared_ok:
+                            total_ms = (perf_counter() - t0) * 1000.0
+                            LOG.info(
+                                "[gcode-load-perf] widget=%s bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f cache_hit=%s file=%s",
+                                editor_class,
+                                bytes_len,
+                                'shared-doc',
+                                0.0,
+                                apply_ms,
+                                total_ms,
+                                cache_hit,
+                                fname,
+                            )
+
+                            PROGRAM_LOAD_PERF_SUMMARY.update_editor(
+                                fname,
+                                widget_name=editor_class,
+                                total_ms=total_ms,
+                            )
+                            return
+
+                    if hasattr(editor, 'set_text_fast'):
+                        bytes_payload, decode_ms, bytes_len, cache_hit = _bytes_from_cache(fname)
+                        used_encoding = 'raw-bytes'
+                        if bytes_payload is None:
+                            LOG.warning("Unable to read program file for GCodeEditor: %s", fname)
+                            return
+                    else:
+                        gcode_text, used_encoding, decode_ms, bytes_len, cache_hit = _decode_file_with_cache(fname)
+                        if gcode_text is None:
+                            LOG.warning("Unable to decode program file for GCodeEditor: %s", fname)
+                            return
 
                     apply_start = perf_counter()
-                    editor.setPlainText(gcode_text)
+                    if hasattr(editor, 'set_text_fast'):
+                        editor.set_text_fast(bytes_payload)
+                    elif hasattr(editor, 'setText'):
+                        editor.setText(gcode_text)
+                    else:
+                        editor.setPlainText(gcode_text)
                     apply_ms = (perf_counter() - apply_start) * 1000.0
                     total_ms = (perf_counter() - t0) * 1000.0
 
+                    if shared_doc_state.get('source_editor') is None:
+                        shared_doc_state['source_editor'] = editor
+
                     LOG.info(
-                        "[gcode-load-perf] widget=%s bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f file=%s",
+                        "[gcode-load-perf] widget=%s bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f cache_hit=%s file=%s",
                         editor_class,
-                        len(gcode_text.encode('utf-8', errors='ignore')),
+                        bytes_len,
                         used_encoding,
                         decode_ms,
                         apply_ms,
                         total_ms,
+                        cache_hit,
                         fname,
                     )
 
@@ -206,6 +361,15 @@ class VCPMainWindow(QMainWindow):
                 def _set_current_line(line, editor=obj):
                     try:
                         line_number = max(0, int(line) - 1)
+                        if hasattr(editor, 'setCursorPosition'):
+                            editor.setCursorPosition(line_number, 0)
+                            if hasattr(editor, 'ensureCursorVisible'):
+                                editor.ensureCursorVisible()
+                            return
+
+                        if not hasattr(editor, 'document'):
+                            return
+
                         block = editor.document().findBlockByLineNumber(line_number)
                         if not block.isValid():
                             return

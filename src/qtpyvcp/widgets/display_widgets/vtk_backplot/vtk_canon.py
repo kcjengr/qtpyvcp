@@ -26,8 +26,17 @@ COLOR_MAP = {
 
 class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
+        cpp_mode = bool(kwargs.pop('cpp_mode', False))
         super(VTKCanon, self).__init__(*args, **kwargs)
         self._datasource = LinuxCncDataSource()
+        self._cpp_mode = cpp_mode and (not self._datasource.isMachineFoam())
+        self._cpp_line_type_codes = {
+            'traverse': 0,
+            'feed': 1,
+            'arcfeed': 2,
+            'dwell': 3,
+            'user': 4,
+        }
 
         self.path_colors = colors
         self.path_actors = OrderedDict()
@@ -82,7 +91,7 @@ class VTKCanon(StatCanon):
         super().set_g5x_offset(index, x, y, z, a, b, c, u, v, w)
         new_wcs = index - 1  # this index counts also G53 so we need to do -1
         
-        if new_wcs not in list(self.path_points.keys()):
+        if new_wcs not in self.path_points:
             #self.path_actors[new_wcs] = PathActor(self._datasource)
             self.path_points[new_wcs] = list()
             self.initial_wcs_offsets[new_wcs] = (x, y, z, a, b, c, u, v, w)
@@ -104,32 +113,52 @@ class VTKCanon(StatCanon):
         # remove them to allow vtk setusertransforms to work correctly.
         # These transforms apply wcs offsets for us in VTK
 
-        adj_start_point = list(start_point)
-        adj_end_point = list(end_point)
-
-        for i in range(9):
-            if i == 2:
-                adj_start_point[i] -= self.tool_offsets[i]
-                adj_end_point[i] -= self.tool_offsets[i]
-            else:
-                adj_start_point[i] += self.tool_offsets[i]
-                adj_end_point[i] += self.tool_offsets[i]
-
         # check to see if active wcs is in the path_actor list.
-        if self.active_wcs_index not in list(self.path_actors.keys()):
+        if self.active_wcs_index not in self.path_actors:
             self.path_actors[self.active_wcs_index] = PathActor(self._datasource)
 
         if len(self.path_segments) == 0 or self.path_segments[-1]['wcs_index'] != self.active_wcs_index:
             self.path_segments.append({'wcs_index': self.active_wcs_index, 'lines': list()})
 
-        for count, value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
-            adj_start_point[count] -= value
-            adj_end_point[count] -= value
-        
+        if self._cpp_mode:
+            wcs_offsets = self.initial_wcs_offsets[self.active_wcs_index]
+            start_xyz = (
+                start_point[0] + self.tool_offsets[0] - wcs_offsets[0],
+                start_point[1] + self.tool_offsets[1] - wcs_offsets[1],
+                start_point[2] - self.tool_offsets[2] - wcs_offsets[2],
+            )
+            end_xyz = (
+                end_point[0] + self.tool_offsets[0] - wcs_offsets[0],
+                end_point[1] + self.tool_offsets[1] - wcs_offsets[1],
+                end_point[2] - self.tool_offsets[2] - wcs_offsets[2],
+            )
+            line = (
+                start_xyz[0], start_xyz[1], start_xyz[2],
+                end_xyz[0], end_xyz[1], end_xyz[2],
+            )
+            line_type_token = self._cpp_line_type_codes.get(line_type, line_type)
+        else:
+            adj_start_point = list(start_point)
+            adj_end_point = list(end_point)
 
-        line = [tuple(adj_start_point), tuple(adj_end_point)]
-        self.path_points.get(self.active_wcs_index).append((line_type, line))
-        self.path_segments[-1]['lines'].append((line_type, line))
+            for i in range(9):
+                if i == 2:
+                    adj_start_point[i] -= self.tool_offsets[i]
+                    adj_end_point[i] -= self.tool_offsets[i]
+                else:
+                    adj_start_point[i] += self.tool_offsets[i]
+                    adj_end_point[i] += self.tool_offsets[i]
+
+            for count, value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
+                adj_start_point[count] -= value
+                adj_end_point[count] -= value
+
+            line = [tuple(adj_start_point), tuple(adj_end_point)]
+            line_type_token = line_type
+
+        if not self._cpp_mode:
+            self.path_points.get(self.active_wcs_index).append((line_type, line))
+        self.path_segments[-1]['lines'].append((line_type_token, line))
 
     def draw_lines(self):
         # Used to draw the lines of the loaded program

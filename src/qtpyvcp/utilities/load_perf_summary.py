@@ -14,6 +14,7 @@ class ProgramLoadPerfSummary:
     def _reset(self):
         self._file = None
         self._start = None
+        self._vtk_cpp_mode = False
         self._vtk_added_segments = None
         self._linuxcnc_open_wait_ms = 0.0
         self._parse_interp_ms = 0.0
@@ -26,6 +27,9 @@ class ProgramLoadPerfSummary:
         self._vtk_ms = None
         self._gcode_text_edit_ms = None
         self._gcode_editor_ms = None
+        self._editor_ms_by_widget = {}
+        self._editor_count_by_widget = {}
+        self._editor_update_count = 0
         self._phases_emitted = set()
         self._phase_elapsed_ms = {}
         self._printed = False
@@ -109,7 +113,7 @@ class ProgramLoadPerfSummary:
 
         return (perf_counter() - self._start) * 1000.0
 
-    def update_backplot(self, fname, *, added_segments, interp_ms, draw_ms, actor_build_ms, pre_backplot_interp_ms=None, parse_done_elapsed_ms=None, draw_done_elapsed_ms=None):
+    def update_backplot(self, fname, *, added_segments, interp_ms, draw_ms, actor_build_ms, cpp_mode=False, pre_backplot_interp_ms=None, parse_done_elapsed_ms=None, draw_done_elapsed_ms=None):
         if not fname:
             return
 
@@ -127,6 +131,7 @@ class ProgramLoadPerfSummary:
                 self._pre_backplot_dispatch_ms = max(0.0, elapsed_to_backplot_ms - self._linuxcnc_open_wait_ms)
             self._has_pre_backplot_interp = True
 
+        self._vtk_cpp_mode = bool(cpp_mode)
         self._vtk_added_segments = int(added_segments)
         self._parse_interp_ms += float(interp_ms)
         self._has_parse_interp = True
@@ -144,11 +149,19 @@ class ProgramLoadPerfSummary:
             self.start(abs_file)
 
         ms_val = float(total_ms)
+        widget_key = str(widget_name) if widget_name else "UnknownEditor"
+        self._editor_update_count += 1
+        self._editor_ms_by_widget[widget_key] = self._editor_ms_by_widget.get(widget_key, 0.0) + ms_val
+        self._editor_count_by_widget[widget_key] = self._editor_count_by_widget.get(widget_key, 0) + 1
+
         if widget_name == "GcodeTextEdit":
-            self._gcode_text_edit_ms = ms_val
+            self._gcode_text_edit_ms = self._editor_ms_by_widget.get("GcodeTextEdit")
             self._emit_phase("gcodetextedit-done", 90)
         elif widget_name in ("GCodeEditor", "GcodeEditor"):
-            self._gcode_editor_ms = ms_val
+            self._gcode_editor_ms = (
+                self._editor_ms_by_widget.get("GCodeEditor", 0.0)
+                + self._editor_ms_by_widget.get("GcodeEditor", 0.0)
+            )
             self._emit_phase("gcodeeditor-done", 96)
 
         self._maybe_print()
@@ -161,8 +174,7 @@ class ProgramLoadPerfSummary:
             self._has_open_wait,
             self._has_parse_interp,
             self._vtk_ms is not None,
-            self._gcode_text_edit_ms is not None,
-            self._gcode_editor_ms is not None,
+            self._editor_update_count >= 2,
         ])
 
     @staticmethod
@@ -192,13 +204,13 @@ class ProgramLoadPerfSummary:
         accounted_total_ms = (
             linuxcnc_interp_total_ms
             + self._vtk_ms
-            + self._gcode_text_edit_ms
-            + self._gcode_editor_ms
+            + sum(self._editor_ms_by_widget.values())
         )
         unaccounted_gap_ms = total_ms - accounted_total_ms
 
         metadata_rows = [
             ("File Name", file_name),
+            ("VTK C++ Mode", "true" if self._vtk_cpp_mode else "false"),
             ("VTK Backplot Data", vtk_data),
         ]
 
@@ -208,9 +220,17 @@ class ProgramLoadPerfSummary:
             ("LCNC Pre-Backplot Dispatch", self._pre_backplot_dispatch_ms, self._phase_elapsed_ms.get("backplot-start")),
             ("LCNC Backplot Parse", self._parse_interp_ms, self._phase_elapsed_ms.get("backplot-parse-done")),
             ("VTK Backplot Time", self._vtk_ms, self._phase_elapsed_ms.get("backplot-draw-done")),
-            ("GcodeTextEdit Time", self._gcode_text_edit_ms, self._phase_elapsed_ms.get("gcodetextedit-done")),
-            ("GcodeEditor Time", self._gcode_editor_ms, self._phase_elapsed_ms.get("gcodeeditor-done")),
         ]
+
+        if self._gcode_text_edit_ms is not None:
+            stage_rows.append(("GcodeTextEdit Time", self._gcode_text_edit_ms, self._phase_elapsed_ms.get("gcodetextedit-done")))
+
+        if self._gcode_editor_ms is not None:
+            gcode_editor_count = self._editor_count_by_widget.get("GCodeEditor", 0) + self._editor_count_by_widget.get("GcodeEditor", 0)
+            gcode_editor_label = "GcodeEditor Time"
+            if gcode_editor_count > 1:
+                gcode_editor_label = f"GcodeEditor Time (x{gcode_editor_count})"
+            stage_rows.append((gcode_editor_label, self._gcode_editor_ms, self._phase_elapsed_ms.get("gcodeeditor-done")))
 
         stage_rows = [row for row in stage_rows if row[2] is not None and row[1] is not None]
 
