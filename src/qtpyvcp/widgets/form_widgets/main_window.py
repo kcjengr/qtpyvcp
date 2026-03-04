@@ -334,6 +334,15 @@ class VCPMainWindow(QMainWindow):
                         editor.setText(gcode_text)
                     else:
                         editor.setPlainText(gcode_text)
+
+                    try:
+                        if hasattr(editor, 'setFilename'):
+                            editor.setFilename(fname)
+                        elif hasattr(editor, 'setFilePath'):
+                            editor.setFilePath(fname)
+                    except Exception:
+                        LOG.debug("Unable to set filename/filepath on GCodeEditor", exc_info=True)
+
                     apply_ms = (perf_counter() - apply_start) * 1000.0
                     total_ms = (perf_counter() - t0) * 1000.0
 

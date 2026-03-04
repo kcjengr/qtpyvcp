@@ -449,6 +449,10 @@ class GcodeEditor(EditorBase, QObject):
             self.setCaretLineVisible(False)
             self.somethingHasChanged.emit(self.text_before_edit != self.text())
 
+    @Slot(bool)
+    def EditorReadWrite(self, state):
+        self.setEditable(state)
+
     @Slot(str)
     def setFilename(self, path):
         self.filename = path
@@ -467,6 +471,10 @@ class GcodeEditor(EditorBase, QObject):
             self.somethingHasChanged.emit(False)
         else:
             LOG.debug("---save error")
+
+    @Slot()
+    def saveFile(self):
+        self.save()
 
     @Slot()
     def saveAs(self):
@@ -492,8 +500,16 @@ class GcodeEditor(EditorBase, QObject):
         self.somethingHasChanged.emit(False)
 
     @Slot()
+    def saveFileAs(self):
+        self.saveAs()
+
+    @Slot()
     def find_replace(self):
         self.dialog.show()
+
+    @Slot()
+    def findDialog(self):
+        self.find_replace()
 
     def search_text(self, find_text, highlight_all):
         from_start = False
