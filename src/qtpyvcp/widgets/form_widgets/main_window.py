@@ -457,18 +457,7 @@ class VCPMainWindow(QMainWindow):
                 LOG.exception("Unable to inspect UI file for GcodeEditor usage: %s", path)
                 return False
 
-        if not _ui_uses_gcode_editor(ui_file):
-            try:
-                from qtpy import uic
-                LOG.debug(f"Loading UI with qtpy.uic.loadUi: {ui_file}")
-                self.ui = uic.loadUi(ui_file, self)
-                _apply_widget_attributes()
-                self.loadSplashGcode()
-                return
-            except Exception:
-                LOG.exception("qtpy.uic.loadUi failed, falling back to QUiLoader")
-
-        # Use QUiLoader when the UI requires custom C++ widgets (e.g. GcodeEditor).
+        # Use QUiLoader for UI loading (PySide6-native path).
 
         LOG.debug(f"Loading UI with QUiLoader: {ui_file}")
 

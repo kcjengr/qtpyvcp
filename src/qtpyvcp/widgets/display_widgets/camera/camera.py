@@ -43,12 +43,11 @@
 
 import os
 
-from qtpy import uic
-
-from PySide6.QtCore import QByteArray, Qt, QTimer
+from PySide6.QtCore import QByteArray, Qt, QTimer, QFile
 from PySide6.QtGui import QPalette, QPixmap
 from PySide6.QtWidgets import (QAction, QActionGroup, QApplication,
                              QWidget, QMessageBox)
+from PySide6.QtUiTools import QUiLoader
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -72,6 +71,20 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
+
+def _load_ui(ui_path, parent):
+    ui_file = QFile(ui_path)
+    if not ui_file.open(QFile.ReadOnly):
+        raise RuntimeError(f"Unable to open UI file: {ui_path}")
+    try:
+        loader = QUiLoader()
+        loaded = loader.load(ui_file, parent)
+    finally:
+        ui_file.close()
+    if loaded is None:
+        raise RuntimeError(f"Unable to load UI file: {ui_path}")
+    return loaded
+
 class Camera(QWidget):
 
     def __init__(self, parent=None, standalone=False):
@@ -85,7 +98,7 @@ class Camera(QWidget):
         if not multimedia_available:
             return
 
-        self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "camera.ui"), self)
+        self.ui = _load_ui(os.path.join(WIDGET_PATH, "camera.ui"), self)
 
         self.camera = None
         self.imageCapture = None

@@ -40,13 +40,26 @@
 
 import os
 
-from qtpy import uic
-
-from PySide6.QtCore import qFuzzyCompare
+from PySide6.QtCore import qFuzzyCompare, QFile
 from PySide6.QtMultimedia import QMultimedia
 from PySide6.QtWidgets import QDialog
+from PySide6.QtUiTools import QUiLoader
 
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
+
+
+def _load_ui(ui_path, parent):
+    ui_file = QFile(ui_path)
+    if not ui_file.open(QFile.ReadOnly):
+        raise RuntimeError(f"Unable to open UI file: {ui_path}")
+    try:
+        loader = QUiLoader()
+        loaded = loader.load(ui_file, parent)
+    finally:
+        ui_file.close()
+    if loaded is None:
+        raise RuntimeError(f"Unable to load UI file: {ui_path}")
+    return loaded
 
 
 class Settings(QDialog):
@@ -57,7 +70,7 @@ class Settings(QDialog):
         self.imagecapture = imageCapture
         self.mediaRecorder = mediaRecorder
 
-        self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "settings.ui"), self)
+        self.ui = _load_ui(os.path.join(WIDGET_PATH, "settings.ui"), self)
 
         self.ui.imageCodecBox.addItem("Default image format", "")
         for codecName in self.imagecapture.supportedImageCodecs():

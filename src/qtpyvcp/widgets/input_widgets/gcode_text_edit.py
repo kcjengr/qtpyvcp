@@ -10,7 +10,7 @@ import yaml
 from time import perf_counter
 
 from PySide6.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
-                         Property, QFile, QTextStream, QSize)
+                         Property, QFile, QTextStream, QSize, QUrl, QStandardPaths)
 
 from PySide6.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
@@ -19,7 +19,7 @@ from PySide6.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
 
 from PySide6.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QWidget, QMenu, QFileDialog,
-                            QStyledItemDelegate, QTreeView, QListView)
+                            QStyledItemDelegate, QTreeView, QListView, QSplitter)
 
 from dateutil.parser import parse as parse_date
 
@@ -1002,8 +1002,6 @@ class GcodeTextEdit(QTextEdit):
         
         # Always use static system locations for consistency across all machines
         # This prevents synced Qt settings from causing issues with Syncthing
-        from qtpy.QtCore import QUrl, QStandardPaths
-        
         static_urls = []
         
         # Home directory (user's home as first entry)
@@ -1128,7 +1126,6 @@ class GcodeTextEdit(QTextEdit):
                     view.setItemDelegateForColumn(col_num, delegate)
         
         # Configure the splitter to show handle and set initial sizes
-        from qtpy.QtWidgets import QSplitter
         for splitter in dialog.findChildren(QSplitter):
             splitter.setHandleWidth(8)
             splitter.setChildrenCollapsible(False)
