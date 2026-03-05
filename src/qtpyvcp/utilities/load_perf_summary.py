@@ -196,20 +196,31 @@ class ProgramLoadPerfSummary:
     def _fmt_stopwatch(value):
         return f"{value / 1000.0:6.1f}s"
 
+    @staticmethod
+    def _fmt_file_size(size_bytes):
+        value = float(size_bytes)
+        for unit in ("B", "KB", "MB", "GB", "TB"):
+            if value < 1024.0 or unit == "TB":
+                if unit == "B":
+                    return f"{int(value)} {unit}"
+                return f"{value:.2f} {unit}"
+            value /= 1024.0
+
     def _maybe_print(self):
         if self._printed or not self._is_complete():
             return
 
         total_ms = (perf_counter() - self._start) * 1000.0
         file_name = os.path.basename(self._file)
-        vtk_data = f"added={self._vtk_added_segments}"
-        linuxcnc_interp_total_ms = (
-            self._linuxcnc_open_wait_ms
-            + self._pre_backplot_dispatch_ms
-            + self._parse_interp_ms
-        )
+        vtk_data = str(self._vtk_added_segments)
+        file_size = "n/a"
+        try:
+            file_size = self._fmt_file_size(os.path.getsize(self._file))
+        except (OSError, TypeError):
+            pass
+
         metadata_rows = [
-            ("File Name", file_name),
+            ("File Size", file_size),
             ("VTK C++ Mode", "true" if self._vtk_cpp_mode else "false"),
             ("VTK Backplot Data", vtk_data),
         ]
@@ -234,30 +245,44 @@ class ProgramLoadPerfSummary:
 
         stage_rows = [row for row in stage_rows if row[2] is not None and row[1] is not None]
 
-        key_width = max(len(label) for label, _ in metadata_rows + [(label, "") for label, _, _ in stage_rows] + [("Total Program Load Time", "")])
+        key_width = max(
+            len(label)
+            for label, _ in metadata_rows
+            + [("File Name", "")]
+            + [(label, "") for label, _, _ in stage_rows]
+            + [("Total Program Load Time", "")]
+        )
 
-        LOG.info("[program-load-summary] ----------------------------------------")
+        duration_col_width = max(
+            [len(self._fmt_stopwatch(total_ms))]
+            + [len(self._fmt_stopwatch(duration_ms)) for _, duration_ms, _ in stage_rows]
+        )
+        elapsed_col_width = max(
+            [len("100%")]
+            + [len(self._fmt_stopwatch(elapsed_ms)) for _, _, elapsed_ms in stage_rows]
+        )
+        metric_col_width = duration_col_width + 1 + elapsed_col_width
+
+        lines = ["------------------------------------------------"]
+        lines.append(f"-   File Name: {file_name}")
+        lines.append("------------------------------------------------")
+
         for label, value in metadata_rows:
-            LOG.info("[program-load-summary] %-*s = %s", key_width, label, value)
+            lines.append(f"-   {label:<{key_width}} = {value:>{metric_col_width}}")
 
         for label, duration_ms, elapsed_ms in stage_rows:
-            LOG.info(
-                "[program-load-summary] %-*s = %s %s",
-                key_width,
-                label,
-                self._fmt_stopwatch(duration_ms),
-                self._fmt_stopwatch(elapsed_ms),
+            duration_text = self._fmt_stopwatch(duration_ms)
+            elapsed_text = self._fmt_stopwatch(elapsed_ms)
+            lines.append(
+                f"-   {label:<{key_width}} = {duration_text:>{duration_col_width}} {elapsed_text:>{elapsed_col_width}}"
             )
 
-        LOG.info("[program-load-summary] ----------------------------------------")
-        LOG.info(
-            "[program-load-summary] %-*s = %s %s",
-            key_width,
-            "Total Program Load Time",
-            self._fmt_stopwatch(total_ms),
-            self._fmt_stopwatch(total_ms),
+        lines.append("------------------------------------------------")
+        lines.append(
+            f"-   {'Total Program Load Time':<{key_width}} = {self._fmt_stopwatch(total_ms):>{duration_col_width}} {'100%':>{elapsed_col_width}}"
         )
-        LOG.info("[program-load-summary] ----------------------------------------")
+        lines.append("------------------------------------------------")
+        LOG.info("[program-load-summary]\n%s", "\n".join(lines))
         self._emit_phase("load-summary-complete", 100)
 
         self._printed = True
