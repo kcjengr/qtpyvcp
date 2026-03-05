@@ -9,6 +9,13 @@ LOG = logger.getLogger(__name__)
 
 class ProgramLoadPerfSummary:
     def __init__(self):
+        # Optional verbose phase trace. Summary output remains enabled regardless.
+        self._log_phase_details = os.getenv("QTPYVCP_LOAD_PHASE_DETAILS", "0") in (
+            "1",
+            "true",
+            "yes",
+            "on",
+        )
         self._reset()
 
     def _reset(self):
@@ -47,7 +54,7 @@ class ProgramLoadPerfSummary:
         self._start = perf_counter()
         self._emit_phase("load-requested", 0)
 
-    def _emit_phase(self, phase, percent, elapsed_ms=None):
+    def _emit_phase(self, phase, percent=None, elapsed_ms=None):
         if phase in self._phases_emitted:
             return
 
@@ -56,18 +63,18 @@ class ProgramLoadPerfSummary:
                 return
             elapsed_ms = (perf_counter() - self._start) * 1000.0
 
-        file_name = os.path.basename(self._file) if self._file else "n/a"
-        LOG.info(
-            "[program-load-phase] file=%s phase=%s percent=%d elapsed_ms=%.2f",
-            file_name,
-            phase,
-            int(percent),
-            float(elapsed_ms),
-        )
+        if self._log_phase_details:
+            file_name = os.path.basename(self._file) if self._file else "n/a"
+            LOG.info(
+                "[program-load-phase] file=%s phase=%s elapsed_ms=%.2f",
+                file_name,
+                phase,
+                float(elapsed_ms),
+            )
         self._phases_emitted.add(phase)
         self._phase_elapsed_ms[phase] = float(elapsed_ms)
 
-    def mark_phase(self, fname, *, phase, percent):
+    def mark_phase(self, fname, *, phase, percent=None):
         if not fname:
             return
 
@@ -201,13 +208,6 @@ class ProgramLoadPerfSummary:
             + self._pre_backplot_dispatch_ms
             + self._parse_interp_ms
         )
-        accounted_total_ms = (
-            linuxcnc_interp_total_ms
-            + self._vtk_ms
-            + sum(self._editor_ms_by_widget.values())
-        )
-        unaccounted_gap_ms = total_ms - accounted_total_ms
-
         metadata_rows = [
             ("File Name", file_name),
             ("VTK C++ Mode", "true" if self._vtk_cpp_mode else "false"),
@@ -257,8 +257,6 @@ class ProgramLoadPerfSummary:
             self._fmt_stopwatch(total_ms),
             self._fmt_stopwatch(total_ms),
         )
-        if abs(unaccounted_gap_ms) >= 1.0:
-            LOG.info("[program-load-summary] %-*s = %s", key_width, "Unaccounted Gap", self._fmt_ms(unaccounted_gap_ms))
         LOG.info("[program-load-summary] ----------------------------------------")
         self._emit_phase("load-summary-complete", 100)
 

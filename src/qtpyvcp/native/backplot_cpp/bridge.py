@@ -147,7 +147,7 @@ def build_backplot_from_canon(canon, datasource, *, file_name: Optional[str] = N
         return None
 
     if file_name:
-        LOG.info(
+        LOG.debug(
             "[backplot-cpp] file=%s used_cpp=true geometry_ms=%.2f total_bridge_ms=%.2f",
             file_name,
             float(payload.get("draw_ms", 0.0)),

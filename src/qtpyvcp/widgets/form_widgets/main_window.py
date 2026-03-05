@@ -296,7 +296,7 @@ class VCPMainWindow(QMainWindow):
                         apply_ms = (perf_counter() - apply_start) * 1000.0
                         if shared_ok:
                             total_ms = (perf_counter() - t0) * 1000.0
-                            LOG.info(
+                            LOG.debug(
                                 "[gcode-load-perf] widget=%s bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f cache_hit=%s file=%s",
                                 editor_class,
                                 bytes_len,
@@ -349,7 +349,7 @@ class VCPMainWindow(QMainWindow):
                     if shared_doc_state.get('source_editor') is None:
                         shared_doc_state['source_editor'] = editor
 
-                    LOG.info(
+                    LOG.debug(
                         "[gcode-load-perf] widget=%s bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f cache_hit=%s file=%s",
                         editor_class,
                         bytes_len,

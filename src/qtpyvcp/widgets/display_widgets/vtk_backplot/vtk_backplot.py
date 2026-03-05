@@ -513,6 +513,156 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             self.interactor.Initialize()
             self.renderer_window.Render()
+
+            diagnostics_enabled = False
+            try:
+                display_log_level = str(self._datasource._inifile.find("DISPLAY", "LOG_LEVEL") or "").strip().upper()
+                diagnostics_enabled = display_log_level == "DEBUG"
+            except Exception:
+                diagnostics_enabled = False
+
+            if not diagnostics_enabled:
+                try:
+                    diagnostics_enabled = LOG.isEnabledFor(10)
+                except Exception:
+                    diagnostics_enabled = False
+
+            if diagnostics_enabled:
+                try:
+                    def _extract_gl_version_pair(version_text):
+                        if not version_text:
+                            return None
+                        text = str(version_text)
+                        for token in text.replace("(", " ").replace(")", " ").split():
+                            parts = token.split(".")
+                            if len(parts) >= 2 and parts[0].isdigit() and parts[1].isdigit():
+                                return int(parts[0]), int(parts[1])
+                        return None
+
+                    def _infer_glsl_from_opengl_version(version_text):
+                        version_pair = _extract_gl_version_pair(version_text)
+                        if version_pair is None:
+                            return "unknown"
+
+                        gl_to_glsl = {
+                            (2, 0): "1.10",
+                            (2, 1): "1.20",
+                            (3, 0): "1.30",
+                            (3, 1): "1.40",
+                            (3, 2): "1.50",
+                            (3, 3): "3.30",
+                            (4, 0): "4.00",
+                            (4, 1): "4.10",
+                            (4, 2): "4.20",
+                            (4, 3): "4.30",
+                            (4, 4): "4.40",
+                            (4, 5): "4.50",
+                            (4, 6): "4.60",
+                        }
+                        inferred = gl_to_glsl.get(version_pair)
+                        if inferred is None:
+                            return "unknown"
+                        return f"{inferred} (inferred from OpenGL {version_pair[0]}.{version_pair[1]})"
+
+                    ogl_info = {
+                        "vendor": "unknown",
+                        "renderer": "unknown",
+                        "version": "unknown",
+                        "glsl": "unknown",
+                        "glsl_source": "unknown",
+                        "direct_rendering": "unknown",
+                        "direct_rendering_source": "unknown",
+                        "glx_server_vendor": "unknown",
+                        "glx_client_vendor": "unknown",
+                    }
+
+                    ogl_window = vtk.vtkOpenGLRenderWindow.SafeDownCast(self.renderer_window)
+                    if ogl_window is not None:
+                        try:
+                            ogl_info["vendor"] = str(ogl_window.GetOpenGLVendor() or "unknown")
+                        except Exception:
+                            pass
+                        try:
+                            ogl_info["renderer"] = str(ogl_window.GetOpenGLRenderer() or "unknown")
+                        except Exception:
+                            pass
+                        try:
+                            ogl_info["version"] = str(ogl_window.GetOpenGLVersion() or "unknown")
+                        except Exception:
+                            pass
+
+                    capabilities = ""
+                    if hasattr(self.renderer_window, "ReportCapabilities"):
+                        try:
+                            capabilities = str(self.renderer_window.ReportCapabilities() or "")
+                        except Exception:
+                            capabilities = ""
+
+                    if capabilities:
+                        for raw_line in capabilities.splitlines():
+                            line = raw_line.strip()
+                            lower = line.lower()
+
+                            if lower.startswith("opengl vendor string:"):
+                                ogl_info["vendor"] = line.split(":", 1)[1].strip() or ogl_info["vendor"]
+                            elif lower.startswith("opengl renderer string:"):
+                                ogl_info["renderer"] = line.split(":", 1)[1].strip() or ogl_info["renderer"]
+                            elif lower.startswith("opengl version string:"):
+                                ogl_info["version"] = line.split(":", 1)[1].strip() or ogl_info["version"]
+                            elif lower.startswith("opengl shading language version string:"):
+                                parsed_glsl = line.split(":", 1)[1].strip()
+                                if parsed_glsl:
+                                    ogl_info["glsl"] = parsed_glsl
+                                    ogl_info["glsl_source"] = "reported"
+                            elif lower.startswith("direct rendering:"):
+                                parsed_direct = line.split(":", 1)[1].strip()
+                                if parsed_direct:
+                                    ogl_info["direct_rendering"] = parsed_direct
+                                    ogl_info["direct_rendering_source"] = "reported"
+                            elif lower.startswith("server glx vendor string:"):
+                                ogl_info["glx_server_vendor"] = line.split(":", 1)[1].strip() or ogl_info["glx_server_vendor"]
+                            elif lower.startswith("client glx vendor string:"):
+                                ogl_info["glx_client_vendor"] = line.split(":", 1)[1].strip() or ogl_info["glx_client_vendor"]
+
+                    if ogl_info["glsl"].lower() == "unknown":
+                        ogl_info["glsl"] = _infer_glsl_from_opengl_version(ogl_info["version"])
+                        if ogl_info["glsl"].lower() == "unknown":
+                            ogl_info["glsl_source"] = "unknown"
+                        else:
+                            ogl_info["glsl_source"] = "inferred"
+
+                    lines = [
+                        "VTK graphics diagnostics:",
+                        f"  - qt_api: {os.getenv('QT_API', 'unknown')}",
+                        f"  - qsg_rhi_backend: {os.getenv('QSG_RHI_BACKEND', 'default')}",
+                        f"  - vtk_version: {vtkVersion().GetVTKVersion()}",
+                        f"  - opengl_vendor: {ogl_info['vendor']}",
+                        f"  - opengl_renderer: {ogl_info['renderer']}",
+                        f"  - opengl_version: {ogl_info['version']}",
+                        f"  - glsl_version: {ogl_info['glsl']}",
+                    ]
+                    if ogl_info["direct_rendering"].lower() != "unknown":
+                        lines.append(f"  - direct_rendering: {ogl_info['direct_rendering']}")
+                    LOG.debug("\n".join(lines))
+
+                    renderer_l = ogl_info["renderer"].lower()
+                    vendor_l = ogl_info["vendor"].lower()
+                    software_tokens = (
+                        "llvmpipe",
+                        "softpipe",
+                        "swrast",
+                        "software rasterizer",
+                        "lavapipe",
+                    )
+                    if any(token in renderer_l or token in vendor_l for token in software_tokens):
+                        LOG.warning(
+                            "VTK appears to be using software rendering (%s / %s). 3D backplot performance may be degraded.",
+                            ogl_info["vendor"],
+                            ogl_info["renderer"],
+                        )
+                except Exception as exc:
+                    LOG.warning("Failed to gather VTK graphics diagnostics: %s", exc)
+
             self.interactor.Start()
 
             # Add the observers to watch for particular events. These invoke Python functions.
@@ -836,8 +986,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.path_actors = self.canon.get_path_actors()
                 self.offset_transitions = self.canon.get_offset_transitions()
 
-            LOG.info("-------Draw time %s seconds ---" % (draw_ms / 1000.0))
-
             # Refresh WCS offsets and active index in case they changed since init.
             # This makes sure newly loaded paths honor the current work offset.
             self._set_wcs_offsets(self._datasource.getWcsOffsets())
@@ -855,8 +1003,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             except Exception:
                 offsets_len = 'n/a'
 
-            LOG.info(
-                "VTKBackPlot load_program: active_wcs=%s offsets_len=%s active_offsets=%s",
+            LOG.debug(
+                "VTKBackPlot load_program context: active_wcs=%s offsets_len=%s active_offsets=%s",
                 self.active_wcs_index,
                 offsets_len,
                 active_offsets,
@@ -942,7 +1090,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
 
             total_ms = (time.perf_counter() - perf_start) * 1000.0
-            LOG.info(
+            LOG.debug(
                 "[backplot-perf] file=%s parse_ms=%.2f draw_ms=%.2f actor_build_ms=%.2f total_ms=%.2f cpp_requested=%s cpp_used=%s",
                 fname,
                 parse_ms,
