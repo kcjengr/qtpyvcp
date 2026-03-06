@@ -1,6 +1,7 @@
 /site
 /build
 /src/qtpyvcp/native/backplot_cpp/build/
+/src/qtpyvcp/native/widgets_cpp/**/build/
 /dist
 /venv
 *.egg-info
