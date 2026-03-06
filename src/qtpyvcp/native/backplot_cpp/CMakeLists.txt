@@ -20,7 +20,7 @@ if(NOT pybind11_FOUND)
         list(APPEND CMAKE_PREFIX_PATH "${PYBIND11_CMAKE_DIR}")
         find_package(pybind11 CONFIG REQUIRED)
     else()
-        message(FATAL_ERROR "pybind11 not found. Install it in the active Python environment, e.g. 'pip install pybind11'.")
+        message(FATAL_ERROR "pybind11 not found. Install it from Debian package manager 'sudo apt install python3-pybind11'.")
     endif()
 endif()
 
