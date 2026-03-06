@@ -2,23 +2,24 @@
 GcodeTextEdit
 -------------
 
-QPlainTextEdit based G-code editor with syntax highlighting.
+QTextEdit based G-code editor with syntax highlighting.
 """
 
 import os
 import yaml
+from time import perf_counter
 
 from PySide6.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
-                         Property, QFile, QTextStream, QSize)
+                         Property, QFile, QTextStream, QSize, QUrl, QStandardPaths)
 
 from PySide6.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
-                        QTextCharFormat, QTextCursor, QPalette, QKeySequence)
+                        QTextCharFormat, QTextCursor, QTextBlockFormat,
+                        QPalette, QKeySequence)
 
 from PySide6.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
-                            QPlainTextEdit, QWidget, QMenu,
-                            QPlainTextDocumentLayout, QFileDialog,
-                            QStyledItemDelegate, QTreeView, QListView)
+                            QWidget, QMenu, QFileDialog,
+                            QStyledItemDelegate, QTreeView, QListView, QSplitter)
 
 from dateutil.parser import parse as parse_date
 
@@ -118,6 +119,7 @@ from qtpyvcp.actions import program_actions
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.encode_utils import allEncodings
+from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 
 from qtpyvcp.widgets.dialogs.find_replace_dialog import FindReplaceDialog
 
@@ -209,9 +211,6 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         """Apply syntax highlighting to the given block of text.
         """
 
-        QApplication.processEvents()
-        LOG.debug(f'Highlight light block:  {text}')
-
 
         for regex, fmt in self.rules:
 
@@ -231,10 +230,10 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
                 index = match.capturedStart()
 
 
-class GcodeTextEdit(QPlainTextEdit):
+class GcodeTextEdit(QTextEdit):
     """G-code Text Edit
 
-    QPlainTextEdit based G-code editor with syntax heightening.
+    QTextEdit based G-code editor with syntax heightening.
     """
     focusLine = Signal(int)
 
@@ -251,6 +250,14 @@ class GcodeTextEdit(QPlainTextEdit):
         self.current_line_color = QColor(self.palette().text().color())
         self.readonly = False
         self.syntax_highlighting = False
+        self.line_height_percent = 100
+        self._applied_line_height_percent = None
+        self.editor_font_family = ""
+        self.editor_font_point_size = 0
+        self.editor_font_weight = -1
+        self.margin_font_family = ""
+        self.margin_font_point_size = 0
+        self.margin_font_weight = -1
         self.old_docs = []
         self.gCodeHighlighter = None
         self.find_case = None
@@ -284,8 +291,10 @@ class GcodeTextEdit(QPlainTextEdit):
             self.real_margin.updateWidth()  # Ensure proper positioning
             return
 
-        self.setCenterOnScroll(True)
+        if hasattr(self, 'setCenterOnScroll'):
+            self.setCenterOnScroll(True)
         self.setGeometry(50, 50, 800, 640)
+        self.setAcceptRichText(False)
         self.setWordWrapMode(QTextOption.NoWrap)
 
         # set the custom margin
@@ -993,8 +1002,6 @@ class GcodeTextEdit(QPlainTextEdit):
         
         # Always use static system locations for consistency across all machines
         # This prevents synced Qt settings from causing issues with Syncthing
-        from qtpy.QtCore import QUrl, QStandardPaths
-        
         static_urls = []
         
         # Home directory (user's home as first entry)
@@ -1119,7 +1126,6 @@ class GcodeTextEdit(QPlainTextEdit):
                     view.setItemDelegateForColumn(col_num, delegate)
         
         # Configure the splitter to show handle and set initial sizes
-        from qtpy.QtWidgets import QSplitter
         for splitter in dialog.findChildren(QSplitter):
             splitter.setHandleWidth(8)
             splitter.setChildrenCollapsible(False)
@@ -1183,17 +1189,29 @@ class GcodeTextEdit(QPlainTextEdit):
         # keep the cursor centered
         if event.key() == Qt.Key_Up:
             self.moveCursor(QTextCursor.Up)
-            self.centerCursor()
+            self._centerCursorInView()
 
         elif event.key() == Qt.Key_Down:
             self.moveCursor(QTextCursor.Down)
-            self.centerCursor()
+            self._centerCursorInView()
 
         else:
             super(GcodeTextEdit, self).keyPressEvent(event)
 
+    def _centerCursorInView(self):
+        vbar = self.verticalScrollBar()
+        if vbar is None:
+            self.ensureCursorVisible()
+            return
+
+        cursor_rect = self.cursorRect()
+        viewport_half_height = self.viewport().height() / 2.0
+        target = vbar.value() + cursor_rect.center().y() - viewport_half_height
+        clamped_target = max(vbar.minimum(), min(vbar.maximum(), int(target)))
+        vbar.setValue(clamped_target)
+
     def changeEvent(self, event):
-        if event.type() == QEvent.FontChange:
+        if event.type() == QEvent.FontChange and self.syntax_highlighting:
             # Update syntax highlighter with new font
             self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
 
@@ -1203,6 +1221,126 @@ class GcodeTextEdit(QPlainTextEdit):
     def syntaxHighlightingOnOff(self, state):
         """Toggle syntax highlighting on/off"""
         pass
+
+    def _applyLineHeight(self, force=False):
+        if self.line_height_percent <= 0:
+            return
+
+        if not force and self._applied_line_height_percent == self.line_height_percent:
+            return
+
+        doc = self.document()
+        if doc is None:
+            return
+
+        cursor = QTextCursor(doc)
+        cursor.beginEditBlock()
+        cursor.select(QTextCursor.Document)
+
+        block_format = QTextBlockFormat()
+        proportional_height = getattr(QTextBlockFormat, 'ProportionalHeight', None)
+        if proportional_height is None:
+            proportional_height = QTextBlockFormat.LineHeightTypes.ProportionalHeight
+        proportional_height_value = getattr(proportional_height, 'value', proportional_height)
+        block_format.setLineHeight(float(self.line_height_percent), int(proportional_height_value))
+        cursor.mergeBlockFormat(block_format)
+
+        cursor.endEditBlock()
+        self._applied_line_height_percent = self.line_height_percent
+
+    def _applyFontToDocument(self, doc, font):
+        if doc is None:
+            return
+
+        doc.setDefaultFont(font)
+
+        cursor = QTextCursor(doc)
+        cursor.beginEditBlock()
+        cursor.select(QTextCursor.Document)
+
+        char_format = QTextCharFormat()
+        char_format.setFont(font)
+        cursor.mergeCharFormat(char_format)
+
+        cursor.endEditBlock()
+
+    def _normalizeFontWeight(self, value):
+        if value < 0:
+            return -1
+
+        allowed_weights = (100, 200, 300, 400, 500, 600, 700, 800, 900)
+        return min(allowed_weights, key=lambda weight: abs(weight - value))
+
+    def _fontWeightValue(self, weight):
+        return int(getattr(weight, 'value', weight))
+
+    def _toQFontWeight(self, value):
+        normalized = self._normalizeFontWeight(value)
+        if normalized < 0:
+            return None
+
+        try:
+            return QFont.Weight(normalized)
+        except Exception:
+            return QFont.Weight.Normal
+
+    def _applyEditorFont(self):
+        current_font = self.font()
+        font = QFont(current_font)
+        updated = False
+        current_weight = self._fontWeightValue(current_font.weight())
+
+        if self.editor_font_family and current_font.family() != self.editor_font_family:
+            font.setFamily(self.editor_font_family)
+            updated = True
+
+        if self.editor_font_point_size > 0 and current_font.pointSize() != self.editor_font_point_size:
+            font.setPointSize(self.editor_font_point_size)
+            updated = True
+
+        if self.editor_font_weight >= 0 and current_weight != self.editor_font_weight:
+            font_weight = self._toQFontWeight(self.editor_font_weight)
+            if font_weight is not None:
+                font.setWeight(font_weight)
+            updated = True
+
+        applied_font = current_font
+        if updated:
+            self.setFont(font)
+            applied_font = font
+            self.margin.updateWidth()
+            self.margin.update()
+
+        self._applyFontToDocument(self.document(), applied_font)
+
+    def _applyMarginFont(self):
+        if not hasattr(self.margin, 'font') or not hasattr(self.margin, 'setFont'):
+            return
+
+        current_font = self.margin.font()
+        font = QFont(current_font)
+        updated = False
+        current_weight = self._fontWeightValue(current_font.weight())
+
+        if self.margin_font_family and current_font.family() != self.margin_font_family:
+            font.setFamily(self.margin_font_family)
+            updated = True
+
+        if self.margin_font_point_size > 0 and current_font.pointSize() != self.margin_font_point_size:
+            font.setPointSize(self.margin_font_point_size)
+            updated = True
+
+        if self.margin_font_weight >= 0 and current_weight != self.margin_font_weight:
+            font_weight = self._toQFontWeight(self.margin_font_weight)
+            if font_weight is not None:
+                font.setWeight(font_weight)
+            updated = True
+
+        if updated:
+            self.margin.setFont(font)
+
+        self.margin.updateWidth()
+        self.margin.update()
 
     @Property(bool)
     def syntaxHighlighting(self):
@@ -1220,7 +1358,7 @@ class GcodeTextEdit(QPlainTextEdit):
 
         LOG.debug('setPlanText')
         doc = QTextDocument()
-        doc.setDocumentLayout(QPlainTextDocumentLayout(doc))
+        self._applyFontToDocument(doc, self.font())
         doc.setPlainText(p_str)
 
         # start syntax highlighting
@@ -1229,6 +1367,7 @@ class GcodeTextEdit(QPlainTextEdit):
             LOG.debug('Syntax highlighting enabled.')
 
         self.setDocument(doc)
+        self._applyLineHeight(force=True)
         self.margin.updateWidth()
         LOG.debug('Document set with text.')
 
@@ -1328,23 +1467,111 @@ class GcodeTextEdit(QPlainTextEdit):
         self.margin.highlight_color = color
         self.margin.update()
 
+    @Property(int)
+    def lineHeightPercent(self):
+        return self.line_height_percent
+
+    @lineHeightPercent.setter
+    def lineHeightPercent(self, value):
+        self.line_height_percent = max(1, int(value))
+        self._applyLineHeight()
+
+    @Property(str)
+    def editorFontFamily(self):
+        return self.editor_font_family
+
+    @editorFontFamily.setter
+    def editorFontFamily(self, value):
+        self.editor_font_family = value.strip()
+        self._applyEditorFont()
+
+    @Property(int)
+    def editorFontPointSize(self):
+        return self.editor_font_point_size
+
+    @editorFontPointSize.setter
+    def editorFontPointSize(self, value):
+        self.editor_font_point_size = max(0, int(value))
+        self._applyEditorFont()
+
+    @Property(int)
+    def editorFontWeight(self):
+        return self.editor_font_weight
+
+    @editorFontWeight.setter
+    def editorFontWeight(self, value):
+        self.editor_font_weight = self._normalizeFontWeight(int(value))
+        self._applyEditorFont()
+
+    @Property(str)
+    def marginFontFamily(self):
+        return self.margin_font_family
+
+    @marginFontFamily.setter
+    def marginFontFamily(self, value):
+        self.margin_font_family = value.strip()
+        self._applyMarginFont()
+
+    @Property(int)
+    def marginFontPointSize(self):
+        return self.margin_font_point_size
+
+    @marginFontPointSize.setter
+    def marginFontPointSize(self, value):
+        self.margin_font_point_size = max(0, int(value))
+        self._applyMarginFont()
+
+    @Property(int)
+    def marginFontWeight(self):
+        return self.margin_font_weight
+
+    @marginFontWeight.setter
+    def marginFontWeight(self, value):
+        self.margin_font_weight = self._normalizeFontWeight(int(value))
+        self._applyMarginFont()
+
     @Slot(str)
     @Slot(object)
     def loadProgramFile(self, fname=None):
         if fname:
+            t0 = perf_counter()
             encodings = allEncodings()
             enc = None
+            gcode = None
+            decode_ms = 0.0
             for enc in encodings:
+                dec_start = perf_counter()
                 try:
                     with open(fname,  'r', encoding=enc) as f:
                         gcode = f.read()
+                        decode_ms = (perf_counter() - dec_start) * 1000.0
                         break
                 except Exception as e:
                     # LOG.debug(e)
                     LOG.info(f"File encoding doesn't match {enc}, trying others")
+            if gcode is None:
+                LOG.warning("Unable to decode program file for GcodeTextEdit: %s", fname)
+                return
             LOG.info(f"File encoding: {enc}")
             # set the syntax highlighter
+            apply_start = perf_counter()
             self.setPlainText(gcode)
+            apply_ms = (perf_counter() - apply_start) * 1000.0
+            total_ms = (perf_counter() - t0) * 1000.0
+            LOG.info(
+                "[gcode-load-perf] widget=GcodeTextEdit bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f file=%s",
+                len(gcode.encode('utf-8', errors='ignore')),
+                enc,
+                decode_ms,
+                apply_ms,
+                total_ms,
+                fname,
+            )
+            PROGRAM_LOAD_PERF_SUMMARY.update_editor(
+                fname,
+                widget_name='GcodeTextEdit',
+                total_ms=total_ms,
+            )
             # self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
 
     @Slot(int)
@@ -1352,7 +1579,7 @@ class GcodeTextEdit(QPlainTextEdit):
     def setCurrentLine(self, line):
         cursor = QTextCursor(self.document().findBlockByLineNumber(line - 1))
         self.setTextCursor(cursor)
-        self.centerCursor()
+        self._centerCursorInView()
 
     def getCurrentLine(self):
         return self.textCursor().blockNumber() + 1
@@ -1390,17 +1617,17 @@ class GcodeTextEdit(QPlainTextEdit):
         cr = self.contentsRect()
         rec = QRect(cr.left(), cr.top(), self.margin.getWidth(), cr.height())
         self.margin.setGeometry(rec)
-        QPlainTextEdit.resizeEvent(self, *e)
+        QTextEdit.resizeEvent(self, *e)
 
 
 class NumberMargin(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         self.parent = parent
-        # this only happens when lines are added or subtracted
-        self.parent.blockCountChanged.connect(self.updateWidth)
-        # this happens quite often
-        self.parent.updateRequest.connect(self.updateContents)
+        self.parent.document().blockCountChanged.connect(self.updateWidth)
+        self.parent.verticalScrollBar().valueChanged.connect(self.onScroll)
+        self.parent.textChanged.connect(self.onTextChanged)
+        self.parent.cursorPositionChanged.connect(self.onCursorChanged)
 
         self.background = QColor('#e8e8e8')
         self.highlight_background = QColor('#e8e8e8')
@@ -1408,8 +1635,8 @@ class NumberMargin(QWidget):
         self.highlight_color = QColor('#000000')
 
     def getWidth(self):
-        blocks = self.parent.blockCount()
-        return self.parent.fontMetrics().horizontalAdvance(str(blocks)) + 5
+        blocks = self.parent.document().blockCount()
+        return self.fontMetrics().horizontalAdvance(str(blocks)) + 5
 
     def updateWidth(self):  # check the number column width and adjust
         width = self.getWidth()
@@ -1417,29 +1644,43 @@ class NumberMargin(QWidget):
             self.setFixedWidth(width)
             self.parent.setViewportMargins(width, 0, 0, 0)
 
-    def updateContents(self, rect, scroll):
-        if scroll:
-            self.scroll(0, scroll)
-        else:
-            self.update(0, rect.y(), self.width(), rect.height())
+    def onScroll(self, value):
+        self.update()
 
-        if rect.contains(self.parent.viewport().rect()):
-            self.updateWidth()
+    def onTextChanged(self):
+        self.updateWidth()
+        self.update()
+
+    def onCursorChanged(self):
+        self.update()
 
     def paintEvent(self, event):  # this puts the line numbers in the margin
         painter = QPainter(self)
         painter.fillRect(event.rect(), self.background)
-        block = self.parent.firstVisibleBlock()
+        doc = self.parent.document()
+        layout = doc.documentLayout()
+        block = doc.begin()
+        scroll_y = self.parent.verticalScrollBar().value()
+        viewport_bottom = self.parent.viewport().height()
 
-        font = self.parent.font()
+        font = QFont(self.font())
 
         while block.isValid():
             block_num = block.blockNumber()
-            block_top = self.parent.blockBoundingGeometry(block).translated(self.parent.contentOffset()).top()
+            block_rect = layout.blockBoundingRect(block)
+            block_top = block_rect.top() - scroll_y
+            block_bottom = block_top + block_rect.height()
 
-            # if the block is not visible stop wasting time
-            if not block.isVisible() or block_top >= event.rect().bottom():
+            if block_bottom < 0:
+                block = block.next()
+                continue
+
+            if block_top > viewport_bottom:
                 break
+
+            if not block.isVisible():
+                block = block.next()
+                continue
 
             if block_num == self.parent.textCursor().blockNumber():
                 font.setBold(True)
@@ -1452,10 +1693,11 @@ class NumberMargin(QWidget):
                 painter.setPen(self.color)
                 background = self.background
 
+            line_height = int(block_rect.height())
             paint_rec = QRect(0, int(block_top), self.width(),
-                              self.parent.fontMetrics().height())
+                              line_height)
             text_rec = QRect(0, int(block_top), self.width() -
-                             4, self.parent.fontMetrics().height())
+                             4, line_height)
             painter.fillRect(paint_rec, background)
             painter.drawText(text_rec, Qt.AlignmentFlag.AlignRight, str(block_num + 1))
             block = block.next()

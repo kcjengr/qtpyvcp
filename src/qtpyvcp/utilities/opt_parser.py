@@ -214,6 +214,18 @@ def apply_opts(opts):
         LOG.debug("Command line options:\n%s",
                   json.dumps(opts, sort_keys=True, indent=4))
 
+        try:
+            from qtpyvcp.utilities.system_diagnostics import build_system_diagnostics_report_lines
+
+            diagnostics_lines = build_system_diagnostics_report_lines(
+                qtpyvcp_version=QTPYVCP_VERSION,
+                qt_version=PySide6.__version__,
+                qt_api=PySide6.__package__,
+            )
+            LOG.info("\n".join(diagnostics_lines))
+        except Exception as exc:
+            LOG.warning("Failed to gather full system diagnostics report: %s", exc)
+
     return opts
 
 def printSystemInfo():

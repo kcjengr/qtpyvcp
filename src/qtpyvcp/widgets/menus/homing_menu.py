@@ -7,6 +7,7 @@ from PySide6.QtGui import QAction
 from qtpyvcp import actions
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 INFO = Info()
 
@@ -40,4 +41,4 @@ class HomingMenu(QMenu):
             home_axis.setVisible(True)
 
         self.setEnabled(self.status.stat.state == linuxcnc.STATE_ON)
-        self.status.on.notify(lambda on: self.setEnabled(on))
+        self.status.on.notify(safe_qt_callback(self, lambda on: self.setEnabled(on)))

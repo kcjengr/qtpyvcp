@@ -5,6 +5,7 @@ from PySide6.QtCore import Signal, QObject
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities import logger
+from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 
 LOG = logger.getLogger('qtpyvcp.' + __name__)
 INFO = Info()
@@ -69,6 +70,7 @@ class LinuxCncDataSource(QObject):
         self._status.tool_table.notify(self.__handleToolTableChanged)
 
     def __handleProgramLoaded(self, fname):
+        PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='datasource-program-loaded', percent=45)
         self.programLoaded.emit(fname)
 
     def __handlePositionChanged(self, position):

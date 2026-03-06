@@ -7,7 +7,7 @@ from jinja2.nativetypes import NativeEnvironment
 from jinja2 import Environment, FileSystemLoader, Undefined, make_logging_undefined
 
 from qtpyvcp.utilities.logger import getLogger, logLevelFromName
-from qtpyvcp.utilities.yaml_filters import INIFilterModule
+from qtpyvcp.utilities.yaml_filters import INIFilterModule, ini_value, effective_theme_color
 
 LOG = getLogger(__name__)
 
@@ -67,6 +67,8 @@ def process_templates(files):
                       undefined=Undefined)
     
     filter_module = INIFilterModule()
+    env.globals['ini_value'] = ini_value
+    env.globals['effective_theme_color'] = effective_theme_color
     
     for name, func in filter_module.filters().items():
         LOG.debug(f"Filter name: {name} func: {func}")

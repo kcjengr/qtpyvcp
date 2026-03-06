@@ -29,6 +29,22 @@ def _resolve_active_tool(tool_table, datasource):
     stat = getattr(status, 'stat', None)
     active_tool = getattr(stat, 'tool_in_spindle', 0)
 
+    try:
+        active_tool = int(active_tool)
+    except Exception:
+        active_tool = 0
+
+    def _entry_tool_number(entry):
+        for attr in ('id', 'tool', 'toolno', 'number'):
+            value = getattr(entry, attr, None)
+            if value is None:
+                continue
+            try:
+                return int(value)
+            except Exception:
+                continue
+        return None
+
     if isinstance(tool_table, dict):
         if active_tool in tool_table:
             return tool_table[active_tool]
@@ -36,6 +52,15 @@ def _resolve_active_tool(tool_table, datasource):
             return tool_table[0]
         values = list(tool_table.values())
         return values[0] if values else None
+
+    # LinuxCNC stat.tool_table is often pocket-indexed, not tool-number-indexed.
+    # Match by tool ID first to avoid selecting wrong geometry/diameter.
+    try:
+        for entry in tool_table:
+            if _entry_tool_number(entry) == active_tool:
+                return entry
+    except Exception:
+        pass
 
     try:
         if active_tool is not None and 0 <= int(active_tool) < len(tool_table):

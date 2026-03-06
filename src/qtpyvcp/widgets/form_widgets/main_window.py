@@ -1,5 +1,6 @@
 import os
 import sys
+from time import perf_counter
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -7,9 +8,9 @@ import linuxcnc
 
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
-from PySide6.QtCore import Qt, Slot, QTimer, QFile
+from PySide6.QtCore import Qt, Slot, QTimer, QFile, QObject
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QVBoxLayout
+    QMenu, QMenuBar, QLineEdit, QVBoxLayout, QButtonGroup
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -20,6 +21,9 @@ from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
 from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
+from qtpyvcp.utilities.encode_utils import allEncodings
+from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 LOG = logger.getLogger(__name__)
 INFO = Info()
@@ -60,6 +64,8 @@ class VCPMainWindow(QMainWindow):
         # Ctl   ctrl key needs to be pushed to enable jog
         self.slow_jog = False
         self.rapid_jog = False
+
+        self._explicit_window_title = title
 
         self.setWindowTitle(title)
 
@@ -135,34 +141,344 @@ class VCPMainWindow(QMainWindow):
             ui_file (str) : Path to a .ui file to load.
         """
         def _apply_widget_attributes():
-            from PySide6.QtWidgets import QWidget
-            for widget in self.findChildren(QWidget):
-                if hasattr(widget, 'objectName') and widget.objectName():
-                    name = widget.objectName()
+            for obj in self.findChildren(QObject):
+                if hasattr(obj, 'objectName') and obj.objectName():
+                    name = obj.objectName()
                     if not hasattr(self, name):
-                        setattr(self, name, widget)
+                        setattr(self, name, obj)
 
-        # Prefer qtpy.uic.loadUi to match PyQt5 behavior and load live .ui edits
-        try:
-            from qtpy import uic
-            LOG.debug(f"Loading UI with qtpy.uic.loadUi: {ui_file}")
-            self.ui = uic.loadUi(ui_file, self)
-            _apply_widget_attributes()
-            self.loadSplashGcode()
-            return
-        except Exception:
-            LOG.exception("qtpy.uic.loadUi failed, falling back to QUiLoader")
+        def _wire_gcode_editor_status_hooks():
+            decode_cache = {
+                'fname': None,
+                'mtime': None,
+                'size': None,
+                'bytes_data': None,
+                'text': None,
+                'encoding': None,
+                'bytes': 0,
+            }
+            shared_doc_state = {
+                'active_file': None,
+                'source_editor': None,
+            }
+
+            def _share_document_from_source(target_editor, source_editor):
+                if source_editor is None or source_editor is target_editor:
+                    return False
+
+                try:
+                    if hasattr(target_editor, 'use_shared_document_from'):
+                        return bool(target_editor.use_shared_document_from(source_editor))
+
+                    if (
+                        hasattr(target_editor, 'setDocument')
+                        and hasattr(target_editor, 'document')
+                        and hasattr(source_editor, 'document')
+                    ):
+                        source_doc = source_editor.document()
+                        if source_doc is None:
+                            return False
+                        if target_editor.document() is source_doc:
+                            return True
+                        target_editor.setDocument(source_doc)
+                        return True
+                except Exception:
+                    LOG.debug("Unable to share editor document", exc_info=True)
+
+                return False
+
+            def _bytes_from_cache(fname):
+                try:
+                    stat = os.stat(fname)
+                except Exception:
+                    return None, 0.0, 0, False
+
+                cache_hit = (
+                    decode_cache['fname'] == fname and
+                    decode_cache['mtime'] == stat.st_mtime_ns and
+                    decode_cache['size'] == stat.st_size and
+                    decode_cache['bytes_data'] is not None
+                )
+                if cache_hit:
+                    return decode_cache['bytes_data'], 0.0, decode_cache['bytes'], True
+
+                read_start = perf_counter()
+                with open(fname, 'rb') as handle:
+                    data = handle.read()
+                read_ms = (perf_counter() - read_start) * 1000.0
+
+                decode_cache['fname'] = fname
+                decode_cache['mtime'] = stat.st_mtime_ns
+                decode_cache['size'] = stat.st_size
+                decode_cache['bytes_data'] = data
+                decode_cache['text'] = None
+                decode_cache['encoding'] = 'raw-bytes'
+                decode_cache['bytes'] = len(data)
+
+                return data, read_ms, len(data), False
+
+            def _decode_file_with_cache(fname):
+                try:
+                    stat = os.stat(fname)
+                except Exception:
+                    return None, None, 0.0, 0, False
+
+                cache_hit = (
+                    decode_cache['fname'] == fname and
+                    decode_cache['mtime'] == stat.st_mtime_ns and
+                    decode_cache['size'] == stat.st_size and
+                    decode_cache['text'] is not None
+                )
+                if cache_hit:
+                    return decode_cache['text'], decode_cache['encoding'], 0.0, decode_cache['bytes'], True
+
+                decode_ms = 0.0
+                gcode_text = None
+                used_encoding = None
+                for encoding in allEncodings():
+                    dec_start = perf_counter()
+                    try:
+                        with open(fname, 'r', encoding=encoding) as handle:
+                            gcode_text = handle.read()
+                        used_encoding = encoding
+                        decode_ms = (perf_counter() - dec_start) * 1000.0
+                        break
+                    except Exception:
+                        continue
+
+                if gcode_text is None:
+                    return None, None, decode_ms, 0, False
+
+                decode_cache['fname'] = fname
+                decode_cache['mtime'] = stat.st_mtime_ns
+                decode_cache['size'] = stat.st_size
+                decode_cache['text'] = gcode_text
+                decode_cache['encoding'] = used_encoding
+                decode_cache['bytes'] = len(gcode_text.encode('utf-8', errors='ignore'))
+
+                return gcode_text, used_encoding, decode_ms, decode_cache['bytes'], False
+
+            for obj in self.findChildren(QObject):
+                if obj.metaObject().className() not in ('GCodeEditor', 'GcodeEditor'):
+                    continue
+                if not (hasattr(obj, 'set_text_fast') or hasattr(obj, 'setText') or hasattr(obj, 'setPlainText')):
+                    continue
+                if getattr(obj, '_qtpyvcp_status_wired', False):
+                    continue
+
+                def _load_program_file(fname=None, editor=obj):
+                    if not fname or not os.path.isfile(fname):
+                        return
+
+                    editor_class = editor.metaObject().className()
+                    t0 = perf_counter()
+
+                    if shared_doc_state['active_file'] != fname:
+                        shared_doc_state['active_file'] = fname
+                        shared_doc_state['source_editor'] = None
+
+                    used_encoding = None
+                    decode_ms = 0.0
+                    bytes_len = 0
+                    cache_hit = False
+
+                    bytes_payload = None
+                    gcode_text = None
+
+                    source_editor = shared_doc_state.get('source_editor')
+                    if (
+                        source_editor is not None
+                        and source_editor is not editor
+                    ):
+                        _, _, bytes_len, cache_hit = _bytes_from_cache(fname)
+                        apply_start = perf_counter()
+                        shared_ok = _share_document_from_source(editor, source_editor)
+                        apply_ms = (perf_counter() - apply_start) * 1000.0
+                        if shared_ok:
+                            total_ms = (perf_counter() - t0) * 1000.0
+                            LOG.debug(
+                                "[gcode-load-perf] widget=%s bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f cache_hit=%s file=%s",
+                                editor_class,
+                                bytes_len,
+                                'shared-doc',
+                                0.0,
+                                apply_ms,
+                                total_ms,
+                                cache_hit,
+                                fname,
+                            )
+
+                            PROGRAM_LOAD_PERF_SUMMARY.update_editor(
+                                fname,
+                                widget_name=editor_class,
+                                total_ms=total_ms,
+                            )
+                            return
+
+                    if hasattr(editor, 'set_text_fast'):
+                        bytes_payload, decode_ms, bytes_len, cache_hit = _bytes_from_cache(fname)
+                        used_encoding = 'raw-bytes'
+                        if bytes_payload is None:
+                            LOG.warning("Unable to read program file for GCodeEditor: %s", fname)
+                            return
+                    else:
+                        gcode_text, used_encoding, decode_ms, bytes_len, cache_hit = _decode_file_with_cache(fname)
+                        if gcode_text is None:
+                            LOG.warning("Unable to decode program file for GCodeEditor: %s", fname)
+                            return
+
+                    apply_start = perf_counter()
+                    if hasattr(editor, 'set_text_fast'):
+                        editor.set_text_fast(bytes_payload)
+                    elif hasattr(editor, 'setText'):
+                        editor.setText(gcode_text)
+                    else:
+                        editor.setPlainText(gcode_text)
+
+                    try:
+                        if hasattr(editor, 'setFilename'):
+                            editor.setFilename(fname)
+                        elif hasattr(editor, 'setFilePath'):
+                            editor.setFilePath(fname)
+                    except Exception:
+                        LOG.debug("Unable to set filename/filepath on GCodeEditor", exc_info=True)
+
+                    apply_ms = (perf_counter() - apply_start) * 1000.0
+                    total_ms = (perf_counter() - t0) * 1000.0
+
+                    if shared_doc_state.get('source_editor') is None:
+                        shared_doc_state['source_editor'] = editor
+
+                    LOG.debug(
+                        "[gcode-load-perf] widget=%s bytes=%d encoding=%s decode_ms=%.2f apply_ms=%.2f total_ms=%.2f cache_hit=%s file=%s",
+                        editor_class,
+                        bytes_len,
+                        used_encoding,
+                        decode_ms,
+                        apply_ms,
+                        total_ms,
+                        cache_hit,
+                        fname,
+                    )
+
+                    PROGRAM_LOAD_PERF_SUMMARY.update_editor(
+                        fname,
+                        widget_name=editor_class,
+                        total_ms=total_ms,
+                    )
+
+                def _set_current_line(line, editor=obj):
+                    try:
+                        line_number = max(0, int(line) - 1)
+                        if hasattr(editor, 'setCursorPosition'):
+                            editor.setCursorPosition(line_number, 0)
+                            if hasattr(editor, 'ensureCursorVisible'):
+                                editor.ensureCursorVisible()
+                            return
+
+                        if not hasattr(editor, 'document'):
+                            return
+
+                        block = editor.document().findBlockByLineNumber(line_number)
+                        if not block.isValid():
+                            return
+                        cursor = editor.textCursor()
+                        cursor.setPosition(block.position())
+                        editor.setTextCursor(cursor)
+                        if hasattr(editor, 'centerCursor'):
+                            editor.centerCursor()
+                    except Exception:
+                        LOG.debug("Unable to set current line for GCodeEditor", exc_info=True)
+
+                STATUS.file.notify(safe_qt_callback(obj, _load_program_file))
+                STATUS.motion_line.onValueChanged(safe_qt_callback(obj, _set_current_line))
+
+                current_file = str(STATUS.file)
+                if current_file:
+                    _load_program_file(current_file)
+
+                setattr(obj, '_qtpyvcp_status_wired', True)
+
+        def _wire_button_group_slots():
+            for group in self.findChildren(QButtonGroup):
+                group_name = group.objectName()
+                if not group_name:
+                    continue
+
+                slot_name = f'on_{group_name}_buttonClicked'
+                slot = getattr(self, slot_name, None)
+                if slot is None:
+                    continue
+
+                if getattr(group, '_qtpyvcp_button_group_wired', False):
+                    continue
+
+                try:
+                    group.buttonClicked.connect(slot)
+                    setattr(group, '_qtpyvcp_button_group_wired', True)
+                except Exception:
+                    LOG.exception("Failed wiring button group slot: %s", slot_name)
+
+        def _register_ui_custom_widgets(loader, path):
+            import importlib
+            import xml.etree.ElementTree as ET
+
+            try:
+                tree = ET.parse(path)
+                root = tree.getroot()
+            except Exception:
+                LOG.exception("Unable to parse UI for custom widget registration: %s", path)
+                return
+
+            customwidgets = root.find('customwidgets')
+            if customwidgets is None:
+                return
+
+            for customwidget in customwidgets.findall('customwidget'):
+                class_name = customwidget.findtext('class')
+                header = customwidget.findtext('header')
+
+                if not class_name or not header:
+                    continue
+
+                module_path = header.strip()
+
+                if module_path.endswith('.h'):
+                    continue
+
+                try:
+                    module = importlib.import_module(module_path)
+                    widget_class = getattr(module, class_name, None)
+                    if widget_class is not None:
+                        loader.registerCustomWidget(widget_class)
+                except Exception:
+                    LOG.debug("Skipping custom widget registration for %s from %s", class_name, module_path)
+
+        def _ui_uses_gcode_editor(path):
+            try:
+                with open(path, 'r', encoding='utf-8') as ui_file_handle:
+                    ui_xml = ui_file_handle.read()
+                return ('<class>GcodeEditor</class>' in ui_xml or
+                        '<widget class="GcodeEditor"' in ui_xml or
+                        '<class>GCodeEditor</class>' in ui_xml or
+                        '<widget class="GCodeEditor"' in ui_xml)
+            except Exception:
+                LOG.exception("Unable to inspect UI file for GcodeEditor usage: %s", path)
+                return False
+
+        # Use QUiLoader for UI loading (PySide6-native path).
 
         LOG.debug(f"Loading UI with QUiLoader: {ui_file}")
-        from PySide6.QtUiTools import QUiLoader
-        from PySide6.QtCore import QFile
 
         # Import all QtPyVCP widgets to ensure they're available
         from qtpyvcp.widgets import register_widgets  # noqa: F401
 
+
         ui_file_obj = QFile(ui_file)
         ui_file_obj.open(QFile.ReadOnly)
+        
         loader = QUiLoader()
+        _register_ui_custom_widgets(loader, ui_file)
 
         # Register essential QtPyVCP custom widgets
         try:
@@ -196,10 +512,55 @@ class VCPMainWindow(QMainWindow):
         except ImportError:
             pass
 
-        self.ui = loader.load(ui_file_obj, self)
-        _apply_widget_attributes()
-        self.loadSplashGcode()
+        
+        loaded_ui = loader.load(ui_file_obj, self)
 
+        if isinstance(loaded_ui, QMainWindow) and loaded_ui is not self:
+            loaded_title = loaded_ui.windowTitle()
+            if self._explicit_window_title in (None, '') and loaded_title:
+                self.setWindowTitle(loaded_title)
+
+            loaded_icon = loaded_ui.windowIcon()
+            if loaded_icon is not None and not loaded_icon.isNull():
+                self.setWindowIcon(loaded_icon)
+
+            loaded_central = loaded_ui.centralWidget()
+            if loaded_central is not None:
+                loaded_central.setParent(None)
+                self.setCentralWidget(loaded_central)
+
+            loaded_status = loaded_ui.statusBar()
+            if loaded_status is not None:
+                loaded_status.setParent(None)
+                self.setStatusBar(loaded_status)
+
+            loaded_menu = loaded_ui.menuBar()
+            if loaded_menu is not None:
+                loaded_menu.setParent(None)
+                self.setMenuBar(loaded_menu)
+
+            for child in list(loaded_ui.children()):
+                if child in (loaded_central, loaded_status, loaded_menu):
+                    continue
+                if child.parent() is not loaded_ui:
+                    continue
+                if not isinstance(child, QButtonGroup):
+                    continue
+                try:
+                    child.setParent(self)
+                except Exception:
+                    LOG.debug("Unable to reparent loaded button group: %s", child, exc_info=True)
+
+            loaded_ui.deleteLater()
+            self.ui = self
+        else:
+            self.ui = loaded_ui
+        
+        _apply_widget_attributes()
+        _wire_button_group_slots()
+        _wire_gcode_editor_status_hooks()
+        self.loadSplashGcode()
+        
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied
         to specific Qt and/or QtPyVCP widget classes.
@@ -272,7 +633,7 @@ class VCPMainWindow(QMainWindow):
                                 menu_action.setChecked(True)
 
                             menu_action.setData(num)
-                            setting.notify(lambda v: update(group, v))
+                            setting.notify(safe_qt_callback(menu_action, lambda v: update(group, v)))
 
                             menu_action.setActionGroup(group)
                             submenu.addAction(menu_action)
@@ -284,7 +645,7 @@ class VCPMainWindow(QMainWindow):
                         menu_action.setCheckable(True)
                         menu_action.triggered.connect(setting.setValue)
                         menu_action.setShortcut(shortcut)
-                        setting.notify(menu_action.setChecked)
+                        setting.notify(safe_qt_callback(menu_action, menu_action.setChecked))
                         menu.addAction(menu_action)
 
                     return

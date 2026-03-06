@@ -43,6 +43,14 @@ class RemovableDeviceComboBox(QComboBox):
 
         self.setSizeAdjustPolicy(QComboBox.AdjustToContents)
 
+        self._file_locations = None
+
+        if IN_DESIGNER:
+            self.addItem('Local Files', {'path': os.path.expanduser('~'), 'removable': False})
+            self.addItem('USB Device', {'path': '/media/usb', 'removable': True})
+            self.currentTextChanged.connect(self.onCurrentTextChanged)
+            return
+
         self._file_locations = getPlugin('file_locations')
         self._file_locations.removable_devices.notify(self.onRemovableDevicesChanged)
         self._file_locations.new_device.notify(self.onNewDeviceAdded)
@@ -56,12 +64,18 @@ class RemovableDeviceComboBox(QComboBox):
         self.onRemovableDevicesChanged(self._file_locations.removable_devices.value)
 
     def showEvent(self, event=None):
-        if self._first_show:
-            self._first_show = False
-            self.setCurrentText(self._file_locations.default_location)
-            data = self.currentData() or {}
-            self.currentDeviceEjectable.emit(data.get('removable', False))
-        super(RemovableDeviceComboBox, self).showEvent(event)
+        try:
+            if self._first_show:
+                self._first_show = False
+                if self._file_locations is not None:
+                    self.setCurrentText(self._file_locations.default_location)
+                data = self.currentData() or {}
+                self.currentDeviceEjectable.emit(data.get('removable', False))
+            super(RemovableDeviceComboBox, self).showEvent(event)
+        except KeyboardInterrupt:
+            if IN_DESIGNER:
+                return
+            raise
 
     def onCurrentTextChanged(self, text):
         data = self.currentData()
@@ -70,6 +84,9 @@ class RemovableDeviceComboBox(QComboBox):
             self.currentDeviceEjectable.emit(data.get('removable', False))
 
     def onRemovableDevicesChanged(self, devices):
+
+        if self._file_locations is None:
+            return
 
         self.blockSignals(True)
 
@@ -87,6 +104,8 @@ class RemovableDeviceComboBox(QComboBox):
         self.blockSignals(False)
 
     def onNewDeviceAdded(self, device):
+        if self._file_locations is None:
+            return
         if device:
             self.setCurrentText(device.get('label'))
         else:
@@ -94,6 +113,8 @@ class RemovableDeviceComboBox(QComboBox):
 
     @Slot()
     def ejectDevice(self):
+        if self._file_locations is None:
+            return
         data = self.currentData()
         if data:
             self._file_locations.ejectDevice(data.get('device'))

@@ -5,6 +5,7 @@ from PySide6.QtGui import QIntValidator, QDoubleValidator
 
 from qtpyvcp import SETTINGS
 from qtpyvcp.widgets import VCPWidget
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 from qtpyvcp.utilities import logger
 
@@ -263,7 +264,7 @@ class VCPSettingsCheckBox(QCheckBox, VCPAbstractSettingsWidget):
             self.setDisplayChecked(value)
             self.toggled.emit(value)
 
-            self._setting.notify(self.setDisplayChecked)
+            self._setting.notify(safe_qt_callback(self, self.setDisplayChecked))
             self.toggled.connect(self._setting.setValue)
 
 
@@ -361,7 +362,7 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
             self.toggled.emit(self.value())
 
             # Use wrapper for settings notification to handle type conversion
-            self._setting.notify(lambda v: self.setDisplayChecked(bool(v)))
+            self._setting.notify(safe_qt_callback(self, lambda v: self.setDisplayChecked(bool(v))))
             # Connect to a wrapper that uses the configured output type
             self.toggled.connect(self._onToggled)
 

@@ -1037,8 +1037,6 @@ class PropertiesCanon(BaseCanon):
             xt, yt, zt = 0, 0, 0
 
             for sj in si:
-                print(len(sj))
-                print(sj)
                 if not isinstance(sj, (list, tuple)) or len(sj) not in (2, 3, 4, 5):
                     return [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
 

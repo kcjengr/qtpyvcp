@@ -82,6 +82,7 @@ class NotificationWidget(QWidget, VCPWidget):
         self.all_notification_model_proxy = QSortFilterProxyModel(self.all_notification_view)
 
         self.all_notification_model_proxy.setSourceModel(self.all_notification_model)
+        self.all_notification_model_proxy.setFilterKeyColumn(0)
 
         # self.all_notification_view.setModel(self.all_notification_model)
         self.all_notification_view.setModel(self.all_notification_model_proxy)
@@ -167,7 +168,7 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(False)
 
         self.notification_name.setText("All Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(None)
+        self.all_notification_model_proxy.setFilterRegularExpression(QRegularExpression())
 
     def show_info_notifications(self):
         self.all_button.setChecked(False)
@@ -177,8 +178,9 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(False)
 
         self.notification_name.setText("Information Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegularExpression("INFO", Qt.CaseSensitive,
-                                                          QRegularExpression.FixedString))
+        self.all_notification_model_proxy.setFilterRegularExpression(
+            QRegularExpression(QRegularExpression.escape("INFO"))
+        )
 
     def show_warn_notifications(self):
         self.all_button.setChecked(False)
@@ -188,8 +190,9 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(False)
 
         self.notification_name.setText("Warning Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegularExpression("WANRNING", Qt.CaseSensitive,
-                                                          QRegularExpression.FixedString))
+        self.all_notification_model_proxy.setFilterRegularExpression(
+            QRegularExpression(QRegularExpression.escape("WARNING"))
+        )
 
     def show_error_notifications(self):
         self.all_button.setChecked(False)
@@ -199,8 +202,9 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(False)
 
         self.notification_name.setText("Error Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegularExpression("ERROR", Qt.CaseInsensitive,
-                                                          QRegularExpression.FixedString))
+        self.all_notification_model_proxy.setFilterRegularExpression(
+            QRegularExpression(QRegularExpression.escape("ERROR"))
+        )
 
     def show_debug_notifications(self):
         self.all_button.setChecked(False)
@@ -210,8 +214,9 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.setChecked(True)
 
         self.notification_name.setText("Debug Notifications")
-        self.all_notification_model_proxy.setFilterRegExp(QRegularExpression("DEBUG", Qt.CaseSensitive,
-                                                          QRegularExpression.FixedString))
+        self.all_notification_model_proxy.setFilterRegularExpression(
+            QRegularExpression(QRegularExpression.escape("DEBUG"))
+        )
 
     def clear_all_notifications(self):
         self.all_notification_model.clear()

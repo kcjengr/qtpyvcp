@@ -42,7 +42,9 @@ else:
     QVTKRenderWindowInteractor = QWidget
 
 from qtpyvcp import actions
+from qtpyvcp.native.backplot_cpp import build_backplot_from_file
 from qtpyvcp.utilities import logger
+from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 from qtpyvcp.utilities.settings import connectSetting, getSetting
 from qtpyvcp.widgets import VCPWidget
 
@@ -503,6 +505,156 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             self.interactor.Initialize()
             self.renderer_window.Render()
+
+            diagnostics_enabled = False
+            try:
+                display_log_level = str(self._datasource._inifile.find("DISPLAY", "LOG_LEVEL") or "").strip().upper()
+                diagnostics_enabled = display_log_level == "DEBUG"
+            except Exception:
+                diagnostics_enabled = False
+
+            if not diagnostics_enabled:
+                try:
+                    diagnostics_enabled = LOG.isEnabledFor(10)
+                except Exception:
+                    diagnostics_enabled = False
+
+            if diagnostics_enabled:
+                try:
+                    def _extract_gl_version_pair(version_text):
+                        if not version_text:
+                            return None
+                        text = str(version_text)
+                        for token in text.replace("(", " ").replace(")", " ").split():
+                            parts = token.split(".")
+                            if len(parts) >= 2 and parts[0].isdigit() and parts[1].isdigit():
+                                return int(parts[0]), int(parts[1])
+                        return None
+
+                    def _infer_glsl_from_opengl_version(version_text):
+                        version_pair = _extract_gl_version_pair(version_text)
+                        if version_pair is None:
+                            return "unknown"
+
+                        gl_to_glsl = {
+                            (2, 0): "1.10",
+                            (2, 1): "1.20",
+                            (3, 0): "1.30",
+                            (3, 1): "1.40",
+                            (3, 2): "1.50",
+                            (3, 3): "3.30",
+                            (4, 0): "4.00",
+                            (4, 1): "4.10",
+                            (4, 2): "4.20",
+                            (4, 3): "4.30",
+                            (4, 4): "4.40",
+                            (4, 5): "4.50",
+                            (4, 6): "4.60",
+                        }
+                        inferred = gl_to_glsl.get(version_pair)
+                        if inferred is None:
+                            return "unknown"
+                        return f"{inferred} (inferred from OpenGL {version_pair[0]}.{version_pair[1]})"
+
+                    ogl_info = {
+                        "vendor": "unknown",
+                        "renderer": "unknown",
+                        "version": "unknown",
+                        "glsl": "unknown",
+                        "glsl_source": "unknown",
+                        "direct_rendering": "unknown",
+                        "direct_rendering_source": "unknown",
+                        "glx_server_vendor": "unknown",
+                        "glx_client_vendor": "unknown",
+                    }
+
+                    ogl_window = vtk.vtkOpenGLRenderWindow.SafeDownCast(self.renderer_window)
+                    if ogl_window is not None:
+                        try:
+                            ogl_info["vendor"] = str(ogl_window.GetOpenGLVendor() or "unknown")
+                        except Exception:
+                            pass
+                        try:
+                            ogl_info["renderer"] = str(ogl_window.GetOpenGLRenderer() or "unknown")
+                        except Exception:
+                            pass
+                        try:
+                            ogl_info["version"] = str(ogl_window.GetOpenGLVersion() or "unknown")
+                        except Exception:
+                            pass
+
+                    capabilities = ""
+                    if hasattr(self.renderer_window, "ReportCapabilities"):
+                        try:
+                            capabilities = str(self.renderer_window.ReportCapabilities() or "")
+                        except Exception:
+                            capabilities = ""
+
+                    if capabilities:
+                        for raw_line in capabilities.splitlines():
+                            line = raw_line.strip()
+                            lower = line.lower()
+
+                            if lower.startswith("opengl vendor string:"):
+                                ogl_info["vendor"] = line.split(":", 1)[1].strip() or ogl_info["vendor"]
+                            elif lower.startswith("opengl renderer string:"):
+                                ogl_info["renderer"] = line.split(":", 1)[1].strip() or ogl_info["renderer"]
+                            elif lower.startswith("opengl version string:"):
+                                ogl_info["version"] = line.split(":", 1)[1].strip() or ogl_info["version"]
+                            elif lower.startswith("opengl shading language version string:"):
+                                parsed_glsl = line.split(":", 1)[1].strip()
+                                if parsed_glsl:
+                                    ogl_info["glsl"] = parsed_glsl
+                                    ogl_info["glsl_source"] = "reported"
+                            elif lower.startswith("direct rendering:"):
+                                parsed_direct = line.split(":", 1)[1].strip()
+                                if parsed_direct:
+                                    ogl_info["direct_rendering"] = parsed_direct
+                                    ogl_info["direct_rendering_source"] = "reported"
+                            elif lower.startswith("server glx vendor string:"):
+                                ogl_info["glx_server_vendor"] = line.split(":", 1)[1].strip() or ogl_info["glx_server_vendor"]
+                            elif lower.startswith("client glx vendor string:"):
+                                ogl_info["glx_client_vendor"] = line.split(":", 1)[1].strip() or ogl_info["glx_client_vendor"]
+
+                    if ogl_info["glsl"].lower() == "unknown":
+                        ogl_info["glsl"] = _infer_glsl_from_opengl_version(ogl_info["version"])
+                        if ogl_info["glsl"].lower() == "unknown":
+                            ogl_info["glsl_source"] = "unknown"
+                        else:
+                            ogl_info["glsl_source"] = "inferred"
+
+                    lines = [
+                        "VTK graphics diagnostics:",
+                        f"  - qt_api: {os.getenv('QT_API', 'unknown')}",
+                        f"  - qsg_rhi_backend: {os.getenv('QSG_RHI_BACKEND', 'default')}",
+                        f"  - vtk_version: {vtkVersion().GetVTKVersion()}",
+                        f"  - opengl_vendor: {ogl_info['vendor']}",
+                        f"  - opengl_renderer: {ogl_info['renderer']}",
+                        f"  - opengl_version: {ogl_info['version']}",
+                        f"  - glsl_version: {ogl_info['glsl']}",
+                    ]
+                    if ogl_info["direct_rendering"].lower() != "unknown":
+                        lines.append(f"  - direct_rendering: {ogl_info['direct_rendering']}")
+                    LOG.debug("\n".join(lines))
+
+                    renderer_l = ogl_info["renderer"].lower()
+                    vendor_l = ogl_info["vendor"].lower()
+                    software_tokens = (
+                        "llvmpipe",
+                        "softpipe",
+                        "swrast",
+                        "software rasterizer",
+                        "lavapipe",
+                    )
+                    if any(token in renderer_l or token in vendor_l for token in software_tokens):
+                        LOG.warning(
+                            "VTK appears to be using software rendering (%s / %s). 3D backplot performance may be degraded.",
+                            ogl_info["vendor"],
+                            ogl_info["renderer"],
+                        )
+                except Exception as exc:
+                    LOG.warning("Failed to gather VTK graphics diagnostics: %s", exc)
+
             self.interactor.Start()
 
             # Add the observers to watch for particular events. These invoke Python functions.
@@ -747,168 +899,229 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
         self._datasource._status.addLock()
-
-        for start_actor in self.offset_change_start_actor.values():
-            if start_actor:
-                self.renderer.RemoveActor(start_actor)
-        for end_actor in self.offset_change_end_actor.values():
-            if end_actor:
-                self.renderer.RemoveActor(end_actor)
-        for line_actor in self.offset_change_line_actor.values():
-            if line_actor:
-                self.renderer.RemoveActor(line_actor)
-
-        self.offset_change_start_actor.clear()
-        self.offset_change_end_actor.clear()
-        self.offset_change_line_actor.clear()
-
-        # Cleanup the scene, remove any previous actors if any.
-        # Do this for each WCS.
-        for wcs_index, actor in self.path_actors.items():
-            axes_actor = actor.get_axes_actor()
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
-
-            # if wcs_index == self.active_wcs_index:
-
-            self.renderer.RemoveActor(axes_actor)
-            
-            self.renderer.RemoveActor(actor)
-            self.renderer.RemoveActor(program_bounds_actor)
-
-
-        self.path_actors.clear()
-        self.offset_axes.clear()
-        self.program_bounds_actors.clear()
-
-        start_time = time.time()
-
-        if fname:
-            # create the object which handles the canonical motion callbacks
-            # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
-            self.canon = VTKCanon(colors=self.path_colors)
-            self.load(fname)
-        else:
-            self._datasource._status.removeLock()
-            return
-
-        self.canon.draw_lines()
-
-        LOG.info("-------Draw time %s seconds ---" % (time.time() - start_time))
-
-        # Refresh WCS offsets and active index in case they changed since init.
-        # This makes sure newly loaded paths honor the current work offset.
-        self._set_wcs_offsets(self._datasource.getWcsOffsets())
-        self.active_wcs_index = self._datasource.getActiveWcsIndex()
-
-        if not self._offsets_ready():
-            LOG.warning(
-                "VTKBackPlot load_program: offset table not ready; skipping draw to avoid G53 placement"
-            )
-            self._datasource._status.removeLock()
-            return
-
-        active_offsets = self._safe_get_offsets(self.active_wcs_index, self._datasource.getOffsetColumns())
+        PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='vtk-load-program-enter', percent=48)
+        perf_start = time.perf_counter()
+        pre_backplot_interp_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+        parse_done_elapsed_ms = None
+        draw_done_elapsed_ms = None
+        actor_done_elapsed_ms = None
+        backplot_done_elapsed_ms = None
+        parse_ms = 0.0
+        draw_ms = 0.0
+        actor_build_ms = 0.0
+        cpp_backplot_used = False
         try:
-            offsets_len = len(self.wcs_offsets)
+            for start_actor in self.offset_change_start_actor.values():
+                if start_actor:
+                    self.renderer.RemoveActor(start_actor)
+            for end_actor in self.offset_change_end_actor.values():
+                if end_actor:
+                    self.renderer.RemoveActor(end_actor)
+            for line_actor in self.offset_change_line_actor.values():
+                if line_actor:
+                    self.renderer.RemoveActor(line_actor)
+
+            self.offset_change_start_actor.clear()
+            self.offset_change_end_actor.clear()
+            self.offset_change_line_actor.clear()
+
+            # Cleanup the scene, remove any previous actors if any.
+            # Do this for each WCS.
+            for wcs_index, actor in self.path_actors.items():
+                axes_actor = actor.get_axes_actor()
+                program_bounds_actor = self.program_bounds_actors[wcs_index]
+
+                # if wcs_index == self.active_wcs_index:
+
+                self.renderer.RemoveActor(axes_actor)
+
+                self.renderer.RemoveActor(actor)
+                self.renderer.RemoveActor(program_bounds_actor)
+
+
+            self.path_actors.clear()
+            self.offset_axes.clear()
+            self.program_bounds_actors.clear()
+
+            if not fname:
+                return
+
+            # Keep VTKCanon instance for downstream state consumers and perf accounting.
+            self.canon = VTKCanon(colors=self.path_colors, cpp_mode=True)
+
+            unitcode = "G%d" % (20 + (self.stat.linear_units == 1))
+            initcode = self.ini.find("RS274NGC", "RS274NGC_STARTUP_CODE") or ""
+
+            draw_start = time.perf_counter()
+            cpp_result = build_backplot_from_file(
+                fname,
+                self._datasource,
+                path_colors=self.path_colors,
+                unitcode=unitcode,
+                initcode=initcode,
+                parameter_file=self.parameter_file,
+                temp_parameter_file=self.temp_parameter_file,
+            )
+            if cpp_result is None:
+                raise RuntimeError("C++ backplot builder returned no result in cpp-only mode")
+
+            parse_ms = float(cpp_result.parse_ms)
+
+            self.path_actors = cpp_result.path_actors
+            self.offset_transitions = cpp_result.offset_transitions or list()
+            self.canon.added_segments = int(cpp_result.added_segments)
+            draw_ms = float(cpp_result.draw_ms)
+            if draw_ms <= 0.0:
+                draw_ms = (time.perf_counter() - draw_start) * 1000.0
+            draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+            # Parse and draw both complete inside the same native call. We only get one
+            # wall-clock checkpoint on return, so estimate parse completion by subtracting
+            # measured native draw time from the draw completion checkpoint.
+            if draw_done_elapsed_ms is not None:
+                parse_done_elapsed_ms = max(0.0, float(draw_done_elapsed_ms) - float(draw_ms))
+            cpp_backplot_used = True
+
+            # Refresh WCS offsets and active index in case they changed since init.
+            # This makes sure newly loaded paths honor the current work offset.
+            self._set_wcs_offsets(self._datasource.getWcsOffsets())
+            self.active_wcs_index = self._datasource.getActiveWcsIndex()
+
+            if not self._offsets_ready():
+                LOG.warning(
+                    "VTKBackPlot load_program: offset table not ready; skipping draw to avoid G53 placement"
+                )
+                return
+
+            active_offsets = self._safe_get_offsets(self.active_wcs_index, self._datasource.getOffsetColumns())
+            try:
+                offsets_len = len(self.wcs_offsets)
+            except Exception:
+                offsets_len = 'n/a'
+
+            LOG.debug(
+                "VTKBackPlot load_program context: active_wcs=%s offsets_len=%s active_offsets=%s",
+                self.active_wcs_index,
+                offsets_len,
+                active_offsets,
+            )
+
+            if self._is_machine_foam:
+
+                self.foam_offset = self.canon.get_foam()
+                LOG.warning(self.foam_offset)
+                z = self.foam_offset[0]
+                w = self.foam_offset[1]
+
+                self.tool_bit_actor.set_foam_offsets(z, w)
+
+            offset_columns = self._datasource.getOffsetColumns()
+
+            actor_start = time.perf_counter()
+            for wcs_index, actor in self.path_actors.items():
+                current_offsets = self._safe_get_offsets(wcs_index, offset_columns)
+                # rotation = self._datasource.getRotationOfActiveWcs()
+
+                x_column = offset_columns.get('X')
+                y_column = offset_columns.get('Y')
+                z_column = offset_columns.get('Z')
+                r_column = offset_columns.get('R')
+
+                if x_column is not None:
+                    x = current_offsets[x_column]
+                else:
+                    x = 0.0
+
+                if y_column is not None:
+                    y = current_offsets[y_column]
+                else:
+                    y = 0.0
+
+                if z_column is not None:
+                    z = current_offsets[z_column]
+                else:
+                    z = 0.0
+
+                if r_column is not None:
+                    rotation = current_offsets[r_column]
+                else:
+                    rotation = 0.0
+
+                if 0 <= wcs_index < len(self.rotation_xy_table):
+                    self.rotation_xy_table[wcs_index] = rotation
+
+                actor_transform = vtk.vtkTransform()
+                axes_transform = vtk.vtkTransform()
+
+                actor_transform.Translate(x, y, z)
+                actor_transform.RotateZ(rotation)
+
+                axes_transform.Translate(x, y, z)
+                axes_transform.RotateZ(rotation)
+
+                # Scale up the axes for the active WCS to provide visual feedback
+                if wcs_index == self.active_wcs_index:
+                    axes_transform.Scale(1.5, 1.5, 1.5)  # Make active WCS axes 50% larger
+
+
+                actor.SetUserTransform(actor_transform)
+
+                program_bounds_actor = ProgramBoundsActor(self.camera, actor)
+
+                axes = actor.get_axes_actor()
+
+                self.offset_axes[wcs_index] = axes
+                self.program_bounds_actors[wcs_index] = program_bounds_actor
+
+                axes.SetUserTransform(axes_transform)  # Keep per-WCS axes aligned with path actor transform.
+
+                self.renderer.AddActor(axes)
+                self.renderer.AddActor(program_bounds_actor)
+                self.renderer.AddActor(actor)
+
+            self._rebuild_transition_actors(offset_columns)
+            # self.renderer.AddActor(self.axes_actor)
+            self._request_render()
+            actor_build_ms = (time.perf_counter() - actor_start) * 1000.0
+            actor_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+
+            total_ms = (time.perf_counter() - perf_start) * 1000.0
+            backplot_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+            LOG.debug(
+                "[backplot-perf] file=%s parse_ms=%.2f draw_ms=%.2f actor_build_ms=%.2f total_ms=%.2f cpp_requested=%s cpp_used=%s",
+                fname,
+                parse_ms,
+                draw_ms,
+                actor_build_ms,
+                total_ms,
+                True,
+                cpp_backplot_used,
+            )
+            PROGRAM_LOAD_PERF_SUMMARY.update_backplot(
+                fname,
+                added_segments=getattr(self.canon, 'added_segments', 0),
+                interp_ms=parse_ms,
+                draw_ms=draw_ms,
+                actor_build_ms=actor_build_ms,
+                cpp_mode=cpp_backplot_used,
+                pre_backplot_interp_ms=pre_backplot_interp_ms,
+                parse_done_elapsed_ms=parse_done_elapsed_ms,
+                draw_done_elapsed_ms=draw_done_elapsed_ms,
+                actor_done_elapsed_ms=actor_done_elapsed_ms,
+                backplot_done_elapsed_ms=backplot_done_elapsed_ms,
+            )
         except Exception:
-            offsets_len = 'n/a'
+            LOG.exception("VTKBackPlot load_program failed")
+        finally:
+            if self.program_view_when_loading_program:
+                self.setViewProgram(self.program_view_when_loading_program_view)
 
-        LOG.info(
-            "VTKBackPlot load_program: active_wcs=%s offsets_len=%s active_offsets=%s",
-            self.active_wcs_index,
-            offsets_len,
-            active_offsets,
-        )
-
-        self.path_actors = self.canon.get_path_actors()
-        self.offset_transitions = self.canon.get_offset_transitions()
-
-        if self._is_machine_foam:
-
-            self.foam_offset = self.canon.get_foam()
-            LOG.warning(self.foam_offset)
-            z = self.foam_offset[0]
-            w = self.foam_offset[1]
-
-            self.tool_bit_actor.set_foam_offsets(z, w)
-
-        offset_columns = self._datasource.getOffsetColumns()
-
-        for wcs_index, actor in self.path_actors.items():
-            current_offsets = self._safe_get_offsets(wcs_index, offset_columns)
-            # rotation = self._datasource.getRotationOfActiveWcs()
-
-            x_column = offset_columns.get('X')
-            y_column = offset_columns.get('Y')
-            z_column = offset_columns.get('Z')
-            r_column = offset_columns.get('R')
-
-            if x_column is not None:
-                x = current_offsets[x_column]
-            else:
-                x = 0.0
-
-            if y_column is not None:
-                y = current_offsets[y_column]
-            else:
-                y = 0.0
-
-            if z_column is not None:
-                z = current_offsets[z_column]
-            else:
-                z = 0.0
-
-            if r_column is not None:
-                rotation = current_offsets[r_column]
-            else:
-                rotation = 0.0
-
-            if 0 <= wcs_index < len(self.rotation_xy_table):
-                self.rotation_xy_table[wcs_index] = rotation
-            
-            actor_transform = vtk.vtkTransform()
-            axes_transform = vtk.vtkTransform()
-                
-            actor_transform.Translate(x, y, z)
-            actor_transform.RotateZ(rotation)
-            
-            axes_transform.Translate(x, y, z)
-            axes_transform.RotateZ(rotation)
-            
-            # Scale up the axes for the active WCS to provide visual feedback
-            if wcs_index == self.active_wcs_index:
-                axes_transform.Scale(1.5, 1.5, 1.5)  # Make active WCS axes 50% larger
-
-                
-            actor.SetUserTransform(actor_transform)
-
-            program_bounds_actor = ProgramBoundsActor(self.camera, actor)
-
-            axes = actor.get_axes_actor()
-
-            self.offset_axes[wcs_index] = axes
-            self.program_bounds_actors[wcs_index] = program_bounds_actor
-
-            axes.SetUserTransform(axes_transform)  # Keep per-WCS axes aligned with path actor transform.
-
-            self.renderer.AddActor(axes)
-            self.renderer.AddActor(program_bounds_actor)
-            self.renderer.AddActor(actor)
-
-        self._rebuild_transition_actors(offset_columns)
-        # self.renderer.AddActor(self.axes_actor)
-        self._request_render()
-        if self.program_view_when_loading_program:
-            self.setViewProgram(self.program_view_when_loading_program_view)
-
-        QTimer.singleShot(300, self._datasource._status.removeLock)
-
+            QTimer.singleShot(300, self._datasource._status.removeLock)
 
     def motion_type(self, value):
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
 
-   
+
     def get_asm_parts(self, parts):
         # helper function to iterate over machine parts tree
         for part in parts.GetParts():

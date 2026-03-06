@@ -2,6 +2,7 @@ import os
 import sys
 import linuxcnc
 import tempfile
+from time import perf_counter
 
 from PySide6.QtCore import Qt, QTimer
 # Set up logging
@@ -9,7 +10,9 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -18,6 +21,8 @@ if not IN_DESIGNER:
 INFO = Info()
 CMD = linuxcnc.command()
 
+_PRECLEAR_BLANK_FILE = None
+
 from qtpyvcp.actions.base_actions import setTaskMode
 
 
@@ -25,23 +30,81 @@ from qtpyvcp.actions.base_actions import setTaskMode
 # Program actions
 #==============================================================================
 
-def load(fname, add_to_recents=True, isreload=False):
+def load(fname, add_to_recents=True, isreload=False, _skip_preclear=False):
     if not fname:
         # load a blank file. Maybe should load [DISPLAY] OPEN_FILE
         clear()
+        return
+
+    if not _skip_preclear:
+        preclear_fname = _preclear_before_load(fname)
+        if preclear_fname:
+            _queue_load_after_preclear_signal(
+                target_fname=fname,
+                preclear_fname=preclear_fname,
+                add_to_recents=add_to_recents,
+                isreload=isreload,
+            )
+            return
+
+    PROGRAM_LOAD_PERF_SUMMARY.start(fname)
+
+    abs_fname = os.path.abspath(fname) if fname else None
+    file_event_seen = {'done': False}
+
+    def _disconnect_file_signal():
+        try:
+            STATUS.file.signal.disconnect(_on_linuxcnc_file_loaded)
+        except Exception:
+            pass
+
+    def _on_linuxcnc_file_loaded(loaded_fname):
+        try:
+            loaded_abs = os.path.abspath(str(loaded_fname)) if loaded_fname else None
+        except Exception:
+            loaded_abs = None
+
+        if abs_fname and loaded_abs == abs_fname and not file_event_seen['done']:
+            file_event_seen['done'] = True
+            PROGRAM_LOAD_PERF_SUMMARY.mark_linuxcnc_file_loaded_event(fname)
+            _disconnect_file_signal()
+
+    try:
+        STATUS.file.signal.connect(_on_linuxcnc_file_loaded)
+    except Exception:
+        pass
 
     #setTaskMode(linuxcnc.MODE_AUTO)
     if not isreload:
         STATUS.addLock()
     
     filter_prog = INFO.getFilterProgram(fname)
-    if not filter_prog:
-        LOG.debug(f"Loading NC program: {fname}")
-        CMD.program_open(fname.encode('utf-8'))
-        CMD.wait_complete()
-    else:
-        LOG.debug(f"Loading file with filter program: {fname}")
-        openFilterProgram(fname, filter_prog)
+    interp_start = perf_counter()
+    PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='linuxcnc-open-wait-start', percent=10)
+    try:
+        if not filter_prog:
+            LOG.debug(f"Loading NC program: {fname}")
+            CMD.program_open(fname.encode('utf-8'))
+            CMD.wait_complete()
+        else:
+            LOG.debug(f"Loading file with filter program: {fname}")
+            openFilterProgram(fname, filter_prog)
+
+        try:
+            STAT.poll()
+            stat_file = os.path.abspath(str(STAT.file)) if STAT.file else None
+        except Exception:
+            stat_file = None
+
+        if abs_fname and stat_file == abs_fname and not file_event_seen['done']:
+            file_event_seen['done'] = True
+            PROGRAM_LOAD_PERF_SUMMARY.mark_linuxcnc_file_loaded_event(fname)
+
+        interp_ms = (perf_counter() - interp_start) * 1000.0
+        PROGRAM_LOAD_PERF_SUMMARY.add_linuxcnc_interp_time(fname, interp_ms=interp_ms)
+    finally:
+        if not file_event_seen['done']:
+            QTimer.singleShot(500, _disconnect_file_signal)
 
     if add_to_recents:
         addToRecents(fname)
@@ -50,6 +113,103 @@ def load(fname, add_to_recents=True, isreload=False):
 
 load.ok = lambda *args, **kwargs: True
 load.bindOk = lambda *args, **kwargs: True
+
+
+def _get_preclear_blank_file():
+    global _PRECLEAR_BLANK_FILE
+
+    if _PRECLEAR_BLANK_FILE and os.path.exists(_PRECLEAR_BLANK_FILE):
+        return _PRECLEAR_BLANK_FILE
+
+    fd, path = tempfile.mkstemp(prefix="qtpyvcp_preclear_", suffix=".ngc")
+    try:
+        with os.fdopen(fd, 'w') as fp:
+            fp.write("(QtPyVCP pre-clear)\nM30\n")
+    except Exception:
+        try:
+            os.close(fd)
+        except Exception:
+            pass
+        raise
+
+    _PRECLEAR_BLANK_FILE = path
+    return _PRECLEAR_BLANK_FILE
+
+
+def _queue_load_after_preclear_signal(*, target_fname, preclear_fname, add_to_recents, isreload):
+    target_abs = os.path.abspath(target_fname) if target_fname else None
+    preclear_abs = os.path.abspath(preclear_fname) if preclear_fname else None
+    fired = {'done': False}
+
+    def _trigger_target_load(reason='signal'):
+        if fired['done']:
+            return
+        fired['done'] = True
+        try:
+            STATUS.file.signal.disconnect(_on_preclear_file_loaded)
+        except Exception:
+            pass
+        LOG.debug("Proceeding with target load after pre-clear (%s): %s", reason, target_abs)
+        # Brief dwell lets the cleared state paint before loading the target.
+        QTimer.singleShot(
+            75,
+            lambda: load(
+                target_fname,
+                add_to_recents=add_to_recents,
+                isreload=isreload,
+                _skip_preclear=True,
+            ),
+        )
+
+    def _on_preclear_file_loaded(loaded_fname):
+        try:
+            loaded_abs = os.path.abspath(str(loaded_fname)) if loaded_fname else None
+        except Exception:
+            loaded_abs = None
+
+        if preclear_abs and loaded_abs == preclear_abs:
+            LOG.debug("Pre-clear completion hook matched: %s", preclear_abs)
+            _trigger_target_load(reason='hook')
+
+    try:
+        STATUS.file.signal.connect(_on_preclear_file_loaded)
+    except Exception:
+        _trigger_target_load(reason='no-hook')
+        return
+
+    # Fallback in case the file signal is delayed/missed.
+    def _timeout_fallback():
+        if not fired['done']:
+            LOG.debug("Pre-clear hook timeout; continuing with target load after 700ms")
+        _trigger_target_load(reason='timeout')
+
+    QTimer.singleShot(700, _timeout_fallback)
+
+
+def _preclear_before_load(target_fname):
+    try:
+        target_abs = os.path.abspath(target_fname) if target_fname else None
+        STAT.poll()
+        current_abs = os.path.abspath(str(STAT.file)) if STAT.file else None
+
+        # Skip pre-clear when no current file or reloading the same file.
+        if not target_abs or not current_abs or current_abs == target_abs:
+            return None
+
+        blank_file = _get_preclear_blank_file()
+        LOG.debug(
+            "Pre-clearing current program before load: current=%s target=%s blank=%s",
+            current_abs,
+            target_abs,
+            blank_file,
+        )
+        CMD.program_open(blank_file.encode('utf-8'))
+        CMD.wait_complete()
+        return blank_file
+    except Exception:
+        # Continue with normal load even if pre-clear fails.
+        LOG.warning("Pre-clear before program load failed; continuing", exc_info=True)
+        return None
 
 def reload():
     """Reload the currently loaded NC program
@@ -199,11 +359,11 @@ def _run_ok(widget=None):
     return ok
 
 def _run_bindOk(widget):
-    STATUS.estop.onValueChanged(lambda: _run_ok(widget))
-    STATUS.enabled.onValueChanged(lambda: _run_ok(widget))
-    STATUS.all_axes_homed.onValueChanged(lambda: _run_ok(widget))
-    STATUS.interp_state.onValueChanged(lambda: _run_ok(widget))
-    STATUS.file.onValueChanged(lambda: _run_ok(widget))
+    STATUS.estop.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
+    STATUS.enabled.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
+    STATUS.all_axes_homed.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
+    STATUS.file.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _run_ok(widget)))
 
 run.ok = _run_ok
 run.bindOk = _run_bindOk
@@ -293,8 +453,8 @@ def _pause_ok(widget=None):
     return ok
 
 def _pause_bindOk(widget):
-    STATUS.state.onValueChanged(lambda: _pause_ok(widget))
-    STATUS.paused.onValueChanged(lambda: _pause_ok(widget))
+    STATUS.state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _pause_ok(widget)))
+    STATUS.paused.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _pause_ok(widget)))
 
 pause.ok = _pause_ok
 pause.bindOk = _pause_bindOk
@@ -348,8 +508,8 @@ def _resume_ok(widget):
     return ok
 
 def _resume_bindOk(widget):
-    STATUS.paused.onValueChanged(lambda: _resume_ok(widget))
-    STATUS.state.onValueChanged(lambda: _resume_ok(widget))
+    STATUS.paused.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _resume_ok(widget)))
+    STATUS.state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _resume_ok(widget)))
 
 resume.ok = _resume_ok
 resume.bindOk = _resume_bindOk
@@ -397,7 +557,7 @@ def _abort_ok(widget=None):
     return ok
 
 def _abort_bindOk(widget):
-    STATUS.state.onValueChanged(lambda: _abort_ok(widget))
+    STATUS.state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _abort_ok(widget)))
 
 abort.ok = _abort_ok
 abort.bindOk = _abort_bindOk
@@ -477,8 +637,8 @@ def _block_delete_ok(widget=None):
 
 def _block_delete_bindOk(widget):
     widget.setChecked(STAT.block_delete)
-    STATUS.task_state.onValueChanged(lambda: _block_delete_ok(widget))
-    STATUS.block_delete.onValueChanged(lambda s: widget.setChecked(s))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _block_delete_ok(widget)))
+    STATUS.block_delete.onValueChanged(safe_qt_callback(widget, lambda s: widget.setChecked(s)))
 
 block_delete.on.ok = block_delete.off.ok = block_delete.toggle.ok = _block_delete_ok
 block_delete.on.bindOk = block_delete.off.bindOk = block_delete.toggle.bindOk = _block_delete_bindOk
@@ -558,8 +718,8 @@ def _optional_stop_ok(widget=None):
 
 def _optional_stop_bindOk(widget):
     widget.setChecked(STAT.block_delete)
-    STATUS.task_state.onValueChanged(lambda: _optional_stop_ok(widget))
-    STATUS.optional_stop.onValueChanged(lambda s: widget.setChecked(s))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _optional_stop_ok(widget)))
+    STATUS.optional_stop.onValueChanged(safe_qt_callback(widget, lambda s: widget.setChecked(s)))
 
 optional_stop.on.ok = optional_stop.off.ok = optional_stop.toggle.ok = _optional_stop_ok
 optional_stop.on.bindOk = optional_stop.off.bindOk = optional_stop.toggle.bindOk  = _optional_stop_bindOk

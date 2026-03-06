@@ -3120,7 +3120,7 @@
   </customwidget>
   <customwidget>
    <class>GcodeTextEdit</class>
-   <extends>QPlainTextEdit</extends>
+    <extends>QTextEdit</extends>
    <header>qtpyvcp.widgets.input_widgets.gcode_text_edit</header>
   </customwidget>
   <customwidget>

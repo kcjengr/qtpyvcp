@@ -1,13 +1,12 @@
 
 import os
 
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QDialog, QDialogButtonBox, QApplication
 
 from PySide6.QtDesigner import QDesignerFormWindowInterface
 
+from .dro_editor_ui import Ui_Dialog
 
 from qtpyvcp.widgets.qtdesigner import _PluginExtension
 
@@ -24,7 +23,7 @@ class DroEditorExtension(_PluginExtension):
         DroEditor(self.widget, parent=None).exec()
 
 
-class DroEditor(QDialog):
+class DroEditor(QDialog, Ui_Dialog):
     """QDialog for user-friendly editing of DRO properties in Qt Designer."""
 
     def __init__(self, widget, parent=None):
@@ -33,24 +32,18 @@ class DroEditor(QDialog):
         self.widget = widget
         self.app = QApplication.instance()
 
-        file_path = os.path.join(os.path.dirname(__file__), UI_FILE)
-        ui_file = QFile(file_path)
-        ui_file.open(QFile.ReadOnly)
+        self.setupUi(self)
 
-        loader = QUiLoader()
-        self.ui = loader.load(ui_file, self)
-        self.ui.show()
+        self.axisCombo.setCurrentIndex(self.widget.axisNumber)
+        self.refTypCombo.setCurrentIndex(self.widget.referenceType)
 
-        self.ui.axisCombo.setCurrentIndex(self.widget.axisNumber)
-        self.ui.refTypCombo.setCurrentIndex(self.widget.referenceType)
+        self.inFmtEntry.setText(self.widget.inchFormat)
+        self.mmFmtEntry.setText(self.widget.millimeterFormat)
+        self.degFmtEntry.setText(self.widget.degreeFormat)
 
-        self.ui.inFmtEntry.setText(self.widget.inchFormat)
-        self.ui.mmFmtEntry.setText(self.widget.millimeterFormat)
-        self.ui.degFmtEntry.setText(self.widget.degreeFormat)
+        self.latheModeCombo.setCurrentIndex(self.widget.latheMode)
 
-        self.ui.latheModeCombo.setCurrentIndex(self.widget.latheMode)
-
-        bb = self.ui.buttonBox
+        bb = self.buttonBox
         bb.button(QDialogButtonBox.StandardButton.Apply).setDefault(True)
         bb.button(QDialogButtonBox.StandardButton.Cancel).setDefault(False)
         bb.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(self.accept)
@@ -59,16 +52,16 @@ class DroEditor(QDialog):
     def accept(self):
         """Commit changes"""
         # general options
-        self.setCursorProperty('axisNumber', self.ui.axisCombo.currentIndex())
-        self.setCursorProperty('referenceType', self.ui.refTypCombo.currentIndex())
+        self.setCursorProperty('axisNumber', self.axisCombo.currentIndex())
+        self.setCursorProperty('referenceType', self.refTypCombo.currentIndex())
 
         # format options
-        self.setCursorProperty('inchFormat', self.ui.inFmtEntry.text())
-        self.setCursorProperty('millimeterFormat', self.ui.mmFmtEntry.text())
-        self.setCursorProperty('degreeFormat', self.ui.degFmtEntry.text())
+        self.setCursorProperty('inchFormat', self.inFmtEntry.text())
+        self.setCursorProperty('millimeterFormat', self.mmFmtEntry.text())
+        self.setCursorProperty('degreeFormat', self.degFmtEntry.text())
 
         # lathe options
-        self.setCursorProperty('latheMode', self.ui.latheModeCombo.currentIndex())
+        self.setCursorProperty('latheMode', self.latheModeCombo.currentIndex())
 
         self.close()
 

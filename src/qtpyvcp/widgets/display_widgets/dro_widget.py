@@ -23,6 +23,12 @@ INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import Slot, Property
 
+try:
+    from PySide6.QtCore import Q_ENUMS
+except Exception:
+    def Q_ENUMS(*args, **kwargs):
+        return None
+
 from qtpyvcp.plugins import getPlugin
 
 STATUS = getPlugin('status')
@@ -62,7 +68,6 @@ class RefType(object):
 
 @deprecated(reason='new DRO implementation', replaced_by='DroLabel')
 class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
-    from PyQt5.QtCore import Q_ENUMS
     Q_ENUMS(Axis)
     Q_ENUMS(RefType)
     Q_ENUMS(Units)

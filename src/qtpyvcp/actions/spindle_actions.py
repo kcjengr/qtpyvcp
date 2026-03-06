@@ -7,6 +7,7 @@ LOG = logger.getLogger(__name__)
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -93,8 +94,8 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
 def _spindle_bindOk(speed=None, spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
-    STATUS.on.notify(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.on.notify(safe_qt_callback(widget, lambda *args, **kwargs: _spindle_ok(spindle=spindle, widget=widget)))
+    STATUS.task_mode.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _spindle_ok(spindle=spindle, widget=widget)))
 
 
 def forward(speed=None, spindle=0):
@@ -133,9 +134,9 @@ def _spindle_forward_bindOk(speed=None, spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
     widget.setCheckable(True)
-    STATUS.on.notify(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.spindle[spindle].direction.onValueChanged(lambda d: widget.setChecked(d == 1))
+    STATUS.on.notify(safe_qt_callback(widget, lambda *args, **kwargs: _spindle_ok(spindle=spindle, widget=widget)))
+    STATUS.task_mode.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _spindle_ok(spindle=spindle, widget=widget)))
+    STATUS.spindle[spindle].direction.onValueChanged(safe_qt_callback(widget, lambda d: widget.setChecked(d == 1)))
 
 forward.ok = _spindle_ok
 forward.bindOk = _spindle_forward_bindOk
@@ -176,9 +177,9 @@ def _spindle_reverse_bindOk(speed=None, spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
     widget.setCheckable(True)
-    STATUS.on.notify(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.spindle[spindle].direction.onValueChanged(lambda d: widget.setChecked(d == -1))
+    STATUS.on.notify(safe_qt_callback(widget, lambda *args, **kwargs: _spindle_ok(spindle=spindle, widget=widget)))
+    STATUS.task_mode.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _spindle_ok(spindle=spindle, widget=widget)))
+    STATUS.spindle[spindle].direction.onValueChanged(safe_qt_callback(widget, lambda d: widget.setChecked(d == -1)))
 
 reverse.ok = _spindle_ok
 reverse.bindOk = _spindle_reverse_bindOk
@@ -348,8 +349,8 @@ def _or_bindOk(value=100, spindle=0, widget=None):
         return
 
     # This will work for any widget
-    STATUS.task_state.onValueChanged(lambda: _or_ok(widget=widget))
-    STATUS.spindle[spindle].override_enabled.onValueChanged(lambda: _or_ok(widget=widget))
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _or_ok(widget=widget)))
+    STATUS.spindle[spindle].override_enabled.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _or_ok(widget=widget)))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -359,12 +360,12 @@ def _or_bindOk(value=100, spindle=0, widget=None):
         try:
             widget.setSliderPosition(100)
             STATUS.spindle[spindle].override.onValueChanged(
-                lambda v: widget.setSliderPosition(int(v * 100)))
+                safe_qt_callback(widget, lambda v: widget.setSliderPosition(int(v * 100))))
 
         except AttributeError:
             widget.setValue(100)
             STATUS.spindle[spindle].override.onValueChanged(
-                lambda v: widget.setValue(int(v * 100)))
+                safe_qt_callback(widget, lambda v: widget.setValue(int(v * 100))))
 
         override(100)
 
@@ -409,9 +410,9 @@ def _or_enable_bindOk(spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
 
-    STATUS.task_state.onValueChanged(lambda: _or_enable_ok(spindle, widget))
-    STATUS.interp_state.onValueChanged(lambda: _or_enable_ok(spindle, widget))
-    STATUS.spindle[spindle].override_enabled.onValueChanged(widget.setChecked)
+    STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _or_enable_ok(spindle, widget)))
+    STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _or_enable_ok(spindle, widget)))
+    STATUS.spindle[spindle].override_enabled.onValueChanged(safe_qt_callback(widget, widget.setChecked))
 
 override.enable.ok = override.disable.ok = override.toggle_enable.ok = _or_enable_ok
 override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk = _or_enable_bindOk
@@ -497,9 +498,9 @@ def _brake_bind_ok(spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
 
-    STATUS.on.notify(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.spindle[spindle].brake.onValueChanged(widget.setChecked)
+    STATUS.on.notify(safe_qt_callback(widget, lambda *args, **kwargs: _spindle_ok(spindle=spindle, widget=widget)))
+    STATUS.task_mode.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _spindle_ok(spindle=spindle, widget=widget)))
+    STATUS.spindle[spindle].brake.onValueChanged(safe_qt_callback(widget, widget.setChecked))
 
 brake.on.ok = brake.off.ok = brake.toggle.ok = _spindle_ok
 brake.on.bindOk = brake.off.bindOk = brake.toggle.bindOk = _brake_bind_ok

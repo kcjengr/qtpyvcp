@@ -27,7 +27,7 @@
 import sys
 import os
 
-from PySide6.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
+from PySide6.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal, QTimer
 from PySide6.QtGui import QFont, QFontMetrics, QColor
 from PySide6.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
 
@@ -356,6 +356,10 @@ class EditorBase(QsciScintilla):
 # ==============================================================================
 class GcodeEditor(EditorBase, QObject):
     ARROW_MARKER_NUM = 8
+    SCI_GETDOCPOINTER = getattr(QsciScintilla, 'SCI_GETDOCPOINTER', 2357)
+    SCI_SETDOCPOINTER = getattr(QsciScintilla, 'SCI_SETDOCPOINTER', 2358)
+    SCI_ADDREFDOCUMENT = getattr(QsciScintilla, 'SCI_ADDREFDOCUMENT', 2376)
+    SCI_RELEASEDOCUMENT = getattr(QsciScintilla, 'SCI_RELEASEDOCUMENT', 2377)
 
     somethingHasChanged = Signal(bool)
 
@@ -370,6 +374,7 @@ class GcodeEditor(EditorBase, QObject):
 
         self.is_editor = False
         self.text_before_edit = ''
+        self._shared_doc_ptr = None
 
         self.dialog = FindReplaceDialog(parent=self)
 
@@ -386,6 +391,51 @@ class GcodeEditor(EditorBase, QObject):
         #self.cursorPositionChanged.connect(self.line_changed)
         self.somethingHasChanged.emit(False)
 
+    def _get_doc_pointer(self):
+        try:
+            return int(self.SendScintilla(self.SCI_GETDOCPOINTER))
+        except Exception:
+            return 0
+
+    def _release_shared_document_ref(self):
+        if not self._shared_doc_ptr:
+            return
+        try:
+            self.SendScintilla(self.SCI_RELEASEDOCUMENT, 0, self._shared_doc_ptr)
+        except Exception:
+            pass
+        finally:
+            self._shared_doc_ptr = None
+
+    def use_shared_document_from(self, source_editor):
+        if source_editor is None or source_editor is self:
+            return False
+
+        source_ptr = 0
+        try:
+            source_ptr = int(source_editor._get_doc_pointer())
+        except Exception:
+            return False
+
+        if not source_ptr:
+            return False
+
+        current_ptr = self._get_doc_pointer()
+        if current_ptr == source_ptr:
+            return True
+
+        self._release_shared_document_ref()
+
+        try:
+            self.SendScintilla(self.SCI_ADDREFDOCUMENT, 0, source_ptr)
+            self.SendScintilla(self.SCI_SETDOCPOINTER, 0, source_ptr)
+            self._shared_doc_ptr = source_ptr
+            self.SendScintilla(QsciScintilla.SCI_GOTOPOS, 0)
+            return True
+        except Exception:
+            self._release_shared_document_ref()
+            return False
+
     @Slot(bool)
     def setEditable(self, state):
         if state:
@@ -398,6 +448,10 @@ class GcodeEditor(EditorBase, QObject):
             self.setReadOnly(True)
             self.setCaretLineVisible(False)
             self.somethingHasChanged.emit(self.text_before_edit != self.text())
+
+    @Slot(bool)
+    def EditorReadWrite(self, state):
+        self.setEditable(state)
 
     @Slot(str)
     def setFilename(self, path):
@@ -417,6 +471,10 @@ class GcodeEditor(EditorBase, QObject):
             self.somethingHasChanged.emit(False)
         else:
             LOG.debug("---save error")
+
+    @Slot()
+    def saveFile(self):
+        self.save()
 
     @Slot()
     def saveAs(self):
@@ -442,8 +500,16 @@ class GcodeEditor(EditorBase, QObject):
         self.somethingHasChanged.emit(False)
 
     @Slot()
+    def saveFileAs(self):
+        self.saveAs()
+
+    @Slot()
     def find_replace(self):
         self.dialog.show()
+
+    @Slot()
+    def findDialog(self):
+        self.find_replace()
 
     def search_text(self, find_text, highlight_all):
         from_start = False
@@ -511,10 +577,48 @@ class GcodeEditor(EditorBase, QObject):
         self.setCursorPosition(0, 0)
 
 
+    def set_text_fast(self, text, defer_lexer=True):
+        lexer = getattr(self, 'lexer', None)
+        lexer_detached = False
+
+        self._release_shared_document_ref()
+
+        if isinstance(text, (bytes, bytearray, memoryview)):
+            payload = bytes(text)
+        else:
+            payload = str(text).encode('utf-8', errors='replace')
+
+        self.setUpdatesEnabled(False)
+        try:
+            if defer_lexer and lexer is not None:
+                self.setLexer(None)
+                lexer_detached = True
+
+            self.SendScintilla(QsciScintilla.SCI_SETUNDOCOLLECTION, 0)
+            self.SendScintilla(QsciScintilla.SCI_SETTEXT, payload)
+            self.SendScintilla(QsciScintilla.SCI_EMPTYUNDOBUFFER)
+            self.SendScintilla(QsciScintilla.SCI_SETUNDOCOLLECTION, 1)
+            self.SendScintilla(QsciScintilla.SCI_GOTOPOS, 0)
+        finally:
+            self.setUpdatesEnabled(True)
+
+        if lexer_detached:
+            def _restore_lexer():
+                self.setLexer(lexer)
+                self.recolor()
+
+            QTimer.singleShot(0, _restore_lexer)
+
+    def closeEvent(self, event):
+        self._release_shared_document_ref()
+        super(GcodeEditor, self).closeEvent(event)
+
+
     def load_text(self, fname):
         try:
             fp = os.path.expanduser(fname)
-            self.setText(open(fp).read())
+            with open(fp, 'rb') as handle:
+                self.set_text_fast(handle.read())
         except:
             LOG.error('File path is not valid: {}'.format(fname))
             self.setText('')

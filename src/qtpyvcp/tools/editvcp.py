@@ -32,6 +32,7 @@ Command line tool to set up and launch QtDesigner for editing VCPs::
 import os
 import sys
 import distro
+from glob import glob
 # enable remote debug on kernel
 # ➜  ~ sudo echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
@@ -98,6 +99,34 @@ def log_subprocess_output(stdout):
         DESIGNER_LOG.info(clean)
 
 
+def _maybe_set_default_ini_file(vcp_name, yaml_file):
+    if os.getenv('INI_FILE_NAME'):
+        return False
+
+    if not vcp_name or not yaml_file:
+        return False
+
+    yaml_dir = os.path.dirname(os.path.realpath(yaml_file))
+    repo_root = os.path.realpath(os.path.join(yaml_dir, '..', '..'))
+    configs_root = os.path.join(repo_root, 'configs')
+    config_dir = os.path.join(configs_root, vcp_name)
+
+    candidates = [
+        os.path.join(config_dir, f'{vcp_name}.ini'),
+    ]
+
+    if os.path.isdir(config_dir):
+        candidates.extend(sorted(glob(os.path.join(config_dir, '*.ini'))))
+
+    for ini_file in candidates:
+        if ini_file and os.path.exists(ini_file):
+            os.environ['INI_FILE_NAME'] = ini_file
+            LOG.info(f"Using inferred INI_FILE_NAME: {ini_file}")
+            return True
+
+    return False
+
+
 def launch_designer(opts=DotDict()) -> None:
 
     if not opts.vcp and not opts.ui_file:
@@ -112,8 +141,11 @@ def launch_designer(opts=DotDict()) -> None:
 
     else:
         fname = opts.vcp or opts.ui_file
+    vcp_name = None
+    inferred_ini_for_render = False
 
     if '.'not in fname or '/' not in fname:
+        vcp_name = fname
         entry_points2 = {}
 
         eps = entry_points()
@@ -130,6 +162,7 @@ def launch_designer(opts=DotDict()) -> None:
         try:
             vcp = entry_points2[fname.lower()].load()
             fname = vcp.VCP_CONFIG_FILE
+            inferred_ini_for_render = _maybe_set_default_ini_file(vcp_name, fname)
         except KeyError:
             pass
 
@@ -228,11 +261,19 @@ def launch_designer(opts=DotDict()) -> None:
     new_pythonpath = f"{widgets_path}:{qtpyvcp_path}/src:{existing_pythonpath}"
     os.environ['PYTHONPATH'] = new_pythonpath
     
-    # Add a Qt environment variable to preload our designer plugin
-    os.environ['QT_PLUGIN_PATH'] = widgets_path
+    # Add our plugin path without clobbering existing Qt plugin paths.
+    existing_qt_plugin_path = os.environ.get('QT_PLUGIN_PATH', '')
+    if existing_qt_plugin_path:
+        os.environ['QT_PLUGIN_PATH'] = f"{widgets_path}:{existing_qt_plugin_path}"
+    else:
+        os.environ['QT_PLUGIN_PATH'] = widgets_path
 
 
     LOG.info("Starting QtDesigner ...")
+
+    if inferred_ini_for_render:
+        os.environ.pop('INI_FILE_NAME', None)
+        LOG.info("Cleared inferred INI_FILE_NAME before launching Designer subprocess")
 
     try:
         process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
