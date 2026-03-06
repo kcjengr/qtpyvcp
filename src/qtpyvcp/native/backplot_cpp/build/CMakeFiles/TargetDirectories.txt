@@ -1,3 +1,0 @@
-/home/g0704/Dev/qtpyvcp/src/qtpyvcp/native/backplot_cpp/build/CMakeFiles/_backplot_cpp.dir
-/home/g0704/Dev/qtpyvcp/src/qtpyvcp/native/backplot_cpp/build/CMakeFiles/edit_cache.dir
-/home/g0704/Dev/qtpyvcp/src/qtpyvcp/native/backplot_cpp/build/CMakeFiles/rebuild_cache.dir
