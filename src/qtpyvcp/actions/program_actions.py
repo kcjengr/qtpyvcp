@@ -21,6 +21,8 @@ if not IN_DESIGNER:
 INFO = Info()
 CMD = linuxcnc.command()
 
+_PRECLEAR_BLANK_FILE = None
+
 from qtpyvcp.actions.base_actions import setTaskMode
 
 
@@ -28,10 +30,22 @@ from qtpyvcp.actions.base_actions import setTaskMode
 # Program actions
 #==============================================================================
 
-def load(fname, add_to_recents=True, isreload=False):
+def load(fname, add_to_recents=True, isreload=False, _skip_preclear=False):
     if not fname:
         # load a blank file. Maybe should load [DISPLAY] OPEN_FILE
         clear()
+        return
+
+    if not _skip_preclear:
+        preclear_fname = _preclear_before_load(fname)
+        if preclear_fname:
+            _queue_load_after_preclear_signal(
+                target_fname=fname,
+                preclear_fname=preclear_fname,
+                add_to_recents=add_to_recents,
+                isreload=isreload,
+            )
+            return
 
     PROGRAM_LOAD_PERF_SUMMARY.start(fname)
 
@@ -99,6 +113,103 @@ def load(fname, add_to_recents=True, isreload=False):
 
 load.ok = lambda *args, **kwargs: True
 load.bindOk = lambda *args, **kwargs: True
+
+
+def _get_preclear_blank_file():
+    global _PRECLEAR_BLANK_FILE
+
+    if _PRECLEAR_BLANK_FILE and os.path.exists(_PRECLEAR_BLANK_FILE):
+        return _PRECLEAR_BLANK_FILE
+
+    fd, path = tempfile.mkstemp(prefix="qtpyvcp_preclear_", suffix=".ngc")
+    try:
+        with os.fdopen(fd, 'w') as fp:
+            fp.write("(QtPyVCP pre-clear)\nM30\n")
+    except Exception:
+        try:
+            os.close(fd)
+        except Exception:
+            pass
+        raise
+
+    _PRECLEAR_BLANK_FILE = path
+    return _PRECLEAR_BLANK_FILE
+
+
+def _queue_load_after_preclear_signal(*, target_fname, preclear_fname, add_to_recents, isreload):
+    target_abs = os.path.abspath(target_fname) if target_fname else None
+    preclear_abs = os.path.abspath(preclear_fname) if preclear_fname else None
+    fired = {'done': False}
+
+    def _trigger_target_load(reason='signal'):
+        if fired['done']:
+            return
+        fired['done'] = True
+        try:
+            STATUS.file.signal.disconnect(_on_preclear_file_loaded)
+        except Exception:
+            pass
+        LOG.debug("Proceeding with target load after pre-clear (%s): %s", reason, target_abs)
+        # Brief dwell lets the cleared state paint before loading the target.
+        QTimer.singleShot(
+            75,
+            lambda: load(
+                target_fname,
+                add_to_recents=add_to_recents,
+                isreload=isreload,
+                _skip_preclear=True,
+            ),
+        )
+
+    def _on_preclear_file_loaded(loaded_fname):
+        try:
+            loaded_abs = os.path.abspath(str(loaded_fname)) if loaded_fname else None
+        except Exception:
+            loaded_abs = None
+
+        if preclear_abs and loaded_abs == preclear_abs:
+            LOG.debug("Pre-clear completion hook matched: %s", preclear_abs)
+            _trigger_target_load(reason='hook')
+
+    try:
+        STATUS.file.signal.connect(_on_preclear_file_loaded)
+    except Exception:
+        _trigger_target_load(reason='no-hook')
+        return
+
+    # Fallback in case the file signal is delayed/missed.
+    def _timeout_fallback():
+        if not fired['done']:
+            LOG.debug("Pre-clear hook timeout; continuing with target load after 700ms")
+        _trigger_target_load(reason='timeout')
+
+    QTimer.singleShot(700, _timeout_fallback)
+
+
+def _preclear_before_load(target_fname):
+    try:
+        target_abs = os.path.abspath(target_fname) if target_fname else None
+        STAT.poll()
+        current_abs = os.path.abspath(str(STAT.file)) if STAT.file else None
+
+        # Skip pre-clear when no current file or reloading the same file.
+        if not target_abs or not current_abs or current_abs == target_abs:
+            return None
+
+        blank_file = _get_preclear_blank_file()
+        LOG.debug(
+            "Pre-clearing current program before load: current=%s target=%s blank=%s",
+            current_abs,
+            target_abs,
+            blank_file,
+        )
+        CMD.program_open(blank_file.encode('utf-8'))
+        CMD.wait_complete()
+        return blank_file
+    except Exception:
+        # Continue with normal load even if pre-clear fails.
+        LOG.warning("Pre-clear before program load failed; continuing", exc_info=True)
+        return None
 
 def reload():
     """Reload the currently loaded NC program
