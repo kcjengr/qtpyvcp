@@ -71,3 +71,4 @@ qtpyvcp.files
 qtpyvcp.includes
 .clang-format
 
+src/qtpyvcp/native/backplot_cpp/build
