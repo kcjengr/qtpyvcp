@@ -32,6 +32,8 @@ class ProgramLoadPerfSummary:
         self._has_parse_interp = False
         self._has_pre_backplot_interp = False
         self._vtk_ms = None
+        self._vtk_draw_ms = None
+        self._vtk_actor_build_ms = None
         self._gcode_text_edit_ms = None
         self._gcode_editor_ms = None
         self._editor_ms_by_widget = {}
@@ -120,7 +122,21 @@ class ProgramLoadPerfSummary:
 
         return (perf_counter() - self._start) * 1000.0
 
-    def update_backplot(self, fname, *, added_segments, interp_ms, draw_ms, actor_build_ms, cpp_mode=False, pre_backplot_interp_ms=None, parse_done_elapsed_ms=None, draw_done_elapsed_ms=None):
+    def update_backplot(
+        self,
+        fname,
+        *,
+        added_segments,
+        interp_ms,
+        draw_ms,
+        actor_build_ms,
+        cpp_mode=False,
+        pre_backplot_interp_ms=None,
+        parse_done_elapsed_ms=None,
+        draw_done_elapsed_ms=None,
+        actor_done_elapsed_ms=None,
+        backplot_done_elapsed_ms=None,
+    ):
         if not fname:
             return
 
@@ -143,8 +159,12 @@ class ProgramLoadPerfSummary:
         self._parse_interp_ms += float(interp_ms)
         self._has_parse_interp = True
         self._emit_phase("backplot-parse-done", 70, parse_done_elapsed_ms)
-        self._vtk_ms = float(draw_ms) + float(actor_build_ms)
+        self._vtk_draw_ms = float(draw_ms)
+        self._vtk_actor_build_ms = float(actor_build_ms)
+        self._vtk_ms = self._vtk_draw_ms + self._vtk_actor_build_ms
         self._emit_phase("backplot-draw-done", 82, draw_done_elapsed_ms)
+        self._emit_phase("backplot-actor-done", 84, actor_done_elapsed_ms)
+        self._emit_phase("backplot-complete", 86, backplot_done_elapsed_ms)
         self._maybe_print()
 
     def update_editor(self, fname, *, widget_name, total_ms):
@@ -194,7 +214,7 @@ class ProgramLoadPerfSummary:
 
     @staticmethod
     def _fmt_stopwatch(value):
-        return f"{value / 1000.0:6.1f}s"
+        return f"{value / 1000.0:7.1f}s"
 
     @staticmethod
     def _fmt_file_size(size_bytes):
@@ -230,7 +250,9 @@ class ProgramLoadPerfSummary:
             ("LCNC File Event Marker", self._linuxcnc_file_event_ms, self._phase_elapsed_ms.get("linuxcnc-file-loaded-event")),
             ("LCNC Pre-Backplot Dispatch", self._pre_backplot_dispatch_ms, self._phase_elapsed_ms.get("backplot-start")),
             ("LCNC Backplot Parse", self._parse_interp_ms, self._phase_elapsed_ms.get("backplot-parse-done")),
-            ("VTK Backplot Time", self._vtk_ms, self._phase_elapsed_ms.get("backplot-draw-done")),
+            ("VTK Backplot Draw", self._vtk_draw_ms, self._phase_elapsed_ms.get("backplot-draw-done")),
+            ("VTK Actor Build", self._vtk_actor_build_ms, self._phase_elapsed_ms.get("backplot-actor-done")),
+            ("VTK Backplot Time", self._vtk_ms, self._phase_elapsed_ms.get("backplot-complete")),
         ]
 
         if self._gcode_text_edit_ms is not None:
@@ -263,25 +285,30 @@ class ProgramLoadPerfSummary:
         )
         metric_col_width = duration_col_width + 1 + elapsed_col_width
 
-        lines = ["------------------------------------------------"]
-        lines.append(f"-   File Name: {file_name}")
-        lines.append("------------------------------------------------")
+        file_name_line = f"-   File Name: {file_name}"
+        content_lines = [file_name_line]
 
         for label, value in metadata_rows:
-            lines.append(f"-   {label:<{key_width}} = {value:>{metric_col_width}}")
+            content_lines.append(f"-   {label:<{key_width}} = {value:>{metric_col_width}}")
 
         for label, duration_ms, elapsed_ms in stage_rows:
             duration_text = self._fmt_stopwatch(duration_ms)
             elapsed_text = self._fmt_stopwatch(elapsed_ms)
-            lines.append(
+            content_lines.append(
                 f"-   {label:<{key_width}} = {duration_text:>{duration_col_width}} {elapsed_text:>{elapsed_col_width}}"
             )
 
-        lines.append("------------------------------------------------")
-        lines.append(
+        total_line = (
             f"-   {'Total Program Load Time':<{key_width}} = {self._fmt_stopwatch(total_ms):>{duration_col_width}} {'100%':>{elapsed_col_width}}"
         )
-        lines.append("------------------------------------------------")
+        summary_width = max([len(total_line)] + [len(line) for line in content_lines])
+        separator = "-" * summary_width
+
+        lines = [separator]
+        lines.extend(content_lines)
+        lines.append(separator)
+        lines.append(total_line)
+        lines.append(separator)
         LOG.info("[program-load-summary]\n%s", "\n".join(lines))
         self._emit_phase("load-summary-complete", 100)
 

@@ -1,10 +1,13 @@
 from dataclasses import dataclass
-import glob
+import importlib
 import importlib.util
 import os
+import shutil
+import sysconfig
 from time import perf_counter
 from typing import Any, Optional
 
+import gcode
 import numpy as np
 import vtk
 from vtk.util import numpy_support
@@ -15,55 +18,40 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 
-@dataclass
-class CppBackplotResult:
-    path_actors: Any
-    offset_transitions: Any
-    added_segments: int
-    draw_ms: float
-
-
-def _load_native_module():
+def _import_native_module():
     try:
-        from . import _backplot_cpp  # type: ignore
-        return _backplot_cpp
+        return importlib.import_module("qtpyvcp.native.backplot_cpp._backplot_cpp")
     except Exception:
         pass
 
     module_dir = os.path.dirname(__file__)
-    candidates = sorted(glob.glob(os.path.join(module_dir, "build", "_backplot_cpp*.so")))
-    if not candidates:
-        return None
+    ext_suffix = sysconfig.get_config_var("EXT_SUFFIX") or ".so"
+    module_path = os.path.join(module_dir, "build", f"_backplot_cpp{ext_suffix}")
+    if not os.path.exists(module_path):
+        raise ImportError(f"missing C++ backplot module: {module_path}")
 
-    module_path = candidates[-1]
     spec = importlib.util.spec_from_file_location("qtpyvcp.native.backplot_cpp._backplot_cpp", module_path)
     if spec is None or spec.loader is None:
-        return None
+        raise ImportError(f"failed to create import spec for {module_path}")
 
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
 
 
-def cpp_backplot_available() -> bool:
-    return _load_native_module() is not None
+_backplot_cpp = _import_native_module()
 
 
-def build_backplot_from_canon(canon, datasource, *, file_name: Optional[str] = None) -> Optional[CppBackplotResult]:
-    module = _load_native_module()
-    if module is None:
-        return None
+@dataclass
+class CppBackplotResult:
+    path_actors: Any
+    offset_transitions: Any
+    added_segments: int
+    draw_ms: float
+    parse_ms: float = 0.0
 
-    bridge_start = perf_counter()
-    try:
-        payload = module.build_from_canon(canon, datasource)
-    except NotImplementedError:
-        LOG.info("C++ backplot bridge loaded but build_from_canon is not implemented yet")
-        return None
-    except Exception:
-        LOG.exception("C++ backplot build failed; falling back to Python draw path")
-        return None
 
+def _payload_to_result(payload: Any, datasource, *, file_name: Optional[str], path_actors: Optional[dict] = None, parse_ms: float = 0.0) -> Optional[CppBackplotResult]:
     if not isinstance(payload, dict):
         LOG.warning("C++ backplot payload type unsupported (%s); falling back", type(payload))
         return None
@@ -73,10 +61,10 @@ def build_backplot_from_canon(canon, datasource, *, file_name: Optional[str] = N
         LOG.warning("C++ backplot payload missing wcs_payload; falling back")
         return None
 
-    path_actors = canon.get_path_actors()
-    if not isinstance(path_actors, dict):
-        LOG.warning("C++ backplot expected dict path_actors; falling back")
-        return None
+    if path_actors is None:
+        path_actors = {}
+
+    from qtpyvcp.widgets.display_widgets.vtk_backplot.path_actor import PathActor
 
     for entry in wcs_payload:
         if not isinstance(entry, dict):
@@ -87,8 +75,8 @@ def build_backplot_from_canon(canon, datasource, *, file_name: Optional[str] = N
 
         actor = path_actors.get(wcs_index)
         if actor is None:
-            LOG.warning("C++ backplot actor missing for wcs=%s; falling back", wcs_index)
-            return None
+            actor = PathActor(datasource)
+            path_actors[wcs_index] = actor
 
         points_np = np.asarray(entry.get("points"), dtype=np.float64)
         colors_np = np.asarray(entry.get("colors"), dtype=np.uint8)
@@ -130,16 +118,12 @@ def build_backplot_from_canon(canon, datasource, *, file_name: Optional[str] = N
         actor.data_mapper.Update()
         actor.SetMapper(actor.data_mapper)
 
-    canon.offset_transitions = payload.get("offset_transitions") or []
-    canon.added_segments = int(payload.get("added_segments", 0))
-
-    bridge_total_ms = (perf_counter() - bridge_start) * 1000.0
-
     result = CppBackplotResult(
         path_actors=path_actors,
-        offset_transitions=canon.offset_transitions,
-        added_segments=canon.added_segments,
-        draw_ms=float(bridge_total_ms),
+        offset_transitions=payload.get("offset_transitions") or [],
+        added_segments=int(payload.get("added_segments", 0)),
+        draw_ms=float(payload.get("draw_ms", 0.0) or 0.0),
+        parse_ms=float(parse_ms),
     )
 
     if result.path_actors is None:
@@ -155,3 +139,57 @@ def build_backplot_from_canon(canon, datasource, *, file_name: Optional[str] = N
         )
 
     return result
+
+
+def build_backplot_from_file(
+    filename: str,
+    datasource,
+    *,
+    path_colors,
+    unitcode: str,
+    initcode: str,
+    parameter_file: str,
+    temp_parameter_file: str,
+) -> Optional[CppBackplotResult]:
+    canon = _backplot_cpp.NativeCanon(path_colors)
+    try:
+        axis_mask = int(datasource.getAxisMask())
+        if axis_mask <= 0:
+            axis_mask = 0x1FF
+    except Exception:
+        axis_mask = 0x1FF
+    try:
+        canon.set_axis_mask(axis_mask)
+    except Exception:
+        pass
+
+    parse_start = perf_counter()
+    try:
+        if os.path.exists(parameter_file):
+            shutil.copy(parameter_file, temp_parameter_file)
+
+        canon.parameter_file = temp_parameter_file
+        result, seq = gcode.parse(filename, canon, unitcode, initcode)
+        if result > gcode.MIN_ERROR:
+            msg = gcode.strerror(result)
+            LOG.warning("C++ native canon parse error in %s line %s: %s", filename, seq - 1, msg)
+            return None
+
+        # Keep parse_ms scoped to parser execution only.
+        parse_ms = (perf_counter() - parse_start) * 1000.0
+
+        payload = _backplot_cpp.build_from_canon(canon, datasource)
+        cpp_result = _payload_to_result(payload, datasource, file_name=filename, parse_ms=parse_ms)
+        return cpp_result
+    except Exception:
+        LOG.exception("C++ native canon parse/build failed")
+        return None
+    finally:
+        try:
+            os.unlink(temp_parameter_file)
+        except Exception:
+            pass
+        try:
+            os.unlink(temp_parameter_file + '.bak')
+        except Exception:
+            pass
