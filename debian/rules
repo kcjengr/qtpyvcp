@@ -11,4 +11,6 @@ override_dh_install:
 	dh_install
 	PYTHONPATH=$$(echo debian/python3-qtpyvcp/usr/lib/python3*/dist-packages) debian/python3-qtpyvcp/usr/bin/qcompile debian/python3-qtpyvcp
 	PYTHONPATH=$$(echo debian/python3-qtpyvcp/usr/lib/python3*/dist-packages) debian/python3-qtpyvcp/usr/bin/qnative --package-root $$(echo debian/python3-qtpyvcp/usr/lib/python3*/dist-packages/qtpyvcp) --build-root debian/.qnative-build
+	install -d $$(echo debian/python3-qtpyvcp/usr/lib/python3*/dist-packages/qtpyvcp/qt_plugins/designer)
+	cp $$(echo debian/python3-qtpyvcp/usr/lib/python3*/dist-packages/qtpyvcp/native/widgets_cpp/gcode_editor/*gcodeeditorplugin*.so) $$(echo debian/python3-qtpyvcp/usr/lib/python3*/dist-packages/qtpyvcp/qt_plugins/designer/)
 	rm -rf debian/.qnative-build

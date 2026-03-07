@@ -248,6 +248,7 @@ def launch_designer(opts=DotDict()) -> None:
     sys.path.insert(0, base)
     widgets_path =  os.path.join(base, "..", "widgets")
     qtpyvcp_path = os.path.join(base, "..")
+    cxx_designer_plugins_root = os.path.join(base, "..", "qt_plugins")
     
     # Set environment for designer
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
@@ -262,11 +263,16 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['PYTHONPATH'] = new_pythonpath
     
     # Add our plugin path without clobbering existing Qt plugin paths.
+    qt_plugin_paths = []
+    if os.path.isdir(cxx_designer_plugins_root):
+        qt_plugin_paths.append(cxx_designer_plugins_root)
+    qt_plugin_paths.append(widgets_path)
+
     existing_qt_plugin_path = os.environ.get('QT_PLUGIN_PATH', '')
     if existing_qt_plugin_path:
-        os.environ['QT_PLUGIN_PATH'] = f"{widgets_path}:{existing_qt_plugin_path}"
-    else:
-        os.environ['QT_PLUGIN_PATH'] = widgets_path
+        qt_plugin_paths.append(existing_qt_plugin_path)
+
+    os.environ['QT_PLUGIN_PATH'] = ':'.join(qt_plugin_paths)
 
 
     LOG.info("Starting QtDesigner ...")
