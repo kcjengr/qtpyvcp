@@ -1,4 +1,5 @@
 #import pydevd; pydevd.settrace()
+import inspect
 
 # Button Widgets
 
@@ -223,6 +224,26 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsCheckBoxPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsPushButtonPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsComboBoxPlugin())
+
+    # External entry-point widgets (e.g. probe_basic widgets package).
+    # These classes are imported by external_widgets but not guaranteed to be
+    # added to the collection unless we do it explicitly.
+    from qtpyvcp.widgets import external_widgets as _external_widgets
+    from PySide6.QtDesigner import QPyDesignerCustomWidgetPlugin
+
+    for _name in dir(_external_widgets):
+        if _name.startswith('_'):
+            continue
+
+        _obj = getattr(_external_widgets, _name)
+        if not inspect.isclass(_obj):
+            continue
+        if _obj is QPyDesignerCustomWidgetPlugin:
+            continue
+        if not issubclass(_obj, QPyDesignerCustomWidgetPlugin):
+            continue
+
+        _safe_add(QPyDesignerCustomWidgetCollection, _obj, f"external:{_name}")
     
     print("DEBUG: All QtPyVCP custom widgets registered successfully", flush=True)
 
