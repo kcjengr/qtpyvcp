@@ -1,5 +1,4 @@
 #import pydevd; pydevd.settrace()
-import inspect
 
 # Button Widgets
 
@@ -241,7 +240,7 @@ def main():
             continue
 
         _obj = getattr(_external_widgets, _name)
-        if not inspect.isclass(_obj):
+        if not isinstance(_obj, type):
             continue
         if _obj is _DesignerPluginBase:
             continue

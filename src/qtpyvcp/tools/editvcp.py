@@ -301,6 +301,16 @@ def launch_designer(opts=DotDict()) -> None:
     if not cxx_plugin_present:
         LOG.warning("No C++ designer plugin .so found for GCodeEditor.")
         LOG.warning("Run `qnative --widgets` in a source checkout, or install a package that includes qtpyvcp/qt_plugins/designer/*.so")
+    else:
+        for pattern in cxx_plugin_globs:
+            for plugin_path in glob(pattern):
+                LOG.info(f"Detected C++ designer plugin candidate: {plugin_path}")
+
+    LOG.info(f"QtDesigner command: {cmd}")
+    LOG.info(f"PYSIDE_DESIGNER_PLUGINS={os.environ.get('PYSIDE_DESIGNER_PLUGINS', '')}")
+    LOG.info(f"QT_DESIGNER_PLUGIN_PATH={os.environ.get('QT_DESIGNER_PLUGIN_PATH', '')}")
+    LOG.info(f"QT_PLUGIN_PATH={os.environ.get('QT_PLUGIN_PATH', '')}")
+    LOG.info(f"PYTHONPATH={os.environ.get('PYTHONPATH', '')}")
 
 
     LOG.info("Starting QtDesigner ...")
