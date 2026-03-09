@@ -22,7 +22,7 @@ Command line tool to set up and launch QtDesigner for editing VCPs::
  Logging Options:
    --log-level (DEBUG | INFO | WARN | ERROR | CRITICAL)
                       Sets the log level. [default: ERROR]
-   --log-file PATH    Specifies the log file. [default: ~/qtpyvcp-designer.log]
+     --log-file PATH    Specifies the log file. [default: /tmp/editvcp.log]
 
  Other Options:
    -h --help          Show this help and exit.
@@ -43,6 +43,8 @@ from glob import glob
 # Force qtpy to use PySide6
 os.environ['QT_API'] = 'pyside6'
 
+DEFAULT_EDITVCP_LOG_FILE = '/tmp/editvcp.log'
+
 from io import TextIOWrapper
 
 from subprocess import Popen, PIPE, STDOUT
@@ -57,11 +59,11 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from linuxcnc import version as lcnc_version
 
 LOG = initBaseLogger('EditVCP',
-                     log_file=None,
+                     log_file=DEFAULT_EDITVCP_LOG_FILE,
                      log_level='DEBUG')
 
 DESIGNER_LOG = initBaseLogger('Designer',
-                              log_file=None,
+                              log_file=DEFAULT_EDITVCP_LOG_FILE,
                               log_level='DEBUG')
 
 
