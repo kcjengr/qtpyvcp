@@ -229,7 +229,12 @@ def main():
     # These classes are imported by external_widgets but not guaranteed to be
     # added to the collection unless we do it explicitly.
     from qtpyvcp.widgets import external_widgets as _external_widgets
-    from PySide6.QtDesigner import QPyDesignerCustomWidgetPlugin
+    try:
+        # Older PySide6
+        from PySide6.QtDesigner import QPyDesignerCustomWidgetPlugin as _DesignerPluginBase
+    except ImportError:
+        # Newer PySide6 (6.8+): QPyDesignerCustomWidgetPlugin removed
+        from PySide6.QtDesigner import QDesignerCustomWidgetInterface as _DesignerPluginBase
 
     for _name in dir(_external_widgets):
         if _name.startswith('_'):
@@ -238,9 +243,9 @@ def main():
         _obj = getattr(_external_widgets, _name)
         if not inspect.isclass(_obj):
             continue
-        if _obj is QPyDesignerCustomWidgetPlugin:
+        if _obj is _DesignerPluginBase:
             continue
-        if not issubclass(_obj, QPyDesignerCustomWidgetPlugin):
+        if not issubclass(_obj, _DesignerPluginBase):
             continue
 
         _safe_add(QPyDesignerCustomWidgetCollection, _obj, f"external:{_name}")
