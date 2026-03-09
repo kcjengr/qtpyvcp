@@ -77,22 +77,19 @@ from qtpyvcp.widgets.input_widgets.setting_slider import (VCPSettingsLineEdit,  
 
 
 def _safe_add(collection, plugin_cls, label):
-    """Add a custom widget plugin, printing before/after so the last line before
-    a segfault identifies the culprit."""
+    """Add a custom widget plugin class with defensive logging."""
     import sys
     try:
-        instance = plugin_cls()
-        print(f"DEBUG: adding {label}", flush=True)
-        collection.addCustomWidget(instance)
-        print(f"DEBUG: OK    {label}", flush=True)
+        print(f"DEBUG: addCustomWidget {label}", flush=True)
+        collection.addCustomWidget(plugin_cls())
+        print(f"DEBUG: OK {label}", flush=True)
     except Exception as e:
-        print(f"DEBUG: SKIP  {label}: {e}", file=sys.stderr, flush=True)
+        print(f"DEBUG: FAILED {label}: {e}", file=sys.stderr, flush=True)
 
 
 def main():
 
     from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
-    C = QPyDesignerCustomWidgetCollection
 
     print("DEBUG: register_widgets.main() called", flush=True)
 
@@ -250,15 +247,6 @@ def main():
         _safe_add(QPyDesignerCustomWidgetCollection, _obj, f"external:{_name}")
     
     print("DEBUG: All QtPyVCP custom widgets registered successfully", flush=True)
-
-def _safe_add(collection, plugin, label):
-    import sys
-    try:
-        print(f"DEBUG: addCustomWidget {label}", flush=True)
-        collection.addCustomWidget(plugin)
-        print(f"DEBUG: OK {label}", flush=True)
-    except Exception as e:
-        print(f"DEBUG: FAILED {label}: {e}", file=sys.stderr, flush=True)
 
 if __name__ == '__main__':
     main()
