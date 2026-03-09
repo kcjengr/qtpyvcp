@@ -249,6 +249,8 @@ def launch_designer(opts=DotDict()) -> None:
     widgets_path =  os.path.join(base, "..", "widgets")
     qtpyvcp_path = os.path.join(base, "..")
     cxx_designer_plugins_root = os.path.join(base, "..", "qt_plugins")
+    cxx_designer_plugins_dir = os.path.join(cxx_designer_plugins_root, "designer")
+    cxx_dev_plugins_dir = os.path.join(base, "..", "native", "widgets_cpp", "gcode_editor")
     
     # Set environment for designer
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
@@ -273,6 +275,35 @@ def launch_designer(opts=DotDict()) -> None:
         qt_plugin_paths.append(existing_qt_plugin_path)
 
     os.environ['QT_PLUGIN_PATH'] = ':'.join(qt_plugin_paths)
+
+    # C++ Designer plugins may live in either installed package layout
+    # (.../qt_plugins/designer) or source/dev layout
+    # (.../native/widgets_cpp/gcode_editor after qnative --widgets).
+    designer_plugin_dirs = []
+    for candidate_dir in [cxx_designer_plugins_dir, cxx_dev_plugins_dir]:
+        if os.path.isdir(candidate_dir):
+            designer_plugin_dirs.append(candidate_dir)
+
+    existing_designer_plugin_path = os.environ.get('QT_DESIGNER_PLUGIN_PATH', '')
+    if existing_designer_plugin_path:
+        designer_plugin_dirs.append(existing_designer_plugin_path)
+
+    if designer_plugin_dirs:
+        os.environ['QT_DESIGNER_PLUGIN_PATH'] = ':'.join(designer_plugin_dirs)
+
+    # Pass plugin path explicitly so pyside6-designer searches these folders.
+    for plugin_dir in [cxx_designer_plugins_dir, cxx_dev_plugins_dir]:
+        if os.path.isdir(plugin_dir):
+            cmd.extend(['--pluginpath', plugin_dir])
+
+    cxx_plugin_globs = [
+        os.path.join(cxx_designer_plugins_dir, '*gcodeeditorplugin*.so'),
+        os.path.join(cxx_dev_plugins_dir, '*gcodeeditorplugin*.so'),
+    ]
+    cxx_plugin_present = any(glob(pattern) for pattern in cxx_plugin_globs)
+    if not cxx_plugin_present:
+        LOG.warning("No C++ designer plugin .so found for GCodeEditor.")
+        LOG.warning("Run `qnative --widgets` in a source checkout, or install a package that includes qtpyvcp/qt_plugins/designer/*.so")
 
 
     LOG.info("Starting QtDesigner ...")
