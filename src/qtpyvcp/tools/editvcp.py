@@ -294,7 +294,7 @@ def launch_designer(opts=DotDict()) -> None:
     # Pass plugin path explicitly so pyside6-designer searches these folders.
     for plugin_dir in [cxx_designer_plugins_dir, cxx_dev_plugins_dir]:
         if os.path.isdir(plugin_dir):
-            cmd.extend(['--pluginpath', plugin_dir])
+            cmd.extend(['--plugin-path', plugin_dir])
 
     cxx_plugin_globs = [
         os.path.join(cxx_designer_plugins_dir, '*gcodeeditorplugin*.so'),
