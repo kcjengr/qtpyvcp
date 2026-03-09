@@ -44,59 +44,6 @@ Files
 ----------
 
 Area
-   EditVCP / Qt Designer plugin discovery (APT installs)
-
-Summary
-   Improved `editvcp` launch environment so Qt Designer can discover QtPyVCP
-   C++ designer plugins in installed package layouts.
-
-Changes
-   - Added explicit `--pluginpath` argument to `pyside6-designer` when
-     `qtpyvcp/qt_plugins/designer` exists.
-   - Added `QT_DESIGNER_PLUGIN_PATH` population for the designer plugin
-     directory.
-   - Corrected `PYTHONPATH` assembly to include installed-package path and only
-     add `/src` when present (dev checkouts).
-   - Wired previously documented `--designer-args` option through to the
-     designer subprocess command.
-
-Validation
-   - Confirmed `editvcp` previously advertised `--designer-args` but did not
-     pass it to the subprocess.
-   - Verified plugin path wiring now targets `qt_plugins/designer` explicitly.
-
-Files
-   - src/qtpyvcp/tools/editvcp.py
-
-
-2026-03-09
-----------
-
-Area
-   Debian packaging dependency metadata (PySide6 runtime)
-
-Summary
-   Added the missing QtDesigner runtime dependency so APT installs include
-   `PySide6.QtDesigner` required by designer plugin imports at startup.
-
-Changes
-   - Added `python3-pyside6.qtdesigner` to `Build-Depends` for PySide6 package
-     completeness in build environments.
-   - Added `python3-pyside6.qtdesigner` to `Depends` for `python3-qtpyvcp` to
-     prevent startup failure in Probe Basic/QtPyVCP launch paths.
-
-Validation
-   - Mapped traceback module target (`PySide6.QtDesigner`) to missing Debian
-     runtime package and updated dependency metadata accordingly.
-
-Files
-   - debian/control
-
-
-2026-03-09
-----------
-
-Area
    Debian packaging dependency metadata (PySide6 runtime)
 
 Summary

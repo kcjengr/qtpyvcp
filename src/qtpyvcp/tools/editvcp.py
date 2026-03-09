@@ -249,7 +249,6 @@ def launch_designer(opts=DotDict()) -> None:
     widgets_path =  os.path.join(base, "..", "widgets")
     qtpyvcp_path = os.path.join(base, "..")
     cxx_designer_plugins_root = os.path.join(base, "..", "qt_plugins")
-    cxx_designer_plugins_dir = os.path.join(cxx_designer_plugins_root, "designer")
     
     # Set environment for designer
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
@@ -258,17 +257,10 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['DESIGNER'] = '1'
     os.environ['PYSIDE_DESIGNER_PLUGINS'] = widgets_path
     
-    # Add qtpyvcp paths to PYTHONPATH so pyside6-designer can import our modules.
-    # Development installs typically need the repo src path, while apt installs
-    # already place the package directly under dist-packages.
+    # Add qtpyvcp paths to PYTHONPATH so pyside6-designer can import our modules
     existing_pythonpath = os.environ.get('PYTHONPATH', '')
-    python_paths = [widgets_path, qtpyvcp_path]
-    qtpyvcp_src_path = os.path.join(qtpyvcp_path, 'src')
-    if os.path.isdir(qtpyvcp_src_path):
-        python_paths.append(qtpyvcp_src_path)
-    if existing_pythonpath:
-        python_paths.append(existing_pythonpath)
-    os.environ['PYTHONPATH'] = ':'.join(python_paths)
+    new_pythonpath = f"{widgets_path}:{qtpyvcp_path}/src:{existing_pythonpath}"
+    os.environ['PYTHONPATH'] = new_pythonpath
     
     # Add our plugin path without clobbering existing Qt plugin paths.
     qt_plugin_paths = []
@@ -281,25 +273,6 @@ def launch_designer(opts=DotDict()) -> None:
         qt_plugin_paths.append(existing_qt_plugin_path)
 
     os.environ['QT_PLUGIN_PATH'] = ':'.join(qt_plugin_paths)
-
-    # Designer-specific plugin search path for C++ custom widgets.
-    qt_designer_plugin_paths = []
-    existing_designer_plugin_path = os.environ.get('QT_DESIGNER_PLUGIN_PATH', '')
-    if os.path.isdir(cxx_designer_plugins_dir):
-        qt_designer_plugin_paths.append(cxx_designer_plugins_dir)
-    if existing_designer_plugin_path:
-        qt_designer_plugin_paths.append(existing_designer_plugin_path)
-    if qt_designer_plugin_paths:
-        os.environ['QT_DESIGNER_PLUGIN_PATH'] = ':'.join(qt_designer_plugin_paths)
-
-    # Pass plugin path explicitly so pyside6-designer loads qtpyvcp C++ widgets
-    # in installed package layouts.
-    if os.path.isdir(cxx_designer_plugins_dir):
-        cmd.extend(['--pluginpath', cxx_designer_plugins_dir])
-
-    # Pass through optional raw arguments for diagnostic or compatibility flags.
-    if opts.designer_args:
-        cmd.extend(opts.designer_args)
 
 
     LOG.info("Starting QtDesigner ...")
