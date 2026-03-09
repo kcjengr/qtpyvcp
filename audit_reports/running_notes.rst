@@ -40,6 +40,30 @@ Files
    - src/qtpyvcp/path/to/file.py
 
 
+2026-03-09
+----------
+
+Area
+   Debian packaging dependency metadata (PySide6 runtime)
+
+Summary
+   Added the missing QtUiTools runtime dependency so APT installs include
+   `PySide6.QtUiTools` needed by the QtPyVCP error dialog path.
+
+Changes
+   - Added `python3-pyside6.qtuitools` to `Build-Depends` for packaging
+     consistency in PySide6 builds.
+   - Added `python3-pyside6.qtuitools` to `Depends` for `python3-qtpyvcp` so
+     runtime imports succeed after plain APT install.
+
+Validation
+   - Verified Debian package name exists via `apt-cache search`.
+   - Confirmed traceback import target matches provided module package.
+
+Files
+   - debian/control
+
+
 2026-02-20
 ----------
 
