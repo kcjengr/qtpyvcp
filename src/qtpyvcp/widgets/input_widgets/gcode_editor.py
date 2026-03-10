@@ -41,7 +41,10 @@ LOG = logger.getLogger(__name__)
 try:
     from PySide6.Qsci import QsciScintilla, QsciLexerCustom
 except ImportError as e:
-    LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
+    LOG.critical(
+        "Can't import PySide6.Qsci (QsciScintilla). Install python3-pyside6.qsci (or python3-pyqt5.qsci).",
+        exc_info=e,
+    )
     sys.exit(1)
     
 IN_DESIGNER = os.getenv('DESIGNER', False)
