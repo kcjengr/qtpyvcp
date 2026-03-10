@@ -8,7 +8,7 @@ import linuxcnc
 
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
-from PySide6.QtCore import Qt, Slot, QTimer, QFile, QObject
+from PySide6.QtCore import Qt, Slot, QTimer, QFile, QObject, QCoreApplication
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
     QMenu, QMenuBar, QLineEdit, QVBoxLayout, QButtonGroup
 
@@ -478,6 +478,39 @@ class VCPMainWindow(QMainWindow):
         ui_file_obj.open(QFile.ReadOnly)
         
         loader = QUiLoader()
+
+        # Make runtime plugin loading explicit for custom C++ widgets declared
+        # in .ui files (notably GCodeEditor from gcodeeditor.h).
+        package_root = os.path.dirname(qtpyvcp.__file__)
+        packaged_plugin_root = os.path.join(package_root, 'qt_plugins')
+        packaged_designer_dir = os.path.join(packaged_plugin_root, 'designer')
+        dev_widgets_dir = os.path.join(package_root, 'native', 'widgets_cpp', 'gcode_editor')
+
+        plugin_roots = [packaged_plugin_root]
+        plugin_roots.extend([p for p in os.environ.get('QT_PLUGIN_PATH', '').split(os.pathsep) if p])
+
+        designer_paths = [packaged_designer_dir, dev_widgets_dir]
+        designer_paths.extend([p for p in os.environ.get('QT_DESIGNER_PLUGIN_PATH', '').split(os.pathsep) if p])
+        for root in plugin_roots:
+            if root:
+                designer_paths.append(os.path.join(root, 'designer'))
+
+        seen_paths = set()
+        for root in plugin_roots:
+            if os.path.isdir(root):
+                QCoreApplication.addLibraryPath(root)
+
+        for plugin_dir in designer_paths:
+            if not plugin_dir or plugin_dir in seen_paths or not os.path.isdir(plugin_dir):
+                continue
+            try:
+                loader.addPluginPath(plugin_dir)
+                seen_paths.add(plugin_dir)
+            except Exception:
+                LOG.debug("Failed to add QUiLoader plugin path: %s", plugin_dir, exc_info=True)
+
+        LOG.info("QUiLoader plugin paths: %s", ', '.join(loader.pluginPaths()))
+
         _register_ui_custom_widgets(loader, ui_file)
 
         # Register essential QtPyVCP custom widgets
