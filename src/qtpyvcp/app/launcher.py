@@ -102,25 +102,39 @@ def _configure_runtime_qt_plugin_path():
     can be instantiated at runtime (LinuxCNC session), not only in editvcp.
     """
     package_root = os.path.dirname(qtpyvcp.__file__)
-    packaged_designer_dir = os.path.join(package_root, 'qt_plugins', 'designer')
+    packaged_plugin_root = os.path.join(package_root, 'qt_plugins')
+    packaged_designer_dir = os.path.join(packaged_plugin_root, 'designer')
     dev_widgets_dir = os.path.join(package_root, 'native', 'widgets_cpp', 'gcode_editor')
 
-    existing = os.environ.get('QT_PLUGIN_PATH', '')
-    existing_paths = [p for p in existing.split(os.pathsep) if p]
+    existing_qt_plugin = os.environ.get('QT_PLUGIN_PATH', '')
+    existing_qt_plugin_paths = [p for p in existing_qt_plugin.split(os.pathsep) if p]
+    existing_designer_plugin = os.environ.get('QT_DESIGNER_PLUGIN_PATH', '')
+    existing_designer_plugin_paths = [p for p in existing_designer_plugin.split(os.pathsep) if p]
 
-    plugin_paths = []
+    qt_plugin_paths = []
+    designer_plugin_paths = []
+
+    # QT_PLUGIN_PATH should contain plugin roots; Qt appends category
+    # subdirectories (e.g. "designer") during lookup.
+    if os.path.isdir(packaged_plugin_root):
+        qt_plugin_paths.append(packaged_plugin_root)
     if os.path.isdir(packaged_designer_dir):
-        plugin_paths.append(packaged_designer_dir)
+        designer_plugin_paths.append(packaged_designer_dir)
     if os.path.isdir(dev_widgets_dir):
-        plugin_paths.append(dev_widgets_dir)
+        designer_plugin_paths.append(dev_widgets_dir)
 
     # Keep existing entries and remove duplicates while preserving order.
-    for p in existing_paths:
-        if p not in plugin_paths:
-            plugin_paths.append(p)
+    for p in existing_qt_plugin_paths:
+        if p not in qt_plugin_paths:
+            qt_plugin_paths.append(p)
+    for p in existing_designer_plugin_paths:
+        if p not in designer_plugin_paths:
+            designer_plugin_paths.append(p)
 
-    if plugin_paths:
-        os.environ['QT_PLUGIN_PATH'] = os.pathsep.join(plugin_paths)
+    if qt_plugin_paths:
+        os.environ['QT_PLUGIN_PATH'] = os.pathsep.join(qt_plugin_paths)
+    if designer_plugin_paths:
+        os.environ['QT_DESIGNER_PLUGIN_PATH'] = os.pathsep.join(designer_plugin_paths)
 
     # Keep runtime logs explicit for apt/debug parity checks.
     candidates = []
@@ -137,6 +151,7 @@ def _configure_runtime_qt_plugin_path():
         LOG.warning("No runtime C++ gcodeeditor plugin .so found.")
 
     LOG.info("Runtime QT_PLUGIN_PATH=%s", os.environ.get('QT_PLUGIN_PATH', ''))
+    LOG.info("Runtime QT_DESIGNER_PLUGIN_PATH=%s", os.environ.get('QT_DESIGNER_PLUGIN_PATH', ''))
 
 
 def launch_application(opts, config):
