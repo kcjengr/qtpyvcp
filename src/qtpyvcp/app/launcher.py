@@ -4,6 +4,7 @@ import time
 import warnings
 import subprocess
 import importlib
+import glob
 
 from importlib.metadata import entry_points
 
@@ -93,6 +94,51 @@ def log_time(task, times=[time.time(), time.time()]):
 log_time("in script")
 
 
+def _configure_runtime_qt_plugin_path():
+    """Ensure runtime can resolve packaged C++ custom widget plugins.
+
+    Qt's UI loader needs the plugin search path to include the QtPyVCP
+    designer-plugin directories so classes like GCodeEditor in .ui files
+    can be instantiated at runtime (LinuxCNC session), not only in editvcp.
+    """
+    package_root = os.path.dirname(qtpyvcp.__file__)
+    packaged_designer_dir = os.path.join(package_root, 'qt_plugins', 'designer')
+    dev_widgets_dir = os.path.join(package_root, 'native', 'widgets_cpp', 'gcode_editor')
+
+    existing = os.environ.get('QT_PLUGIN_PATH', '')
+    existing_paths = [p for p in existing.split(os.pathsep) if p]
+
+    plugin_paths = []
+    if os.path.isdir(packaged_designer_dir):
+        plugin_paths.append(packaged_designer_dir)
+    if os.path.isdir(dev_widgets_dir):
+        plugin_paths.append(dev_widgets_dir)
+
+    # Keep existing entries and remove duplicates while preserving order.
+    for p in existing_paths:
+        if p not in plugin_paths:
+            plugin_paths.append(p)
+
+    if plugin_paths:
+        os.environ['QT_PLUGIN_PATH'] = os.pathsep.join(plugin_paths)
+
+    # Keep runtime logs explicit for apt/debug parity checks.
+    candidates = []
+    for pattern in (
+        os.path.join(packaged_designer_dir, '*gcodeeditorplugin*.so'),
+        os.path.join(dev_widgets_dir, '*gcodeeditorplugin*.so'),
+    ):
+        candidates.extend(glob.glob(pattern))
+    candidates = sorted(set(candidates))
+
+    if candidates:
+        LOG.info("Runtime C++ plugin candidates: %s", ', '.join(candidates))
+    else:
+        LOG.warning("No runtime C++ gcodeeditor plugin .so found.")
+
+    LOG.info("Runtime QT_PLUGIN_PATH=%s", os.environ.get('QT_PLUGIN_PATH', ''))
+
+
 def launch_application(opts, config):
     qtpyvcp.OPTIONS.update(opts)
     qtpyvcp.CONFIG.update(config)
@@ -149,6 +195,8 @@ def launch_application(opts, config):
 
 
 def load_vcp(opts):
+
+    _configure_runtime_qt_plugin_path()
 
     vcp = opts.vcp
     if vcp is None:
