@@ -1,5 +1,17 @@
 import os
-IN_DESIGNER = os.getenv('DESIGNER', False)
+
+
+def _env_flag(name):
+    value = os.getenv(name)
+    if value is None:
+        return False
+    value = str(value).strip().lower()
+    if value in ('', '0', 'false', 'no', 'off'):
+        return False
+    return True
+
+
+IN_DESIGNER = _env_flag('DESIGNER')
 
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 from qtpyvcp.widgets.qtdesigner.designer_plugin import RulesEditorExtension
@@ -42,14 +54,12 @@ class StatusLEDPlugin(_DesignerPlugin):
 # VTK Widget - Cannot be instantiated in designer due to VTK dependencies
 # Create a placeholder class for designer mode only
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 
 class VTKBackPlotPlaceholder(QWidget):
     """Placeholder for VTKBackPlot widget in designer mode."""
     def __init__(self, parent=None):
-        print("DEBUG: VTKBackPlot placeholder __init__ START", flush=True)
         super().__init__(parent)
-        print("DEBUG: VTKBackPlot super().__init__ done", flush=True)
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         label = QLabel("VTK Backplot\n(3D visualization)")
@@ -58,35 +68,93 @@ class VTKBackPlotPlaceholder(QWidget):
         self.setLayout(layout)
         self.setMinimumSize(400, 300)
         self.setStyleSheet("background-color: #2a2a2a; color: #cccccc;")
-        print("DEBUG: VTKBackPlot placeholder __init__ DONE", flush=True)
 
-    # Dummy methods for UI connections
-    def setViewY(self): pass
-    def setViewX(self): pass
-    def setViewZ(self): pass
-    def setViewPath(self): pass
-    def setViewP(self): pass
-    def setViewOrtho(self): pass
-    def setViewPersp(self): pass
-    def setViewProgram(self): pass
-    def setViewMachine(self): pass
-    def clearLivePlot(self): pass
-    def zoomIn(self): pass
-    def zoomOut(self): pass
-    def enable_panning(self, enabled): pass
+    # Dummy slot methods for UI connections in Designer.
+    @Slot()
+    def setViewY(self):
+        pass
+
+    @Slot()
+    def setViewX(self):
+        pass
+
+    @Slot()
+    def setViewZ(self):
+        pass
+
+    @Slot()
+    def setViewPath(self):
+        pass
+
+    @Slot()
+    def setViewP(self):
+        pass
+
+    @Slot()
+    def setViewOrtho(self):
+        pass
+
+    @Slot()
+    def setViewPersp(self):
+        pass
+
+    @Slot()
+    def setViewProgram(self):
+        pass
+
+    @Slot()
+    def setViewMachine(self):
+        pass
+
+    @Slot(int)
+    def setView(self, _index):
+        pass
+
+    @Slot()
+    def clearLivePlot(self):
+        pass
+
+    @Slot()
+    def zoomIn(self):
+        pass
+
+    @Slot()
+    def zoomOut(self):
+        pass
+
+    @Slot(bool)
+    def enable_panning(self, _enabled):
+        pass
+
+
+# Give Designer a class whose runtime name matches the requested class
+# to prevent custom widget factory class-name mismatch warnings.
+class VTKBackPlot(VTKBackPlotPlaceholder):
+    pass
 
 class VTKWidgetPlugin(_DesignerPlugin):
+    def objectName(self):
+        # Keep Probe Basic compatibility: many .ui signal receivers target
+        # object name "vtk". If Designer inserts "vtkbackplot" by default,
+        # those connections silently break when users replace the widget.
+        return "vtk"
+
+    def name(self):
+        # Expose the runtime class name in Designer while still using a
+        # placeholder implementation when DESIGNER is set.
+        return "VTKBackPlot"
+
     def pluginClass(self):
         # Return the placeholder for designer mode, real widget for runtime
         if IN_DESIGNER:
-            return VTKBackPlotPlaceholder
+            return VTKBackPlot
         else:
             # Import the real VTK widget at runtime
             try:
-                from .vtk_backplot.vtk_backplot import VTKBackPlot
-                return VTKBackPlot
+                from .vtk_backplot.vtk_backplot import VTKBackPlot as RuntimeVTKBackPlot
+                return RuntimeVTKBackPlot
             except ImportError:
-                return VTKBackPlotPlaceholder
+                return VTKBackPlot
     
     def toolTip(self):
         return "VTK 3D Backplot Widget (runtime only)"
@@ -97,11 +165,16 @@ class VTKWidgetPlugin(_DesignerPlugin):
     def isContainer(self):
         return True
 
-# Export a VTKBackPlot symbol so compiled UIs that import from this module succeed
-try:
-    from .vtk_backplot.vtk_backplot import VTKBackPlot as _VTKBackPlot
-except ImportError:
-    _VTKBackPlot = VTKBackPlotPlaceholder
+# Export a VTKBackPlot symbol so compiled UIs that import from this module
+# succeed. In runtime mode, prefer the real widget and only fall back if import
+# actually fails.
+if IN_DESIGNER:
+    _VTKBackPlot = VTKBackPlot
+else:
+    try:
+        from .vtk_backplot.vtk_backplot import VTKBackPlot as _VTKBackPlot
+    except Exception:
+        _VTKBackPlot = VTKBackPlot
 
 VTKBackPlot = _VTKBackPlot
 

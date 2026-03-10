@@ -3,15 +3,24 @@
 This module loads custom widgets defined in external packages
 so they are available in QtDesigner.
 """
-
-from pkg_resources import iter_entry_points
+from importlib.metadata import entry_points
 
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
 
 
-for entry_point in iter_entry_points(group='qtpyvcp.widgets'):
+def _iter_widget_entry_points():
+    """Yield qtpyvcp widget entry points across importlib.metadata variants."""
+    eps = entry_points()
+    # Python 3.10+: EntryPoints object supports select(group=...)
+    if hasattr(eps, 'select'):
+        return eps.select(group='qtpyvcp.widgets')
+    # Older behavior: dict-like mapping by group
+    return eps.get('qtpyvcp.widgets', [])
+
+
+for entry_point in _iter_widget_entry_points():
 
     try:
         group_name = entry_point.name

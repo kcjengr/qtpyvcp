@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC>
+  <qresource prefix="/">
+    <file>images/backspace.png</file>
+    <file>images/left_arrow.png</file>
+    <file>images/right_arrow.png</file>
+    <file>images/up_arrow.png</file>
+    <file>images/down_arrow.png</file>
+  </qresource>
+</RCC>

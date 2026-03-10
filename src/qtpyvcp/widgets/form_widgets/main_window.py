@@ -10,7 +10,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
 from PySide6.QtCore import Qt, Slot, QTimer, QFile, QObject, QCoreApplication
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QVBoxLayout, QButtonGroup
+    QMenu, QMenuBar, QLineEdit, QVBoxLayout, QButtonGroup, QWidget, QGridLayout, QBoxLayout
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -454,6 +454,92 @@ class VCPMainWindow(QMainWindow):
                 except Exception:
                     LOG.debug("Skipping custom widget registration for %s from %s", class_name, module_path)
 
+        def _replace_vtk_placeholders_runtime(root_widget):
+            """Replace any designer placeholder VTK widgets with the real runtime widget."""
+            placeholders = root_widget.findChildren(QWidget, "vtkbackplotplaceholder")
+            # Also detect class-based placeholders regardless of object name.
+            placeholders_by_class = [
+                w for w in root_widget.findChildren(QWidget)
+                if w.metaObject().className() == "VTKBackPlotPlaceholder"
+            ]
+
+            # Merge preserving object identity order.
+            seen = set()
+            all_placeholders = []
+            for w in placeholders + placeholders_by_class:
+                wid = id(w)
+                if wid in seen:
+                    continue
+                seen.add(wid)
+                all_placeholders.append(w)
+
+            if not all_placeholders:
+                return
+
+            try:
+                from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import VTKBackPlot as RealVTKBackPlot
+            except Exception:
+                LOG.exception("Failed importing runtime VTKBackPlot for placeholder replacement")
+                return
+
+            for placeholder in all_placeholders:
+                placeholder_name = placeholder.objectName()
+                placeholder_parent = placeholder.parentWidget()
+                layout = placeholder_parent.layout() if placeholder_parent is not None else None
+
+                if placeholder_parent is None or layout is None:
+                    continue
+
+                try:
+                    real_vtk = RealVTKBackPlot(placeholder_parent)
+                    # Keep wiring stable: normalize placeholder names to runtime names.
+                    normalized_name = placeholder_name or "vtk"
+                    if normalized_name.endswith("placeholder"):
+                        normalized_name = normalized_name[: -len("placeholder")]
+                    if not normalized_name:
+                        normalized_name = "vtk"
+                    real_vtk.setObjectName(normalized_name)
+
+                    # Prefer Qt's built-in replacement API, which can resolve
+                    # nested layout ownership better than indexOf() alone.
+                    replaced_item = None
+                    try:
+                        replaced_item = layout.replaceWidget(placeholder, real_vtk)
+                    except Exception:
+                        replaced_item = None
+
+                    if replaced_item is not None:
+                        placeholder.hide()
+                        placeholder.deleteLater()
+                        continue
+
+                    if isinstance(layout, QGridLayout):
+                        index = layout.indexOf(placeholder)
+                        if index >= 0:
+                            row, col, row_span, col_span = layout.getItemPosition(index)
+                            layout.removeWidget(placeholder)
+                            layout.addWidget(real_vtk, row, col, row_span, col_span)
+                        else:
+                            # Fallback if placeholder is not a direct item in this layout.
+                            layout.addWidget(real_vtk)
+                            real_vtk.setGeometry(placeholder.geometry())
+                    elif isinstance(layout, QBoxLayout):
+                        index = layout.indexOf(placeholder)
+                        if index >= 0:
+                            layout.removeWidget(placeholder)
+                            layout.insertWidget(index, real_vtk)
+                        else:
+                            # Fallback if placeholder is nested or wrapped in another item.
+                            layout.addWidget(real_vtk)
+                            real_vtk.setGeometry(placeholder.geometry())
+                    else:
+                        layout.removeWidget(placeholder)
+                        layout.addWidget(real_vtk)
+
+                    placeholder.deleteLater()
+                except Exception:
+                    LOG.exception("Failed replacing VTK placeholder: name=%s", placeholder_name)
+
         def _ui_uses_gcode_editor(path):
             try:
                 with open(path, 'r', encoding='utf-8') as ui_file_handle:
@@ -545,6 +631,14 @@ class VCPMainWindow(QMainWindow):
         except ImportError:
             pass
 
+        # Backward compatibility for .ui files saved with the designer-only
+        # placeholder class name.
+        try:
+            from qtpyvcp.widgets.display_widgets.designer_plugins import VTKBackPlotPlaceholder
+            loader.registerCustomWidget(VTKBackPlotPlaceholder)
+        except ImportError:
+            pass
+
         
         loaded_ui = loader.load(ui_file_obj, self)
 
@@ -588,6 +682,8 @@ class VCPMainWindow(QMainWindow):
             self.ui = self
         else:
             self.ui = loaded_ui
+
+        _replace_vtk_placeholders_runtime(self)
         
         _apply_widget_attributes()
         _wire_button_group_slots()

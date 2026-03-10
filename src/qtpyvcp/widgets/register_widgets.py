@@ -73,25 +73,9 @@ from qtpyvcp.widgets.input_widgets.setting_slider import (VCPSettingsLineEdit,  
                                                           VCPSettingsComboBox)  # noqa: F401
 
 
-
-
-
-def _safe_add(collection, plugin_cls, label):
-    """Add a custom widget plugin class with defensive logging."""
-    import sys
-    try:
-        print(f"DEBUG: addCustomWidget {label}", flush=True)
-        collection.addCustomWidget(plugin_cls())
-        print(f"DEBUG: OK {label}", flush=True)
-    except Exception as e:
-        print(f"DEBUG: FAILED {label}: {e}", file=sys.stderr, flush=True)
-
-
 def main():
 
     from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
-
-    print("DEBUG: register_widgets.main() called", flush=True)
 
     # Action Buttons
     from qtpyvcp.widgets.button_widgets.designer_plugins import (ActionButtonPlugin,
@@ -243,10 +227,10 @@ def main():
             continue
         if not issubclass(_obj, _DesignerPluginBase):
             continue
-
-        _safe_add(QPyDesignerCustomWidgetCollection, _obj, f"external:{_name}")
-    
-    print("DEBUG: All QtPyVCP custom widgets registered successfully", flush=True)
+        try:
+            QPyDesignerCustomWidgetCollection.addCustomWidget(_obj())
+        except Exception:
+            pass
 
 if __name__ == '__main__':
     main()

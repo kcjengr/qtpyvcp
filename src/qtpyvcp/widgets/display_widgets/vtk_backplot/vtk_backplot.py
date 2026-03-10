@@ -358,6 +358,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.path_end_point = OrderedDict()
             self.path_angle_point = OrderedDict()
+
             self.path_start_point = OrderedDict()
             self.offset_transitions = list()
 

@@ -54,8 +54,37 @@ class VirtualInput(QWidget):
         self.ui = form_class()
         self.ui.setupUi(self)
 
+        # Explicitly connect only widgets that exist in this form variant
+        # (keyboard or numpad) to avoid noisy connectSlotsByName warnings.
+        self.buttonGroup = getattr(self.ui, 'buttonGroup', None)
+        if self.buttonGroup is not None:
+            self.buttonGroup.buttonPressed.connect(self._button_group_pressed)
+        self._wire_special_keys()
+
+    def _connect_pressed(self, widget_name, handler):
+        widget = getattr(self.ui, widget_name, None)
+        if widget is not None and hasattr(widget, 'pressed'):
+            widget.pressed.connect(handler)
+
+    def _wire_special_keys(self):
+        self._connect_pressed('space_key', self.space_key_pressed)
+        self._connect_pressed('enter_key', self.enter_key_pressed)
+        self._connect_pressed('esc_key', self.esc_key_pressed)
+        self._connect_pressed('backspace_key', self.backspace_key_pressed)
+        self._connect_pressed('delete_key', self.delete_key_pressed)
+        self._connect_pressed('left_key', self.left_key_pressed)
+        self._connect_pressed('right_key', self.right_key_pressed)
+        self._connect_pressed('up_key', self.up_key_pressed)
+        self._connect_pressed('down_key', self.down_key_pressed)
+        self._connect_pressed('tab_key', self.tab_key_pressed)
+        self._connect_pressed('home_key', self.home_key_pressed)
+        self._connect_pressed('end_key', self.end_key_pressed)
+        self._connect_pressed('page_up_key', self.page_up_key_pressed)
+        self._connect_pressed('page_down_key', self.page_down_key_pressed)
+        self._connect_pressed('caps_key', self.caps_key_pressed)
+
     @Slot(QAbstractButton)
-    def on_buttonGroup_buttonPressed(self, btn):
+    def _button_group_pressed(self, btn):
         event = QInputMethodEvent()
         event.setCommitString(btn.text())
         QGuiApplication.sendEvent(self.focus_object, event)
@@ -78,6 +107,10 @@ class VirtualInput(QWidget):
     @Slot()
     def backspace_key_pressed(self):
         self.send_key_(Qt.Key_Backspace)
+
+    @Slot()
+    def delete_key_pressed(self):
+        self.send_key_(Qt.Key_Delete)
 
     @Slot()
     def left_key_pressed(self):
