@@ -479,7 +479,8 @@ GCodeEditor::GCodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 
 GCodeEditor::~GCodeEditor()
 {
-	delete highlighter;
+	// highlighter is parented to QTextDocument via GCodeHighlighter(document())
+	// and is destroyed by Qt's QObject parent-child teardown.
 }
 
 int GCodeEditor::lineNumberAreaWidth() const
