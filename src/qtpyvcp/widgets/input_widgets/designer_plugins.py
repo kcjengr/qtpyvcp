@@ -1,4 +1,5 @@
 from PySide6.QtUiTools import QUiLoader
+from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 from qtpyvcp.widgets.qtdesigner.designer_plugin import RulesEditorExtension
@@ -21,15 +22,38 @@ class MDIHistoryPlugin(_DesignerPlugin):
     def pluginClass(self):
         return MDIHistory
 
-# from gcode_editor import GcodeEditor
-# class GcodeEditorPlugin(_DesignerPlugin):
-#     def pluginClass(self):
-#         return GcodeEditor
 
-from qtpyvcp.widgets.input_widgets.gcode_text_edit import GcodeTextEdit
-class GCodeEditPlugin(_DesignerPlugin):
+class _GCodeEditorDesignerPlaceholder(QWidget):
+    """Designer-only placeholder for the C++ GCodeEditor widget."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        layout = QVBoxLayout(self)
+        label = QLabel("GCodeEditor", self)
+        label.setObjectName("gcodeEditorPlaceholderLabel")
+        layout.addWidget(label)
+
+
+class GCodeEditorPlugin(_DesignerPlugin):
+    """Expose C++ GCodeEditor in Qt Designer widget box deterministically."""
+
     def pluginClass(self):
-        return GcodeTextEdit
+        return _GCodeEditorDesignerPlaceholder
+
+    def name(self):
+        return 'GCodeEditor'
+
+    def objectName(self):
+        return 'gcodeEditor'
+
+    def includeFile(self):
+        return 'gcodeeditor.h'
+
+    def toolTip(self):
+        return 'G-code Editor Widget'
+
+    def whatsThis(self):
+        return 'A text editor with G-code syntax highlighting'
 
 from qtpyvcp.widgets.input_widgets.recent_file_combobox import RecentFileComboBox
 class RecentFileComboBoxPlugin(_DesignerPlugin):

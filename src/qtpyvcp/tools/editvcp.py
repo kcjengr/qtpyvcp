@@ -51,6 +51,7 @@ from subprocess import Popen, PIPE, STDOUT
 from importlib.metadata import entry_points
 
 from docopt import docopt
+from PySide6.QtCore import QLibraryInfo
 from PySide6.QtWidgets import QApplication, QFileDialog
 
 from qtpyvcp.lib.types import DotDict
@@ -286,12 +287,28 @@ def launch_designer(opts=DotDict()) -> None:
         if os.path.isdir(candidate_dir):
             designer_plugin_dirs.append(candidate_dir)
 
+    # Preserve Qt's built-in designer plugin directory (contains libPySidePlugin)
+    # so Python custom widgets continue to load when using --plugin-path.
+    try:
+        qt_plugins_root = QLibraryInfo.path(QLibraryInfo.LibraryPath.PluginsPath)
+        qt_designer_builtin_dir = os.path.join(qt_plugins_root, 'designer')
+        if os.path.isdir(qt_designer_builtin_dir):
+            designer_plugin_dirs.insert(0, qt_designer_builtin_dir)
+    except Exception:
+        # Fallback safely if QLibraryInfo API differs on older bindings.
+        pass
+
     existing_designer_plugin_path = os.environ.get('QT_DESIGNER_PLUGIN_PATH', '')
     if existing_designer_plugin_path:
         designer_plugin_dirs.append(existing_designer_plugin_path)
 
     if designer_plugin_dirs:
-        os.environ['QT_DESIGNER_PLUGIN_PATH'] = ':'.join(designer_plugin_dirs)
+        designer_plugin_path = os.pathsep.join(designer_plugin_dirs)
+        os.environ['QT_DESIGNER_PLUGIN_PATH'] = designer_plugin_path
+        # Some PySide6 designer builds do not reliably honor
+        # QT_DESIGNER_PLUGIN_PATH from the environment. Pass the plugin
+        # path list explicitly to pyside6-designer for deterministic loading.
+        cmd.extend(['--plugin-path', designer_plugin_path])
 
     cxx_plugin_globs = [
         os.path.join(cxx_designer_plugins_dir, '*gcodeeditorplugin*.so'),

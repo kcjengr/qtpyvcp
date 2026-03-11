@@ -54,7 +54,6 @@ from qtpyvcp.widgets.input_widgets.action_dial import (ActionDial)  # noqa: F401
 from qtpyvcp.widgets.input_widgets.action_slider import (ActionSlider)  # noqa: F401
 from qtpyvcp.widgets.input_widgets.dro_line_edit import (DROLineEdit)  # noqa: F401
 from qtpyvcp.widgets.input_widgets.file_system import (FileSystemTable, RemovableDeviceComboBox)  # noqa: F401
-from qtpyvcp.widgets.input_widgets.gcode_text_edit import (GcodeTextEdit)  # noqa: F401
 from qtpyvcp.widgets.input_widgets.jog_increment import (JogIncrementWidget)  # noqa: F401
 from qtpyvcp.widgets.input_widgets.line_edit import (VCPLineEdit)  # noqa: F401
 from qtpyvcp.widgets.input_widgets.mdientry_widget import (MDIEntry)  # noqa: F401
@@ -117,8 +116,8 @@ def main():
                                                                 ActionSliderPlugin,
                                                                 DROLineEditPlugin,
                                                                 FileSystemPlugin,
+                                                                GCodeEditorPlugin,
                                                                 RemovableDeviceComboBoxPlugin,
-                                                                GCodeEditPlugin,
                                                                 JogIncrementPlugin,
                                                                 VCPLineEditPlugin,
                                                                 MDIEntryPlugin,
@@ -186,8 +185,8 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(ActionSliderPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(DROLineEditPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(FileSystemPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(GCodeEditorPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(RemovableDeviceComboBoxPlugin())
-    QPyDesignerCustomWidgetCollection.addCustomWidget(GCodeEditPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(JogIncrementPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPLineEditPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(MDIEntryPlugin())
