@@ -23,6 +23,10 @@ from PySide6 import QtWidgets, QtCore, QtDesigner
 
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins
 from qtpyvcp.utilities.settings import Setting
+from qtpyvcp.utilities.machine_parameters import (
+    read_parameter_values,
+    get_parameter_value,
+)
 from .plugin_extension import _PluginExtension
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
@@ -321,6 +325,7 @@ class RulesEditor(QtWidgets.QDialog):
         lbl_expression = QtWidgets.QLabel("Expression:")
         expr_help_layout = QtWidgets.QHBoxLayout()
         self.txt_expression = QtWidgets.QLineEdit()
+        self.txt_expression.textChanged.connect(self.expression_changed)
         self.txt_expression.editingFinished.connect(self.expression_changed)
         expr_help_layout.addWidget(self.txt_expression)
         expression_layout.addRow(lbl_expression, expr_help_layout)
@@ -588,7 +593,7 @@ class RulesEditor(QtWidgets.QDialog):
 
         return chan_obj, chan_exp, chan_val, chan_obj.__doc__
 
-    def expression_changed(self):
+    def expression_changed(self, _=None):
         """Callback executed when the expression is modified."""
         self.change_entry("expression", self.txt_expression.text())
 
@@ -601,6 +606,8 @@ class RulesEditor(QtWidgets.QDialog):
                 and the error message otherwise.
         """
         errors = []
+        params = read_parameter_values()
+        param = lambda number, default=0.0: get_parameter_value(params, number, default)
         for idx, rule in enumerate(self.rules):
             name = rule.get("name")
             prop = rule.get("property")
@@ -646,7 +653,11 @@ class RulesEditor(QtWidgets.QDialog):
 
             try:
                 # check python expression
-                value = eval(expression, {'ch': channel_values})
+                value = eval(expression, {
+                    'ch': channel_values,
+                    'params': params,
+                    'param': param,
+                })
 
                 # check return type
                 exp_typ = self.available_properties[prop][1]
@@ -681,8 +692,40 @@ class RulesEditor(QtWidgets.QDialog):
         if is_valid:
             data = json.dumps(self.rules)
             formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
-            if formWindow:
-                formWindow.cursor().setProperty("rules", data)
+            if not formWindow:
+                QtWidgets.QMessageBox.critical(
+                    self,
+                    "Error Saving",
+                    "Unable to save widget rules because no Designer form window was found.",
+                    QtWidgets.QMessageBox.StandardButton.Ok,
+                )
+                LOG.error("Rules save aborted: no form window for widget '%s'", self.widget.objectName())
+                return
+
+            cursor = formWindow.cursor()
+
+            # Prefer explicit widget-targeted property updates.
+            try:
+                prop_set = cursor.setWidgetProperty(self.widget, "rules", data)
+            except TypeError:
+                # Compatibility fallback for Qt bindings that may not expose
+                # setWidgetProperty with this signature.
+                prop_set = cursor.setProperty("rules", data)
+
+            if prop_set is False:
+                QtWidgets.QMessageBox.critical(
+                    self,
+                    "Error Saving",
+                    "Designer rejected the rules property update.",
+                    QtWidgets.QMessageBox.StandardButton.Ok,
+                )
+                LOG.error("Rules save failed: setProperty returned False for widget '%s'", self.widget.objectName())
+                return
+
+            # Mirror value to the live widget for immediate editor feedback.
+            self.widget.setProperty("rules", data)
+            formWindow.setDirty(True)
+
             self.accept()
         else:
             QtWidgets.QMessageBox.critical(self, "Error Saving", message,

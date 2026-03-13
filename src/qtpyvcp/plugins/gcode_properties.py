@@ -35,10 +35,15 @@ LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 INFO = Info()
 
-INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
-
-MAX_LINEAR_VELOCITY = bool(INIFILE.find("TRAJ", "MAX_LINEAR_VELOCITY"))
-MAX_ANGULAR_VELOCITY = bool(INIFILE.find("TRAJ", "MAX_ANGULAR_VELOCITY"))
+INI_FILE_NAME = os.getenv("INI_FILE_NAME")
+if INI_FILE_NAME:
+    INIFILE = linuxcnc.ini(INI_FILE_NAME)
+    MAX_LINEAR_VELOCITY = bool(INIFILE.find("TRAJ", "MAX_LINEAR_VELOCITY"))
+    MAX_ANGULAR_VELOCITY = bool(INIFILE.find("TRAJ", "MAX_ANGULAR_VELOCITY"))
+else:
+    INIFILE = None
+    MAX_LINEAR_VELOCITY = False
+    MAX_ANGULAR_VELOCITY = False
 
 MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
 
@@ -49,22 +54,34 @@ class GCodeProperties(DataPlugin):
     def __init__(self):
         super(GCodeProperties, self).__init__()
 
-        inifile = os.getenv("INI_FILE_NAME")
-        self.ini = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
-        self.config_dir = os.path.dirname(inifile)
-
         self.linear_units = MACHINE_UNITS
-
         self.canon = None
         self.loaded_file = None
+
+        if IN_DESIGNER:
+            # Designer only needs channel metadata for rules completer.
+            self.ini = None
+            self.config_dir = ''
+            self.parameter_file = ''
+            self.temp_parameter_file = ''
+            return
+
+        inifile = os.getenv("INI_FILE_NAME")
+        if not inifile:
+            LOG.warning("INI_FILE_NAME is not set; gcode_properties plugin is disabled")
+            self.ini = None
+            self.config_dir = ''
+            self.parameter_file = ''
+            self.temp_parameter_file = ''
+            return
+
+        self.ini = linuxcnc.ini(inifile)
+        self.config_dir = os.path.dirname(inifile)
 
         temp = self.ini.find("RS274NGC", "PARAMETER_FILE") or "linuxcnc.var"
         self.parameter_file = os.path.join(self.config_dir, temp)
         self.temp_parameter_file = os.path.join(self.parameter_file + '.temp')
         
-        if IN_DESIGNER:
-            return
-            
         self.stat = STATUS
         self.stat.file.notify(self._file_event)
 

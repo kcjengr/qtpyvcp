@@ -25,6 +25,10 @@ class NullPlugin:
     
     Used in designer mode when plugins aren't available to prevent AttributeErrors.
     """
+    def getChannel(self, *args, **kwargs):
+        """Match DataPlugin.getChannel contract for designer-safe callers."""
+        return None, None
+
     def __getattr__(self, name):
         """Return a callable that returns False or empty data by default."""
         def null_method(*args, **kwargs):
@@ -211,6 +215,7 @@ def _initializeDesignerPlugins():
         'notifications': ('qtpyvcp.plugins.notifications', 'Notifications', {}),
         'persistent_data_manager': ('qtpyvcp.plugins.persistent_data_manager', 'PersistentDataManager', {}),
         'file_locations': ('qtpyvcp.plugins.file_locations', 'FileLocations', {}),
+        'gcode_properties': ('qtpyvcp.plugins.gcode_properties', 'GCodeProperties', {}),
     }
     
     LOG.debug("Initializing essential plugins for Designer mode")

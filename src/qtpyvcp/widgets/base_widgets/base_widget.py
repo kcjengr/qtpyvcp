@@ -15,6 +15,10 @@ from PySide6.QtWidgets import QPushButton
 from qtpyvcp import hal as qhal
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.machine_parameters import (
+    read_parameter_values,
+    get_parameter_value,
+)
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -230,6 +234,10 @@ class VCPBaseWidget(VCPPrimitiveWidget):
 
     def registerRules(self):
         rules = json.loads(self._rules)
+        params = read_parameter_values()
+        # Read fresh parameter values each evaluation so rule expressions react
+        # to runtime .var changes (ATC pocket updates, etc.).
+        param = lambda number, default=0.0: get_parameter_value(read_parameter_values(), number, default)
         for rule in rules:
             # print(rule)
             ch = ChanList()
@@ -260,7 +268,12 @@ class VCPBaseWidget(VCPPrimitiveWidget):
                 self._data_channels = ch
                 continue
 
-            eval_env = {'ch': ch, 'widget': self}
+            eval_env = {
+                'ch': ch,
+                'widget': self,
+                'params': params,
+                'param': param,
+            }
             eval_exp = 'lambda: widget.{}({})'.format(
                             prop[0], rule['expression']).encode('utf-8')
             exp = eval(eval_exp, eval_env)
