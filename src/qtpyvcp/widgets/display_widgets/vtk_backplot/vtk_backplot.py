@@ -674,6 +674,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
+            self._datasource.toolInSpindleChanged.connect(self.update_tool)
             # self.status.g5x_index.notify(self.update_g5x_index)
             
             self.offsetTableColumnsIndex = self._datasource.getOffsetColumns()
@@ -716,6 +717,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
+            try:
+                tool_in_spindle = int(getattr(self._datasource._status.stat, 'tool_in_spindle', 0))
+            except Exception:
+                tool_in_spindle = 0
+
+            # If no tool is loaded, show cone placeholder and hide tool-bit geometry.
+            if tool_in_spindle <= 0:
+                self.tool_actor.SetVisibility(1)
+                self.tool_bit_actor.SetVisibility(0)
+            else:
+                self.tool_actor.SetVisibility(1)
+                self.tool_bit_actor.SetVisibility(1)
             self.renderer.AddActor(self.points_surface_actor)
             self.renderer.AddActor(self.machine_actor)
             self.renderer.AddActor(self.axes_actor)
@@ -1474,7 +1487,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self._request_render()
 
-    def update_tool(self):
+    def update_tool(self, *_args):
         self.renderer.RemoveActor(self.tool_actor)
         self.renderer.RemoveActor(self.tool_bit_actor)
 
@@ -1495,6 +1508,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.tool_bit_actor.SetUserTransform(tool_transform)
         else:
             self.tool_bit_actor.SetUserTransform(tool_transform)
+
+        try:
+            tool_in_spindle = int(getattr(self._datasource._status.stat, 'tool_in_spindle', 0))
+        except Exception:
+            tool_in_spindle = 0
+
+        if tool_in_spindle <= 0:
+            self.tool_actor.SetVisibility(1)
+            self.tool_bit_actor.SetVisibility(0)
+        else:
+            self.tool_actor.SetVisibility(1)
+            self.tool_bit_actor.SetVisibility(1)
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.tool_bit_actor)

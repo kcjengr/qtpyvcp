@@ -30,6 +30,7 @@ class LinuxCncDataSource(QObject):
     activeOffsetChanged = Signal(int)
     toolTableChanged = Signal(tuple)
     toolOffsetChanged = Signal(tuple)
+    toolInSpindleChanged = Signal(int)
 
     def __init__(self):
         super(LinuxCncDataSource, self).__init__(None)
@@ -68,6 +69,7 @@ class LinuxCncDataSource(QObject):
 
         self._status.tool_offset.notify(self.__handleToolOffsetChanged)
         self._status.tool_table.notify(self.__handleToolTableChanged)
+        self._status.tool_in_spindle.notify(self.__handleToolInSpindleChanged)
 
     def __handleProgramLoaded(self, fname):
         PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='datasource-program-loaded', percent=45)
@@ -132,6 +134,12 @@ class LinuxCncDataSource(QObject):
 
     def __handleToolTableChanged(self, tool_table):
         self.toolTableChanged.emit(tool_table)
+
+    def __handleToolInSpindleChanged(self, tool_number):
+        try:
+            self.toolInSpindleChanged.emit(int(tool_number))
+        except Exception:
+            self.toolInSpindleChanged.emit(0)
 
     def getFPS(self):
         return self._fps
