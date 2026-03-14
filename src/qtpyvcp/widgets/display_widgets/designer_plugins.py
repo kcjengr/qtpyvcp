@@ -71,6 +71,20 @@ class VTKBackPlotPlaceholder(QWidget):
 
     # Dummy slot methods for UI connections in Designer.
     @Slot()
+    def reload_program(self):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def viewPerspective(self, _persp):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showSpindle(self, _show):
+        pass
+
+    @Slot()
     def setViewY(self):
         pass
 
@@ -80,6 +94,18 @@ class VTKBackPlotPlaceholder(QWidget):
 
     @Slot()
     def setViewZ(self):
+        pass
+
+    @Slot()
+    def setViewXZ(self):
+        pass
+
+    @Slot()
+    def setViewXZ2(self):
+        pass
+
+    @Slot()
+    def setViewZ2(self):
         pass
 
     @Slot()
@@ -115,11 +141,91 @@ class VTKBackPlotPlaceholder(QWidget):
         pass
 
     @Slot()
+    def printView(self):
+        pass
+
+    @Slot()
     def zoomIn(self):
         pass
 
     @Slot()
     def zoomOut(self):
+        pass
+
+    @Slot(bool)
+    def enableBreadcrumbs(self, _enabled):
+        pass
+
+    @Slot(bool)
+    def enableMultiTouch(self, _enabled):
+        pass
+
+    @Slot(bool)
+    def setProgramViewWhenLoadingProgram(self, _enabled):
+        pass
+
+    @Slot(bool)
+    def alphaBlend(self, _alpha):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showSurface(self, _show):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showGrid(self, _show):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showProgramBounds(self, _show):
+        pass
+
+    @Slot()
+    def toggleProgramBounds(self):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachineBounds(self, _show):
+        pass
+
+    @Slot()
+    def toggleMachineBounds(self):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachineTicks(self, _show):
+        pass
+
+    @Slot()
+    def toggleMachineTicks(self):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachineLabels(self, _show):
+        pass
+
+    @Slot()
+    def toggleMachineLabels(self):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showMultiColorPath(self, _show):
+        pass
+
+    @Slot()
+    def toggleMultiColorPath(self):
+        pass
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachine(self, _show):
         pass
 
     @Slot(bool)

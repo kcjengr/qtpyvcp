@@ -2360,10 +2360,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.breadcrumbs_plotted = enable
 
     @Slot(bool)
-    def enableBreadcrumbs(self, enable):
-        self.breadcrumbs_plotted = enable
-
-    @Slot(bool)
     def enable_panning(self, enabled):
         self.pan_mode = enabled
 
