@@ -54,6 +54,40 @@ class LinuxCncDataSource(QObject):
         self._fps = int(self._inifile.find("DISPLAY", "FPS") or 0)
         if self._fps == 0:
             self._fps = int(self._inifile.find("VTK", "FPS") or 30)
+
+        self._vtk_kinematics_type = str(self._inifile.find("VTK", "KINEMATICS_TYPE") or "gantry_xyz")
+        self._vtk_axis_motion_owner = {
+            'X': 'tool',
+            'Y': 'tool',
+            'Z': 'tool',
+            'A': 'tool',
+            'B': 'tool',
+            'C': 'tool',
+        }
+
+        explicit_axis_owner = False
+        for axis in ['X', 'Y', 'Z', 'A', 'B', 'C']:
+            raw_owner = self._inifile.find("VTK", axis)
+            if raw_owner is None:
+                continue
+
+            owner = str(raw_owner).strip().lower()
+            if owner in ['tool', 'table']:
+                self._vtk_axis_motion_owner[axis] = owner
+                explicit_axis_owner = True
+
+        # Backward compatibility for old single-value kinematics selector.
+        # Per-axis entries take precedence when present.
+        if not explicit_axis_owner:
+            legacy_mode = self._vtk_kinematics_type.strip().lower()
+            if legacy_mode in ['vmc_table_xy', '3_axis_vmc', 'vmc']:
+                self._vtk_axis_motion_owner['X'] = 'table'
+                self._vtk_axis_motion_owner['Y'] = 'table'
+                self._vtk_axis_motion_owner['Z'] = 'tool'
+            elif legacy_mode in ['gantry_fixed_y', '3_axis_gantry_fixed_y']:
+                self._vtk_axis_motion_owner['X'] = 'tool'
+                self._vtk_axis_motion_owner['Y'] = 'table'
+                self._vtk_axis_motion_owner['Z'] = 'tool'
         
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -217,4 +251,10 @@ class LinuxCncDataSource(QObject):
     
     def getOffsetColumns(self):
         return self._offsettable.column_labels
+
+    def getKinematicsType(self):
+        return self._vtk_kinematics_type
+
+    def getAxisMotionOwners(self):
+        return dict(self._vtk_axis_motion_owner)
 

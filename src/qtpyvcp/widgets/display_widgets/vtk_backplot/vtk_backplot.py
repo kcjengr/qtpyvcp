@@ -65,6 +65,21 @@ LOG = logger.getLogger(__name__)
 NUMBER_OF_WCS = 9
 EXTENTS_PADDING = 1.1
 
+KINEMATICS_GANTRY_XYZ = "gantry_xyz"
+KINEMATICS_GANTRY_FIXED_Y = "gantry_fixed_y"
+KINEMATICS_VMC_TABLE_XY = "vmc_table_xy"
+
+KINEMATICS_ALIASES = {
+    "gantry_xyz": KINEMATICS_GANTRY_XYZ,
+    "3_axis_gantry": KINEMATICS_GANTRY_XYZ,
+    "gantry": KINEMATICS_GANTRY_XYZ,
+    "gantry_fixed_y": KINEMATICS_GANTRY_FIXED_Y,
+    "3_axis_gantry_fixed_y": KINEMATICS_GANTRY_FIXED_Y,
+    "vmc_table_xy": KINEMATICS_VMC_TABLE_XY,
+    "3_axis_vmc": KINEMATICS_VMC_TABLE_XY,
+    "vmc": KINEMATICS_VMC_TABLE_XY,
+}
+
 # TODO: check this with PySide6
 
 # turn on antialiasing
@@ -242,6 +257,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._is_machine_lathe = self._datasource.isMachineLathe()
         self._is_machine_foam = self._datasource.isMachineFoam()
         self._is_machine_jet = self._datasource.isMachineJet()
+
+        self.kinematics_type = self._resolve_kinematics_type(self._datasource.getKinematicsType())
+        self.axis_motion_owner = self._datasource.getAxisMotionOwners()
         
         # Detect lathe mode for backplot view logic (LATHE=1 or BACK_TOOL_LATHE=1)
         inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
@@ -299,6 +317,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.machine_parts = None
         self.machine_parts_data = None
+        self.kinematics_overlay_shift = (0.0, 0.0, 0.0)
+        self._machine_bounds_base = None
         
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
@@ -342,6 +362,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.original_g92_offset = [0.0] * NUMBER_OF_WCS
 
         self.spindle_position = (0.0, 0.0, 0.0)
+        self.machine_motion_position = (0.0, 0.0, 0.0)
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
         
@@ -734,6 +755,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
 
+            self._machine_bounds_base = tuple(self.machine_actor.GetBounds())
+            self._apply_kinematics_overlay_shift()
+
             self.setView(self.default_view)
 
             self.interactor.ReInitialize()
@@ -1066,10 +1090,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_transform = vtk.vtkTransform()
                 axes_transform = vtk.vtkTransform()
 
-                actor_transform.Translate(x, y, z)
+                actor_transform.Translate(
+                    x + self.kinematics_overlay_shift[0],
+                    y + self.kinematics_overlay_shift[1],
+                    z + self.kinematics_overlay_shift[2],
+                )
                 actor_transform.RotateZ(rotation)
 
-                axes_transform.Translate(x, y, z)
+                axes_transform.Translate(
+                    x + self.kinematics_overlay_shift[0],
+                    y + self.kinematics_overlay_shift[1],
+                    z + self.kinematics_overlay_shift[2],
+                )
                 axes_transform.RotateZ(rotation)
 
                 # Scale up the axes for the active WCS to provide visual feedback
@@ -1135,6 +1167,77 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
 
+    def _resolve_kinematics_type(self, value):
+        normalized = str(value or "").strip().lower()
+        return KINEMATICS_ALIASES.get(normalized, KINEMATICS_GANTRY_XYZ)
+
+    def _visual_spindle_position(self, machine_position, active_wcs_offset):
+        x = machine_position[0]
+        y = machine_position[1]
+        z = machine_position[2]
+
+        if self.axis_motion_owner.get('X', 'tool') == 'table':
+            x = 0.0
+
+        if self.axis_motion_owner.get('Y', 'tool') == 'table':
+            y = 0.0
+
+        if self.axis_motion_owner.get('Z', 'tool') == 'table':
+            z = 0.0
+
+        return (x, y, z)
+
+    def _compute_kinematics_overlay_shift(self, machine_position):
+        if all(self.axis_motion_owner.get(axis, 'tool') == 'tool' for axis in ['X', 'Y', 'Z']):
+            return (0.0, 0.0, 0.0)
+
+        sx = float(self.spindle_position[0] - machine_position[0])
+        sy = float(self.spindle_position[1] - machine_position[1])
+        sz = float(self.spindle_position[2] - machine_position[2])
+
+        # Table-owned axes should not drift when only WCS origin changes.
+        if self.axis_motion_owner.get('X', 'tool') == 'table':
+            sx = float(-machine_position[0])
+        if self.axis_motion_owner.get('Y', 'tool') == 'table':
+            sy = float(-machine_position[1])
+        if self.axis_motion_owner.get('Z', 'tool') == 'table':
+            sz = float(-machine_position[2])
+
+        return (
+            sx,
+            sy,
+            sz,
+        )
+
+    def _apply_machine_bounds_shift(self):
+        if self._machine_bounds_base is None:
+            return
+
+        sx, sy, sz = self.kinematics_overlay_shift
+        base = self._machine_bounds_base
+
+        self.machine_actor.SetBounds(
+            base[0] + sx,
+            base[1] + sx,
+            base[2] + sy,
+            base[3] + sy,
+            base[4] + sz,
+            base[5] + sz,
+        )
+
+    def _apply_kinematics_overlay_shift(self):
+        shift_transform = vtk.vtkTransform()
+        shift_transform.Translate(*self.kinematics_overlay_shift)
+
+        self._apply_machine_bounds_shift()
+        self.path_cache_actor.SetUserTransform(shift_transform)
+
+    def _machine_linear_axis_value(self, axis_name, axis_value):
+        owner = self.axis_motion_owner.get(axis_name.upper(), 'tool')
+        if owner == 'table':
+            return -float(axis_value)
+        return float(axis_value)
+
 
     def get_asm_parts(self, parts):
         # helper function to iterate over machine parts tree
@@ -1170,8 +1273,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             list_pos[2] = active_wcs_offset[2]
             position = tuple(list_pos)
             
-        self.spindle_position = position[:3]
+        machine_position = position[:3]
+        self.machine_motion_position = machine_position
+        self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
         self.spindle_rotation = position[3:6]
+
+        new_overlay_shift = self._compute_kinematics_overlay_shift(machine_position)
+        if tuple(new_overlay_shift) != tuple(self.kinematics_overlay_shift):
+            self.kinematics_overlay_shift = tuple(new_overlay_shift)
+            self._apply_kinematics_overlay_shift()
+            if len(self.path_actors) > 0:
+                self.rotate_and_translate()
         
 
         tool_transform = vtk.vtkTransform()
@@ -1211,15 +1323,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._is_machine_foam:
             self.tool_bit_actor.set_position(position)
         else:
-            self.tool_bit_actor.set_position_cnc(position)
+            visual_position = list(position)
+            visual_position[0] = self.spindle_position[0]
+            visual_position[1] = self.spindle_position[1]
+            visual_position[2] = self.spindle_position[2]
+            self.tool_bit_actor.set_position_cnc(tuple(visual_position))
 
         tlo = self._datasource.getToolOffset()
-        self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
+        self.tooltip_position = [pos - tlo for pos, tlo in zip(machine_position, tlo[:3])]
 
         if self._is_machine_jet:
             # if a jet based machine (plasma, water jet, laser) suppress
             # plotting the Z movements
-            self.tooltip_position = self.spindle_position
+            self.tooltip_position = machine_position
             
 
         # self.spindle_actor.SetPosition(self.spindle_position)
@@ -1232,6 +1348,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def move_part(self, part):
                 
         position = part.GetPartPosition()
+        machine_position = self.machine_motion_position
         
         part_axis = part.GetPartAxis()
         part_type = part.GetPartType()
@@ -1256,18 +1373,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # elif part_axis == "-z":
             #     part.SetPosition(0, 0, -self.spindle_position[2])
                 
+            x_delta = self._machine_linear_axis_value('X', machine_position[0])
+            y_delta = self._machine_linear_axis_value('Y', machine_position[1])
+            z_delta = self._machine_linear_axis_value('Z', machine_position[2])
+
             if part_axis == "x":
-                part_transform.Translate(self.spindle_position[0], 0, 0)
+                part_transform.Translate(x_delta, 0, 0)
             elif part_axis == "y":
-                part_transform.Translate(0, self.spindle_position[1], 0)
+                part_transform.Translate(0, y_delta, 0)
             elif part_axis == "z":
-                part_transform.Translate(0, 0, self.spindle_position[2])
+                part_transform.Translate(0, 0, z_delta)
             elif part_axis == "-x":
-                part_transform.Translate(-self.spindle_position[0], 0, 0)
+                part_transform.Translate(-x_delta, 0, 0)
             elif part_axis == "-y":
-                part_transform.Translate(0, -self.spindle_position[1], 0)
+                part_transform.Translate(0, -y_delta, 0)
             elif part_axis == "-z":
-                part_transform.Translate(0, 0, -self.spindle_position[2])
+                part_transform.Translate(0, 0, -z_delta)
             
 
         elif part_type == "angular":
@@ -1415,10 +1536,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             actor_transform = vtk.vtkTransform()
             axes_transform = vtk.vtkTransform()
 
-            actor_transform.Translate(x, y, z)
+            actor_transform.Translate(
+                x + self.kinematics_overlay_shift[0],
+                y + self.kinematics_overlay_shift[1],
+                z + self.kinematics_overlay_shift[2],
+            )
             actor_transform.RotateZ(rotation)
 
-            axes_transform.Translate(x, y, z)
+            axes_transform.Translate(
+                x + self.kinematics_overlay_shift[0],
+                y + self.kinematics_overlay_shift[1],
+                z + self.kinematics_overlay_shift[2],
+            )
             axes_transform.RotateZ(rotation)
             
             # Scale up the axes for the active WCS to provide visual feedback
@@ -1477,7 +1606,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 axes = actor.get_axes_actor()
 
                 path_transform = vtk.vtkTransform()
-                path_transform.Translate(*new_path_position[:3])
+                path_transform.Translate(
+                    new_path_position[0] + self.kinematics_overlay_shift[0],
+                    new_path_position[1] + self.kinematics_overlay_shift[1],
+                    new_path_position[2] + self.kinematics_overlay_shift[2],
+                )
 
                 # self.axes_actor.SetUserTransform(path_transform)
                 axes.SetUserTransform(path_transform)
@@ -1880,7 +2013,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         rotation = current_offsets[r_column] if r_column is not None and r_column < len(current_offsets) else 0.0
 
         transform = vtk.vtkTransform()
-        transform.Translate(x, y, z)
+        transform.Translate(
+            x + self.kinematics_overlay_shift[0],
+            y + self.kinematics_overlay_shift[1],
+            z + self.kinematics_overlay_shift[2],
+        )
         transform.RotateZ(rotation)
         return transform
 
