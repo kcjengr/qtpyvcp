@@ -383,7 +383,7 @@ class OffsetTable(DataPlugin):
                     if (param == 5282) and (self.y_column is not None):
                         # Y
                         self.g5x_offset_table.get(3)[self.y_column] = data
-                    if (param == 5283) and (self.x_column is not None):
+                    if (param == 5283) and (self.z_column is not None):
                         # Z
                         self.g5x_offset_table.get(3)[self.z_column] = data
                     if (param == 5284) and (self.a_column is not None):
@@ -509,34 +509,34 @@ class OffsetTable(DataPlugin):
 
                     # G59.2
 
-                    if (param == 5361) and self.x_column:
+                    if (param == 5361) and (self.x_column is not None):
                         # X
                         self.g5x_offset_table.get(7)[self.x_column] = data
-                    if (param == 5362) and self.y_column:
+                    if (param == 5362) and (self.y_column is not None):
                         # Y
                         self.g5x_offset_table.get(7)[self.y_column] = data
-                    if (param == 5363) and self.z_column:
+                    if (param == 5363) and (self.z_column is not None):
                         # Z
                         self.g5x_offset_table.get(7)[self.z_column] = data
-                    if (param == 5364) and self.a_column:
+                    if (param == 5364) and (self.a_column is not None):
                         # A
                         self.g5x_offset_table.get(7)[self.a_column] = data
-                    if (param == 5365) and self.b_column:
+                    if (param == 5365) and (self.b_column is not None):
                         # B
                         self.g5x_offset_table.get(7)[self.b_column] = data
-                    if (param == 5366) and self.c_column:
+                    if (param == 5366) and (self.c_column is not None):
                         # C
                         self.g5x_offset_table.get(7)[self.c_column] = data
-                    if (param == 5367) and self.u_column:
+                    if (param == 5367) and (self.u_column is not None):
                         # U
                         self.g5x_offset_table.get(7)[self.u_column] = data
-                    if (param == 5368) and self.v_column:
+                    if (param == 5368) and (self.v_column is not None):
                         # V
                         self.g5x_offset_table.get(7)[self.v_column] = data
-                    if (param == 5369) and self.w_column:
+                    if (param == 5369) and (self.w_column is not None):
                         # W
                         self.g5x_offset_table.get(7)[self.w_column] = data
-                    if (param == 5370) and self.r_column:
+                    if (param == 5370) and (self.r_column is not None):
                         # R
                         self.g5x_offset_table.get(7)[self.r_column] = data
 

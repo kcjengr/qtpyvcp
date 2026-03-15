@@ -53,7 +53,6 @@ class VTKCanon(StatCanon):
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
         self.tool_offset = self._datasource.getToolOffset()
         self.added_segments = 0
-        self._preview_switchkins_type = 0
 
         g5x = self._datasource.getActiveWcsOffsets()
 
@@ -65,161 +64,6 @@ class VTKCanon(StatCanon):
         self.foam_z = 0.0
         self.foam_w = 0.0
         LOG.debug("VTKCanon --- Init Done ---")
-
-    def next_line(self, st):
-        super().next_line(st)
-
-        # Capture switchkins transitions seen by the preview interpreter so
-        # load-time shaping follows M428/M429 state the same way runtime does.
-        try:
-            for mcode in getattr(st, 'mcodes', ()):
-                code = int(mcode)
-                if code == 428:
-                    self._preview_switchkins_type = 1
-                elif code in (429, 430):
-                    self._preview_switchkins_type = 0
-        except Exception:
-            pass
-
-    @staticmethod
-    def _rotate_point_about_axis(point_xyz, pivot_xyz, axis_name, angle_deg):
-        px, py, pz = float(point_xyz[0]), float(point_xyz[1]), float(point_xyz[2])
-        ox, oy, oz = float(pivot_xyz[0]), float(pivot_xyz[1]), float(pivot_xyz[2])
-
-        # Shift into pivot-local coordinates.
-        x = px - ox
-        y = py - oy
-        z = pz - oz
-
-        theta = math.radians(float(angle_deg))
-        ct = math.cos(theta)
-        st = math.sin(theta)
-
-        axis = str(axis_name or '').upper()
-        if axis == 'A':
-            # Rotate about X
-            ry = y * ct - z * st
-            rz = y * st + z * ct
-            rx = x
-        elif axis == 'B':
-            # Rotate about Y
-            rx = x * ct + z * st
-            rz = -x * st + z * ct
-            ry = y
-        else:
-            # Rotate about Z (C)
-            rx = x * ct - y * st
-            ry = x * st + y * ct
-            rz = z
-
-        return (rx + ox, ry + oy, rz + oz)
-
-    @staticmethod
-    def _transform_point_to_part_frame(point_xyz, pivots_local, angles_by_axis, active_axes):
-        p = (float(point_xyz[0]), float(point_xyz[1]), float(point_xyz[2]))
-        # Apply table chain parent-to-child to match live overlay transform
-        # composition in vtk_backplot (_overlay_rotary_axis_order).
-        # Use positive table angles so load-time geometry follows program
-        # direction for table-owned rotary axes.
-        for axis in ('A', 'B', 'C'):
-            if axis not in active_axes:
-                continue
-            p = VTKCanon._rotate_point_about_axis(
-                p,
-                pivots_local[axis],
-                axis,
-                float(angles_by_axis.get(axis, 0.0)),
-            )
-        return p
-
-    def _sample_table_rotary_motion_points(self, start_point, end_point, wcs_index, switchkins_type=0):
-        # In TCP switchkins mode, motion points are already tool-point/world
-        # coordinates, so applying an extra table rotation here doubles the
-        # transform and can explode path scale.
-        if int(switchkins_type) == 1:
-            return None
-
-        # Convert machine-frame path points into part frame using absolute
-        # table rotary angles. This handles constant-angle cuts (e.g. A=30)
-        # and varying-angle sweeps with one consistent mapping.
-        sx, sy, sz = float(start_point[0]), float(start_point[1]), float(start_point[2])
-        ex, ey, ez = float(end_point[0]), float(end_point[1]), float(end_point[2])
-
-        axis_owner = self._datasource.getAxisMotionOwners()
-        origins = self._datasource.getRotaryAxisOrigins()
-
-        da = float(end_point[3] - start_point[3])
-        db = float(end_point[4] - start_point[4])
-        dc = float(end_point[5] - start_point[5])
-        deltas = {'A': da, 'B': db, 'C': dc}
-
-        start_angles = {
-            'A': float(start_point[3]),
-            'B': float(start_point[4]),
-            'C': float(start_point[5]),
-        }
-        end_angles = {
-            'A': float(end_point[3]),
-            'B': float(end_point[4]),
-            'C': float(end_point[5]),
-        }
-
-        active_axes = []
-        for axis in ('A', 'B', 'C'):
-            if axis_owner.get(axis, 'tool') != 'table':
-                continue
-            if abs(deltas[axis]) <= 1e-8 and abs(start_angles[axis]) <= 1e-8 and abs(end_angles[axis]) <= 1e-8:
-                continue
-            if origins.get(axis) is None:
-                continue
-            active_axes.append(axis)
-
-        if not active_axes:
-            return None
-
-        wcs_offsets = self.initial_wcs_offsets.get(wcs_index, (0.0,) * 9)
-        pivots_local = {}
-        for axis in active_axes:
-            origin = origins[axis]
-            pivots_local[axis] = (
-                float(origin[0] - wcs_offsets[0]),
-                float(origin[1] - wcs_offsets[1]),
-                float(origin[2] - wcs_offsets[2]),
-            )
-
-        max_delta = max(abs(deltas[axis]) for axis in active_axes)
-        step_deg = 2.0
-        if max_delta <= 1e-8:
-            steps = 1
-        else:
-            steps = max(2, int(math.ceil(max_delta / step_deg)))
-
-        sampled = []
-        for i in range(0, steps + 1):
-            frac = float(i) / float(steps)
-
-            machine_xyz = (
-                sx + (ex - sx) * frac,
-                sy + (ey - sy) * frac,
-                sz + (ez - sz) * frac,
-            )
-
-            angles_now = {
-                'A': start_angles['A'] + deltas['A'] * frac,
-                'B': start_angles['B'] + deltas['B'] * frac,
-                'C': start_angles['C'] + deltas['C'] * frac,
-            }
-
-            sampled.append(
-                self._transform_point_to_part_frame(
-                    machine_xyz,
-                    pivots_local,
-                    angles_now,
-                    active_axes,
-                )
-            )
-
-        return sampled
 
     def comment(self, comment):
         items = comment.lower().split(',', 1)
@@ -313,7 +157,7 @@ class VTKCanon(StatCanon):
             line_type_token = line_type
 
         if not self._cpp_mode:
-            self.path_points.get(self.active_wcs_index).append((line_type, line, int(self._preview_switchkins_type)))
+            self.path_points.get(self.active_wcs_index).append((line_type, line))
         self.path_segments[-1]['lines'].append((line_type_token, line))
 
     def draw_lines(self):
@@ -337,13 +181,7 @@ class VTKCanon(StatCanon):
                 last_point = None
                 point_count = 0
 
-                for row in data:
-                    if len(row) >= 3:
-                        line_type, line_data, switchkins_type = row[0], row[1], row[2]
-                    else:
-                        line_type, line_data = row[0], row[1]
-                        switchkins_type = 0
-
+                for line_type, line_data in data:
                     start_point = line_data[0]
                     end_point = line_data[1]
 
@@ -394,39 +232,26 @@ class VTKCanon(StatCanon):
                             if (point_count == 0) and (line_type == "traverse") and (wcs_index != first_cut_wcs_index):
                                 continue
 
-                        def _insert_xyz_segment(seg_start_xyz, seg_end_xyz):
-                            nonlocal point_count, added_segment_count
-                            path_actor.points.InsertNextPoint(seg_end_xyz[0] * multiplication_factor,
-                                                              seg_end_xyz[1] * multiplication_factor,
-                                                              seg_end_xyz[2] * multiplication_factor)
+                        path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
+                                                          end_point[1] * multiplication_factor,
+                                                          end_point[2] * multiplication_factor)
 
-                            path_actor.points.InsertNextPoint(seg_start_xyz[0] * multiplication_factor,
-                                                              seg_start_xyz[1] * multiplication_factor,
-                                                              seg_start_xyz[2] * multiplication_factor)
+                        path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
+                                                          start_point[1] * multiplication_factor,
+                                                          start_point[2] * multiplication_factor)
+                        # LOG.debug(f"--------- Path Actor Start Point : {start_point[0] * multiplication_factor} {start_point[1] * multiplication_factor} {start_point[2] * multiplication_factor}")
+                        # LOG.debug(f"--------- Path Actor End Point : {end_point[0] * multiplication_factor} {end_point[1] * multiplication_factor} {end_point[2] * multiplication_factor}")
 
-                            path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
+                        path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
 
-                            vtk_line = vtk.vtkLine()
-                            vtk_line.GetPointIds().SetId(0, point_count)
-                            vtk_line.GetPointIds().SetId(1, point_count + 1)
-                            path_actor.lines.InsertNextCell(vtk_line)
+                        line = vtk.vtkLine()
+                        line.GetPointIds().SetId(0, point_count)
+                        line.GetPointIds().SetId(1, point_count + 1)
 
-                            point_count += 2
-                            added_segment_count += 1
+                        path_actor.lines.InsertNextCell(line)
 
-                        sampled_points = self._sample_table_rotary_motion_points(
-                            start_point,
-                            end_point,
-                            wcs_index,
-                            switchkins_type,
-                        )
-                        if sampled_points and len(sampled_points) > 1:
-                            prev = sampled_points[0]
-                            for curr in sampled_points[1:]:
-                                _insert_xyz_segment(prev, curr)
-                                prev = curr
-                        else:
-                            _insert_xyz_segment(start_point, end_point)
+                        point_count += 2
+                        added_segment_count += 1
 
                     last_point = end_point
 

@@ -1,5 +1,6 @@
 import linuxcnc
 import os
+import hal
 
 from PySide6.QtCore import Signal, QObject
 from qtpyvcp.plugins import getPlugin
@@ -64,6 +65,11 @@ class LinuxCncDataSource(QObject):
             'B': 'tool',
             'C': 'tool',
         }
+        self._vtk_rotary_axis_origin = {
+            'A': None,
+            'B': None,
+            'C': None,
+        }
 
         explicit_axis_owner = False
         for axis in ['X', 'Y', 'Z', 'A', 'B', 'C']:
@@ -88,6 +94,8 @@ class LinuxCncDataSource(QObject):
                 self._vtk_axis_motion_owner['X'] = 'tool'
                 self._vtk_axis_motion_owner['Y'] = 'table'
                 self._vtk_axis_motion_owner['Z'] = 'tool'
+
+        self._load_rotary_axis_origins_from_ini()
         
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -191,10 +199,25 @@ class LinuxCncDataSource(QObject):
         return self._status.tool_offset
 
     def isMachineMetric(self):
+        # Prefer explicit INI units so backplot scaling follows the currently
+        # loaded machine configuration even if Info() reports stale data.
+        ini_units = str(self._inifile.find("TRAJ", "LINEAR_UNITS") or "").strip().lower()
+        if ini_units:
+            if ini_units in ("mm", "metric", "millimeter", "millimeters", "cm", "centimeter", "centimeters"):
+                return True
+            if ini_units in ("inch", "in", "imperial", "inches"):
+                return False
+
         return self._info.getIsMachineMetric()
 
     def getProgramUnits(self):
         return str(self._status.program_units)
+
+    def getSwitchkinsType(self):
+        try:
+            return int(float(hal.get_value('motion.switchkins-type')))
+        except Exception:
+            return None
 
     def isMachineLathe(self):
         # Return True if either LATHE or BACK_TOOL_LATHE is set
@@ -257,4 +280,59 @@ class LinuxCncDataSource(QObject):
 
     def getAxisMotionOwners(self):
         return dict(self._vtk_axis_motion_owner)
+
+    @staticmethod
+    def _parse_vector3(raw_value):
+        if raw_value is None:
+            return None
+
+        text = str(raw_value).strip()
+        if not text:
+            return None
+
+        text = text.replace(',', ' ')
+        parts = [p for p in text.split() if p]
+        if len(parts) < 3:
+            return None
+
+        try:
+            return (float(parts[0]), float(parts[1]), float(parts[2]))
+        except Exception:
+            return None
+
+    @staticmethod
+    def _parse_float(raw_value, default=0.0):
+        try:
+            if raw_value is None:
+                return float(default)
+            return float(raw_value)
+        except Exception:
+            return float(default)
+
+    def _load_rotary_axis_origins_from_ini(self):
+        for axis in ['A', 'B', 'C']:
+            vec_keys = [
+                f"{axis}_PIVOT",
+                f"{axis}_ORIGIN",
+                f"{axis}_ROT_CENTER",
+            ]
+
+            origin = None
+            for key in vec_keys:
+                origin = self._parse_vector3(self._inifile.find("VTK", key))
+                if origin is not None:
+                    break
+
+            if origin is None:
+                x = self._parse_float(self._inifile.find("VTK", f"{axis}_PIVOT_X"), 0.0)
+                y = self._parse_float(self._inifile.find("VTK", f"{axis}_PIVOT_Y"), 0.0)
+                z_raw = self._inifile.find("VTK", f"{axis}_PIVOT_Z")
+                if z_raw is not None:
+                    z = self._parse_float(z_raw, 0.0)
+                    origin = (x, y, z)
+
+            self._vtk_rotary_axis_origin[axis] = origin
+
+    def getRotaryAxisOrigins(self):
+        return dict(self._vtk_rotary_axis_origin)
 
