@@ -45,6 +45,7 @@ class MDIEntry(QLineEdit, CMDWidget):
         # entry UI. So this designer exposed setting allows this to be enabled
         # or disabled as needed.
         self._completer_enabled = True
+        self._show_completer_on_focus = False
 
         self.returnPressed.connect(self.submit)
 
@@ -63,6 +64,14 @@ class MDIEntry(QLineEdit, CMDWidget):
     @completerEnabled.setter
     def completerEnabled(self, flag):
         self._completer_enabled = flag
+
+    @Property(bool)
+    def showCompleterOnFocus(self):
+        return self._show_completer_on_focus
+
+    @showCompleterOnFocus.setter
+    def showCompleterOnFocus(self, flag):
+        self._show_completer_on_focus = flag
 
     @Slot()
     def submit(self):
@@ -99,7 +108,7 @@ class MDIEntry(QLineEdit, CMDWidget):
 
     def focusInEvent(self, event):
         super(MDIEntry, self).focusInEvent(event)
-        if self._completer_enabled:
+        if self._completer_enabled and self._show_completer_on_focus:
             completer = self.completer()
             if completer is not None:
                 completer.complete()

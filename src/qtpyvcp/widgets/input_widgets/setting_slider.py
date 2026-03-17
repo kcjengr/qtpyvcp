@@ -105,7 +105,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             else:
                 self.setDisplayValue(self._setting.getValue())
 
-            self._setting.notify(self.setDisplayValue)
+            self._setting.notify(safe_qt_callback(self, self.setDisplayValue))
 
             self.editingFinished.connect(self.onEditingFinished)
 
@@ -170,7 +170,7 @@ class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
                 self.setMinimum(int(self._setting.min_value))
 
             self.setDisplayValue(self._setting.getValue())
-            self._setting.notify(self.setDisplayValue)
+            self._setting.notify(safe_qt_callback(self, self.setDisplayValue))
             self.valueChanged.connect(self._setting.setValue)
 
 
@@ -200,7 +200,7 @@ class VCPSettingsSpinBox(QSpinBox, VCPAbstractSettingsWidget):
                 self.setMinimum(int(self._setting.min_value))
 
             self.setDisplayValue(self._setting.getValue())
-            self._setting.notify(self.setDisplayValue)
+            self._setting.notify(safe_qt_callback(self, self.setDisplayValue))
             self.valueChanged.connect(self._setting.setValue)
 
 
@@ -233,7 +233,7 @@ class VCPSettingsDoubleSpinBox(QDoubleSpinBox, VCPAbstractSettingsWidget):
                 self.setMinimum(self._setting.min_value)
 
             self.setDisplayValue(self._setting.getValue())
-            self._setting.notify(self.setDisplayValue)
+            self._setting.notify(safe_qt_callback(self, self.setDisplayValue))
             #self.valueChanged.connect(self._setting.setValue)
             self.editingFinished.connect(self.editingEnded)
 
@@ -408,5 +408,5 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
             self.setDisplayIndex(value)
             self.currentIndexChanged.emit(value)
 
-            self._setting.notify(self.setDisplayIndex)
+            self._setting.notify(safe_qt_callback(self, self.setDisplayIndex))
             self.currentIndexChanged.connect(self._setting.setValue)

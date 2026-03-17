@@ -273,6 +273,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         back_tool_val = (inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
         transform_debug_val = str(inifile.find("VTK", "TRANSFORM_DEBUG") or "0").strip().lower()
         self._transform_debug = transform_debug_val in ("1", "true", "yes", "on")
+        breadcrumb_frame = str(inifile.find("VTK", "BREADCRUMB_FRAME") or "auto").strip().lower()
+        if breadcrumb_frame in ("world", "machine"):
+            self._breadcrumb_frame = "world"
+        elif breadcrumb_frame in ("tool",):
+            self._breadcrumb_frame = "tool"
+        else:
+            has_table_linear = any(self.axis_motion_owner.get(axis, 'tool') == 'table' for axis in ('X', 'Y', 'Z'))
+            has_table_rotary = any(self.axis_motion_owner.get(axis, 'tool') == 'table' for axis in ('A', 'B', 'C'))
+            self._breadcrumb_frame = 'tool' if (has_table_linear or has_table_rotary) else 'world'
+        self._breadcrumb_world_frame = (self._breadcrumb_frame == "world")
+        LOG.debug(
+            "VTK breadcrumb mode resolved: requested=%s resolved=%s owners=%s",
+            breadcrumb_frame,
+            self._breadcrumb_frame,
+            self.axis_motion_owner,
+        )
 
         cpp_backplot_val = str(inifile.find("VTK", "CPP_BACKPLOT") or "1").strip().lower()
         cpp_backplot_requested = cpp_backplot_val in ("1", "true", "yes", "on")
@@ -388,6 +404,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.current_motion_type = None
         self._breadcrumbs_armed = False
         self._path_cache_seeded = False
+        self._last_breadcrumb_world = None
         
         if not IN_DESIGNER:
             self.joints = self._datasource._status.joint
@@ -467,10 +484,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # Machine-space transform intentionally not applied to global axes actor.
             # self.axes_actor.SetUserTransform(transform)
             self.path_actors = OrderedDict()
-            # Cache live points in path-local coordinates and transform the
-            # actor with the same active WCS/table transform as program paths.
+            # Cache live points either in world frame or in active path-local
+            # frame, based on [VTK] BREADCRUMB_FRAME.
             self.path_cache_actor = PathCacheActor(tuple(self.tooltip_position[:3]))
-            self.path_cache_actor.SetUserTransform(self._active_path_transform)
+            if not self._breadcrumb_world_frame:
+                self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
             self.points_surface_actor = PointsSurfaceActor(self._datasource)
 
@@ -1217,10 +1235,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if mt == linuxcnc.MOTION_TYPE_TOOLCHANGE:
                 return False
 
-            # Avoid startup rapid breadcrumbs before cutting begins.
+            # Arm breadcrumbs on the first non-toolchange motion.
+            # Initial phantom-line prevention is handled by first-point seeding.
             if not self._breadcrumbs_armed:
-                if mt == linuxcnc.MOTION_TYPE_TRAVERSE:
-                    return False
                 self._breadcrumbs_armed = True
         except Exception:
             # Fallback to plotting if motion type is unavailable.
@@ -1619,8 +1636,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._cache_overlay_transform = shift_transform
 
         self._apply_machine_bounds_shift()
-        # Keep breadcrumbs in the same moving frame as the active path actor.
-        self.path_cache_actor.SetUserTransform(self._active_path_transform)
+        # Keep breadcrumbs aligned to active path transform when running in
+        # tool-relative mode. In world mode, they remain fixed in machine frame.
+        if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
+            self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
     def _world_tooltip_point(self, tooltip_local):
         try:
@@ -1861,21 +1880,34 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         tlo = self._datasource.getToolOffset()
         tool_tip_world = self._current_tool_tip_world(tlo[:3], machine_position, current_switchkins_type)
-        self.tooltip_position = self._active_path_local_point(tool_tip_world)
+        if self._breadcrumb_world_frame:
+            self.tooltip_position = tool_tip_world
+        else:
+            self.tooltip_position = self._active_path_local_point(tool_tip_world)
             
 
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
 
         if self.breadcrumbs_plotted and self._should_plot_breadcrumb_for_motion():
+            current_tip = tuple(self.tooltip_position[:3])
             if not self._path_cache_seeded:
+                seed_tip = self._last_breadcrumb_world if self._last_breadcrumb_world is not None else current_tip
                 self.renderer.RemoveActor(self.path_cache_actor)
-                self.path_cache_actor = PathCacheActor(tuple(self.tooltip_position[:3]))
-                self.path_cache_actor.SetUserTransform(self._active_path_transform)
+                self.path_cache_actor = PathCacheActor(seed_tip)
+                if not self._breadcrumb_world_frame:
+                    self.path_cache_actor.SetUserTransform(self._active_path_transform)
+                dx = float(current_tip[0]) - float(seed_tip[0])
+                dy = float(current_tip[1]) - float(seed_tip[1])
+                dz = float(current_tip[2]) - float(seed_tip[2])
+                if (dx * dx + dy * dy + dz * dz) > 1e-16:
+                    self.path_cache_actor.add_line_point(current_tip)
                 self.renderer.AddActor(self.path_cache_actor)
                 self._path_cache_seeded = True
             else:
-                self.path_cache_actor.add_line_point(tuple(self.tooltip_position[:3]))
+                self.path_cache_actor.add_line_point(current_tip)
+
+            self._last_breadcrumb_world = current_tip
         self._request_render()
         
     def move_part(self, part):
@@ -2136,8 +2168,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if len(self.path_actors) > 1:
             self._update_transition_actors(self.offsetTableColumnsIndex)
 
-        # Keep breadcrumbs aligned to the same transform as the active path.
-        if self.path_cache_actor is not None:
+        # Keep breadcrumbs aligned to active path transform in tool-relative
+        # mode so moving-table simulation overlays remain coherent.
+        if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
             self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
         self._request_render()
@@ -2201,7 +2234,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 self._sync_program_bounds_actor(wcs_index, actor)
 
-            if self.path_cache_actor is not None:
+            if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
                 self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
             self._request_render()
@@ -3060,10 +3093,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def clearLivePlot(self):
         self.renderer.RemoveActor(self.path_cache_actor)
         self.path_cache_actor = PathCacheActor(tuple(self.tooltip_position[:3]))
-        self.path_cache_actor.SetUserTransform(self._active_path_transform)
+        if not self._breadcrumb_world_frame:
+            self.path_cache_actor.SetUserTransform(self._active_path_transform)
         self.renderer.AddActor(self.path_cache_actor)
         self._breadcrumbs_armed = False
         self._path_cache_seeded = False
+        self._last_breadcrumb_world = tuple(self.tooltip_position[:3])
         self._request_render()
 
     @Slot(bool)
