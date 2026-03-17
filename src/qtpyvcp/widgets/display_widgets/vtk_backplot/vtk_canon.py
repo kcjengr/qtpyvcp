@@ -29,6 +29,7 @@ class VTKCanon(StatCanon):
         cpp_mode = bool(kwargs.pop('cpp_mode', False))
         super(VTKCanon, self).__init__(*args, **kwargs)
         self._datasource = LinuxCncDataSource()
+        self.arcdivision = self._datasource.getArcDivision()
         self._cpp_mode = cpp_mode and (not self._datasource.isMachineFoam())
         self._cpp_line_type_codes = {
             'traverse': 0,
@@ -54,6 +55,7 @@ class VTKCanon(StatCanon):
         self.tool_offset = self._datasource.getToolOffset()
         self.added_segments = 0
         self._preview_switchkins_type = 0
+        self._preview_program_units = None
 
         g5x = self._datasource.getActiveWcsOffsets()
 
@@ -80,6 +82,57 @@ class VTKCanon(StatCanon):
                     self._preview_switchkins_type = 0
         except Exception:
             pass
+
+        # Track the interpreter units mode for load-time scaling.
+        # LinuxCNC canonical units: 1=in, 2=mm, 3=cm.
+        try:
+            units = int(getattr(st, 'units', 0) or 0)
+            if units in (1, 2, 3):
+                self._preview_program_units = units
+        except Exception:
+            pass
+
+    def _program_to_machine_length_factor(self):
+        # Convert parsed program coordinates into configured machine units.
+        # Avoid deriving from machine units alone: G20/G21 can change per file.
+        machine_is_metric = bool(self._datasource.isMachineMetric())
+
+        program_units = self._preview_program_units
+        if program_units is None:
+            # Fallback to status string when preview state isn't available yet.
+            units_text = str(self._datasource.getProgramUnits() or '').strip().lower()
+            if units_text in ('in', 'inch', 'inches'):
+                program_units = 1
+            elif units_text in ('mm', 'metric', 'millimeter', 'millimeters'):
+                program_units = 2
+            elif units_text in ('cm', 'centimeter', 'centimeters'):
+                program_units = 3
+
+        # program_units -> mm
+        if program_units == 1:
+            to_mm = 25.4
+        elif program_units == 3:
+            to_mm = 10.0
+        else:
+            to_mm = 1.0
+
+        # mm -> machine units
+        if machine_is_metric:
+            return float(to_mm)
+        return float(to_mm / 25.4)
+
+    @staticmethod
+    def _scale_linear_axes(point_values, factor):
+        scaled = list(point_values)
+        try:
+            f = float(factor)
+        except Exception:
+            f = 1.0
+
+        for idx in (0, 1, 2, 6, 7, 8):
+            if idx < len(scaled):
+                scaled[idx] = float(scaled[idx]) * f
+        return scaled
 
     @staticmethod
     def _rotate_point_about_axis(point_xyz, pivot_xyz, axis_name, angle_deg):
@@ -132,13 +185,14 @@ class VTKCanon(StatCanon):
             )
         return p
 
-    def _sample_table_rotary_motion_points(self, start_point, end_point, wcs_index, switchkins_type=0):
-        # In TCP switchkins mode, motion points are already tool-point/world
-        # coordinates, so applying an extra table rotation here doubles the
-        # transform and can explode path scale.
-        if int(switchkins_type) == 1:
-            return None
-
+    def _sample_table_rotary_motion_points(
+        self,
+        start_point,
+        end_point,
+        wcs_index,
+        switchkins_type=0,
+        program_to_machine_factor=1.0,
+    ):
         # Convert machine-frame path points into part frame using absolute
         # table rotary angles. This handles constant-angle cuts (e.g. A=30)
         # and varying-angle sweeps with one consistent mapping.
@@ -174,10 +228,18 @@ class VTKCanon(StatCanon):
                 continue
             active_axes.append(axis)
 
+        # For switchkins runs with no table-owned rotary axes, keep legacy
+        # behavior (no additional rotary-part-frame sampling).
+        if int(switchkins_type) == 1 and not active_axes:
+            return None
+
         if not active_axes:
             return None
 
-        wcs_offsets = self.initial_wcs_offsets.get(wcs_index, (0.0,) * 9)
+        wcs_offsets = self._scale_linear_axes(
+            self.initial_wcs_offsets.get(wcs_index, (0.0,) * 9),
+            program_to_machine_factor,
+        )
         pivots_local = {}
         for axis in active_axes:
             origin = origins[axis]
@@ -276,17 +338,28 @@ class VTKCanon(StatCanon):
         if len(self.path_segments) == 0 or self.path_segments[-1]['wcs_index'] != self.active_wcs_index:
             self.path_segments.append({'wcs_index': self.active_wcs_index, 'lines': list()})
 
+        # Normalize parsed coordinates into machine units at ingest time.
+        # This keeps downstream WCS/pivot math unit-consistent regardless of
+        # G20/G21 switches or machine/unit mismatches.
+        program_to_machine = self._program_to_machine_length_factor()
+        start_point_scaled = self._scale_linear_axes(start_point, program_to_machine)
+        end_point_scaled = self._scale_linear_axes(end_point, program_to_machine)
+        tool_offsets_scaled = self._scale_linear_axes(self.tool_offsets, program_to_machine)
+        wcs_offsets_scaled = self._scale_linear_axes(
+            self.initial_wcs_offsets[self.active_wcs_index],
+            program_to_machine,
+        )
+
         if self._cpp_mode:
-            wcs_offsets = self.initial_wcs_offsets[self.active_wcs_index]
             start_xyz = (
-                start_point[0] + self.tool_offsets[0] - wcs_offsets[0],
-                start_point[1] + self.tool_offsets[1] - wcs_offsets[1],
-                start_point[2] - self.tool_offsets[2] - wcs_offsets[2],
+                start_point_scaled[0] + tool_offsets_scaled[0] - wcs_offsets_scaled[0],
+                start_point_scaled[1] + tool_offsets_scaled[1] - wcs_offsets_scaled[1],
+                start_point_scaled[2] - tool_offsets_scaled[2] - wcs_offsets_scaled[2],
             )
             end_xyz = (
-                end_point[0] + self.tool_offsets[0] - wcs_offsets[0],
-                end_point[1] + self.tool_offsets[1] - wcs_offsets[1],
-                end_point[2] - self.tool_offsets[2] - wcs_offsets[2],
+                end_point_scaled[0] + tool_offsets_scaled[0] - wcs_offsets_scaled[0],
+                end_point_scaled[1] + tool_offsets_scaled[1] - wcs_offsets_scaled[1],
+                end_point_scaled[2] - tool_offsets_scaled[2] - wcs_offsets_scaled[2],
             )
             line = (
                 start_xyz[0], start_xyz[1], start_xyz[2],
@@ -294,18 +367,18 @@ class VTKCanon(StatCanon):
             )
             line_type_token = self._cpp_line_type_codes.get(line_type, line_type)
         else:
-            adj_start_point = list(start_point)
-            adj_end_point = list(end_point)
+            adj_start_point = list(start_point_scaled)
+            adj_end_point = list(end_point_scaled)
 
             for i in range(9):
                 if i == 2:
-                    adj_start_point[i] -= self.tool_offsets[i]
-                    adj_end_point[i] -= self.tool_offsets[i]
+                    adj_start_point[i] -= tool_offsets_scaled[i]
+                    adj_end_point[i] -= tool_offsets_scaled[i]
                 else:
-                    adj_start_point[i] += self.tool_offsets[i]
-                    adj_end_point[i] += self.tool_offsets[i]
+                    adj_start_point[i] += tool_offsets_scaled[i]
+                    adj_end_point[i] += tool_offsets_scaled[i]
 
-            for count, value in enumerate(self.initial_wcs_offsets[self.active_wcs_index]):
+            for count, value in enumerate(wcs_offsets_scaled):
                 adj_start_point[count] -= value
                 adj_end_point[count] -= value
 
@@ -313,13 +386,15 @@ class VTKCanon(StatCanon):
             line_type_token = line_type
 
         if not self._cpp_mode:
-            self.path_points.get(self.active_wcs_index).append((line_type, line, int(self._preview_switchkins_type)))
+            self.path_points.get(self.active_wcs_index).append(
+                (line_type, line, int(self._preview_switchkins_type), float(program_to_machine))
+            )
         self.path_segments[-1]['lines'].append((line_type_token, line))
 
     def draw_lines(self):
         # Used to draw the lines of the loaded program
-        # Metric programs require this scale factor so VTK path points render in machine units.
-        multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
+        # Points are pre-normalized to machine units in add_path_point().
+        multiplication_factor = 1.0
 
         first_cut_wcs_index = None
         for segment in self.path_segments:
@@ -338,11 +413,15 @@ class VTKCanon(StatCanon):
                 point_count = 0
 
                 for row in data:
-                    if len(row) >= 3:
+                    if len(row) >= 4:
+                        line_type, line_data, switchkins_type, row_program_to_machine = row[0], row[1], row[2], row[3]
+                    elif len(row) >= 3:
                         line_type, line_data, switchkins_type = row[0], row[1], row[2]
+                        row_program_to_machine = 1.0
                     else:
                         line_type, line_data = row[0], row[1]
                         switchkins_type = 0
+                        row_program_to_machine = 1.0
 
                     start_point = line_data[0]
                     end_point = line_data[1]
@@ -419,6 +498,7 @@ class VTKCanon(StatCanon):
                             end_point,
                             wcs_index,
                             switchkins_type,
+                            row_program_to_machine,
                         )
                         if sampled_points and len(sampled_points) > 1:
                             prev = sampled_points[0]

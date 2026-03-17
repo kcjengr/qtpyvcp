@@ -332,7 +332,7 @@
   <customwidget>
    <class>QCameraViewfinder</class>
    <extends>QWidget</extends>
-   <header>PyQt5.QtMultimediaWidgets</header>
+    <header>PySide6.QtMultimediaWidgets</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

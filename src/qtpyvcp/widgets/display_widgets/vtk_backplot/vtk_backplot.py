@@ -335,6 +335,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.machine_parts_data = None
         self.kinematics_overlay_shift = (0.0, 0.0, 0.0)
         self.kinematics_overlay_rotation = (0.0, 0.0, 0.0)
+        self._runtime_switchkins_type = 0
         self._cache_overlay_transform = vtk.vtkTransform()
         self._active_path_transform = vtk.vtkTransform()
         self._machine_bounds_base = None
@@ -386,6 +387,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tooltip_position = (0.0, 0.0, 0.0)
         self.current_motion_type = None
         self._breadcrumbs_armed = False
+        self._path_cache_seeded = False
         
         if not IN_DESIGNER:
             self.joints = self._datasource._status.joint
@@ -1469,17 +1471,31 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         return (x, y, z)
 
-    def _is_tcp_switchkins_active(self):
+    def _current_switchkins_type(self):
         try:
-            return self._datasource.getSwitchkinsType() == 1
+            value = self._datasource.getSwitchkinsType()
+            if value is None:
+                return int(self._runtime_switchkins_type)
+            return int(value)
         except Exception:
-            return False
+            return int(self._runtime_switchkins_type)
 
-    def _compute_kinematics_overlay_shift(self, machine_position):
+    def _is_tcp_switchkins_active(self, switchkins_type=None):
+        if switchkins_type is None:
+            switchkins_type = self._current_switchkins_type()
+        return int(switchkins_type) == 1
+
+    def _has_table_owned_axes(self):
+        for axis in ['X', 'Y', 'Z', 'A', 'B', 'C']:
+            if self.axis_motion_owner.get(axis, 'tool') == 'table':
+                return True
+        return False
+
+    def _compute_kinematics_overlay_shift(self, machine_position, switchkins_type=None):
         # In TCP switchkins mode, status position is already in the controlled
         # tool-point/world frame, so applying table overlay shift again causes
         # backplot/cache actor drift.
-        if self._is_tcp_switchkins_active():
+        if self._is_tcp_switchkins_active(switchkins_type) and (not self._has_table_owned_axes()):
             return (0.0, 0.0, 0.0)
 
         if all(self.axis_motion_owner.get(axis, 'tool') == 'tool' for axis in ['X', 'Y', 'Z']):
@@ -1503,11 +1519,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             sz,
         )
 
-    def _compute_kinematics_overlay_rotation(self, machine_rotation):
+    def _compute_kinematics_overlay_rotation(self, machine_rotation, switchkins_type=None):
         # In TCP switchkins mode, tool-point coordinates are already solved in
         # world space, so applying table overlay rotation here doubles rotary
         # motion in loaded/active path transforms.
-        if self._is_tcp_switchkins_active():
+        if self._is_tcp_switchkins_active(switchkins_type) and (not self._has_table_owned_axes()):
             return (0.0, 0.0, 0.0)
 
         if all(self.axis_motion_owner.get(axis, 'tool') == 'tool' for axis in ['A', 'B', 'C']):
@@ -1623,25 +1639,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         except Exception:
             return tuple(world_point[:3])
 
-    def _current_tool_tip_world(self, tlo, machine_position):
+    def _current_tool_tip_world(self, tlo, machine_position, switchkins_type=None):
         if self._is_machine_jet:
             return (
                 float(machine_position[0]),
                 float(machine_position[1]),
                 float(machine_position[2]),
             )
-
-        # In switchkins TCP mode, motion position already represents the
-        # controlled tool point in world coordinates.
-        try:
-            if self._datasource.getSwitchkinsType() == 1:
-                return (
-                    float(machine_position[0]),
-                    float(machine_position[1]),
-                    float(machine_position[2]),
-                )
-        except Exception:
-            pass
 
         return (
             float(self.spindle_position[0] + tlo[0]),
@@ -1700,6 +1704,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         x = float(position[0])
         y = float(position[1])
         z = float(position[2])
+
+        # In TCP switchkins mode, status position is already in the controlled
+        # world/tool-point frame. Rebuilding XYZ from raw joints introduces a
+        # small but visible offset against the loaded path.
+        if self._is_tcp_switchkins_active():
+            return (x, y, z)
 
         table_linear_active = any(
             self.axis_motion_owner.get(axis, 'tool') == 'table'
@@ -1782,9 +1792,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.machine_motion_position = machine_position
         self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
         self.spindle_rotation = position[3:6]
+        current_switchkins_type = self._current_switchkins_type()
+        self._runtime_switchkins_type = int(current_switchkins_type)
 
-        new_overlay_shift = self._compute_kinematics_overlay_shift(machine_position)
-        new_overlay_rotation = self._compute_kinematics_overlay_rotation(self.spindle_rotation)
+        new_overlay_shift = self._compute_kinematics_overlay_shift(machine_position, current_switchkins_type)
+        new_overlay_rotation = self._compute_kinematics_overlay_rotation(self.spindle_rotation, current_switchkins_type)
         if tuple(new_overlay_shift) != tuple(self.kinematics_overlay_shift) or tuple(new_overlay_rotation) != tuple(self.kinematics_overlay_rotation):
             self.kinematics_overlay_shift = tuple(new_overlay_shift)
             self.kinematics_overlay_rotation = tuple(new_overlay_rotation)
@@ -1848,7 +1860,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.tool_bit_actor.set_position_cnc(tuple(visual_position))
 
         tlo = self._datasource.getToolOffset()
-        tool_tip_world = self._current_tool_tip_world(tlo[:3], machine_position)
+        tool_tip_world = self._current_tool_tip_world(tlo[:3], machine_position, current_switchkins_type)
         self.tooltip_position = self._active_path_local_point(tool_tip_world)
             
 
@@ -1856,7 +1868,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # self.tool_actor.SetPosition(self.spindle_position)
 
         if self.breadcrumbs_plotted and self._should_plot_breadcrumb_for_motion():
-            self.path_cache_actor.add_line_point(tuple(self.tooltip_position[:3]))
+            if not self._path_cache_seeded:
+                self.renderer.RemoveActor(self.path_cache_actor)
+                self.path_cache_actor = PathCacheActor(tuple(self.tooltip_position[:3]))
+                self.path_cache_actor.SetUserTransform(self._active_path_transform)
+                self.renderer.AddActor(self.path_cache_actor)
+                self._path_cache_seeded = True
+            else:
+                self.path_cache_actor.add_line_point(tuple(self.tooltip_position[:3]))
         self._request_render()
         
     def move_part(self, part):
@@ -2151,22 +2170,39 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 # determine change in g92 offset since path was drawn
 
                 current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
-                new_path_position = list(map(add, current_offsets[:9], path_offset))
+                x, y, z, rotation = self._resolve_wcs_components(
+                    wcs_index,
+                    current_offsets,
+                    self.offsetTableColumnsIndex,
+                )
+
+                if len(path_offset) > 0:
+                    x += float(path_offset[0])
+                if len(path_offset) > 1:
+                    y += float(path_offset[1])
+                if len(path_offset) > 2:
+                    z += float(path_offset[2])
 
                 axes = actor.get_axes_actor()
 
                 path_transform = self._compose_wcs_transform(
-                    new_path_position[0],
-                    new_path_position[1],
-                    new_path_position[2],
-                    0.0,
+                    x,
+                    y,
+                    z,
+                    rotation,
                 )
+
+                if wcs_index == self.active_wcs_index:
+                    self._active_path_transform = path_transform
 
                 # self.axes_actor.SetUserTransform(path_transform)
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
 
                 self._sync_program_bounds_actor(wcs_index, actor)
+
+            if self.path_cache_actor is not None:
+                self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
             self._request_render()
 
@@ -3027,6 +3063,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_cache_actor.SetUserTransform(self._active_path_transform)
         self.renderer.AddActor(self.path_cache_actor)
         self._breadcrumbs_armed = False
+        self._path_cache_seeded = False
         self._request_render()
 
     @Slot(bool)

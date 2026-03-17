@@ -55,6 +55,13 @@ class LinuxCncDataSource(QObject):
         self._fps = int(self._inifile.find("DISPLAY", "FPS") or 0)
         if self._fps == 0:
             self._fps = int(self._inifile.find("VTK", "FPS") or 30)
+        self._arc_division = 64
+        raw_arc_division = self._inifile.find("VTK", "ARC_DIVISION")
+        if raw_arc_division is not None:
+            try:
+                self._arc_division = max(8, min(1024, int(raw_arc_division)))
+            except Exception:
+                LOG.warning("Invalid [VTK] ARC_DIVISION=%r, using default=64", raw_arc_division)
 
         self._vtk_kinematics_type = str(self._inifile.find("VTK", "KINEMATICS_TYPE") or "gantry_xyz")
         self._vtk_axis_motion_owner = {
@@ -70,6 +77,7 @@ class LinuxCncDataSource(QObject):
             'B': None,
             'C': None,
         }
+        self._last_switchkins_type = 0
 
         explicit_axis_owner = False
         for axis in ['X', 'Y', 'Z', 'A', 'B', 'C']:
@@ -186,6 +194,9 @@ class LinuxCncDataSource(QObject):
     def getFPS(self):
         return self._fps
 
+    def getArcDivision(self):
+        return self._arc_division
+
     def getAxis(self):
         return self._status.stat.axis
 
@@ -213,11 +224,51 @@ class LinuxCncDataSource(QObject):
     def getProgramUnits(self):
         return str(self._status.program_units)
 
-    def getSwitchkinsType(self):
+    @staticmethod
+    def _hal_get_float(pin_name):
         try:
-            return int(float(hal.get_value('motion.switchkins-type')))
+            return float(hal.get_value(pin_name))
         except Exception:
             return None
+
+    def _switchkins_type_from_status_bits(self):
+        b0 = self._hal_get_float('kinstype.is-0')
+        b1 = self._hal_get_float('kinstype.is-1')
+        b2 = self._hal_get_float('kinstype.is-2')
+
+        if b0 is None and b1 is None and b2 is None:
+            return None
+
+        v0 = bool((b0 or 0.0) >= 0.5)
+        v1 = bool((b1 or 0.0) >= 0.5)
+        v2 = bool((b2 or 0.0) >= 0.5)
+
+        if v1 and not v0 and not v2:
+            return 1
+        if v2 and not v0 and not v1:
+            return 2
+        if v0 and not v1 and not v2:
+            return 0
+
+        return None
+
+    def getSwitchkinsType(self):
+        # Authoritative runtime source: motion.switchkins-type.
+        # Fallback to kinstype.is-* bits when the motion pin is unavailable.
+        raw = self._hal_get_float('motion.switchkins-type')
+        if raw is not None:
+            try:
+                self._last_switchkins_type = int(raw)
+            except Exception:
+                pass
+            return self._last_switchkins_type
+
+        bits_value = self._switchkins_type_from_status_bits()
+        if bits_value is not None:
+            self._last_switchkins_type = int(bits_value)
+            return self._last_switchkins_type
+
+        return self._last_switchkins_type
 
     def isMachineLathe(self):
         # Return True if either LATHE or BACK_TOOL_LATHE is set
