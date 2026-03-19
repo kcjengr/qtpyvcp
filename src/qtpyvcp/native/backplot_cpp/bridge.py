@@ -20,11 +20,6 @@ LOG = logger.getLogger(__name__)
 
 
 def _import_native_module():
-    try:
-        return importlib.import_module("qtpyvcp.native.backplot_cpp._backplot_cpp")
-    except Exception:
-        pass
-
     module_dir = os.path.dirname(__file__)
     ext_suffix = sysconfig.get_config_var("EXT_SUFFIX") or ".so"
     candidates = [
@@ -36,14 +31,17 @@ def _import_native_module():
     candidates.extend(sorted(glob.glob(os.path.join(module_dir, "_backplot_cpp*.so")), reverse=True))
     candidates.extend(sorted(glob.glob(os.path.join(module_dir, "build", "_backplot_cpp*.so")), reverse=True))
 
+    # Prefer newest build output so development rebuilds are picked up
+    # without needing a manual copy into package root.
+    existing_candidates = [p for p in candidates if os.path.exists(p)]
+    existing_candidates.sort(key=lambda p: os.path.getmtime(p), reverse=True)
+
     seen = set()
     import_errors = []
-    for module_path in candidates:
+    for module_path in existing_candidates:
         if module_path in seen:
             continue
         seen.add(module_path)
-        if not os.path.exists(module_path):
-            continue
 
         try:
             spec = importlib.util.spec_from_file_location("qtpyvcp.native.backplot_cpp._backplot_cpp", module_path)
@@ -53,9 +51,18 @@ def _import_native_module():
 
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
+            LOG.debug("[backplot-cpp] loaded native module: %s", module_path)
             return module
         except Exception as ex:
             import_errors.append(f"{module_path}: {ex}")
+
+    # Fall back to standard import as a last resort.
+    try:
+        module = importlib.import_module("qtpyvcp.native.backplot_cpp._backplot_cpp")
+        LOG.debug("[backplot-cpp] loaded native module via importlib: %s", getattr(module, "__file__", "<unknown>"))
+        return module
+    except Exception as ex:
+        import_errors.append(f"importlib: {ex}")
 
     searched = [
         os.path.join(module_dir, "_backplot_cpp*.so"),
@@ -179,6 +186,18 @@ def build_backplot_from_file(
     temp_parameter_file: str,
 ) -> Optional[CppBackplotResult]:
     canon = _backplot_cpp.NativeCanon(path_colors)
+    try:
+        machine_is_metric = bool(datasource.isMachineMetric())
+        external_length_units = 1.0 if machine_is_metric else (1.0 / 25.4)
+        canon.set_external_length_units(external_length_units)
+        LOG.debug(
+            "[backplot-cpp] canon external units: machine_is_metric=%s external_length_units=%.12f",
+            machine_is_metric,
+            external_length_units,
+        )
+    except Exception:
+        LOG.exception("Failed to configure native canon external length units")
+
     try:
         axis_mask = int(datasource.getAxisMask())
         if axis_mask <= 0:

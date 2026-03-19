@@ -594,9 +594,22 @@ class OffsetTable(DataPlugin):
         """
 
         self.g5x_offset_table = offset_table
-        
-        mdi_commands = ""
-        
+        # Offset values are loaded directly from LinuxCNC VAR params, which are
+        # stored in machine native linear units. Force G10 writes to that same
+        # unit system so edits are not scaled when current program units differ.
+        linear_units = float(STAT.linear_units)
+        if abs(linear_units - (1.0 / 25.4)) < 1e-9:
+            machine_units_cmd = 'G20'
+        else:
+            machine_units_cmd = 'G21'
+            if abs(linear_units - 1.0) >= 1e-9:
+                LOG.warning(
+                    "Unexpected STAT.linear_units=%s; defaulting offset save to G21",
+                    linear_units,
+                )
+
+        mdi_commands = ["M70", machine_units_cmd]
+
         for index in range(len(self.rows)):
             mdi_list = list()
             mdi_list.append("G10 L2")
@@ -609,9 +622,11 @@ class OffsetTable(DataPlugin):
                 mdi_list.append("{}{}".format(char, self.g5x_offset_table[index][column_index]))
 
             mdi_command = " ".join(mdi_list)
-            
-            mdi_commands = f"{mdi_commands};{mdi_command}"
-            
-        issue_mdi(mdi_commands)
+
+            mdi_commands.append(mdi_command)
+
+        mdi_commands.append("M72")
+
+        issue_mdi(";".join(mdi_commands))
 
 

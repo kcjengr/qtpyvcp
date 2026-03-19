@@ -89,6 +89,19 @@ def convType(val):
     return val
 
 
+def _ini_bool(value, default=False):
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return default
+    text = str(value).strip().lower()
+    if text in ('1', 'true', 'on', 'yes', 'y'):
+        return True
+    if text in ('0', 'false', 'off', 'no', 'n'):
+        return False
+    return default
+
+
 def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp_version=None):
     # LinuxCNC passes the INI file as `-ini=inifile` which docopt sees as a
     # short argument which does not support an equals sign, so we loop thru
@@ -121,6 +134,7 @@ def apply_opts(opts):
     # read options from INI file and merge with cmd line options
     ini_file = normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs'))
     ini_obj = ini(ini_file)
+    advanced_logging_enabled = _ini_bool(ini_obj.find('DISPLAY', 'ADVANCED_LOGGING'), default=False)
     for k, v in opts.items():
         ini_val = ini_obj.find('DISPLAY', k.upper().replace('-', '_'))
         if ini_val is None:
@@ -207,24 +221,22 @@ def apply_opts(opts):
 
     LOG.info("QtPyVCP Version: %s", QTPYVCP_VERSION)
 
+    if advanced_logging_enabled:
+        from qtpyvcp.utilities.system_diagnostics import build_system_diagnostics_report_lines
+
+        diagnostics_lines = build_system_diagnostics_report_lines(
+            qtpyvcp_version=QTPYVCP_VERSION,
+            qt_version=PySide6.__version__,
+            qt_api=PySide6.__package__,
+        )
+        LOG.info("\n".join(diagnostics_lines))
+
     if LOG.getEffectiveLevel() == logger.logLevelFromName("DEBUG"):
         LOG.debug("Qt Version: %s", PySide6.__version__)
 
 
         LOG.debug("Command line options:\n%s",
                   json.dumps(opts, sort_keys=True, indent=4))
-
-        try:
-            from qtpyvcp.utilities.system_diagnostics import build_system_diagnostics_report_lines
-
-            diagnostics_lines = build_system_diagnostics_report_lines(
-                qtpyvcp_version=QTPYVCP_VERSION,
-                qt_version=PySide6.__version__,
-                qt_api=PySide6.__package__,
-            )
-            LOG.info("\n".join(diagnostics_lines))
-        except Exception as exc:
-            LOG.warning("Failed to gather full system diagnostics report: %s", exc)
 
     return opts
 

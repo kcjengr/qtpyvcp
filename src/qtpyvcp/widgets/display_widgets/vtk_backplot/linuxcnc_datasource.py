@@ -1,6 +1,8 @@
 import linuxcnc
 import os
 import hal
+import re
+import yaml
 
 from PySide6.QtCore import Signal, QObject
 from qtpyvcp.plugins import getPlugin
@@ -33,6 +35,45 @@ class LinuxCncDataSource(QObject):
     toolOffsetChanged = Signal(tuple)
     toolInSpindleChanged = Signal(int)
 
+    @staticmethod
+    def _normalize_axis_owner(raw_owner, default='head'):
+        text = str(raw_owner).strip().lower() if raw_owner is not None else ''
+        if text in ('head', 'table'):
+            return text
+        return default
+
+    @staticmethod
+    def _coerce_int(value, default=None):
+        if isinstance(value, bool):
+            return int(value)
+        if isinstance(value, int):
+            return value
+        if isinstance(value, float):
+            return int(value) if value.is_integer() else default
+
+        text = str(value or '').strip()
+        if not text:
+            return default
+        signless = text[1:] if text[0] in ('+', '-') else text
+        if signless.isdigit():
+            return int(text)
+        return default
+
+    @staticmethod
+    def _coerce_float(value, default=None):
+        if isinstance(value, bool):
+            return float(int(value))
+        if isinstance(value, (int, float)):
+            return float(value)
+
+        text = str(value or '').strip()
+        if not text:
+            return default
+        float_pattern = r'^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$'
+        if re.fullmatch(float_pattern, text):
+            return float(text)
+        return default
+
     def __init__(self):
         super(LinuxCncDataSource, self).__init__(None)
 
@@ -58,52 +99,45 @@ class LinuxCncDataSource(QObject):
         self._arc_division = 64
         raw_arc_division = self._inifile.find("VTK", "ARC_DIVISION")
         if raw_arc_division is not None:
-            try:
-                self._arc_division = max(8, min(1024, int(raw_arc_division)))
-            except Exception:
+            parsed_arc_division = self._coerce_int(raw_arc_division)
+            if parsed_arc_division is not None:
+                self._arc_division = max(8, min(1024, parsed_arc_division))
+            else:
                 LOG.warning("Invalid [VTK] ARC_DIVISION=%r, using default=64", raw_arc_division)
 
-        self._vtk_kinematics_type = str(self._inifile.find("VTK", "KINEMATICS_TYPE") or "gantry_xyz")
         self._vtk_axis_motion_owner = {
-            'X': 'tool',
-            'Y': 'tool',
-            'Z': 'tool',
-            'A': 'tool',
-            'B': 'tool',
-            'C': 'tool',
+            'X': 'head',
+            'Y': 'head',
+            'Z': 'head',
+            'A': 'head',
+            'B': 'head',
+            'C': 'head',
         }
         self._vtk_rotary_axis_origin = {
             'A': None,
             'B': None,
             'C': None,
         }
+        self._vtk_machine_parts_file = None
+        self._vtk_machine_parts_loaded = False
+        self._vtk_machine_parts_axes = {}
+        self._vtk_active_machine_axes = self._get_active_machine_axes()
+        self._vtk_axis_config_report = {
+            'strict_mode': False,
+            'warnings': [],
+            'missing_axes': [],
+            'extra_axes': [],
+            'invalid_axes': {},
+            'missing_machine_parts_axes': [],
+            'missing_rotary_origins': [],
+        }
         self._last_switchkins_type = 0
+        self._last_logged_motion_switchkins_raw = None
+        self._last_logged_motion_switchkins_parsed = None
+        self._last_logged_kinstype_bits_raw = None
+        self._hal_pin_read_error_logged = set()
 
-        explicit_axis_owner = False
-        for axis in ['X', 'Y', 'Z', 'A', 'B', 'C']:
-            raw_owner = self._inifile.find("VTK", axis)
-            if raw_owner is None:
-                continue
-
-            owner = str(raw_owner).strip().lower()
-            if owner in ['tool', 'table']:
-                self._vtk_axis_motion_owner[axis] = owner
-                explicit_axis_owner = True
-
-        # Backward compatibility for old single-value kinematics selector.
-        # Per-axis entries take precedence when present.
-        if not explicit_axis_owner:
-            legacy_mode = self._vtk_kinematics_type.strip().lower()
-            if legacy_mode in ['vmc_table_xy', '3_axis_vmc', 'vmc']:
-                self._vtk_axis_motion_owner['X'] = 'table'
-                self._vtk_axis_motion_owner['Y'] = 'table'
-                self._vtk_axis_motion_owner['Z'] = 'tool'
-            elif legacy_mode in ['gantry_fixed_y', '3_axis_gantry_fixed_y']:
-                self._vtk_axis_motion_owner['X'] = 'tool'
-                self._vtk_axis_motion_owner['Y'] = 'table'
-                self._vtk_axis_motion_owner['Z'] = 'tool'
-
-        self._load_rotary_axis_origins_from_ini()
+        self._configure_vtk_machine_axes()
         
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -186,10 +220,8 @@ class LinuxCncDataSource(QObject):
         self.toolTableChanged.emit(tool_table)
 
     def __handleToolInSpindleChanged(self, tool_number):
-        try:
-            self.toolInSpindleChanged.emit(int(tool_number))
-        except Exception:
-            self.toolInSpindleChanged.emit(0)
+        tool_number_int = self._coerce_int(tool_number, 0)
+        self.toolInSpindleChanged.emit(tool_number_int)
 
     def getFPS(self):
         return self._fps
@@ -224,12 +256,21 @@ class LinuxCncDataSource(QObject):
     def getProgramUnits(self):
         return str(self._status.program_units)
 
-    @staticmethod
-    def _hal_get_float(pin_name):
-        try:
-            return float(hal.get_value(pin_name))
-        except Exception:
+    def _hal_get_float(self, pin_name):
+        if not pin_name:
             return None
+        try:
+            raw_value = hal.get_value(pin_name)
+        except Exception as exc:
+            if pin_name not in self._hal_pin_read_error_logged:
+                LOG.warning(
+                    "VTK switchkins pin read failed for %s: %s",
+                    pin_name,
+                    exc,
+                )
+                self._hal_pin_read_error_logged.add(pin_name)
+            return None
+        return LinuxCncDataSource._coerce_float(raw_value, None)
 
     def _switchkins_type_from_status_bits(self):
         b0 = self._hal_get_float('kinstype.is-0')
@@ -237,33 +278,49 @@ class LinuxCncDataSource(QObject):
         b2 = self._hal_get_float('kinstype.is-2')
 
         if b0 is None and b1 is None and b2 is None:
-            return None
+            return None, (b0, b1, b2)
 
         v0 = bool((b0 or 0.0) >= 0.5)
         v1 = bool((b1 or 0.0) >= 0.5)
         v2 = bool((b2 or 0.0) >= 0.5)
 
         if v1 and not v0 and not v2:
-            return 1
+            return 1, (b0, b1, b2)
         if v2 and not v0 and not v1:
-            return 2
+            return 2, (b0, b1, b2)
         if v0 and not v1 and not v2:
-            return 0
+            return 0, (b0, b1, b2)
 
-        return None
+        return None, (b0, b1, b2)
 
     def getSwitchkinsType(self):
         # Authoritative runtime source: motion.switchkins-type.
         # Fallback to kinstype.is-* bits when the motion pin is unavailable.
         raw = self._hal_get_float('motion.switchkins-type')
         if raw is not None:
-            try:
-                self._last_switchkins_type = int(raw)
-            except Exception:
-                pass
+            parsed_switchkins = self._coerce_int(raw)
+            if raw != self._last_logged_motion_switchkins_raw or parsed_switchkins != self._last_logged_motion_switchkins_parsed:
+                LOG.info(
+                    "VTK switchkins pin: motion.switchkins-type raw=%s parsed=%s",
+                    raw,
+                    parsed_switchkins,
+                )
+                self._last_logged_motion_switchkins_raw = raw
+                self._last_logged_motion_switchkins_parsed = parsed_switchkins
+            if parsed_switchkins is not None:
+                self._last_switchkins_type = parsed_switchkins
             return self._last_switchkins_type
 
-        bits_value = self._switchkins_type_from_status_bits()
+        bits_value, bits_raw = self._switchkins_type_from_status_bits()
+        if bits_raw != self._last_logged_kinstype_bits_raw:
+            LOG.info(
+                "VTK switchkins pins: kinstype.is-0=%s kinstype.is-1=%s kinstype.is-2=%s resolved=%s",
+                bits_raw[0],
+                bits_raw[1],
+                bits_raw[2],
+                bits_value,
+            )
+            self._last_logged_kinstype_bits_raw = bits_raw
         if bits_value is not None:
             self._last_switchkins_type = int(bits_value)
             return self._last_switchkins_type
@@ -326,11 +383,27 @@ class LinuxCncDataSource(QObject):
     def getOffsetColumns(self):
         return self._offsettable.column_labels
 
-    def getKinematicsType(self):
-        return self._vtk_kinematics_type
-
     def getAxisMotionOwners(self):
         return dict(self._vtk_axis_motion_owner)
+
+    def getAxisConfigurationDataset(self):
+        return {
+            'active_machine_axes': list(self._vtk_active_machine_axes),
+            'axis_motion_owner': dict(self._vtk_axis_motion_owner),
+            'rotary_axis_origin': dict(self._vtk_rotary_axis_origin),
+            'machine_parts_file': self._vtk_machine_parts_file,
+            'machine_parts_loaded': bool(self._vtk_machine_parts_loaded),
+            'machine_parts_axes': dict(self._vtk_machine_parts_axes),
+            'validation': {
+                'strict_mode': bool(self._vtk_axis_config_report.get('strict_mode')),
+                'warnings': list(self._vtk_axis_config_report.get('warnings', [])),
+                'missing_axes': list(self._vtk_axis_config_report.get('missing_axes', [])),
+                'extra_axes': list(self._vtk_axis_config_report.get('extra_axes', [])),
+                'invalid_axes': dict(self._vtk_axis_config_report.get('invalid_axes', {})),
+                'missing_machine_parts_axes': list(self._vtk_axis_config_report.get('missing_machine_parts_axes', [])),
+                'missing_rotary_origins': list(self._vtk_axis_config_report.get('missing_rotary_origins', [])),
+            },
+        }
 
     @staticmethod
     def _parse_vector3(raw_value):
@@ -346,43 +419,218 @@ class LinuxCncDataSource(QObject):
         if len(parts) < 3:
             return None
 
-        try:
-            return (float(parts[0]), float(parts[1]), float(parts[2]))
-        except Exception:
+        x = LinuxCncDataSource._coerce_float(parts[0], None)
+        y = LinuxCncDataSource._coerce_float(parts[1], None)
+        z = LinuxCncDataSource._coerce_float(parts[2], None)
+        if x is None or y is None or z is None:
             return None
+        return (x, y, z)
 
     @staticmethod
-    def _parse_float(raw_value, default=0.0):
-        try:
-            if raw_value is None:
-                return float(default)
-            return float(raw_value)
-        except Exception:
-            return float(default)
+    def _point3_or_none(value):
+        if not isinstance(value, (list, tuple)) or len(value) < 3:
+            return None
+        x = LinuxCncDataSource._coerce_float(value[0], None)
+        y = LinuxCncDataSource._coerce_float(value[1], None)
+        z = LinuxCncDataSource._coerce_float(value[2], None)
+        if x is None or y is None or z is None:
+            return None
+        return (float(x), float(y), float(z))
 
-    def _load_rotary_axis_origins_from_ini(self):
-        for axis in ['A', 'B', 'C']:
-            vec_keys = [
-                f"{axis}_PIVOT",
-                f"{axis}_ORIGIN",
-                f"{axis}_ROT_CENTER",
+    @staticmethod
+    def _parse_traj_coordinates(raw_value):
+        allowed = {'X', 'Y', 'Z', 'A', 'B', 'C', 'U', 'V', 'W'}
+        text = str(raw_value or '').strip().upper()
+        if not text:
+            return ['X', 'Y', 'Z']
+
+        parsed = []
+        for token in text.replace(',', ' ').split():
+            if not token:
+                continue
+            axis = token[0]
+            if axis in allowed and axis not in parsed:
+                parsed.append(axis)
+        return parsed or ['X', 'Y', 'Z']
+
+    def _get_active_machine_axes(self):
+        return self._parse_traj_coordinates(self._inifile.find("TRAJ", "COORDINATES"))
+
+    def _resolve_machine_parts_path(self):
+        raw = self._inifile.find("VTK", "MACHINE_PARTS")
+        text = str(raw or '').strip()
+        if not text:
+            return None
+
+        if os.path.isabs(text):
+            return text
+
+        ini_file = os.getenv("INI_FILE_NAME") or ''
+        config_dir = os.path.dirname(ini_file)
+        if not config_dir:
+            return text
+        return os.path.normpath(os.path.join(config_dir, text))
+
+    def _extract_machine_parts_axes(self, machine_parts_data):
+        axes = {}
+
+        def walk(node):
+            if not isinstance(node, dict):
+                return
+
+            axis_raw = node.get('axis')
+            if isinstance(axis_raw, str) and axis_raw.strip():
+                axis = axis_raw.strip().upper()
+                if axis not in axes:
+                    axes[axis] = {
+                        'axis': axis,
+                        'type': str(node.get('type', '')).lower(),
+                        'origin': self._point3_or_none(node.get('origin')),
+                        'joint': node.get('joint'),
+                        'id': node.get('id'),
+                    }
+
+            for value in node.values():
+                if isinstance(value, dict):
+                    walk(value)
+
+        walk(machine_parts_data)
+        return axes
+
+    def _warn_vtk(self, message):
+        self._vtk_axis_config_report['warnings'].append(message)
+        LOG.warning("VTK configuration: %s", message)
+
+    def _configure_vtk_machine_axes(self):
+        allowed_axes = ('X', 'Y', 'Z', 'A', 'B', 'C')
+        active_axes = [axis for axis in self._vtk_active_machine_axes if axis in allowed_axes]
+
+        configured_axes = []
+        invalid_axes = {}
+        for axis in allowed_axes:
+            raw_owner = self._inifile.find("VTK", axis)
+            if raw_owner is None:
+                continue
+
+            configured_axes.append(axis)
+            owner = self._normalize_axis_owner(raw_owner, default=None)
+            if owner in ('head', 'table'):
+                self._vtk_axis_motion_owner[axis] = owner
+            else:
+                invalid_axes[axis] = str(raw_owner)
+
+        strict_mode = bool(configured_axes)
+        self._vtk_axis_config_report['strict_mode'] = strict_mode
+
+        if not strict_mode:
+            return
+
+        missing_axes = [axis for axis in active_axes if axis not in configured_axes]
+        extra_axes = [axis for axis in configured_axes if axis not in active_axes]
+
+        self._vtk_axis_config_report['missing_axes'] = list(missing_axes)
+        self._vtk_axis_config_report['extra_axes'] = list(extra_axes)
+        self._vtk_axis_config_report['invalid_axes'] = dict(invalid_axes)
+
+        if missing_axes or invalid_axes or extra_axes:
+            details = [
+                f"machine axes={active_axes}",
+                f"vtk axes={configured_axes}",
             ]
+            if missing_axes:
+                details.append(f"missing={missing_axes}")
+            if extra_axes:
+                details.append(f"extra={extra_axes}")
+            if invalid_axes:
+                details.append(f"invalid={invalid_axes}")
+            self._warn_vtk("axis ownership map does not match machine axes; " + "; ".join(details))
 
-            origin = None
-            for key in vec_keys:
-                origin = self._parse_vector3(self._inifile.find("VTK", key))
-                if origin is not None:
-                    break
+        machine_parts_path = self._resolve_machine_parts_path()
+        self._vtk_machine_parts_file = machine_parts_path
 
-            if origin is None:
-                x = self._parse_float(self._inifile.find("VTK", f"{axis}_PIVOT_X"), 0.0)
-                y = self._parse_float(self._inifile.find("VTK", f"{axis}_PIVOT_Y"), 0.0)
-                z_raw = self._inifile.find("VTK", f"{axis}_PIVOT_Z")
-                if z_raw is not None:
-                    z = self._parse_float(z_raw, 0.0)
-                    origin = (x, y, z)
+        if machine_parts_path is None:
+            self._warn_vtk(
+                "MACHINE_PARTS is not set in [VTK]; add MACHINE_PARTS=<yaml> to complete machine-axis simulation metadata"
+            )
+            return
 
-            self._vtk_rotary_axis_origin[axis] = origin
+        if not os.path.isfile(machine_parts_path):
+            self._warn_vtk(
+                f"MACHINE_PARTS file not found: {machine_parts_path}"
+            )
+            return
+
+        try:
+            with open(machine_parts_path, 'r', encoding='utf-8') as stream:
+                machine_parts_data = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            self._warn_vtk(
+                f"MACHINE_PARTS YAML parse failed for {machine_parts_path}: {exc}"
+            )
+            return
+        except OSError as exc:
+            self._warn_vtk(
+                f"MACHINE_PARTS file read failed for {machine_parts_path}: {exc}"
+            )
+            return
+
+        if not isinstance(machine_parts_data, dict):
+            self._warn_vtk(
+                f"MACHINE_PARTS did not parse to a mapping: {machine_parts_path}"
+            )
+            return
+
+        self._vtk_machine_parts_loaded = True
+        self._vtk_machine_parts_axes = self._extract_machine_parts_axes(machine_parts_data)
+
+        yaml_axes = set(self._vtk_machine_parts_axes.keys())
+        missing_from_yaml = [axis for axis in active_axes if axis not in yaml_axes]
+        if missing_from_yaml:
+            self._vtk_axis_config_report['missing_machine_parts_axes'] = list(missing_from_yaml)
+            self._warn_vtk(
+                f"MACHINE_PARTS is missing active machine axes: {missing_from_yaml}"
+            )
+
+        for axis in ('A', 'B', 'C'):
+            meta = self._vtk_machine_parts_axes.get(axis)
+            if meta is not None:
+                self._vtk_rotary_axis_origin[axis] = meta.get('origin')
+
+        missing_rotary_origins = []
+        for axis in ('A', 'B', 'C'):
+            if axis not in active_axes:
+                continue
+            if self._vtk_axis_motion_owner.get(axis, 'head') != 'table':
+                continue
+
+            meta = self._vtk_machine_parts_axes.get(axis)
+            if meta is None:
+                continue
+            axis_type = str(meta.get('type') or '').lower()
+            if axis_type != 'angular':
+                self._warn_vtk(
+                    f"MACHINE_PARTS axis {axis} should be type=angular for table rotary ownership (got type={axis_type or 'unset'})"
+                )
+            if meta.get('origin') is None:
+                missing_rotary_origins.append(axis)
+
+        self._vtk_axis_config_report['missing_rotary_origins'] = list(missing_rotary_origins)
+        if missing_rotary_origins:
+            self._warn_vtk(
+                f"table rotary axes missing MACHINE_PARTS origin definitions: {missing_rotary_origins}"
+            )
+
+        legacy_pivot_keys = []
+        for axis in ('A', 'B', 'C'):
+            for key_suffix in ('PIVOT', 'ORIGIN', 'ROT_CENTER', 'PIVOT_X', 'PIVOT_Y', 'PIVOT_Z'):
+                key = f"{axis}_{key_suffix}"
+                if self._inifile.find("VTK", key) is not None:
+                    legacy_pivot_keys.append(key)
+
+        if legacy_pivot_keys:
+            self._warn_vtk(
+                f"legacy VTK pivot keys are ignored; use MACHINE_PARTS origins instead (keys={legacy_pivot_keys})"
+            )
 
     def getRotaryAxisOrigins(self):
         return dict(self._vtk_rotary_axis_origin)

@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 import math
+import re
 
 import vtk
 import vtk.qt
@@ -56,6 +57,7 @@ class VTKCanon(StatCanon):
         self.added_segments = 0
         self._preview_switchkins_type = 0
         self._preview_program_units = None
+        self._last_units_factor_log = None
 
         g5x = self._datasource.getActiveWcsOffsets()
 
@@ -73,24 +75,74 @@ class VTKCanon(StatCanon):
 
         # Capture switchkins transitions seen by the preview interpreter so
         # load-time shaping follows M428/M429 state the same way runtime does.
-        try:
-            for mcode in getattr(st, 'mcodes', ()):
-                code = int(mcode)
-                if code == 428:
-                    self._preview_switchkins_type = 1
-                elif code in (429, 430):
-                    self._preview_switchkins_type = 0
-        except Exception:
-            pass
+        seq = self._coerce_int(getattr(st, 'sequence_number', None))
+        for mcode in getattr(st, 'mcodes', ()):
+            code = self._coerce_int(mcode)
+            if code is None:
+                continue
+            if code == 428:
+                LOG.warning(
+                    "VTK preview switchkins command: M428 encountered (seq=%s)",
+                    seq,
+                )
+                if self._preview_switchkins_type != 1:
+                    LOG.info(
+                        "VTK preview switchkins: M428 detected -> switchkins_type=1 (seq=%s)",
+                        seq,
+                    )
+                self._preview_switchkins_type = 1
+            elif code in (429, 430):
+                LOG.warning(
+                    "VTK preview switchkins command: M%s encountered (seq=%s)",
+                    code,
+                    seq,
+                )
+                if self._preview_switchkins_type != 0:
+                    LOG.info(
+                        "VTK preview switchkins: M%s detected -> switchkins_type=0 (seq=%s)",
+                        code,
+                        seq,
+                    )
+                self._preview_switchkins_type = 0
 
         # Track the interpreter units mode for load-time scaling.
         # LinuxCNC canonical units: 1=in, 2=mm, 3=cm.
-        try:
-            units = int(getattr(st, 'units', 0) or 0)
-            if units in (1, 2, 3):
-                self._preview_program_units = units
-        except Exception:
-            pass
+        units = self._coerce_int(getattr(st, 'units', 0) or 0)
+        if units in (1, 2, 3):
+            self._preview_program_units = units
+
+    @staticmethod
+    def _coerce_int(value):
+        if isinstance(value, bool):
+            return int(value)
+        if isinstance(value, int):
+            return value
+        if isinstance(value, float):
+            return int(value) if value.is_integer() else None
+        text = str(value or '').strip()
+        if not text:
+            return None
+        if text[0] in ('+', '-'):
+            digits = text[1:]
+        else:
+            digits = text
+        if digits.isdigit():
+            return int(text)
+        return None
+
+    @staticmethod
+    def _coerce_float_or_default(value, default=1.0):
+        if isinstance(value, bool):
+            return float(int(value))
+        if isinstance(value, (int, float)):
+            return float(value)
+        text = str(value or '').strip()
+        if not text:
+            return float(default)
+        float_pattern = r'^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$'
+        if re.fullmatch(float_pattern, text):
+            return float(text)
+        return float(default)
 
     def _program_to_machine_length_factor(self):
         # Convert parsed program coordinates into configured machine units.
@@ -118,16 +170,33 @@ class VTKCanon(StatCanon):
 
         # mm -> machine units
         if machine_is_metric:
-            return float(to_mm)
-        return float(to_mm / 25.4)
+            factor = float(to_mm)
+        else:
+            factor = float(to_mm / 25.4)
+
+        fallback_program_units = str(self._datasource.getProgramUnits() or '').strip().lower()
+        log_key = (
+            bool(machine_is_metric),
+            self._preview_program_units,
+            fallback_program_units,
+            round(float(factor), 9),
+        )
+        if self._last_units_factor_log != log_key:
+            # This function is called for each segment; only log on unit-state change.
+            LOG.debug(
+                "VTK units factor: machine_is_metric=%s preview_program_units=%s fallback_program_units=%s factor=%.9f",
+                machine_is_metric,
+                self._preview_program_units,
+                fallback_program_units,
+                factor,
+            )
+            self._last_units_factor_log = log_key
+        return factor
 
     @staticmethod
     def _scale_linear_axes(point_values, factor):
         scaled = list(point_values)
-        try:
-            f = float(factor)
-        except Exception:
-            f = 1.0
+        f = VTKCanon._coerce_float_or_default(factor, 1.0)
 
         for idx in (0, 1, 2, 6, 7, 8):
             if idx < len(scaled):
@@ -220,7 +289,7 @@ class VTKCanon(StatCanon):
 
         active_axes = []
         for axis in ('A', 'B', 'C'):
-            if axis_owner.get(axis, 'tool') != 'table':
+            if axis_owner.get(axis, 'head') != 'table':
                 continue
             if abs(deltas[axis]) <= 1e-8 and abs(start_angles[axis]) <= 1e-8 and abs(end_angles[axis]) <= 1e-8:
                 continue
@@ -307,6 +376,11 @@ class VTKCanon(StatCanon):
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
         # ensure the passed values get set on 'self' via super
         super().set_g5x_offset(index, x, y, z, a, b, c, u, v, w)
+
+        # G53 (machine coordinates) is non-modal and should not create a WCS segment.
+        if index <= 0:
+            return
+
         new_wcs = index - 1  # this index counts also G53 so we need to do -1
         
         if new_wcs not in self.path_points:
@@ -469,9 +543,11 @@ class VTKCanon(StatCanon):
 
                     else:
                         # LOG.debug(f"--------- Points:")
-                        if len(self.path_actors) > 1:
-                            if (point_count == 0) and (line_type == "traverse") and (wcs_index != first_cut_wcs_index):
-                                continue
+                        # The first traverse in a segment has no provable
+                        # start point in preview context, so do not render it
+                        # as geometry.
+                        if (point_count == 0) and (line_type == "traverse"):
+                            continue
 
                         def _insert_xyz_segment(seg_start_xyz, seg_end_xyz):
                             nonlocal point_count, added_segment_count
@@ -533,8 +609,9 @@ class VTKCanon(StatCanon):
                 segment_data = segment['lines']
                 segment_start = None
                 segment_end = None
-                segment_point_count = 0
                 segment_has_cut_motion = False
+                first_cut_start = None
+                last_cut_end = None
 
                 for segment_line_type, segment_line_data in segment_data:
                     segment_start_point = segment_line_data[0]
@@ -543,8 +620,18 @@ class VTKCanon(StatCanon):
                     if segment_line_type != "traverse":
                         segment_has_cut_motion = True
 
-                    if (segment_index > 0) and (segment_point_count == 0) and (segment_line_type == "traverse"):
-                        continue
+                        if first_cut_start is None:
+                            first_cut_start = [
+                                segment_start_point[0] * multiplication_factor,
+                                segment_start_point[1] * multiplication_factor,
+                                segment_start_point[2] * multiplication_factor,
+                            ]
+
+                        last_cut_end = [
+                            segment_end_point[0] * multiplication_factor,
+                            segment_end_point[1] * multiplication_factor,
+                            segment_end_point[2] * multiplication_factor,
+                        ]
 
                     if segment_start is None:
                         segment_start = [
@@ -558,16 +645,19 @@ class VTKCanon(StatCanon):
                         segment_end_point[1] * multiplication_factor,
                         segment_end_point[2] * multiplication_factor,
                     ]
-                    segment_point_count += 2
 
-                segment_summaries.append((segment_wcs_index, segment_start, segment_end, segment_has_cut_motion))
+                segment_summaries.append((
+                    segment_wcs_index,
+                    segment_start,
+                    segment_end,
+                    segment_has_cut_motion,
+                    first_cut_start,
+                    last_cut_end,
+                ))
 
             for transition_index in range(1, len(segment_summaries)):
-                prev_wcs_index, _, prev_end, prev_has_cut_motion = segment_summaries[transition_index - 1]
-                next_wcs_index, next_start, _, next_has_cut_motion = segment_summaries[transition_index]
-
-                if prev_end is None or next_start is None:
-                    continue
+                prev_wcs_index, _, prev_end, prev_has_cut_motion, _, prev_last_cut_end = segment_summaries[transition_index - 1]
+                next_wcs_index, next_start, _, next_has_cut_motion, next_first_cut_start, _ = segment_summaries[transition_index]
 
                 if not prev_has_cut_motion or not next_has_cut_motion:
                     continue
@@ -575,11 +665,23 @@ class VTKCanon(StatCanon):
                 if prev_wcs_index == next_wcs_index:
                     continue
 
+                if prev_wcs_index < 0 or next_wcs_index < 0:
+                    continue
+
+                # Source from the actual end of prior segment (preserves final
+                # reposition like G53), but target first cutting point in next
+                # segment to avoid linking to an intermediate traverse start.
+                transition_from = prev_end
+                transition_to = next_first_cut_start if next_first_cut_start is not None else next_start
+
+                if transition_from is None or transition_to is None:
+                    continue
+
                 self.offset_transitions.append({
                     'from_wcs': prev_wcs_index,
                     'to_wcs': next_wcs_index,
-                    'from_end': prev_end,
-                    'to_start': next_start,
+                    'from_end': transition_from,
+                    'to_start': transition_to,
                 })
 
         self.added_segments = added_segment_count

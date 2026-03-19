@@ -1,0 +1,2 @@
+CompileFlags:
+  CompilationDatabase: src/qtpyvcp/native/backplot_cpp/build
