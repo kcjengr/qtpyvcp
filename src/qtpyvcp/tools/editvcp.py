@@ -176,7 +176,7 @@ def launch_designer(opts=DotDict()) -> None:
     if distro.id() == "gentoo":
         cmd = ["designer"]
     elif distro.id() == "arch":
-        cmd = ["pyside6-designer"]
+        cmd = ["designer6"]
     else:
         cmd = ["pyside6-designer"]
 
