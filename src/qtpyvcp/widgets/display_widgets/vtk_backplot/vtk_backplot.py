@@ -18,9 +18,14 @@
 
 import math
 import os
+import re
 import time
+import logging
+import shutil
+from operator import add
 from collections import OrderedDict
 
+import gcode
 import linuxcnc
 import vtk
 import yaml
@@ -127,7 +132,7 @@ class InteractorEventFilter(QObject):
             if max_vel is not None:
                 return float(max_vel)
         # Otherwise use the standard QtPyVCP jog speed logic
-        return machine_actions.jog_linear_speed.value / 60.0
+        return actions.machine.jog_linear_speed.value / 60.0
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.KeyPress:
@@ -242,11 +247,42 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._is_machine_lathe = self._datasource.isMachineLathe()
         self._is_machine_foam = self._datasource.isMachineFoam()
         self._is_machine_jet = self._datasource.isMachineJet()
+
+        self.axis_motion_owner = self._datasource.getAxisMotionOwners()
+        self.rotary_axis_origin = {'A': None, 'B': None, 'C': None}
+        self.rotary_axis_origin.update(self._datasource.getRotaryAxisOrigins())
+        self._overlay_pivot_log_cache = None
         
         # Detect lathe mode for backplot view logic (LATHE=1 or BACK_TOOL_LATHE=1)
         inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         lathe_val = (inifile.find("DISPLAY", "LATHE") or "0").strip()
         back_tool_val = (inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
+        transform_debug_val = str(inifile.find("VTK", "TRANSFORM_DEBUG") or "0").strip().lower()
+        self._transform_debug = transform_debug_val in ("1", "true", "yes", "on")
+        breadcrumb_frame = str(inifile.find("VTK", "BREADCRUMB_FRAME") or "auto").strip().lower()
+        if breadcrumb_frame in ("world", "machine"):
+            self._breadcrumb_frame = "world"
+        elif breadcrumb_frame in ("tool",):
+            self._breadcrumb_frame = "tool"
+        else:
+            has_table_linear = any(self.axis_motion_owner.get(axis, 'head') == 'table' for axis in ('X', 'Y', 'Z'))
+            has_table_rotary = any(self.axis_motion_owner.get(axis, 'head') == 'table' for axis in ('A', 'B', 'C'))
+            self._breadcrumb_frame = 'tool' if (has_table_linear or has_table_rotary) else 'world'
+        self._breadcrumb_world_frame = (self._breadcrumb_frame == "world")
+        LOG.debug(
+            "VTK breadcrumb mode resolved: requested=%s resolved=%s owners=%s",
+            breadcrumb_frame,
+            self._breadcrumb_frame,
+            self.axis_motion_owner,
+        )
+
+        cpp_backplot_val = str(inifile.find("VTK", "CPP_BACKPLOT") or "1").strip().lower()
+        cpp_backplot_requested = cpp_backplot_val in ("1", "true", "yes", "on")
+        has_table_rotary = any(self.axis_motion_owner.get(axis, 'head') == 'table' for axis in ('A', 'B', 'C'))
+        # Prefer Python backplot for table-rotary kinematics so program paths
+        # can include kinematics-aware shaping during load, not only at runtime.
+        self._use_cpp_backplot = bool(cpp_backplot_requested and not has_table_rotary)
+
         self._lathe_mode = (lathe_val not in ["0", "false", "no", "n", ""]) or (back_tool_val not in ["0", "false", "no", "n", ""])
         self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
         
@@ -268,10 +304,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # provide a control to UI builders to suppress when line "breadcrumbs" are plotted
         self.breadcrumbs_plotted = True
 
-        try:
-            self.machine_ext_scale = getSetting("backplot.machine-ext-scale").value
-        except Exception:
-            self.machine_ext_scale = 1.0
+        machine_ext_scale_setting = getSetting("backplot.machine-ext-scale")
+        machine_ext_scale_value = getattr(machine_ext_scale_setting, 'value', 1.0)
+        self.machine_ext_scale = self._coerce_float(machine_ext_scale_value, 1.0)
         
         # Set default view for lathe/back-tool-lathe
         if self._is_machine_lathe:
@@ -299,6 +334,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.machine_parts = None
         self.machine_parts_data = None
+        self.kinematics_overlay_shift = (0.0, 0.0, 0.0)
+        self.kinematics_overlay_rotation = (0.0, 0.0, 0.0)
+        self._runtime_switchkins_type = 0
+        self._runtime_switchkins_cmd_lines = {}
+        self._runtime_switchkins_logged_lines = set()
+        self._cache_overlay_transform = vtk.vtkTransform()
+        self._active_path_transform = vtk.vtkTransform()
+        self._machine_bounds_base = None
         
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
@@ -342,8 +385,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.original_g92_offset = [0.0] * NUMBER_OF_WCS
 
         self.spindle_position = (0.0, 0.0, 0.0)
+        self.machine_motion_position = (0.0, 0.0, 0.0)
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
+        self.current_motion_type = None
+        self._breadcrumbs_armed = False
+        self._path_cache_seeded = False
+        self._last_breadcrumb_world = None
         
         if not IN_DESIGNER:
             self.joints = self._datasource._status.joint
@@ -423,7 +471,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # Machine-space transform intentionally not applied to global axes actor.
             # self.axes_actor.SetUserTransform(transform)
             self.path_actors = OrderedDict()
-            self.path_cache_actor = PathCacheActor(self.tooltip_position)
+            # Cache live points either in world frame or in active path-local
+            # frame, based on [VTK] BREADCRUMB_FRAME.
+            self.path_cache_actor = PathCacheActor(tuple(self.tooltip_position[:3]))
+            if not self._breadcrumb_world_frame:
+                self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
             self.points_surface_actor = PointsSurfaceActor(self._datasource)
 
@@ -455,6 +507,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 if self.machine_parts:
                     with open(self.machine_parts, 'r') as f:
                         self.machine_parts_data = yaml.load(f, Loader=yaml.SafeLoader)
+                        axis_dataset = self._datasource.getAxisConfigurationDataset()
+
+                        LOG.debug(
+                            "VTK rotary setup: owners=%s origins=%s validation=%s",
+                            self.axis_motion_owner,
+                            self.rotary_axis_origin,
+                            axis_dataset.get('validation'),
+                        )
                         
                         self.machine_parts_actor = MachinePartsASM(self.machine_parts_data)
             
@@ -507,155 +567,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.interactor.Initialize()
             self.renderer_window.Render()
 
-            diagnostics_enabled = False
-            try:
-                display_log_level = str(self._datasource._inifile.find("DISPLAY", "LOG_LEVEL") or "").strip().upper()
-                diagnostics_enabled = display_log_level == "DEBUG"
-            except Exception:
-                diagnostics_enabled = False
-
-            if not diagnostics_enabled:
-                try:
-                    diagnostics_enabled = LOG.isEnabledFor(10)
-                except Exception:
-                    diagnostics_enabled = False
-
-            if diagnostics_enabled:
-                try:
-                    def _extract_gl_version_pair(version_text):
-                        if not version_text:
-                            return None
-                        text = str(version_text)
-                        for token in text.replace("(", " ").replace(")", " ").split():
-                            parts = token.split(".")
-                            if len(parts) >= 2 and parts[0].isdigit() and parts[1].isdigit():
-                                return int(parts[0]), int(parts[1])
-                        return None
-
-                    def _infer_glsl_from_opengl_version(version_text):
-                        version_pair = _extract_gl_version_pair(version_text)
-                        if version_pair is None:
-                            return "unknown"
-
-                        gl_to_glsl = {
-                            (2, 0): "1.10",
-                            (2, 1): "1.20",
-                            (3, 0): "1.30",
-                            (3, 1): "1.40",
-                            (3, 2): "1.50",
-                            (3, 3): "3.30",
-                            (4, 0): "4.00",
-                            (4, 1): "4.10",
-                            (4, 2): "4.20",
-                            (4, 3): "4.30",
-                            (4, 4): "4.40",
-                            (4, 5): "4.50",
-                            (4, 6): "4.60",
-                        }
-                        inferred = gl_to_glsl.get(version_pair)
-                        if inferred is None:
-                            return "unknown"
-                        return f"{inferred} (inferred from OpenGL {version_pair[0]}.{version_pair[1]})"
-
-                    ogl_info = {
-                        "vendor": "unknown",
-                        "renderer": "unknown",
-                        "version": "unknown",
-                        "glsl": "unknown",
-                        "glsl_source": "unknown",
-                        "direct_rendering": "unknown",
-                        "direct_rendering_source": "unknown",
-                        "glx_server_vendor": "unknown",
-                        "glx_client_vendor": "unknown",
-                    }
-
-                    ogl_window = vtk.vtkOpenGLRenderWindow.SafeDownCast(self.renderer_window)
-                    if ogl_window is not None:
-                        try:
-                            ogl_info["vendor"] = str(ogl_window.GetOpenGLVendor() or "unknown")
-                        except Exception:
-                            pass
-                        try:
-                            ogl_info["renderer"] = str(ogl_window.GetOpenGLRenderer() or "unknown")
-                        except Exception:
-                            pass
-                        try:
-                            ogl_info["version"] = str(ogl_window.GetOpenGLVersion() or "unknown")
-                        except Exception:
-                            pass
-
-                    capabilities = ""
-                    if hasattr(self.renderer_window, "ReportCapabilities"):
-                        try:
-                            capabilities = str(self.renderer_window.ReportCapabilities() or "")
-                        except Exception:
-                            capabilities = ""
-
-                    if capabilities:
-                        for raw_line in capabilities.splitlines():
-                            line = raw_line.strip()
-                            lower = line.lower()
-
-                            if lower.startswith("opengl vendor string:"):
-                                ogl_info["vendor"] = line.split(":", 1)[1].strip() or ogl_info["vendor"]
-                            elif lower.startswith("opengl renderer string:"):
-                                ogl_info["renderer"] = line.split(":", 1)[1].strip() or ogl_info["renderer"]
-                            elif lower.startswith("opengl version string:"):
-                                ogl_info["version"] = line.split(":", 1)[1].strip() or ogl_info["version"]
-                            elif lower.startswith("opengl shading language version string:"):
-                                parsed_glsl = line.split(":", 1)[1].strip()
-                                if parsed_glsl:
-                                    ogl_info["glsl"] = parsed_glsl
-                                    ogl_info["glsl_source"] = "reported"
-                            elif lower.startswith("direct rendering:"):
-                                parsed_direct = line.split(":", 1)[1].strip()
-                                if parsed_direct:
-                                    ogl_info["direct_rendering"] = parsed_direct
-                                    ogl_info["direct_rendering_source"] = "reported"
-                            elif lower.startswith("server glx vendor string:"):
-                                ogl_info["glx_server_vendor"] = line.split(":", 1)[1].strip() or ogl_info["glx_server_vendor"]
-                            elif lower.startswith("client glx vendor string:"):
-                                ogl_info["glx_client_vendor"] = line.split(":", 1)[1].strip() or ogl_info["glx_client_vendor"]
-
-                    if ogl_info["glsl"].lower() == "unknown":
-                        ogl_info["glsl"] = _infer_glsl_from_opengl_version(ogl_info["version"])
-                        if ogl_info["glsl"].lower() == "unknown":
-                            ogl_info["glsl_source"] = "unknown"
-                        else:
-                            ogl_info["glsl_source"] = "inferred"
-
-                    lines = [
-                        "VTK graphics diagnostics:",
-                        f"  - qt_api: {os.getenv('QT_API', 'unknown')}",
-                        f"  - qsg_rhi_backend: {os.getenv('QSG_RHI_BACKEND', 'default')}",
-                        f"  - vtk_version: {vtkVersion().GetVTKVersion()}",
-                        f"  - opengl_vendor: {ogl_info['vendor']}",
-                        f"  - opengl_renderer: {ogl_info['renderer']}",
-                        f"  - opengl_version: {ogl_info['version']}",
-                        f"  - glsl_version: {ogl_info['glsl']}",
-                    ]
-                    if ogl_info["direct_rendering"].lower() != "unknown":
-                        lines.append(f"  - direct_rendering: {ogl_info['direct_rendering']}")
-                    LOG.debug("\n".join(lines))
-
-                    renderer_l = ogl_info["renderer"].lower()
-                    vendor_l = ogl_info["vendor"].lower()
-                    software_tokens = (
-                        "llvmpipe",
-                        "softpipe",
-                        "swrast",
-                        "software rasterizer",
-                        "lavapipe",
-                    )
-                    if any(token in renderer_l or token in vendor_l for token in software_tokens):
-                        LOG.warning(
-                            "VTK appears to be using software rendering (%s / %s). 3D backplot performance may be degraded.",
-                            ogl_info["vendor"],
-                            ogl_info["renderer"],
-                        )
-                except Exception as exc:
-                    LOG.warning("Failed to gather VTK graphics diagnostics: %s", exc)
-
             self.interactor.Start()
 
             # Add the observers to watch for particular events. These invoke Python functions.
@@ -668,6 +579,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.g5xIndexChanged.connect(self.update_g5x_index)
             self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
+
+            motion_line_channel = getattr(self._datasource._status, 'motion_line', None)
+            motion_line_notify = getattr(motion_line_channel, 'notify', None)
+            if callable(motion_line_notify):
+                motion_line_notify(self._on_motion_line_changed)
             
             self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
             self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
@@ -685,13 +601,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             for wcs_index, path_actor in list(self.path_actors.items()):
                 current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
+                r_column = self.offsetTableColumnsIndex.get('R') if self.offsetTableColumnsIndex else None
+                rotation = current_offsets[r_column] if r_column is not None and r_column < len(current_offsets) else 0.0
 
                 actor_transform = vtk.vtkTransform()
                 actor_transform.Translate(*current_offsets[:3])
-                actor_transform.RotateZ(current_offsets[9])
+                actor_transform.RotateZ(rotation)
 
                 path_actor.SetUserTransform(actor_transform)
-                path_actor.SetPosition(*current_offsets[:3])
+                # Keep actor position at origin; WCS offset is already applied by UserTransform.
+                path_actor.SetPosition(0.0, 0.0, 0.0)
 
                 program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
 
@@ -717,10 +636,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
-            try:
-                tool_in_spindle = int(getattr(self._datasource._status.stat, 'tool_in_spindle', 0))
-            except Exception:
-                tool_in_spindle = 0
+            tool_in_spindle = self._tool_in_spindle()
 
             # If no tool is loaded, show cone placeholder and hide tool-bit geometry.
             if tool_in_spindle <= 0:
@@ -733,6 +649,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(self.machine_actor)
             self.renderer.AddActor(self.axes_actor)
             self.renderer.AddActor(self.path_cache_actor)
+
+            self._machine_bounds_base = tuple(self.machine_actor.GetBounds())
+            self._apply_kinematics_overlay_shift()
 
             self.setView(self.default_view)
 
@@ -915,6 +834,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._datasource._status.addLock()
         PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='vtk-load-program-enter', percent=48)
         perf_start = time.perf_counter()
+        self._index_runtime_switchkins_commands(fname)
         pre_backplot_interp_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
         parse_done_elapsed_ms = None
         draw_done_elapsed_ms = None
@@ -961,39 +881,68 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 return
 
             # Keep VTKCanon instance for downstream state consumers and perf accounting.
-            self.canon = VTKCanon(colors=self.path_colors, cpp_mode=True)
+            self.canon = VTKCanon(colors=self.path_colors, cpp_mode=self._use_cpp_backplot)
 
             unitcode = "G%d" % (20 + (self.stat.linear_units == 1))
             initcode = self.ini.find("RS274NGC", "RS274NGC_STARTUP_CODE") or ""
 
-            draw_start = time.perf_counter()
-            cpp_result = build_backplot_from_file(
-                fname,
-                self._datasource,
-                path_colors=self.path_colors,
-                unitcode=unitcode,
-                initcode=initcode,
-                parameter_file=self.parameter_file,
-                temp_parameter_file=self.temp_parameter_file,
-            )
-            if cpp_result is None:
-                raise RuntimeError("C++ backplot builder returned no result in cpp-only mode")
+            if self._use_cpp_backplot:
+                draw_start = time.perf_counter()
+                cpp_result = build_backplot_from_file(
+                    fname,
+                    self._datasource,
+                    path_colors=self.path_colors,
+                    unitcode=unitcode,
+                    initcode=initcode,
+                    parameter_file=self.parameter_file,
+                    temp_parameter_file=self.temp_parameter_file,
+                )
+                if cpp_result is None:
+                    raise RuntimeError("C++ backplot builder returned no result in cpp-only mode")
 
-            parse_ms = float(cpp_result.parse_ms)
+                parse_ms = float(cpp_result.parse_ms)
 
-            self.path_actors = cpp_result.path_actors
-            self.offset_transitions = cpp_result.offset_transitions or list()
-            self.canon.added_segments = int(cpp_result.added_segments)
-            draw_ms = float(cpp_result.draw_ms)
-            if draw_ms <= 0.0:
+                self.path_actors = cpp_result.path_actors
+                self.offset_transitions = cpp_result.offset_transitions or list()
+                self.canon.added_segments = int(cpp_result.added_segments)
+                draw_ms = float(cpp_result.draw_ms)
+                if draw_ms <= 0.0:
+                    draw_ms = (time.perf_counter() - draw_start) * 1000.0
+                draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+                # Parse and draw both complete inside the same native call. We only get one
+                # wall-clock checkpoint on return, so estimate parse completion by subtracting
+                # measured native draw time from the draw completion checkpoint.
+                if draw_done_elapsed_ms is not None:
+                    parse_done_elapsed_ms = max(0.0, float(draw_done_elapsed_ms) - float(draw_ms))
+                cpp_backplot_used = True
+            else:
+                parse_start = time.perf_counter()
+                try:
+                    if os.path.exists(self.parameter_file):
+                        shutil.copy(self.parameter_file, self.temp_parameter_file)
+                    self.canon.parameter_file = self.temp_parameter_file
+                    result, seq = gcode.parse(fname, self.canon, unitcode, initcode)
+                    if result > gcode.MIN_ERROR:
+                        msg = gcode.strerror(result)
+                        LOG.warning("Python backplot parse error in %s line %s: %s", fname, seq - 1, msg)
+                        return
+                finally:
+                    if os.path.isfile(self.temp_parameter_file):
+                        os.unlink(self.temp_parameter_file)
+                    bak_file = self.temp_parameter_file + '.bak'
+                    if os.path.isfile(bak_file):
+                        os.unlink(bak_file)
+
+                parse_ms = (time.perf_counter() - parse_start) * 1000.0
+                parse_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+
+                draw_start = time.perf_counter()
+                self.canon.draw_lines()
                 draw_ms = (time.perf_counter() - draw_start) * 1000.0
-            draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
-            # Parse and draw both complete inside the same native call. We only get one
-            # wall-clock checkpoint on return, so estimate parse completion by subtracting
-            # measured native draw time from the draw completion checkpoint.
-            if draw_done_elapsed_ms is not None:
-                parse_done_elapsed_ms = max(0.0, float(draw_done_elapsed_ms) - float(draw_ms))
-            cpp_backplot_used = True
+                draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+
+                self.path_actors = self.canon.get_path_actors()
+                self.offset_transitions = self.canon.get_offset_transitions() or list()
 
             # Refresh WCS offsets and active index in case they changed since init.
             # This makes sure newly loaded paths honor the current work offset.
@@ -1007,10 +956,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 return
 
             active_offsets = self._safe_get_offsets(self.active_wcs_index, self._datasource.getOffsetColumns())
-            try:
-                offsets_len = len(self.wcs_offsets)
-            except Exception:
-                offsets_len = 'n/a'
+            offsets_len = len(self.wcs_offsets) if hasattr(self.wcs_offsets, '__len__') else 'n/a'
 
             LOG.debug(
                 "VTKBackPlot load_program context: active_wcs=%s offsets_len=%s active_offsets=%s",
@@ -1033,44 +979,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             actor_start = time.perf_counter()
             for wcs_index, actor in self.path_actors.items():
                 current_offsets = self._safe_get_offsets(wcs_index, offset_columns)
-                # rotation = self._datasource.getRotationOfActiveWcs()
-
-                x_column = offset_columns.get('X')
-                y_column = offset_columns.get('Y')
-                z_column = offset_columns.get('Z')
-                r_column = offset_columns.get('R')
-
-                if x_column is not None:
-                    x = current_offsets[x_column]
-                else:
-                    x = 0.0
-
-                if y_column is not None:
-                    y = current_offsets[y_column]
-                else:
-                    y = 0.0
-
-                if z_column is not None:
-                    z = current_offsets[z_column]
-                else:
-                    z = 0.0
-
-                if r_column is not None:
-                    rotation = current_offsets[r_column]
-                else:
-                    rotation = 0.0
+                x, y, z, rotation = self._resolve_wcs_components(
+                    wcs_index,
+                    current_offsets,
+                    offset_columns,
+                )
 
                 if 0 <= wcs_index < len(self.rotation_xy_table):
                     self.rotation_xy_table[wcs_index] = rotation
 
-                actor_transform = vtk.vtkTransform()
-                axes_transform = vtk.vtkTransform()
+                actor_transform = self._compose_wcs_transform(x, y, z, rotation)
+                axes_transform = self._compose_wcs_transform(x, y, z, rotation)
 
-                actor_transform.Translate(x, y, z)
-                actor_transform.RotateZ(rotation)
-
-                axes_transform.Translate(x, y, z)
-                axes_transform.RotateZ(rotation)
+                if wcs_index == self.active_wcs_index:
+                    self._active_path_transform = actor_transform
 
                 # Scale up the axes for the active WCS to provide visual feedback
                 if wcs_index == self.active_wcs_index:
@@ -1123,8 +1045,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_done_elapsed_ms=actor_done_elapsed_ms,
                 backplot_done_elapsed_ms=backplot_done_elapsed_ms,
             )
-        except Exception:
-            LOG.exception("VTKBackPlot load_program failed")
         finally:
             if self.program_view_when_loading_program:
                 self.setViewProgram(self.program_view_when_loading_program_view)
@@ -1132,8 +1052,759 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             QTimer.singleShot(300, self._datasource._status.removeLock)
 
     def motion_type(self, value):
+        self.current_motion_type = value
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
+
+    def _on_motion_line_changed(self, _line):
+        self._log_runtime_switchkins_command_hit(
+            self._current_switchkins_type(),
+            motion_line_value=_line,
+        )
+
+    def _should_plot_breadcrumb_for_motion(self):
+        mt = self.current_motion_type
+        if mt is None:
+            status_obj = getattr(self._datasource, '_status', None)
+            stat_obj = getattr(status_obj, 'stat', None)
+            mt = getattr(stat_obj, 'motion_type', None)
+
+        if mt == linuxcnc.MOTION_TYPE_TOOLCHANGE:
+            return False
+
+        # Arm breadcrumbs on the first non-toolchange motion.
+        # Initial phantom-line prevention is handled by first-point seeding.
+        if not self._breadcrumbs_armed:
+            self._breadcrumbs_armed = True
+
+        return True
+
+    @staticmethod
+    def _coerce_int(value, default=None):
+        if isinstance(value, bool):
+            return int(value)
+        if isinstance(value, int):
+            return value
+        if isinstance(value, float):
+            return int(value) if value.is_integer() else default
+
+        text = str(value or '').strip()
+        if not text:
+            return default
+        signless = text[1:] if text[0] in ('+', '-') else text
+        if signless.isdigit():
+            return int(text)
+        return default
+
+    @staticmethod
+    def _coerce_float(value, default=None):
+        if isinstance(value, bool):
+            return float(int(value))
+        if isinstance(value, (int, float)):
+            return float(value)
+
+        text = str(value or '').strip()
+        if not text:
+            return default
+
+        float_pattern = r'^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$'
+        if re.fullmatch(float_pattern, text):
+            return float(text)
+        return default
+
+    @staticmethod
+    def _point3_or_none(value):
+        if not isinstance(value, (list, tuple)) or len(value) < 3:
+            return None
+        x = VTKBackPlot._coerce_float(value[0], None)
+        y = VTKBackPlot._coerce_float(value[1], None)
+        z = VTKBackPlot._coerce_float(value[2], None)
+        if x is None or y is None or z is None:
+            return None
+        return (x, y, z)
+
+    def _tool_in_spindle(self):
+        status_obj = getattr(self._datasource, '_status', None)
+        stat_obj = getattr(status_obj, 'stat', None)
+        raw = getattr(stat_obj, 'tool_in_spindle', 0)
+        return self._coerce_int(raw, 0)
+
+    @staticmethod
+    def _strip_gcode_comments(line):
+        if not line:
+            return ""
+
+        # Remove semicolon comments and parenthesized comments for simple
+        # runtime M-code line tagging.
+        text = line.split(';', 1)[0]
+        return re.sub(r'\([^\)]*\)', ' ', text)
+
+    def _index_runtime_switchkins_commands(self, fname):
+        self._runtime_switchkins_cmd_lines = {}
+        self._runtime_switchkins_logged_lines.clear()
+
+        if not fname or not os.path.isfile(fname):
+            return
+
+        command_lines = {}
+        try:
+            with open(fname, 'r', encoding='utf-8', errors='ignore') as handle:
+                for line_number, raw_line in enumerate(handle, start=1):
+                    stripped = self._strip_gcode_comments(raw_line)
+                    codes = re.findall(r'(?<!\d)M\s*(428|429|430)(?!\d)', stripped, flags=re.IGNORECASE)
+                    if codes:
+                        command_lines[line_number] = tuple(f"M{code}" for code in codes)
+        except Exception as exc:
+            LOG.warning("VTK runtime switchkins index failed for %s: %s", fname, exc)
+            return
+
+        self._runtime_switchkins_cmd_lines = command_lines
+        if command_lines:
+            details = ', '.join(
+                f"L{line}={'/'.join(codes)}" for line, codes in sorted(command_lines.items())
+            )
+            LOG.warning("VTK runtime switchkins commands indexed: %s", details)
+
+    def _log_runtime_switchkins_command_hit(self, current_switchkins_type, motion_line_value=None):
+        if not self._runtime_switchkins_cmd_lines:
+            return
+
+        status_obj = getattr(self._datasource, '_status', None)
+        stat_obj = getattr(status_obj, 'stat', None)
+        if stat_obj is None:
+            return
+
+        motion_line = self._coerce_int(motion_line_value, None)
+        if motion_line is None:
+            motion_line = self._coerce_int(getattr(stat_obj, 'motion_line', None), None)
+        if motion_line is None:
+            return
+
+        codes = self._runtime_switchkins_cmd_lines.get(motion_line)
+        if not codes:
+            return
+        if motion_line in self._runtime_switchkins_logged_lines:
+            return
+
+        LOG.warning(
+            "VTK runtime switchkins command reached: line=%s codes=%s switchkins_type=%s interp_state=%s",
+            motion_line,
+            '/'.join(codes),
+            int(current_switchkins_type),
+            getattr(stat_obj, 'interp_state', None),
+        )
+        self._runtime_switchkins_logged_lines.add(motion_line)
+
+    def _graphics_diagnostics_enabled(self):
+        inifile = getattr(self._datasource, '_inifile', None)
+        inifile_find = getattr(inifile, 'find', None)
+        if not callable(inifile_find):
+            return False
+
+        # Keep expensive graphics diagnostics strictly opt-in.
+        advanced_logging = str(inifile_find("DISPLAY", "ADVANCED_LOGGING") or "").strip().lower()
+        return advanced_logging in ("1", "true", "yes", "on")
+
+    @staticmethod
+    def _extract_gl_version_pair(version_text):
+        if not version_text:
+            return None
+        text = str(version_text)
+        match = re.search(r"(\d+)\.(\d+)", text)
+        if match is None:
+            return None
+        return int(match.group(1)), int(match.group(2))
+
+    @staticmethod
+    def _infer_glsl_from_opengl_version(version_text):
+        version_pair = VTKBackPlot._extract_gl_version_pair(version_text)
+        if version_pair is None:
+            return "unknown"
+
+        gl_to_glsl = {
+            (2, 0): "1.10",
+            (2, 1): "1.20",
+            (3, 0): "1.30",
+            (3, 1): "1.40",
+            (3, 2): "1.50",
+            (3, 3): "3.30",
+            (4, 0): "4.00",
+            (4, 1): "4.10",
+            (4, 2): "4.20",
+            (4, 3): "4.30",
+            (4, 4): "4.40",
+            (4, 5): "4.50",
+            (4, 6): "4.60",
+        }
+        inferred = gl_to_glsl.get(version_pair)
+        if inferred is None:
+            return "unknown"
+        return f"{inferred} (inferred from OpenGL {version_pair[0]}.{version_pair[1]})"
+
+    def _log_graphics_diagnostics(self):
+        ogl_info = {
+            "vendor": "unknown",
+            "renderer": "unknown",
+            "version": "unknown",
+            "glsl": "unknown",
+        }
+
+        ogl_window = vtk.vtkOpenGLRenderWindow.SafeDownCast(self.renderer_window)
+        if ogl_window is not None:
+            get_vendor = getattr(ogl_window, 'GetOpenGLVendor', None)
+            get_renderer = getattr(ogl_window, 'GetOpenGLRenderer', None)
+            get_major = getattr(ogl_window, 'GetOpenGLMajorVersion', None)
+            get_minor = getattr(ogl_window, 'GetOpenGLMinorVersion', None)
+            if callable(get_vendor):
+                ogl_info["vendor"] = str(get_vendor() or "unknown")
+            if callable(get_renderer):
+                ogl_info["renderer"] = str(get_renderer() or "unknown")
+            if callable(get_major) and callable(get_minor):
+                major = self._coerce_int(get_major(), None)
+                minor = self._coerce_int(get_minor(), None)
+                if major is not None and minor is not None:
+                    ogl_info["version"] = f"{major}.{minor}"
+
+        if ogl_info["glsl"].lower() == "unknown":
+            ogl_info["glsl"] = self._infer_glsl_from_opengl_version(ogl_info["version"])
+
+        lines = [
+            "VTK graphics diagnostics:",
+            f"  - qt_api: {os.getenv('QT_API', 'unknown')}",
+            f"  - qsg_rhi_backend: {os.getenv('QSG_RHI_BACKEND', 'default')}",
+            f"  - vtk_version: {vtkVersion().GetVTKVersion()}",
+            f"  - opengl_vendor: {ogl_info['vendor']}",
+            f"  - opengl_renderer: {ogl_info['renderer']}",
+            f"  - opengl_version: {ogl_info['version']}",
+            f"  - glsl_version: {ogl_info['glsl']}",
+        ]
+        LOG.debug("\n".join(lines))
+
+        renderer_l = ogl_info["renderer"].lower()
+        vendor_l = ogl_info["vendor"].lower()
+        software_tokens = (
+            "llvmpipe",
+            "softpipe",
+            "swrast",
+            "software rasterizer",
+            "lavapipe",
+        )
+        if any(token in renderer_l or token in vendor_l for token in software_tokens):
+            LOG.warning(
+                "VTK appears to be using software rendering (%s / %s). 3D backplot performance may be degraded.",
+                ogl_info["vendor"],
+                ogl_info["renderer"],
+            )
+
+    def _log_overlay_rotation_sources(self):
+        axis_specs = [('A', 0), ('B', 1), ('C', 2)]
+        active = []
+        missing = []
+
+        for axis_name, idx in axis_specs:
+            if self.axis_motion_owner.get(axis_name, 'head') != 'table':
+                continue
+
+            angle = float(self.kinematics_overlay_rotation[idx])
+            if abs(angle) <= 1e-12:
+                continue
+
+            origin = self.rotary_axis_origin.get(axis_name)
+            if origin is None:
+                missing.append(axis_name)
+            else:
+                active.append((axis_name, tuple(origin), angle))
+
+        if active:
+            log_key = ('active', tuple(active), tuple(missing))
+            if self._overlay_pivot_log_cache != log_key:
+                LOG.debug(
+                    "VTK overlay pivots active: %s missing=%s overlay_rotation=%s",
+                    active,
+                    missing,
+                    self.kinematics_overlay_rotation,
+                )
+                self._overlay_pivot_log_cache = log_key
+            return
+
+        table_axes = [axis for axis, _ in axis_specs if self.axis_motion_owner.get(axis, 'head') == 'table']
+        fallback = []
+        for axis_name in table_axes:
+            origin = self.rotary_axis_origin.get(axis_name)
+            if origin is not None:
+                fallback.append((axis_name, tuple(origin)))
+
+        if fallback:
+            log_key = ('fallback', tuple(fallback))
+            if self._overlay_pivot_log_cache != log_key:
+                LOG.debug(
+                    "VTK overlay pivots fallback: %s overlay_rotation=%s",
+                    fallback,
+                    self.kinematics_overlay_rotation,
+                )
+                self._overlay_pivot_log_cache = log_key
+            return
+
+        log_key = ('none', tuple(table_axes))
+        if self._overlay_pivot_log_cache != log_key:
+            LOG.debug(
+                "VTK overlay pivots missing: table_axes=%s owners=%s origins=%s overlay_rotation=%s",
+                table_axes,
+                self.axis_motion_owner,
+                self.rotary_axis_origin,
+                self.kinematics_overlay_rotation,
+            )
+            self._overlay_pivot_log_cache = log_key
+
+    @staticmethod
+    def _apply_axis_rotation_about_pivot(transform, axis_name, angle_deg, pivot_local):
+        transform.Translate(pivot_local[0], pivot_local[1], pivot_local[2])
+        if axis_name == 'A':
+            transform.RotateX(angle_deg)
+        elif axis_name == 'B':
+            transform.RotateY(angle_deg)
+        elif axis_name == 'C':
+            transform.RotateZ(angle_deg)
+        transform.Translate(-pivot_local[0], -pivot_local[1], -pivot_local[2])
+
+    def _overlay_rotary_pivot_absolute(self, axis_name):
+        origin = self.rotary_axis_origin.get(axis_name)
+        if origin is None:
+            return None
+
+        shift_x = self.kinematics_overlay_shift[0] if self.axis_motion_owner.get('X', 'head') == 'table' else 0.0
+        shift_y = self.kinematics_overlay_shift[1] if self.axis_motion_owner.get('Y', 'head') == 'table' else 0.0
+        shift_z = self.kinematics_overlay_shift[2] if self.axis_motion_owner.get('Z', 'head') == 'table' else 0.0
+
+        return (
+            float(origin[0] + shift_x),
+            float(origin[1] + shift_y),
+            float(origin[2] + shift_z),
+        )
+
+    def _overlay_rotary_axis_order(self):
+        # Apply rotary transforms parent-to-child so downstream axes inherit
+        # upstream tilt (e.g. C riding on A in xyzac machine assemblies).
+        table_a = self.axis_motion_owner.get('A', 'head') == 'table'
+        table_c = self.axis_motion_owner.get('C', 'head') == 'table'
+        if table_a and table_c:
+            return ('A', 'B', 'C')
+        return ('A', 'B', 'C')
+
+    def _transform_debug_enabled(self):
+        return self._transform_debug and LOG.isEnabledFor(logging.DEBUG)
+
+    def _compose_wcs_transform(self, x, y, z, rotation=0.0):
+        # LinuxCNC-style chain for table machines:
+        # 1) place WCS, 2) apply table linear shift, 3) apply table rotary axes
+        # about configured pivots.
+        wcs_x = float(x)
+        wcs_y = float(y)
+        wcs_z = float(z)
+
+        base_x = wcs_x + self.kinematics_overlay_shift[0]
+        base_y = wcs_y + self.kinematics_overlay_shift[1]
+        base_z = wcs_z + self.kinematics_overlay_shift[2]
+
+        if self._transform_debug_enabled():
+            LOG.debug(
+                "VTK compose_wcs start: wcs=(%.6f, %.6f, %.6f) base=(%.6f, %.6f, %.6f) "
+                "overlay_shift=%s overlay_rotation=%s r_xy=%.6f",
+                wcs_x,
+                wcs_y,
+                wcs_z,
+                base_x,
+                base_y,
+                base_z,
+                self.kinematics_overlay_shift,
+                self.kinematics_overlay_rotation,
+                float(rotation),
+            )
+
+        rx = float(self.kinematics_overlay_rotation[0])
+        ry = float(self.kinematics_overlay_rotation[1])
+        rz = float(self.kinematics_overlay_rotation[2])
+        angles_by_axis = {
+            'A': rx,
+            'B': ry,
+            'C': rz,
+        }
+
+        transform = vtk.vtkTransform()
+
+        # Match machine-part transform style: place base first, then rotate
+        # about local pivots relative to that base placement.
+        transform.Translate(base_x, base_y, base_z)
+
+        self._log_overlay_rotation_sources()
+        for axis_name in self._overlay_rotary_axis_order():
+            angle = float(angles_by_axis.get(axis_name, 0.0))
+            if abs(angle) <= 1e-12:
+                continue
+
+            origin = self._overlay_rotary_pivot_absolute(axis_name)
+            if origin is None:
+                # Missing pivot: rotate around local origin as a safe fallback.
+                self._apply_axis_rotation_about_pivot(transform, axis_name, angle, (0.0, 0.0, 0.0))
+                continue
+
+            pivot_local = (
+                float(origin[0] - base_x),
+                float(origin[1] - base_y),
+                float(origin[2] - base_z),
+            )
+            if self._transform_debug_enabled():
+                pivot_world_before = transform.TransformPoint(
+                    float(pivot_local[0]),
+                    float(pivot_local[1]),
+                    float(pivot_local[2]),
+                )
+                LOG.debug(
+                    "VTK compose_wcs rotate: axis=%s angle=%.6f pivot_abs=%s pivot_local=%s pivot_world_before=(%.6f, %.6f, %.6f)",
+                    axis_name,
+                    angle,
+                    origin,
+                    pivot_local,
+                    float(pivot_world_before[0]),
+                    float(pivot_world_before[1]),
+                    float(pivot_world_before[2]),
+                )
+            self._apply_axis_rotation_about_pivot(transform, axis_name, angle, pivot_local)
+            if self._transform_debug_enabled():
+                pivot_world_after = transform.TransformPoint(
+                    float(pivot_local[0]),
+                    float(pivot_local[1]),
+                    float(pivot_local[2]),
+                )
+                LOG.debug(
+                    "VTK compose_wcs rotate result: axis=%s pivot_world_after=(%.6f, %.6f, %.6f)",
+                    axis_name,
+                    float(pivot_world_after[0]),
+                    float(pivot_world_after[1]),
+                    float(pivot_world_after[2]),
+                )
+
+        transform.RotateZ(rotation)
+        if self._transform_debug_enabled():
+            world_origin = transform.TransformPoint(0.0, 0.0, 0.0)
+            LOG.debug(
+                "VTK compose_wcs done: world_origin=(%.6f, %.6f, %.6f)",
+                float(world_origin[0]),
+                float(world_origin[1]),
+                float(world_origin[2]),
+            )
+        return transform
+
+    def _visual_spindle_position(self, machine_position, active_wcs_offset):
+        x = machine_position[0]
+        y = machine_position[1]
+        z = machine_position[2]
+
+        if self.axis_motion_owner.get('X', 'head') == 'table':
+            x = 0.0
+
+        if self.axis_motion_owner.get('Y', 'head') == 'table':
+            y = 0.0
+
+        if self.axis_motion_owner.get('Z', 'head') == 'table':
+            z = 0.0
+
+        return (x, y, z)
+
+    def _current_switchkins_type(self):
+        value = self._datasource.getSwitchkinsType()
+        if value is None:
+            return self._coerce_int(self._runtime_switchkins_type, 0)
+        parsed = self._coerce_int(value, None)
+        if parsed is None:
+            return self._coerce_int(self._runtime_switchkins_type, 0)
+        return parsed
+
+    def _is_tcp_switchkins_active(self, switchkins_type=None):
+        if switchkins_type is None:
+            switchkins_type = self._current_switchkins_type()
+        return int(switchkins_type) == 1
+
+    def _has_table_owned_axes(self):
+        for axis in ['X', 'Y', 'Z', 'A', 'B', 'C']:
+            if self.axis_motion_owner.get(axis, 'head') == 'table':
+                return True
+        return False
+
+    def _compute_kinematics_overlay_shift(self, machine_position, switchkins_type=None):
+        # In TCP switchkins mode, status position is already in the controlled
+        # tool-point/world frame, so applying table overlay shift again causes
+        # backplot/cache actor drift.
+        if self._is_tcp_switchkins_active(switchkins_type) and (not self._has_table_owned_axes()):
+            return (0.0, 0.0, 0.0)
+
+        if all(self.axis_motion_owner.get(axis, 'head') == 'head' for axis in ['X', 'Y', 'Z']):
+            return (0.0, 0.0, 0.0)
+
+        sx = float(self.spindle_position[0] - machine_position[0])
+        sy = float(self.spindle_position[1] - machine_position[1])
+        sz = float(self.spindle_position[2] - machine_position[2])
+
+        # Table-owned axes should not drift when only WCS origin changes.
+        if self.axis_motion_owner.get('X', 'head') == 'table':
+            sx = float(-machine_position[0])
+        if self.axis_motion_owner.get('Y', 'head') == 'table':
+            sy = float(-machine_position[1])
+        if self.axis_motion_owner.get('Z', 'head') == 'table':
+            sz = float(-machine_position[2])
+
+        return (
+            sx,
+            sy,
+            sz,
+        )
+
+    def _compute_kinematics_overlay_rotation(self, machine_rotation, switchkins_type=None):
+        # In TCP switchkins mode, tool-point coordinates are already solved in
+        # world space, so applying table overlay rotation here doubles rotary
+        # motion in loaded/active path transforms.
+        if self._is_tcp_switchkins_active(switchkins_type) and (not self._has_table_owned_axes()):
+            return (0.0, 0.0, 0.0)
+
+        if all(self.axis_motion_owner.get(axis, 'head') == 'head' for axis in ['A', 'B', 'C']):
+            return (0.0, 0.0, 0.0)
+
+        rx = 0.0
+        ry = 0.0
+        rz = 0.0
+
+        if self.axis_motion_owner.get('A', 'head') == 'table':
+            rx = -float(machine_rotation[0])
+        if self.axis_motion_owner.get('B', 'head') == 'table':
+            ry = -float(machine_rotation[1])
+        if self.axis_motion_owner.get('C', 'head') == 'table':
+            rz = -float(machine_rotation[2])
+
+        return (rx, ry, rz)
+
+    def _apply_machine_bounds_shift(self):
+        if self._machine_bounds_base is None:
+            return
+
+        sx, sy, sz = self.kinematics_overlay_shift
+        base = self._machine_bounds_base
+
+        self.machine_actor.SetBounds(
+            base[0] + sx,
+            base[1] + sx,
+            base[2] + sy,
+            base[3] + sy,
+            base[4] + sz,
+            base[5] + sz,
+        )
+
+    def _apply_kinematics_overlay_shift(self):
+        shift_transform = vtk.vtkTransform()
+        sx, sy, sz = self.kinematics_overlay_shift
+        shift_transform.Translate(sx, sy, sz)
+
+        rx = float(self.kinematics_overlay_rotation[0])
+        ry = float(self.kinematics_overlay_rotation[1])
+        rz = float(self.kinematics_overlay_rotation[2])
+        angles_by_axis = {
+            'A': rx,
+            'B': ry,
+            'C': rz,
+        }
+
+        for axis_name in self._overlay_rotary_axis_order():
+            angle = float(angles_by_axis.get(axis_name, 0.0))
+            if abs(angle) <= 1e-12:
+                continue
+
+            origin = self._overlay_rotary_pivot_absolute(axis_name)
+            if origin is None:
+                self._apply_axis_rotation_about_pivot(shift_transform, axis_name, angle, (0.0, 0.0, 0.0))
+                continue
+
+            pivot_local = (
+                float(origin[0] - sx),
+                float(origin[1] - sy),
+                float(origin[2] - sz),
+            )
+            self._apply_axis_rotation_about_pivot(shift_transform, axis_name, angle, pivot_local)
+            if self._transform_debug_enabled():
+                cache_pivot_after = shift_transform.TransformPoint(
+                    float(pivot_local[0]),
+                    float(pivot_local[1]),
+                    float(pivot_local[2]),
+                )
+                LOG.debug(
+                    "VTK cache overlay rotate: axis=%s angle=%.6f pivot_abs=%s pivot_local=%s pivot_world_after=(%.6f, %.6f, %.6f)",
+                    axis_name,
+                    angle,
+                    origin,
+                    pivot_local,
+                    float(cache_pivot_after[0]),
+                    float(cache_pivot_after[1]),
+                    float(cache_pivot_after[2]),
+                )
+
+        if self._transform_debug_enabled():
+            cache_origin = shift_transform.TransformPoint(0.0, 0.0, 0.0)
+            LOG.debug(
+                "VTK cache overlay transform: shift=%s rot=%s cache_origin=(%.6f, %.6f, %.6f)",
+                self.kinematics_overlay_shift,
+                self.kinematics_overlay_rotation,
+                float(cache_origin[0]),
+                float(cache_origin[1]),
+                float(cache_origin[2]),
+            )
+
+        self._cache_overlay_transform = shift_transform
+
+        self._apply_machine_bounds_shift()
+        # Keep breadcrumbs aligned to active path transform when running in
+        # tool-relative mode. In world mode, they remain fixed in machine frame.
+        if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
+            self.path_cache_actor.SetUserTransform(self._active_path_transform)
+
+    def _world_tooltip_point(self, tooltip_local):
+        point = self._point3_or_none(tooltip_local)
+        if point is None:
+            return (0.0, 0.0, 0.0)
+        if self._active_path_transform is None:
+            return point
+        return self._active_path_transform.TransformPoint(point[0], point[1], point[2])
+
+    def _active_path_local_point(self, world_point):
+        point = self._point3_or_none(world_point)
+        if point is None:
+            return (0.0, 0.0, 0.0)
+        if self._active_path_transform is None:
+            return point
+
+        inverse = vtk.vtkTransform()
+        inverse.DeepCopy(self._active_path_transform)
+        inverse.Inverse()
+        return inverse.TransformPoint(point[0], point[1], point[2])
+
+    def _current_tool_tip_world(self, tlo, machine_position, switchkins_type=None):
+        if self._is_machine_jet:
+            return (
+                float(machine_position[0]),
+                float(machine_position[1]),
+                float(machine_position[2]),
+            )
+        return (
+            float(self.spindle_position[0] + tlo[0]),
+            float(self.spindle_position[1] + tlo[1]),
+            float(self.spindle_position[2] - tlo[2]),
+        )
+
+    def _tooltip_point_in_path_frame(self, active_wcs_offset, tlo, machine_position):
+        # Build tooltip sample in the same local frame as path actor points.
+        # For table-owned linear axes, spindle_position is intentionally pinned,
+        # so use machine_position to preserve XY breadcrumb motion.
+        src_x = float(machine_position[0]) if self.axis_motion_owner.get('X', 'head') == 'table' else float(self.spindle_position[0])
+        src_y = float(machine_position[1]) if self.axis_motion_owner.get('Y', 'head') == 'table' else float(self.spindle_position[1])
+        src_z = float(machine_position[2]) if self.axis_motion_owner.get('Z', 'head') == 'table' else float(self.spindle_position[2])
+
+        tx = float(src_x + tlo[0])
+        ty = float(src_y + tlo[1])
+        tz = float(src_z - tlo[2])
+
+        x_col = self.offsetTableColumnsIndex.get('X') if self.offsetTableColumnsIndex else None
+        y_col = self.offsetTableColumnsIndex.get('Y') if self.offsetTableColumnsIndex else None
+        z_col = self.offsetTableColumnsIndex.get('Z') if self.offsetTableColumnsIndex else None
+
+        if isinstance(active_wcs_offset, (list, tuple)):
+            if x_col is not None and x_col < len(active_wcs_offset):
+                tx -= float(active_wcs_offset[x_col])
+            if y_col is not None and y_col < len(active_wcs_offset):
+                ty -= float(active_wcs_offset[y_col])
+            if z_col is not None and z_col < len(active_wcs_offset):
+                tz -= float(active_wcs_offset[z_col])
+
+        return [tx, ty, tz]
+
+    def _machine_linear_axis_value(self, axis_name, axis_value):
+        owner = self.axis_motion_owner.get(axis_name.upper(), 'head')
+        if owner == 'table':
+            return -float(axis_value)
+        return float(axis_value)
+
+    def _axis_joint_feedback(self, axis_name):
+        # Fallback mapping for common XYZABC<->joint index layouts.
+        # When table-owned linear axes are present, joint feedback reflects
+        # real table motion more reliably than Cartesian status.position.
+        axis_order = "XYZABCUVW"
+        idx = axis_order.find(str(axis_name or '').upper())
+        if idx < 0:
+            return None
+
+        if not isinstance(self.joints, (list, tuple)):
+            return None
+        if idx >= len(self.joints):
+            return None
+
+        joint_channel = self.joints[idx]
+        if not hasattr(joint_channel, 'input'):
+            return None
+
+        input_channel = joint_channel.input
+        if not hasattr(input_channel, 'value'):
+            return None
+
+        return self._coerce_float(input_channel.value, None)
+
+    def _table_aware_linear_position(self, position):
+        x = float(position[0])
+        y = float(position[1])
+        z = float(position[2])
+
+        # In TCP switchkins mode, status position is already in the controlled
+        # world/tool-point frame. Rebuilding XYZ from raw joints introduces a
+        # small but visible offset against the loaded path.
+        if self._is_tcp_switchkins_active():
+            return (x, y, z)
+
+        table_linear_active = any(
+            self.axis_motion_owner.get(axis, 'head') == 'table'
+            for axis in ['X', 'Y', 'Z']
+        )
+
+        # Keep XYZ from one timing domain when table kinematics is active.
+        # Mixing joint-backed X/Y with status-backed Z can introduce slight
+        # breadcrumb offsets on vertical-plane arcs (G18/G19).
+        if table_linear_active:
+            xj = self._axis_joint_feedback('X')
+            yj = self._axis_joint_feedback('Y')
+            zj = self._axis_joint_feedback('Z')
+            if xj is not None and yj is not None and zj is not None:
+                return (xj, yj, zj)
+
+        if self.axis_motion_owner.get('X', 'head') == 'table':
+            xj = self._axis_joint_feedback('X')
+            if xj is not None:
+                x = xj
+        if self.axis_motion_owner.get('Y', 'head') == 'table':
+            yj = self._axis_joint_feedback('Y')
+            if yj is not None:
+                y = yj
+        if self.axis_motion_owner.get('Z', 'head') == 'table':
+            zj = self._axis_joint_feedback('Z')
+            if zj is not None:
+                z = zj
+
+        return (x, y, z)
+
+    def _machine_angular_axis_value(self, axis_name, axis_value):
+        owner = self.axis_motion_owner.get(axis_name.upper(), 'head')
+        if owner == 'table':
+            return -float(axis_value)
+        return float(axis_value)
+
+    def _visual_tool_rotation(self, machine_rotation):
+        rx = 0.0 if self.axis_motion_owner.get('A', 'head') == 'table' else float(machine_rotation[0])
+        ry = 0.0 if self.axis_motion_owner.get('B', 'head') == 'table' else float(machine_rotation[1])
+        rz = 0.0 if self.axis_motion_owner.get('C', 'head') == 'table' else float(machine_rotation[2])
+        return (rx, ry, rz)
 
 
     def get_asm_parts(self, parts):
@@ -1170,8 +1841,29 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             list_pos[2] = active_wcs_offset[2]
             position = tuple(list_pos)
             
-        self.spindle_position = position[:3]
+        machine_position = self._table_aware_linear_position(position)
+        self.machine_motion_position = machine_position
+        self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
         self.spindle_rotation = position[3:6]
+        prev_switchkins_type = int(self._runtime_switchkins_type)
+        current_switchkins_type = self._current_switchkins_type()
+        if int(current_switchkins_type) != prev_switchkins_type:
+            LOG.info(
+                "VTK runtime switchkins-type changed: %s -> %s",
+                prev_switchkins_type,
+                int(current_switchkins_type),
+            )
+        self._runtime_switchkins_type = int(current_switchkins_type)
+        self._log_runtime_switchkins_command_hit(current_switchkins_type)
+
+        new_overlay_shift = self._compute_kinematics_overlay_shift(machine_position, current_switchkins_type)
+        new_overlay_rotation = self._compute_kinematics_overlay_rotation(self.spindle_rotation, current_switchkins_type)
+        if tuple(new_overlay_shift) != tuple(self.kinematics_overlay_shift) or tuple(new_overlay_rotation) != tuple(self.kinematics_overlay_rotation):
+            self.kinematics_overlay_shift = tuple(new_overlay_shift)
+            self.kinematics_overlay_rotation = tuple(new_overlay_rotation)
+            self._apply_kinematics_overlay_shift()
+            if len(self.path_actors) > 0:
+                self.rotate_and_translate()
         
 
         tool_transform = vtk.vtkTransform()
@@ -1211,27 +1903,52 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._is_machine_foam:
             self.tool_bit_actor.set_position(position)
         else:
-            self.tool_bit_actor.set_position_cnc(position)
+            visual_position = list(position)
+            visual_position[0] = self.spindle_position[0]
+            visual_position[1] = self.spindle_position[1]
+            visual_position[2] = self.spindle_position[2]
+
+            # Keep tool orientation aligned to spindle axes; table-owned rotary
+            # axes (e.g. A/C on trunnion/table machines) should not tilt tool.
+            tool_rotation = self._visual_tool_rotation(self.spindle_rotation)
+            if len(visual_position) > 3:
+                visual_position[3] = tool_rotation[0]
+            if len(visual_position) > 4:
+                visual_position[4] = tool_rotation[1]
+            if len(visual_position) > 5:
+                visual_position[5] = tool_rotation[2]
+
+            self.tool_bit_actor.set_position_cnc(tuple(visual_position))
 
         tlo = self._datasource.getToolOffset()
-        self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
-
-        if self._is_machine_jet:
-            # if a jet based machine (plasma, water jet, laser) suppress
-            # plotting the Z movements
-            self.tooltip_position = self.spindle_position
-            
+        tool_tip_world = self._current_tool_tip_world(
+            tlo[:3],
+            machine_position,
+            switchkins_type=current_switchkins_type,
+        )
+        if self._breadcrumb_world_frame:
+            self.tooltip_position = tool_tip_world
+        else:
+            self.tooltip_position = self._active_path_local_point(tool_tip_world)
 
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
 
-        if self.breadcrumbs_plotted:
-            self.path_cache_actor.add_line_point(self.tooltip_position)
+        if self.breadcrumbs_plotted and self._should_plot_breadcrumb_for_motion():
+            current_tip = tuple(self.tooltip_position[:3])
+            self.path_cache_actor.add_line_point(current_tip)
+            self._path_cache_seeded = True
+
+            self._last_breadcrumb_world = current_tip
         self._request_render()
         
     def move_part(self, part):
                 
         position = part.GetPartPosition()
+        pivot = part.GetPartOrigin() if hasattr(part, 'GetPartOrigin') else None
+        if pivot is None:
+            pivot = position
+        machine_position = self.machine_motion_position
         
         part_axis = part.GetPartAxis()
         part_type = part.GetPartType()
@@ -1256,18 +1973,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # elif part_axis == "-z":
             #     part.SetPosition(0, 0, -self.spindle_position[2])
                 
+            x_delta = self._machine_linear_axis_value('X', machine_position[0])
+            y_delta = self._machine_linear_axis_value('Y', machine_position[1])
+            z_delta = self._machine_linear_axis_value('Z', machine_position[2])
+
             if part_axis == "x":
-                part_transform.Translate(self.spindle_position[0], 0, 0)
+                part_transform.Translate(x_delta, 0, 0)
             elif part_axis == "y":
-                part_transform.Translate(0, self.spindle_position[1], 0)
+                part_transform.Translate(0, y_delta, 0)
             elif part_axis == "z":
-                part_transform.Translate(0, 0, self.spindle_position[2])
+                part_transform.Translate(0, 0, z_delta)
             elif part_axis == "-x":
-                part_transform.Translate(-self.spindle_position[0], 0, 0)
+                part_transform.Translate(-x_delta, 0, 0)
             elif part_axis == "-y":
-                part_transform.Translate(0, -self.spindle_position[1], 0)
+                part_transform.Translate(0, -y_delta, 0)
             elif part_axis == "-z":
-                part_transform.Translate(0, 0, -self.spindle_position[2])
+                part_transform.Translate(0, 0, -z_delta)
             
 
         elif part_type == "angular":
@@ -1287,22 +2008,43 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # elif part_axis == "-c":
             #     part.SetOrientation(0, 0, -self.spindle_rotation[2])
  
-            part_transform.Translate(position[0], position[1], position[2])
+            part_transform.Translate(pivot[0], pivot[1], pivot[2])
+
+            a_delta = self._machine_angular_axis_value('A', self.spindle_rotation[0])
+            b_delta = self._machine_angular_axis_value('B', self.spindle_rotation[1])
+            c_delta = self._machine_angular_axis_value('C', self.spindle_rotation[2])
             
             if part_axis == "a":
-                part_transform.RotateX(self.spindle_rotation[0])
+                part_transform.RotateX(a_delta)
             elif part_axis== "b":
-                part_transform.RotateY(self.spindle_rotation[1])
+                part_transform.RotateY(b_delta)
             elif part_axis == "c":
-                part_transform.RotateZ(self.spindle_rotation[2])
+                part_transform.RotateZ(c_delta)
             elif part_axis == "-a":
-                part_transform.RotateX(-self.spindle_rotation[0])
+                part_transform.RotateX(-a_delta)
             elif part_axis == "-b":
-                part_transform.RotateY(-self.spindle_rotation[1])
+                part_transform.RotateY(-b_delta)
             elif part_axis == "-c":
-                part_transform.RotateZ(-self.spindle_rotation[2])  
+                part_transform.RotateZ(-c_delta)
             
-            part_transform.Translate(-position[0], -position[1], -position[2])
+            part_transform.Translate(-pivot[0], -pivot[1], -pivot[2])
+
+            if self._transform_debug_enabled():
+                part_name = part.GetPartName() if hasattr(part, 'GetPartName') else '<unknown>'
+                pivot_world = part_transform.TransformPoint(pivot[0], pivot[1], pivot[2])
+                LOG.debug(
+                    "VTK move_part angular: part=%s axis=%s pivot=%s deltas=(A=%.6f,B=%.6f,C=%.6f) "
+                    "pivot_world_after=(%.6f, %.6f, %.6f)",
+                    part_name,
+                    part_axis,
+                    pivot,
+                    float(a_delta),
+                    float(b_delta),
+                    float(c_delta),
+                    float(pivot_world[0]),
+                    float(pivot_world[1]),
+                    float(pivot_world[2]),
+                )
             
         part.SetUserTransform(part_transform)
         
@@ -1333,10 +2075,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         """Normalize incoming WCS offsets so lookups work regardless of key type."""
 
         if isinstance(offsets, dict):
-            try:
-                self.wcs_offsets = {int(k): v for k, v in offsets.items()}
-            except Exception:
-                self.wcs_offsets = dict(offsets)
+            normalized_offsets = dict()
+            for key, value in offsets.items():
+                int_key = self._coerce_int(key, None)
+                if int_key is None:
+                    continue
+                normalized_offsets[int_key] = value
+            self.wcs_offsets = normalized_offsets if normalized_offsets else dict(offsets)
         else:
             self.wcs_offsets = offsets
 
@@ -1354,15 +2099,38 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if offsets is None:
             column_count = 9
             if offset_columns:
-                try:
-                    column_count = max(offset_columns.values()) + 1
-                except ValueError:
-                    pass
+                values = list(offset_columns.values())
+                if len(values) > 0:
+                    column_count = max(values) + 1
 
             offsets = [0.0] * column_count
             LOG.warning("Missing WCS offsets for index %s, defaulting to zeros", wcs_index)
 
         return offsets
+
+    def _resolve_wcs_components(self, wcs_index, current_offsets, offset_columns):
+        x_column = offset_columns.get('X') if offset_columns else None
+        y_column = offset_columns.get('Y') if offset_columns else None
+        z_column = offset_columns.get('Z') if offset_columns else None
+        r_column = offset_columns.get('R') if offset_columns else None
+
+        x = current_offsets[x_column] if x_column is not None and x_column < len(current_offsets) else 0.0
+        y = current_offsets[y_column] if y_column is not None and y_column < len(current_offsets) else 0.0
+        z = current_offsets[z_column] if z_column is not None and z_column < len(current_offsets) else 0.0
+        rotation = current_offsets[r_column] if r_column is not None and r_column < len(current_offsets) else 0.0
+
+        # For active WCS, use live status values to avoid stale offset-table snapshots.
+        if wcs_index == self.active_wcs_index and isinstance(self.active_wcs_offset, (list, tuple)):
+            live = self.active_wcs_offset
+            if x_column is not None and x_column < len(live):
+                x = live[x_column]
+            if y_column is not None and y_column < len(live):
+                y = live[y_column]
+            if z_column is not None and z_column < len(live):
+                z = live[z_column]
+            rotation = float(self.active_rotation or 0.0)
+
+        return x, y, z, rotation
 
     def update_rotation_xy(self, rot):
         self.active_rotation = rot
@@ -1386,40 +2154,32 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
             
             current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
+            x, y, z, rotation = self._resolve_wcs_components(
+                wcs_index,
+                current_offsets,
+                self.offsetTableColumnsIndex,
+            )
 
-            x_column = self.offsetTableColumnsIndex.get('X')
-            y_column = self.offsetTableColumnsIndex.get('Y')
-            z_column = self.offsetTableColumnsIndex.get('Z')
-            r_column = self.offsetTableColumnsIndex.get('R')
+            actor_transform = self._compose_wcs_transform(x, y, z, rotation)
+            axes_transform = self._compose_wcs_transform(x, y, z, rotation)
 
-            if x_column is not None:
-                x = current_offsets[x_column]
-            else:
-                x = 0.0
+            if wcs_index == self.active_wcs_index:
+                self._active_path_transform = actor_transform
 
-            if y_column is not None:
-                y = current_offsets[y_column]
-            else:
-                y = 0.0
-
-            if z_column is not None:
-                z = current_offsets[z_column]
-            else:
-                z = 0.0
-
-            if r_column is not None:
-                rotation = current_offsets[r_column]
-            else:
-                rotation = 0.0
-
-            actor_transform = vtk.vtkTransform()
-            axes_transform = vtk.vtkTransform()
-
-            actor_transform.Translate(x, y, z)
-            actor_transform.RotateZ(rotation)
-
-            axes_transform.Translate(x, y, z)
-            axes_transform.RotateZ(rotation)
+            if self._transform_debug_enabled():
+                actor_origin = actor_transform.TransformPoint(0.0, 0.0, 0.0)
+                LOG.debug(
+                    "VTK rotate_and_translate: wcs=%s resolved_xyzr=(%.6f, %.6f, %.6f, %.6f) "
+                    "actor_origin=(%.6f, %.6f, %.6f)",
+                    wcs_index,
+                    float(x),
+                    float(y),
+                    float(z),
+                    float(rotation),
+                    float(actor_origin[0]),
+                    float(actor_origin[1]),
+                    float(actor_origin[2]),
+                )
             
             # Scale up the axes for the active WCS to provide visual feedback
             if wcs_index == self.active_wcs_index:
@@ -1442,6 +2202,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if len(self.path_actors) > 1:
             self._update_transition_actors(self.offsetTableColumnsIndex)
 
+        # Keep breadcrumbs aligned to active path transform in tool-relative
+        # mode so moving-table simulation overlays remain coherent.
+        if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
+            self.path_cache_actor.SetUserTransform(self._active_path_transform)
+
         self._request_render()
         
     def update_g5x_index(self, index):
@@ -1452,9 +2217,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._set_wcs_offsets(self._datasource.getWcsOffsets())
     
     def update_active_wcs(self, wcs_index):
+        prev_wcs_index = self.active_wcs_index
         self.active_wcs_index = wcs_index
         # Keep offsets fresh when the active WCS changes.
         self._set_wcs_offsets(self._datasource.getWcsOffsets())
+
+        if self._transform_debug_enabled():
+            active_offsets = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
+            LOG.debug(
+                "VTK update_active_wcs: prev=%s new=%s offsets=%s",
+                prev_wcs_index,
+                self.active_wcs_index,
+                active_offsets,
+            )
         
         # Update the visual scale of axes to highlight the active WCS
         # This is done by calling rotate_and_translate which will rebuild
@@ -1466,24 +2241,52 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._datasource.isModeMdi() or self._datasource.isModeAuto():
             self.g92_offset = g92_offset
 
+            if self._transform_debug_enabled():
+                LOG.debug(
+                    "VTK update_g92_offset: active_wcs=%s g92=%s",
+                    self.active_wcs_index,
+                    self.g92_offset,
+                )
+
             path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
 
             for wcs_index, actor in list(self.path_actors.items()):
                 # determine change in g92 offset since path was drawn
 
                 current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
-                new_path_position = list(map(add, current_offsets[:9], path_offset))
+                x, y, z, rotation = self._resolve_wcs_components(
+                    wcs_index,
+                    current_offsets,
+                    self.offsetTableColumnsIndex,
+                )
+
+                if len(path_offset) > 0:
+                    x += float(path_offset[0])
+                if len(path_offset) > 1:
+                    y += float(path_offset[1])
+                if len(path_offset) > 2:
+                    z += float(path_offset[2])
 
                 axes = actor.get_axes_actor()
 
-                path_transform = vtk.vtkTransform()
-                path_transform.Translate(*new_path_position[:3])
+                path_transform = self._compose_wcs_transform(
+                    x,
+                    y,
+                    z,
+                    rotation,
+                )
+
+                if wcs_index == self.active_wcs_index:
+                    self._active_path_transform = path_transform
 
                 # self.axes_actor.SetUserTransform(path_transform)
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
 
                 self._sync_program_bounds_actor(wcs_index, actor)
+
+            if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
+                self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
             self._request_render()
 
@@ -1496,9 +2299,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
-        tool_transform.RotateX(-self.spindle_rotation[0])
-        tool_transform.RotateY(-self.spindle_rotation[1])
-        tool_transform.RotateZ(-self.spindle_rotation[2])
+        tool_rotation = self._visual_tool_rotation(self.spindle_rotation)
+        tool_transform.RotateX(-tool_rotation[0])
+        tool_transform.RotateY(-tool_rotation[1])
+        tool_transform.RotateZ(-tool_rotation[2])
 
         self.tool_actor.SetUserTransform(tool_transform)
 
@@ -1509,10 +2313,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         else:
             self.tool_bit_actor.SetUserTransform(tool_transform)
 
-        try:
-            tool_in_spindle = int(getattr(self._datasource._status.stat, 'tool_in_spindle', 0))
-        except Exception:
-            tool_in_spindle = 0
+        tool_in_spindle = self._tool_in_spindle()
 
         if tool_in_spindle <= 0:
             self.tool_actor.SetVisibility(1)
@@ -1868,21 +2669,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def _make_wcs_transform(self, wcs_index, offset_columns):
         current_offsets = self.wcs_offsets.get(wcs_index, [])
+        x, y, z, rotation = self._resolve_wcs_components(wcs_index, current_offsets, offset_columns)
 
-        x_column = offset_columns.get('X')
-        y_column = offset_columns.get('Y')
-        z_column = offset_columns.get('Z')
-        r_column = offset_columns.get('R')
-
-        x = current_offsets[x_column] if x_column is not None and x_column < len(current_offsets) else 0.0
-        y = current_offsets[y_column] if y_column is not None and y_column < len(current_offsets) else 0.0
-        z = current_offsets[z_column] if z_column is not None and z_column < len(current_offsets) else 0.0
-        rotation = current_offsets[r_column] if r_column is not None and r_column < len(current_offsets) else 0.0
-
-        transform = vtk.vtkTransform()
-        transform.Translate(x, y, z)
-        transform.RotateZ(rotation)
-        return transform
+        return self._compose_wcs_transform(x, y, z, rotation)
 
     def _make_transition_point_actor(self, point_position, color_rgb, actor_transform):
         points = vtk.vtkPoints()
@@ -1959,6 +2748,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             to_wcs = transition['to_wcs']
             from_end = transition['from_end']
             to_start = transition['to_start']
+            debug_mul = transition.get('debug_mul')
+            debug_prev_raw_end = transition.get('debug_prev_raw_end')
+            debug_prev_last_type = transition.get('debug_prev_last_type')
+            debug_prev_scaled_last_cut_end = transition.get('debug_prev_scaled_last_cut_end')
+            debug_next_raw_start = transition.get('debug_next_raw_start')
+            debug_next_first_type = transition.get('debug_next_first_type')
+            debug_next_scaled_first_cut_start = transition.get('debug_next_scaled_first_cut_start')
 
             from_transform = self._make_wcs_transform(from_wcs, offset_columns)
             to_transform = self._make_wcs_transform(to_wcs, offset_columns)
@@ -1982,6 +2778,30 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             from_world = self._transform_transition_point(from_wcs, from_end, offset_columns)
             to_world = self._transform_transition_point(to_wcs, to_start, offset_columns)
+
+            LOG.info(
+                "WCS transition %d: from_end local=(%.6f, %.6f, %.6f) world=(%.6f, %.6f, %.6f) | cyan to_start local=(%.6f, %.6f, %.6f) world=(%.6f, %.6f, %.6f) from_wcs=%s to_wcs=%s",
+                transition_index,
+                from_end[0], from_end[1], from_end[2],
+                from_world[0], from_world[1], from_world[2],
+                to_start[0], to_start[1], to_start[2],
+                to_world[0], to_world[1], to_world[2],
+                from_wcs,
+                to_wcs,
+            )
+
+            if debug_prev_raw_end is not None:
+                LOG.info(
+                    "WCS transition %d cpp-debug: mul=%s prev_raw_end=%s prev_last_type=%s prev_scaled_last_cut_end=%s next_raw_start=%s next_first_type=%s next_scaled_first_cut_start=%s",
+                    transition_index,
+                    debug_mul,
+                    debug_prev_raw_end,
+                    debug_prev_last_type,
+                    debug_prev_scaled_last_cut_end,
+                    debug_next_raw_start,
+                    debug_next_first_type,
+                    debug_next_scaled_first_cut_start,
+                )
 
             line_actor = self._make_transition_line_actor(from_world, to_world)
             self.offset_change_line_actor[transition_index] = line_actor
@@ -2013,6 +2833,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             from_world = self._transform_transition_point(from_wcs, from_end, offset_columns)
             to_world = self._transform_transition_point(to_wcs, to_start, offset_columns)
+
+            LOG.info(
+                "WCS transition %d update: from_end local=(%.6f, %.6f, %.6f) world=(%.6f, %.6f, %.6f) | cyan to_start local=(%.6f, %.6f, %.6f) world=(%.6f, %.6f, %.6f) from_wcs=%s to_wcs=%s",
+                transition_index,
+                from_end[0], from_end[1], from_end[2],
+                from_world[0], from_world[1], from_world[2],
+                to_start[0], to_start[1], to_start[2],
+                to_world[0], to_world[1], to_world[2],
+                from_wcs,
+                to_wcs,
+            )
 
             new_line_actor = self._make_transition_line_actor(from_world, to_world)
             self.offset_change_line_actor[transition_index] = new_line_actor
@@ -2351,8 +3182,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def clearLivePlot(self):
         self.renderer.RemoveActor(self.path_cache_actor)
-        self.path_cache_actor = PathCacheActor(self.tooltip_position)
+
+        self.path_cache_actor = PathCacheActor(tuple(self.tooltip_position[:3]))
+        if not self._breadcrumb_world_frame:
+            self.path_cache_actor.SetUserTransform(self._active_path_transform)
+
         self.renderer.AddActor(self.path_cache_actor)
+        self._breadcrumbs_armed = False
+        self._path_cache_seeded = False
+        self._last_breadcrumb_world = tuple(self.tooltip_position[:3])
         self._request_render()
 
     @Slot(bool)

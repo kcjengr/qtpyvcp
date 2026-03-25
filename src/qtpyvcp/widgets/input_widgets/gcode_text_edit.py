@@ -120,6 +120,7 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.encode_utils import allEncodings
 from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 from qtpyvcp.widgets.dialogs.find_replace_dialog import FindReplaceDialog
 
@@ -324,8 +325,8 @@ class GcodeTextEdit(QTextEdit):
         self.cursorPositionChanged.connect(self.onCursorChanged)
 
         # connect status signals
-        STATUS.file.notify(self.loadProgramFile)
-        STATUS.motion_line.onValueChanged(self.setCurrentLine)
+        STATUS.file.notify(safe_qt_callback(self, self.loadProgramFile))
+        STATUS.motion_line.onValueChanged(safe_qt_callback(self, self.setCurrentLine))
 
     @Slot(str)
     def set_search_term(self, text):

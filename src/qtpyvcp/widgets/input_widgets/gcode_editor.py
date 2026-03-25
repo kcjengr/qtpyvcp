@@ -34,6 +34,7 @@ from PySide6.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVB
 from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 
 
 LOG = logger.getLogger(__name__)
@@ -537,8 +538,8 @@ class GcodeEditor(EditorBase, QObject):
     def is_editor(self, enabled):
         self._is_editor = enabled
         if not self._is_editor:
-            STATUS.file.notify(self.load_program)
-            STATUS.motion_line.onValueChanged(self.highlight_line)
+            STATUS.file.notify(safe_qt_callback(self, self.load_program))
+            STATUS.motion_line.onValueChanged(safe_qt_callback(self, self.highlight_line))
 
             # STATUS.connect('line-changed', self.highlight_line)
             # if self.idle_line_reset:

@@ -65,7 +65,7 @@ try:
     from .settings import Settings
 except ImportError:
     multimedia_available = False
-    LOG.error('Can\'t import QtMultimedia, is package "python-pyqt5.qtmultimedia" installed?')
+    LOG.error('Can\'t import QtMultimedia, is package "python3-pyside6.qtmultimedia" installed?')
 
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 

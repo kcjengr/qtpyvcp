@@ -10,13 +10,12 @@ class PathCacheActor(vtk.vtkActor):
         self.current_position = current_position
         self.index = 0
         self.num_points = 2
+        self.first_sample_seeded = False
 
         self.points = vtk.vtkPoints()
         self.points.InsertNextPoint(current_position)
 
         self.lines = vtk.vtkCellArray()
-        self.lines.InsertNextCell(1)  # number of points
-        self.lines.InsertCellPoint(0)
 
         self.lines_poligon_data = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
@@ -36,6 +35,16 @@ class PathCacheActor(vtk.vtkActor):
         self.GetProperty().SetBackfaceCulling(1)
 
     def add_line_point(self, point):
+        if not self.first_sample_seeded:
+            # First live sample only seeds the breadcrumb origin to avoid a
+            # synthetic startup segment from an unknown position.
+            self.points.SetPoint(0, point)
+            self.points.Modified()
+            self.current_position = point
+            self.first_sample_seeded = True
+            self.index = 0
+            return
+
         self.index += 1
 
         self.points.InsertNextPoint(point)

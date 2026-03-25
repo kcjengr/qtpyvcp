@@ -35,6 +35,7 @@ class BaseCanon(QObject):
 
         self.first_move = True
         self.in_arc = False
+        self.path_initialized = False
         self.suppress = 0
 
         self.plane = 1
@@ -170,6 +171,7 @@ class BaseCanon(QObject):
 
     def tool_offset(self, xo, yo, zo, ao, bo, co, uo, vo, wo):
         self.first_move = True
+        self.path_initialized = False
         x, y, z, a, b, c, u, v, w = self.last_pos
 
         self.last_pos = (
@@ -206,6 +208,7 @@ class BaseCanon(QObject):
 
     def change_tool(self, pocket):
         self.first_move = True
+        self.path_initialized = False
 
     def get_tool(self, pocket):
         return -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
@@ -215,6 +218,11 @@ class BaseCanon(QObject):
             return
 
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
+        if not self.path_initialized:
+            self.path_initialized = True
+            self.first_move = False
+            self.last_pos = pos
+            return
         if not self.first_move:
             self.add_path_point('traverse', self.last_pos, pos)
         else:
@@ -229,17 +237,33 @@ class BaseCanon(QObject):
         if self.suppress > 0:
             return
 
-        self.first_move = False
         pos = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
         pos += self.last_pos[3:]
 
+        if not self.path_initialized:
+            self.path_initialized = True
+            self.first_move = False
+            self.last_pos = pos
+            return
+
+        self.first_move = False
+
         self.add_path_point('feed', self.last_pos, pos)
+        self.last_pos = pos
 
     def set_plane(self, plane):
         self.plane = plane
 
     def arc_feed(self, end_x, end_y, center_x, center_y, rot, end_z, a, b, c, u, v, w):
         if self.suppress > 0:
+            return
+
+        if not self.path_initialized:
+            # Initial machine position is unknown in preview; seed without
+            # creating unprovable geometry.
+            self.path_initialized = True
+            self.first_move = False
+            self.last_pos = self.rotate_and_translate(end_x, end_y, end_z, a, b, c, u, v, w)
             return
 
         self.first_move = False
@@ -265,8 +289,15 @@ class BaseCanon(QObject):
         if self.suppress > 0:
             return
 
-        self.first_move = False
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
+
+        if not self.path_initialized:
+            self.path_initialized = True
+            self.first_move = False
+            self.last_pos = pos
+            return
+
+        self.first_move = False
 
         self.add_path_point('feed', self.last_pos, pos)
         self.last_pos = pos

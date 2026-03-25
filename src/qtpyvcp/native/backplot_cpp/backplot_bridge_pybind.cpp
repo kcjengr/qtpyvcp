@@ -4,7 +4,9 @@
 #include <array>
 #include <chrono>
 #include <cmath>
+#include <cstdint>
 #include <optional>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -87,6 +89,7 @@ public:
         tool_offsets.fill(0.0);
         g92_offsets.fill(0.0);
         g5x_offsets.fill(0.0);
+        external_length_units = 1.0;
         py::module_ gcode = py::module_::import("gcode");
         arc_to_segments_fn = gcode.attr("arc_to_segments");
 
@@ -95,6 +98,25 @@ public:
         line_type_rgba[2] = color_rgba(path_colors, "arcfeed");
         line_type_rgba[3] = color_rgba(path_colors, "dwell");
         line_type_rgba[4] = color_rgba(path_colors, "user");
+
+        trace_logger = py::none();
+    }
+
+    bool should_trace_seq() const {
+        return false;
+    }
+
+    static bool near_value(double value, double target, double tolerance) {
+        return std::abs(value - target) <= tolerance;
+    }
+
+    bool should_trace_point(const std::array<double, 3> &point) const {
+        (void)point;
+        return false;
+    }
+
+    void trace_debug(const std::string &message) {
+        (void)message;
     }
 
     void next_line(py::object state) {
@@ -103,10 +125,30 @@ public:
         } catch (...) {
             seq_num = -1;
         }
+
+        if (should_trace_seq()) {
+            std::ostringstream oss;
+            oss << "[cpp-trace] next_line seq=" << seq_num;
+            trace_debug(oss.str());
+        }
     }
 
     void set_g5x_offset(int index, double x, double y, double z, double a, double b, double c, double u, double v, double w) {
         g5x_offsets = {x, y, z, a, b, c, u, v, w};
+
+        if (should_trace_seq() || index <= 1) {
+            std::ostringstream oss;
+            oss << "[cpp-trace] set_g5x_offset seq=" << seq_num
+                << " index=" << index
+                << " g5x_z=" << z
+                << " active_wcs_before=" << active_wcs_index;
+            trace_debug(oss.str());
+        }
+
+        // G53 (machine coordinates) is non-modal and should not create a WCS segment.
+        if (index <= 0) {
+            return;
+        }
 
         const int new_wcs = index - 1;
         py::object wcs_key = py::int_(new_wcs);
@@ -138,10 +180,22 @@ public:
         }
 
         active_wcs_index = new_wcs;
+
+        if (should_trace_seq() || new_wcs <= 1) {
+            std::ostringstream oss;
+            oss << "[cpp-trace] set_g5x_offset applied seq=" << seq_num
+                << " new_wcs=" << new_wcs
+                << " active_wcs_initial_z=" << active_wcs_initial_z;
+            trace_debug(oss.str());
+        }
     }
 
     void set_g92_offset(double x, double y, double z, double a, double b, double c, double u, double v, double w) {
         g92_offsets = {x, y, z, a, b, c, u, v, w};
+    }
+
+    void set_external_length_units(double units) {
+        external_length_units = units;
     }
 
     void set_xy_rotation(double rotation) {
@@ -153,6 +207,7 @@ public:
 
     void tool_offset(double xo, double yo, double zo, double ao, double bo, double co, double uo, double vo, double wo) {
         first_move = true;
+        path_initialized = false;
         last_pos = {
             last_pos[0] - xo + tool_offsets[0],
             last_pos[1] - yo + tool_offsets[1],
@@ -165,6 +220,13 @@ public:
             last_pos[8] - wo + tool_offsets[8],
         };
         tool_offsets = {xo, yo, zo, ao, bo, co, uo, vo, wo};
+
+        if (should_trace_seq() || std::abs(zo) > 0.0001) {
+            std::ostringstream oss;
+            oss << "[cpp-trace] tool_offset seq=" << seq_num
+                << " tool_z=" << zo;
+            trace_debug(oss.str());
+        }
     }
 
     void straight_traverse(double x, double y, double z, double a, double b, double c, double u, double v, double w) {
@@ -172,6 +234,14 @@ public:
             return;
         }
         const auto pos = rotate_and_translate(x, y, z, a, b, c, u, v, w);
+        if (!path_initialized) {
+            // Initial machine position is unknown in preview; seed without
+            // creating unprovable geometry.
+            path_initialized = true;
+            first_move = false;
+            last_pos = pos;
+            return;
+        }
         if (!first_move) {
             add_path_point(0, last_pos, pos);
         } else {
@@ -184,8 +254,14 @@ public:
         if (suppress > 0) {
             return;
         }
-        first_move = false;
         const auto pos = rotate_and_translate(x, y, z, a, b, c, u, v, w);
+        if (!path_initialized) {
+            path_initialized = true;
+            first_move = false;
+            last_pos = pos;
+            return;
+        }
+        first_move = false;
         add_path_point(1, last_pos, pos);
         last_pos = pos;
     }
@@ -198,7 +274,6 @@ public:
         if (suppress > 0) {
             return;
         }
-        first_move = false;
         auto pos = rotate_and_translate(x, y, z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
         pos[3] = last_pos[3];
         pos[4] = last_pos[4];
@@ -206,6 +281,13 @@ public:
         pos[6] = last_pos[6];
         pos[7] = last_pos[7];
         pos[8] = last_pos[8];
+        if (!path_initialized) {
+            path_initialized = true;
+            first_move = false;
+            last_pos = pos;
+            return;
+        }
+        first_move = false;
         add_path_point(1, last_pos, pos);
         last_pos = pos;
     }
@@ -213,6 +295,14 @@ public:
     void arc_feed(double end_x, double end_y, double center_x, double center_y, int rot, double end_z,
                   double a, double b, double c, double u, double v, double w) {
         if (suppress > 0) {
+            return;
+        }
+        if (!path_initialized) {
+            // An initial arc cannot be resolved without a known start point.
+            // Seed at arc end and defer plotting until position is known.
+            path_initialized = true;
+            first_move = false;
+            last_pos = rotate_and_translate(end_x, end_y, end_z, a, b, c, u, v, w);
             return;
         }
         first_move = false;
@@ -269,12 +359,15 @@ public:
     void select_plane(int plane_value) { plane = plane_value; }
     void set_traverse_rate(double) {}
     void set_feed_mode(int) {}
-    void change_tool(int) { first_move = true; }
+    void change_tool(int) {
+        first_move = true;
+        path_initialized = false;
+    }
     py::tuple get_tool(int) {
         return py::make_tuple(-1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0);
     }
     double get_external_angular_units() { return 1.0; }
-    double get_external_length_units() { return 1.0; }
+    double get_external_length_units() { return external_length_units; }
     int get_axis_mask() { return axis_mask; }
     void set_axis_mask(int mask) { axis_mask = mask; }
     int get_block_delete() { return 0; }
@@ -391,6 +484,20 @@ private:
         adjust(start_point, start_xyz);
         adjust(end_point, end_xyz);
 
+        if (should_trace_seq() || should_trace_point(start_xyz) || should_trace_point(end_xyz)) {
+            std::ostringstream oss;
+            oss << "[cpp-trace] add_path_point seq=" << seq_num
+                << " line_type=" << static_cast<int>(line_type_code)
+                << " active_wcs=" << active_wcs_index
+                << " start_z_raw=" << start_point[2]
+                << " end_z_raw=" << end_point[2]
+                << " tool_z=" << tool_offsets[2]
+                << " active_wcs_initial_z=" << active_wcs_initial_z
+                << " start_z_adj=" << start_xyz[2]
+                << " end_z_adj=" << end_xyz[2];
+            trace_debug(oss.str());
+        }
+
         NativeLine native_line;
         native_line.type_code = line_type_code;
         native_line.start = start_xyz;
@@ -403,12 +510,14 @@ private:
     std::array<double, 9> tool_offsets;
     std::array<double, 9> g92_offsets;
     std::array<double, 9> g5x_offsets;
+    double external_length_units{1.0};
     int seq_num{-1};
     int suppress{0};
     int active_wcs_index{0};
     int arcdivision{64};
     bool first_move{true};
     bool in_arc{false};
+    bool path_initialized{false};
     int plane{1};
     int axis_mask{0x1FF};
     double feedrate{1.0};
@@ -421,6 +530,7 @@ private:
     double active_wcs_initial_z{0.0};
     std::unordered_map<int, std::array<double, 3>> initial_wcs_offsets_native;
     py::object arc_to_segments_fn;
+    py::object trace_logger{py::none()};
     std::vector<NativeSegment> native_segments;
     std::array<std::array<std::uint8_t, 4>, 5> line_type_rgba{{
         std::array<std::uint8_t, 4>{255, 255, 255, 255},
@@ -570,7 +680,9 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
         }
 
         for (const auto &line : segment.lines) {
-            if (path_actor_count > 1 && acc.segment_count == 0 && line.type_code == 0 && first_cut_wcs.has_value() && segment_wcs != *first_cut_wcs) {
+            // First traverse in each segment has no provable start point in
+            // preview context; skip rendering it as segment geometry.
+            if (acc.segment_count == 0 && line.type_code == 0) {
                 continue;
             }
 
@@ -607,26 +719,31 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
             int wcs_index{0};
             std::array<double, 3> start{};
             std::array<double, 3> end{};
+            std::array<double, 3> first_cut_start{};
+            std::array<double, 3> last_cut_end{};
             bool has_start{false};
             bool has_end{false};
             bool has_cut{false};
+            bool has_first_cut_start{false};
+            bool has_last_cut_end{false};
         };
 
         std::vector<SegmentSummary> segment_summaries;
         segment_summaries.reserve(native_segments.size());
 
-        for (size_t seg_idx = 0; seg_idx < native_segments.size(); ++seg_idx) {
-            const auto &segment = native_segments[seg_idx];
+        py::object trace_logger = py::none();
+        try {
+            py::module_ logging = py::module_::import("logging");
+            trace_logger = logging.attr("getLogger")("qtpyvcp.native.backplot_cpp.bridge");
+        } catch (...) {
+            trace_logger = py::none();
+        }
+
+        for (const auto &segment : native_segments) {
             SegmentSummary summary;
             summary.wcs_index = segment.wcs_index;
 
-            bool segment_started = false;
             for (const auto &line : segment.lines) {
-                if (seg_idx > 0 && !segment_started && line.type_code == 0) {
-                    continue;
-                }
-
-                segment_started = true;
                 if (!summary.has_start) {
                     summary.start = {
                         line.start[0] * multiplication_factor,
@@ -645,6 +762,22 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
 
                 if (line.type_code != 0) {
                     summary.has_cut = true;
+
+                    if (!summary.has_first_cut_start) {
+                        summary.first_cut_start = {
+                            line.start[0] * multiplication_factor,
+                            line.start[1] * multiplication_factor,
+                            line.start[2] * multiplication_factor,
+                        };
+                        summary.has_first_cut_start = true;
+                    }
+
+                    summary.last_cut_end = {
+                        line.end[0] * multiplication_factor,
+                        line.end[1] * multiplication_factor,
+                        line.end[2] * multiplication_factor,
+                    };
+                    summary.has_last_cut_end = true;
                 }
             }
 
@@ -664,12 +797,42 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
             if (prev.wcs_index == next.wcs_index) {
                 continue;
             }
+            if (prev.wcs_index < 0 || next.wcs_index < 0) {
+                continue;
+            }
+
+            // Source from the actual end of prior segment (preserves final
+            // reposition like G53), but target the first cutting point in the
+            // next segment to avoid snapping to an intermediate traverse start.
+            const auto &transition_from = prev.end;
+            const auto &transition_to = next.has_first_cut_start ? next.first_cut_start : next.start;
+
+            std::array<double, 3> prev_raw_end{0.0, 0.0, 0.0};
+            int prev_last_type = -1;
+            if (!native_segments[i - 1].lines.empty()) {
+                prev_raw_end = native_segments[i - 1].lines.back().end;
+                prev_last_type = static_cast<int>(native_segments[i - 1].lines.back().type_code);
+            }
+
+            std::array<double, 3> next_raw_start{0.0, 0.0, 0.0};
+            int next_first_type = -1;
+            if (!native_segments[i].lines.empty()) {
+                next_raw_start = native_segments[i].lines.front().start;
+                next_first_type = static_cast<int>(native_segments[i].lines.front().type_code);
+            }
 
             py::dict transition;
             transition["from_wcs"] = py::int_(prev.wcs_index);
             transition["to_wcs"] = py::int_(next.wcs_index);
-            transition["from_end"] = py::make_tuple(prev.end[0], prev.end[1], prev.end[2]);
-            transition["to_start"] = py::make_tuple(next.start[0], next.start[1], next.start[2]);
+            transition["from_end"] = py::make_tuple(transition_from[0], transition_from[1], transition_from[2]);
+            transition["to_start"] = py::make_tuple(transition_to[0], transition_to[1], transition_to[2]);
+            transition["debug_mul"] = py::float_(multiplication_factor);
+            transition["debug_prev_raw_end"] = py::make_tuple(prev_raw_end[0], prev_raw_end[1], prev_raw_end[2]);
+            transition["debug_prev_last_type"] = py::int_(prev_last_type);
+            transition["debug_prev_scaled_last_cut_end"] = py::make_tuple(prev.last_cut_end[0], prev.last_cut_end[1], prev.last_cut_end[2]);
+            transition["debug_next_raw_start"] = py::make_tuple(next_raw_start[0], next_raw_start[1], next_raw_start[2]);
+            transition["debug_next_first_type"] = py::int_(next_first_type);
+            transition["debug_next_scaled_first_cut_start"] = py::make_tuple(next.first_cut_start[0], next.first_cut_start[1], next.first_cut_start[2]);
             offset_transitions.append(transition);
         }
     }
@@ -824,19 +987,27 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
             py::object wcs_index;
             py::object start;
             py::object end;
+            std::array<double, 3> raw_start{};
+            std::array<double, 3> raw_end{};
+            std::array<double, 3> first_cut_start{};
+            std::array<double, 3> last_cut_end{};
+            int first_type{-1};
+            int last_type{-1};
             bool has_cut{false};
+            bool has_raw_start{false};
+            bool has_raw_end{false};
+            bool has_first_cut_start{false};
+            bool has_last_cut_end{false};
         };
         std::vector<SegmentSummary> segment_summaries;
         segment_summaries.reserve(static_cast<size_t>(py::len(path_segments)));
 
-        ssize_t segment_index = 0;
         for (auto segment_obj : path_segments) {
             py::dict segment = segment_obj.cast<py::dict>();
             py::object segment_wcs_index = segment["wcs_index"];
             py::list segment_data = segment["lines"].cast<py::list>();
             py::object segment_start = py::none();
             py::object segment_end = py::none();
-            bool segment_started = false;
             bool segment_has_cut_motion = false;
 
             for (auto seg_line_obj : segment_data) {
@@ -848,12 +1019,6 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
                     segment_has_cut_motion = true;
                 }
 
-                if (segment_index > 0 && !segment_started && segment_line_type.is_traverse) {
-                    continue;
-                }
-
-                segment_started = true;
-
                 const auto line_points = line_points_xyz(segment_line_data, multiplication_factor);
 
                 if (segment_start.is_none()) {
@@ -863,15 +1028,47 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
                 segment_end = py::make_tuple(line_points.end[0], line_points.end[1], line_points.end[2]);
             }
 
-            segment_summaries.push_back(
-                SegmentSummary{
-                    segment_wcs_index,
-                    segment_start,
-                    segment_end,
-                    segment_has_cut_motion,
+            SegmentSummary summary{};
+            summary.wcs_index = segment_wcs_index;
+            summary.start = segment_start;
+            summary.end = segment_end;
+            summary.has_cut = segment_has_cut_motion;
+
+            if (py::len(segment_data) > 0) {
+                py::tuple first_line_item = segment_data[0].cast<py::tuple>();
+                py::tuple last_line_item = segment_data[py::len(segment_data) - 1].cast<py::tuple>();
+
+                const auto first_raw = line_points_xyz(first_line_item[1], 1.0);
+                const auto last_raw = line_points_xyz(last_line_item[1], 1.0);
+                summary.raw_start = first_raw.start;
+                summary.raw_end = last_raw.end;
+                summary.has_raw_start = true;
+                summary.has_raw_end = true;
+
+                if (PyLong_Check(first_line_item[0].ptr())) {
+                    summary.first_type = static_cast<int>(PyLong_AsLong(first_line_item[0].ptr()));
                 }
-            );
-            segment_index += 1;
+                if (PyLong_Check(last_line_item[0].ptr())) {
+                    summary.last_type = static_cast<int>(PyLong_AsLong(last_line_item[0].ptr()));
+                }
+            }
+
+            for (auto seg_line_obj : segment_data) {
+                py::tuple segment_line_item = seg_line_obj.cast<py::tuple>();
+                const auto segment_line_type = decode_line_type(segment_line_item[0]);
+                if (segment_line_type.is_traverse) {
+                    continue;
+                }
+                const auto line_points = line_points_xyz(segment_line_item[1], multiplication_factor);
+                if (!summary.has_first_cut_start) {
+                    summary.first_cut_start = line_points.start;
+                    summary.has_first_cut_start = true;
+                }
+                summary.last_cut_end = line_points.end;
+                summary.has_last_cut_end = true;
+            }
+
+            segment_summaries.push_back(summary);
         }
 
         for (size_t i = 1; i < segment_summaries.size(); ++i) {
@@ -892,7 +1089,24 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
             transition["from_wcs"] = prev.wcs_index;
             transition["to_wcs"] = next.wcs_index;
             transition["from_end"] = prev.end;
-            transition["to_start"] = next.start;
+            transition["to_start"] = next.has_first_cut_start
+                ? py::make_tuple(next.first_cut_start[0], next.first_cut_start[1], next.first_cut_start[2])
+                : next.start;
+            transition["debug_mul"] = py::float_(multiplication_factor);
+            if (prev.has_raw_end) {
+                transition["debug_prev_raw_end"] = py::make_tuple(prev.raw_end[0], prev.raw_end[1], prev.raw_end[2]);
+            }
+            transition["debug_prev_last_type"] = py::int_(prev.last_type);
+            if (prev.has_last_cut_end) {
+                transition["debug_prev_scaled_last_cut_end"] = py::make_tuple(prev.last_cut_end[0], prev.last_cut_end[1], prev.last_cut_end[2]);
+            }
+            if (next.has_raw_start) {
+                transition["debug_next_raw_start"] = py::make_tuple(next.raw_start[0], next.raw_start[1], next.raw_start[2]);
+            }
+            transition["debug_next_first_type"] = py::int_(next.first_type);
+            if (next.has_first_cut_start) {
+                transition["debug_next_scaled_first_cut_start"] = py::make_tuple(next.first_cut_start[0], next.first_cut_start[1], next.first_cut_start[2]);
+            }
             offset_transitions.append(transition);
         }
     }
@@ -920,6 +1134,7 @@ PYBIND11_MODULE(_backplot_cpp, m) {
         .def("next_line", &NativeCanon::next_line)
         .def("set_g5x_offset", &NativeCanon::set_g5x_offset)
         .def("set_g92_offset", &NativeCanon::set_g92_offset)
+        .def("set_external_length_units", &NativeCanon::set_external_length_units)
         .def("set_xy_rotation", &NativeCanon::set_xy_rotation)
         .def("tool_offset", &NativeCanon::tool_offset)
         .def("straight_traverse", &NativeCanon::straight_traverse)

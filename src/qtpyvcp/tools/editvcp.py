@@ -176,7 +176,7 @@ def launch_designer(opts=DotDict()) -> None:
     if distro.id() == "gentoo":
         cmd = ["designer"]
     elif distro.id() == "arch":
-        cmd = ["pyside6-designer"]
+        cmd = ["designer6"]
     else:
         cmd = ["pyside6-designer"]
 
@@ -261,6 +261,11 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['QT_SELECT'] = 'qt6'
     os.environ['DESIGNER'] = '1'
     os.environ['PYSIDE_DESIGNER_PLUGINS'] = widgets_path
+
+    # Work around intermittent wheel-event issues in Qt6 Designer on X11.
+    if os.getenv('XDG_SESSION_TYPE', '').lower() == 'x11' and 'QT_XCB_NO_XI2' not in os.environ:
+        os.environ['QT_XCB_NO_XI2'] = '1'
+        LOG.info('Set QT_XCB_NO_XI2=1 for Qt Designer wheel-event compatibility on X11')
     
     # Add qtpyvcp paths to PYTHONPATH so pyside6-designer can import our modules
     existing_pythonpath = os.environ.get('PYTHONPATH', '')
@@ -328,6 +333,7 @@ def launch_designer(opts=DotDict()) -> None:
     LOG.info(f"QT_DESIGNER_PLUGIN_PATH={os.environ.get('QT_DESIGNER_PLUGIN_PATH', '')}")
     LOG.info(f"QT_PLUGIN_PATH={os.environ.get('QT_PLUGIN_PATH', '')}")
     LOG.info(f"PYTHONPATH={os.environ.get('PYTHONPATH', '')}")
+    LOG.info(f"QT_XCB_NO_XI2={os.environ.get('QT_XCB_NO_XI2', '')}")
 
 
     LOG.info("Starting QtDesigner ...")
