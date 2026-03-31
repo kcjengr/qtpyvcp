@@ -247,6 +247,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._is_machine_lathe = self._datasource.isMachineLathe()
         self._is_machine_foam = self._datasource.isMachineFoam()
         self._is_machine_jet = self._datasource.isMachineJet()
+        self._joint_part_motion_enabled = bool(self._datasource.useJointDrivenPartMotion())
 
         self.axis_motion_owner = self._datasource.getAxisMotionOwners()
         self.rotary_axis_origin = {'A': None, 'B': None, 'C': None}
@@ -274,6 +275,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             breadcrumb_frame,
             self._breadcrumb_frame,
             self.axis_motion_owner,
+        )
+        LOG.info(
+            "VTK part-motion mode: enabled_joint_motion=%s mode=%s kins=%s profile=%s",
+            self._joint_part_motion_enabled,
+            self._datasource.getVtkMotionMode(),
+            self._datasource.getKinematicsModule() or '<unset>',
+            self._datasource.getKinematicsMotionProfile(),
         )
 
         cpp_backplot_val = str(inifile.find("VTK", "CPP_BACKPLOT") or "1").strip().lower()
@@ -1800,6 +1808,75 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             return -float(axis_value)
         return float(axis_value)
 
+    def _part_joint_value(self, part):
+        if not hasattr(part, 'GetPartJoint'):
+            return None
+
+        joint_index = self._coerce_int(part.GetPartJoint(), None)
+        if joint_index is None or joint_index < 0:
+            return None
+
+        if not isinstance(self.joints, (list, tuple)):
+            return None
+
+        if joint_index >= len(self.joints):
+            return None
+
+        joint_channel = self.joints[joint_index]
+        input_channel = getattr(joint_channel, 'input', None)
+        if input_channel is None:
+            return None
+
+        return self._coerce_float(getattr(input_channel, 'value', None), None)
+
+    @staticmethod
+    def _axis_sign(axis_name):
+        axis_text = str(axis_name or '').strip().lower()
+        if axis_text.startswith('-'):
+            return -1.0
+        return 1.0
+
+    @staticmethod
+    def _axis_base(axis_name):
+        axis_text = str(axis_name or '').strip().lower()
+        if axis_text.startswith('-'):
+            axis_text = axis_text[1:]
+        return axis_text
+
+    def _apply_rotation_for_axis(self, transform, axis_name, angle_value):
+        axis_base = self._axis_base(axis_name)
+        sign = self._axis_sign(axis_name)
+        angle = float(angle_value) * sign
+
+        # Accept both machine-axis notation (A/B/C) and cartesian axis notation
+        # (X/Y/Z) for joint-driven parts.
+        if axis_base in ('a', 'x'):
+            transform.RotateX(angle)
+            return True
+        if axis_base in ('b', 'y'):
+            transform.RotateY(angle)
+            return True
+        if axis_base in ('c', 'z'):
+            transform.RotateZ(angle)
+            return True
+        return False
+
+    def _apply_linear_for_axis(self, transform, axis_name, value):
+        axis_base = self._axis_base(axis_name)
+        sign = self._axis_sign(axis_name)
+        delta = float(value) * sign
+
+        if axis_base == 'x':
+            transform.Translate(delta, 0, 0)
+            return True
+        if axis_base == 'y':
+            transform.Translate(0, delta, 0)
+            return True
+        if axis_base == 'z':
+            transform.Translate(0, 0, delta)
+            return True
+        return False
+
     def _visual_tool_rotation(self, machine_rotation):
         rx = 0.0 if self.axis_motion_owner.get('A', 'head') == 'table' else float(machine_rotation[0])
         ry = 0.0 if self.axis_motion_owner.get('B', 'head') == 'table' else float(machine_rotation[1])
@@ -1952,11 +2029,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         part_axis = part.GetPartAxis()
         part_type = part.GetPartType()
+        joint_value = self._part_joint_value(part) if self._joint_part_motion_enabled else None
 
 
         part_transform = vtk.vtkTransform()  
         
         if part_type == "linear":
+
+            if joint_value is not None and self._apply_linear_for_axis(part_transform, part_axis, joint_value):
+                part.SetUserTransform(part_transform)
+                return
 
             #part_position = self.joints[part_joint].input.value
             
@@ -1977,18 +2059,26 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             y_delta = self._machine_linear_axis_value('Y', machine_position[1])
             z_delta = self._machine_linear_axis_value('Z', machine_position[2])
 
-            if part_axis == "x":
-                part_transform.Translate(x_delta, 0, 0)
-            elif part_axis == "y":
-                part_transform.Translate(0, y_delta, 0)
-            elif part_axis == "z":
-                part_transform.Translate(0, 0, z_delta)
-            elif part_axis == "-x":
-                part_transform.Translate(-x_delta, 0, 0)
-            elif part_axis == "-y":
-                part_transform.Translate(0, -y_delta, 0)
-            elif part_axis == "-z":
-                part_transform.Translate(0, 0, -z_delta)
+            if not self._apply_linear_for_axis(part_transform, part_axis, {
+                'x': x_delta,
+                'y': y_delta,
+                'z': z_delta,
+                '-x': x_delta,
+                '-y': y_delta,
+                '-z': z_delta,
+            }.get(str(part_axis or '').strip().lower(), 0.0)):
+                if part_axis == "x":
+                    part_transform.Translate(x_delta, 0, 0)
+                elif part_axis == "y":
+                    part_transform.Translate(0, y_delta, 0)
+                elif part_axis == "z":
+                    part_transform.Translate(0, 0, z_delta)
+                elif part_axis == "-x":
+                    part_transform.Translate(-x_delta, 0, 0)
+                elif part_axis == "-y":
+                    part_transform.Translate(0, -y_delta, 0)
+                elif part_axis == "-z":
+                    part_transform.Translate(0, 0, -z_delta)
             
 
         elif part_type == "angular":
@@ -2010,37 +2100,51 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
  
             part_transform.Translate(pivot[0], pivot[1], pivot[2])
 
-            a_delta = self._machine_angular_axis_value('A', self.spindle_rotation[0])
-            b_delta = self._machine_angular_axis_value('B', self.spindle_rotation[1])
-            c_delta = self._machine_angular_axis_value('C', self.spindle_rotation[2])
-            
-            if part_axis == "a":
-                part_transform.RotateX(a_delta)
-            elif part_axis== "b":
-                part_transform.RotateY(b_delta)
-            elif part_axis == "c":
-                part_transform.RotateZ(c_delta)
-            elif part_axis == "-a":
-                part_transform.RotateX(-a_delta)
-            elif part_axis == "-b":
-                part_transform.RotateY(-b_delta)
-            elif part_axis == "-c":
-                part_transform.RotateZ(-c_delta)
+            if joint_value is not None:
+                if not self._apply_rotation_for_axis(part_transform, part_axis, joint_value):
+                    # Backward-compatible fallback for joint-driven parts that do
+                    # not specify an axis in MACHINE_PARTS.
+                    part_transform.RotateZ(float(joint_value))
+            else:
+                a_delta = self._machine_angular_axis_value('A', self.spindle_rotation[0])
+                b_delta = self._machine_angular_axis_value('B', self.spindle_rotation[1])
+                c_delta = self._machine_angular_axis_value('C', self.spindle_rotation[2])
+
+                if part_axis == "a":
+                    part_transform.RotateX(a_delta)
+                elif part_axis== "b":
+                    part_transform.RotateY(b_delta)
+                elif part_axis == "c":
+                    part_transform.RotateZ(c_delta)
+                elif part_axis == "-a":
+                    part_transform.RotateX(-a_delta)
+                elif part_axis == "-b":
+                    part_transform.RotateY(-b_delta)
+                elif part_axis == "-c":
+                    part_transform.RotateZ(-c_delta)
+                else:
+                    a_delta = 0.0
+                    b_delta = 0.0
+                    c_delta = 0.0
             
             part_transform.Translate(-pivot[0], -pivot[1], -pivot[2])
 
             if self._transform_debug_enabled():
                 part_name = part.GetPartName() if hasattr(part, 'GetPartName') else '<unknown>'
                 pivot_world = part_transform.TransformPoint(pivot[0], pivot[1], pivot[2])
+                log_a = float(self._machine_angular_axis_value('A', self.spindle_rotation[0])) if joint_value is None else 0.0
+                log_b = float(self._machine_angular_axis_value('B', self.spindle_rotation[1])) if joint_value is None else 0.0
+                log_c = float(self._machine_angular_axis_value('C', self.spindle_rotation[2])) if joint_value is None else 0.0
                 LOG.debug(
-                    "VTK move_part angular: part=%s axis=%s pivot=%s deltas=(A=%.6f,B=%.6f,C=%.6f) "
+                    "VTK move_part angular: part=%s axis=%s joint=%s pivot=%s deltas=(A=%.6f,B=%.6f,C=%.6f) "
                     "pivot_world_after=(%.6f, %.6f, %.6f)",
                     part_name,
                     part_axis,
+                    joint_value,
                     pivot,
-                    float(a_delta),
-                    float(b_delta),
-                    float(c_delta),
+                    log_a,
+                    log_b,
+                    log_c,
                     float(pivot_world[0]),
                     float(pivot_world[1]),
                     float(pivot_world[2]),

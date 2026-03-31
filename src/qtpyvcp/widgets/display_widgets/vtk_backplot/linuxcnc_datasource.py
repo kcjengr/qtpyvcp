@@ -40,6 +40,10 @@ class LinuxCncDataSource(QObject):
         text = str(raw_owner).strip().lower() if raw_owner is not None else ''
         if text in ('head', 'table'):
             return text
+        if text in ('tool', 'spindle', 'gantry'):
+            return 'head'
+        if text in ('workpiece', 'fixture', 'part'):
+            return 'table'
         return default
 
     @staticmethod
@@ -74,6 +78,68 @@ class LinuxCncDataSource(QObject):
             return float(text)
         return default
 
+    @staticmethod
+    def _kinematics_module_name(raw_kinematics):
+        text = str(raw_kinematics or '').strip().lower()
+        if not text:
+            return ''
+        return text.split()[0]
+
+    @staticmethod
+    def _kinematics_motion_profile(module_name):
+        name = str(module_name or '').strip().lower()
+        if not name:
+            return 'unknown'
+
+        # LinuxCNC kinematics names from docs/src/man/man9/kins.9.adoc and
+        # src/emc/kinematics/*.c. These groups are used only for VTK
+        # visualization profile selection.
+        cartesian_modules = {
+            'trivkins',
+            'corexykins',
+            'matrixkins',
+            'rotatekins',
+            'xyzac-trt-kins',
+            'xyzbc-trt-kins',
+            '5axiskins',
+        }
+        if name in cartesian_modules:
+            return 'cartesian'
+
+        joint_modules = {
+            'genserkins',
+            'ugenserkins',
+            'pumakins',
+            'scarakins',
+            'genhexkins',
+            'tripodkins',
+            'lineardeltakins',
+            'rotarydeltakins',
+            'pentakins',
+            'maxkins',
+            'rosekins',
+            'scorbot-kins',
+        }
+        if name in joint_modules:
+            return 'joint'
+
+        # Keep switchkins/other custom modules conservative unless explicitly
+        # overridden by [VTK] MOTION_MODE.
+        return 'unknown'
+
+    @staticmethod
+    def _is_joint_driven_kinematics_module(module_name):
+        return LinuxCncDataSource._kinematics_motion_profile(module_name) == 'joint'
+
+    @staticmethod
+    def _normalize_vtk_motion_mode(raw_mode):
+        text = str(raw_mode or '').strip().lower()
+        if text in ('joint', 'joints', 'robot', 'joint-driven'):
+            return 'joint'
+        if text in ('cartesian', 'axis', 'axes'):
+            return 'cartesian'
+        return 'auto'
+
     def __init__(self):
         super(LinuxCncDataSource, self).__init__(None)
 
@@ -84,6 +150,11 @@ class LinuxCncDataSource(QObject):
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
         self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF") or "false"
+        self._kins_raw = str(self._inifile.find("KINS", "KINEMATICS") or '').strip()
+        self._kins_module = self._kinematics_module_name(self._kins_raw)
+        self._kins_motion_profile = self._kinematics_motion_profile(self._kins_module)
+        self._is_joint_kinematics = self._is_joint_driven_kinematics_module(self._kins_module)
+        self._vtk_motion_mode = self._normalize_vtk_motion_mode(self._inifile.find("VTK", "MOTION_MODE"))
         self._is_lathe = (
             bool(self._inifile.find("DISPLAY", "LATHE")) or
             bool(self._inifile.find("DISPLAY", "BACK_TOOL_LATHE"))
@@ -138,6 +209,14 @@ class LinuxCncDataSource(QObject):
         self._hal_pin_read_error_logged = set()
 
         self._configure_vtk_machine_axes()
+        LOG.info(
+            "VTK kinematics profile: kins='%s' module='%s' profile=%s inferred_joint=%s motion_mode=%s",
+            self._kins_raw or '<unset>',
+            self._kins_module or '<unset>',
+            self._kins_motion_profile,
+            bool(self._is_joint_kinematics),
+            self._vtk_motion_mode,
+        )
         
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
@@ -386,6 +465,29 @@ class LinuxCncDataSource(QObject):
     def getAxisMotionOwners(self):
         return dict(self._vtk_axis_motion_owner)
 
+    def getKinematicsRaw(self):
+        return str(self._kins_raw)
+
+    def getKinematicsModule(self):
+        return str(self._kins_module)
+
+    def isJointDrivenKinematics(self):
+        return bool(self._is_joint_kinematics)
+
+    def getKinematicsMotionProfile(self):
+        return str(self._kins_motion_profile)
+
+    def getVtkMotionMode(self):
+        return str(self._vtk_motion_mode)
+
+    def useJointDrivenPartMotion(self):
+        mode = self.getVtkMotionMode()
+        if mode == 'joint':
+            return True
+        if mode == 'cartesian':
+            return False
+        return self.isJointDrivenKinematics()
+
     def getAxisConfigurationDataset(self):
         return {
             'active_machine_axes': list(self._vtk_active_machine_axes),
@@ -585,7 +687,11 @@ class LinuxCncDataSource(QObject):
 
         yaml_axes = set(self._vtk_machine_parts_axes.keys())
         missing_from_yaml = [axis for axis in active_axes if axis not in yaml_axes]
-        if missing_from_yaml:
+        if self.useJointDrivenPartMotion():
+            # For robot-style kinematics we animate parts from joint metadata,
+            # so cartesian axis tags (X/Y/Z/A/B/C) are optional.
+            self._vtk_axis_config_report['missing_machine_parts_axes'] = []
+        elif missing_from_yaml:
             self._vtk_axis_config_report['missing_machine_parts_axes'] = list(missing_from_yaml)
             self._warn_vtk(
                 f"MACHINE_PARTS is missing active machine axes: {missing_from_yaml}"

@@ -246,6 +246,7 @@ class MachinePart(vtk.vtkAssembly):
         self.part_type = None
         self.part_pos = None
         self.part_origin = None
+        self.part_joint = None
 
     def SetPartPosition(self, attr):
         self.part_pos = attr
@@ -259,6 +260,9 @@ class MachinePart(vtk.vtkAssembly):
     def SetPartOrigin(self, attr):
         self.part_origin = attr
 
+    def SetPartJoint(self, attr):
+        self.part_joint = attr
+
     def GetPartPosition(self):
         return self.part_pos
     
@@ -270,6 +274,9 @@ class MachinePart(vtk.vtkAssembly):
 
     def GetPartOrigin(self):
         return self.part_origin
+
+    def GetPartJoint(self):
+        return self.part_joint
 
 
 class MachinePartsASM(vtk.vtkAssembly):
@@ -354,6 +361,7 @@ class MachinePartsASM(vtk.vtkAssembly):
         tmp_assembly.SetPartType(self.part_type)
         tmp_assembly.SetPartPosition(self.part_position)
         tmp_assembly.SetPartOrigin(self.part_origin)
+        tmp_assembly.SetPartJoint(self.part_joint)
         
         tmp_assembly.AddPart(part_actor)
         
