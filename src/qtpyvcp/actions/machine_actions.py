@@ -13,9 +13,11 @@ LOG = logger.getLogger(__name__)
 from qtpyvcp.actions.base_actions import setTaskMode
 from qtpyvcp.plugins import getPlugin
 IN_DESIGNER = os.getenv('DESIGNER', False)
+STATUS = None
+STAT = None
 if not IN_DESIGNER:
     STATUS = getPlugin('status')
-    STAT = STATUS.stat
+    STAT = getattr(STATUS, 'stat', None)
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
@@ -176,7 +178,7 @@ def _resetMode(interp_state):
             LOG.debug("Successfully reset task_mode after MDI")
         PREVIOUS_MODE = None
 
-if not IN_DESIGNER:
+if not IN_DESIGNER and STATUS is not None:
     STATUS.interp_state.onValueChanged(_resetMode)
 
 def issue_mdi(command, reset=True):
@@ -200,6 +202,10 @@ def issue_mdi(command, reset=True):
         reset (bool, optional): Whether to reset the Task Mode to the state
             the machine was in prior to issuing the MDI command.
     """
+    if IN_DESIGNER or STATUS is None or STAT is None:
+        LOG.debug("Ignoring MDI command while Designer/status is unavailable: %s", command)
+        return False
+
     # Track G96/G97 parameters if this command contains them
     global G96_MAX_RPM, G96_SURFACE_SPEED, G97_SPINDLE_RPM
     cmd_upper = command.upper()
@@ -316,7 +322,7 @@ def _issue_mdi_ok(mdi_cmd='', widget=None):
 
 def _issue_mdi_bindOk(mdi_cmd='', widget=None):
     _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)
-    if IN_DESIGNER:
+    if IN_DESIGNER or STATUS is None:
         return
     STATUS.task_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)))
     STATUS.interp_state.onValueChanged(safe_qt_callback(widget, lambda *args, **kwargs: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)))

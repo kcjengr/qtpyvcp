@@ -83,7 +83,8 @@ def main():
                                                  MacroButtonPlugin,
                                                  LedButtonPlugin,
                                                  MDIButtonPlugin,
-                                                 DialogButtonPlugin)
+                                                 DialogButtonPlugin,
+                                                 VCPVarPushButtonPlugin)
     # Tool Database Widgets
     from qtpyvcp.widgets.db_widgets.designer_plugins import (ToolSTLFieldPlugin)
 
@@ -131,7 +132,8 @@ def main():
                                                                 VCPSettingsDoubleSpinBoxPlugin,
                                                                 VCPSettingsCheckBoxPlugin,
                                                                 VCPSettingsPushButtonPlugin,
-                                                                VCPSettingsComboBoxPlugin
+                                                                VCPSettingsComboBoxPlugin,
+                                                                VCPVarLineEditPlugin
                                                                 )
 
     # Button Widgets
@@ -142,6 +144,7 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(LedButtonPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(MDIButtonPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(DialogButtonPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(VCPVarPushButtonPlugin())
 
     # Tool database Widgets
     QPyDesignerCustomWidgetCollection.addCustomWidget(ToolSTLFieldPlugin())
@@ -194,6 +197,7 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(OffsetTablePlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(ProbeSimPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(RecentFileComboBoxPlugin())
+    QPyDesignerCustomWidgetCollection.addCustomWidget(VCPVarLineEditPlugin())
     
     # Settings Widgets
     QPyDesignerCustomWidgetCollection.addCustomWidget(VCPSettingsLineEditPlugin())
