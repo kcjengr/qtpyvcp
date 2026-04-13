@@ -215,6 +215,7 @@ class VCPApplication(QApplication):
         # per QT docs -1 is error and 0+ is index to font loaded for later use
         if res < 0:
             LOG.error("Failed to load font: %s", font_path)
+            return
 
     def getWidget(self, name):
         """Searches for a widget by name in the application windows.
