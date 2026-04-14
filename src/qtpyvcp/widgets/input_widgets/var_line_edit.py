@@ -1,4 +1,5 @@
 import os
+import json
 from PySide6.QtCore import Property, QTimer
 from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
 from qtpyvcp.widgets.base_widgets import VarWidgetMixin
@@ -521,9 +522,26 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         """Get the current value from the line edit widget"""
         return self.value()
 
+    def _has_text_rule(self):
+        """Return True when this widget has a rule that sets the Text property."""
+        try:
+            rules = json.loads(self.rules or '[]')
+        except Exception:
+            return False
+
+        for rule in rules:
+            if isinstance(rule, dict) and rule.get('property') == 'Text':
+                return True
+        return False
+
     def _on_parameter_changed(self, param_number, new_value):
         """Handle parameter change notifications from VarFileManager"""
         if self.hasFocus():
+            return
+
+        # If Text is controlled by widget rules, do not overwrite the displayed
+        # expression result with var-file updates.
+        if self._has_text_rule():
             return
 
         if param_number == self.var_parameter_number and new_value is not None:

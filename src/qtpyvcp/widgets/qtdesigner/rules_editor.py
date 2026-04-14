@@ -13,6 +13,8 @@ import os
 import json
 import functools
 import webbrowser
+import re
+import html
 
 # Force qtpy to use PySide6
 os.environ['QT_API'] = 'pyside6'
@@ -21,8 +23,9 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from PySide6 import QtWidgets, QtCore, QtDesigner
 
+from qtpyvcp import CONFIG, SETTINGS, DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins
-from qtpyvcp.utilities.settings import Setting
+from qtpyvcp.utilities.settings import Setting, addSetting
 from qtpyvcp.utilities.machine_parameters import (
     read_parameter_values,
     get_parameter_value,
@@ -42,6 +45,106 @@ RULE_PROPERTIES = {
     'Style Class': ['setStyleClass', str],
     # 'Opacity': ['setOpacity', float]
 }
+
+_DESIGNER_SETTINGS_PRELOADED_FILES = set()
+
+
+def _merge_settings_from_config(config_dict):
+    if not isinstance(config_dict, dict):
+        return
+
+    cfg_settings = config_dict.get('settings', {})
+    if not isinstance(cfg_settings, dict):
+        return
+
+    for setting_name, setting_kwargs in cfg_settings.items():
+        if setting_name in SETTINGS:
+            continue
+        try:
+            addSetting(setting_name, **setting_kwargs)
+        except Exception:
+            LOG.debug("Unable to preload designer setting '%s'", setting_name, exc_info=True)
+
+
+def _iter_designer_yaml_candidates(widget=None):
+    candidates = []
+
+    env_files = os.getenv('VCP_CONFIG_FILES', '')
+    for path in env_files.split(':'):
+        if not path:
+            continue
+        if path.lower().endswith(('.yml', '.yaml')) and os.path.exists(path):
+            candidates.append(path)
+
+    if widget is not None:
+        try:
+            form_window = QtDesigner.QDesignerFormWindowInterface.findFormWindow(widget)
+        except Exception:
+            form_window = None
+
+        if form_window is not None:
+            ui_path = form_window.fileName() or ''
+            if ui_path:
+                ui_root, _ = os.path.splitext(ui_path)
+                for ext in ('.yml', '.yaml'):
+                    yaml_path = ui_root + ext
+                    if os.path.exists(yaml_path):
+                        candidates.append(yaml_path)
+
+    deduped = []
+    seen = set()
+    for path in candidates:
+        if path in seen:
+            continue
+        seen.add(path)
+        deduped.append(path)
+
+    return deduped
+
+
+def _ensure_designer_settings_loaded(widget=None):
+    """Populate designer settings channels from loaded YAML CONFIG when needed."""
+    if not IN_DESIGNER:
+        return
+
+    # Trigger plugin auto-load in Designer mode.
+    settings_plugin = getPlugin('settings')
+
+    # 1) Merge already-loaded CONFIG settings first.
+    _merge_settings_from_config(CONFIG)
+
+    # 2) If needed, merge settings from env and inferred yaml candidates.
+    for cfg_file in _iter_designer_yaml_candidates(widget):
+        if cfg_file in _DESIGNER_SETTINGS_PRELOADED_FILES:
+            continue
+
+        try:
+            from qtpyvcp.utilities.config_loader import load_config_files
+            loaded_cfg = load_config_files(cfg_file, DEFAULT_CONFIG_FILE)
+            if isinstance(loaded_cfg, dict):
+                CONFIG.update(loaded_cfg)
+            _merge_settings_from_config(loaded_cfg)
+            _DESIGNER_SETTINGS_PRELOADED_FILES.add(cfg_file)
+        except Exception:
+            LOG.debug("Unable to load designer config file '%s'", cfg_file, exc_info=True)
+
+    # Keep plugin channel table synchronized with the global SETTINGS dict.
+    if isinstance(settings_plugin, DataPlugin):
+        settings_plugin.channels = SETTINGS
+
+
+def _build_channel_completer_items():
+    items = []
+
+    for plugin, obj in iterPlugins():
+        if isinstance(obj, DataPlugin):
+            for chan_name in obj.channels:
+                items.append('{}:{}'.format(plugin, chan_name))
+
+    for setting_name in SETTINGS:
+        items.append('settings:{}'.format(setting_name))
+
+    return sorted(set(items))
 
 
 class RulesEditorExtension(_PluginExtension):
@@ -64,28 +167,64 @@ class ChanInfoDialog(QtWidgets.QDialog):
         ui_file.open(QFile.ReadOnly)
 
         loader = QUiLoader()
-        self.ui = loader.load(ui_file, self)
+        loaded_ui = loader.load(ui_file, self)
+        ui_file.close()
+
+        if isinstance(loaded_ui, QtWidgets.QDialog) and loaded_ui is not self:
+            self.setWindowTitle(loaded_ui.windowTitle())
+            loaded_layout = loaded_ui.layout()
+            if loaded_layout is not None:
+                loaded_layout.setParent(self)
+                self.setLayout(loaded_layout)
+            loaded_ui.deleteLater()
+            self.ui = self
+        else:
+            self.ui = loaded_ui if loaded_ui is not None else self
+
+        self.lbl_chan_name = self.findChild(QtWidgets.QLabel, 'lbl_chan_name')
+        self.tb_chan_doc = self.findChild(QtWidgets.QTextBrowser, 'tb_chan_doc')
+        self.lbl_chan_rtn = self.findChild(QtWidgets.QLabel, 'lbl_chan_rtn')
+        self.lbl_rtn_typ = self.findChild(QtWidgets.QLabel, 'lbl_rtn_typ')
+        self.lbl_can_val = self.findChild(QtWidgets.QLabel, 'lbl_can_val')
+        self.buttonBox = self.findChild(QtWidgets.QDialogButtonBox, 'buttonBox')
+
+        if self.buttonBox is not None:
+            self.buttonBox.accepted.connect(self.accept)
+            self.buttonBox.rejected.connect(self.reject)
 
         ch_obj, ch_exp, ch_val, ch_doc = info
 
-        doc_lines = [l.strip() for l in ch_doc.strip().splitlines()]
-        title = doc_lines[0]
+        doc_text = (ch_doc or '').strip()
+        doc_lines = [l.strip() for l in doc_text.splitlines() if l.strip()]
+        title = doc_lines[0] if doc_lines else 'Data Channel'
 
-        self.lbl_rtn_typ.setText(type(ch_obj.getValue()).__name__)
+        initial_val = ch_val
+        if initial_val is None and ch_obj is not None:
+            try:
+                initial_val = ch_obj.getValue()
+            except Exception:
+                initial_val = None
+        if self.lbl_rtn_typ is not None:
+            self.lbl_rtn_typ.setText(type(initial_val).__name__ if initial_val is not None else 'unknown')
 
         for line in doc_lines:
             if line.startswith(':returns:'):
-                self.lbl_chan_rtn.setText(line.replace(':returns:', '').strip())
+                if self.lbl_chan_rtn is not None:
+                    self.lbl_chan_rtn.setText(line.replace(':returns:', '').strip())
             elif line.startswith(':rtype:'):
-                self.lbl_rtn_typ.setText(line.replace(':rtype:', '').strip())
+                if self.lbl_rtn_typ is not None:
+                    self.lbl_rtn_typ.setText(line.replace(':rtype:', '').strip())
 
-        self.lbl_chan_name.setText(title)
-        self.tb_chan_doc.setText(ch_doc)
-        val = ch_obj.getValue()
+        if self.lbl_chan_name is not None:
+            self.lbl_chan_name.setText(title)
+        if self.tb_chan_doc is not None:
+            self.tb_chan_doc.setText(ch_doc or '')
+        val = initial_val
         txt = ''
-        if len(self.lbl_rtn_typ.text().split(',')) > 1:
+        if self.lbl_rtn_typ is not None and len(self.lbl_rtn_typ.text().split(',')) > 1:
             txt = ', ' + str(ch_val)
-        self.lbl_can_val.setText(str(val) + txt)
+        if self.lbl_can_val is not None:
+            self.lbl_can_val.setText(str(val) + txt)
 
 
 class TableCheckButton(QtWidgets.QWidget):
@@ -107,18 +246,18 @@ class CompleterDelegate(QtWidgets.QStyledItemDelegate):
     def __init__(self, parent=None):
         super(CompleterDelegate, self).__init__(parent)
 
-        items = []
-        for plugin, obj in iterPlugins():
-            if isinstance(obj, DataPlugin):
-                for chan_name in obj.channels:
-                    items.append('{}:{}'.format(plugin, chan_name))
+        _ensure_designer_settings_loaded()
 
-        self.completer = QtWidgets.QCompleter(sorted(items))
+        self.completer = QtWidgets.QCompleter(_build_channel_completer_items())
         self.completer.setCompletionColumn(0)
         self.completer.setCompletionRole(QtCore.Qt.ItemDataRole.EditRole)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
 
     def createEditor(self, parent, option, index):
+        # Refresh items so late-loaded settings appear without restarting Designer.
+        _ensure_designer_settings_loaded()
+        self.completer.setModel(QtCore.QStringListModel(_build_channel_completer_items(), self.completer))
+
         editor = QtWidgets.QLineEdit(parent)
         editor.setFrame(False)
         editor.setCompleter(self.completer)
@@ -138,6 +277,8 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.widget = widget
         self.app = QtWidgets.QApplication.instance()
+
+        _ensure_designer_settings_loaded(self.widget)
 
         if IN_DESIGNER:
             getPlugin('status')  # trigger designer plugin initialization
@@ -580,6 +721,9 @@ class RulesEditor(QtWidgets.QDialog):
     def get_channel_data(self, url):
 
         protocol, sep, item = url.partition(':')
+        if protocol == 'settings':
+            _ensure_designer_settings_loaded()
+
         try:
             plugin = getPlugin(protocol)
         except ValueError:
@@ -724,12 +868,74 @@ class RulesEditor(QtWidgets.QDialog):
 
             # Mirror value to the live widget for immediate editor feedback.
             self.widget.setProperty("rules", data)
+
+            # Force persistence in the .ui XML as a reliability fallback for
+            # custom widget properties under some Designer/Qt6 combinations.
+            self._persist_rules_to_form_contents(formWindow, data)
+
             formWindow.setDirty(True)
 
             self.accept()
         else:
             QtWidgets.QMessageBox.critical(self, "Error Saving", message,
                                        QtWidgets.QMessageBox.StandardButton.Ok)
+
+    def _persist_rules_to_form_contents(self, form_window, rules_json):
+        """Persist the widget rules property directly into form XML contents."""
+        try:
+            ui_text = form_window.contents()
+            ui_text = ui_text if isinstance(ui_text, str) else str(ui_text)
+
+            widget_name = self.widget.objectName()
+            pattern = (
+                r'(<widget\\b(?=[^>]*\\bname="' + re.escape(widget_name) + r'")[^>]*>)'
+                r'(.*?)'
+                r'(</widget>)'
+            )
+            match = re.search(pattern, ui_text, flags=re.DOTALL)
+            if not match:
+                LOG.debug("Rules XML persistence skipped: widget '%s' block not found", widget_name)
+                return
+
+            opening_tag, body, closing_tag = match.groups()
+
+            escaped_rules = html.escape(rules_json, quote=True)
+
+            # Reuse existing property indentation if present.
+            indent_match = re.search(r'\\n(\\s*)<property\\b', body)
+            indent = indent_match.group(1) if indent_match else '      '
+
+            prop_block = (
+                f"\\n{indent}<property name=\"rules\" stdset=\"0\">"
+                f"\\n{indent} <string>{escaped_rules}</string>"
+                f"\\n{indent}</property>"
+            )
+
+            if re.search(r'<property\\s+name="rules"[^>]*>.*?</property>', body, flags=re.DOTALL):
+                body = re.sub(
+                    r'<property\\s+name="rules"[^>]*>.*?</property>',
+                    prop_block.strip(),
+                    body,
+                    count=1,
+                    flags=re.DOTALL,
+                )
+            else:
+                body = prop_block + body
+
+            new_block = opening_tag + body + closing_tag
+            start, end = match.span()
+            new_text = ui_text[:start] + new_block + ui_text[end:]
+
+            if new_text != ui_text:
+                form_window.beginCommand("Persist Widget Rules")
+                form_window.setContents(new_text)
+                form_window.endCommand()
+        except Exception:
+            try:
+                form_window.endCommand()
+            except Exception:
+                pass
+            LOG.debug("Rules XML persistence fallback failed", exc_info=True)
 
     @QtCore.Slot()
     def cancelChanges(self):

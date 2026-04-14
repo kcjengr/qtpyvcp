@@ -1,5 +1,5 @@
 import os
-from PySide6.QtCore import Property, QTimer
+from PySide6.QtCore import Property, QTimer, Qt
 from PySide6.QtWidgets import QPushButton
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.widgets.base_widgets.var_widget_mixin import VarWidgetMixin
@@ -64,6 +64,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
         
         # Make button checkable by default for toggle behavior
         self.setCheckable(True)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         
         # Widget properties for var parameter functionality
         self._auto_write_enabled = True

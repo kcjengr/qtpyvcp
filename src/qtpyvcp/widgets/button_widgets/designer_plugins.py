@@ -61,3 +61,19 @@ class VCPVarPushButtonPlugin(_DesignerPlugin):
         - autoWriteEnabled: Automatically write changes to LinuxCNC
         - writeDelay: Delay in milliseconds before writing changes
         """
+        def domXml(self):
+                return """
+                <widget class="VCPVarPushButton" name="vcpVarPushButton">
+                    <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                    </property>
+                    <property name="checkable">
+                        <bool>true</bool>
+                    </property>
+                    <property name="text">
+                        <string>Var Button</string>
+                    </property>
+                    <property name="varParameterNumber">
+                        <number>3014</number>
+                    </property>
+                </widget>"""

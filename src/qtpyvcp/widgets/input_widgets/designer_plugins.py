@@ -101,14 +101,14 @@ class ProbeSimPlugin(_DesignerPlugin):
         return ProbeSim
 
 from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit
-from qtpyvcp.widgets.qtdesigner.settings_selector import SettingSelectorExtension
+from qtpyvcp.widgets.qtdesigner.settings_selector import SettingSelectorExtension, ConvertToVarLineEditExtension
 class VCPSettingsLineEditPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VCPSettingsLineEdit
     def objectName(self):
         return 'settings_lineedit'
     def designerExtensions(self):
-        return [SettingSelectorExtension, RulesEditorExtension]
+        return [SettingSelectorExtension, ConvertToVarLineEditExtension, RulesEditorExtension]
 
 from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsSlider
 class VCPSettingsSliderPlugin(_DesignerPlugin):

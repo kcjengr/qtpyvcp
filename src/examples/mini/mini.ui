@@ -199,9 +199,6 @@
       <property name="settingName" stdset="0">
        <string>touch-probe.diameter-offset</string>
       </property>
-      <property name="textFormat" stdset="0">
-       <string>%0.4f</string>
-      </property>
      </widget>
     </item>
     <item>
