@@ -74,6 +74,30 @@ class LinuxCncDataSource(QObject):
             return float(text)
         return default
 
+    @staticmethod
+    def _coerce_bool(value, default=False):
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, (int, float)):
+            if float(value).is_integer():
+                return bool(int(value))
+            return bool(default)
+
+        text = str(value or '').strip().lower()
+        if not text:
+            return bool(default)
+
+        if text in ('1', 'true', 'yes', 'on'):
+            return True
+        if text in ('0', 'false', 'no', 'off'):
+            return False
+
+        numeric = LinuxCncDataSource._coerce_float(text, None)
+        if numeric is not None and float(numeric).is_integer():
+            return bool(int(numeric))
+
+        return bool(default)
+
     def __init__(self):
         super(LinuxCncDataSource, self).__init__(None)
 
@@ -117,6 +141,11 @@ class LinuxCncDataSource(QObject):
             'A': None,
             'B': None,
             'C': None,
+        }
+        self._vtk_rotary_axis_wrapped = {
+            'A': False,
+            'B': False,
+            'C': False,
         }
         self._vtk_machine_parts_file = None
         self._vtk_machine_parts_loaded = False
@@ -391,6 +420,7 @@ class LinuxCncDataSource(QObject):
             'active_machine_axes': list(self._vtk_active_machine_axes),
             'axis_motion_owner': dict(self._vtk_axis_motion_owner),
             'rotary_axis_origin': dict(self._vtk_rotary_axis_origin),
+            'rotary_axis_wrapped': dict(self._vtk_rotary_axis_wrapped),
             'machine_parts_file': self._vtk_machine_parts_file,
             'machine_parts_loaded': bool(self._vtk_machine_parts_loaded),
             'machine_parts_axes': dict(self._vtk_machine_parts_axes),
@@ -502,6 +532,10 @@ class LinuxCncDataSource(QObject):
         LOG.warning("VTK configuration: %s", message)
 
     def _configure_vtk_machine_axes(self):
+        for axis in ('A', 'B', 'C'):
+            raw_wrapped = self._inifile.find(f"AXIS_{axis}", "WRAPPED_ROTARY")
+            self._vtk_rotary_axis_wrapped[axis] = self._coerce_bool(raw_wrapped, False)
+
         allowed_axes = ('X', 'Y', 'Z', 'A', 'B', 'C')
         active_axes = [axis for axis in self._vtk_active_machine_axes if axis in allowed_axes]
 
@@ -634,4 +668,7 @@ class LinuxCncDataSource(QObject):
 
     def getRotaryAxisOrigins(self):
         return dict(self._vtk_rotary_axis_origin)
+
+    def getRotaryAxisWrapped(self):
+        return dict(self._vtk_rotary_axis_wrapped)
 

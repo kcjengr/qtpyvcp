@@ -54,6 +54,7 @@ class VTKCanon(StatCanon):
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.active_rotation = self._datasource.getRotationOfActiveWcs()
         self.tool_offset = self._datasource.getToolOffset()
+        self.rotary_axis_wrapped = self._datasource.getRotaryAxisWrapped()
         self.added_segments = 0
         self._preview_switchkins_type = 0
         self._preview_program_units = None
@@ -254,6 +255,19 @@ class VTKCanon(StatCanon):
             )
         return p
 
+    @staticmethod
+    def _rotary_delta_deg(start_angle, end_angle, wrapped=False):
+        start = float(start_angle)
+        end = float(end_angle)
+        delta = end - start
+
+        if not wrapped:
+            return delta
+
+        # For wrapped rotary axes, plot the shortest path through the
+        # 0/360 boundary to match LinuxCNC preview behavior.
+        return ((delta + 180.0) % 360.0) - 180.0
+
     def _sample_table_rotary_motion_points(
         self,
         start_point,
@@ -270,10 +284,11 @@ class VTKCanon(StatCanon):
 
         axis_owner = self._datasource.getAxisMotionOwners()
         origins = self._datasource.getRotaryAxisOrigins()
+        wrapped_axes = self.rotary_axis_wrapped
 
-        da = float(end_point[3] - start_point[3])
-        db = float(end_point[4] - start_point[4])
-        dc = float(end_point[5] - start_point[5])
+        da = self._rotary_delta_deg(start_point[3], end_point[3], wrapped_axes.get('A', False))
+        db = self._rotary_delta_deg(start_point[4], end_point[4], wrapped_axes.get('B', False))
+        dc = self._rotary_delta_deg(start_point[5], end_point[5], wrapped_axes.get('C', False))
         deltas = {'A': da, 'B': db, 'C': dc}
 
         start_angles = {

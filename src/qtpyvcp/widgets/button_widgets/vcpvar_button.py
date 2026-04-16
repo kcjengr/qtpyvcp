@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QPushButton
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.widgets.base_widgets.var_widget_mixin import VarWidgetMixin
 from qtpyvcp.utilities import logger
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions.machine_actions import issue_mdi
 
@@ -74,6 +75,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
         
         # Status monitoring for safety
         self._status = None
+        self._status_homed_callback = None
         self._original_enabled_state = True
         
         # Internal state tracking
@@ -90,7 +92,9 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
 
     def getParameterFilePath(self):
         """Get the automatically detected parameter file path"""
-        return self.var_file_manager.var_file_path if self.var_file_manager else None
+        if not self._var_manager:
+            return None
+        return getattr(self._var_manager, '_parameter_file_path', None)
 
     def getConfigurationInfo(self):
         """
@@ -165,8 +169,10 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
             LOG.warning("VCPVarPushButton: Status plugin not available")
             return
             
-        # Connect to all homed status signal
-        self._status.all_axes_homed.notify(self._updateEnabledState)
+        # Connect to all homed status signal using a tracked safe callback so
+        # terminate() can disconnect the exact callable that was connected.
+        self._status_homed_callback = safe_qt_callback(self, self._updateEnabledState)
+        self._status.all_axes_homed.signal.connect(self._status_homed_callback)
         LOG.debug("VCPVarPushButton: Connected to status plugin for homing monitoring")
         # Update initial state
         self._updateEnabledState()
@@ -362,8 +368,13 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
         self._cleanup_var_monitoring()
         
         # Disconnect from status plugin
-        if self._status:
-            self._status.all_axes_homed.signal.disconnect(self._updateEnabledState)
+        if self._status and self._status_homed_callback is not None:
+            try:
+                self._status.all_axes_homed.signal.disconnect(self._status_homed_callback)
+            except (RuntimeError, TypeError):
+                # Signal may already be disconnected during shutdown ordering.
+                pass
+            self._status_homed_callback = None
         
         # Restore original enabled state
         if hasattr(self, '_original_enabled_state'):

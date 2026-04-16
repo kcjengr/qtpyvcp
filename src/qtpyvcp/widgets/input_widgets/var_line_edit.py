@@ -5,6 +5,7 @@ from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
 from qtpyvcp.widgets.base_widgets import VarWidgetMixin
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.misc import cnc_float
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions.machine_actions import issue_mdi
 
@@ -65,6 +66,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         
         # Status monitoring for safety
         self._status = None
+        self._status_homed_callback = None
         self._original_enabled_state = True
         
         # Internal 6-decimal storage (LinuxCNC var parameter limit)
@@ -204,8 +206,10 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
             LOG.warning("VCPVarLineEdit: Status plugin not available")
             return
             
-        # Connect to all homed status signal
-        self._status.all_axes_homed.notify(self._updateEnabledState)
+        # Connect to all homed status signal using a tracked safe callback so
+        # terminate() can disconnect the exact callable that was connected.
+        self._status_homed_callback = safe_qt_callback(self, self._updateEnabledState)
+        self._status.all_axes_homed.signal.connect(self._status_homed_callback)
         LOG.debug("VCPVarLineEdit: Connected to status plugin for homing monitoring")
         # Update initial state
         self._updateEnabledState()
@@ -492,8 +496,13 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         self._cleanup_var_monitoring()
         
         # Disconnect from status plugin
-        if self._status:
-            self._status.all_axes_homed.signal.disconnect(self._updateEnabledState)
+        if self._status and self._status_homed_callback is not None:
+            try:
+                self._status.all_axes_homed.signal.disconnect(self._status_homed_callback)
+            except (RuntimeError, TypeError):
+                # Signal may already be disconnected during shutdown ordering.
+                pass
+            self._status_homed_callback = None
         
         # Restore original enabled state
         if hasattr(self, '_original_enabled_state'):
