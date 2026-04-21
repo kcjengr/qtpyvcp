@@ -262,18 +262,18 @@ class _Info(object):
     def getAxisMinMax(self, axis=None):
         result = []
         if axis == None:
-            for ltr in AXIS_LETTER_LIST:
+            for ltr in self.AXIS_LETTER_LIST:
                 temp_min = self.ini.find(f'AXIS_{ltr.upper()}', 'MIN_LIMIT')
                 temp_max = self.ini.find(f'AXIS_{ltr.upper()}', 'MAX_LIMIT')
                 if None in (temp_min, temp_max):
-                    LOG.error('getAxisMinMax: Missing min or max entry in ini file')
+                    log.error('getAxisMinMax: Missing min or max entry in ini file')
                 else:
                     result.append((float(temp_min), float(temp_max)))
         else:
             temp_min = self.ini.find(f'AXIS_{axis.upper()}', 'MIN_LIMIT')
             temp_max = self.ini.find(f'AXIS_{axis.upper()}', 'MAX_LIMIT')
             if None in (temp_min, temp_max):
-                LOG.error('getAxisMinMax: Missing min or max entry in ini file')
+                log.error('getAxisMinMax: Missing min or max entry in ini file')
             else:
                 result.append((float(temp_min), float(temp_max)))
         return result

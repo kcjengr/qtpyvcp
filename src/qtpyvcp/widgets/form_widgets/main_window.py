@@ -1105,6 +1105,6 @@ class VCPMainWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = App()
+    # ex = App()
     sys.exit(app.exec())
 

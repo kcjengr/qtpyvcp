@@ -7,6 +7,7 @@ import sys
 import inspect
 
 from importlib.metadata import entry_points
+from importlib import import_module
 
 
 from PySide6.QtGui import QFontDatabase
@@ -149,7 +150,7 @@ class VCPApplication(QApplication):
         sys.path.append(module_dir)
 
         # Load the module. It's attributes can be accessed via `python_vcp.attr`
-        module = importlib.import_module(name="python_vcp", package=pyfile)
+        module = import_module(name="python_vcp", package=pyfile)
 
         classes = [obj for name, obj in inspect.getmembers(module)
                    if inspect.isclass(obj)

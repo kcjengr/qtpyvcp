@@ -19,7 +19,7 @@ import linuxcnc  # For commanding linuxcnc
 
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget, QApplication, QLineEdit
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import getPlugin
@@ -116,7 +116,7 @@ class SubCaller(QWidget):
 
     def getArgs(self):
         args = {}
-        for line_edit in self.findChildren(QtWidgets.QLineEdit):
+        for line_edit in self.findChildren(QLineEdit):
             key = line_edit.objectName()
             value = line_edit.text()
             args[key] = value
@@ -126,7 +126,7 @@ class SubCaller(QWidget):
 if __name__ == '__main__':
     import sys
 
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
 
     sub_caller = SubCaller()
     sub_caller.show()
