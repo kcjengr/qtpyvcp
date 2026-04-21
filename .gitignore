@@ -73,3 +73,5 @@ qtpyvcp.files
 qtpyvcp.includes
 .clang-format
 
+
+src/qtpyvcp/native/backplot_cpp/_backplot_cpp.cpython-313-x86_64-linux-gnu.so
