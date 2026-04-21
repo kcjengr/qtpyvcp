@@ -23,6 +23,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from PySide6 import QtWidgets, QtCore, QtDesigner
 
+from qtpyvcp.utilities import logger
 from qtpyvcp import CONFIG, SETTINGS, DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins
 from qtpyvcp.utilities.settings import Setting, addSetting
@@ -35,7 +36,6 @@ from .plugin_extension import _PluginExtension
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
 # Set up logging
-from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 RULE_PROPERTIES = {
@@ -293,7 +293,7 @@ class RulesEditor(QtWidgets.QDialog):
 
         try:
             self.rules = json.loads(widget.rules)
-        except:
+        except Exception:
             self.rules = []
 
         for ac in self.rules:
@@ -681,7 +681,6 @@ class RulesEditor(QtWidgets.QDialog):
             else:
                 self.lbl_expected_type.setText(prop[1].__name__)
                 self.txt_expression.setEnabled(True)
-            idx = self.get_current_index()
             self.change_entry("property", self.cmb_property.currentText())
         except Exception as e:
             print(("error", e))

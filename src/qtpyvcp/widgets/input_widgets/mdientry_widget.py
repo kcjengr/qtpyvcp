@@ -20,7 +20,7 @@ class Validator(QValidator):
         # eventually could do some actual validating here
         inputVal = string
         if not(inputVal.startswith(";") or inputVal.startswith("(")):
-            inputVal = inputVal.upper();
+            inputVal = inputVal.upper()
         return QValidator.Acceptable, inputVal, pos
 
 

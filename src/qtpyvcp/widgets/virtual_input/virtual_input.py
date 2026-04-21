@@ -1,11 +1,8 @@
 import os
 
-import linuxcnc
-
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import Slot, Qt, QEvent, QPoint, QFile
+from PySide6.QtCore import Slot, Qt, QEvent, QPoint
 from PySide6.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
-from PySide6.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox, QApplication
+from PySide6.QtWidgets import QWidget, QAbstractButton, QApplication
 
 # Map .ui filenames to their pre-compiled Ui_Form classes (which use __file__-relative
 # image paths and don't require re-running pyside6-uic at runtime).

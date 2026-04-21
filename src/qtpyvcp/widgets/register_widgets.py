@@ -43,7 +43,6 @@ from qtpyvcp.widgets.hal_widgets.hal_led_button import (HALLEDButton)  # noqa: F
 from qtpyvcp.widgets.hal_widgets.hal_plot import (HalPlot)  # noqa: F401
 from qtpyvcp.widgets.hal_widgets.hal_slider import (HalSlider)  # noqa: F401
 from qtpyvcp.widgets.hal_widgets.hal_spinbox import (HalQSpinBox)  # noqa: F401
-from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLoadMeterPlugin) # noqa: F401
 
 
 

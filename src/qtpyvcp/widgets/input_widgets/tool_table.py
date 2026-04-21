@@ -1,6 +1,5 @@
 from PySide6.QtCore import Qt, Slot, Signal, Property, QModelIndex, QSortFilterProxyModel
 from PySide6.QtGui import QStandardItemModel, QColor, QBrush
-from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
 
@@ -8,7 +7,7 @@ from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
-from qtpyvcp.utilities.settings import connectSetting, getSetting
+from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.plugins.db_tool_table import DBToolTable
 from qtpyvcp.actions import IN_DESIGNER
 
@@ -28,9 +27,9 @@ class ItemDelegate(QStyledItemDelegate):
 
     def displayText(self, value, locale):
 
-        if type(value) == float:
+        if type(value) is float:
             return f"{value:.4f}"
-        if type(value) == str:
+        if type(value) is str:
             return f"{self._padding}{value}"
 
         return f"{self._padding}{value}"
@@ -74,7 +73,7 @@ class ItemDelegate(QStyledItemDelegate):
                     editor.setRange(min_range, max_range)
                 else:
                     editor.setRange(-1000, 1000)
-            except:
+            except Exception:
                 # In designer mode or when settings aren't available
                 editor.setRange(-1000, 1000)
 

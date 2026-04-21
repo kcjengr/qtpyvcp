@@ -203,7 +203,6 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
 
-            val = self._setting.getValue()
             value_type = self._effective_value_type()
 
             validator = None

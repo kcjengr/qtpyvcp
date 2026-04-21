@@ -882,16 +882,12 @@ class GcodeTextEdit(QTextEdit):
         if self.find_words:
             flags |= QTextDocument.FindWholeWords
 
-        found = self.find(text, flags)
-
+        # found = self.find(text, flags)
         # if found:
         #     cursor = self.document().find(text, flags)
         #     if cursor.position() > 0:
         #         self.setTextCursor(cursor)
 
-    def findForward(self):
-        """Alias for findForwardText to maintain compatibility with UI files."""
-        self.findForwardText()
 
     def findBackwardText(self, text=None):
         if text is None:
@@ -904,8 +900,7 @@ class GcodeTextEdit(QTextEdit):
         if self.find_words:
             flags |= QTextDocument.FindWholeWords
 
-        found = self.find(text, flags)
-
+        # found = self.find(text, flags)
         # if found:
         #     cursor = self.document().find(text, flags)
         #     if cursor.position() > 0:
@@ -930,11 +925,7 @@ class GcodeTextEdit(QTextEdit):
             cursor.beginEditBlock()
             if cursor.hasSelection():
                 cursor.insertText(replace)
-            cursor.endEditBlock();
-
-    def replace(self):
-        """Alias for replaceText to maintain compatibility with UI files."""
-        self.replaceText()
+            cursor.endEditBlock()
 
     def replaceAllText(self, search=None, replace=None):
         if search is None:
@@ -957,17 +948,13 @@ class GcodeTextEdit(QTextEdit):
                 cursor.beginEditBlock()
                 if cursor.hasSelection():
                     cursor.insertText(replace)
-                cursor.endEditBlock();
+                cursor.endEditBlock()
             else:
                 searching = False
 
-    def replaceAll(self):
-        """Alias for replaceAllText to maintain compatibility with UI files."""
-        self.replaceAllText()
-
     @Slot()
     def saveFile(self, save_file_name = None):
-        if save_file_name == None:
+        if save_file_name is None:
             save_file = QFile(str(STATUS.file))
         else:
             save_file = QFile(str(save_file_name))
@@ -1152,7 +1139,7 @@ class GcodeTextEdit(QTextEdit):
     @Slot()
     def saveFileAs(self):
         open_file = QFile(str(STATUS.file))
-        if open_file == None:
+        if open_file is None:
             return
 
         current_file_name = open_file.fileName()
@@ -1363,7 +1350,7 @@ class GcodeTextEdit(QTextEdit):
         doc.setPlainText(p_str)
 
         # start syntax highlighting
-        if self.syntax_highlighting == True:
+        if self.syntax_highlighting:
             self.gCodeHighlighter = GcodeSyntaxHighlighter(doc, self.font)
             LOG.debug('Syntax highlighting enabled.')
 
@@ -1547,8 +1534,7 @@ class GcodeTextEdit(QTextEdit):
                         gcode = f.read()
                         decode_ms = (perf_counter() - dec_start) * 1000.0
                         break
-                except Exception as e:
-                    # LOG.debug(e)
+                except Exception:
                     LOG.info(f"File encoding doesn't match {enc}, trying others")
             if gcode is None:
                 LOG.warning("Unable to decode program file for GcodeTextEdit: %s", fname)

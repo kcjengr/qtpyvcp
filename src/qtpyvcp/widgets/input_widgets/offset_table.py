@@ -18,13 +18,13 @@
 
 import os
 
-from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
+from PySide6.QtCore import Qt, Slot, Property, QSortFilterProxyModel
 from PySide6.QtGui import QStandardItemModel, QColor, QBrush
 from PySide6.QtWidgets import QTableView, QHeaderView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
-from qtpyvcp.utilities.settings import connectSetting, getSetting
+from qtpyvcp.utilities.settings import getSetting
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -46,7 +46,7 @@ class ItemDelegate(QStyledItemDelegate):
 
     def displayText(self, value, locale):
 
-        if type(value) == float:
+        if type(value) is float:
             return "{0:.4f}".format(value)
 
         return "{}{}".format(self._padding, value)
@@ -71,7 +71,7 @@ class ItemDelegate(QStyledItemDelegate):
                     editor.setRange(min_range, max_range)
                 else:
                     editor.setRange(-1000, 1000)
-            except:
+            except Exception:
                 # In designer mode or when settings aren't available
                 editor.setRange(-1000, 1000)
             return editor

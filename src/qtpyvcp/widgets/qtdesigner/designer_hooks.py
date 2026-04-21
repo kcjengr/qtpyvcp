@@ -11,8 +11,6 @@
 
 from PySide6.QtCore import QTimer
 
-from PySide6.QtWidgets import QWidget
-
 from . import stylesheet
 
 class DesignerHooks(object):

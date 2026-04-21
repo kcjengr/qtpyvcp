@@ -56,7 +56,7 @@ class _DesignerPlugin(QDesignerCustomWidgetInterface):
             try:
                 tmp = self.pluginClass().__module__.split('.')[2].split('_')[0].capitalize()
                 return "QtPyVCP - {}".format(tmp)
-            except:
+            except Exception:
                 return "QtPyVCP - Undefined"
         else:
             return self.group_name
