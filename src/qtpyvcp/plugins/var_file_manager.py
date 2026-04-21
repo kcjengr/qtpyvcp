@@ -42,7 +42,7 @@ from PySide6.QtCore import QFileSystemWatcher, QTimer, Signal
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
+from qtpyvcp.plugins import DataPlugin, DataChannel
 
 LOG = getLogger(__name__)
 INFO = Info()

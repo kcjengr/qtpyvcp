@@ -1,4 +1,3 @@
-import os
 import numpy as np
 
 from vtk import (
@@ -7,35 +6,17 @@ from vtk import (
     vtkPolyDataMapper,
     vtkPolyData,
     vtkDelaunay2D,
-    vtkSmoothPolyDataFilter,
     vtkTransform
 )
 
 # noinspection PyUnresolvedReferences
-import vtkmodules.vtkInteractionStyle
 # noinspection PyUnresolvedReferences
-import vtkmodules.vtkRenderingContextOpenGL2
 # noinspection PyUnresolvedReferences
-import vtkmodules.vtkRenderingOpenGL2
-from vtkmodules.vtkChartsCore import (
-    vtkChartXYZ,
-    vtkPlotSurface
-)
-from vtkmodules.vtkCommonColor import vtkNamedColors
-from vtkmodules.vtkCommonCore import vtkFloatArray
-from vtkmodules.vtkCommonDataModel import (
-    vtkRectf,
-    vtkTable,
-    vtkVector2i
-)
-from vtkmodules.vtkRenderingContext2D import vtkContextMouseEvent
-from vtkmodules.vtkViewsContext2D import vtkContextView
 
 from qtpyvcp.utilities import logger
 
 # from qtpyvcp.widgets.display_widgets.vtk_backplot.linuxcnc_datasource import LinuxCncDataSource
 from qtpyvcp.utilities.settings import getSetting
-from qtpyvcp.plugins import iterPlugins, getPlugin
 
 LOG = logger.getLogger(__name__)
 

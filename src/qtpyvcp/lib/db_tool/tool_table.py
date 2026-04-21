@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from sqlalchemy import Column, String, Integer, Date, Table, ForeignKey, Float, Text
+from sqlalchemy import Column, String, Integer, ForeignKey, Float, Text
 from sqlalchemy.orm import relationship
 
 from .base import Base

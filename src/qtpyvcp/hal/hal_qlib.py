@@ -4,7 +4,7 @@ import signal
 import _hal
 import hal
 
-from PySide6.QtCore import QObject, Signal, QTimer
+from PySide6.QtCore import QObject, Signal
 
 import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger

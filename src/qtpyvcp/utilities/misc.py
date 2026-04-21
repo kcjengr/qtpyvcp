@@ -39,7 +39,7 @@ def cnc_float(value):
         locale.setlocale(locale.LC_NUMERIC, 'C')
         result = float(value)
         return result
-    except (ValueError, locale.Error) as e:
+    except (ValueError, locale.Error):
         raise ValueError(f"Invalid CNC decimal format: '{value}'. Use format like 1234.5678")
     finally:
         # Restore original locale

@@ -2,8 +2,7 @@ import os
 import yaml
 from importlib.metadata import entry_points
 
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import (Qt, Slot, QFile)
+from PySide6.QtCore import (Qt, Slot)
 from PySide6.QtWidgets import (QFileDialog,
                                QApplication,
                                QDialog,

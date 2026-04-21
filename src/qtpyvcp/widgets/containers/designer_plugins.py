@@ -1,4 +1,4 @@
-from qtpyvcp.widgets.qtdesigner import _DesignerPlugin, _PluginExtension
+from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
 from .frame import VCPFrame
 class VCPFramePlugin(_DesignerPlugin):

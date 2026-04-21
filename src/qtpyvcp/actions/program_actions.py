@@ -4,7 +4,7 @@ import linuxcnc
 import tempfile
 from time import perf_counter
 
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import QTimer
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -729,8 +729,11 @@ optional_skip = block_delete
 #==============================================================================
 # Program preprocessing handlers
 #==============================================================================
-import os, sys, time, select, re
-import tempfile, atexit, shutil
+import os
+import select
+import re
+import atexit
+import shutil
 
 FILTER_TEMP = None
 

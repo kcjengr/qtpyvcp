@@ -27,7 +27,7 @@ from PySide6.QtGui import QIcon
 
 from PySide6.QtWidgets import (QWidget, QHBoxLayout, QLabel, QPushButton,
                             QVBoxLayout, QApplication,
-                            QDialog, QScrollArea, QPlainTextEdit, QSizePolicy)
+                            QScrollArea, QPlainTextEdit)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 

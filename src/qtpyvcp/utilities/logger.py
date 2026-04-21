@@ -18,13 +18,10 @@
 import os
 
 import logging
-from logging.handlers import SocketHandler
 
-from linuxcnc import ini
 
 # Our custom colorizing formatter for the terminal handler
 from qtpyvcp.lib.colored_formatter import ColoredFormatter
-from qtpyvcp.lib.logger import TTYHandler
 from qtpyvcp.utilities.misc import normalizePath
 
 # Global name of the base logger

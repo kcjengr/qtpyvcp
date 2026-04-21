@@ -2,8 +2,7 @@
 
 import os
 
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import Qt, QFile
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDialog
 
 from qtpyvcp.utilities.logger import getLogger

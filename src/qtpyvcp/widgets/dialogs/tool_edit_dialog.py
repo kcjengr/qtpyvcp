@@ -22,7 +22,6 @@ import os
 
 #from PySide6.QtUiTools import QUiLoader
 #from PySide6.QtCore import QFile
-from PySide6.QtWidgets import QDialog
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog

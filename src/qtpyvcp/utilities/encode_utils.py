@@ -1,6 +1,3 @@
-import pkgutil
-import os
-import encodings
 
 
 def allEncodings():

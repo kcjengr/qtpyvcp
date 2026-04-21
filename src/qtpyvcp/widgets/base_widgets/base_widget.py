@@ -12,7 +12,6 @@ import json
 from PySide6.QtCore import Qt,Property, Slot
 from PySide6.QtWidgets import QPushButton
 
-from qtpyvcp import hal as qhal
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.machine_parameters import (

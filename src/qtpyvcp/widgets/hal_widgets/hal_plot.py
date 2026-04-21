@@ -3,7 +3,7 @@ import os
 
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QWidget, QVBoxLayout
-from PySide6.QtCore import Property, Signal, Slot, QTime, QElapsedTimer, QTimer, Qt
+from PySide6.QtCore import Property, QTime, QElapsedTimer, QTimer, Qt
 from collections import deque
 
 from qtpyvcp import hal

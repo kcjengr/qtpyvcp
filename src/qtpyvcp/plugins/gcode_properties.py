@@ -17,7 +17,6 @@ YAML configuration:
 
 """
 import os
-import pprint
 import shutil
 
 import linuxcnc

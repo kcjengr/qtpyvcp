@@ -18,14 +18,8 @@
 
 import os
 
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile
-from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel, QMenu
 
-from qtpyvcp import actions
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
-from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 class ShutDownDialog(BaseDialog):
@@ -48,7 +42,7 @@ class ShutDownDialog(BaseDialog):
 
 
     def reject(self):
-        self.hide();
+        self.hide()
 
     def accept(self):
-        self.hide();
+        self.hide()

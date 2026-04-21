@@ -4,7 +4,6 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Property
 
 from qtpyvcp.utilities.info import Info
-from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
 
 INFO = Info()
 

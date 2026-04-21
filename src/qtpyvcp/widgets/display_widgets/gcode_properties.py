@@ -6,7 +6,6 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile
 from PySide6.QtWidgets import QWidget
 
-from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 
 IN_DESIGNER = os.getenv('DESIGNER') != None

@@ -18,9 +18,6 @@
 
 import os
 
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QFile
-from PySide6.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 from qtpyvcp.plugins import getPlugin

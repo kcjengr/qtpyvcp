@@ -1,11 +1,9 @@
 # coding=utf-8
 
-from datetime import date
 
 from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
 from qtpyvcp.lib.db_tool.base import Session, engine, Base
 
-from qtpyvcp.plugins import getPlugin
 #
 # tooltable_plugin = getPlugin('tooltable')
 #

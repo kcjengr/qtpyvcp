@@ -17,8 +17,7 @@ from PySide6.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextCharFormat, QTextCursor, QTextBlockFormat,
                         QPalette, QKeySequence)
 
-from PySide6.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
-                            QWidget, QMenu, QFileDialog,
+from PySide6.QtWidgets import (QTextEdit, QWidget, QMenu, QFileDialog,
                             QStyledItemDelegate, QTreeView, QListView, QSplitter)
 
 from dateutil.parser import parse as parse_date

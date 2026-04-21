@@ -5,7 +5,7 @@ DROLineEdit
 """
 
 import os
-from PySide6.QtCore import Qt, Property
+from PySide6.QtCore import Qt
 from qtpyvcp.widgets.base_widgets.eval_line_edit import EvalLineEdit
 
 from qtpyvcp.widgets.base_widgets.dro_base_widget import DROBaseWidget, Axis, LatheMode

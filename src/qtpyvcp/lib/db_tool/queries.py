@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from .tool_table import ToolTable, Tool
+from .tool_table import ToolTable
 from .base import Session
 
 session = Session()

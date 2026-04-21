@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import os
 import sys
 import re
 
@@ -9,7 +8,7 @@ from tooldb import tooldb_tools     # list of tool numbers
 from tooldb import tooldb_loop      # main loop
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
+from qtpyvcp.lib.db_tool.tool_table import Tool
 
 # Catch unhandled exceptions
 def excepthook(exc_type, exc_msg, exc_tb):

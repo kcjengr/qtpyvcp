@@ -7,12 +7,10 @@ from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QPushButton, QFileDialog, QDialog, QLabel
 
 
-from qtpyvcp.lib.db_tool.base import Session, Base, engine
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
+from qtpyvcp.lib.db_tool.base import Session
+from qtpyvcp.lib.db_tool.tool_table import ToolModel
 
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
-from qtpyvcp.widgets.base_widgets.base_widget import VCPWidget
 
 LOG = getLogger(__name__)
 

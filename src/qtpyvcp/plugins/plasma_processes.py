@@ -294,7 +294,7 @@ class Cutchart(crudMixin,BASE):
 
     @classmethod
     def tool_list_for_lcnc(cls, session, machine, pressure, measurement):
-        LOG.debug(f"class method for tool_list_for_lcnc")
+        LOG.debug("class method for tool_list_for_lcnc")
         measurementid = LinearSystem.get_by_key(session, 'name', measurement)[0].id
         LOG.debug(f"measurementid = {measurementid}")
         pressureid = PressureSystem.get_by_key(session, 'name', pressure)[0].id
@@ -568,7 +568,7 @@ class PlasmaProcesses(Plugin):
         #                 amps = args['amps'], \
         #                 pressure = args['pressure'], \
         #                 pause_at_end = args['pause_at_end'])
-        LOG.debug(f"Update cutchart.")
+        LOG.debug("Update cutchart.")
 
     def seed_data_base(self, source_file, holes_file=None):
         # This method tears down the DB and loads net new from a source file

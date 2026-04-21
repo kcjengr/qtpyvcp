@@ -11,7 +11,6 @@ os.environ['DESIGNER'] = '1'
 
 # Initialize and register custom widgets BEFORE launching designer
 try:
-    from qtpyvcp.widgets import qtdesigner_plugin
     print("✓ QtPyVCP designer plugins initialized", file=sys.stderr, flush=True)
 except Exception as e:
     print(f"✗ Error initializing designer plugins: {e}", file=sys.stderr)

@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QPushButton
-from PySide6.QtCore import Qt, Slot, Property, Signal, QSize
+from PySide6.QtCore import Qt, Slot, Property, QSize
 from PySide6.QtGui import QColor
 
 from qtpyvcp.utilities.obj_status import HALStatus

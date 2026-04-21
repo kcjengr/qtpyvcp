@@ -20,7 +20,6 @@ DEFAULT_SPEED = INFO.defaultSpindleSpeed()
 
 CMD = linuxcnc.command()
 
-from qtpyvcp.actions.base_actions import setTaskMode
 
 
 def _spindle_exists(spindle):

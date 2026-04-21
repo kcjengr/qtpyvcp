@@ -18,7 +18,7 @@ import linuxcnc  # For commanding linuxcnc
 
 
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import Qt, QFile
+from PySide6.QtCore import QFile
 from PySide6.QtWidgets import QWidget
 
 from qtpyvcp.utilities.info import Info

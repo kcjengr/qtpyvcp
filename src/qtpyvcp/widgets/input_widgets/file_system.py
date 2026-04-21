@@ -1,15 +1,12 @@
 import os
 import subprocess
 
-import linuxcnc
-import psutil
 
 
 from dateutil.parser import parse
 # from pyudev.pyqt5 import MonitorObserver
-from pyudev import Context, Monitor, Devices
 
-from PySide6.QtCore import Qt, Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice, QEnum
+from PySide6.QtCore import Qt, Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
 from PySide6.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
     QApplication, QAbstractItemView, QInputDialog, QLineEdit
 
@@ -132,7 +129,7 @@ class QtpyVCPQFileSystemModel(QFileSystemModel):
                     date = parse(data)
                     formatted_date = f"{date:%m/%d/%y   %I:%M  %p}"
                     return formatted_date
-                except ValueError as e:
+                except ValueError:
                     pass
                 return f"{data}"
 
@@ -221,7 +218,7 @@ class FileSystemTable(QTableView, TableType):
                     with open(path,  'r', encoding=enc) as f:
                         content = f.read()
                         break
-                except Exception as e:
+                except Exception:
                     # LOG.debug(e)
                     LOG.info(f"File encoding doesn't match {enc}, trying others")
             LOG.info(f"File encoding: {enc}")

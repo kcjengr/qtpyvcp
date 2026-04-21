@@ -103,7 +103,7 @@ def _get_style_data(stylesheet_file_path=None):
                 LOG.info("Opening the default stylesheet '{0}'...".format(
                     GLOBAL_STYLESHEET))
                 __style_data = default_stylesheet.read()
-        except Exception as ex:
+        except Exception:
             __style_data = None
             LOG.exception("Cannot find the default stylesheet file '{0}'.".format(GLOBAL_STYLESHEET))
     return __style_data

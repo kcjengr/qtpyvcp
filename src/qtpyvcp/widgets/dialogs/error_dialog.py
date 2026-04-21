@@ -1,9 +1,8 @@
 import os
 from traceback import format_exception
 
-from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import Slot, QFile
-from PySide6.QtWidgets import QDialog, QApplication
+from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QApplication
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
@@ -64,7 +63,9 @@ class ErrorDialog(BaseDialog):
     @Slot()
     def on_reportIssue_clicked(self):
         import PySide6
-        import urllib.request, urllib.parse, urllib.error
+        import urllib.request
+        import urllib.parse
+        import urllib.error
         import webbrowser
         import subprocess
         import linuxcnc

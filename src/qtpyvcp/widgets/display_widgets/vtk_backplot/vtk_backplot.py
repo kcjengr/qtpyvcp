@@ -31,7 +31,7 @@ import vtk
 import yaml
 from PySide6.QtCore import QObject, Property, QEvent, Qt, QTimer, Slot
 from PySide6.QtGui import QColor
-from PySide6.QtWidgets import QApplication, QWidget
+from PySide6.QtWidgets import QWidget
 from vtkmodules.vtkCommonCore import VTK_VERSION_NUMBER, vtkVersion
 
 IN_DESIGNER = os.getenv("DESIGNER", False)
@@ -63,7 +63,7 @@ from .program_bounds_actor import ProgramBoundsActor
 from .spindle_actor import SpindleActor
 from .table_actor import TableActor
 from .tool_actor import ToolActor, ToolBitActor
-from .vtk_canon import COLOR_MAP, VTKCanon
+from .vtk_canon import VTKCanon
 
 LOG = logger.getLogger(__name__)
 

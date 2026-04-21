@@ -1,5 +1,5 @@
 import os
-from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
+from PySide6.QtCore import Qt, Property
 from PySide6.QtGui import QStandardItemModel, QColor, QBrush
 from PySide6.QtWidgets import QTableView
 

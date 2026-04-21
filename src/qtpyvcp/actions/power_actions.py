@@ -1,4 +1,3 @@
-import linuxcnc
 
 # Set up logging
 from qtpyvcp.utilities import logger

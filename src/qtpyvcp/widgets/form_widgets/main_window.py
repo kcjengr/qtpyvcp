@@ -10,7 +10,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
 from PySide6.QtCore import Qt, Slot, QTimer, QFile, QObject, QCoreApplication
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QVBoxLayout, QButtonGroup, QWidget, QGridLayout, QBoxLayout
+    QMenu, QMenuBar, QLineEdit, QButtonGroup, QWidget, QGridLayout, QBoxLayout
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -20,7 +20,6 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
-from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 from qtpyvcp.utilities.encode_utils import allEncodings
 from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
@@ -901,7 +900,7 @@ class VCPMainWindow(QMainWindow):
         if self.app.focusWidget() != None:
             LOG.debug(f"Focus widget = {self.app.focusWidget().objectName()}")
         else:
-            LOG.debug(f"Focus widget = None")
+            LOG.debug("Focus widget = None")
 
         # Determine jog speed: Shift always means rapid jog
         if event.modifiers() & Qt.KeyboardModifier.ShiftModifier:

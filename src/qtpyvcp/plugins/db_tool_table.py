@@ -22,30 +22,23 @@ Tool Table YAML configuration:
 """
 
 import os
-import sys
-import re
-import io
 
-from itertools import takewhile
-from datetime import datetime
 
 from deepdiff import DeepDiff
 
 from  linuxcnc import command
 
-from PySide6.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
+from PySide6.QtCore import QTimer, Signal
 
-import qtpyvcp
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
+from qtpyvcp.lib.db_tool.tool_table import Tool
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
-import pprint
 
 CMD = command()
 LOG = getLogger(__name__)

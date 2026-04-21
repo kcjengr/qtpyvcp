@@ -7,7 +7,6 @@ from qtpyvcp.utilities.settings import setting
 
 # Set up logging
 from qtpyvcp.utilities import logger
-from abc import abstractstaticmethod
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.actions.base_actions import setTaskMode

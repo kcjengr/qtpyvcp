@@ -19,7 +19,7 @@
 import os
 from PySide6.QtCore import Qt, QSortFilterProxyModel, QRegularExpression
 from PySide6.QtGui import QStandardItemModel, QStandardItem, QIcon
-from PySide6.QtWidgets import QVBoxLayout, QStackedWidget, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin

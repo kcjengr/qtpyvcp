@@ -5,7 +5,7 @@ from PySide6.QtCore import (Qt, QSize)
 from PySide6.QtGui import (QFont, QIcon, QPalette, QTextCursor)
 
 from PySide6.QtWidgets import (QLineEdit, QHBoxLayout,
-                            QVBoxLayout, QLabel, QPushButton, QCheckBox, QLayout,
+                            QVBoxLayout, QLabel, QPushButton, QLayout,
                             QSizePolicy)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog

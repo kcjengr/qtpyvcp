@@ -1,16 +1,9 @@
 import os
-import math
 
-from pprint import pprint
-from _collections import defaultdict
 
 import vtk.qt
 from vtk.util.colors import *
 
-from vtkmodules.vtkCommonColor import vtkNamedColors
-from vtkmodules.vtkFiltersSources import vtkLineSource
-from vtkmodules.vtkFiltersSources import vtkCylinderSource
-from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
 from qtpyvcp.utilities import logger
 from collections import OrderedDict
@@ -43,7 +36,7 @@ class MachineCubeActor(vtk.vtkCubeAxesActor):
         self.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
         
         
-        self.SetGridLineLocation(self.VTK_GRID_LINES_FURTHEST);
+        self.SetGridLineLocation(self.VTK_GRID_LINES_FURTHEST)
 
         grid_color = vtk.vtkProperty()
         grid_color.SetColor(0.05, 0.05, 0.05)

@@ -3,7 +3,7 @@ import os
 from PySide6.QtWidgets import qApp
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
+from qtpyvcp.plugins import DataPlugin, DataChannel
 
 LOG = getLogger(__name__)
 
@@ -51,7 +51,7 @@ class UserManagement(DataPlugin):
             True if the user was logged in successfully.
         """
         # Test password and user
-        if not username in self.users:
+        if username not in self.users:
             LOG.debug(f'User: {username} not found')
             return False
         

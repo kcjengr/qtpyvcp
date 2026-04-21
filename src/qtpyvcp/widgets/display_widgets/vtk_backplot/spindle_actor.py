@@ -1,8 +1,6 @@
 import vtk.qt
 
 from vtkmodules.vtkCommonColor import vtkNamedColors
-from vtkmodules.vtkFiltersSources import vtkLineSource
-from vtkmodules.vtkFiltersSources import vtkCylinderSource
 from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
 

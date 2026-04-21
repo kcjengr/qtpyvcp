@@ -50,7 +50,7 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
         
         try:
             self.setText(f"{value:{self._fmt}}")
-        except Exception as e:
+        except Exception:
             self.setText(f"ERR: {self._fmt}")
             LOG.warning("Invalid format specified")
             

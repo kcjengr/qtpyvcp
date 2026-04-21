@@ -114,7 +114,7 @@ class Status(DataPlugin):
         if self.locking_count <= 0:
             self.locking_count = 0
             QApplication.restoreOverrideCursor()
-            LOG.debug(f"---- Remove lock: restoreOverrideCursor")
+            LOG.debug("---- Remove lock: restoreOverrideCursor")
         LOG.debug(f"Remove lock. Total = {self.locking_count}")
 
     def loadMdiHistory(self, fname):

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
 
 from math import cos, sin, radians
 
@@ -12,13 +11,12 @@ from vtkmodules.vtkFiltersSources import vtkCylinderSource
 from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
 from qtpyvcp.utilities import logger
-from qtpyvcp.utilities.settings import getSetting
 
-from qtpyvcp.plugins import iterPlugins, getPlugin
+from qtpyvcp.plugins import iterPlugins
 from qtpyvcp.plugins.db_tool_table import DBToolTable
 
-from qtpyvcp.lib.db_tool.base import Session, Base, engine
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
+from qtpyvcp.lib.db_tool.base import Session
+from qtpyvcp.lib.db_tool.tool_table import ToolModel
 
 
 LOG = logger.getLogger(__name__)

@@ -1,4 +1,3 @@
-from string import Template
 
 from PySide6.QtCore import Qt, Property, Slot, QRectF, QSize
 from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPen
@@ -262,7 +261,7 @@ class BarIndicatorBase(QWidget):
     def text(self):
         try:
             return f"{self.prefix} {self.value:{self._format}} {self.sufix}"
-        except Exception as e:
+        except Exception:
              # self.setText(f"ERR: {self._fmt}")
              LOG.error(f"Invalid format specified {self._format}")
              return "FORMAT ERROR"

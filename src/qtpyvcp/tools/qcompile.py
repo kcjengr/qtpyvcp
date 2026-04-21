@@ -17,7 +17,6 @@ Example::
 
 import os
 import sys
-import fnmatch
 import subprocess
 
 pyrcc = 'pyside6-rcc'

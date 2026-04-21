@@ -1,4 +1,3 @@
-from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
