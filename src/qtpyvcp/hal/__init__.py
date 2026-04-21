@@ -30,8 +30,10 @@ Example:
 """
 
 from qtpyvcp.utilities.logger import getLogger
-
-from .hal_qlib import QComponent, QPin, QParam
+# Import as redundant alias to suppress linter warnings
+from .hal_qlib import QComponent as QComponent
+from .hal_qlib import QPin as QPin
+from .hal_qlib import QParam as QParam
 
 COMPONENTS = {}
 LOG = getLogger(__name__)

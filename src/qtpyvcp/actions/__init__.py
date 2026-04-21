@@ -3,12 +3,12 @@ import sys
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox, QDial
 
-from . import machine_actions as machine
-from . import program_actions as program
-from . import spindle_actions as spindle
-from . import coolant_actions as coolant
-from . import tool_actions as tool
-from . import power_actions as power
+from . import machine_actions as machine    # noqa: F401
+from . import program_actions as program    # noqa: F401
+from . import spindle_actions as spindle    # noqa: F401
+from . import coolant_actions as coolant    # noqa: F401
+from . import tool_actions as tool          # noqa: F401
+from . import power_actions as power        # noqa: F401
 
 # Set up logging
 from qtpyvcp.utilities import logger

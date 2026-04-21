@@ -12,7 +12,12 @@ import importlib
 from collections import OrderedDict
 
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins.base_plugins import Plugin, DataPlugin, DataChannel
+# Import as redundant alias to suppress linter warnings
+from qtpyvcp.plugins.base_plugins import Plugin as Plugin
+from qtpyvcp.plugins.base_plugins import DataPlugin as DataPlugin
+from qtpyvcp.plugins.base_plugins import DataChannel as DataChannel
+
+
 
 LOG = getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)

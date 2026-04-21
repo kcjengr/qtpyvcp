@@ -29,7 +29,8 @@ log = logger.getLogger(__name__)
 
 DBusQtMainLoop = None
 try:
-    from PySide6.QtDBus import QDBusConnection
+    # Should this use the importlib.util.find_spec test pattern?
+    from PySide6.QtDBus import QDBusConnection      # noqa: F401
 except ImportError:
     log.warning("Could not import DBusQtMainLoop, is package 'python-dbus.mainloop.pyqt5' installed?")
 
