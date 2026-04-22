@@ -1416,7 +1416,7 @@ class PreProcessor:
                         centre_y = endy + arc_j
                         radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
                         diameter = 2 * fabs(radius)
-                        circumferance = diameter * pi
+                        # circumferance = diameter * pi
                         
                         # see if can find hidef data for this hole scenario
                         if self.active_materialid is not None:

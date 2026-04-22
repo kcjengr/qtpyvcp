@@ -45,13 +45,13 @@ def main():
                     if descriptor in ('T', 'P', 'Q'):
                         try:
                             tool_data[descriptor] = int(value)
-                        except:
+                        except Exception:
                             LOG.error('Error converting value to int: {}'.format(value))
                             break
                     else:
                         try:
                             tool_data[descriptor] = float(value)
-                        except:
+                        except Exception:
                             LOG.error('Error converting value to float: {}'.format(value))
                             break
 

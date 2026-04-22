@@ -261,7 +261,7 @@ class OffsetTable(DataPlugin):
             self.fs_watcher.addPath(self.parameter_file)
 
         # reload with the new data
-        offset_table = self.loadOffsetTable()
+        self.loadOffsetTable()
 
     def iterTools(self, offset_table=None, columns=None):
         offset_table = offset_table or self.OFFSET_TABLE

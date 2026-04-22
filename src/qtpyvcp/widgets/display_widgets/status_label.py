@@ -56,7 +56,7 @@ class StatusLabel(QLabel, VCPWidget):
         self._expression = expression
         try:
             self._compiled_exp = eval('lambda val: ' + self._expression, {})
-        except:
+        except Exception:
             LOG.exception("Python expression is not valid: %s", self._expression)
 
     @Slot(str)

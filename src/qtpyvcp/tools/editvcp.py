@@ -374,7 +374,7 @@ def main() -> None:
     opts = DotDict({arg.strip('-<>').replace('-', '_'):
                     value for arg, value in list(raw_args.items())})
 
-    app = QApplication(sys.argv)
+    QApplication(sys.argv)
     launch_designer(opts)
 
 

@@ -310,13 +310,13 @@ class ToolTable(DataPlugin):
     
                             try:
                                 tool[descriptor] = int(value)
-                            except:
+                            except Exception:
                                 LOG.error('Error converting value to int: {}'.format(value))
                                 break
                         else:
                             try:
                                 tool[descriptor] = float(value)
-                            except:
+                            except Exception:
                                 LOG.error('Error converting value to float: {}'.format(value))
                                 break
     
@@ -405,7 +405,7 @@ class ToolTable(DataPlugin):
                                     version=qtpyvcp.__version__,
                                     datetime=datetime.now()).lstrip().splitlines()
                 header_lines.append('')  # extra new line before table header
-            except:
+            except Exception:
                 pass
 
         if self.orig_header_lines:

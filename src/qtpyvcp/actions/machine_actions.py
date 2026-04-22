@@ -508,7 +508,7 @@ def _feed_override_bindOk(value=100, widget=None):
 
     except AttributeError:
         pass
-    except:
+    except Exception:
         LOG.exception('Error in feed_override bindOk')
 
 feed_override.set.ok = feed_override.reset.ok = _feed_override_ok
@@ -576,7 +576,7 @@ def _rapid_override_bindOk(value=100, widget=None):
 
     except AttributeError:
         pass
-    except:
+    except Exception:
         LOG.exception('Error in rapid_override bindOk')
 
 rapid_override.set.ok = rapid_override.reset.ok = _rapid_override_ok
@@ -642,7 +642,7 @@ def _max_velocity_bindOk(value=100, widget=None):
 
     except AttributeError:
         pass
-    except:
+    except Exception:
         LOG.exception('Error in max_velocity bindOk')
 
 max_velocity.set.ok = max_velocity.reset.ok = _max_velocity_ok
@@ -949,7 +949,7 @@ def override_limits():
 
 def _override_limits_ok(widget=None):
     ok = False
-    mgs = None
+    msg = None
     if IN_DESIGNER:
         return 
     for anum in INFO.AXIS_NUMBER_LIST:

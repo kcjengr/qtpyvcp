@@ -74,7 +74,7 @@ class MDIButton(VCPButton):
 
                 cmd = cmd.replace("{}#<{}>".format(cmd_word, object_name),
                                   "{}{}".format(cmd_word, val))
-            except:
+            except Exception:
                 LOG.exception("Couldn't expand '{}' variable.".format(object_name))
                 return
 

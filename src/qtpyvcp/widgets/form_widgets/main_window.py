@@ -113,7 +113,7 @@ class VCPMainWindow(QMainWindow):
             try:
                 width, height = size.lower().split('x')
                 self.resize(int(width), int(height))
-            except:
+            except Exception:
                 LOG.exception('Error parsing --size argument: %s', size)
 
         pos = opts.position or position
@@ -121,7 +121,7 @@ class VCPMainWindow(QMainWindow):
             try:
                 xpos, ypos = pos.lower().split('x')
                 self.move(int(xpos), int(ypos))
-            except:
+            except Exception:
                 LOG.exception('Error parsing --position argument: %s', pos)
 
         QShortcut(QKeySequence("F11"), self, self.toggleFullscreen)
@@ -762,7 +762,7 @@ class VCPMainWindow(QMainWindow):
                             submenu.addAction(menu_action)
                         menu.addMenu(submenu)
 
-                    elif setting.value_type == bool:
+                    elif setting.value_type is bool:
                         # works for bool settings
                         menu_action = QAction(parent=self, text=title)
                         menu_action.setCheckable(True)
@@ -786,7 +786,7 @@ class VCPMainWindow(QMainWindow):
                 menu_action.setShortcut(shortcut)
                 menu.addAction(menu_action)
                 return
-            except:
+            except Exception:
                 pass
 
             try:
@@ -833,8 +833,8 @@ class VCPMainWindow(QMainWindow):
                 title = item.get('title') or ''
                 items = item.get('items')
                 provider = item.get('provider')
-                args = item.get('args') or []
-                kwargs = item.get('kwargs') or {}
+                # args = item.get('args') or []
+                # kwargs = item.get('kwargs') or {}
 
                 if items is not None:
                     new_menu = QMenu(parent=self, title=title)
@@ -897,7 +897,7 @@ class VCPMainWindow(QMainWindow):
         if event.isAutoRepeat():
             return
 
-        if self.app.focusWidget() != None:
+        if self.app.focusWidget() is not None:
             LOG.debug(f"Focus widget = {self.app.focusWidget().objectName()}")
         else:
             LOG.debug("Focus widget = None")
@@ -994,7 +994,7 @@ class VCPMainWindow(QMainWindow):
 
         jog_stopped = False
         if self._lathe_mode:
-            x_sign = -1 if (not self._back_tool_lathe and self._lathe_mode) else 1
+            # x_sign = -1 if (not self._back_tool_lathe and self._lathe_mode) else 1
             if event.key() == Qt.Key_Up:
                 actions.machine.jog.axis('X', 0)
                 jog_stopped = True

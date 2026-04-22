@@ -102,7 +102,7 @@ class Setting(QObject):
         return value
 
     def normalizeValue(self, value):
-        if type(value) != self.value_type:
+        if type(value) is not self.value_type:
             try:
                 value = self.value_type(value)
             except ValueError:
@@ -144,7 +144,7 @@ class Setting(QObject):
         if update:
             try:
                 wrapped(self.getValue())
-            except:
+            except Exception:
                 pass
 
     def __get__(self, instance, owner):

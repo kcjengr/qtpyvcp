@@ -10,7 +10,7 @@ from qtpyvcp.actions.machine_actions import issue_mdi
 
 LOG = logger.getLogger(__name__)
 
-IN_DESIGNER = os.getenv('DESIGNER') != None
+IN_DESIGNER = os.getenv('DESIGNER') is not None
 
 def _safe_import_linuxcnc():
     """Import linuxcnc with intelligent error handling"""

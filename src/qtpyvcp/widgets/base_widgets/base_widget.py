@@ -57,7 +57,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     This class handles the rules and other things that
     apply to QtPyVCP widgets regardless of use.
     """
-    IN_DESIGNER = os.getenv('DESIGNER') != None
+    IN_DESIGNER = os.getenv('DESIGNER') is not None
 
     DEFAULT_RULE_PROPERTY = 'None'
     RULE_PROPERTIES = {
@@ -280,7 +280,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
             # initial call to update
             try:
                 exp()
-            except:
+            except Exception:
                 widget_name = self.objectName()
                 LOG.exception(f'Error calling rules expression from {widget_name}:')
                 continue

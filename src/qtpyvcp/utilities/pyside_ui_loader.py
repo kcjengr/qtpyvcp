@@ -39,13 +39,13 @@ class PySide6Ui:
             with open(py_file, 'w') as f:
                 f.write(uipy.decode("utf-8"))
             return True
-        except:
+        except Exception:
             return False
 
     def load(self):
         uipy = self.__getUi()
         parsed = xml.parse(self.__ui_file)
-        widget_class = parsed.find('widget').get('class')
+        # widget_class = parsed.find('widget').get('class')
         form_class = parsed.find('class').text
         pyc = compile(uipy, '<string>', 'exec')
         frame = {}

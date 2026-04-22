@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QWidget
 
 from qtpyvcp.utilities import logger
 
-IN_DESIGNER = os.getenv('DESIGNER') != None
+IN_DESIGNER = os.getenv('DESIGNER')is not None
 
 LOG = logger.getLogger(__name__)
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))

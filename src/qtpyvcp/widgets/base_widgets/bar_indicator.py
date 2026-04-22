@@ -279,7 +279,7 @@ class BarIndicatorBase(QWidget):
                 pos, r, g, b = stop.split(',')[:4]
                 color = QColor(int(r), int(g), int(b))
                 grad.setColorAt(float(pos), color)
-        except:
+        except Exception:
             LOG.exception('Invalid gradient.')
             return
 

@@ -143,8 +143,6 @@ class GcodeLexer(QsciLexerCustom):
 
         # scintilla always asks to style whole lines
         for line in source.splitlines(True):
-            # print(line)
-            length = len(line)
             graymode = False
             msg = ('msg'.encode('utf-8') in line.lower() or 'debug'.encode('utf-8') in line.lower())
             for char in str(line):
@@ -160,7 +158,8 @@ class GcodeLexer(QsciLexerCustom):
                 elif graymode:
                     if msg and char.lower() in ('m', 's', 'g', ',', 'd', 'e', 'b', 'u'):
                         set_style(1, self.Assignment)
-                        if char == ',': msg = False
+                        if char == ',':
+                            msg = False
                     else:
                         set_style(1, self.Comment)
                     continue
@@ -305,7 +304,7 @@ class EditorBase(QsciScintilla):
             if from_start:
                 self.setCursorPosition(0, 0)
 
-            match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
+            self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
 
     def text_replace(self, text, sub, from_start, re=False,
                      cs=True, wo=False, wrap=True, forward=True,
@@ -623,7 +622,7 @@ class GcodeEditor(EditorBase, QObject):
             fp = os.path.expanduser(fname)
             with open(fp, 'rb') as handle:
                 self.set_text_fast(handle.read())
-        except:
+        except Exception:
             LOG.error('File path is not valid: {}'.format(fname))
             self.setText('')
             return

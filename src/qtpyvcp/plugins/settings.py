@@ -56,7 +56,7 @@ class Settings(DataPlugin):
     def terminate(self):
         settings = {}
         for key, obj in list(SETTINGS.items()):
-            if obj.persistent == True:
+            if obj.persistent:
                 value = obj.getValue()
                 if obj.default_value != value:
                     settings[key] = value

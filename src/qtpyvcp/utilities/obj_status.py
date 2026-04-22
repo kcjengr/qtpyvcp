@@ -69,7 +69,7 @@ class StatusItem(QObject):
         return hash((self.attr_name, self.index, self.key))
 
     def __eq__(self, other):
-        return type(self) == type(other) and (self.attr_name, self.index, self.key) == (other.attr_name, other.index, other.key)
+        return type(self) is type(other) and (self.attr_name, self.index, self.key) == (other.attr_name, other.index, other.key)
 
     def __ne__(self, other):
         # Needed to avoid having both x==y and x!=y True at the same time!
@@ -233,7 +233,7 @@ class HALPin(QObject):
         return hash(self.pin_name)
 
     def __eq__(self, other):
-        return type(self) == type(other) and hash(self.pin_name) == hash(other.pin_name)
+        return type(self) is type(other) and hash(self.pin_name) == hash(other.pin_name)
 
     def __ne__(self, other):
         # Needed to avoid having both x==y and x!=y True at the same time!
@@ -283,7 +283,7 @@ class HALPin(QObject):
         return self.log_change
 
     def convertType(self, value):
-        if self.type == bool:
+        if self.type is bool:
             return value.lower() in ['true', '1']
         return self.type(value)
 

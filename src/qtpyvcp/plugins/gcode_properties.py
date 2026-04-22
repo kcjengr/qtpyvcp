@@ -208,9 +208,9 @@ class GCodeProperties(DataPlugin):
             units = "mm"
             fmt = "%.3f"
         else:
-            conv = 1 / 25.4
-            units = "in"
-            fmt = "%.4f"
+            conv = 1 / 25.4     # noqa: F841
+            units = "in"        # noqa: F841
+            fmt = "%.4f"        # noqa: F841
 
         return chan.value
 
@@ -780,13 +780,13 @@ class GCodeProperties(DataPlugin):
         self.extents_size.setValue(extents_size)
     
     def calc_distance(self):
+        pass
+        # mf = 100.0
 
-        mf = 100.0
-
-        g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
-
-        g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
-            sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
+        # g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
+        #
+        # g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
+        #     sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
 
         # gt = (sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0]) for l in self.canon.feed) +
         #     sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0])  for l in self.canon.arcfeed) +

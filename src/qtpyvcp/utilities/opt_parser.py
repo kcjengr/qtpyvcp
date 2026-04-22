@@ -141,7 +141,7 @@ def apply_opts(opts):
             continue
 
         # convert str values to bool
-        if type(v) == bool:
+        if type(v) is bool:
             # TODO: Find a way to prefer cmd line values over INI values
             ini_val = ini_val.lower() in ['true', 'on', 'yes', '1']
 

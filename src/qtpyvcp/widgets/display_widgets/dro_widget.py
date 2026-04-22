@@ -40,7 +40,7 @@ from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
-IN_DESIGNER = os.getenv('DESIGNER') != None
+IN_DESIGNER = os.getenv('DESIGNER') is not None
 
 
 from qtpyvcp.lib.decorators import deprecated

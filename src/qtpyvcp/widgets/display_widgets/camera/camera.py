@@ -129,7 +129,7 @@ class Camera(QWidget):
                 videoDeviceAction.setData(deviceName)
 
                 if camera_device.isEmpty():
-                    cameraDevice = deviceName
+                    # cameraDevice = deviceName
                     videoDeviceAction.setChecked(True)
 
                 self.ui.devicesCombo.addAction(videoDeviceAction)

@@ -72,11 +72,11 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
                     ok = eval(rule.get("expression"))
                 else:
                     ok = True
-                    msh = ""
+                    msg = ""
 
             else:
                 ok = True
-                msh = ""
+                msg = ""
     else:
         ok = True
         msg = ""
@@ -370,7 +370,7 @@ def _or_bindOk(value=100, spindle=0, widget=None):
 
     except AttributeError:
         pass
-    except:
+    except Exception:
         LOG.exception('Error in spindle.override bindOk')
 
 override.ok = override.reset.ok = _or_ok

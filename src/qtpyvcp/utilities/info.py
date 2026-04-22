@@ -207,7 +207,7 @@ class _Info(object):
         # max velocity settings: more then one place to check
         # This is the maximum velocity of the machine
         temp = self.ini.find('TRAJ', 'MAX_LINEAR_VELOCITY') or self.ini.find('TRAJ', 'MAX_VELOCITY')
-        if  temp == None:
+        if  temp is None:
             log.warning("No entry [TRAJ] MAX_VELOCITY found in INI, using 15ipm")
             temp = 15.0
         return float(temp) * 60
@@ -261,7 +261,7 @@ class _Info(object):
 
     def getAxisMinMax(self, axis=None):
         result = []
-        if axis == None:
+        if axis is None:
             for ltr in self.AXIS_LETTER_LIST:
                 temp_min = self.ini.find(f'AXIS_{ltr.upper()}', 'MIN_LIMIT')
                 temp_max = self.ini.find(f'AXIS_{ltr.upper()}', 'MAX_LIMIT')
@@ -332,7 +332,7 @@ class _Info(object):
                     description = description.strip()
                     qt_filter_list.append(( ';;{} ({})'.format(description, extention)))
                 return ''.join(qt_filter_list)
-            except:
+            except Exception:
                 log.error("Error converting file extensions in [FILTER] PROGRAM_EXTENSION, using default '*.ngc'")
         return qt_filter_list[0]
 

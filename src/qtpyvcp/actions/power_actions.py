@@ -12,23 +12,23 @@ def shut_system_down_prompt():
     try:
         try:
             subprocess.check_call('xfce4-session-logout', shell=True)
-        except:
+        except Exception:
             try:
                 subprocess.check_call('systemctl poweroff', shell=True)
-            except:
+            except Exception:
                 raise
     except Exception as e:
-        LOG.warning("Couldn't shut system down: {}".format(e))
+        LOG.warning(f"Couldn't shut system down: {e}")
 
 def shut_system_down_now():
     import subprocess
     try:
         try:
             subprocess.check_call('xfce4-session-logout -h', shell=True)
-        except:
+        except Exception:
             try:
                 subprocess.check_call('systemctl poweroff', shell=True)
-            except:
+            except Exception:
                 raise
     except Exception as e:
-        LOG.warning("Couldn't shut system down: {}".format(e))
+        LOG.warning(f"Couldn't shut system down: {e}")

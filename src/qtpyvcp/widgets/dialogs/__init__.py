@@ -49,7 +49,7 @@ def hideActiveDialog():
     try:
         dialog = ACTIVE_DIALOGS.pop(-1)
         dialog.hide()
-    except:
+    except Exception:
         pass
 
 

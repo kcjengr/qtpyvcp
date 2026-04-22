@@ -62,7 +62,7 @@ class SubCallButton(VCPButton):
         if IN_DESIGNER:
             return
         
-        window = QApplication.instance().activeWindow()
+        # window = QApplication.instance().activeWindow()
 
         subfile = None
         for dir in SUBROUTINE_SEARCH_DIRS:

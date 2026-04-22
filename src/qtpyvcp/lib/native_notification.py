@@ -20,7 +20,7 @@
 
 import sys
 
-from datetime import datetime
+# from datetime import datetime
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QIcon
@@ -85,9 +85,8 @@ class NativeNotification(BaseDialog):
 
     def __init__(self, parent=None):
         super(NativeNotification, self).__init__(parent=parent, stay_on_top=True, frameless=True)
-        time = datetime.now()
-
-        current_time = "{}:{}".format(time.hour, time.minute)
+        # time = datetime.now()
+        # current_time = "{}:{}".format(time.hour, time.minute)
 
         self.setWindowFlags(Qt.WindowType.Tool | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.WindowSystemMenuHint)
 

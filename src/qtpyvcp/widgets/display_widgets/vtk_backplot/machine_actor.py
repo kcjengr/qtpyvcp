@@ -6,7 +6,7 @@ from vtk.util.colors import *
 
 
 from qtpyvcp.utilities import logger
-from collections import OrderedDict
+# from collections import OrderedDict
 
 from qtpyvcp.utilities.settings import getSetting
 
@@ -22,7 +22,7 @@ class MachineCubeActor(vtk.vtkCubeAxesActor):
         self._datasource = linuxcncDataSource
         
         axis = self._datasource.getAxis()
-        units = self._datasource.getProgramUnits()
+        # units = self._datasource.getProgramUnits()
 
         x_max = axis[0]["max_position_limit"]
         x_min = axis[0]["min_position_limit"]
@@ -135,7 +135,7 @@ class MachineLineActor(vtk.vtkCubeAxesActor2D):
         self._datasource = linuxcncDataSource
         
         axis = self._datasource.getAxis()
-        units = self._datasource.getProgramUnits()
+        # units = self._datasource.getProgramUnits()
 
         x_max = axis[0]["max_position_limit"]
         x_min = axis[0]["min_position_limit"]
@@ -279,11 +279,11 @@ class MachinePartsASM(vtk.vtkAssembly):
         self.part_joint = None
         self.part_color = None
 
-        previous_asm = None
+        # previous_asm = None
         
-        parts_dict = OrderedDict()
-        previous_depth = 0
-        branch_num = 0
+        # parts_dict = OrderedDict()
+        # previous_depth = 0
+        # branch_num = 0
         
         # for depth, part_root, part_data in self.items_recursive(parts):
         for part in self.items_recursive(parts, self):

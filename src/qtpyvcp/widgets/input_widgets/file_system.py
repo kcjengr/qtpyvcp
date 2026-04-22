@@ -20,7 +20,7 @@ from qtpyvcp.lib.decorators import deprecated
 
 LOG = getLogger(__name__)
 
-IN_DESIGNER = os.getenv('DESIGNER') != None
+IN_DESIGNER = os.getenv('DESIGNER') is not None
 
 class TableType(object):
     Local = 0
@@ -505,7 +505,7 @@ class FileSystemTable(QTableView, TableType):
     def hiddenColumns(self, columns):
         try:
             col_list = [int(c) for c in columns.split(',') if c != '']
-        except:
+        except Exception:
             return False
 
         self._hidden_columns = columns

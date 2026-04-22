@@ -110,7 +110,7 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
 
 
     # Get logger for logger
-    log = getLogger(__name__)
+    # log = getLogger(__name__)
     base_log.info('Logging to yellow<{}>'.format(log_file))
 
     return base_log

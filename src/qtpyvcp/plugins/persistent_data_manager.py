@@ -38,7 +38,7 @@ class PersistentDataManager(Plugin):
             with open(self.persistence_file, 'rb') as fh:
                 try:
                     self.data = self.serializer.loads(fh.read())
-                except:
+                except Exception:
                     LOG.exception("Error reading persistent data from file: %s",
                                   self.persistence_file)
 

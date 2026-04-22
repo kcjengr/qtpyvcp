@@ -128,7 +128,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         # first remove the legend as it does not update correnctly
         try:
             self.legend.scene().removeItem(self.legend)
-        except:
+        except Exception:
             pass
 
         # remove all plot items

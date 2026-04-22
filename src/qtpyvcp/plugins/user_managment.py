@@ -78,7 +78,7 @@ class UserManagement(DataPlugin):
     def currentUserLevel(self, chan):
         # split out test from single line as a chan.value of 0 was causing a
         # -1 return which was not the desired behaviour.
-        if chan.value == None:
+        if chan.value is None:
             rtn_val = -1
         else:
             rtn_val = chan.value
@@ -109,7 +109,7 @@ class UserManagement(DataPlugin):
                     user, password, security = line.split()
                     self.users[user] = password
                     self.user_levels[user] = int(security)
-                except:
+                except Exception:
                     LOG.debug('User file may have blank line at the end. Or is not the correct format,')
         user_file.close()
 

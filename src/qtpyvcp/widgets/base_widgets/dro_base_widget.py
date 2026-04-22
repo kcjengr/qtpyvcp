@@ -226,9 +226,9 @@ class DROBaseWidget(VCPWidget):
 
         else:
             try:
-                txt = in_fmt % 360.42
+                # txt = in_fmt % 360.42
                 self._in_fmt = in_fmt
-            except:
+            except Exception:
                 if self.in_fmt_setting:
                     self.in_fmt_setting.setValue(self._in_fmt)
 
@@ -250,9 +250,9 @@ class DROBaseWidget(VCPWidget):
 
         else:
             try:
-                txt = mm_fmt % 360.42
+                # txt = mm_fmt % 360.42
                 self._mm_fmt = mm_fmt
-            except:
+            except Exception:
                 if self.mm_fmt_setting:
                     self.mm_fmt_setting.setValue(self._mm_fmt)
 
@@ -277,9 +277,9 @@ class DROBaseWidget(VCPWidget):
 
         else:
             try:
-                txt = deg_fmt % 360.42
+                # txt = deg_fmt % 360.42
                 self._deg_fmt = deg_fmt
-            except:
+            except Exception:
                 if self.deg_fmt_setting:
                     self.deg_fmt_setting.setValue(self._deg_fmt)
 

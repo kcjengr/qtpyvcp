@@ -67,7 +67,7 @@ class crudMixin(object):
         try:
             cls_key = getattr(cls, key)
             return session.query(cls).filter(cls_key == value).all()
-        except:
+        except Exception:
             LOG.debug('Possible key name error in crudMixin')
             return None
 
@@ -136,7 +136,7 @@ class Thickness(crudMixin, BASE):
 
     @classmethod
     def get_all(cls, session, linear=None):
-        if linear == None:
+        if linear is None:
             return session.query(cls).order_by(cls.thickness).all()
         else:
             return session.query(cls).filter(cls.linearsystemid == linear).order_by(cls.thickness).all()
@@ -495,9 +495,9 @@ class PlasmaProcesses(Plugin):
         return data
 
     def tool_list_for_lcnc(self, machine=None, pressure=None, measurement=None):
-        if machine == None: machine = self._machine_name
-        if pressure == None: pressure = self._pressure_name
-        if measurement == None: measurement = self._measurement_name
+        if machine is None: machine = self._machine_name
+        if pressure is None: pressure = self._pressure_name
+        if measurement is None: measurement = self._measurement_name
         LOG.debug(f'lcnc tool list for filters machine={machine}, pressure={pressure}, measurement={measurement}')
         data = Cutchart.tool_list_for_lcnc(self._session, machine, pressure, measurement)
         return data

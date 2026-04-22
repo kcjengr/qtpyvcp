@@ -603,7 +603,7 @@ class block_delete:
 
         """
 
-        if STAT.block_delete == True:
+        if STAT.block_delete:
             block_delete.off()
         else:
             block_delete.on()
@@ -684,7 +684,7 @@ class optional_stop:
 
         """
 
-        if STAT.optional_stop == True:
+        if STAT.optional_stop:
             optional_stop.off()
         else:
             optional_stop.on()

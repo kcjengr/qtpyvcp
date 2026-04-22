@@ -120,7 +120,7 @@ class VCPApplication(QApplication):
                     entry_point_data[entry_point.name] = entry_point
                 window = entry_point_data[vcp.lower()].load()
                 return window(opts=opts)
-            except:
+            except Exception:
                 LOG.exception("Failed to load entry point")
 
         LOG.critical("VCP could not be loaded: yellow<{}>".format(vcp))

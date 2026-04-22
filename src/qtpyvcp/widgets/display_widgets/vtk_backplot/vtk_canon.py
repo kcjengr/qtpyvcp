@@ -485,10 +485,10 @@ class VTKCanon(StatCanon):
         # Points are pre-normalized to machine units in add_path_point().
         multiplication_factor = 1.0
 
-        first_cut_wcs_index = None
+        # first_cut_wcs_index = None
         for segment in self.path_segments:
             if any(line_type != "traverse" for line_type, _ in segment['lines']):
-                first_cut_wcs_index = segment['wcs_index']
+                # first_cut_wcs_index = segment['wcs_index']
                 break
 
         added_segment_count = 0
@@ -498,7 +498,7 @@ class VTKCanon(StatCanon):
             path_actor = self.path_actors.get(wcs_index)
 
             if path_actor is not None:
-                last_point = None
+                # last_point = None
                 point_count = 0
 
                 for row in data:
@@ -599,7 +599,7 @@ class VTKCanon(StatCanon):
                         else:
                             _insert_xyz_segment(start_point, end_point)
 
-                    last_point = end_point
+                    # last_point = end_point
 
                 # free up memory, lots of it for big files
 
