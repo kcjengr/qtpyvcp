@@ -17,7 +17,7 @@
 
 import os
 import sys
-import mock
+from unittest import mock
 from importlib.metadata import PackageNotFoundError, version as metadata_version
 
 qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..')
