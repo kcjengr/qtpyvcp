@@ -114,6 +114,8 @@ def _payload_to_result(payload: Any, datasource, *, file_name: Optional[str], pa
 
         points_np = np.asarray(entry.get("points"), dtype=np.float64)
         colors_np = np.asarray(entry.get("colors"), dtype=np.uint8)
+        line_numbers_raw = entry.get("line_numbers")
+        line_numbers_np = None if line_numbers_raw is None else np.asarray(line_numbers_raw, dtype=np.int32)
 
         if points_np.ndim != 2 or points_np.shape[1] != 3:
             LOG.warning("C++ backplot points payload shape invalid for wcs=%s; falling back", wcs_index)
@@ -121,6 +123,9 @@ def _payload_to_result(payload: Any, datasource, *, file_name: Optional[str], pa
         if colors_np.ndim != 2 or colors_np.shape[1] != 4:
             LOG.warning("C++ backplot colors payload shape invalid for wcs=%s; falling back", wcs_index)
             return None
+        if line_numbers_np is not None and (line_numbers_np.ndim != 1 or line_numbers_np.shape[0] != segment_count):
+            LOG.warning("C++ backplot line_numbers payload shape invalid for wcs=%s; skipping line metadata", wcs_index)
+            line_numbers_np = None
 
         vtk_points_data = numpy_support.numpy_to_vtk(points_np, deep=True)
         actor.points = vtk.vtkPoints()
@@ -148,6 +153,16 @@ def _payload_to_result(payload: Any, datasource, *, file_name: Optional[str], pa
         actor.poly_data.SetPoints(actor.points)
         actor.poly_data.SetLines(actor.lines)
         actor.poly_data.GetCellData().SetScalars(actor.colors)
+
+        if line_numbers_np is not None:
+            vtk_line_numbers = numpy_support.numpy_to_vtk(
+                num_array=line_numbers_np,
+                deep=True,
+                array_type=vtk.VTK_INT,
+            )
+            vtk_line_numbers.SetName("gcode_seq")
+            actor.poly_data.GetCellData().AddArray(vtk_line_numbers)
+
         actor.data_mapper.SetInputData(actor.poly_data)
         actor.data_mapper.Update()
         actor.SetMapper(actor.data_mapper)

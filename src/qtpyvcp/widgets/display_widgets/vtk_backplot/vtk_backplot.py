@@ -23,7 +23,7 @@ import time
 import logging
 import shutil
 from operator import add
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 
 import gcode
 import linuxcnc
@@ -342,6 +342,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._cache_overlay_transform = vtk.vtkTransform()
         self._active_path_transform = vtk.vtkTransform()
         self._machine_bounds_base = None
+        self._line_cells_by_wcs = {}
+        self._highlight_line_actors = OrderedDict()
+        self._highlighted_selected_lines = None
+        self._highlight_line_width = 4.0
+        self._highlight_line_color = (1.0, 0.9, 0.2)
         
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
@@ -584,6 +589,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             motion_line_notify = getattr(motion_line_channel, 'notify', None)
             if callable(motion_line_notify):
                 motion_line_notify(self._on_motion_line_changed)
+
+            selected_line_channel = getattr(self._datasource._status, 'selected_program_line', None)
+            selected_line_notify = getattr(selected_line_channel, 'notify', None)
+            if callable(selected_line_notify):
+                selected_line_notify(self._on_selected_program_line_changed)
+
+            selected_lines_channel = getattr(self._datasource._status, 'selected_program_lines', None)
+            selected_lines_notify = getattr(selected_lines_channel, 'notify', None)
+            if callable(selected_lines_notify):
+                selected_lines_notify(self._on_selected_program_lines_changed)
             
             self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
             self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
@@ -835,6 +850,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='vtk-load-program-enter', percent=48)
         perf_start = time.perf_counter()
         self._index_runtime_switchkins_commands(fname)
+        self._line_cells_by_wcs = {}
+        self._clear_gcode_line_highlight_actors()
         pre_backplot_interp_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
         parse_done_elapsed_ms = None
         draw_done_elapsed_ms = None
@@ -1015,6 +1032,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(actor)
 
             self._rebuild_transition_actors(offset_columns)
+            self._rebuild_gcode_line_index()
+            self._update_backplot_line_highlight(self._preferred_program_line(), force=True)
             # self.renderer.AddActor(self.axes_actor)
             self._request_render()
             actor_build_ms = (time.perf_counter() - actor_start) * 1000.0
@@ -1061,6 +1080,207 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._current_switchkins_type(),
             motion_line_value=_line,
         )
+
+    def _on_selected_program_line_changed(self, _line):
+        self._update_backplot_line_highlight(self._preferred_program_line())
+
+    def _on_selected_program_lines_changed(self, _lines):
+        self._update_backplot_line_highlight(self._preferred_program_line())
+
+    def _normalize_selected_lines(self, line_value):
+        if isinstance(line_value, (list, tuple, set)):
+            raw_values = line_value
+        elif line_value is None:
+            raw_values = []
+        else:
+            raw_values = [line_value]
+
+        normalized = []
+        seen = set()
+        for raw in raw_values:
+            line_no = self._coerce_int(raw, None)
+            if line_no is None or line_no <= 0 or line_no in seen:
+                continue
+            seen.add(line_no)
+            normalized.append(line_no)
+
+        normalized.sort()
+        return normalized
+
+    def _preferred_program_line(self):
+        selected_lines = self._selected_program_line_values()
+        if selected_lines:
+            return selected_lines
+        return []
+
+    def _selected_program_line_value(self):
+        status_obj = getattr(self._datasource, '_status', None)
+        selected_chan = getattr(status_obj, 'selected_program_line', None)
+        return self._coerce_int(getattr(selected_chan, 'value', None), 0)
+
+    def _selected_program_line_values(self):
+        status_obj = getattr(self._datasource, '_status', None)
+        selected_lines_chan = getattr(status_obj, 'selected_program_lines', None)
+        selected_lines = self._normalize_selected_lines(getattr(selected_lines_chan, 'value', None))
+        if selected_lines:
+            return selected_lines
+
+        selected_line = self._selected_program_line_value()
+        if selected_line is not None and selected_line > 0:
+            return [selected_line]
+
+        return []
+
+    def _clear_gcode_line_highlight_actors(self):
+        for actor in self._highlight_line_actors.values():
+            try:
+                self.renderer.RemoveActor(actor)
+            except Exception:
+                pass
+        self._highlight_line_actors.clear()
+
+    def _rebuild_gcode_line_index(self):
+        indexed = {}
+
+        for wcs_index, path_actor in self.path_actors.items():
+            poly_data = getattr(path_actor, 'poly_data', None)
+            if poly_data is None:
+                continue
+
+            cell_data = poly_data.GetCellData()
+            if cell_data is None:
+                continue
+
+            line_array = cell_data.GetArray("gcode_seq")
+            if line_array is None:
+                continue
+
+            cell_count = int(poly_data.GetNumberOfCells())
+            tuple_count = int(line_array.GetNumberOfTuples())
+            limit = min(cell_count, tuple_count)
+
+            per_line = defaultdict(list)
+            for cell_id in range(limit):
+                line_no = self._coerce_int(line_array.GetTuple1(cell_id), None)
+                if line_no is None or line_no <= 0:
+                    continue
+                per_line[int(line_no)].append(cell_id)
+
+            if per_line:
+                indexed[wcs_index] = dict(per_line)
+
+        self._line_cells_by_wcs = indexed
+
+    def _sync_gcode_line_highlight_transforms(self):
+        for wcs_index, highlight_actor in self._highlight_line_actors.items():
+            path_actor = self.path_actors.get(wcs_index)
+            if path_actor is None:
+                continue
+            highlight_actor.SetUserTransform(path_actor.GetUserTransform())
+
+    def _build_highlight_actor_for_line_cells(self, path_actor, cell_ids):
+        source_poly = getattr(path_actor, 'poly_data', None)
+        if source_poly is None:
+            return None
+
+        source_points = source_poly.GetPoints()
+        if source_points is None:
+            return None
+
+        highlight_points = vtk.vtkPoints()
+        highlight_lines = vtk.vtkCellArray()
+        line_id_list = vtk.vtkIdList()
+
+        added_cells = 0
+        for cell_id in cell_ids:
+            source_poly.GetCellPoints(int(cell_id), line_id_list)
+            if line_id_list.GetNumberOfIds() < 2:
+                continue
+
+            p0 = source_points.GetPoint(line_id_list.GetId(0))
+            p1 = source_points.GetPoint(line_id_list.GetId(1))
+
+            p0_id = highlight_points.InsertNextPoint(p0)
+            p1_id = highlight_points.InsertNextPoint(p1)
+
+            vtk_line = vtk.vtkLine()
+            vtk_line.GetPointIds().SetId(0, p0_id)
+            vtk_line.GetPointIds().SetId(1, p1_id)
+            highlight_lines.InsertNextCell(vtk_line)
+            added_cells += 1
+
+        if added_cells <= 0:
+            return None
+
+        highlight_poly = vtk.vtkPolyData()
+        highlight_poly.SetPoints(highlight_points)
+        highlight_poly.SetLines(highlight_lines)
+
+        highlight_mapper = vtk.vtkPolyDataMapper()
+        highlight_mapper.SetInputData(highlight_poly)
+        highlight_mapper.ScalarVisibilityOff()
+
+        highlight_actor = vtk.vtkActor()
+        highlight_actor.SetMapper(highlight_mapper)
+        highlight_actor.GetProperty().SetColor(*self._highlight_line_color)
+        highlight_actor.GetProperty().SetLineWidth(self._highlight_line_width)
+        highlight_actor.GetProperty().SetOpacity(1.0)
+        highlight_actor.SetPickable(0)
+        highlight_actor.SetUserTransform(path_actor.GetUserTransform())
+
+        return highlight_actor
+
+    def _update_backplot_line_highlight(self, line_value, force=False):
+        line_numbers = self._normalize_selected_lines(line_value)
+        if not line_numbers:
+            if self._highlight_line_actors:
+                self._clear_gcode_line_highlight_actors()
+                self._request_render()
+            self._highlighted_selected_lines = None
+            return
+
+        selected_signature = tuple(line_numbers)
+
+        if (not force) and (selected_signature == self._highlighted_selected_lines):
+            return
+
+        self._clear_gcode_line_highlight_actors()
+
+        for wcs_index, line_map in self._line_cells_by_wcs.items():
+            merged_cell_ids = []
+            for line_no in line_numbers:
+                cell_ids = line_map.get(line_no)
+                if cell_ids:
+                    merged_cell_ids.extend(cell_ids)
+
+            if not merged_cell_ids:
+                continue
+
+            dedup_cell_ids = []
+            seen_cell_ids = set()
+            for cell_id in merged_cell_ids:
+                if cell_id in seen_cell_ids:
+                    continue
+                seen_cell_ids.add(cell_id)
+                dedup_cell_ids.append(cell_id)
+
+            cell_ids = dedup_cell_ids
+            if not cell_ids:
+                continue
+
+            path_actor = self.path_actors.get(wcs_index)
+            if path_actor is None:
+                continue
+
+            highlight_actor = self._build_highlight_actor_for_line_cells(path_actor, cell_ids)
+            if highlight_actor is None:
+                continue
+
+            self._highlight_line_actors[wcs_index] = highlight_actor
+            self.renderer.AddActor(highlight_actor)
+
+        self._highlighted_selected_lines = selected_signature
+        self._request_render()
 
     def _should_plot_breadcrumb_for_motion(self):
         mt = self.current_motion_type
@@ -2207,6 +2427,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
             self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
+        self._sync_gcode_line_highlight_transforms()
         self._request_render()
         
     def update_g5x_index(self, index):
@@ -2288,6 +2509,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
                 self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
+            self._sync_gcode_line_highlight_transforms()
             self._request_render()
 
     def update_tool(self, *_args):
