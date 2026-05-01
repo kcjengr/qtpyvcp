@@ -14,7 +14,7 @@ Overview
 --------
 
 QtPyVCP is a **Qt and Python based Virtual Control Panel framework** designed to
-be used with LinuxCNC.  The repository follows a :term:`src/ layout` with the
+be used with LinuxCNC.  The repository follows a ``src/`` layout with the
 Python packages under ``src/`` and a number of supporting directories for
 documentation, examples and packaging.
 
@@ -41,20 +41,19 @@ Package Layout
 
 The structure beneath ``src/qtpyvcp`` is:
 
-```
-app/              # main() entrypoint and VCP launcher
-plugins/          # plugin registration and base classes
-widgets/          # custom Qt widgets used by panels
-hal/              # LinuxCNC HAL helpers
-tools/            # standalone CLI utilities
-utilities/        # miscellaneous helpers (logging, config, etc.)
-yaml_lib/         # YAML loader/formats used by the chooser
-lib/              # miscellaneous library code (db helpers, etc.)
-actions/          # legacy or specialised action modules
-vcp_chooser/      # graphical chooser implementation
-ops/              # operation definitions used by examples
+.. code-block:: text
 
-```
+  app/              # main() entrypoint and VCP launcher
+  plugins/          # plugin registration and base classes
+  widgets/          # custom Qt widgets used by panels
+  hal/              # LinuxCNC HAL helpers
+  tools/            # standalone CLI utilities
+  utilities/        # miscellaneous helpers (logging, config, etc.)
+  yaml_lib/         # YAML loader/formats used by the chooser
+  lib/              # miscellaneous library code (db helpers, etc.)
+  actions/          # legacy or specialised action modules
+  vcp_chooser/      # graphical chooser implementation
+  ops/              # operation definitions used by examples
 
 Each directory usually contains its own ``__init__.py`` and may define API
 classes, helpers and state.  The project uses an ``examples`` package to hold
@@ -164,3 +163,4 @@ registering plugins, writing tools, and running examples.
 ----------------------------------
 
 *Generated on 27 February 2026.*
+
