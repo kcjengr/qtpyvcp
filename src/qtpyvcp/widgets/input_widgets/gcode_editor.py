@@ -379,6 +379,7 @@ class GcodeEditor(EditorBase, QObject):
         self.is_editor = False
         self.text_before_edit = ''
         self._shared_doc_ptr = None
+        self._applying_external_program_selection = False
 
         self.dialog = FindReplaceDialog(parent=self)
 
@@ -395,7 +396,87 @@ class GcodeEditor(EditorBase, QObject):
         #self.cursorPositionChanged.connect(self.line_changed)
         self.cursorPositionChanged.connect(self._on_cursor_position_changed)
         self.selectionChanged.connect(self._on_selection_changed)
+        self._install_external_selected_line_sync()
         self.somethingHasChanged.emit(False)
+
+    def _install_external_selected_line_sync(self):
+        status_obj = globals().get('STATUS', None)
+        if status_obj is None:
+            return
+
+        selected_line_channel = getattr(status_obj, 'selected_program_line', None)
+        selected_line_notify = getattr(selected_line_channel, 'notify', None)
+        if callable(selected_line_notify):
+            selected_line_notify(safe_qt_callback(self, self._on_external_selected_program_line_changed))
+
+        selected_lines_channel = getattr(status_obj, 'selected_program_lines', None)
+        selected_lines_notify = getattr(selected_lines_channel, 'notify', None)
+        if callable(selected_lines_notify):
+            selected_lines_notify(safe_qt_callback(self, self._on_external_selected_program_line_changed))
+
+    def _on_external_selected_program_line_changed(self, *_args):
+        if self._applying_external_program_selection:
+            return
+        if not self._last_filename:
+            return
+
+        selected_lines = self._selected_program_line_values_from_status()
+        if not selected_lines:
+            return
+
+        self._apply_selected_program_lines_from_status(selected_lines)
+
+    def _selected_program_line_values_from_status(self):
+        status_obj = globals().get('STATUS', None)
+        if status_obj is None:
+            return []
+
+        selected_lines_channel = getattr(status_obj, 'selected_program_lines', None)
+        selected_lines_raw = getattr(selected_lines_channel, 'value', None)
+        if isinstance(selected_lines_raw, (list, tuple, set)):
+            selected_lines = self._normalize_selected_lines(selected_lines_raw)
+            if selected_lines:
+                return selected_lines
+
+        selected_line_channel = getattr(status_obj, 'selected_program_line', None)
+        selected_line_raw = getattr(selected_line_channel, 'value', None)
+        return self._normalize_selected_lines([selected_line_raw])
+
+    def _apply_selected_program_lines_from_status(self, line_numbers):
+        selected_lines = self._normalize_selected_lines(line_numbers)
+        if not selected_lines:
+            return
+
+        start_line = selected_lines[0] - 1
+        end_line = selected_lines[-1] - 1
+        if start_line < 0 or end_line < start_line:
+            return
+
+        self._applying_external_program_selection = True
+        try:
+            end_col = 0
+            try:
+                line_text = self.text(end_line)
+                if isinstance(line_text, str):
+                    end_col = len(line_text)
+            except Exception:
+                end_col = 0
+
+            try:
+                self.setSelection(start_line, 0, end_line, end_col)
+            except Exception:
+                pass
+
+            self.setCursorPosition(start_line, 0)
+
+            ensure_line_visible = getattr(self, 'ensureLineVisible', None)
+            if callable(ensure_line_visible):
+                ensure_line_visible(start_line)
+
+            self.ensureCursorVisible()
+            self.SendScintilla(QsciScintilla.SCI_VERTICALCENTRECARET)
+        finally:
+            self._applying_external_program_selection = False
 
     def _get_doc_pointer(self):
         try:
@@ -650,6 +731,8 @@ class GcodeEditor(EditorBase, QObject):
         self._set_selected_program_line_channels(range(start_line + 1, end_line + 2))
 
     def _on_cursor_position_changed(self, line, _index):
+        if self._applying_external_program_selection:
+            return
         if not self._last_filename:
             return
         if self.hasSelectedText():
@@ -658,6 +741,8 @@ class GcodeEditor(EditorBase, QObject):
         self._publish_selected_program_line(line)
 
     def _on_selection_changed(self):
+        if self._applying_external_program_selection:
+            return
         if not self._last_filename:
             return
         if self.hasSelectedText():

@@ -343,10 +343,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._active_path_transform = vtk.vtkTransform()
         self._machine_bounds_base = None
         self._line_cells_by_wcs = {}
+        self._line_by_cell_by_wcs = {}
         self._highlight_line_actors = OrderedDict()
         self._highlighted_selected_lines = None
         self._highlight_line_width = 4.0
         self._highlight_line_color = (1.0, 0.9, 0.2)
+        self._line_cell_picker = None
+        self._left_button_press_pos = None
+        self._left_button_dragged = False
         
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
@@ -685,6 +689,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def button_event(self, obj, event):
 
         if event == "LeftButtonPressEvent":
+            self._left_button_press_pos = tuple(self.interactor.GetEventPosition())
+            self._left_button_dragged = False
             if self.pan_mode is True:
                 self.panning = 1
             else:
@@ -695,6 +701,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.panning = 0
             else:
                 self.rotating = 0
+            self._handle_backplot_left_click_pick(obj)
 
         elif event == "MiddleButtonPressEvent":
             if self.pan_mode is True:
@@ -728,6 +735,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         xypos = self.interactor.GetEventPosition()
         x = xypos[0]
         y = xypos[1]
+
+        if self._left_button_press_pos is not None and not self._left_button_dragged:
+            dx = int(x) - int(self._left_button_press_pos[0])
+            dy = int(y) - int(self._left_button_press_pos[1])
+            self._left_button_dragged = (dx * dx + dy * dy) > 4
 
         center = self.renderer_window.GetSize()
         centerX = center[0] / 2.0
@@ -851,6 +863,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         perf_start = time.perf_counter()
         self._index_runtime_switchkins_commands(fname)
         self._line_cells_by_wcs = {}
+        self._line_by_cell_by_wcs = {}
         self._clear_gcode_line_highlight_actors()
         pre_backplot_interp_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
         parse_done_elapsed_ms = None
@@ -1131,6 +1144,100 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         return []
 
+    def _handle_backplot_left_click_pick(self, interactor):
+        press_pos = self._left_button_press_pos
+        dragged = bool(self._left_button_dragged)
+        self._left_button_press_pos = None
+        self._left_button_dragged = False
+
+        if self.pan_mode or dragged or press_pos is None:
+            return
+
+        event_pos = tuple(self.interactor.GetEventPosition())
+        dx = int(event_pos[0]) - int(press_pos[0])
+        dy = int(event_pos[1]) - int(press_pos[1])
+        if (dx * dx + dy * dy) > 4:
+            return
+
+        picked_lines = self._pick_program_lines_at_display_pos(event_pos[0], event_pos[1])
+        if not picked_lines:
+            return
+
+        additive = False
+        if interactor is not None:
+            additive = bool(interactor.GetShiftKey() or interactor.GetControlKey())
+
+        self._publish_selected_program_lines_from_backplot(picked_lines, additive=additive)
+
+    def _pick_program_lines_at_display_pos(self, x_pos, y_pos):
+        if not self.path_actors or not self._line_by_cell_by_wcs:
+            return []
+
+        picker = self._line_cell_picker
+        if picker is None:
+            picker = vtk.vtkCellPicker()
+            picker.SetTolerance(0.02)
+            self._line_cell_picker = picker
+
+        picker.PickFromListOn()
+        picker.InitializePickList()
+
+        actor_wcs_map = {}
+        for wcs_index, path_actor in self.path_actors.items():
+            if path_actor is None:
+                continue
+            picker.AddPickList(path_actor)
+            actor_wcs_map[id(path_actor)] = wcs_index
+
+        if picker.Pick(float(x_pos), float(y_pos), 0.0, self.renderer) <= 0:
+            return []
+
+        picked_actor = picker.GetActor()
+        picked_cell_id = int(picker.GetCellId())
+        if picked_actor is None or picked_cell_id < 0:
+            return []
+
+        wcs_index = actor_wcs_map.get(id(picked_actor), None)
+        if wcs_index is None:
+            for candidate_wcs, path_actor in self.path_actors.items():
+                if path_actor == picked_actor:
+                    wcs_index = candidate_wcs
+                    break
+
+        if wcs_index is None:
+            return []
+
+        line_no = self._line_by_cell_by_wcs.get(wcs_index, {}).get(picked_cell_id, None)
+        line_no = self._coerce_int(line_no, None)
+        if line_no is None or line_no <= 0:
+            return []
+
+        return [line_no]
+
+    def _publish_selected_program_lines_from_backplot(self, line_numbers, additive=False):
+        status_obj = getattr(self._datasource, '_status', None)
+        if status_obj is None:
+            return
+
+        picked_lines = self._normalize_selected_lines(line_numbers)
+        if not picked_lines:
+            return
+
+        merged_lines = list(picked_lines)
+        if additive:
+            merged_lines.extend(self._selected_program_line_values())
+            merged_lines = self._normalize_selected_lines(merged_lines)
+
+        selected_lines_channel = getattr(status_obj, 'selected_program_lines', None)
+        set_lines = getattr(selected_lines_channel, 'setValue', None)
+        if callable(set_lines):
+            set_lines(merged_lines)
+
+        selected_line_channel = getattr(status_obj, 'selected_program_line', None)
+        set_line = getattr(selected_line_channel, 'setValue', None)
+        if callable(set_line):
+            set_line(picked_lines[0])
+
     def _clear_gcode_line_highlight_actors(self):
         for actor in self._highlight_line_actors.values():
             try:
@@ -1141,6 +1248,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def _rebuild_gcode_line_index(self):
         indexed = {}
+        indexed_by_cell = {}
 
         for wcs_index, path_actor in self.path_actors.items():
             poly_data = getattr(path_actor, 'poly_data', None)
@@ -1160,16 +1268,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             limit = min(cell_count, tuple_count)
 
             per_line = defaultdict(list)
+            per_cell = {}
             for cell_id in range(limit):
                 line_no = self._coerce_int(line_array.GetTuple1(cell_id), None)
                 if line_no is None or line_no <= 0:
                     continue
                 per_line[int(line_no)].append(cell_id)
+                per_cell[int(cell_id)] = int(line_no)
 
             if per_line:
                 indexed[wcs_index] = dict(per_line)
+            if per_cell:
+                indexed_by_cell[wcs_index] = per_cell
 
         self._line_cells_by_wcs = indexed
+        self._line_by_cell_by_wcs = indexed_by_cell
 
     def _sync_gcode_line_highlight_transforms(self):
         for wcs_index, highlight_actor in self._highlight_line_actors.items():
