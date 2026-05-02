@@ -15,867 +15,1083 @@
 #include <QTextDocument>
 #include <QTextStream>
 #include <QVBoxLayout>
+#include <QApplication>
 
 void GCodeEditor::applyExtraSelections()
 {
-	QList<QTextEdit::ExtraSelection> extraSelections = searchExtraSelections;
+    QList<QTextEdit::ExtraSelection> extraSelections = searchExtraSelections;
 
-	if (!isReadOnly() && currentLineHighlight) {
-		QTextEdit::ExtraSelection selection;
-		selection.format.setBackground(currentLineBackgroundColor);
-		selection.format.setForeground(currentLineTextColor);
-		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-		selection.cursor = textCursor();
-		selection.cursor.clearSelection();
-		extraSelections.append(selection);
-	}
+    if (!isReadOnly() && currentLineHighlight) {
+        QTextEdit::ExtraSelection selection;
+        selection.format.setBackground(currentLineBackgroundColor);
+        selection.format.setForeground(currentLineTextColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
 
-	setExtraSelections(extraSelections);
+    setExtraSelections(extraSelections);
 }
 
 void GCodeEditor::findDialog()
 {
-	QDialog dialog(this);
-	dialog.setWindowTitle(tr("Find / Replace"));
-	dialog.setObjectName("findReplaceDialog");
-	dialog.setMinimumWidth(520);
-	dialog.setStyleSheet(
-		"QDialog#findReplaceDialog QLineEdit {"
-		"  font: 10pt \"sans\";"
-		"  padding-left: 5px;"
-		"}"
-	);
+    QDialog dialog(this);
+    dialog.setWindowTitle(tr("Find / Replace"));
+    dialog.setObjectName("findReplaceDialog");
+    dialog.setMinimumWidth(520);
+    dialog.setStyleSheet(
+        "QDialog#findReplaceDialog QLineEdit {"
+        "  font: 10pt \"sans\";"
+        "  padding-left: 5px;"
+        "}"
+    );
 
-	auto *mainLayout = new QVBoxLayout(&dialog);
-	mainLayout->setContentsMargins(20, 20, 20, 20);
-	mainLayout->setSpacing(20);
+    auto *mainLayout = new QVBoxLayout(&dialog);
+    mainLayout->setContentsMargins(20, 20, 20, 20);
+    mainLayout->setSpacing(20);
 
-	auto *findRow = new QHBoxLayout();
-	auto *replaceRow = new QHBoxLayout();
-	auto *buttonRow = new QHBoxLayout();
-	findRow->setContentsMargins(6, 10, 6, 0);
-	findRow->setSpacing(12);
-	replaceRow->setContentsMargins(6, 0, 6, 0);
-	replaceRow->setSpacing(12);
-	buttonRow->setContentsMargins(6, 20, 6, 0);
-	buttonRow->setSpacing(15);
+    auto *findRow = new QHBoxLayout();
+    auto *replaceRow = new QHBoxLayout();
+    auto *buttonRow = new QHBoxLayout();
+    findRow->setContentsMargins(6, 10, 6, 0);
+    findRow->setSpacing(12);
+    replaceRow->setContentsMargins(6, 0, 6, 0);
+    replaceRow->setSpacing(12);
+    buttonRow->setContentsMargins(6, 20, 6, 0);
+    buttonRow->setSpacing(15);
 
-	auto *findLabel = new QLabel(tr("Find:"), &dialog);
-	auto *replaceLabel = new QLabel(tr("Replace:"), &dialog);
-	auto *findEdit = new QLineEdit(&dialog);
-	auto *replaceEdit = new QLineEdit(&dialog);
-	auto *findPrevButton = new QPushButton(&dialog);
-	auto *findNextButton = new QPushButton(&dialog);
-	auto *replaceButton = new QPushButton(tr("Replace"), &dialog);
-	auto *replaceAllButton = new QPushButton(tr("Replace All"), &dialog);
-	auto *closeButton = new QPushButton(tr("Close"), &dialog);
-	auto *undoButton = new QPushButton(tr("Undo"), &dialog);
-	auto *statusLabel = new QLabel(&dialog);
+    auto *findLabel = new QLabel(tr("Find:"), &dialog);
+    auto *replaceLabel = new QLabel(tr("Replace:"), &dialog);
+    auto *findEdit = new QLineEdit(&dialog);
+    auto *replaceEdit = new QLineEdit(&dialog);
+    auto *findPrevButton = new QPushButton(&dialog);
+    auto *findNextButton = new QPushButton(&dialog);
+    auto *replaceButton = new QPushButton(tr("Replace"), &dialog);
+    auto *replaceAllButton = new QPushButton(tr("Replace All"), &dialog);
+    auto *closeButton = new QPushButton(tr("Close"), &dialog);
+    auto *undoButton = new QPushButton(tr("Undo"), &dialog);
+    auto *statusLabel = new QLabel(&dialog);
 
-	findLabel->setFixedWidth(60);
-	findLabel->setStyleSheet("QLabel { font: 14pt; }");
-	replaceLabel->setFixedWidth(60);
-	replaceLabel->setStyleSheet("QLabel { font: 14pt; }");
+    findLabel->setFixedWidth(60);
+    findLabel->setStyleSheet("QLabel { font: 14pt; }");
+    replaceLabel->setFixedWidth(60);
+    replaceLabel->setStyleSheet("QLabel { font: 14pt; }");
 
-	findEdit->setPlaceholderText(tr("Enter search text..."));
-	findEdit->setMinimumHeight(40);
-	findEdit->setMinimumWidth(260);
+    findEdit->setPlaceholderText(tr("Enter search text..."));
+    findEdit->setMinimumHeight(40);
+    findEdit->setMinimumWidth(260);
 
-	replaceEdit->setPlaceholderText(tr("Replace with..."));
-	replaceEdit->setMinimumHeight(40);
+    replaceEdit->setPlaceholderText(tr("Replace with..."));
+    replaceEdit->setMinimumHeight(40);
 
-	findPrevButton->setText(QString());
-	findPrevButton->setToolTip(tr("Previous (Shift+Enter)"));
-	findPrevButton->setFixedSize(50, 42);
-	findPrevButton->setIcon(QIcon(":/images/up_arrow.png"));
-	findPrevButton->setIconSize(QSize(20, 20));
+    findPrevButton->setText(QString());
+    findPrevButton->setToolTip(tr("Previous (Shift+Enter)"));
+    findPrevButton->setFixedSize(50, 42);
+    findPrevButton->setIcon(QIcon(":/images/up_arrow.png"));
+    findPrevButton->setIconSize(QSize(20, 20));
 
-	findNextButton->setText(QString());
-	findNextButton->setToolTip(tr("Next (Enter)"));
-	findNextButton->setFixedSize(50, 42);
-	findNextButton->setIcon(QIcon(":/images/down_arrow.png"));
-	findNextButton->setIconSize(QSize(20, 20));
+    findNextButton->setText(QString());
+    findNextButton->setToolTip(tr("Next (Enter)"));
+    findNextButton->setFixedSize(50, 42);
+    findNextButton->setIcon(QIcon(":/images/down_arrow.png"));
+    findNextButton->setIconSize(QSize(20, 20));
 
-	statusLabel->setFixedWidth(110);
-	statusLabel->setAlignment(Qt::AlignCenter);
-	statusLabel->setStyleSheet(QStringLiteral(
-		"QLabel {"
-		"  border-style: solid;"
-		"  border-color: %1;"
-		"  border-width: 1px;"
-		"  border-radius: 5px;"
-		"  color: %2;"
-		"  background: %3;"
-		"  font: 15pt;"
-		"  font-weight: bold;"
-		"}"
-	)
-		.arg(findStatusBorderColor.name(QColor::HexArgb))
-		.arg(findStatusTextColor.name(QColor::HexArgb))
-		.arg(findStatusBackgroundColor.name(QColor::HexArgb)));
+    statusLabel->setFixedWidth(110);
+    statusLabel->setAlignment(Qt::AlignCenter);
+    statusLabel->setStyleSheet(QStringLiteral(
+        "QLabel {"
+        "  border-style: solid;"
+        "  border-color: %1;"
+        "  border-width: 1px;"
+        "  border-radius: 5px;"
+        "  color: %2;"
+        "  background: %3;"
+        "  font: 15pt;"
+        "  font-weight: bold;"
+        "}"
+    )
+        .arg(findStatusBorderColor.name(QColor::HexArgb))
+        .arg(findStatusTextColor.name(QColor::HexArgb))
+        .arg(findStatusBackgroundColor.name(QColor::HexArgb)));
 
-	replaceButton->setMinimumSize(120, 40);
-	replaceAllButton->setMinimumSize(120, 40);
-	closeButton->setMinimumSize(100, 40);
-	undoButton->setMinimumSize(100, 40);
-	undoButton->setEnabled(false);
+    replaceButton->setMinimumSize(120, 40);
+    replaceAllButton->setMinimumSize(120, 40);
+    closeButton->setMinimumSize(100, 40);
+    undoButton->setMinimumSize(100, 40);
+    undoButton->setEnabled(false);
 
-	QPalette defaultPalette = findEdit->palette();
-	QPalette errorPalette = findEdit->palette();
-	errorPalette.setColor(QPalette::Base, findErrorBackgroundColor);
-	errorPalette.setColor(QPalette::Text, findErrorTextColor);
+    QPalette defaultPalette = findEdit->palette();
+    QPalette errorPalette = findEdit->palette();
+    errorPalette.setColor(QPalette::Base, findErrorBackgroundColor);
+    errorPalette.setColor(QPalette::Text, findErrorTextColor);
 
-	struct ReplaceRecord {
-		int pos;
-		QString original;
-		QString new_text;
-	};
-	QVector<QVector<ReplaceRecord>> replaceUndoStack;
+    struct ReplaceRecord {
+        int pos;
+        QString original;
+        QString new_text;
+    };
+    QVector<QVector<ReplaceRecord>> replaceUndoStack;
 
-	auto rebuildHighlightsAndStatus = [this, findEdit, statusLabel]() {
-		const QString needle = findEdit->text();
-		searchExtraSelections.clear();
+    auto rebuildHighlightsAndStatus = [this, findEdit, statusLabel]() {
+        const QString needle = findEdit->text();
+        searchExtraSelections.clear();
 
-		if (needle.isEmpty()) {
-			statusLabel->clear();
-			applyExtraSelections();
-			return;
-		}
+        if (needle.isEmpty()) {
+            statusLabel->clear();
+            applyExtraSelections();
+            return;
+        }
 
-		QTextCursor scan(document());
-		scan.movePosition(QTextCursor::Start);
+        QTextCursor scan(document());
+        scan.movePosition(QTextCursor::Start);
 
-		int count = 0;
-		int currentIndex = -1;
-		const int currentStart = textCursor().selectionStart();
+        int count = 0;
+        int currentIndex = -1;
+        const int currentStart = textCursor().selectionStart();
 
-		QTextCharFormat fmt;
-		fmt.setBackground(findHighlightBackgroundColor);
-		fmt.setForeground(findHighlightTextColor);
+        QTextCharFormat fmt;
+        fmt.setBackground(findHighlightBackgroundColor);
+        fmt.setForeground(findHighlightTextColor);
 
-		while (true) {
-			QTextCursor found = document()->find(needle, scan);
-			if (found.isNull()) {
-				break;
-			}
+        while (true) {
+            QTextCursor found = document()->find(needle, scan);
+            if (found.isNull()) {
+                break;
+            }
 
-			QTextEdit::ExtraSelection sel;
-			sel.cursor = found;
-			sel.format = fmt;
-			searchExtraSelections.append(sel);
+            QTextEdit::ExtraSelection sel;
+            sel.cursor = found;
+            sel.format = fmt;
+            searchExtraSelections.append(sel);
 
-			count++;
-			if (found.selectionStart() == currentStart) {
-				currentIndex = count;
-			}
+            count++;
+            if (found.selectionStart() == currentStart) {
+                currentIndex = count;
+            }
 
-			scan = found;
-		}
+            scan = found;
+        }
 
-		if (count == 0) {
-			statusLabel->setText(QStringLiteral("Not found"));
-		} else {
-			if (currentIndex < 1) {
-				currentIndex = 1;
-			}
-			statusLabel->setText(QString::number(currentIndex) + QStringLiteral(" of ") + QString::number(count));
-		}
+        if (count == 0) {
+            statusLabel->setText(QStringLiteral("Not found"));
+        } else {
+            if (currentIndex < 1) {
+                currentIndex = 1;
+            }
+            statusLabel->setText(QString::number(currentIndex) + QStringLiteral(" of ") + QString::number(count));
+        }
 
-		applyExtraSelections();
-	};
+        applyExtraSelections();
+    };
 
-	findRow->addWidget(findLabel);
-	findRow->addWidget(findEdit, 1);
-	findRow->addWidget(findPrevButton);
-	findRow->addWidget(findNextButton);
+    findRow->addWidget(findLabel);
+    findRow->addWidget(findEdit, 1);
+    findRow->addWidget(findPrevButton);
+    findRow->addWidget(findNextButton);
 
-	replaceRow->addWidget(replaceLabel);
-	replaceRow->addWidget(replaceEdit, 1);
-	replaceRow->addWidget(statusLabel);
+    replaceRow->addWidget(replaceLabel);
+    replaceRow->addWidget(replaceEdit, 1);
+    replaceRow->addWidget(statusLabel);
 
-	buttonRow->addWidget(replaceButton);
-	buttonRow->addWidget(replaceAllButton);
-	buttonRow->addWidget(undoButton);
-	buttonRow->addStretch(1);
-	buttonRow->addWidget(closeButton);
+    buttonRow->addWidget(replaceButton);
+    buttonRow->addWidget(replaceAllButton);
+    buttonRow->addWidget(undoButton);
+    buttonRow->addStretch(1);
+    buttonRow->addWidget(closeButton);
 
-	mainLayout->addLayout(findRow);
-	mainLayout->addLayout(replaceRow);
-	mainLayout->addLayout(buttonRow);
+    mainLayout->addLayout(findRow);
+    mainLayout->addLayout(replaceRow);
+    mainLayout->addLayout(buttonRow);
 
-	auto findNext = [this, findEdit]() {
-		const QString needle = findEdit->text();
-		if (needle.isEmpty()) {
-			return false;
-		}
+    auto findNext = [this, findEdit]() {
+        const QString needle = findEdit->text();
+        if (needle.isEmpty()) {
+            return false;
+        }
 
-		QTextCursor found = document()->find(needle, textCursor());
-		if (found.isNull()) {
-			QTextCursor start(document());
-			start.movePosition(QTextCursor::Start);
-			setTextCursor(start);
-			found = document()->find(needle, textCursor());
-		}
+        // Ensure visible blocks include search area
+        if (highlighter->isLazyHighlightingEnabled()) {
+            updateVisibleBlocks();
+        }
 
-		if (!found.isNull()) {
-			setTextCursor(found);
-			centerCursor();
-			return true;
-		}
-		return false;
-	};
+        QTextCursor found = document()->find(needle, textCursor());
+        if (found.isNull()) {
+            QTextCursor start(document());
+            start.movePosition(QTextCursor::Start);
+            setTextCursor(start);
+            found = document()->find(needle, textCursor());
+        }
 
-	auto findPrev = [this, findEdit]() {
-		const QString needle = findEdit->text();
-		if (needle.isEmpty()) {
-			return false;
-		}
+        if (!found.isNull()) {
+            setTextCursor(found);
+            centerCursor();
+            return true;
+        }
+        return false;
+    };
 
-		QTextCursor found = document()->find(needle, textCursor(), QTextDocument::FindBackward);
-		if (found.isNull()) {
-			QTextCursor end(document());
-			end.movePosition(QTextCursor::End);
-			setTextCursor(end);
-			found = document()->find(needle, textCursor(), QTextDocument::FindBackward);
-		}
+    auto findPrev = [this, findEdit]() {
+        const QString needle = findEdit->text();
+        if (needle.isEmpty()) {
+            return false;
+        }
 
-		if (!found.isNull()) {
-			setTextCursor(found);
-			centerCursor();
-			return true;
-		}
-		return false;
-	};
+        // Ensure visible blocks include search area
+        if (highlighter->isLazyHighlightingEnabled()) {
+            updateVisibleBlocks();
+        }
 
-	auto focusFirstMatch = [this, findEdit]() {
-		const QString needle = findEdit->text();
-		if (needle.isEmpty()) {
-			QTextCursor cursor = textCursor();
-			cursor.clearSelection();
-			setTextCursor(cursor);
-			return false;
-		}
+        QTextCursor found = document()->find(needle, textCursor(), QTextDocument::FindBackward);
+        if (found.isNull()) {
+            QTextCursor end(document());
+            end.movePosition(QTextCursor::End);
+            setTextCursor(end);
+            found = document()->find(needle, textCursor(), QTextDocument::FindBackward);
+        }
 
-		QTextCursor start(document());
-		start.movePosition(QTextCursor::Start);
-		QTextCursor found = document()->find(needle, start);
-		if (found.isNull()) {
-			QTextCursor cursor = textCursor();
-			cursor.clearSelection();
-			setTextCursor(cursor);
-			return false;
-		}
+        if (!found.isNull()) {
+            setTextCursor(found);
+            centerCursor();
+            return true;
+        }
+        return false;
+    };
 
-		setTextCursor(found);
-		centerCursor();
-		return true;
-	};
+    auto focusFirstMatch = [this, findEdit]() {
+        const QString needle = findEdit->text();
+        if (needle.isEmpty()) {
+            QTextCursor cursor = textCursor();
+            cursor.clearSelection();
+            setTextCursor(cursor);
+            return false;
+        }
 
-	QObject::connect(findEdit, &QLineEdit::textChanged, &dialog, [findEdit, defaultPalette, focusFirstMatch, rebuildHighlightsAndStatus]() {
-		findEdit->setPalette(defaultPalette);
-		focusFirstMatch();
-		rebuildHighlightsAndStatus();
-	});
+        // Force update visible blocks to include search area
+        if (highlighter->isLazyHighlightingEnabled()) {
+            updateVisibleBlocks();
+        }
 
-	QObject::connect(findNextButton, &QPushButton::clicked, &dialog, [findNext, findEdit, errorPalette, rebuildHighlightsAndStatus]() {
-		if (findNext()) {
-			rebuildHighlightsAndStatus();
-		} else {
-			findEdit->setPalette(errorPalette);
-		}
-	});
-	QObject::connect(findPrevButton, &QPushButton::clicked, &dialog, [findPrev, findEdit, errorPalette, rebuildHighlightsAndStatus]() {
-		if (findPrev()) {
-			rebuildHighlightsAndStatus();
-		} else {
-			findEdit->setPalette(errorPalette);
-		}
-	});
-	QObject::connect(findEdit, &QLineEdit::returnPressed, &dialog, [findNext, findEdit, errorPalette, rebuildHighlightsAndStatus]() {
-		if (findNext()) {
-			rebuildHighlightsAndStatus();
-		} else {
-			findEdit->setPalette(errorPalette);
-		}
-	});
-	QObject::connect(replaceEdit, &QLineEdit::returnPressed, &dialog, [replaceButton]() {
-		replaceButton->click();
-	});
+        QTextCursor start(document());
+        start.movePosition(QTextCursor::Start);
+        QTextCursor found = document()->find(needle, start);
+        if (found.isNull()) {
+            QTextCursor cursor = textCursor();
+            cursor.clearSelection();
+            setTextCursor(cursor);
+            return false;
+        }
 
-	QObject::connect(replaceButton, &QPushButton::clicked, &dialog, [this, findEdit, replaceEdit, findNext, &replaceUndoStack, undoButton, rebuildHighlightsAndStatus]() {
-		const QString needle = findEdit->text();
-		if (needle.isEmpty()) {
-			return;
-		}
+        setTextCursor(found);
+        centerCursor();
+        return true;
+    };
 
-		QTextCursor cursor = textCursor();
-		QVector<ReplaceRecord> records;
-		if (cursor.hasSelection() && cursor.selectedText() == needle) {
-			records.append({cursor.selectionStart(), cursor.selectedText(), replaceEdit->text()});
-			cursor.insertText(replaceEdit->text());
-		}
+    QObject::connect(findEdit, &QLineEdit::textChanged, &dialog, [findEdit, defaultPalette, focusFirstMatch, rebuildHighlightsAndStatus]() {
+        findEdit->setPalette(defaultPalette);
+        focusFirstMatch();
+        rebuildHighlightsAndStatus();
+    });
 
-		if (!records.isEmpty()) {
-			replaceUndoStack.append(records);
-			undoButton->setEnabled(true);
-		}
+    QObject::connect(findNextButton, &QPushButton::clicked, &dialog, [findNext, findEdit, errorPalette, rebuildHighlightsAndStatus]() {
+        if (findNext()) {
+            rebuildHighlightsAndStatus();
+        } else {
+            findEdit->setPalette(errorPalette);
+        }
+    });
 
-		findNext();
-		rebuildHighlightsAndStatus();
-	});
+    QObject::connect(findPrevButton, &QPushButton::clicked, &dialog, [findPrev, findEdit, errorPalette, rebuildHighlightsAndStatus]() {
+        if (findPrev()) {
+            rebuildHighlightsAndStatus();
+        } else {
+            findEdit->setPalette(errorPalette);
+        }
+    });
 
-	QObject::connect(replaceAllButton, &QPushButton::clicked, &dialog, [this, findEdit, replaceEdit, &replaceUndoStack, undoButton, statusLabel, rebuildHighlightsAndStatus]() {
-		const QString needle = findEdit->text();
-		if (needle.isEmpty()) {
-			return;
-		}
+    QObject::connect(findEdit, &QLineEdit::returnPressed, &dialog, [findNext, findEdit, errorPalette, rebuildHighlightsAndStatus]() {
+        if (findNext()) {
+            rebuildHighlightsAndStatus();
+        } else {
+            findEdit->setPalette(errorPalette);
+        }
+    });
 
-		QTextCursor cursor(document());
-		QVector<ReplaceRecord> records;
-		cursor.beginEditBlock();
-		cursor.movePosition(QTextCursor::Start);
+    QObject::connect(replaceEdit, &QLineEdit::returnPressed, &dialog, [replaceButton]() {
+        replaceButton->click();
+    });
 
-		while (true) {
-			QTextCursor found = document()->find(needle, cursor);
-			if (found.isNull()) {
-				break;
-			}
-			records.append({found.selectionStart(), found.selectedText(), replaceEdit->text()});
-			found.insertText(replaceEdit->text());
-			cursor = found;
-		}
+    QObject::connect(replaceButton, &QPushButton::clicked, &dialog, [this, findEdit, replaceEdit, findNext, &replaceUndoStack, undoButton, rebuildHighlightsAndStatus]() {
+        const QString needle = findEdit->text();
+        if (needle.isEmpty()) {
+            return;
+        }
 
-		cursor.endEditBlock();
+        QTextCursor cursor = textCursor();
+        QVector<ReplaceRecord> records;
+        if (cursor.hasSelection() && cursor.selectedText() == needle) {
+            records.append({cursor.selectionStart(), cursor.selectedText(), replaceEdit->text()});
+            cursor.insertText(replaceEdit->text());
+        }
 
-		if (!records.isEmpty()) {
-			replaceUndoStack.append(records);
-			undoButton->setEnabled(true);
-			statusLabel->setText(QStringLiteral("Replaced ") + QString::number(records.size()));
-		} else {
-			statusLabel->setText(QStringLiteral("Not found"));
-		}
+        if (!records.isEmpty()) {
+            replaceUndoStack.append(records);
+            undoButton->setEnabled(true);
+        }
 
-		rebuildHighlightsAndStatus();
-	});
+        findNext();
+        rebuildHighlightsAndStatus();
+    });
 
-	QObject::connect(undoButton, &QPushButton::clicked, &dialog, [this, &replaceUndoStack, undoButton, rebuildHighlightsAndStatus]() {
-		if (replaceUndoStack.isEmpty()) {
-			return;
-		}
+    QObject::connect(replaceAllButton, &QPushButton::clicked, &dialog, [this, findEdit, replaceEdit, &replaceUndoStack, undoButton, statusLabel, rebuildHighlightsAndStatus]() {
+        const QString needle = findEdit->text();
+        if (needle.isEmpty()) {
+            return;
+        }
 
-		const QVector<ReplaceRecord> records = replaceUndoStack.takeLast();
-		QTextCursor cursor(document());
-		cursor.beginEditBlock();
-		for (int i = records.size() - 1; i >= 0; --i) {
-			const ReplaceRecord &record = records.at(i);
-			cursor.setPosition(record.pos);
-			cursor.setPosition(record.pos + record.new_text.size(), QTextCursor::KeepAnchor);
-			cursor.insertText(record.original);
-		}
-		cursor.endEditBlock();
+        QTextCursor cursor(document());
+        QVector<ReplaceRecord> records;
+        cursor.beginEditBlock();
+        cursor.movePosition(QTextCursor::Start);
 
-		undoButton->setEnabled(!replaceUndoStack.isEmpty());
-		rebuildHighlightsAndStatus();
-	});
+        while (true) {
+            QTextCursor found = document()->find(needle, cursor);
+            if (found.isNull()) {
+                break;
+            }
+            records.append({found.selectionStart(), found.selectedText(), replaceEdit->text()});
+            found.insertText(replaceEdit->text());
+            cursor = found;
+        }
 
-	auto clearSearchUiState = [this]() {
-		searchExtraSelections.clear();
-		QTextCursor cursor = textCursor();
-		if (cursor.hasSelection()) {
-			cursor.clearSelection();
-			setTextCursor(cursor);
-		}
-		applyExtraSelections();
-	};
+        cursor.endEditBlock();
 
-	QObject::connect(closeButton, &QPushButton::clicked, &dialog, &QDialog::accept);
-	QObject::connect(&dialog, &QDialog::finished, this, clearSearchUiState);
+        if (!records.isEmpty()) {
+            replaceUndoStack.append(records);
+            undoButton->setEnabled(true);
+            statusLabel->setText(QStringLiteral("Replaced ") + QString::number(records.size()));
+        } else {
+            statusLabel->setText(QStringLiteral("Not found"));
+        }
 
-	findEdit->setFocus();
-	rebuildHighlightsAndStatus();
-	dialog.exec();
+        rebuildHighlightsAndStatus();
+    });
+
+    QObject::connect(undoButton, &QPushButton::clicked, &dialog, [this, &replaceUndoStack, undoButton, rebuildHighlightsAndStatus]() {
+        if (replaceUndoStack.isEmpty()) {
+            return;
+        }
+
+        const QVector<ReplaceRecord> records = replaceUndoStack.takeLast();
+        QTextCursor cursor(document());
+        cursor.beginEditBlock();
+        for (int i = records.size() - 1; i >= 0; --i) {
+            const ReplaceRecord &record = records.at(i);
+            cursor.setPosition(record.pos);
+            cursor.setPosition(record.pos + record.new_text.size(), QTextCursor::KeepAnchor);
+            cursor.insertText(record.original);
+        }
+        cursor.endEditBlock();
+
+        undoButton->setEnabled(!replaceUndoStack.isEmpty());
+        rebuildHighlightsAndStatus();
+    });
+
+    auto clearSearchUiState = [this]() {
+        searchExtraSelections.clear();
+        QTextCursor cursor = textCursor();
+        if (cursor.hasSelection()) {
+            cursor.clearSelection();
+            setTextCursor(cursor);
+        }
+        applyExtraSelections();
+    };
+
+    QObject::connect(closeButton, &QPushButton::clicked, &dialog, &QDialog::accept);
+    QObject::connect(&dialog, &QDialog::finished, this, clearSearchUiState);
+
+    findEdit->setFocus();
+    rebuildHighlightsAndStatus();
+    dialog.exec();
 }
 
 void GCodeEditor::saveFile()
 {
-	if (currentFilePath.isEmpty()) {
-		saveFileAs();
-		return;
-	}
+    if (currentFilePath.isEmpty()) {
+        saveFileAs();
+        return;
+    }
 
-	QFile file(currentFilePath);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		QMessageBox::warning(this,
-						 tr("Save Failed"),
-						 tr("Unable to save file:\n%1").arg(currentFilePath));
-		return;
-	}
+    QFile file(currentFilePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::warning(this,
+                         tr("Save Failed"),
+                         tr("Unable to save file:\n%1").arg(currentFilePath));
+        return;
+    }
 
-	QTextStream out(&file);
-	out << toPlainText();
+    QTextStream out(&file);
+    out << toPlainText();
 }
 
 void GCodeEditor::saveFileAs()
 {
-	const QString path = QFileDialog::getSaveFileName(this,
-									  tr("Save G-code As"),
-									  currentFilePath,
-									  tr("G-code Files (*.ngc *.nc *.tap *.txt);;All Files (*)"));
-	if (path.isEmpty()) {
-		return;
-	}
+    const QString path = QFileDialog::getSaveFileName(this,
+                                  tr("Save G-code As"),
+                                  currentFilePath,
+                                  tr("G-code Files (*.ngc *.nc *.tap *.txt);;All Files (*)"));
+    if (path.isEmpty()) {
+        return;
+    }
 
-	currentFilePath = path;
-	saveFile();
+    currentFilePath = path;
+    saveFile();
 }
 
 void GCodeEditor::EditorReadWrite(bool editable)
 {
-	setReadOnly(!editable);
+    setReadOnly(!editable);
 }
 
 void GCodeEditor::setEditable(bool editable)
 {
-	EditorReadWrite(editable);
+    EditorReadWrite(editable);
 }
 
 void GCodeEditor::setFilename(const QString &path)
 {
-	setFilePath(path);
+    setFilePath(path);
+}
+
+void GCodeEditor::setLazyHighlightingEnabled(bool enabled)
+{
+    if (highlighter) {
+        highlighter->setLazyHighlightingEnabled(enabled);
+        if (enabled) {
+            updateVisibleBlocks();
+        } else {
+            highlighter->rehighlight();
+        }
+    }
+}
+
+bool GCodeEditor::isLazyHighlightingEnabled() const
+{
+    return highlighter ? highlighter->isLazyHighlightingEnabled() : false;
+}
+
+void GCodeEditor::updateVisibleBlocks()
+{
+    if (highlighter && highlighter->isLazyHighlightingEnabled()) {
+        delayedUpdateVisibleBlocks();
+    }
+}
+
+void GCodeEditor::loadFileInChunks(const QString &path)
+{
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, tr("Load Failed"),
+                           tr("Unable to open file:\n%1").arg(path));
+        return;
+    }
+
+    // Check file size for performance warning
+    if (isFileSizeExceedsLimit(path) && !largeFileWarningShown) {
+        QMessageBox::information(this, tr("Large File"),
+            tr("The file is quite large. For better performance,\n"
+               "the editor will use optimized loading and\n"
+               "only highlight visible lines.\n\n"
+               "You can disable syntax highlighting in the settings\n"
+               "if performance is still an issue."));
+        largeFileWarningShown = true;
+    }
+
+    // Temporarily disable updates for faster loading
+    setUpdatesEnabled(false);
+
+    QTextStream stream(&file);
+    const int CHUNK_SIZE = 500; // lines per chunk
+    QStringList buffer;
+    int totalLines = 0;
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
+    while (!stream.atEnd()) {
+        buffer.append(stream.readLine());
+        totalLines++;
+
+        if (buffer.size() >= CHUNK_SIZE) {
+            appendPlainText(buffer.join('\n'));
+            buffer.clear();
+
+            // Process events to keep UI responsive
+            QCoreApplication::processEvents();
+        }
+    }
+
+    // Add remaining lines
+    if (!buffer.isEmpty()) {
+        appendPlainText(buffer.join('\n'));
+    }
+
+    QApplication::restoreOverrideCursor();
+    setUpdatesEnabled(true);
+
+    // If file is very large, disable lazy highlighting for better scrolling
+    if (totalLines > 10000) {
+        setLazyHighlightingEnabled(true);
+    }
+
+    currentFilePath = path;
+}
+
+void GCodeEditor::setMaximumFileSizeForHighlighting(qint64 bytes)
+{
+    maxFileSizeForHighlighting = bytes;
+}
+
+qint64 GCodeEditor::maximumFileSizeForHighlighting() const
+{
+    return maxFileSizeForHighlighting;
 }
 
 GCodeEditor::GCodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
-	highlighter = new GCodeHighlighter(document());
-	lineNumberArea = new LineNumberArea(this);
-	lineNumberAreaBackgroundColor = QColor(240, 240, 240);
-	lineNumberAreaTextColor = Qt::black;
-	lineNumberAreaFont = font();
-	lineNumberAreaFont.setPointSize(10);
-	currentLineHighlight = true;
-	currentLineBackgroundColor = QColor(Qt::yellow).lighter(160);
-	currentLineTextColor = palette().color(QPalette::Text);
-	findHighlightBackgroundColor = QColor(85, 85, 238, 90);
-	findHighlightTextColor = QColor(Qt::white);
-	findErrorBackgroundColor = QColor(Qt::red);
-	findErrorTextColor = QColor(Qt::white);
-	findStatusBackgroundColor = QColor(90, 90, 90);
-	findStatusTextColor = QColor(Qt::white);
-	findStatusBorderColor = QColor(95, 95, 95);
+    highlighter = new GCodeHighlighter(document());
+    lineNumberArea = new LineNumberArea(this);
+    lineNumberAreaBackgroundColor = QColor(240, 240, 240);
+    lineNumberAreaTextColor = Qt::black;
+    lineNumberAreaFont = font();
+    lineNumberAreaFont.setPointSize(10);
+    currentLineHighlight = true;
+    currentLineBackgroundColor = QColor(Qt::yellow).lighter(160);
+    currentLineTextColor = palette().color(QPalette::Text);
+    findHighlightBackgroundColor = QColor(85, 85, 238, 90);
+    findHighlightTextColor = QColor(Qt::white);
+    findErrorBackgroundColor = QColor(Qt::red);
+    findErrorTextColor = QColor(Qt::white);
+    findStatusBackgroundColor = QColor(90, 90, 90);
+    findStatusTextColor = QColor(Qt::white);
+    findStatusBorderColor = QColor(95, 95, 95);
 
-	connect(document(), &QTextDocument::blockCountChanged,
-			this, &GCodeEditor::updateLineNumberAreaWidth);
-	connect(this, &QPlainTextEdit::updateRequest,
-			this, &GCodeEditor::updateLineNumberArea);
-	connect(verticalScrollBar(), &QScrollBar::valueChanged,
-			this, [this](int){ lineNumberArea->update(); });
-	connect(this, &QPlainTextEdit::cursorPositionChanged,
-			this, &GCodeEditor::highlightCurrentLine);
+    // Performance optimization initialization
+    highlightUpdateTimer = new QTimer(this);
+    highlightUpdateTimer->setSingleShot(true);
+    highlightUpdateTimer->setInterval(50); // Debounce for 50ms
+    connect(highlightUpdateTimer, &QTimer::timeout,
+            this, &GCodeEditor::delayedUpdateVisibleBlocks);
 
-	updateLineNumberAreaWidth(0);
-	lineNumberArea->raise();
-	highlightCurrentLine();
+    lastVisibleStartBlock = -1;
+    lastVisibleEndBlock = -1;
+    maxFileSizeForHighlighting = 5 * 1024 * 1024; // 5MB default
+    largeFileWarningShown = false;
+
+    connect(document(), &QTextDocument::blockCountChanged,
+            this, &GCodeEditor::updateLineNumberAreaWidth);
+    connect(this, &QPlainTextEdit::updateRequest,
+            this, &GCodeEditor::updateLineNumberArea);
+    connect(verticalScrollBar(), &QScrollBar::valueChanged,
+            this, &GCodeEditor::onVerticalScroll);
+    connect(this, &QPlainTextEdit::cursorPositionChanged,
+            this, &GCodeEditor::onCursorPositionChanged);
+
+    updateLineNumberAreaWidth(0);
+    lineNumberArea->raise();
+    highlightCurrentLine();
+
+    // Enable lazy highlighting by default
+    setLazyHighlightingEnabled(true);
 }
 
 GCodeEditor::~GCodeEditor()
 {
-	// highlighter is parented to QTextDocument via GCodeHighlighter(document())
-	// and is destroyed by Qt's QObject parent-child teardown.
+    delete highlightUpdateTimer;
+    // highlighter is parented to QTextDocument via GCodeHighlighter(document())
+    // and is destroyed by Qt's QObject parent-child teardown.
 }
 
 int GCodeEditor::lineNumberAreaWidth() const
 {
-	int digits = 1;
-	int max = qMax(1, document()->blockCount());
-	while (max >= 10) {
-		max /= 10;
-		++digits;
-	}
-	QFontMetrics marginMetrics(lineNumberAreaFont);
-	return 10 + marginMetrics.horizontalAdvance('9') * digits;
+    int digits = 1;
+    int max = qMax(1, document()->blockCount());
+    while (max >= 10) {
+        max /= 10;
+        ++digits;
+    }
+    QFontMetrics marginMetrics(lineNumberAreaFont);
+    return 10 + marginMetrics.horizontalAdvance('9') * digits;
 }
 
 void GCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
-	QPainter painter(lineNumberArea);
-	painter.fillRect(event->rect(), lineNumberAreaBackgroundColor);
-	painter.setFont(lineNumberAreaFont);
+    QPainter painter(lineNumberArea);
+    painter.fillRect(event->rect(), lineNumberAreaBackgroundColor);
+    painter.setFont(lineNumberAreaFont);
 
-	QTextBlock block = firstVisibleBlock();
-	int blockNumber = block.blockNumber();
+    QTextBlock block = firstVisibleBlock();
+    int blockNumber = block.blockNumber();
 
-	qreal top = blockBoundingGeometry(block).translated(contentOffset()).top();
-	qreal bottom = top + blockBoundingRect(block).height();
+    qreal top = blockBoundingGeometry(block).translated(contentOffset()).top();
+    qreal bottom = top + blockBoundingRect(block).height();
 
-	while (block.isValid() && top <= event->rect().bottom()) {
-		if (block.isVisible() && bottom >= event->rect().top()) {
-			QString number = QString::number(blockNumber + 1);
-			painter.setPen(lineNumberAreaTextColor);
-			painter.drawText(0, top,
-							 lineNumberArea->width() - 5,
-							 QFontMetrics(lineNumberAreaFont).height(),
-							 Qt::AlignRight, number);
-		}
+    while (block.isValid() && top <= event->rect().bottom()) {
+        if (block.isVisible() && bottom >= event->rect().top()) {
+            QString number = QString::number(blockNumber + 1);
+            painter.setPen(lineNumberAreaTextColor);
+            painter.drawText(0, top,
+                             lineNumberArea->width() - 5,
+                             QFontMetrics(lineNumberAreaFont).height(),
+                             Qt::AlignRight, number);
+        }
 
-		block = block.next();
-		top = bottom;
-		bottom = top + blockBoundingRect(block).height();
-		++blockNumber;
-	}
+        block = block.next();
+        top = bottom;
+        bottom = top + blockBoundingRect(block).height();
+        ++blockNumber;
+    }
 }
 
 void GCodeEditor::resizeEvent(QResizeEvent *event)
 {
-	QPlainTextEdit::resizeEvent(event);
-	updateLineNumberAreaWidth(0);
+    QPlainTextEdit::resizeEvent(event);
+    updateLineNumberAreaWidth(0);
 
-	QRect cr = contentsRect();
-	lineNumberArea->setGeometry(QRect(cr.left(), cr.top(),
-									  lineNumberAreaWidth(), cr.height()));
+    QRect cr = contentsRect();
+    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(),
+                                      lineNumberAreaWidth(), cr.height()));
+
+    // Update visible blocks when resizing
+    if (highlighter && highlighter->isLazyHighlightingEnabled()) {
+        highlightUpdateTimer->start();
+    }
 }
 
 void GCodeEditor::showEvent(QShowEvent *event)
 {
-	QPlainTextEdit::showEvent(event);
-	updateLineNumberAreaWidth(0);
-	QRect cr = contentsRect();
-	lineNumberArea->setGeometry(QRect(cr.left(), cr.top(),
-									  lineNumberAreaWidth(), cr.height()));
-	lineNumberArea->raise();
+    QPlainTextEdit::showEvent(event);
+    updateLineNumberAreaWidth(0);
+    QRect cr = contentsRect();
+    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(),
+                                      lineNumberAreaWidth(), cr.height()));
+    lineNumberArea->raise();
+
+    // Update visible blocks when shown
+    if (highlighter && highlighter->isLazyHighlightingEnabled()) {
+        delayedUpdateVisibleBlocks();
+    }
 }
 
 void GCodeEditor::changeEvent(QEvent *event)
 {
-	QPlainTextEdit::changeEvent(event);
+    QPlainTextEdit::changeEvent(event);
 
-	switch (event->type()) {
-	case QEvent::StyleChange:
-	case QEvent::FontChange:
-	case QEvent::PaletteChange:
-	case QEvent::LayoutDirectionChange:
-		updateLineNumberAreaWidth(0);
-		lineNumberArea->update();
-		break;
-	default:
-		break;
-	}
+    switch (event->type()) {
+    case QEvent::StyleChange:
+    case QEvent::FontChange:
+    case QEvent::PaletteChange:
+    case QEvent::LayoutDirectionChange:
+        updateLineNumberAreaWidth(0);
+        lineNumberArea->update();
+        break;
+    default:
+        break;
+    }
 }
 
 void GCodeEditor::updateLineNumberAreaWidth(int)
 {
-	setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 
 void GCodeEditor::highlightCurrentLine()
 {
-	applyExtraSelections();
+    applyExtraSelections();
 }
 
 void GCodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
-	if (dy)
-		lineNumberArea->scroll(0, dy);
-	else
-		lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+    if (dy)
+        lineNumberArea->scroll(0, dy);
+    else
+        lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+}
+
+void GCodeEditor::onVerticalScroll(int value)
+{
+    Q_UNUSED(value)
+    // Debounce the highlight updates during scrolling
+    if (highlighter && highlighter->isLazyHighlightingEnabled()) {
+        highlightUpdateTimer->start();
+    }
+}
+
+void GCodeEditor::onCursorPositionChanged()
+{
+    // Update visible blocks when cursor moves (e.g., during find operations)
+    if (highlighter && highlighter->isLazyHighlightingEnabled()) {
+        highlightUpdateTimer->start();
+    }
+}
+
+void GCodeEditor::delayedUpdateVisibleBlocks()
+{
+    if (highlighter && highlighter->isLazyHighlightingEnabled()) {
+        updateVisibleBlockRange();
+    }
+}
+
+void GCodeEditor::updateVisibleBlockRange()
+{
+    if (!highlighter || !highlighter->isLazyHighlightingEnabled()) {
+        return;
+    }
+
+    // Calculate visible block range
+    QTextBlock firstBlock = firstVisibleBlock();
+    if (!firstBlock.isValid()) {
+        return;
+    }
+
+    QTextBlock lastBlock = firstBlock;
+
+    int firstVisibleLine = firstBlock.blockNumber();
+    int lastVisibleLine = firstVisibleLine;
+
+    // Calculate the last visible block
+    qreal viewportHeight = viewport()->height();
+    qreal currentY = blockBoundingGeometry(firstBlock).translated(contentOffset()).top();
+    qreal currentHeight = blockBoundingRect(firstBlock).height();
+
+    QTextBlock block = firstBlock;
+    while (block.isValid() && currentY + currentHeight < viewportHeight) {
+        block = block.next();
+        if (block.isValid()) {
+            currentY += currentHeight;
+            currentHeight = blockBoundingRect(block).height();
+            lastVisibleLine = block.blockNumber();
+        }
+    }
+
+    // Add buffer lines for smoother scrolling (prevents flickering)
+    const int bufferLines = 20;
+    int startBlock = qMax(0, firstVisibleLine - bufferLines);
+    int endBlock = lastVisibleLine + bufferLines;
+
+    // Only update if range changed significantly
+    if (startBlock != lastVisibleStartBlock || endBlock != lastVisibleEndBlock) {
+        lastVisibleStartBlock = startBlock;
+        lastVisibleEndBlock = endBlock;
+        highlighter->setVisibleBlockRange(startBlock, endBlock);
+    }
+}
+
+bool GCodeEditor::isFileSizeExceedsLimit(const QString &path) const
+{
+    QFile file(path);
+    if (file.exists()) {
+        return file.size() > maxFileSizeForHighlighting;
+    }
+    return false;
 }
 
 bool GCodeEditor::gCodeHighlightEnabled() const
 {
-	return highlighter->isGCodeHighlightEnabled();
+    return highlighter->isGCodeHighlightEnabled();
 }
 
 void GCodeEditor::setGCodeHighlightEnabled(bool enabled)
 {
-	highlighter->setGCodeHighlightEnabled(enabled);
+    highlighter->setGCodeHighlightEnabled(enabled);
 }
 
 bool GCodeEditor::mCodeHighlightEnabled() const
 {
-	return highlighter->isMCodeHighlightEnabled();
+    return highlighter->isMCodeHighlightEnabled();
 }
 
 void GCodeEditor::setMCodeHighlightEnabled(bool enabled)
 {
-	highlighter->setMCodeHighlightEnabled(enabled);
+    highlighter->setMCodeHighlightEnabled(enabled);
 }
 
 bool GCodeEditor::parameterHighlightEnabled() const
 {
-	return highlighter->isParameterHighlightEnabled();
+    return highlighter->isParameterHighlightEnabled();
 }
 
 void GCodeEditor::setParameterHighlightEnabled(bool enabled)
 {
-	highlighter->setParameterHighlightEnabled(enabled);
+    highlighter->setParameterHighlightEnabled(enabled);
 }
 
 bool GCodeEditor::numberHighlightEnabled() const
 {
-	return highlighter->isNumberHighlightEnabled();
+    return highlighter->isNumberHighlightEnabled();
 }
 
 void GCodeEditor::setNumberHighlightEnabled(bool enabled)
 {
-	highlighter->setNumberHighlightEnabled(enabled);
+    highlighter->setNumberHighlightEnabled(enabled);
 }
 
 bool GCodeEditor::commentHighlightEnabled() const
 {
-	return highlighter->isCommentHighlightEnabled();
+    return highlighter->isCommentHighlightEnabled();
 }
 
 void GCodeEditor::setCommentHighlightEnabled(bool enabled)
 {
-	highlighter->setCommentHighlightEnabled(enabled);
+    highlighter->setCommentHighlightEnabled(enabled);
 }
 
 bool GCodeEditor::stringHighlightEnabled() const
 {
-	return highlighter->isStringHighlightEnabled();
+    return highlighter->isStringHighlightEnabled();
 }
 
 void GCodeEditor::setStringHighlightEnabled(bool enabled)
 {
-	highlighter->setStringHighlightEnabled(enabled);
+    highlighter->setStringHighlightEnabled(enabled);
 }
 
 QColor GCodeEditor::gCodeColor() const
 {
-	return highlighter->gCodeColor();
+    return highlighter->gCodeColor();
 }
 
 void GCodeEditor::setGCodeColor(const QColor &color)
 {
-	highlighter->setGCodeColor(color);
+    highlighter->setGCodeColor(color);
 }
 
 QColor GCodeEditor::mCodeColor() const
 {
-	return highlighter->mCodeColor();
+    return highlighter->mCodeColor();
 }
 
 void GCodeEditor::setMCodeColor(const QColor &color)
 {
-	highlighter->setMCodeColor(color);
+    highlighter->setMCodeColor(color);
 }
 
 QColor GCodeEditor::parameterColor() const
 {
-	return highlighter->parameterColor();
+    return highlighter->parameterColor();
 }
 
 void GCodeEditor::setParameterColor(const QColor &color)
 {
-	highlighter->setParameterColor(color);
+    highlighter->setParameterColor(color);
 }
 
 QColor GCodeEditor::numberColor() const
 {
-	return highlighter->numberColor();
+    return highlighter->numberColor();
 }
 
 void GCodeEditor::setNumberColor(const QColor &color)
 {
-	highlighter->setNumberColor(color);
+    highlighter->setNumberColor(color);
 }
 
 QColor GCodeEditor::commentColor() const
 {
-	return highlighter->commentColor();
+    return highlighter->commentColor();
 }
 
 void GCodeEditor::setCommentColor(const QColor &color)
 {
-	highlighter->setCommentColor(color);
+    highlighter->setCommentColor(color);
 }
 
 QColor GCodeEditor::stringColor() const
 {
-	return highlighter->stringColor();
+    return highlighter->stringColor();
 }
 
 void GCodeEditor::setStringColor(const QColor &color)
 {
-	highlighter->setStringColor(color);
+    highlighter->setStringColor(color);
 }
 
 QColor GCodeEditor::lineNumberAreaBackground() const
 {
-	return lineNumberAreaBackgroundColor;
+    return lineNumberAreaBackgroundColor;
 }
 
 void GCodeEditor::setLineNumberAreaBackground(const QColor &color)
 {
-	lineNumberAreaBackgroundColor = color;
-	lineNumberArea->update();
+    lineNumberAreaBackgroundColor = color;
+    lineNumberArea->update();
 }
 
 QColor GCodeEditor::lineNumberAreaColor() const
 {
-	return lineNumberAreaTextColor;
+    return lineNumberAreaTextColor;
 }
 
 void GCodeEditor::setLineNumberAreaColor(const QColor &color)
 {
-	lineNumberAreaTextColor = color;
-	lineNumberArea->update();
+    lineNumberAreaTextColor = color;
+    lineNumberArea->update();
 }
 
 QString GCodeEditor::lineNumberFontFamily() const
 {
-	return lineNumberAreaFont.family();
+    return lineNumberAreaFont.family();
 }
 
 void GCodeEditor::setLineNumberFontFamily(const QString &family)
 {
-	lineNumberAreaFont.setFamily(family);
-	updateLineNumberAreaWidth(0);
-	lineNumberArea->update();
+    lineNumberAreaFont.setFamily(family);
+    updateLineNumberAreaWidth(0);
+    lineNumberArea->update();
 }
 
 int GCodeEditor::lineNumberFontPointSize() const
 {
-	return lineNumberAreaFont.pointSize();
+    return lineNumberAreaFont.pointSize();
 }
 
 void GCodeEditor::setLineNumberFontPointSize(int pointSize)
 {
-	lineNumberAreaFont.setPointSize(pointSize);
-	updateLineNumberAreaWidth(0);
-	lineNumberArea->update();
+    lineNumberAreaFont.setPointSize(pointSize);
+    updateLineNumberAreaWidth(0);
+    lineNumberArea->update();
 }
 
 int GCodeEditor::lineNumberFontWeight() const
 {
-	return lineNumberAreaFont.weight();
+    return lineNumberAreaFont.weight();
 }
 
 void GCodeEditor::setLineNumberFontWeight(int weight)
 {
-	lineNumberAreaFont.setWeight(static_cast<QFont::Weight>(weight));
-	lineNumberArea->update();
+    lineNumberAreaFont.setWeight(static_cast<QFont::Weight>(weight));
+    lineNumberArea->update();
 }
 
 bool GCodeEditor::lineNumberFontItalic() const
 {
-	return lineNumberAreaFont.italic();
+    return lineNumberAreaFont.italic();
 }
 
 void GCodeEditor::setLineNumberFontItalic(bool italic)
 {
-	lineNumberAreaFont.setItalic(italic);
-	lineNumberArea->update();
+    lineNumberAreaFont.setItalic(italic);
+    lineNumberArea->update();
 }
 
 bool GCodeEditor::currentLineHighlightEnabled() const
 {
-	return currentLineHighlight;
+    return currentLineHighlight;
 }
 
 void GCodeEditor::setCurrentLineHighlightEnabled(bool enabled)
 {
-	currentLineHighlight = enabled;
-	highlightCurrentLine();
+    currentLineHighlight = enabled;
+    highlightCurrentLine();
 }
 
 QColor GCodeEditor::currentLineBackground() const
 {
-	return currentLineBackgroundColor;
+    return currentLineBackgroundColor;
 }
 
 void GCodeEditor::setCurrentLineBackground(const QColor &color)
 {
-	currentLineBackgroundColor = color;
-	highlightCurrentLine();
+    currentLineBackgroundColor = color;
+    highlightCurrentLine();
 }
 
 QColor GCodeEditor::currentLineColor() const
 {
-	return currentLineTextColor;
+    return currentLineTextColor;
 }
 
 QColor GCodeEditor::findHighlightBackground() const
 {
-	return findHighlightBackgroundColor;
+    return findHighlightBackgroundColor;
 }
 
 void GCodeEditor::setFindHighlightBackground(const QColor &color)
 {
-	findHighlightBackgroundColor = color;
+    findHighlightBackgroundColor = color;
 }
 
 QColor GCodeEditor::findHighlightText() const
 {
-	return findHighlightTextColor;
+    return findHighlightTextColor;
 }
 
 void GCodeEditor::setFindHighlightText(const QColor &color)
 {
-	findHighlightTextColor = color;
+    findHighlightTextColor = color;
 }
 
 QColor GCodeEditor::findErrorBackground() const
 {
-	return findErrorBackgroundColor;
+    return findErrorBackgroundColor;
 }
 
 void GCodeEditor::setFindErrorBackground(const QColor &color)
 {
-	findErrorBackgroundColor = color;
+    findErrorBackgroundColor = color;
 }
 
 QColor GCodeEditor::findErrorText() const
 {
-	return findErrorTextColor;
+    return findErrorTextColor;
 }
 
 void GCodeEditor::setFindErrorText(const QColor &color)
 {
-	findErrorTextColor = color;
+    findErrorTextColor = color;
 }
 
 QColor GCodeEditor::findStatusBackground() const
 {
-	return findStatusBackgroundColor;
+    return findStatusBackgroundColor;
 }
 
 void GCodeEditor::setFindStatusBackground(const QColor &color)
 {
-	findStatusBackgroundColor = color;
+    findStatusBackgroundColor = color;
 }
 
 QColor GCodeEditor::findStatusText() const
 {
-	return findStatusTextColor;
+    return findStatusTextColor;
 }
 
 void GCodeEditor::setFindStatusText(const QColor &color)
 {
-	findStatusTextColor = color;
+    findStatusTextColor = color;
 }
 
 QColor GCodeEditor::findStatusBorder() const
 {
-	return findStatusBorderColor;
+    return findStatusBorderColor;
 }
 
 void GCodeEditor::setFindStatusBorder(const QColor &color)
 {
-	findStatusBorderColor = color;
+    findStatusBorderColor = color;
 }
 
 QString GCodeEditor::filePath() const
 {
-	return currentFilePath;
+    return currentFilePath;
 }
 
 void GCodeEditor::setFilePath(const QString &path)
 {
-	currentFilePath = path;
+    currentFilePath = path;
 }
 
 void GCodeEditor::setCurrentLineColor(const QColor &color)
 {
-	currentLineTextColor = color;
-	highlightCurrentLine();
+    currentLineTextColor = color;
+    highlightCurrentLine();
 }
