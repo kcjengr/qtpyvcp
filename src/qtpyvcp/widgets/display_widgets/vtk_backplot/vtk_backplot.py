@@ -1228,6 +1228,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             merged_lines.extend(self._selected_program_line_values())
             merged_lines = self._normalize_selected_lines(merged_lines)
 
+        # Mark source so editor-side sync can distinguish backplot picks from
+        # editor-originated cursor/selection updates.
+        setattr(status_obj, '_selected_program_line_source', 'backplot')
+
         selected_lines_channel = getattr(status_obj, 'selected_program_lines', None)
         set_lines = getattr(selected_lines_channel, 'setValue', None)
         if callable(set_lines):
