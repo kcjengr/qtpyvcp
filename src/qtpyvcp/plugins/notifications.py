@@ -117,7 +117,11 @@ class Notifications(DataPlugin):
 
     def timerEvent(self, event):
         """Called every 200ms to poll error channel"""
-        error = self.error_channel.poll()
+        try:
+            error = self.error_channel.poll()
+        except linuxcnc.error:
+            # Error channel not valid (LinuxCNC not running or shutting down)
+            return
 
         if not error:
             return

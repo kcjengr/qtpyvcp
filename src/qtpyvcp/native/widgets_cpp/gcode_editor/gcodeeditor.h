@@ -13,20 +13,9 @@ class LineNumberArea;
 class GCodeEditor : public QPlainTextEdit
 {
 	Q_OBJECT
-	Q_PROPERTY(bool gCodeHighlightEnabled READ gCodeHighlightEnabled WRITE setGCodeHighlightEnabled)
-	Q_PROPERTY(bool mCodeHighlightEnabled READ mCodeHighlightEnabled WRITE setMCodeHighlightEnabled)
-	Q_PROPERTY(bool parameterHighlightEnabled READ parameterHighlightEnabled WRITE setParameterHighlightEnabled)
-	Q_PROPERTY(bool numberHighlightEnabled READ numberHighlightEnabled WRITE setNumberHighlightEnabled)
-	Q_PROPERTY(bool commentHighlightEnabled READ commentHighlightEnabled WRITE setCommentHighlightEnabled)
-	Q_PROPERTY(bool stringHighlightEnabled READ stringHighlightEnabled WRITE setStringHighlightEnabled)
-
-	Q_PROPERTY(QColor gCodeColor READ gCodeColor WRITE setGCodeColor)
-	Q_PROPERTY(QColor mCodeColor READ mCodeColor WRITE setMCodeColor)
-	Q_PROPERTY(QColor parameterColor READ parameterColor WRITE setParameterColor)
-	Q_PROPERTY(QColor numberColor READ numberColor WRITE setNumberColor)
-	Q_PROPERTY(QColor commentColor READ commentColor WRITE setCommentColor)
-	Q_PROPERTY(QColor stringColor READ stringColor WRITE setStringColor)
-
+	// Single master switch for all syntax highlighting
+	Q_PROPERTY(bool syntaxHighlightingEnabled READ syntaxHighlightingEnabled WRITE setSyntaxHighlightingEnabled)
+	
 	Q_PROPERTY(QColor lineNumberAreaBackground READ lineNumberAreaBackground WRITE setLineNumberAreaBackground)
 	Q_PROPERTY(QColor lineNumberAreaColor READ lineNumberAreaColor WRITE setLineNumberAreaColor)
 	Q_PROPERTY(QString lineNumberFontFamily READ lineNumberFontFamily WRITE setLineNumberFontFamily)
@@ -53,31 +42,8 @@ public:
 	int lineNumberAreaWidth() const;
 	void lineNumberAreaPaintEvent(QPaintEvent *event);
 
-	bool gCodeHighlightEnabled() const;
-	void setGCodeHighlightEnabled(bool enabled);
-	bool mCodeHighlightEnabled() const;
-	void setMCodeHighlightEnabled(bool enabled);
-	bool parameterHighlightEnabled() const;
-	void setParameterHighlightEnabled(bool enabled);
-	bool numberHighlightEnabled() const;
-	void setNumberHighlightEnabled(bool enabled);
-	bool commentHighlightEnabled() const;
-	void setCommentHighlightEnabled(bool enabled);
-	bool stringHighlightEnabled() const;
-	void setStringHighlightEnabled(bool enabled);
-
-	QColor gCodeColor() const;
-	void setGCodeColor(const QColor &color);
-	QColor mCodeColor() const;
-	void setMCodeColor(const QColor &color);
-	QColor parameterColor() const;
-	void setParameterColor(const QColor &color);
-	QColor numberColor() const;
-	void setNumberColor(const QColor &color);
-	QColor commentColor() const;
-	void setCommentColor(const QColor &color);
-	QColor stringColor() const;
-	void setStringColor(const QColor &color);
+	bool syntaxHighlightingEnabled() const;
+	void setSyntaxHighlightingEnabled(bool enabled);
 
 	QColor lineNumberAreaBackground() const;
 	void setLineNumberAreaBackground(const QColor &color);
@@ -116,6 +82,10 @@ public:
 	void setFilePath(const QString &path);
 
 public slots:
+	// Dynamic token→color mapping (called from Python with YAML data)
+	void setTokenColorMap(const QVariantMap &tokenColorMap);
+	void clearTokenColorMap();
+	
 	void findDialog();
 	void saveFile();
 	void saveFileAs();

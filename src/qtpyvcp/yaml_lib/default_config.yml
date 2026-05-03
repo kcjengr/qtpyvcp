@@ -203,4 +203,94 @@ settings:
 
   backplot.multitool-colors:
     default_value: false
+
+  # Core GCode editor syntax control settings.
+  gcode-syntax.on-off:
+    description: Enable GCode syntax highlighting in the native editor.
+    default_value: false
+    persistent: true
+
+  gcode-syntax.user-color-1:
+    default_value: "{{ '#78b4ff' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#2355aa' }}"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.user-color-2:
+    default_value: "{{ '#ff96dc' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#872d82' }}"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.user-color-3:
+    default_value: "{{ '#8cdc8c' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#1e731e' }}"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.user-color-4:
+    default_value: "{{ '#ff9191' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#9b2323' }}"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.user-color-5:
+    default_value: "{{ '#96c896' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#377837' }}"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.user-color-6:
+    default_value: "{{ '#82dcdc' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#007882' }}"
+    value_type: str
+    persistent: true
+
+# Core runtime-owned editor defaults. VCPs can override these in config files.
+gcode_editor_style_defaults:
+  background_color: "{{ '#6c6c6c' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#dfdfdf' }}"
+  text_color: "{{ '#ffffff' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#000000' }}"
+  padding: 2
+  font_family: "Sans Serif"
+  font_point_size: 11
+  font_style: normal
+  font_weight: 400
+  border_radius: 2
+
+  line_number_area_background: "{{ '#505050' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#cdcdcd' }}"
+  line_number_area_color: "{{ '#ffffff' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#000000' }}"
+  line_number_font_family: "Sans Serif"
+  line_number_font_point_size: 10
+  line_number_font_weight: 400
+  line_number_font_italic: false
+
+  current_line_highlight_enabled: true
+  current_line_background: "{{ '#6c6ef0' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#bfc8ff' }}"
+  current_line_color: "{{ '#ffffff' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#000000' }}"
+  find_highlight_background: "{{ '#2848b9' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#9db6ff' }}"
+  find_highlight_text: "{{ '#ffffff' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#000000' }}"
+  find_error_background: "#ff0000"
+  find_error_text: "#ffffff"
+  find_status_background: "{{ '#5a5a5a' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#b7b7b7' }}"
+  find_status_text: "{{ '#ffffff' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#000000' }}"
+  find_status_border: "{{ '#5f5f5f' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#8f8f8f' }}"
+
+# Core syntax profile consumed by VCPMainWindow runtime apply logic.
+gcode_syntax_profile:
+  version: 1
+  model: flat-token-groups
+  default_color: "{{ '#ffffff' if effective_theme_color('DISPLAY', 'THEME_COLOR', 'light') == 'dark' else '#000000' }}"
+  syntax_styles:
+    - id: Syntax_style_1
+      setting: gcode-syntax.user-color-1
+      tokens: [G]
+    - id: Syntax_style_2
+      setting: gcode-syntax.user-color-2
+      tokens: [M]
+    - id: Syntax_style_3
+      setting: gcode-syntax.user-color-3
+      tokens: [X, Y, Z, A, B, C, U, V, W, I, J, K, R, Q, P, F]
+    - id: Syntax_style_4
+      setting: gcode-syntax.user-color-4
+      tokens: [number]
+    - id: Syntax_style_5
+      setting: gcode-syntax.user-color-5
+      tokens: [semicolon, parenthesis, comment]
+    - id: Syntax_style_6
+      setting: gcode-syntax.user-color-6
+      tokens: [single_quote, double_quote, string]
  

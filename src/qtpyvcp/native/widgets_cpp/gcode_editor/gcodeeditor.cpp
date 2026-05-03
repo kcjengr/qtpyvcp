@@ -448,20 +448,21 @@ GCodeEditor::GCodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
 	highlighter = new GCodeHighlighter(document());
 	lineNumberArea = new LineNumberArea(this);
-	lineNumberAreaBackgroundColor = QColor(240, 240, 240);
-	lineNumberAreaTextColor = Qt::black;
+	// All colors initialized from palette - Python runtime will set from YAML
+	lineNumberAreaBackgroundColor = palette().color(QPalette::AlternateBase);
+	lineNumberAreaTextColor = palette().color(QPalette::Text);
 	lineNumberAreaFont = font();
 	lineNumberAreaFont.setPointSize(10);
-	currentLineHighlight = true;
-	currentLineBackgroundColor = QColor(Qt::yellow).lighter(160);
-	currentLineTextColor = palette().color(QPalette::Text);
-	findHighlightBackgroundColor = QColor(85, 85, 238, 90);
-	findHighlightTextColor = QColor(Qt::white);
-	findErrorBackgroundColor = QColor(Qt::red);
-	findErrorTextColor = QColor(Qt::white);
-	findStatusBackgroundColor = QColor(90, 90, 90);
-	findStatusTextColor = QColor(Qt::white);
-	findStatusBorderColor = QColor(95, 95, 95);
+	currentLineHighlight = false;  // Disabled by default, YAML enables if configured
+	currentLineBackgroundColor = palette().color(QPalette::Highlight);
+	currentLineTextColor = palette().color(QPalette::HighlightedText);
+	findHighlightBackgroundColor = palette().color(QPalette::Highlight);
+	findHighlightTextColor = palette().color(QPalette::HighlightedText);
+	findErrorBackgroundColor = palette().color(QPalette::Highlight);
+	findErrorTextColor = palette().color(QPalette::HighlightedText);
+	findStatusBackgroundColor = palette().color(QPalette::Window);
+	findStatusTextColor = palette().color(QPalette::WindowText);
+	findStatusBorderColor = palette().color(QPalette::Mid);
 
 	connect(document(), &QTextDocument::blockCountChanged,
 			this, &GCodeEditor::updateLineNumberAreaWidth);
@@ -579,124 +580,24 @@ void GCodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 		lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
 }
 
-bool GCodeEditor::gCodeHighlightEnabled() const
+bool GCodeEditor::syntaxHighlightingEnabled() const
 {
-	return highlighter->isGCodeHighlightEnabled();
+	return highlighter->isSyntaxHighlightingEnabled();
 }
 
-void GCodeEditor::setGCodeHighlightEnabled(bool enabled)
+void GCodeEditor::setSyntaxHighlightingEnabled(bool enabled)
 {
-	highlighter->setGCodeHighlightEnabled(enabled);
+	highlighter->setSyntaxHighlightingEnabled(enabled);
 }
 
-bool GCodeEditor::mCodeHighlightEnabled() const
+void GCodeEditor::setTokenColorMap(const QVariantMap &tokenColorMap)
 {
-	return highlighter->isMCodeHighlightEnabled();
+	highlighter->setTokenColorMap(tokenColorMap);
 }
 
-void GCodeEditor::setMCodeHighlightEnabled(bool enabled)
+void GCodeEditor::clearTokenColorMap()
 {
-	highlighter->setMCodeHighlightEnabled(enabled);
-}
-
-bool GCodeEditor::parameterHighlightEnabled() const
-{
-	return highlighter->isParameterHighlightEnabled();
-}
-
-void GCodeEditor::setParameterHighlightEnabled(bool enabled)
-{
-	highlighter->setParameterHighlightEnabled(enabled);
-}
-
-bool GCodeEditor::numberHighlightEnabled() const
-{
-	return highlighter->isNumberHighlightEnabled();
-}
-
-void GCodeEditor::setNumberHighlightEnabled(bool enabled)
-{
-	highlighter->setNumberHighlightEnabled(enabled);
-}
-
-bool GCodeEditor::commentHighlightEnabled() const
-{
-	return highlighter->isCommentHighlightEnabled();
-}
-
-void GCodeEditor::setCommentHighlightEnabled(bool enabled)
-{
-	highlighter->setCommentHighlightEnabled(enabled);
-}
-
-bool GCodeEditor::stringHighlightEnabled() const
-{
-	return highlighter->isStringHighlightEnabled();
-}
-
-void GCodeEditor::setStringHighlightEnabled(bool enabled)
-{
-	highlighter->setStringHighlightEnabled(enabled);
-}
-
-QColor GCodeEditor::gCodeColor() const
-{
-	return highlighter->gCodeColor();
-}
-
-void GCodeEditor::setGCodeColor(const QColor &color)
-{
-	highlighter->setGCodeColor(color);
-}
-
-QColor GCodeEditor::mCodeColor() const
-{
-	return highlighter->mCodeColor();
-}
-
-void GCodeEditor::setMCodeColor(const QColor &color)
-{
-	highlighter->setMCodeColor(color);
-}
-
-QColor GCodeEditor::parameterColor() const
-{
-	return highlighter->parameterColor();
-}
-
-void GCodeEditor::setParameterColor(const QColor &color)
-{
-	highlighter->setParameterColor(color);
-}
-
-QColor GCodeEditor::numberColor() const
-{
-	return highlighter->numberColor();
-}
-
-void GCodeEditor::setNumberColor(const QColor &color)
-{
-	highlighter->setNumberColor(color);
-}
-
-QColor GCodeEditor::commentColor() const
-{
-	return highlighter->commentColor();
-}
-
-void GCodeEditor::setCommentColor(const QColor &color)
-{
-	highlighter->setCommentColor(color);
-}
-
-QColor GCodeEditor::stringColor() const
-{
-	return highlighter->stringColor();
-}
-
-void GCodeEditor::setStringColor(const QColor &color)
-{
-	highlighter->setStringColor(color);
+	highlighter->clearTokenColorMap();
 }
 
 QColor GCodeEditor::lineNumberAreaBackground() const

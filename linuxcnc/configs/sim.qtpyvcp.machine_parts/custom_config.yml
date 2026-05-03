@@ -4,3 +4,65 @@ windows:
     kwargs:
       confirm_exit: false
 
+settings:
+  # G-code syntax highlighting settings
+  gcode-syntax.gcode-enabled:
+    default_value: true
+    value_type: bool
+    persistent: true
+
+  gcode-syntax.mcode-enabled:
+    default_value: true
+    value_type: bool
+    persistent: true
+
+  gcode-syntax.parameter-enabled:
+    default_value: true
+    value_type: bool
+    persistent: true
+
+  gcode-syntax.number-enabled:
+    default_value: true
+    value_type: bool
+    persistent: true
+
+  gcode-syntax.comment-enabled:
+    default_value: true
+    value_type: bool
+    persistent: true
+
+  gcode-syntax.string-enabled:
+    default_value: true
+    value_type: bool
+    persistent: true
+
+  gcode-syntax.gcode-color:
+    default_value: "#78b4ff"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.mcode-color:
+    default_value: "#ff96dc"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.parameter-color:
+    default_value: "#8cdc8c"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.number-color:
+    default_value: "#ff9191"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.comment-color:
+    default_value: "#96c896"
+    value_type: str
+    persistent: true
+
+  gcode-syntax.string-color:
+    default_value: "#82dcdc"
+    value_type: str
+    persistent: true
+
