@@ -83,7 +83,7 @@ class Setting(QObject):
                 self.value = self.clampValue(value)
             else:
                 self.value = value
-            self.signal.emit(value)
+            self.signal.emit(self.value)
         else:
             self.fset(self.instance, self, value)
 

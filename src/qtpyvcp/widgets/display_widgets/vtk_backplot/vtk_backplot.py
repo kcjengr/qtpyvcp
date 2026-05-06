@@ -2457,14 +2457,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         rotation = current_offsets[r_column] if r_column is not None and r_column < len(current_offsets) else 0.0
 
         # For active WCS, use live status values to avoid stale offset-table snapshots.
+        # linuxcnc g5x_offset is always ordered (X, Y, Z, A, B, C, U, V, W) at fixed indices,
+        # regardless of how many axes are configured in OFFSET_COLUMNS.
+        _LCNC_AXIS_IDX = {'X': 0, 'Y': 1, 'Z': 2, 'A': 3, 'B': 4, 'C': 5, 'U': 6, 'V': 7, 'W': 8}
         if wcs_index == self.active_wcs_index and isinstance(self.active_wcs_offset, (list, tuple)):
             live = self.active_wcs_offset
-            if x_column is not None and x_column < len(live):
-                x = live[x_column]
-            if y_column is not None and y_column < len(live):
-                y = live[y_column]
-            if z_column is not None and z_column < len(live):
-                z = live[z_column]
+            if x_column is not None:
+                live_x = _LCNC_AXIS_IDX['X']
+                if live_x < len(live):
+                    x = live[live_x]
+            if y_column is not None:
+                live_y = _LCNC_AXIS_IDX['Y']
+                if live_y < len(live):
+                    y = live[live_y]
+            if z_column is not None:
+                live_z = _LCNC_AXIS_IDX['Z']
+                if live_z < len(live):
+                    z = live[live_z]
             rotation = float(self.active_rotation or 0.0)
 
         return x, y, z, rotation
