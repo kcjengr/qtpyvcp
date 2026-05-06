@@ -107,9 +107,10 @@ class VTKCanon(StatCanon):
                 self._preview_switchkins_type = 0
 
         # Track the interpreter units mode for load-time scaling.
-        # LinuxCNC canonical units: 1=in, 2=mm, 3=cm.
+        # LinuxCNC canonical units: 200=in, 210=mm. Only G20 and G21 are valid unit G-Codes
         units = self._coerce_int(getattr(st, 'units', 0) or 0)
-        if units in (1, 2, 3):
+        LOG.debug(f"Linuxcnc canonical units from status channel = {units}")
+        if units in (210, 200):
             self._preview_program_units = units
 
     @staticmethod
@@ -155,17 +156,17 @@ class VTKCanon(StatCanon):
             # Fallback to status string when preview state isn't available yet.
             units_text = str(self._datasource.getProgramUnits() or '').strip().lower()
             if units_text in ('in', 'inch', 'inches'):
-                program_units = 1
+                program_units = 200
             elif units_text in ('mm', 'metric', 'millimeter', 'millimeters'):
-                program_units = 2
-            elif units_text in ('cm', 'centimeter', 'centimeters'):
-                program_units = 3
+                program_units = 210
+            #elif units_text in ('cm', 'centimeter', 'centimeters'):
+            #    program_units = 3
 
         # program_units -> mm
-        if program_units == 1:
+        if program_units == 200:
             to_mm = 25.4
-        elif program_units == 3:
-            to_mm = 10.0
+        #elif program_units == 3:
+        #    to_mm = 10.0
         else:
             to_mm = 1.0
 
