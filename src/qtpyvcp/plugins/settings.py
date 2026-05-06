@@ -8,9 +8,6 @@ from qtpyvcp.utilities.settings import addSetting
 from qtpyvcp.plugins import DataPlugin, getPlugin
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
-SETTINGS_TRACE_ENABLED = str(os.getenv('QTPYVCP_SETTINGS_TRACE', '')).strip().lower() in (
-    '1', 'true', 'yes', 'on'
-)
 
 LOG = getLogger(__name__)
 
@@ -50,17 +47,9 @@ class Settings(DataPlugin):
     def initialise(self):
         settings = self.data_manager.getData('settings', {})
 
-        if SETTINGS_TRACE_ENABLED:
-            if 'drill.feed-mode' in settings:
-                LOG.info("[settings-trace] initialise persistent drill.feed-mode=%r", settings.get('drill.feed-mode'))
-            else:
-                LOG.info("[settings-trace] initialise no persistent drill.feed-mode entry")
-
         for key, value in list(settings.items()):
             try:
                 SETTINGS[key].setValue(value)
-                if SETTINGS_TRACE_ENABLED and key == 'drill.feed-mode':
-                    LOG.info("[settings-trace] initialise applied drill.feed-mode=%r", SETTINGS[key].getValue())
             except KeyError:
                 pass
 
@@ -71,16 +60,5 @@ class Settings(DataPlugin):
                 value = obj.getValue()
                 if obj.default_value != value:
                     settings[key] = value
-
-        if SETTINGS_TRACE_ENABLED and 'drill.feed-mode' in SETTINGS:
-            current = SETTINGS['drill.feed-mode'].getValue()
-            default = SETTINGS['drill.feed-mode'].default_value
-            saved = settings.get('drill.feed-mode', '<not-saved>')
-            LOG.info(
-                "[settings-trace] terminate drill.feed-mode current=%r default=%r saved=%r",
-                current,
-                default,
-                saved,
-            )
 
         self.data_manager.setData('settings', settings)

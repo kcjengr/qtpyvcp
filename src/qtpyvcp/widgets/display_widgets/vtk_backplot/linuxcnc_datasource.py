@@ -98,6 +98,12 @@ class LinuxCncDataSource(QObject):
 
         return bool(default)
 
+    @staticmethod
+    def _ini_uses_switchkins(kins_value):
+        """Return True when INI KINS line indicates switchkins support."""
+        text = str(kins_value or '').strip().lower()
+        return 'switchkins' in text
+
     def __init__(self):
         super(LinuxCncDataSource, self).__init__(None)
 
@@ -106,6 +112,8 @@ class LinuxCncDataSource(QObject):
         self._tooltable = getPlugin('tooltable')
         self._offsettable = getPlugin('offsettable')
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
+        self._kins_decl = str(self._inifile.find("KINS", "KINEMATICS") or "").strip()
+        self._switchkins_probe_enabled = self._ini_uses_switchkins(self._kins_decl)
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
         self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF") or "false"
         self._is_lathe = (
@@ -165,6 +173,12 @@ class LinuxCncDataSource(QObject):
         self._last_logged_motion_switchkins_parsed = None
         self._last_logged_kinstype_bits_raw = None
         self._hal_pin_read_error_logged = set()
+
+        if not self._switchkins_probe_enabled:
+            LOG.debug(
+                "VTK switchkins probe disabled for kinematics: %s",
+                self._kins_decl or "<unset>",
+            )
 
         self._configure_vtk_machine_axes()
         
@@ -323,6 +337,9 @@ class LinuxCncDataSource(QObject):
         return None, (b0, b1, b2)
 
     def getSwitchkinsType(self):
+        if not self._switchkins_probe_enabled:
+            return self._last_switchkins_type
+
         # Authoritative runtime source: motion.switchkins-type.
         # Fallback to kinstype.is-* bits when the motion pin is unavailable.
         raw = self._hal_get_float('motion.switchkins-type')

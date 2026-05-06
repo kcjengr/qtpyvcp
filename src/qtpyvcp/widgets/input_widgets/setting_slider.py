@@ -11,9 +11,6 @@ from qtpyvcp.utilities.misc import cnc_float
 from qtpyvcp.utilities import logger
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
-COMBO_TRACE_ENABLED = str(os.getenv('QTPYVCP_COMBO_TRACE', '')).strip().lower() in (
-    '1', 'true', 'yes', 'on'
-)
 LOG = logger.getLogger(__name__)
 
 class VCPAbstractSettingsWidget(VCPWidget):
@@ -507,13 +504,6 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
         # Backward-compatible default: persist index unless explicitly disabled.
         self._store_index = True
 
-    def _is_trace_target(self):
-        return COMBO_TRACE_ENABLED and self._setting_name == 'drill.feed-mode'
-
-    def _trace(self, msg, *args):
-        if self._is_trace_target():
-            LOG.info("[combo-trace:%s] " + msg, self.objectName() or self._setting_name, *args)
-
     @Property(bool)
     def storeIndex(self):
         return self._store_index
@@ -552,10 +542,6 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
         if self._setting is not None and self.count() > 0 and self._setting.value_type in (int, float):
             item_values = [self._item_value(i) for i in range(self.count())]
             if item_values != list(range(self.count())):
-                self._trace(
-                    "forcing store-by-value for numeric setting: item_values=%r",
-                    item_values,
-                )
                 return False
 
         return True
@@ -600,27 +586,7 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
         """Persist selected value (not index) when storeIndex is disabled."""
         if self._setting is None or index < 0:
             return
-        self._trace(
-            "store-by-value index=%s text=%r item_value=%r setting_before=%r",
-            index,
-            self.itemText(index),
-            self._item_value(index),
-            self._setting.getValue(),
-        )
         self._setting.setValue(self._item_value(index))
-        self._trace("store-by-value setting_after=%r", self._setting.getValue())
-
-    def _trace_index_change(self, index):
-        if self._setting is None:
-            return
-        item_value = self._item_value(index) if index >= 0 else None
-        self._trace(
-            "index-changed index=%s text=%r item_value=%r setting_now=%r",
-            index,
-            self.itemText(index) if index >= 0 else '',
-            item_value,
-            self._setting.getValue(),
-        )
 
     def _apply_setting_update_store_index(self, value):
         """Update display for store-index mode from either index or item value."""
@@ -629,16 +595,9 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
 
         if isinstance(value, int) and 0 <= value < self.count():
             self.setDisplayIndex(value)
-            self._trace("notify store-index as index value=%r -> index=%d", value, value)
             return
 
-        match_mode = self._set_display_from_value(value)
-        self._trace(
-            "notify store-index as value value=%r match_mode=%r current_index=%s",
-            value,
-            match_mode,
-            self.currentIndex(),
-        )
+        self._set_display_from_value(value)
 
     def _resolve_display_after_items_inserted(self, *args):
         """Ensure a valid selection after dynamic item population."""
@@ -654,13 +613,6 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
             default_match = self._set_display_from_value(self._setting.default_value)
             if default_match == '':
                 self.setDisplayIndex(0)
-
-        self._trace(
-            "post-populate resolve value=%r current_index=%s current_text=%r",
-            value,
-            self.currentIndex(),
-            self.currentText(),
-        )
 
     def setDisplayIndex(self, index):
         self.blockSignals(True)
@@ -684,17 +636,6 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
         if self._setting is not None:
 
             value = self._setting.getValue()
-            self._trace(
-                "initialize start storeIndex=%s raw_storeIndex_prop=%r setting_value=%r default=%r count=%d",
-                self._stores_index(),
-                self.property('storeIndex'),
-                value,
-                self._setting.default_value,
-                self.count(),
-            )
-            if self._is_trace_target():
-                items = [self.itemText(i) for i in range(self.count())]
-                self._trace("initialize items=%r", items)
 
             # Backward compatibility: accept stored text and map to index
             if isinstance(value, str):
@@ -703,6 +644,7 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
                     value = idx
 
             options = self._setting.enum_options
+            had_items_before = self.count() > 0
             # Only inject options if the UI has not already provided them
             if self.count() == 0 and isinstance(options, list):
                 for option in options:
@@ -711,7 +653,8 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
             # Some combos are populated later by operation logic; re-resolve
             # their selection when items are inserted to avoid a blank state.
             model = self.model()
-            if model is not None and not getattr(self, '_rows_inserted_connected', False):
+            needs_late_population_watch = (not had_items_before) and self.count() == 0
+            if needs_late_population_watch and model is not None and not getattr(self, '_rows_inserted_connected', False):
                 model.rowsInserted.connect(
                     safe_qt_callback(self, self._resolve_display_after_items_inserted)
                 )
@@ -735,7 +678,6 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
 
                 self._setting.notify(safe_qt_callback(self, self._apply_setting_update_store_index))
                 self.currentIndexChanged.connect(self._setting.setValue)
-                self.currentIndexChanged.connect(self._trace_index_change)
             else:
                 match_mode = self._set_display_from_value(value)
 
@@ -771,11 +713,3 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
 
                 self._setting.notify(safe_qt_callback(self, self._set_display_from_value))
                 self.currentIndexChanged.connect(self._store_selected_value)
-                self.currentIndexChanged.connect(self._trace_index_change)
-
-            self._trace(
-                "initialize end current_index=%s current_text=%r setting_now=%r",
-                self.currentIndex(),
-                self.currentText(),
-                self._setting.getValue(),
-            )

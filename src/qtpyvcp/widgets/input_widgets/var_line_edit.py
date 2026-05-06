@@ -13,6 +13,11 @@ LOG = logger.getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
 
+_INI_CONFIG_CACHE = None
+_INI_CONFIG_CACHE_KEY = None
+_WARNED_MISSING_INI_ENV = False
+_WARNED_MISSING_PARAMETER_FILE = False
+
 def _safe_import_linuxcnc():
     """Import linuxcnc with intelligent error handling"""
     if IN_DESIGNER:
@@ -26,6 +31,52 @@ def _safe_import_linuxcnc():
                 # Unexpected in runtime mode - log the error
         LOG.error(f"Failed to import linuxcnc in runtime mode: {e}")
         return None
+
+
+def _get_cached_ini_configuration():
+    """Resolve LinuxCNC ini + parameter file path once per process/env."""
+    global _INI_CONFIG_CACHE
+    global _INI_CONFIG_CACHE_KEY
+    global _WARNED_MISSING_INI_ENV
+    global _WARNED_MISSING_PARAMETER_FILE
+
+    ini_file_name = os.getenv('INI_FILE_NAME')
+    config_dir = os.getenv('CONFIG_DIR', os.path.dirname(ini_file_name) if ini_file_name else None)
+    cache_key = (ini_file_name, config_dir)
+
+    if _INI_CONFIG_CACHE is not None and _INI_CONFIG_CACHE_KEY == cache_key:
+        return _INI_CONFIG_CACHE
+
+    if not ini_file_name:
+        if not _WARNED_MISSING_INI_ENV:
+            LOG.warning("VCPVarLineEdit: INI_FILE_NAME environment variable not set")
+            _WARNED_MISSING_INI_ENV = True
+        return None
+
+    linuxcnc = _safe_import_linuxcnc()
+    if linuxcnc is None:
+        return None
+
+    ini_file = linuxcnc.ini(ini_file_name)
+    parameter_file = ini_file.find('RS274NGC', 'PARAMETER_FILE')
+    if not parameter_file:
+        if not _WARNED_MISSING_PARAMETER_FILE:
+            LOG.warning("VCPVarLineEdit: PARAMETER_FILE not found in [RS274NGC] section of ini file")
+            _WARNED_MISSING_PARAMETER_FILE = True
+        return None
+
+    if not os.path.isabs(parameter_file):
+        parameter_file_path = os.path.join(config_dir, parameter_file)
+    else:
+        parameter_file_path = parameter_file
+
+    _INI_CONFIG_CACHE = {
+        'ini_file': ini_file,
+        'config_dir': config_dir,
+        'parameter_file_path': parameter_file_path,
+    }
+    _INI_CONFIG_CACHE_KEY = cache_key
+    return _INI_CONFIG_CACHE
 
 
 class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
@@ -91,35 +142,13 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
 
     def _loadIniConfiguration(self):
         """Load LinuxCNC ini file and extract parameter file path"""
-        linuxcnc = _safe_import_linuxcnc()
-        if linuxcnc is None:
-            return  # Skip when linuxcnc unavailable (designer mode or error already logged)
-            
-        # Get the ini file path from environment variable
-        ini_file_name = os.getenv('INI_FILE_NAME')
-        if not ini_file_name:
-            LOG.warning("VCPVarLineEdit: INI_FILE_NAME environment variable not set")
+        config = _get_cached_ini_configuration()
+        if config is None:
             return
-            
-        # Load the ini file
-        self._ini_file = linuxcnc.ini(ini_file_name)
-        
-        # Get config directory from environment
-        self._config_dir = os.getenv('CONFIG_DIR', os.path.dirname(ini_file_name))
-        
-        # Get parameter file from [RS274NGC] section
-        parameter_file = self._ini_file.find('RS274NGC', 'PARAMETER_FILE')
-        if not parameter_file:
-            LOG.warning("VCPVarLineEdit: PARAMETER_FILE not found in [RS274NGC] section of ini file")
-            return
-            
-        # Handle relative paths by joining with config directory
-        if not os.path.isabs(parameter_file):
-            self._parameter_file_path = os.path.join(self._config_dir, parameter_file)
-        else:
-            self._parameter_file_path = parameter_file
-            
-        LOG.debug(f"VCPVarLineEdit: Parameter file path: {self._parameter_file_path}")
+
+        self._ini_file = config['ini_file']
+        self._config_dir = config['config_dir']
+        self._parameter_file_path = config['parameter_file_path']
 
     def getParameterFilePath(self):
         """Get the automatically detected parameter file path"""
@@ -226,7 +255,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
             super().setEnabled(False)
             self.setToolTip("Status plugin not available - widget disabled for safety")
             return
-            
+
         # Check if machine is in safe state for parameter editing
         linuxcnc = _safe_import_linuxcnc()
         if linuxcnc is None:
@@ -234,15 +263,14 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
             super().setEnabled(False)
             self.setToolTip("LinuxCNC not available - widget disabled")
             return
-            
+
         stat = linuxcnc.stat()
         stat.poll()
-        
+
         # Check machine state: ON, HOMED, and IDLE (same as MDI button safety)
         is_machine_on = stat.task_state == linuxcnc.STATE_ON
         is_all_homed = self._status.allHomed()
         is_idle = stat.interp_state == linuxcnc.INTERP_IDLE
-        
         is_safe = is_machine_on and is_all_homed and is_idle
         
         if is_safe:
@@ -392,15 +420,14 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
             linuxcnc = _safe_import_linuxcnc()
             if linuxcnc is None:
                 return  # Skip writing when linuxcnc unavailable
-                
+
             stat = linuxcnc.stat()
             stat.poll()
-            
+
             # Check machine state: ON, HOMED, and IDLE
             is_machine_on = stat.task_state == linuxcnc.STATE_ON
             is_all_homed = self._status.allHomed()
             is_idle = stat.interp_state == linuxcnc.INTERP_IDLE
-            
             if not (is_machine_on and is_all_homed and is_idle):
                 LOG.warning("VCPVarLineEdit: Cannot write parameter - machine not in safe state")
                 return
@@ -420,7 +447,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         issue_mdi(mdi_command)
         self._pending_user_commit = False
         
-        LOG.info(f"VCPVarLineEdit: Set parameter #{self.var_parameter_number} = {value:.6f} via MDI")
+        LOG.debug(f"VCPVarLineEdit: Set parameter #{self.var_parameter_number} = {value:.6f} via MDI")
 
     def readParameterFromVarFile(self, parameter_number=None):
         """
@@ -488,7 +515,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         # Connect to status plugin for safety monitoring
         self._connectStatusPlugin()
         
-        LOG.info(f"VCPVarLineEdit initialized: param #{self.var_parameter_number}, auto_write={self._auto_write_enabled}, require_homed={self._require_homed}")
+        LOG.debug(f"VCPVarLineEdit initialized: param #{self.var_parameter_number}, auto_write={self._auto_write_enabled}, require_homed={self._require_homed}")
 
     def terminate(self):
         """Cleanup when widget is destroyed"""
