@@ -53,6 +53,7 @@ building complex VCPs.
 
    development/contribution_guide
    development/dev_environment
+   development/native_widgets_consolidation_plan
    architecture
    tools/index
 

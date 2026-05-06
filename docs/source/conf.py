@@ -17,12 +17,22 @@
 
 import os
 import sys
-import mock
+from unittest import mock
+from importlib.metadata import PackageNotFoundError, version as metadata_version
 
 qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..')
 sys.path.insert(0, os.path.abspath(qtpyvcp_dir))
 
-import qtpyvcp
+
+def _package_version(*package_names, default="0.0.0+0.gunknown"):
+    for package_name in package_names:
+        try:
+            return metadata_version(package_name)
+        except PackageNotFoundError:
+            continue
+        except Exception:
+            continue
+    return default
 
 # -- General configuration ------------------------------------------------
 
@@ -74,13 +84,18 @@ author = 'Kurt Jacobson'
 # built documents.
 
 # The short X.Y version.
-version = qtpyvcp.__version__.split('+')[0]
+release = _package_version("qtpyvcp")
+version = release.split('+')[0]
 
 # The full version, including alpha/beta/rc tags.
-release = qtpyvcp.__version__
-
-# The short commit ID
-commit = qtpyvcp.__version__.split('.')[2]
+commit = "gunknown"
+if '+' in release:
+    suffix = release.split('+', 1)[1]
+    parts = suffix.split('.')
+    if len(parts) > 1:
+        commit = parts[-1]
+    elif suffix:
+        commit = suffix
 
 rst_epilog = f"""
 .. |code_version| replace:: {version}
@@ -144,6 +159,21 @@ todo_include_todos = True
 
 # Order autodoc by source rather than alphabetically
 autodoc_member_order = 'bysource'
+
+# Avoid importing runtime-heavy Qt/LinuxCNC modules during docs builds.
+autodoc_mock_imports = [
+    'qtpyvcp',
+    'qtpyvcp.plugins',
+    'qtpy',
+    'qtpy.QtCore',
+    'qtpy.QtGui',
+    'qtpy.QtWidgets',
+    'PyQt5',
+    'PySide6',
+    'linuxcnc',
+    '_hal',
+    'hal',
+]
 
 # -- Options for HTML output ----------------------------------------------
 
@@ -390,8 +420,17 @@ class linuxcnc(mock.MagicMock):
 
 
 sys.modules['linuxcnc'] = linuxcnc
-for module in ['_hal', 'hal']:
-    sys.modules[module] = mock.MagicMock()
+
+
+def _mock_module(name):
+    module = mock.MagicMock()
+    module.__name__ = name
+    module.__file__ = os.devnull
+    return module
+
+
+for module in ['_hal', 'hal', 'qtpyvcp.plugins.status']:
+    sys.modules[module] = _mock_module(module)
 
 
 # MagicMock does not work for inheriting, so use our own Mock for PyQt5
@@ -442,12 +481,3 @@ class Mock(object):
 #                  'qtpy.QtWidgets',
 #                  'docopt',
 #                  'dbus')
-
-
-import qtpyvcp.plugins
-
-qtpyvcp.plugins._PLUGINS = mock.MagicMock()
-qtpyvcp.plugins.iterPlugins = mock.MagicMock()
-qtpyvcp.WINDOWS = mock.MagicMock()
-qtpyvcp.OPTIONS = mock.MagicMock()
-qtpyvcp.DIALOGS = mock.MagicMock()

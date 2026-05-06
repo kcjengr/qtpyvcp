@@ -55,9 +55,19 @@ def load_config_files(*files):
                              failonmissingfiles=True)
 
     if LOG.getEffectiveLevel() == logLevelFromName("DEBUG"):
-        LOG.debug("Merged YAML config:\n\n%s\n",
-                  hiyapyco.dump(cfg_dict,
-                                default_flow_style=False))
+        try:
+            merged_dump = hiyapyco.dump(cfg_dict, default_flow_style=False)
+        except Exception:
+            # Some merged configs can legitimately include non-serializable
+            # template placeholders (for example Jinja Undefined values).
+            # Keep loading behavior intact and only skip debug pretty-print.
+            LOG.debug(
+                "Merged YAML config contains non-serializable values; "
+                "skipping debug dump",
+                exc_info=True,
+            )
+        else:
+            LOG.debug("Merged YAML config:\n\n%s\n", merged_dump)
 
     return cfg_dict
 

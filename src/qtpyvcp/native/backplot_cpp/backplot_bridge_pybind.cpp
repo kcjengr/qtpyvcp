@@ -2,6 +2,7 @@
 #include <pybind11/numpy.h>
 
 #include <array>
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstdint>
@@ -74,6 +75,7 @@ struct NativeLine {
     std::array<double, 3> start{};
     std::array<double, 3> end{};
     std::array<std::uint8_t, 4> rgba{};
+    int seq_num{-1};
 };
 
 struct NativeSegment {
@@ -503,6 +505,7 @@ private:
         native_line.start = start_xyz;
         native_line.end = end_xyz;
         native_line.rgba = line_type_rgba[static_cast<size_t>(line_type_code)];
+        native_line.seq_num = seq_num;
         native_segments.back().lines.push_back(std::move(native_line));
     }
 
@@ -622,6 +625,13 @@ static py::array_t<std::uint8_t> make_colors_array(const std::vector<std::uint8_
     return arr;
 }
 
+static py::array_t<int> make_line_numbers_array(const std::vector<int> &line_numbers) {
+    py::array_t<int> arr({static_cast<ssize_t>(line_numbers.size())});
+    auto *dst = static_cast<int *>(arr.mutable_data());
+    std::copy(line_numbers.begin(), line_numbers.end(), dst);
+    return arr;
+}
+
 static py::dict build_from_native_canon(NativeCanon &canon, py::object datasource) {
     const bool is_machine_metric = py::bool_(datasource.attr("isMachineMetric")());
     const double multiplication_factor = is_machine_metric ? 25.4 : 1.0;
@@ -654,6 +664,7 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
         ssize_t segment_count{0};
         std::vector<double> points_xyz;
         std::vector<std::uint8_t> colors_rgba;
+        std::vector<int> line_numbers;
     };
 
     std::vector<WcsPayloadAccum> wcs_accums;
@@ -678,6 +689,9 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
         if (acc.colors_rgba.capacity() < (acc.colors_rgba.size() + segment.lines.size() * 4)) {
             acc.colors_rgba.reserve(acc.colors_rgba.size() + segment.lines.size() * 4);
         }
+        if (acc.line_numbers.capacity() < (acc.line_numbers.size() + segment.lines.size())) {
+            acc.line_numbers.reserve(acc.line_numbers.size() + segment.lines.size());
+        }
 
         for (const auto &line : segment.lines) {
             // First traverse in each segment has no provable start point in
@@ -697,6 +711,7 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
             acc.colors_rgba.push_back(line.rgba[1]);
             acc.colors_rgba.push_back(line.rgba[2]);
             acc.colors_rgba.push_back(line.rgba[3]);
+            acc.line_numbers.push_back(line.seq_num);
 
             acc.segment_count += 1;
             added_segment_count += 1;
@@ -710,6 +725,7 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
         entry["segment_count"] = py::int_(acc.segment_count);
         entry["points"] = make_points_array(acc.points_xyz);
         entry["colors"] = make_colors_array(acc.colors_rgba);
+        entry["line_numbers"] = make_line_numbers_array(acc.line_numbers);
         wcs_payload.append(entry);
     }
 

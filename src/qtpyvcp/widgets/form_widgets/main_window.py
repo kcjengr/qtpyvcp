@@ -23,6 +23,7 @@ from qtpyvcp.app.launcher import _initialize_object_from_dict
 from qtpyvcp.utilities.encode_utils import allEncodings
 from qtpyvcp.utilities.load_perf_summary import PROGRAM_LOAD_PERF_SUMMARY
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
+from qtpyvcp.utilities.gcode_editor_config import apply_yaml_config_to_editor
 
 LOG = logger.getLogger(__name__)
 INFO = Info()
@@ -682,7 +683,36 @@ class VCPMainWindow(QMainWindow):
         _apply_widget_attributes()
         _wire_button_group_slots()
         _wire_gcode_editor_status_hooks()
+        
+        # Defer YAML config application with multiple attempts to catch C++ widget promotion
+        QTimer.singleShot(0, lambda: self._apply_gcode_editor_yaml_config(attempt=1))
+        QTimer.singleShot(100, lambda: self._apply_gcode_editor_yaml_config(attempt=2))
+        QTimer.singleShot(500, lambda: self._apply_gcode_editor_yaml_config(attempt=3))
+        
         self.loadSplashGcode()
+        
+    def _apply_gcode_editor_yaml_config(self, attempt=1):
+        """Apply YAML config to GCodeEditor widgets after they're fully instantiated."""
+        editors_found = []
+        
+        # Search all QObjects and check metaObject className (C++ class name)
+        all_widgets = self.findChildren(QObject)
+        for obj in all_widgets:
+            meta_class = obj.metaObject().className()
+            obj_name = obj.objectName() if hasattr(obj, 'objectName') else 'unnamed'
+            
+            # Check if it's a GCodeEditor via C++ meta object
+            if meta_class in ('GCodeEditor', 'GcodeEditor'):
+                if not hasattr(obj, '_yaml_config_applied'):
+                    editors_found.append(obj_name)
+                    LOG.info(f"Applying YAML config to GCodeEditor: {obj_name}")
+                    apply_yaml_config_to_editor(obj, qtpyvcp.CONFIG)
+                    obj._yaml_config_applied = True  # Mark as configured
+        
+        if editors_found:
+            LOG.info(f"Successfully configured {len(editors_found)} GCodeEditor widget(s)")
+        elif attempt == 1:
+            LOG.debug(f"No GCodeEditor widgets found on attempt #{attempt}, will retry...")
         
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied

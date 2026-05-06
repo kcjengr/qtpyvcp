@@ -52,7 +52,7 @@ class Status(DataPlugin):
             try:
                 STAT.poll()
             except Exception as e:
-                LOG.Error("Unable to poll status channel")
+                LOG.error("Unable to poll status channel")
                 LOG.Debug(e)
 
         excluded_items = ['axis', 'joint', 'spindle', 'poll']
@@ -99,6 +99,8 @@ class Status(DataPlugin):
         self.locking_count = 0
 
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
+    selected_program_line = DataChannel(doc='Editor-selected G-code line (1-based)', settable=True, data=0)
+    selected_program_lines = DataChannel(doc='Editor-selected G-code lines (1-based list)', settable=True, data=[])
 
     def isLocked(self):
         return True if self.locking_count > 0 else False

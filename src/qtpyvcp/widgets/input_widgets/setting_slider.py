@@ -500,10 +500,134 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
 
     def __init__(self, parent):
         super(VCPSettingsComboBox, self).__init__(parent=parent)
+        # Backward-compatible default: persist index unless explicitly disabled.
+        self._store_index = True
+
+    @Property(bool)
+    def storeIndex(self):
+        return self._store_index
+
+    @storeIndex.setter
+    def storeIndex(self, value):
+        self._store_index = bool(value)
+
+    def _stores_index(self):
+        """Return True when this combo should persist index values."""
+        prop = self.property('storeIndex')
+        # Backward compatibility: if property is absent, keep legacy index behavior.
+        if prop is None:
+            wants_index = bool(self._store_index)
+        elif isinstance(prop, bool):
+            wants_index = prop
+        elif isinstance(prop, (int, float)):
+            wants_index = bool(prop)
+        # Some .ui loaders can return dynamic properties as strings.
+        elif isinstance(prop, str):
+            normalized = prop.strip().lower()
+            if normalized in ('false', '0', 'no', 'off'):
+                wants_index = False
+            elif normalized in ('true', '1', 'yes', 'on'):
+                wants_index = True
+            else:
+                wants_index = bool(prop)
+        else:
+            wants_index = bool(prop)
+
+        if not wants_index:
+            return False
+
+        # If numeric setting values in the combo are not 0..N-1, storing index
+        # writes wrong values (then often clamps to the minimum setting value).
+        if self._setting is not None and self.count() > 0 and self._setting.value_type in (int, float):
+            item_values = [self._item_value(i) for i in range(self.count())]
+            if item_values != list(range(self.count())):
+                return False
+
+        return True
+
+    def _item_value(self, index):
+        """Return item text converted to the underlying setting value type."""
+        text = self.itemText(index)
+        if self._setting is None:
+            return text
+
+        value_type = self._setting.value_type
+        if value_type in (int, float):
+            try:
+                return value_type(text)
+            except ValueError:
+                return text
+        return text
+
+    def _set_display_from_value(self, value):
+        """Select combobox entry matching a persisted setting value.
+
+        Returns:
+            str: 'value' when matched by value/text,
+                 'index' when matched using legacy index fallback,
+                 '' when no match was found.
+        """
+        # First try exact typed/text matching against combo item values.
+        for idx in range(self.count()):
+            item_value = self._item_value(idx)
+            if item_value == value or str(item_value) == str(value):
+                self.setDisplayIndex(idx)
+                return 'value'
+
+        # Backward compatibility: if value looks like an index, accept it.
+        if isinstance(value, int) and 0 <= value < self.count():
+            self.setDisplayIndex(value)
+            return 'index'
+
+        return ''
+
+    def _store_selected_value(self, index):
+        """Persist selected value (not index) when storeIndex is disabled."""
+        if self._setting is None or index < 0:
+            return
+        self._setting.setValue(self._item_value(index))
+
+    def _apply_setting_update_store_index(self, value):
+        """Update display for store-index mode from either index or item value."""
+        if self.count() <= 0:
+            return
+
+        if isinstance(value, int) and 0 <= value < self.count():
+            self.setDisplayIndex(value)
+            return
+
+        self._set_display_from_value(value)
+
+    def _resolve_display_after_items_inserted(self, *args):
+        """Ensure a valid selection after dynamic item population."""
+        if self._setting is None or self.count() <= 0:
+            return
+
+        if self.currentIndex() >= 0:
+            return
+
+        value = self._setting.getValue()
+        match_mode = self._set_display_from_value(value)
+        if match_mode == '':
+            default_match = self._set_display_from_value(self._setting.default_value)
+            if default_match == '':
+                self.setDisplayIndex(0)
 
     def setDisplayIndex(self, index):
         self.blockSignals(True)
-        self.setCurrentIndex(index)
+
+        if self.count() <= 0:
+            resolved_index = -1
+        else:
+            try:
+                resolved_index = int(index)
+            except (TypeError, ValueError):
+                resolved_index = self.currentIndex()
+
+            if resolved_index < 0 or resolved_index >= self.count():
+                resolved_index = self.currentIndex() if self.currentIndex() >= 0 else 0
+
+        self.setCurrentIndex(resolved_index)
         self.blockSignals(False)
 
     def initialize(self):
@@ -519,13 +643,72 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
                     value = idx
 
             options = self._setting.enum_options
+            had_items_before = self.count() > 0
             # Only inject options if the UI has not already provided them
             if self.count() == 0 and isinstance(options, list):
                 for option in options:
                     self.addItem(str(option))
 
-            self.setDisplayIndex(value)
-            self.currentIndexChanged.emit(value)
+            # Some combos are populated later by operation logic; re-resolve
+            # their selection when items are inserted to avoid a blank state.
+            model = self.model()
+            needs_late_population_watch = (not had_items_before) and self.count() == 0
+            if needs_late_population_watch and model is not None and not getattr(self, '_rows_inserted_connected', False):
+                model.rowsInserted.connect(
+                    safe_qt_callback(self, self._resolve_display_after_items_inserted)
+                )
+                setattr(self, '_rows_inserted_connected', True)
 
-            self._setting.notify(safe_qt_callback(self, self.setDisplayIndex))
-            self.currentIndexChanged.connect(self._setting.setValue)
+            if self._stores_index():
+                # Prefer index when valid; otherwise support value-based fallback.
+                match_mode = ''
+                if isinstance(value, int) and 0 <= value < self.count():
+                    self.setDisplayIndex(value)
+                    match_mode = 'index'
+                else:
+                    match_mode = self._set_display_from_value(value)
+
+                if match_mode == '':
+                    default_match = self._set_display_from_value(self._setting.default_value)
+                    if default_match == '':
+                        self.setDisplayIndex(0 if self.count() else -1)
+
+                self.currentIndexChanged.emit(self.currentIndex())
+
+                self._setting.notify(safe_qt_callback(self, self._apply_setting_update_store_index))
+                self.currentIndexChanged.connect(self._setting.setValue)
+            else:
+                match_mode = self._set_display_from_value(value)
+
+                # Migrate legacy index-based persisted values to real item values.
+                if match_mode == 'index':
+                    migrated_value = self._item_value(self.currentIndex())
+                    try:
+                        self._setting.setValue(migrated_value)
+                    except Exception as e:
+                        LOG.warning(
+                            "Failed to migrate legacy index value '%s' for setting '%s': %s",
+                            value,
+                            self._setting_name,
+                            e,
+                        )
+
+                # If persisted data is invalid, fall back to default setting value.
+                elif match_mode == '':
+                    default_match = self._set_display_from_value(self._setting.default_value)
+                    if default_match == '':
+                        self.setDisplayIndex(0 if self.count() else -1)
+                    try:
+                        if self.currentIndex() >= 0:
+                            self._setting.setValue(self._item_value(self.currentIndex()))
+                    except Exception as e:
+                        LOG.warning(
+                            "Failed to restore default for setting '%s': %s",
+                            self._setting_name,
+                            e,
+                        )
+
+                self.currentIndexChanged.emit(self.currentIndex())
+
+                self._setting.notify(safe_qt_callback(self, self._set_display_from_value))
+                self.currentIndexChanged.connect(self._store_selected_value)

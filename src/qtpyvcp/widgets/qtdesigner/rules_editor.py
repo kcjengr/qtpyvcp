@@ -49,6 +49,21 @@ RULE_PROPERTIES = {
 _DESIGNER_SETTINGS_PRELOADED_FILES = set()
 
 
+def _designer_settings_debug_enabled():
+    qtdesigner_cfg = CONFIG.get('qtdesigner') or {}
+    return bool(qtdesigner_cfg.get('debug_settings_load', False))
+
+
+def _designer_settings_fail_fast_enabled():
+    qtdesigner_cfg = CONFIG.get('qtdesigner') or {}
+    return bool(qtdesigner_cfg.get('fail_fast_settings_load', False))
+
+
+def _designer_settings_log_debug(message, *args):
+    if _designer_settings_debug_enabled():
+        LOG.info(message, *args)
+
+
 def _merge_settings_from_config(config_dict):
     if not isinstance(config_dict, dict):
         return
@@ -70,11 +85,36 @@ def _iter_designer_yaml_candidates(widget=None):
     candidates = []
 
     env_files = os.getenv('VCP_CONFIG_FILES', '')
+    _designer_settings_log_debug("Designer settings preload VCP_CONFIG_FILES=%s", env_files)
     for path in env_files.split(':'):
         if not path:
             continue
         if path.lower().endswith(('.yml', '.yaml')) and os.path.exists(path):
             candidates.append(path)
+
+    # Allow VCP configs to explicitly provide additional YAML files that
+    # should be searched for settings in Designer mode.
+    qtdesigner_cfg = CONFIG.get('qtdesigner') or {}
+    extra_files = qtdesigner_cfg.get('extra_config_files', [])
+    if isinstance(extra_files, str):
+        extra_files = [extra_files]
+
+    fail_fast = _designer_settings_fail_fast_enabled()
+    for path in extra_files:
+        if not path:
+            continue
+        is_yaml = path.lower().endswith(('.yml', '.yaml'))
+        exists = os.path.exists(path)
+        if is_yaml and exists:
+            candidates.append(path)
+        else:
+            msg = (
+                "Configured qtdesigner.extra_config_files entry is invalid: "
+                f"path={path!r}, is_yaml={is_yaml}, exists={exists}"
+            )
+            if fail_fast:
+                raise RuntimeError(msg)
+            LOG.warning(msg)
 
     if widget is not None:
         try:
@@ -99,7 +139,39 @@ def _iter_designer_yaml_candidates(widget=None):
         seen.add(path)
         deduped.append(path)
 
+    _designer_settings_log_debug("Designer settings preload candidates=%s", deduped)
+
     return deduped
+
+
+def _assert_required_settings_present():
+    qtdesigner_cfg = CONFIG.get('qtdesigner') or {}
+
+    required_settings = qtdesigner_cfg.get('required_settings', [])
+    if isinstance(required_settings, str):
+        required_settings = [required_settings]
+
+    required_prefixes = qtdesigner_cfg.get('required_setting_prefixes', [])
+    if isinstance(required_prefixes, str):
+        required_prefixes = [required_prefixes]
+
+    missing_settings = [name for name in required_settings if name not in SETTINGS]
+    missing_prefixes = []
+    if required_prefixes:
+        all_setting_names = list(SETTINGS.keys())
+        for prefix in required_prefixes:
+            if not any(name.startswith(prefix) for name in all_setting_names):
+                missing_prefixes.append(prefix)
+
+    if missing_settings or missing_prefixes:
+        sample = sorted(SETTINGS.keys())[:25]
+        raise RuntimeError(
+            "Designer settings fail-fast check failed. "
+            f"Missing required_settings={missing_settings}, "
+            f"missing required_setting_prefixes={missing_prefixes}. "
+            f"Loaded settings count={len(SETTINGS)}. "
+            f"Sample settings={sample}"
+        )
 
 
 def _ensure_designer_settings_loaded(widget=None):
@@ -107,11 +179,15 @@ def _ensure_designer_settings_loaded(widget=None):
     if not IN_DESIGNER:
         return
 
+    fail_fast = _designer_settings_fail_fast_enabled()
+    _designer_settings_log_debug("Designer settings preload start; fail_fast=%s", fail_fast)
+
     # Trigger plugin auto-load in Designer mode.
     settings_plugin = getPlugin('settings')
 
     # 1) Merge already-loaded CONFIG settings first.
     _merge_settings_from_config(CONFIG)
+    _designer_settings_log_debug("After CONFIG merge, loaded settings=%d", len(SETTINGS))
 
     # 2) If needed, merge settings from env and inferred yaml candidates.
     for cfg_file in _iter_designer_yaml_candidates(widget):
@@ -125,8 +201,22 @@ def _ensure_designer_settings_loaded(widget=None):
                 CONFIG.update(loaded_cfg)
             _merge_settings_from_config(loaded_cfg)
             _DESIGNER_SETTINGS_PRELOADED_FILES.add(cfg_file)
+            cfg_settings = loaded_cfg.get('settings', {}) if isinstance(loaded_cfg, dict) else {}
+            cfg_settings_count = len(cfg_settings) if isinstance(cfg_settings, dict) else 0
+            _designer_settings_log_debug(
+                "Loaded designer settings source: %s (settings=%d, total_loaded=%d)",
+                cfg_file,
+                cfg_settings_count,
+                len(SETTINGS),
+            )
         except Exception:
-            LOG.debug("Unable to load designer config file '%s'", cfg_file, exc_info=True)
+            LOG.exception("Unable to load designer config file '%s'", cfg_file)
+            if fail_fast:
+                raise
+
+    if fail_fast:
+        _assert_required_settings_present()
+        _designer_settings_log_debug("Required settings checks passed")
 
     # Keep plugin channel table synchronized with the global SETTINGS dict.
     if isinstance(settings_plugin, DataPlugin):

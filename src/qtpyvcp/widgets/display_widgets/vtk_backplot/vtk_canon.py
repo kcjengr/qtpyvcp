@@ -474,9 +474,17 @@ class VTKCanon(StatCanon):
             line = [tuple(adj_start_point), tuple(adj_end_point)]
             line_type_token = line_type
 
+        line_number = int(getattr(self, 'seq_num', -1))
+
         if not self._cpp_mode:
             self.path_points.get(self.active_wcs_index).append(
-                (line_type, line, int(self._preview_switchkins_type), float(program_to_machine))
+                (
+                    line_type,
+                    line,
+                    int(self._preview_switchkins_type),
+                    float(program_to_machine),
+                    line_number,
+                )
             )
         self.path_segments[-1]['lines'].append((line_type_token, line))
 
@@ -500,17 +508,29 @@ class VTKCanon(StatCanon):
             if path_actor is not None:
                 # last_point = None
                 point_count = 0
+                segment_line_numbers = []
 
                 for row in data:
-                    if len(row) >= 4:
+                    if len(row) >= 5:
+                        line_type, line_data, switchkins_type, row_program_to_machine, line_number = (
+                            row[0],
+                            row[1],
+                            row[2],
+                            row[3],
+                            row[4],
+                        )
+                    elif len(row) >= 4:
                         line_type, line_data, switchkins_type, row_program_to_machine = row[0], row[1], row[2], row[3]
+                        line_number = -1
                     elif len(row) >= 3:
                         line_type, line_data, switchkins_type = row[0], row[1], row[2]
                         row_program_to_machine = 1.0
+                        line_number = -1
                     else:
                         line_type, line_data = row[0], row[1]
                         switchkins_type = 0
                         row_program_to_machine = 1.0
+                        line_number = -1
 
                     start_point = line_data[0]
                     end_point = line_data[1]
@@ -533,6 +553,7 @@ class VTKCanon(StatCanon):
                         line.GetPointIds().SetId(1, point_count + 1)
 
                         path_actor.lines.InsertNextCell(line)
+                        segment_line_numbers.append(int(line_number))
 
                         point_count += 2
                         added_segment_count += 1
@@ -552,6 +573,7 @@ class VTKCanon(StatCanon):
                         line2.GetPointIds().SetId(1, point_count + 1)
 
                         path_actor.lines.InsertNextCell(line2)
+                        segment_line_numbers.append(int(line_number))
 
                         point_count += 2
                         added_segment_count += 1
@@ -580,6 +602,7 @@ class VTKCanon(StatCanon):
                             vtk_line.GetPointIds().SetId(0, point_count)
                             vtk_line.GetPointIds().SetId(1, point_count + 1)
                             path_actor.lines.InsertNextCell(vtk_line)
+                            segment_line_numbers.append(int(line_number))
 
                             point_count += 2
                             added_segment_count += 1
@@ -609,6 +632,15 @@ class VTKCanon(StatCanon):
                 path_actor.poly_data.SetPoints(path_actor.points)
                 path_actor.poly_data.SetLines(path_actor.lines)
                 path_actor.poly_data.GetCellData().SetScalars(path_actor.colors)
+
+                line_numbers_array = vtk.vtkIntArray()
+                line_numbers_array.SetName("gcode_seq")
+                line_numbers_array.SetNumberOfComponents(1)
+                line_numbers_array.SetNumberOfTuples(len(segment_line_numbers))
+                for cell_id, line_no in enumerate(segment_line_numbers):
+                    line_numbers_array.SetValue(cell_id, int(line_no))
+                path_actor.poly_data.GetCellData().AddArray(line_numbers_array)
+
                 path_actor.data_mapper.SetInputData(path_actor.poly_data)
                 path_actor.data_mapper.Update()
                 path_actor.SetMapper(path_actor.data_mapper)

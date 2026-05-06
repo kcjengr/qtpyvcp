@@ -128,6 +128,11 @@ class SettingSelector(QDialog, Ui_Dialog):
         self.widget = widget
         self.app = QApplication.instance()
 
+        # Keep Setting Selector behavior aligned with Rules Editor by
+        # preloading settings from configured YAML files in Designer.
+        from .rules_editor import _ensure_designer_settings_loaded
+        _ensure_designer_settings_loaded(self.widget)
+
         self.setupUi(self)
 
         for setting in sorted(SETTINGS):

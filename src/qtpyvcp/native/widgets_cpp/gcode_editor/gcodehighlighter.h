@@ -4,6 +4,15 @@
 #include <QSyntaxHighlighter>
 #include <QRegularExpression>
 #include <QColor>
+#include <QVector>
+#include <QVariantMap>
+
+// Dynamic format rule: token name + pattern + format
+struct HighlightRule {
+	QString tokenName;
+	QRegularExpression pattern;
+	QTextCharFormat format;
+};
 
 class GCodeHighlighter : public QSyntaxHighlighter
 {
@@ -12,51 +21,25 @@ class GCodeHighlighter : public QSyntaxHighlighter
 public:
 	GCodeHighlighter(QTextDocument *parent = nullptr);
 
-	void setGCodeHighlightEnabled(bool enabled);
-	bool isGCodeHighlightEnabled() const;
-	void setMCodeHighlightEnabled(bool enabled);
-	bool isMCodeHighlightEnabled() const;
-	void setParameterHighlightEnabled(bool enabled);
-	bool isParameterHighlightEnabled() const;
-	void setNumberHighlightEnabled(bool enabled);
-	bool isNumberHighlightEnabled() const;
-	void setCommentHighlightEnabled(bool enabled);
-	bool isCommentHighlightEnabled() const;
-	void setStringHighlightEnabled(bool enabled);
-	bool isStringHighlightEnabled() const;
-
-	void setGCodeColor(const QColor &color);
-	QColor gCodeColor() const;
-	void setMCodeColor(const QColor &color);
-	QColor mCodeColor() const;
-	void setParameterColor(const QColor &color);
-	QColor parameterColor() const;
-	void setNumberColor(const QColor &color);
-	QColor numberColor() const;
-	void setCommentColor(const QColor &color);
-	QColor commentColor() const;
-	void setStringColor(const QColor &color);
-	QColor stringColor() const;
+	void setSyntaxHighlightingEnabled(bool enabled);
+	bool isSyntaxHighlightingEnabled() const;
+	
+	// Dynamic configuration: set token→color mappings from YAML
+	void setTokenColorMap(const QVariantMap &tokenColorMap);
+	void clearTokenColorMap();
 
 protected:
 	void highlightBlock(const QString &text) override;
 
 private:
-	bool gCodeHighlightEnabled;
-	bool mCodeHighlightEnabled;
-	bool parameterHighlightEnabled;
-	bool numberHighlightEnabled;
-	bool commentHighlightEnabled;
-	bool stringHighlightEnabled;
-
-	QTextCharFormat gCodeFormat;
-	QTextCharFormat mCodeFormat;
-	QTextCharFormat commentFormat;
-	QTextCharFormat numberFormat;
-	QTextCharFormat parameterFormat;
-	QTextCharFormat stringFormat;
-
-	void applyColors();
+	bool syntaxHighlightingEnabled;
+	QVector<HighlightRule> highlightRules;
+	
+	// Build regex pattern for a given token type
+	QString buildPatternForToken(const QString &token) const;
+	
+	// Apply text formatting (bold for G/M codes, italic for comments)
+	void applyTextFormatting(QTextCharFormat &format, const QString &token) const;
 };
 
 #endif // GCODEHIGHLIGHTER_H

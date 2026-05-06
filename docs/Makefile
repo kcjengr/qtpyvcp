@@ -11,6 +11,12 @@ BUILDDIR      = build
 PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
+# Preview build avoids runtime-heavy autodoc sections that can crash in headless/dev envs.
+PREVIEWSPHINXOPTS = -d $(BUILDDIR)/doctrees-preview $(PAPEROPT_$(PAPER)) \
+	-D extensions=sphinx.ext.todo,sphinx.ext.coverage,sphinx.ext.mathjax,sphinx.ext.githubpages,sphinx.ext.napoleon,sphinx_gitstamp,notfound.extension \
+	-D suppress_warnings=toc.excluded,ref.doc,autodoc.mocked_object \
+	-D exclude_patterns=widgets/**,plugins/**,actions/**,tools/**,components/**,designer/** \
+	$(SPHINXOPTS) source
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
@@ -18,6 +24,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
+	@echo "  html-preview to make preview HTML files (skips runtime-heavy sections)"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
@@ -53,6 +60,12 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+
+.PHONY: html-preview
+html-preview:
+	$(SPHINXBUILD) -b html $(PREVIEWSPHINXOPTS) $(BUILDDIR)/html-preview
+	@echo
+	@echo "Build finished. The preview HTML pages are in $(BUILDDIR)/html-preview."
 
 .PHONY: dirhtml
 dirhtml:

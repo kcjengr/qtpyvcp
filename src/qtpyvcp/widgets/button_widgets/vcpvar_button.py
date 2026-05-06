@@ -189,7 +189,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
             super().setEnabled(False)
             self.setToolTip("Status plugin not available - widget disabled for safety")
             return
-            
+
         # Check if machine is in safe state for parameter editing
         linuxcnc = _safe_import_linuxcnc()
         if linuxcnc is None:
@@ -197,10 +197,10 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
             super().setEnabled(False)
             self.setToolTip("LinuxCNC not available - widget disabled")
             return
-            
+
         stat = linuxcnc.stat()
         stat.poll()
-        
+
         # Check machine state: ON, HOMED, and IDLE (same as MDI button safety)
         is_machine_on = stat.task_state == linuxcnc.STATE_ON
         is_all_homed = self._status.allHomed()
@@ -305,15 +305,14 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
             linuxcnc = _safe_import_linuxcnc()
             if linuxcnc is None:
                 return  # Skip writing when linuxcnc unavailable
-                
+
             stat = linuxcnc.stat()
             stat.poll()
-            
+
             # Check machine state: ON, HOMED, and IDLE
             is_machine_on = stat.task_state == linuxcnc.STATE_ON
             is_all_homed = self._status.allHomed()
             is_idle = stat.interp_state == linuxcnc.INTERP_IDLE
-            
             if not (is_machine_on and is_all_homed and is_idle):
                 LOG.warning("VCPVarPushButton: Cannot write parameter - machine not in safe state")
                 return
@@ -332,7 +331,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
         LOG.debug(f"VCPVarPushButton: Issuing MDI command: {mdi_command}")
         issue_mdi(mdi_command)
         
-        LOG.info(f"VCPVarPushButton: Set parameter #{self.var_parameter_number} = {value} via MDI")
+        LOG.debug(f"VCPVarPushButton: Set parameter #{self.var_parameter_number} = {value} via MDI")
 
     # VarWidgetMixin abstract method implementations
     def _load_parameter_value(self, value):
@@ -360,7 +359,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
         # Connect to status plugin for safety monitoring
         self._connectStatusPlugin()
         
-        LOG.info(f"VCPVarPushButton initialized: param #{self.var_parameter_number}, auto_write={self._auto_write_enabled}, require_homed={self._require_homed}")
+        LOG.debug(f"VCPVarPushButton initialized: param #{self.var_parameter_number}, auto_write={self._auto_write_enabled}, require_homed={self._require_homed}")
 
     def terminate(self):
         """Cleanup when widget is destroyed"""
