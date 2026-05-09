@@ -610,6 +610,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
             self._datasource.toolInSpindleChanged.connect(self.update_tool)
+
+            # Also react to QtPyVCP tooltable plugin updates (remark/comment-only edits
+            # may not produce a LinuxCNC status tool_table change event).
+            tooltable_plugin = getattr(self._datasource, '_tooltable', None)
+            tooltable_changed = getattr(tooltable_plugin, 'tool_table_changed', None)
+            if tooltable_changed is not None and hasattr(tooltable_changed, 'connect'):
+                tooltable_changed.connect(self.update_tool)
             # self.status.g5x_index.notify(self.update_g5x_index)
             
             self.offsetTableColumnsIndex = self._datasource.getOffsetColumns()

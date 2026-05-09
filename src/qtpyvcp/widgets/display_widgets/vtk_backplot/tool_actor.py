@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 
 from math import cos, sin, radians
 
@@ -22,6 +23,9 @@ from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
 
 
 LOG = logger.getLogger(__name__)
+
+
+WIDTH_REMARK_PATTERN = re.compile(r'\bwidth\s*:\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)', re.IGNORECASE)
 
 
 def _coerce_int(value, default=0):
@@ -78,6 +82,58 @@ def _resolve_active_tool(tool_table, datasource):
         return tool_table[0] if tool_table else None
 
     return None
+
+
+def _extract_width_from_tool_remark(tool, default_width, datasource=None):
+    """Return tool edge width parsed from remark text, else default_width.
+
+    Supported remark format examples:
+      - "width: 0.1181"
+      - "WIDTH: .090"
+    """
+    def _remark_from_entry(entry):
+        if entry is None:
+            return ''
+
+        for attr in ('remark', 'comment', 'R'):
+            value = getattr(entry, attr, None)
+            if value:
+                return str(value)
+
+        if isinstance(entry, dict):
+            for key in ('R', 'remark', 'comment'):
+                value = entry.get(key)
+                if value:
+                    return str(value)
+
+        return ''
+
+    try:
+        remark_text = _remark_from_entry(tool)
+
+        # LinuxCNC status tool entries often do not include remark/comment text.
+        # Fallback to the tooltable plugin's canonical per-tool dict ('R').
+        if not remark_text and datasource is not None:
+            status = getattr(datasource, '_status', None)
+            stat = getattr(status, 'stat', None)
+            active_tool = _coerce_int(getattr(stat, 'tool_in_spindle', 0), 0)
+
+            tooltable_plugin = getPlugin('tooltable')
+            table = tooltable_plugin.getToolTable() if tooltable_plugin else None
+            if isinstance(table, dict):
+                remark_text = _remark_from_entry(table.get(active_tool))
+
+        match = WIDTH_REMARK_PATTERN.search(remark_text)
+        if not match:
+            return default_width
+
+        parsed_width = float(match.group(1))
+        if parsed_width > 0.0:
+            return parsed_width
+    except Exception:
+        pass
+
+    return default_width
 
 class ToolActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
@@ -218,6 +274,9 @@ class ToolBitActor(vtk.vtkActor):
         tip_length = 0.5 * self.unit_scale
         stick_length = 1.0 * self.unit_scale
         profile_length = 0.35 * self.unit_scale
+
+        # Allow per-tool lathe edge width override via tool remark, e.g. "width: 0.1181".
+        tip_edge = _extract_width_from_tool_remark(self.tool, tip_edge, self._datasource)
 
         # FOAM TOOL
 

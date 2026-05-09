@@ -218,7 +218,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     def styleClass(self, style):
         self.setStyleClass(style)
 
-    @Property(str, designable=False)
+    @Property(str, designable=True, stored=True)
     def rules(self):
         """JSON formatted list of dictionaries, defining the widget rules.
 

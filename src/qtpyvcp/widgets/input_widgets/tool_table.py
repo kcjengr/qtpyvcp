@@ -43,7 +43,8 @@ class ItemDelegate(QStyledItemDelegate):
             editor = QLineEdit(parent)
             editor.setFrame(False)
             margins = editor.textMargins()
-            padding = editor.fontMetrics().width(self._padding) + 1
+            metrics = editor.fontMetrics()
+            padding = metrics.horizontalAdvance(self._padding) + 1 if hasattr(metrics, 'horizontalAdvance') else metrics.width(self._padding) + 1
             margins.setLeft(margins.left() + padding)
             editor.setTextMargins(margins)
             return editor
@@ -136,7 +137,7 @@ class ToolModel(QStandardItemModel):
         # refresh model so current tool gets highlighted
         self.beginResetModel()
         self.endResetModel()
-        LOG.info("ToolModel refresh: tools=%s rows=%s", len(self._tool_table) - 1, self.rowCount())
+        LOG.debug("ToolModel refresh: tools=%s rows=%s", len(self._tool_table) - 1, self.rowCount())
 
     def updateModel(self, tool_table):
         # update model with new data
@@ -146,7 +147,7 @@ class ToolModel(QStandardItemModel):
         self.beginResetModel()
         self._tool_table = tool_table
         self.endResetModel()
-        LOG.info("ToolModel update: tools=%s rows=%s", len(tool_table) - 1, self.rowCount())
+        LOG.debug("ToolModel update: tools=%s rows=%s", len(tool_table) - 1, self.rowCount())
 
     def setColumns(self, columns):
         self._columns = columns
@@ -313,7 +314,7 @@ class ToolTable(QTableView):
             return
         self.proxy_model.invalidate()
         self.sortByColumn(0, Qt.AscendingOrder)
-        LOG.info("ToolTable view refresh: tools=%s rows=%s", len(table) - 1, self.tool_model.rowCount())
+        LOG.debug("ToolTable view refresh: tools=%s rows=%s", len(table) - 1, self.tool_model.rowCount())
 
     @Slot()
     def saveToolTable(self):

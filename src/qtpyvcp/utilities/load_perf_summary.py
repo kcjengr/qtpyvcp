@@ -309,7 +309,7 @@ class ProgramLoadPerfSummary:
         lines.append(separator)
         lines.append(total_line)
         lines.append(separator)
-        LOG.info("[program-load-summary]\n%s", "\n".join(lines))
+        LOG.debug("[program-load-summary]\n%s", "\n".join(lines))
         self._emit_phase("load-summary-complete", 100)
 
         self._printed = True
