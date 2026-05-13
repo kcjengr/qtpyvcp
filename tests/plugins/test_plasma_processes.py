@@ -36,19 +36,19 @@ class TestCrudMixinCreate:
     def test_create_gas(self, session):
         id_ = Gas.create(session, name='Air')
         assert isinstance(id_, int)
-        g = session.query(Gas).get(id_)
+        g = session.get(Gas, id_)
         assert g is not None
         assert g.name == 'Air'
 
     def test_create_machine(self, session):
         id_ = Machine.create(session, name='MyMachine', service_height=100)
-        m = session.query(Machine).get(id_)
+        m = session.get(Machine, id_)
         assert m.name == 'MyMachine'
         assert m.service_height == 100
 
     def test_create_material(self, session):
         id_ = Material.create(session, name='Mild Steel', code='ms')
-        mat = session.query(Material).get(id_)
+        mat = session.get(Material, id_)
         assert mat.name == 'Mild Steel'
         assert mat.code == 'ms'
 
@@ -60,13 +60,13 @@ class TestCrudMixinCreate:
 class TestCrudMixinUpdate:
     def test_update_gas_name(self, session):
         id_ = Gas.create(session, name='OldName')
-        g = session.query(Gas).get(id_)
+        g = session.get(Gas, id_)
         Gas.update(session, (g,), name='NewName')
         assert g.name == 'NewName'
 
     def test_update_multiple_fields(self, session):
         id_ = Machine.create(session, name='A', service_height=50)
-        m = session.query(Machine).get(id_)
+        m = session.get(Machine, id_)
         Machine.update(session, (m,), name='B', service_height=200)
         assert m.name == 'B'
         assert m.service_height == 200
@@ -75,7 +75,7 @@ class TestCrudMixinUpdate:
 class TestCrudMixinDelete:
     def test_delete_gas(self, session):
         id_ = Gas.create(session, name='ToDelete')
-        g = session.query(Gas).get(id_)
+        g = session.get(Gas, id_)
         crudMixin.delete(session, g)
         result = session.query(Gas).filter_by(id=id_).first()
         assert result is None
@@ -121,12 +121,12 @@ class TestGasModel:
 
     def test_id_is_primary_key(self, session):
         id_ = Gas.create(session, name='Test')
-        g = session.query(Gas).get(id_)
+        g = session.get(Gas, id_)
         assert g.id == id_
 
     def test_name_column(self, session):
         id_ = Gas.create(session, name='Argon')
-        g = session.query(Gas).get(id_)
+        g = session.get(Gas, id_)
         assert g.name == 'Argon'
 
 
@@ -136,7 +136,7 @@ class TestMachineModel:
 
     def test_service_height_column(self, session):
         id_ = Machine.create(session, name='CNC-Plasma', service_height=150)
-        m = session.query(Machine).get(id_)
+        m = session.get(Machine, id_)
         assert m.service_height == 150
 
 
@@ -146,7 +146,7 @@ class TestMaterialModel:
 
     def test_code_column(self, session):
         id_ = Material.create(session, name='Aluminium', code='al')
-        mat = session.query(Material).get(id_)
+        mat = session.get(Material, id_)
         assert mat.code == 'al'
 
 
@@ -156,7 +156,7 @@ class TestLinearSystemModel:
 
     def test_unit_per_inch_column(self, session):
         id_ = LinearSystem.create(session, name='mm', unit_per_inch=24.5)
-        ls = session.query(LinearSystem).get(id_)
+        ls = session.get(LinearSystem, id_)
         assert ls.unit_per_inch == 24.5
 
 
@@ -167,13 +167,13 @@ class TestThicknessModel:
     def test_thickness_column(self, session):
         mm_id = LinearSystem.create(session, name='mm', unit_per_inch=24.5)
         id_ = Thickness.create(session, name='3mm', thickness=3.0, linearsystemid=mm_id)
-        t = session.query(Thickness).get(id_)
+        t = session.get(Thickness, id_)
         assert t.thickness == 3.0
 
     def test_relationship_to_linear_system(self, session):
         mm_id = LinearSystem.create(session, name='mm', unit_per_inch=24.5)
         id_ = Thickness.create(session, name='3mm', thickness=3.0, linearsystemid=mm_id)
-        t = session.query(Thickness).get(id_)
+        t = session.get(Thickness, id_)
         assert t.linearsystem is not None
         assert t.linearsystem.name == 'mm'
 
@@ -200,7 +200,7 @@ class TestPressureSystemModel:
 
     def test_unit_per_psi_column(self, session):
         id_ = PressureSystem.create(session, name='psi', unit_per_psi=1.0)
-        ps = session.query(PressureSystem).get(id_)
+        ps = session.get(PressureSystem, id_)
         assert ps.unit_per_psi == 1.0
 
 
@@ -210,7 +210,7 @@ class TestOperationModel:
 
     def test_name_column(self, session):
         id_ = Operation.create(session, name='Cut')
-        op = session.query(Operation).get(id_)
+        op = session.get(Operation, id_)
         assert op.name == 'Cut'
 
 
@@ -220,7 +220,7 @@ class TestQualityModel:
 
     def test_name_column(self, session):
         id_ = Quality.create(session, name='Production')
-        q = session.query(Quality).get(id_)
+        q = session.get(Quality, id_)
         assert q.name == 'Production'
 
 
@@ -230,7 +230,7 @@ class TestConsumableModel:
 
     def test_image_path_column(self, session):
         id_ = Consumable.create(session, name='Shielded', image_path='/path/to/img')
-        c = session.query(Consumable).get(id_)
+        c = session.get(Consumable, id_)
         assert c.image_path == '/path/to/img'
 
 
@@ -254,7 +254,7 @@ class TestHoleCutModel:
             speed2=250.0, speed3=200.0, overburn_speed=100.0,
             overburn_adjust=1.0, straight_leadin=True)
 
-        hc_obj = session.query(HoleCut).get(hc)
+        hc_obj = session.get(HoleCut, hc)
         assert hc_obj.machine is not None
         assert hc_obj.material is not None
         assert hc_obj.thickness is not None
@@ -306,7 +306,7 @@ class TestCutchartModel:
 
     def test_foreign_keys(self, session):
         id_ = self._setup_cutchart(session)
-        cc = session.query(Cutchart).get(id_)
+        cc = session.get(Cutchart, id_)
         assert cc.linearsystem is not None
         assert cc.pressuresystem is not None
         assert cc.machine is not None
@@ -344,7 +344,7 @@ class TestCutchartModel:
 
     def test_tool_number_column(self, session):
         id_ = self._setup_cutchart(session, tool_number=42)
-        cc = session.query(Cutchart).get(id_)
+        cc = session.get(Cutchart, id_)
         assert cc.tool_number == 42
 
     def test_smallest_hole_column(self, session):
@@ -366,7 +366,7 @@ class TestCutchartModel:
             cut_height=4.0, cut_speed=300.0, volts=100.0, kerf_width=1.0,
             plunge_rate=10.0, puddle_height=3.0, puddle_delay=0.5,
             amps=100.0, pressure=15.0, pause_at_end=2.0, smallest_hole=2.5)
-        cc = session.query(Cutchart).get(id_)
+        cc = session.get(Cutchart, id_)
         assert cc.smallest_hole == 2.5
 
 
@@ -408,7 +408,7 @@ class TestPlasmaProcessesPlugin:
     def test_add_gas(self):
         p = self._make_plugin()
         id_ = p.add_gas('Oxygen')
-        g = self.session.query(Gas).get(id_)
+        g = self.session.get(Gas, id_)
         assert g.name == 'Oxygen'
 
     def test_machines_method(self):
@@ -420,7 +420,7 @@ class TestPlasmaProcessesPlugin:
     def test_add_machine(self):
         p = self._make_plugin()
         id_ = p.add_machine('MyPlasma', 150)
-        m = self.session.query(Machine).get(id_)
+        m = self.session.get(Machine, id_)
         assert m.name == 'MyPlasma'
         assert m.service_height == 150
 
@@ -433,7 +433,7 @@ class TestPlasmaProcessesPlugin:
     def test_add_materials(self):
         p = self._make_plugin()
         id_ = p.add_materials('Aluminium', 'al')
-        mat = self.session.query(Material).get(id_)
+        mat = self.session.get(Material, id_)
         assert mat.name == 'Aluminium'
         assert mat.code == 'al'
 
@@ -448,7 +448,7 @@ class TestPlasmaProcessesPlugin:
         p = self._make_plugin()
         mm_id = LinearSystem.create(self.session, name='mm', unit_per_inch=24.5)
         id_ = p.add_thickness('6mm', 6.0, mm_id)
-        t = self.session.query(Thickness).get(id_)
+        t = self.session.get(Thickness, id_)
         assert t.name == '6mm'
         assert t.thickness == 6.0
 
@@ -461,7 +461,7 @@ class TestPlasmaProcessesPlugin:
     def test_add_linearsystems(self):
         p = self._make_plugin()
         id_ = p.add_linearsystems('inch', 1.0)
-        ls = self.session.query(LinearSystem).get(id_)
+        ls = self.session.get(LinearSystem, id_)
         assert ls.name == 'inch'
         assert ls.unit_per_inch == 1.0
 
@@ -474,7 +474,7 @@ class TestPlasmaProcessesPlugin:
     def test_add_pressuresystems(self):
         p = self._make_plugin()
         id_ = p.add_pressuresystems('bar', 0.0689476)
-        ps = self.session.query(PressureSystem).get(id_)
+        ps = self.session.get(PressureSystem, id_)
         assert ps.name == 'bar'
         assert ps.unit_per_psi == 0.0689476
 
@@ -487,7 +487,7 @@ class TestPlasmaProcessesPlugin:
     def test_add_operations(self):
         p = self._make_plugin()
         id_ = p.add_operations('Mark/Spot')
-        op = self.session.query(Operation).get(id_)
+        op = self.session.get(Operation, id_)
         assert op.name == 'Mark/Spot'
 
     def test_qualities_method(self):
@@ -499,7 +499,7 @@ class TestPlasmaProcessesPlugin:
     def test_add_qualities(self):
         p = self._make_plugin()
         id_ = p.add_qualities('Fine')
-        q = self.session.query(Quality).get(id_)
+        q = self.session.get(Quality, id_)
         assert q.name == 'Fine'
 
     def test_consumables_method(self):
@@ -511,7 +511,7 @@ class TestPlasmaProcessesPlugin:
     def test_add_consumables(self):
         p = self._make_plugin()
         id_ = p.add_consumables('Unshielded')
-        c = self.session.query(Consumable).get(id_)
+        c = self.session.get(Consumable, id_)
         assert c.name == 'Unshielded'
 
 
