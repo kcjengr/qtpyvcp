@@ -2,23 +2,23 @@
 
 ## Current State
 
-**273 tests passing**, covering pure Python modules, DB models, and plugin infrastructure. No HAL/LinuxCNC or Qt widget tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**715 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Coverage Summary
 
 | Phase | Tests | Modules Covered |
 |-------|-------|-----------------|
-| Phase 1 (Easy) | 137 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config` |
+| Phase 1 (Easy) | 260 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters` |
 | Phase 2 (DB + Plugins) | 157 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry` |
+| Phase 3 (Qt Widgets) | 199 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget` |
 
-### Missing from Phase 1 (Easy tier)
+### Missing from Phase 1 (Easy tier) — ALL COMPLETE
 
-| Module | Effort | Tests Needed | Notes |
-|--------|--------|-------------|-------|
-| `utilities/settings.py` | Medium | ~15 | Pure functions (`getSetting`, `setSetting`, `addSetting`) testable with mocked `SETTINGS`; `Setting` class requires Qt fixture |
-| `lib/decorators.py` | Easy | ~6 | `@deprecated` decorator — needs mocked logger, tests for class vs function branches |
-| `app/enums.py` | Trivial | ~5 | Constant-value assertions only, zero dependencies |
-| `utilities/yaml_filters.py` | Easy | ~8 | `from_ini()` env-var branching logic, pure Python |
+All Phase 1 modules now have tests:
+- `utilities/settings.py` — 65 tests (Medium effort, uses mocked SETTINGS dict)
+- `lib/decorators.py` — 22 tests (Easy, uses mocked logger)
+- `app/enums.py` — 30 tests (Trivial, constant-value assertions)
+- `utilities/yaml_filters.py` — 15 tests (Easy, env-var branching logic)
 
 ## Testable Boundaries
 
@@ -29,49 +29,55 @@ Out of the 3 packages under `src/`, roughly **40% of qtpyvcp is pure Python** (n
 | **Easy — pure logic** | `ops/drill_ops.py`, `ops/gcode_file.py`, `ops/face_ops.py`, `utilities/misc.py`, `utilities/settings.py`, `lib/types.py`, `lib/decorators.py`, `lib/colored_formatter.py`, `app/runtime_config.py`, `app/enums.py`, `utilities/yaml_filters.py` | Assert output strings, value coercion, path normalization |
 | **Medium — DB logic** | `lib/db_tool/tool_table.py`, `plugins/plasma_processes.py` (SQLAlchemy models) | In-memory SQLite round-trips |
 | **Hard — HAL dependent** | `hal/`, plugins with `import linuxcnc`, widgets that bind to HAL pins | Requires mocking `_hal`, or running inside LinuxCNC simulation |
-| **Hardest — Qt widgets** | All UI widgets, VCP chooser, notifications | Requires Xvfb + `pytest-qt` or similar |
+| **Qt widgets** | All UI widgets, VCP chooser, notifications | Requires Xvfb + `pytest-qt` (Phase 3 in progress) |
 
 ## Recommended Approach
 
 ### Phase 1: Infrastructure + Pure Python (Week 1) — COMPLETED
 
-1. **Add pytest to dev deps** in `pyproject.toml`:
-    ```toml
-    [tool.poetry.group.dev.dependencies]
-    pytest = "^7.4"
-    pytest-qt = "^4.2"    # for later phases, add now to avoid re-running installs
-    ```
+All modules from the original plan are now tested. Additional modules covered beyond the original scope include `settings.py`, `decorators.py`, `enums.py`, and `yaml_filters.py`.
 
-2. **Create `src/tests/`** mirroring the source structure:
-    ```
-    src/tests/
-    ├── ops/
-    │   ├── test_drill_ops.py
-    │   ├── test_face_ops.py
-    │   └── test_gcode_file.py
-    ├── utilities/
-    │   ├── test_settings.py          ← NOT YET WRITTEN
-    │   ├── test_misc.py
-    │   └── test_yaml_filters.py      ← NOT YET WRITTEN
-    ├── lib/
-    │   ├── test_types.py
-    │   ├── test_decorators.py        ← NOT YET WRITTEN
-    │   └── test_colored_formatter.py
-    └── app/
-        └── test_runtime_config.py
-    ```
+Run via:
+```bash
+poetry run pytest tests/
+```
 
-3. **Run via:** `poetry run pytest tests/`
-
-This gives you ~137 tests covering GCode generation, misc utilities, path normalization, and config loading — all without LinuxCNC running. The ops module is especially low-hanging fruit: each drill cycle produces a deterministic string output that's trivial to assert.
+This gives you ~260 tests covering GCode generation, misc utilities, path normalization, config loading, settings management, decorators, and enum values.
 
 ### Phase 2: DB Models + Plugin Registry (Week 2) — COMPLETED
 
 157 tests covering `ToolTable`/`ToolModel` with in-memory SQLite, plugin registry lifecycle, base plugin CRUD channels, and full `plasma_processes` SQLAlchemy model suite (CRUD operations, 11 model classes, CSV seeding).
 
-### Phase 3: Qt Widget Testing (Week 3+) — NOT STARTED
+### Phase 3: Qt Widget Testing (Week 3+) — IN PROGRESS
 
-Add `Xvfb` for headless rendering in CI. Use `pytest-qt` to test widget initialization, signal/slot behavior, and HAL pin binding simulation. Convert `video_tests/` apps into automated assertions rather than purely visual checks. This is the next major milestone after the remaining Phase 1 modules above are filled in.
+Baseline established with 199 tests across 7 widget modules:
+
+- **LEDWidget** (31 tests) — Diameter, color, alignment, state, flashing, flashRate properties; size hints; focus policy; toggle/startFlashing/stopFlashing methods
+- **BarIndicatorBase** (42 tests) — Value clamping, min/max, orientation, text formatting, gradient parsing, colors, border settings, Qt properties
+- **StatusLabel** (33 tests) — setValue with various types, format strings, expression evaluation, invalid expression handling, inheritance
+- **EvalLineEdit** (33 tests) — Expression evaluation via simpleeval, operator prefixes (+, *, /, -=, +=), sign toggle with `-`, error handling, return key binding
+- **StatusLED** (25 tests) — State/flashing properties inherited from LEDWidget, rule properties (On, Flashing), Qt property access, size hints
+- **VCPFrame** (13 tests) — Enable rule property, visibility, sizing, object naming
+- **VCPStackedWidget** (35 tests) — Page management (add/remove/setCurrentIndex), setIndexValue with signal blocking, settingName property, currentChanged signal
+
+#### Setup for Qt Widget Testing
+
+Qt widget tests require `PYTEST_QT_API=pyqt5` to be set before pytest starts. This is handled automatically via `usercustomize.py` in the Poetry venv.
+
+```bash
+# All tests (including widgets) run headlessly with Xvfb
+poetry run pytest tests/ -v
+
+# Only widget tests
+poetry run pytest tests/widgets/ -v
+```
+
+#### Widget Test Patterns Established
+
+1. **Fixtures in `tests/widgets/conftest.py`** — Use `qtbot.addWidget()` for proper cleanup
+2. **Direct module imports** — Import directly from file paths (e.g., `importlib.util.spec_from_file_location`) to avoid triggering package `__init__.py` chains that pull in HAL-dependent modules like VTKBackPlot
+3. **Property testing** — Use `qtpy.QtCore.Property` (not `pyqtProperty`) for Qt property type checks
+4. **Timer signals** — Avoid `qtbot.waitSignal()` for QTimer; test state changes instead since event loop timing is unreliable in headless tests
 
 ### Phase 4: HAL/LinuxCNC Integration Tests (Ongoing) — NOT STARTED
 
@@ -85,4 +91,4 @@ These require a running LinuxCNC sim instance. Consider a separate test suite th
 
 3. **HAL mocking strategy** — Mock the `_hal` C extension, or spin up LinuxCNC sim in a container/subprocess per test suite?
 
-4. **Phase 1 completion priority** — `app/enums.py` (trivial) → `lib/decorators.py` (easy) → `utilities/yaml_filters.py` (easy) → `utilities/settings.py` (medium, requires Qt fixture).
+4. **Qt binding consistency** — Project uses `qtpy` abstraction layer. Tests require PyQt5 (set via `PYTEST_QT_API=pyqt5`). Both PyQt5 and PyQt6 may be installed, but pytest-qt must use the same binding as the application code.

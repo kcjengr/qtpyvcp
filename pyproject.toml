@@ -22,6 +22,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
+qtpy = "^2.4.3"
+pyqt5 = "^5.15.11"
 
 
 [tool.poetry.group.dev.dependencies]
