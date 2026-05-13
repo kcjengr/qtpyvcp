@@ -54,7 +54,7 @@ class crudMixin(object):
         session.commit()
 
     @classmethod
-    def delete(cls, sesson, qry):
+    def delete(cls, session, qry):
         session.delete(qry)
         session.commit()
 

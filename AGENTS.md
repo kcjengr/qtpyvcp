@@ -30,7 +30,8 @@
 - **Phase 2 easy tier complete** — 62 tests covering `gcode_file`, `face_ops` (+`BaseGenerator`), and plugin registry.
 - **Phase 2 DB models complete** — 21 tests covering `ToolTable`, `Tool`, `ToolModel` CRUD + relationships (in-memory SQLite).
 - **Phase 2 base_plugins complete** — 40 tests covering `Plugin` lifecycle, `DataPlugin` channel discovery/getChannel/setLogLevel, `DataChannel` getValue/setValue/signals/descriptors/decorators(fget/fset/fstr)/notify/str/docstring.
-- Total: **170 tests**, all passing, zero HAL/LinuxCNC dependencies.
+- **Phase 2 plasma_processes complete** — 75 tests covering `crudMixin` CRUD (create/update/delete/get_all/get_by_key), all 11 model classes (Gas, Machine, Material, LinearSystem, Thickness, PressureSystem, Operation, Quality, Consumable, HoleCut, Cutchart) with FK relationships and custom classmethods, `PlasmaProcesses` plugin CRUD wrapper methods, and `seed_data_base()` CSV import (DESIGNER=1 bypass + in-memory SQLite).
+- Total: **245 tests**, all passing, zero HAL/LinuxCNC dependencies.
 - See `testing.md` for the full phased plan (Phases 3+ cover Qt widgets and HAL integration).
 
 ## Gotchas
