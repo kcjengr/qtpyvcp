@@ -21,9 +21,19 @@
 - **`debian/`** — Debian packaging for distro builds.
 - **`versioneer.py`** at root + `src/qtpyvcp/_version.py` — version generation, never hand-edit.
 
+## Testing
+
+- **pytest** is configured via `[tool.pytest.ini_options]` in `pyproject.toml`. Tests live at root-level `tests/`.
+- **Run all tests:** `poetry run pytest tests/`
+- **Dev deps:** `pytest ^7.4`, `pytest-qt ^4.2` (in `[tool.poetry.group.dev.dependencies]`)
+- **Phase 1 complete** — 47 tests covering `drill_ops`, `misc`, `runtime_config`, `types`.
+- **Phase 2 easy tier complete** — 62 tests covering `gcode_file`, `face_ops` (+`BaseGenerator`), and plugin registry.
+- Total: **109 tests**, all passing, zero HAL/LinuxCNC dependencies.
+- See `testing.md` for the full phased plan (Phases 3+ cover Qt widgets and HAL integration).
+
 ## Gotchas
 
-- **No test suite.** No pytest, no linting, no typechecking, no pre-commit, no CI. Verification is manual: run example VCPs and inspect visually.
+- No linting, no typechecking, no pre-commit, no CI. Verification is manual: run example VCPs and inspect visually.
 - **`.ui` files are source artifacts.** After editing a `.ui` file, compile it with `qcompile` or reload the app. Preserve relative resource paths used by examples/widgets.
 - **YAML config priority:** CLI args > `$VCP_CONFIG_FILES` env var > VCP-specific YAML > `DEFAULT_CONFIG_FILE`. See `qtpyvcp.app.run()`.
 - **Qt bindings:** supports PyQt5 or PySide2 via QtPy. Never import from a specific binding directly.
