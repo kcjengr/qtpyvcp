@@ -1,4 +1,3 @@
-
 import inspect
 
 from qtpy.QtWidgets import QWidget
@@ -39,7 +38,7 @@ def deprecated(reason='Not Specified', replaced_by='Not Specified'):
                                   replaced_by=replaced_by)
 
             def inner(*args, **kwargs):
-                LOG.warn(msg)
+                LOG.warning(msg)
                 return obj(*args, **kwargs)
 
             return inner
