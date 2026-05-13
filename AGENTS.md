@@ -28,7 +28,8 @@
 - **Dev deps:** `pytest ^7.4`, `pytest-qt ^4.2` (in `[tool.poetry.group.dev.dependencies]`)
 - **Phase 1 complete** — 47 tests covering `drill_ops`, `misc`, `runtime_config`, `types`.
 - **Phase 2 easy tier complete** — 62 tests covering `gcode_file`, `face_ops` (+`BaseGenerator`), and plugin registry.
-- Total: **109 tests**, all passing, zero HAL/LinuxCNC dependencies.
+- **Phase 2 DB models complete** — 21 tests covering `ToolTable`, `Tool`, `ToolModel` CRUD + relationships (in-memory SQLite).
+- Total: **130 tests**, all passing, zero HAL/LinuxCNC dependencies.
 - See `testing.md` for the full phased plan (Phases 3+ cover Qt widgets and HAL integration).
 
 ## Gotchas
