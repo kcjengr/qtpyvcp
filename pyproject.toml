@@ -21,12 +21,13 @@ packages = [
 
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4"
 pytest-qt = "^4.2"
+pytest-xvfb = "^3.1"
 
 
 [tool.poetry.scripts]
