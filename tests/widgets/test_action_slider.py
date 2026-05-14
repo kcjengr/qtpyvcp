@@ -88,6 +88,9 @@ class TestActionSlider:
         s.setMinimum(0)
         s.setMaximum(100)
         
+        from qtpyvcp.plugins import _PLUGINS
+        _PLUGINS['status'].isLocked.return_value = False
+        
         event = QMouseEvent(
             QMouseEvent.Type.MouseButtonDblClick,
             s.rect().center(),
