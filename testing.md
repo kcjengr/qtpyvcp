@@ -2,7 +2,7 @@
 
 ## Current State
 
-**850 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**961 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Coverage Summary
 
@@ -10,7 +10,7 @@
 |-------|-------|-----------------|
 | Phase 1 (Easy) | 260 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters` |
 | Phase 2 (DB + Plugins) | 157 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry` |
-| Phase 3 (Qt Widgets) | 334 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin` (10 modules, ~334 tests) |
+| Phase 3 (Qt Widgets) | 445 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton` (17 modules, ~445 tests) |
 
 ### Missing from Phase 1 (Easy tier) — ALL COMPLETE
 
@@ -64,6 +64,13 @@ Baseline established with 334 tests across 10 widget modules:
 - **dialogs/__init__** (19 tests) — getDialog, showDialog, hideActiveDialog, hideDialog, askQuestion, ACTIVE_DIALOGS state
 - **RulesEditor** (46 tests) — TableCheckButton, CompleterDelegate, RulesEditor init/UI/actions/validation/callbacks, ChanInfoDialog
 - **_DesignerPlugin** (23 tests) — name, objectName, group, domXml, initialize, extensions, createWidget, includeFile
+- **ActionButton** (17 tests) — VCPButton base, actionName property, bindWidget integration, click signal, text/icon setters
+- **MDIButton** (20 tests) — MDICommand property, variable substitution (#<widget>), issueMDI with mocks, PARSE_VARS regex
+- **SubCallButton** (19 tests) — filename property, callSub with file lookup, PARSE_POSITIONAL_ARGS regex, param #31 skip logic
+- **ActionCheckBox** (13 tests) — QCheckBox wrapper, actionName binding, no focus policy, toggled signal
+- **ActionSpinBox** (12 tests) — QSpinBox wrapper, actionName binding, valueChanged signal, range/step settings
+- **VCPLineEdit** (14 tests) — Text rule property, actionName (bind disabled), returnPressed behavior, initialize/terminate
+- **LEDButton** (19 tests) — ActionButton subclass, LED positioning, setLedState/setLedFlashing, diameter/color/alignment properties
 
 #### Setup for Qt Widget Testing
 
@@ -103,23 +110,39 @@ Phase 3 covers all Qt widget testing, split into tiers by dependency complexity:
 
 These inherit from `VCPWidget`, which pulls in `from qtpyvcp import hal` at the top of `base_widget.py`. A conftest-level mock makes them testable.
 
-| Module | Classes | Est. Tests | Status |
-|--------|---------|------------|--------|
-| `display_widgets/bar_indicator.py` | `BarIndicator` | ~15 | Not started |
-| `display_widgets/dro_label.py` | `DROLabel` | ~20 | Not started |
-| `form_widgets/probe_widget/probe.py` | `ProbeWidget` | ~15 | Not started |
-| `input_widgets/line_edit.py` | `VCPLineEdit` | ~15 | Not started |
+| Module | Classes | Est. Tests | Actual | Status |
+|--------|---------|------------|--------|--------|
+| `display_widgets/bar_indicator.py` | `BarIndicator` | ~15 | — | Not started |
+| `display_widgets/dro_label.py` | `DROLabel` | ~20 | — | Not started |
+| `form_widgets/probe_widget/probe.py` | `ProbeWidget` | ~15 | — | Not started |
 
-**Tier 3 — Deep mocking (module-level `getPlugin('status')` or `Info()` calls)**
+**Tier 3A — VCPButton subclasses with mock status plugin in conftest**
 
-These have top-level `STATUS = getPlugin('status')` or `INFO = Info()` that execute at import time. Would need deeper mocking of the entire plugin system, or are better suited for Phase 4 integration tests:
+These inherit from `VCPButton`, which calls `getPlugin('status')` in `__init__`. A module-level mock in `tests/widgets/conftest.py` makes them testable. The mock registers a MagicMock as the 'status' plugin with `isLocked()` returning False.
+
+| Module | Classes | Est. Tests | Actual | Status |
+|--------|---------|------------|--------|--------|
+| `button_widgets/action_button.py` | `ActionButton` | ~12 | 17 | ✅ Complete |
+| `button_widgets/mdi_button.py` | `MDIButton` | ~15 | 20 | ✅ Complete |
+| `button_widgets/subcall_button.py` | `SubCallButton` | ~15 | 19 | ✅ Complete |
+| `button_widgets/action_checkbox.py` | `ActionCheckBox` | ~8 | 13 | ✅ Complete |
+| `button_widgets/action_spinbox.py` | `ActionSpinBox` | ~8 | 12 | ✅ Complete |
+| `input_widgets/line_edit.py` | `VCPLineEdit` | ~10 | 14 | ✅ Complete |
+| `button_widgets/led_button.py` | `LEDButton` | ~15 | 19 | ✅ Complete |
+
+**Tier 3B — Deep mocking (module-level `Info()` calls, machine_actions imports)**
+
+These have top-level `INFO = Info()` or import `machine_actions` which requires LinuxCNC STATUS. Would need deeper mocking or are better suited for Phase 4 integration tests:
 
 - `hal_widgets/` (12 files) — HAL pin binding → **Phase 4 candidate**
-- `input_widgets/action_*.py`, `button_widgets/action_*.py` — action binding → **Phase 4 candidate**
-- `display_widgets/dro_widget.py`, `notification_widget.py`, `gcode_properties.py` → **Phase 3 or 4**
-- `menus/homing_menu.py`, `recent_files_menu.py` → **Phase 3 or 4**
+- `display_widgets/dro_widget.py`, `notification_widget.py`, `gcode_properties.py` → **Phase 3B or 4**
+- `menus/homing_menu.py`, `recent_files_menu.py` → **Phase 3B or 4**
 - `form_widgets/main_window.py` → **Phase 4 candidate**
 - `display_widgets/vtk_backplot/` — requires VTK + linuxcnc mock → **Phase 4**
+
+#### Widget Test Setup Notes
+
+A module-level mock of the 'status' plugin is registered in `tests/widgets/conftest.py` to allow `VCPButton` subclasses to be instantiated without LinuxCNC. The fixture re-registers after each test to survive `_PLUGINS.clear()` from other test fixtures (e.g., `clean_registry` in `test_plugin_registry.py`).
 
 ### Phase 4: HAL/LinuxCNC Integration Tests (Ongoing) — NOT STARTED
 

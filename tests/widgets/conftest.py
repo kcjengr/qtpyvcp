@@ -1,4 +1,31 @@
 import pytest
+from unittest.mock import MagicMock
+
+# Register a mock 'status' plugin at module level so VCPButton subclasses
+# can be instantiated during tests without LinuxCNC/HAL running.
+from qtpyvcp.plugins import _PLUGINS
+
+def _get_mock_status():
+    """Get or create the mock status plugin."""
+    if 'status' not in _PLUGINS:
+        mock = MagicMock()
+        mock.isLocked.return_value = False
+        _PLUGINS['status'] = mock
+    return _PLUGINS['status']
+
+
+@pytest.fixture(autouse=True)
+def mock_status_plugin():
+    """Ensure mock status plugin is registered before and after each test.
+
+    This is needed because other test fixtures (like clean_registry in
+    test_plugin_registry.py) may clear _PLUGINS, removing our mock.
+    """
+    _get_mock_status()
+    yield _PLUGINS['status']
+    # Re-register after the test in case another fixture cleared it
+    if 'status' not in _PLUGINS:
+        _PLUGINS['status'] = _get_mock_status()
 
 
 @pytest.fixture
