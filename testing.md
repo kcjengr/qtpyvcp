@@ -2,7 +2,7 @@
 
 ## Current State
 
-**961 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**987 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Coverage Summary
 
@@ -10,7 +10,7 @@
 |-------|-------|-----------------|
 | Phase 1 (Easy) | 260 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters` |
 | Phase 2 (DB + Plugins) | 157 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry` |
-| Phase 3 (Qt Widgets) | 445 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton` (17 modules, ~445 tests) |
+| Phase 3 (Qt Widgets) | 480 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog` (19 modules, ~480 tests) |
 
 ### Missing from Phase 1 (Easy tier) — ALL COMPLETE
 
@@ -105,6 +105,7 @@ Phase 3 covers all Qt widget testing, split into tiers by dependency complexity:
 | `display_widgets/camera/camera.py` | `Camera` | ~20 | — | Deferred (QtMultimedia) |
 | `qtdesigner/rules_editor.py` | `RulesEditor`, `ChanInfoDialog` | ~25 | 46 | ✅ Complete |
 | `qtdesigner/designer_plugin.py` | `_DesignerPlugin` | ~12 | 23 | ✅ Complete |
+| `dialogs/about_dialog.py` | `AboutDialog` | ~15 | 15 | ✅ Complete |
 
 **Tier 2 — Simple patching (`qtpyvcp.hal` + `getPlugin()` mocks in conftest)**
 
@@ -129,6 +130,7 @@ These inherit from `VCPButton`, which calls `getPlugin('status')` in `__init__`.
 | `button_widgets/action_spinbox.py` | `ActionSpinBox` | ~8 | 12 | ✅ Complete |
 | `input_widgets/line_edit.py` | `VCPLineEdit` | ~10 | 14 | ✅ Complete |
 | `button_widgets/led_button.py` | `LEDButton` | ~15 | 19 | ✅ Complete |
+| `button_widgets/dialog_button.py` | `DialogButton` | ~10 | 11 | ✅ Complete |
 
 **Tier 3B — Deep mocking (module-level `Info()` calls, machine_actions imports)**
 
