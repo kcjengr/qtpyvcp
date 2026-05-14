@@ -30,6 +30,7 @@ pyqt5 = "^5.15.11"
 pytest = "^7.4"
 pytest-qt = "^4.2"
 pytest-xvfb = "^3.1"
+pytest-env = "^1.1"
 
 
 [tool.poetry.scripts]
@@ -70,6 +71,10 @@ parentdir_prefix = ""
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.pytest-env]
+QT_API = "pyqt5"
+PYTEST_QT_API = "pyqt5"
 
 [tool.poetry-dynamic-versioning]
 enable = true

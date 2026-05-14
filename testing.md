@@ -74,7 +74,7 @@ Baseline established with 334 tests across 10 widget modules:
 
 #### Setup for Qt Widget Testing
 
-Qt widget tests require `PYTEST_QT_API=pyqt5` to be set before pytest starts. This is handled automatically via `usercustomize.py` in the Poetry venv.
+Qt binding is configured via `pytest-env` in `pyproject.toml`. No manual setup required — just run:
 
 ```bash
 # All tests (including widgets) run headlessly with Xvfb
