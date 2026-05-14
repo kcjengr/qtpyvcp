@@ -24,6 +24,7 @@ packages = [
 python = "^3.9"
 qtpy = "^2.4.3"
 pyqt5 = "^5.15.11"
+hiyapyco = "^0.7.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -72,7 +73,7 @@ parentdir_prefix = ""
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
-[tool.pytest-env]
+[tool.pytest_env]
 QT_API = "pyqt5"
 PYTEST_QT_API = "pyqt5"
 
