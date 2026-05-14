@@ -2,7 +2,7 @@
 
 ## Current State
 
-**987 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**1072 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Coverage Summary
 
@@ -10,7 +10,7 @@
 |-------|-------|-----------------|
 | Phase 1 (Easy) | 260 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters` |
 | Phase 2 (DB + Plugins) | 157 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry` |
-| Phase 3 (Qt Widgets) | 480 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog` (19 modules, ~480 tests) |
+| Phase 3 (Qt Widgets) | 565 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget` (21 modules, ~565 tests) |
 
 ### Missing from Phase 1 (Easy tier) — ALL COMPLETE
 
@@ -109,13 +109,22 @@ Phase 3 covers all Qt widget testing, split into tiers by dependency complexity:
 
 **Tier 2 — Simple patching (`qtpyvcp.hal` + `getPlugin()` mocks in conftest)**
 
-These inherit from `VCPWidget`, which pulls in `from qtpyvcp import hal` at the top of `base_widget.py`. A conftest-level mock makes them testable.
+These inherit from `VCPWidget`, which pulls in `from qtpyvcp import hal` at the top of `base_widget.py`. A conftest-level mock makes them testable. Mock plugins for `status`, `position`, and `notifications` are registered as autouse fixtures in `tests/widgets/conftest.py`.
 
 | Module | Classes | Est. Tests | Actual | Status |
 |--------|---------|------------|--------|--------|
-| `display_widgets/bar_indicator.py` | `BarIndicator` | ~15 | — | Not started |
-| `display_widgets/dro_label.py` | `DROLabel` | ~20 | — | Not started |
-| `form_widgets/probe_widget/probe.py` | `ProbeWidget` | ~15 | — | Not started |
+| `display_widgets/bar_indicator.py` | `BarIndicatorBase` | ~15 | 42 | ✅ Complete |
+| `display_widgets/active_gcodes_table.py` | `ActiveGcodesTable`, `ActiveGcodesModel` | ~30 | 31 | ✅ Complete |
+| `display_widgets/notification_widget.py` | `NotificationWidget` | ~40 | 54 | ✅ Complete |
+
+**Tier 2 — Deferred (requires deeper mocking)**
+
+These have module-level `INFO = Info()` or `linuxcnc.command/stat()` calls that block instantiation. Better suited for Phase 3B/4:
+
+| Module | Classes | Notes | Status |
+|--------|---------|-------|--------|
+| `display_widgets/dro_label.py` / `dro_base_widget.py` | `DROLabel`, `DROBaseWidget` | `INFO = Info()` at module level + `getPlugin('status')`/`position` | Phase 3B |
+| `form_widgets/probe_widget/probe.py` | `SubCaller` | `linuxcnc.command/stat()`, loads .ui file, needs subroutine path | Phase 4 |
 
 **Tier 3A — VCPButton subclasses with mock status plugin in conftest**
 
