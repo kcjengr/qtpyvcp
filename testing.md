@@ -2,14 +2,14 @@
 
 ## Current State
 
-**1072 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**1429 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Coverage Summary
 
 | Phase | Tests | Modules Covered |
 |-------|-------|-----------------|
 | Phase 1 (Easy) | 260 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters` |
-| Phase 2 (DB + Plugins) | 157 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry` |
+| Phase 2 (DB + Plugins) | 213 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry`, `clock` (39 tests), `settings` (17 tests) |
 | Phase 3 (Qt Widgets) | 565 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget` (21 modules, ~565 tests) |
 
 ### Missing from Phase 1 (Easy tier) — ALL COMPLETE
@@ -19,6 +19,23 @@ All Phase 1 modules now have tests:
 - `lib/decorators.py` — 22 tests (Easy, uses mocked logger)
 - `app/enums.py` — 30 tests (Trivial, constant-value assertions)
 - `utilities/yaml_filters.py` — 15 tests (Easy, env-var branching logic)
+
+### Missing from Phase 2 (DB + Plugins tier) — PARTIAL
+
+Remaining untested plugins:
+- `plugins/clock.py` — 39 tests (Medium effort, QTimer + DataChannel patterns) ✅ **COMPLETE**
+- `plugins/settings.py` — 17 tests (Medium effort, requires SETTINGS/CONFIG mocking via module reload) ✅ **COMPLETE**
+- `plugins/notifications.py` — Hard (linuxcnc.error_channel dependency) → Phase 4
+- `plugins/file_locations.py` — Hard (pyudev, OS calls) → Phase 4
+- `plugins/positions.py` — Hard (STATUS/INFO dependencies) → Phase 4
+- `plugins/db_tool_table.py` — Hard (linuxcnc.command + DB deps) → Phase 4
+- `plugins/exported_hal.py` — Hard (HAL dependency) → Phase 4
+- `plugins/gcode_properties.py` — Hard (machine_actions import) → Phase 4
+- `plugins/offset_table.py` — Hard (HAL-dependent widget) → Phase 4
+- `plugins/tool_table.py` — Hard (LinuxCNC tool table file format) → Phase 4
+- `plugins/user_managment.py` — Hard (database + UI logic) → Phase 4
+- `plugins/virtual_input_manager.py` — Hard (HAL pin binding) → Phase 4
+- `plugins/status.py` — Hard (LinuxCNC STATUS wrapper) → Phase 4
 
 ## Testable Boundaries
 
@@ -46,11 +63,11 @@ This gives you ~260 tests covering GCode generation, misc utilities, path normal
 
 ### Phase 2: DB Models + Plugin Registry (Week 2) — COMPLETED
 
-157 tests covering `ToolTable`/`ToolModel` with in-memory SQLite, plugin registry lifecycle, base plugin CRUD channels, and full `plasma_processes` SQLAlchemy model suite (CRUD operations, 11 model classes, CSV seeding).
+213 tests covering `ToolTable`/`ToolModel` with in-memory SQLite, plugin registry lifecycle, base plugin CRUD channels, full `plasma_processes` SQLAlchemy model suite (CRUD operations, 11 model classes, CSV seeding), `Clock` plugin (39 tests: init, channels, getChannel URL parsing, tostring formatting, timer lifecycle, signal notifications), and `Settings` plugin (17 tests: init, getChannel with various types, initialise persistence loading, terminate saving logic with persistent/default filtering).
 
 ### Phase 3: Qt Widget Testing (Week 3+) — IN PROGRESS
 
-Baseline established with 334 tests across 10 widget modules:
+Baseline established with 565+ tests across 21+ widget modules (up from 334):
 
 - **LEDWidget** (31 tests) — Diameter, color, alignment, state, flashing, flashRate properties; size hints; focus policy; toggle/startFlashing/stopFlashing methods
 - **BarIndicatorBase** (42 tests) — Value clamping, min/max, orientation, text formatting, gradient parsing, colors, border settings, Qt properties
@@ -150,6 +167,18 @@ These have top-level `INFO = Info()` or import `machine_actions` which requires 
 - `menus/homing_menu.py`, `recent_files_menu.py` → **Phase 3B or 4**
 - `form_widgets/main_window.py` → **Phase 4 candidate**
 - `display_widgets/vtk_backplot/` — requires VTK + linuxcnc mock → **Phase 4**
+
+### Phase 2.5: Additional Plugin Testing (Ongoing)
+
+Plugins that are testable with proper mocking (no HAL/LinuxCNC dependency in core logic):
+
+| Module | Est. Tests | Status |
+|--------|------------|--------|
+| `plugins/clock.py` | ~30 | 39 tests ✅ Complete |
+| `plugins/settings.py` | ~15 | 17 tests ✅ Complete |
+| `plugins/notifications.py` | ~40 | ⏳ Phase 4 (linuxcnc.error_channel) |
+| `plugins/file_locations.py` | ~25 | ⏳ Phase 4 (pyudev, OS calls) |
+| `plugins/positions.py` | ~30 | ⏳ Phase 4 (STATUS/INFO) |
 
 #### Widget Test Setup Notes
 
