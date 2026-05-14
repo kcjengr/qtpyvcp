@@ -23,7 +23,7 @@ poetry install
 poetry run pytest tests/ -v
 ```
 
-This runs 516 tests across pure-Python modules. No display or LinuxCNC required.
+This runs ~1072 tests across pure-Python modules and Qt widgets (via pytest-xvfb). No LinuxCNC required.
 
 ### Filter by Category
 
@@ -178,6 +178,27 @@ tests/
 │   ├── test_opt_parser.py
 │   ├── test_settings.py
 │   └── test_yaml_filters.py
+├── widgets/
+│   ├── conftest.py
+│   ├── test_about_dialog.py
+│   ├── test_action_button.py
+│   ├── test_active_gcodes_table.py
+│   ├── test_bar_indicator.py
+│   ├── test_base_dialog.py
+│   ├── test_containers.py
+│   ├── test_designer_plugin.py
+│   ├── test_dialog_button.py
+│   ├── test_error_dialog.py
+│   ├── test_eval_line_edit.py
+│   ├── test_led_button.py
+│   ├── test_led_widget.py
+│   ├── test_line_edit.py
+│   ├── test_mdi_button.py
+│   ├── test_notification_widget.py
+│   ├── test_rules_editor.py
+│   ├── test_status_label.py
+│   ├── test_status_led.py
+│   └── test_subcall_button.py
 ├── test_drill_ops.py
 ├── test_misc.py
 ├── test_runtime_config.py
@@ -195,10 +216,10 @@ tests/
 | **utilities** | 400/1,480 | 27.0% | Good |
 | **ops** | ~250/300+ | ~85%+ | Excellent |
 | **actions** | 0/1,399 | 0% | Needs HAL at runtime |
-| **widgets** | 0/12,120 | 0% | Phase 3 target — Qt widget tests |
+| **widgets** | — | Partial | Phase 3 in progress — see `testing.md` |
 | **hal** | 0/137 | 0% | Needs LinuxCNC |
 
-**Overall: 6.2%** (1,294 / 20,720 lines, 516 tests)
+**Overall: ~5.2%** (1,072 tests collected)
 
 ## CI Integration Example
 
@@ -242,7 +263,7 @@ jobs:
 
 ## Notes
 
-- Tests do **not** require LinuxCNC or HAL to run — they target pure-Python modules only.
-- Qt widget tests (Phase 3) will be added under `tests/widgets/` once the testing plan reaches that milestone.
+- Tests do **not** require LinuxCNC or HAL to run — they target pure-Python modules and Qt widgets (via pytest-xvfb).
+- Qt widget tests are under `tests/widgets/` — see `testing.md` for the phased testing plan (Phase 3).
 - HAL/LinuxCNC integration tests (Phase 4) will require a separate test suite with a running LinuxCNC sim instance, gated behind `pytest.mark.integration`.
 - The Python requirement was bumped from `^3.7` to `^3.9` in `pyproject.toml` to support `pytest-xvfb >= 3.1`.
