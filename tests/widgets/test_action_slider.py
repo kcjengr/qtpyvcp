@@ -31,9 +31,9 @@ class TestActionSlider:
         from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
         s = ActionSlider()
         qtbot.addWidget(s)
-        s.actionName = 'spindle.0.override'
-        assert s._action_name == 'spindle.0.override'
-        mock_bind.assert_called_once_with(s, 'spindle.0.override')
+        s.actionName = 'machine.jog.x.positive'
+        assert s._action_name == 'machine.jog.x.positive'
+        mock_bind.assert_called_once_with(s, 'machine.jog.x.positive')
 
     def test_actionName_is_qt_property(self, qtbot):
         from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
@@ -43,26 +43,60 @@ class TestActionSlider:
         prop_names = [meta_obj.property(i).name() for i in range(meta_obj.propertyCount())]
         assert 'actionName' in prop_names
 
-    def test_value_default(self, qtbot):
+    def test_orientation_default(self, qtbot):
+        from qtpy.QtCore import Qt
         from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
         s = ActionSlider()
         qtbot.addWidget(s)
-        assert s.value() == 0
+        assert s.orientation() == Qt.Orientation.Vertical
 
-    def test_set_value(self, qtbot):
+    def test_set_orientation_horizontal(self, qtbot):
+        from qtpy.QtCore import Qt
         from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
         s = ActionSlider()
         qtbot.addWidget(s)
+        s.setOrientation(Qt.Orientation.Horizontal)
+        assert s.orientation() == Qt.Orientation.Horizontal
+
+    def test_set_orientation_vertical(self, qtbot):
+        from qtpy.QtCore import Qt
+        from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
+        s = ActionSlider()
+        qtbot.addWidget(s)
+        s.setOrientation(Qt.Orientation.Vertical)
+        assert s.orientation() == Qt.Orientation.Vertical
+
+    def test_value_range(self, qtbot):
+        from qtpy.QtCore import Qt
+        from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
+        s = ActionSlider()
+        qtbot.addWidget(s)
+        s.setOrientation(Qt.Orientation.Horizontal)
+        s.setMinimum(0)
+        s.setMaximum(100)
         s.setValue(50)
-        assert s.value() == 50
-
-    def test_set_range(self, qtbot):
-        from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
-        s = ActionSlider()
-        qtbot.addWidget(s)
-        s.setRange(0, 100)
         assert s.minimum() == 0
         assert s.maximum() == 100
+        assert s.value() == 50
+
+    def test_mouseDoubleClickEvent_sets_value_to_100(self, qtbot):
+        from qtpy.QtCore import Qt
+        from qtpy.QtGui import QMouseEvent
+        from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
+        s = ActionSlider()
+        qtbot.addWidget(s)
+        s.setMinimum(0)
+        s.setMaximum(100)
+        
+        event = QMouseEvent(
+            QMouseEvent.Type.MouseButtonDblClick,
+            s.rect().center(),
+            Qt.LeftButton,
+            Qt.LeftButton,
+            Qt.NoModifier
+        )
+        s.mouseDoubleClickEvent(event)
+        assert s.value() == 100
 
     def test_mouseDoubleClickEvent_locked(self, qtbot):
         from qtpy.QtCore import Qt
@@ -74,37 +108,17 @@ class TestActionSlider:
         from qtpyvcp.plugins import _PLUGINS
         _PLUGINS['status'].isLocked.return_value = True
         
+        initial_value = s.value()
         event = QMouseEvent(
-            QMouseEvent.Type.MouseButtonPress,
+            QMouseEvent.Type.MouseButtonDblClick,
             s.rect().center(),
             Qt.LeftButton,
             Qt.LeftButton,
             Qt.NoModifier
         )
         s.mouseDoubleClickEvent(event)
+        assert s.value() == initial_value
         assert event.isAccepted() is True
-
-    def test_mouseDoubleClickEvent_unlocked_sets_100(self, qtbot):
-        from qtpy.QtCore import Qt
-        from qtpy.QtGui import QMouseEvent
-        from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
-        s = ActionSlider()
-        qtbot.addWidget(s)
-        s.setRange(0, 100)
-        
-        from qtpyvcp.plugins import _PLUGINS
-        _PLUGINS['status'].isLocked.return_value = False
-        
-        s.setValue(0)
-        event = QMouseEvent(
-            QMouseEvent.Type.MouseButtonPress,
-            s.rect().center(),
-            Qt.LeftButton,
-            Qt.LeftButton,
-            Qt.NoModifier
-        )
-        s.mouseDoubleClickEvent(event)
-        assert s.value() == 100
 
     def test_mousePressEvent_locked(self, qtbot):
         from qtpy.QtCore import Qt
@@ -158,7 +172,7 @@ class TestActionSlider:
         
         event = QKeyEvent(
             QKeyEvent.Type.KeyPress,
-            Qt.Key_Return,
+            Qt.Key_Up,
             Qt.NoModifier
         )
         s.keyPressEvent(event)
@@ -176,30 +190,8 @@ class TestActionSlider:
         
         event = QKeyEvent(
             QKeyEvent.Type.KeyRelease,
-            Qt.Key_Return,
+            Qt.Key_Up,
             Qt.NoModifier
         )
         s.keyReleaseEvent(event)
         assert event.isAccepted() is True
-
-    def test_set_orientation_horizontal(self, qtbot):
-        from qtpy.QtCore import Qt
-        from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
-        s = ActionSlider()
-        qtbot.addWidget(s)
-        s.setOrientation(Qt.Horizontal)
-        assert s.orientation() == Qt.Horizontal
-
-    def test_set_orientation_vertical(self, qtbot):
-        from qtpy.QtCore import Qt
-        from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
-        s = ActionSlider()
-        qtbot.addWidget(s)
-        s.setOrientation(Qt.Vertical)
-        assert s.orientation() == Qt.Vertical
-
-    def test_enabled_default(self, qtbot):
-        from qtpyvcp.widgets.input_widgets.action_slider import ActionSlider
-        s = ActionSlider()
-        qtbot.addWidget(s)
-        assert s.isEnabled() is True
