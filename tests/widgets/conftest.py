@@ -91,3 +91,178 @@ def vcp_stacked_widget(qtbot):
     widget = VCPStackedWidget()
     qtbot.addWidget(widget)
     return widget
+
+
+@pytest.fixture
+def base_dialog(qtbot):
+    from qtpy.QtWidgets import QDialog
+
+    from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
+
+    dialog = BaseDialog()
+    qtbot.addWidget(dialog)
+    return dialog
+
+
+@pytest.fixture
+def error_dialog(qtbot):
+    import sys
+
+    from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+
+    try:
+        raise ValueError("test error")
+    except Exception:
+        exc_info = sys.exc_info()
+
+    dialog = ErrorDialog(exc_info)
+    qtbot.addWidget(dialog)
+    return dialog
+
+
+@pytest.fixture
+def warning_dialog(qtbot):
+    import sys
+
+    from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+
+    try:
+        raise UserWarning("test warning")
+    except Exception:
+        exc_info = sys.exc_info()
+
+    dialog = ErrorDialog(exc_info)
+    qtbot.addWidget(dialog)
+    return dialog
+
+
+@pytest.fixture
+def keyerror_dialog(qtbot):
+    import sys
+
+    from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+
+    try:
+        raise KeyError("missing_key")
+    except Exception:
+        exc_info = sys.exc_info()
+
+    dialog = ErrorDialog(exc_info)
+    qtbot.addWidget(dialog)
+    return dialog
+
+
+@pytest.fixture
+def attrerror_dialog(qtbot):
+    import sys
+
+    from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+
+    try:
+        raise AttributeError("missing_attr")
+    except Exception:
+        exc_info = sys.exc_info()
+
+    dialog = ErrorDialog(exc_info)
+    qtbot.addWidget(dialog)
+    return dialog
+
+
+@pytest.fixture
+def typeerror_dialog(qtbot):
+    import sys
+
+    from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+
+    try:
+        raise TypeError("bad type")
+    except Exception:
+        exc_info = sys.exc_info()
+
+    dialog = ErrorDialog(exc_info)
+    qtbot.addWidget(dialog)
+    return dialog
+
+
+@pytest.fixture
+def empty_msg_dialog(qtbot):
+    import sys
+
+    from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+
+    try:
+        raise ValueError("")
+    except Exception:
+        exc_info = sys.exc_info()
+
+    dialog = ErrorDialog(exc_info)
+    qtbot.addWidget(dialog)
+    return dialog
+
+
+@pytest.fixture
+def long_msg_dialog(qtbot):
+    import sys
+
+    from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+
+    long_msg = "This is a very long error message that spans multiple lines and contains a lot of text to test the dialog's ability to handle lengthy exception messages properly." * 5
+
+    try:
+        raise ValueError(long_msg)
+    except Exception:
+        exc_info = sys.exc_info()
+
+    dialog = ErrorDialog(exc_info)
+    qtbot.addWidget(dialog)
+    return dialog
+
+
+@pytest.fixture
+def designer_error_dialog(qtbot):
+    import os
+    import sys
+
+    from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+
+    original_designer = os.environ.get("DESIGNER")
+    os.environ["DESIGNER"] = "1"
+
+    try:
+        raise ValueError("designer test error")
+    except Exception:
+        exc_info = sys.exc_info()
+
+    dialog = ErrorDialog(exc_info)
+    qtbot.addWidget(dialog)
+
+    if original_designer is not None:
+        os.environ["DESIGNER"] = original_designer
+    else:
+        os.environ.pop("DESIGNER", None)
+
+    return dialog
+
+
+@pytest.fixture
+def mock_widget_with_rules():
+    from unittest.mock import MagicMock
+
+    mock = MagicMock()
+    mock.rules = "[]"
+    mock.RULE_PROPERTIES = {
+        'None': ['None', None],
+        'Enable': ['setEnabled', bool],
+        'Visible': ['setVisible', bool],
+        'Style Class': ['setStyleClass', str],
+    }
+    mock.DEFAULT_RULE_PROPERTY = 'Visible'
+    return mock
+
+
+@pytest.fixture
+def mock_widget_without_rules():
+    from unittest.mock import MagicMock
+
+    mock = MagicMock()
+    return mock

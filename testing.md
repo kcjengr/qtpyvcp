@@ -2,7 +2,7 @@
 
 ## Current State
 
-**715 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**850 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Coverage Summary
 
@@ -10,7 +10,7 @@
 |-------|-------|-----------------|
 | Phase 1 (Easy) | 260 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters` |
 | Phase 2 (DB + Plugins) | 157 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry` |
-| Phase 3 (Qt Widgets) | 199 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget` |
+| Phase 3 (Qt Widgets) | 334 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin` (10 modules, ~334 tests) |
 
 ### Missing from Phase 1 (Easy tier) — ALL COMPLETE
 
@@ -50,7 +50,7 @@ This gives you ~260 tests covering GCode generation, misc utilities, path normal
 
 ### Phase 3: Qt Widget Testing (Week 3+) — IN PROGRESS
 
-Baseline established with 199 tests across 7 widget modules:
+Baseline established with 334 tests across 10 widget modules:
 
 - **LEDWidget** (31 tests) — Diameter, color, alignment, state, flashing, flashRate properties; size hints; focus policy; toggle/startFlashing/stopFlashing methods
 - **BarIndicatorBase** (42 tests) — Value clamping, min/max, orientation, text formatting, gradient parsing, colors, border settings, Qt properties
@@ -59,6 +59,11 @@ Baseline established with 199 tests across 7 widget modules:
 - **StatusLED** (25 tests) — State/flashing properties inherited from LEDWidget, rule properties (On, Flashing), Qt property access, size hints
 - **VCPFrame** (13 tests) — Enable rule property, visibility, sizing, object naming
 - **VCPStackedWidget** (35 tests) — Page management (add/remove/setCurrentIndex), setIndexValue with signal blocking, settingName property, currentChanged signal
+- **BaseDialog** (22 tests) — Init, modality, window flags, UI loading, combined options
+- **ErrorDialog** (25 tests) — Init, display, warning types, ignore list, quit app, exception types, edge cases
+- **dialogs/__init__** (19 tests) — getDialog, showDialog, hideActiveDialog, hideDialog, askQuestion, ACTIVE_DIALOGS state
+- **RulesEditor** (46 tests) — TableCheckButton, CompleterDelegate, RulesEditor init/UI/actions/validation/callbacks, ChanInfoDialog
+- **_DesignerPlugin** (23 tests) — name, objectName, group, domXml, initialize, extensions, createWidget, includeFile
 
 #### Setup for Qt Widget Testing
 
@@ -78,6 +83,43 @@ poetry run pytest tests/widgets/ -v
 2. **Direct module imports** — Import directly from file paths (e.g., `importlib.util.spec_from_file_location`) to avoid triggering package `__init__.py` chains that pull in HAL-dependent modules like VTKBackPlot
 3. **Property testing** — Use `qtpy.QtCore.Property` (not `pyqtProperty`) for Qt property type checks
 4. **Timer signals** — Avoid `qtbot.waitSignal()` for QTimer; test state changes instead since event loop timing is unreliable in headless tests
+
+#### Phase 3 Expansion Plan
+
+Phase 3 covers all Qt widget testing, split into tiers by dependency complexity:
+
+**Tier 1 — Zero workarounds needed (pure Qt widgets, no VCPWidget inheritance)**
+
+| Module | Classes | Est. Tests | Actual | Status |
+|--------|---------|------------|--------|--------|
+| `dialogs/base_dialog.py` | `BaseDialog` | ~10 | 22 | ✅ Complete |
+| `dialogs/error_dialog.py` | `ErrorDialog` | ~15 | 25 | ✅ Complete |
+| `dialogs/__init__.py` (functions) | `getDialog()`, `showDialog()`, `hideActiveDialog()` | ~8 | 19 | ✅ Complete |
+| `display_widgets/camera/camera.py` | `Camera` | ~20 | — | Deferred (QtMultimedia) |
+| `qtdesigner/rules_editor.py` | `RulesEditor`, `ChanInfoDialog` | ~25 | 46 | ✅ Complete |
+| `qtdesigner/designer_plugin.py` | `_DesignerPlugin` | ~12 | 23 | ✅ Complete |
+
+**Tier 2 — Simple patching (`qtpyvcp.hal` + `getPlugin()` mocks in conftest)**
+
+These inherit from `VCPWidget`, which pulls in `from qtpyvcp import hal` at the top of `base_widget.py`. A conftest-level mock makes them testable.
+
+| Module | Classes | Est. Tests | Status |
+|--------|---------|------------|--------|
+| `display_widgets/bar_indicator.py` | `BarIndicator` | ~15 | Not started |
+| `display_widgets/dro_label.py` | `DROLabel` | ~20 | Not started |
+| `form_widgets/probe_widget/probe.py` | `ProbeWidget` | ~15 | Not started |
+| `input_widgets/line_edit.py` | `VCPLineEdit` | ~15 | Not started |
+
+**Tier 3 — Deep mocking (module-level `getPlugin('status')` or `Info()` calls)**
+
+These have top-level `STATUS = getPlugin('status')` or `INFO = Info()` that execute at import time. Would need deeper mocking of the entire plugin system, or are better suited for Phase 4 integration tests:
+
+- `hal_widgets/` (12 files) — HAL pin binding → **Phase 4 candidate**
+- `input_widgets/action_*.py`, `button_widgets/action_*.py` — action binding → **Phase 4 candidate**
+- `display_widgets/dro_widget.py`, `notification_widget.py`, `gcode_properties.py` → **Phase 3 or 4**
+- `menus/homing_menu.py`, `recent_files_menu.py` → **Phase 3 or 4**
+- `form_widgets/main_window.py` → **Phase 4 candidate**
+- `display_widgets/vtk_backplot/` — requires VTK + linuxcnc mock → **Phase 4**
 
 ### Phase 4: HAL/LinuxCNC Integration Tests (Ongoing) — NOT STARTED
 
