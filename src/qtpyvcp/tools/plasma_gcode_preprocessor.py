@@ -72,7 +72,7 @@ try:
     h = hal.component('dummy')
     LOG.debug('Python HAL is available')
 except Exception as e:
-    LOG.warn(f'Python HAL is NOT available: {e}')
+    LOG.warning(f'Python HAL is NOT available: {e}')
 
 
 # Define some globals that will be referenced from anywhere
@@ -572,7 +572,7 @@ class CodeLine:
         if len(cut_process) == 0:
             # rewrite the raw line as an error comment
             self.raw = f"; ERROR: Invalid Cutchart ID in Tx. Check CAM Tools: {self.raw}"
-            LOG.warn(f'Tool {tool} not a valid cut process in DB')
+            LOG.warning(f'Tool {tool} not a valid cut process in DB')
         else:
             self.cutchart_id = tool
             self._parent.active_cutchart = tool

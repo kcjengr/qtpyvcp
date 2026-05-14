@@ -43,7 +43,7 @@ class ErrorDialog(BaseDialog):
     @Slot()
     def on_ignoreException_clicked(self):
         if self.ignoreCheckBox.isChecked():
-            LOG.warn("User selected to ignore future occurrences of exception.",
+            LOG.warning("User selected to ignore future occurrences of exception.",
                      exc_info=self.exc_info)
             IGNORE_LIST.append((str(self.exc_info[0]),
                                 str(self.exc_info[1]),
