@@ -2,13 +2,13 @@
 
 ## Current State
 
-**1429 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**1517 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Coverage Summary
 
 | Phase | Tests | Modules Covered |
 |-------|-------|-----------------|
-| Phase 1 (Easy) | 260 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters` |
+| Phase 1 (Easy) | 365 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters`, `load_perf_summary` (52 tests), `dbus_notification` (36 tests) |
 | Phase 2 (DB + Plugins) | 213 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry`, `clock` (39 tests), `settings` (17 tests) |
 | Phase 3 (Qt Widgets) | 565 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget` (21 modules, ~565 tests) |
 
@@ -19,6 +19,8 @@ All Phase 1 modules now have tests:
 - `lib/decorators.py` — 22 tests (Easy, uses mocked logger)
 - `app/enums.py` — 30 tests (Trivial, constant-value assertions)
 - `utilities/yaml_filters.py` — 15 tests (Easy, env-var branching logic)
+- `utilities/load_perf_summary.py` — 52 tests (Medium effort, perf_counter mocking, phase tracking state machine) ✅ **COMPLETE**
+- `lib/dbus_notification.py` — 36 tests (Medium effort, dbus mocking, notification lifecycle, action callbacks) ✅ **COMPLETE**
 
 ### Missing from Phase 2 (DB + Plugins tier) — PARTIAL
 
@@ -43,7 +45,7 @@ Out of the 3 packages under `src/`, roughly **40% of qtpyvcp is pure Python** (n
 
 | Tier | Modules | Effort |
 |------|---------|--------|
-| **Easy — pure logic** | `ops/drill_ops.py`, `ops/gcode_file.py`, `ops/face_ops.py`, `utilities/misc.py`, `utilities/settings.py`, `lib/types.py`, `lib/decorators.py`, `lib/colored_formatter.py`, `app/runtime_config.py`, `app/enums.py`, `utilities/yaml_filters.py` | Assert output strings, value coercion, path normalization |
+| **Easy — pure logic** | `ops/drill_ops.py`, `ops/gcode_file.py`, `ops/face_ops.py`, `utilities/misc.py`, `utilities/settings.py`, `lib/types.py`, `lib/decorators.py`, `lib/colored_formatter.py`, `app/runtime_config.py`, `app/enums.py`, `utilities/yaml_filters.py`, `utilities/load_perf_summary.py`, `lib/dbus_notification.py` | Assert output strings, value coercion, path normalization, phase tracking state machine, notification lifecycle with mocked DBus |
 | **Medium — DB logic** | `lib/db_tool/tool_table.py`, `plugins/plasma_processes.py` (SQLAlchemy models) | In-memory SQLite round-trips |
 | **Hard — HAL dependent** | `hal/`, plugins with `import linuxcnc`, widgets that bind to HAL pins | Requires mocking `_hal`, or running inside LinuxCNC simulation |
 | **Qt widgets** | All UI widgets, VCP chooser, notifications | Requires Xvfb + `pytest-qt` (Phase 3 in progress) |
@@ -52,14 +54,14 @@ Out of the 3 packages under `src/`, roughly **40% of qtpyvcp is pure Python** (n
 
 ### Phase 1: Infrastructure + Pure Python (Week 1) — COMPLETED
 
-All modules from the original plan are now tested. Additional modules covered beyond the original scope include `settings.py`, `decorators.py`, `enums.py`, and `yaml_filters.py`.
+All modules from the original plan are now tested. Additional modules covered beyond the original scope include `settings.py`, `decorators.py`, `enums.py`, `yaml_filters.py`, `load_perf_summary.py` (52 tests: phase tracking, file matching, timing accumulation, formatting helpers, completeness checks), and `dbus_notification.py` (36 tests: urgency levels, notification lifecycle, action callbacks, hint setters, DBus interface mocking).
 
 Run via:
 ```bash
 poetry run pytest tests/
 ```
 
-This gives you ~260 tests covering GCode generation, misc utilities, path normalization, config loading, settings management, decorators, and enum values.
+This gives you ~365 tests covering GCode generation, misc utilities, path normalization, config loading, settings management, decorators, enum values, program load performance summary, and DBus notifications.
 
 ### Phase 2: DB Models + Plugin Registry (Week 2) — COMPLETED
 
@@ -172,13 +174,13 @@ These have top-level `INFO = Info()` or import `machine_actions` which requires 
 
 Plugins that are testable with proper mocking (no HAL/LinuxCNC dependency in core logic):
 
-| Module | Est. Tests | Status |
-|--------|------------|--------|
-| `plugins/clock.py` | ~30 | 39 tests ✅ Complete |
-| `plugins/settings.py` | ~15 | 17 tests ✅ Complete |
-| `plugins/notifications.py` | ~40 | ⏳ Phase 4 (linuxcnc.error_channel) |
-| `plugins/file_locations.py` | ~25 | ⏳ Phase 4 (pyudev, OS calls) |
-| `plugins/positions.py` | ~30 | ⏳ Phase 4 (STATUS/INFO) |
+| Module | Est. Tests | Actual | Status |
+|--------|------------|--------|--------|
+| `plugins/clock.py` | ~30 | 39 | ✅ Complete |
+| `plugins/settings.py` | ~15 | 17 | ✅ Complete |
+| `plugins/notifications.py` | ~40 | — | ⏳ Phase 4 (linuxcnc.error_channel) |
+| `plugins/file_locations.py` | ~25 | — | ⏳ Phase 4 (pyudev, OS calls) |
+| `plugins/positions.py` | ~30 | — | ⏳ Phase 4 (STATUS/INFO) |
 
 #### Widget Test Setup Notes
 
