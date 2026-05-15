@@ -2,7 +2,7 @@
 
 ## Current State
 
-**1813 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**1893 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Line Coverage
 
@@ -34,9 +34,9 @@
 | Phase | Tests | Modules Covered |
 |-------|-------|-----------------|
 | Phase 1 (Easy) | 620 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters`, `load_perf_summary` (52 tests), `dbus_notification` (36 tests), `base_op` + `drill_ops` (71 tests), `encode_utils` (13 tests), `system_diagnostics` (84 tests), `persistent_data_manager` (35 tests), `actions/__init__` (20 tests) |
-| Phase 3 (Qt Widgets) | 601 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `stylesheet` (14 tests), `shutdown_dialog` (13 tests), `probesim_dialog` (14 tests), `dro_label` (10 tests), `toolchange_dialog` (22 tests) (26 modules, ~601 tests) |
-| Phase 2 (DB + Plugins) | 213 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry`, `clock` (39 tests), `settings` (17 tests) |
-| Phase 3 (Qt Widgets) | 601 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `shutdown_dialog` (13 tests), `probesim_dialog` (14 tests), `dro_label` (10 tests), `toolchange_dialog` (22 tests) (25 modules, ~601 tests) |
+| Phase 3 (Qt Widgets) | 632 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `stylesheet` (14 tests), `shutdown_dialog` (13 tests), `probesim_dialog` (14 tests), `dro_label` (10 tests), `toolchange_dialog` (22 tests), `probesim_widget` (16 tests), `recent_file_combobox` (15 tests) (28 modules, ~632 tests) |
+| Phase 2 (DB + Plugins) | 269 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry`, `clock` (39 tests), `settings` (17 tests), `user_managment` (37 tests), `virtual_input_manager` (19 tests) |
+| Phase 3 (Qt Widgets) | 632 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `shutdown_dialog` (13 tests), `probesim_dialog` (14 tests), `dro_label` (10 tests), `toolchange_dialog` (22 tests), `probesim_widget` (16 tests), `recent_file_combobox` (15 tests) (28 modules, ~632 tests) |
 
 ### Missing from Phase 1 (Easy tier) — PARTIAL
 
@@ -75,8 +75,8 @@ Remaining untested plugins:
 - `plugins/gcode_properties.py` — Hard (machine_actions import) → Phase 4
 - `plugins/offset_table.py` — Hard (HAL-dependent widget) → Phase 4
 - `plugins/tool_table.py` — Hard (LinuxCNC tool table file format) → Phase 4
-- `plugins/user_managment.py` — Hard (database + UI logic) → Phase 4
-- `plugins/virtual_input_manager.py` — Hard (HAL pin binding) → Phase 4
+- `plugins/user_managment.py` — 37 tests (Medium effort, DataChannels for auth, login/logoff lifecycle, permission-based widget enablement, user cache, setWidgetEnablementPerPermission) ✅ **COMPLETE**
+- `plugins/virtual_input_manager.py` — 19 tests (Medium effort, input provider activation/deactivation, focusChanged signal handling, config-driven provider initialization with dot-to-colon key conversion) ✅ **COMPLETE**
 - `plugins/status.py` — Hard (LinuxCNC STATUS wrapper) → Phase 4
 
 ## Testable Boundaries
@@ -109,7 +109,7 @@ This gives you ~620 tests covering GCode generation (BaseGenerator, DrillOps can
 
 ### Phase 3: Qt Widget Testing (Week 3+) — IN PROGRESS
 
-Baseline established with 565+ tests across 21+ widget modules (up from 334):
+Baseline established with 632+ tests across 28+ widget modules (up from 334):
 
 - **LEDWidget** (31 tests) — Diameter, color, alignment, state, flashing, flashRate properties; size hints; focus policy; toggle/startFlashing/stopFlashing methods
 - **BarIndicatorBase** (42 tests) — Value clamping, min/max, orientation, text formatting, gradient parsing, colors, border settings, Qt properties
@@ -207,6 +207,8 @@ These inherit from `VCPButton`, which calls `getPlugin('status')` in `__init__`.
 | `button_widgets/action_checkbox.py` | `ActionCheckBox` | ~8 | 13 | ✅ Complete |
 | `button_widgets/action_spinbox.py` | `ActionSpinBox` | ~8 | 12 | ✅ Complete |
 | `input_widgets/line_edit.py` | `VCPLineEdit` | ~10 | 14 | ✅ Complete |
+| `input_widgets/probesim_widget.py` | `ProbeSimWidget` | ~15 | 16 | ✅ Complete |
+| `input_widgets/recent_file_combobox.py` | `RecentFileComboBox` | ~12 | 15 | ✅ Complete |
 | `button_widgets/led_button.py` | `LEDButton` | ~15 | 19 | ✅ Complete |
 | `button_widgets/dialog_button.py` | `DialogButton` | ~10 | 11 | ✅ Complete |
 
@@ -231,6 +233,8 @@ Plugins that are testable with proper mocking (no HAL/LinuxCNC dependency in cor
 | `plugins/persistent_data_manager.py` | ~20 | 35 | ✅ Complete |
 | `actions/__init__.py` | ~15 | 20 | ✅ Complete |
 | `utilities/system_diagnostics.py` | ~40 | 84 | ✅ Complete |
+| `plugins/user_managment.py` | ~37 | 37 | ✅ Complete |
+| `plugins/virtual_input_manager.py` | ~20 | 19 | ✅ Complete |
 | `plugins/notifications.py` | ~40 | — | ⏳ Phase 4 (linuxcnc.error_channel) |
 | `plugins/file_locations.py` | ~25 | — | ⏳ Phase 4 (pyudev, OS calls) |
 | `plugins/positions.py` | ~30 | — | ⏳ Phase 4 (STATUS/INFO) |
