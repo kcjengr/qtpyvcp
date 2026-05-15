@@ -2,25 +2,56 @@
 
 ## Current State
 
-**1517 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**1615 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+
+### Line Coverage
+
+| Metric | Value |
+|--------|-------|
+| Total statements | 20,718 |
+| Covered | 15,627 |
+| **Overall coverage** | **25%** |
+
+### Source-to-Test Mapping (168 source files scanned)
+
+| Status | Count |
+|--------|-------|
+| Directly tested | 52 |
+| Transitively loaded | 64 |
+| Not tested | 52 |
+
+### Tier Breakdown
+
+| Tier | Description | Total | Tested | Transitive | Not Tested |
+|------|-------------|-------|--------|------------|------------|
+| Tier 1 | Pure Python, no HAL/LinuxCNC | 61 | 24 | 15 | **22** |
+| Tier 2 | Qt widgets, pytest-qt required | 37 | 14 | 9 | **14** |
+| Tier 3 | Plugins with some HAL dependency | 18 | 5 | 11 | 2 |
+| Tier 4+ | Require LinuxCNC/HAL integration | 52 | 6 | 29 | 17 |
 
 ### Coverage Summary
 
 | Phase | Tests | Modules Covered |
 |-------|-------|-----------------|
-| Phase 1 (Easy) | 365 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters`, `load_perf_summary` (52 tests), `dbus_notification` (36 tests) |
+| Phase 1 (Easy) | 449 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters`, `load_perf_summary` (52 tests), `dbus_notification` (36 tests), `base_op` + `drill_ops` (71 tests), `encode_utils` (13 tests) |
+| Phase 3 (Qt Widgets) | 579 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `stylesheet` (14 tests) (22 modules, ~579 tests) |
 | Phase 2 (DB + Plugins) | 213 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry`, `clock` (39 tests), `settings` (17 tests) |
 | Phase 3 (Qt Widgets) | 565 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget` (21 modules, ~565 tests) |
 
-### Missing from Phase 1 (Easy tier) — ALL COMPLETE
+### Missing from Phase 1 (Easy tier) — PARTIAL
+
+Remaining untested Tier 1 modules:
+- `lib/native_notification.py` — Qt widget (Phase 3 candidate)
 
 All Phase 1 modules now have tests:
-- `utilities/settings.py` — 65 tests (Medium effort, uses mocked SETTINGS dict)
-- `lib/decorators.py` — 22 tests (Easy, uses mocked logger)
-- `app/enums.py` — 30 tests (Trivial, constant-value assertions)
-- `utilities/yaml_filters.py` — 15 tests (Easy, env-var branching logic)
+- `utilities/settings.py` — 65 tests (Medium effort, uses mocked SETTINGS dict) ✅ **COMPLETE**
+- `lib/decorators.py` — 22 tests (Easy, uses mocked logger) ✅ **COMPLETE**
+- `app/enums.py` — 30 tests (Trivial, constant-value assertions) ✅ **COMPLETE**
+- `utilities/yaml_filters.py` — 15 tests (Easy, env-var branching logic) ✅ **COMPLETE**
 - `utilities/load_perf_summary.py` — 52 tests (Medium effort, perf_counter mocking, phase tracking state machine) ✅ **COMPLETE**
-- `lib/dbus_notification.py` — 36 tests (Medium effort, dbus mocking, notification lifecycle, action callbacks) ✅ **COMPLETE**
+- `lib/dbus_notification.py` — 36 tests (Medium effort, dbus mocking, notification lifecycle, action callbacks, hint setters, DBus interface mocking) ✅ **COMPLETE**
+- `ops/base_op.py` + `ops/drill_ops.py` — 71 tests (Easy-Medium, BaseGenerator init/start/end + DrillOps G-code cycles: drill/dwell/peck/chip_break/tap/rigid_tap/manual/hole_circle) ✅ **COMPLETE**
+- `utilities/encode_utils.py` — 13 tests (Trivial, encoding list content verification) ✅ **COMPLETE**
 
 ### Missing from Phase 2 (DB + Plugins tier) — PARTIAL
 
@@ -45,7 +76,7 @@ Out of the 3 packages under `src/`, roughly **40% of qtpyvcp is pure Python** (n
 
 | Tier | Modules | Effort |
 |------|---------|--------|
-| **Easy — pure logic** | `ops/drill_ops.py`, `ops/gcode_file.py`, `ops/face_ops.py`, `utilities/misc.py`, `utilities/settings.py`, `lib/types.py`, `lib/decorators.py`, `lib/colored_formatter.py`, `app/runtime_config.py`, `app/enums.py`, `utilities/yaml_filters.py`, `utilities/load_perf_summary.py`, `lib/dbus_notification.py` | Assert output strings, value coercion, path normalization, phase tracking state machine, notification lifecycle with mocked DBus |
+| **Easy — pure logic** | `ops/drill_ops.py`, `ops/gcode_file.py`, `ops/face_ops.py`, `ops/base_op.py`, `utilities/misc.py`, `utilities/settings.py`, `lib/types.py`, `lib/decorators.py`, `lib/colored_formatter.py`, `app/runtime_config.py`, `app/enums.py`, `utilities/yaml_filters.py`, `utilities/load_perf_summary.py`, `lib/dbus_notification.py` | Assert output strings, value coercion, path normalization, phase tracking state machine, notification lifecycle with mocked DBus, G-code generation logic |
 | **Medium — DB logic** | `lib/db_tool/tool_table.py`, `plugins/plasma_processes.py` (SQLAlchemy models) | In-memory SQLite round-trips |
 | **Hard — HAL dependent** | `hal/`, plugins with `import linuxcnc`, widgets that bind to HAL pins | Requires mocking `_hal`, or running inside LinuxCNC simulation |
 | **Qt widgets** | All UI widgets, VCP chooser, notifications | Requires Xvfb + `pytest-qt` (Phase 3 in progress) |
@@ -61,7 +92,7 @@ Run via:
 poetry run pytest tests/
 ```
 
-This gives you ~365 tests covering GCode generation, misc utilities, path normalization, config loading, settings management, decorators, enum values, program load performance summary, and DBus notifications.
+This gives you ~436 tests covering GCode generation (BaseGenerator, DrillOps canned cycles), FaceOps, misc utilities, path normalization, config loading, settings management, decorators, enum values, program load performance summary, and DBus notifications.
 
 ### Phase 2: DB Models + Plugin Registry (Week 2) — COMPLETED
 
