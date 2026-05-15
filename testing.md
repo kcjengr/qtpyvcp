@@ -2,7 +2,7 @@
 
 ## Current State
 
-**1615 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**1754 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Line Coverage
 
@@ -24,7 +24,7 @@
 
 | Tier | Description | Total | Tested | Transitive | Not Tested |
 |------|-------------|-------|--------|------------|------------|
-| Tier 1 | Pure Python, no HAL/LinuxCNC | 61 | 24 | 15 | **22** |
+| Tier 1 | Pure Python, no HAL/LinuxCNC | 61 | 27 | 15 | **19** |
 | Tier 2 | Qt widgets, pytest-qt required | 37 | 14 | 9 | **14** |
 | Tier 3 | Plugins with some HAL dependency | 18 | 5 | 11 | 2 |
 | Tier 4+ | Require LinuxCNC/HAL integration | 52 | 6 | 29 | 17 |
@@ -33,7 +33,7 @@
 
 | Phase | Tests | Modules Covered |
 |-------|-------|-----------------|
-| Phase 1 (Easy) | 449 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters`, `load_perf_summary` (52 tests), `dbus_notification` (36 tests), `base_op` + `drill_ops` (71 tests), `encode_utils` (13 tests) |
+| Phase 1 (Easy) | 620 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters`, `load_perf_summary` (52 tests), `dbus_notification` (36 tests), `base_op` + `drill_ops` (71 tests), `encode_utils` (13 tests), `system_diagnostics` (84 tests), `persistent_data_manager` (35 tests), `actions/__init__` (20 tests) |
 | Phase 3 (Qt Widgets) | 579 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `stylesheet` (14 tests) (22 modules, ~579 tests) |
 | Phase 2 (DB + Plugins) | 213 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry`, `clock` (39 tests), `settings` (17 tests) |
 | Phase 3 (Qt Widgets) | 565 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget` (21 modules, ~565 tests) |
@@ -42,6 +42,16 @@
 
 Remaining untested Tier 1 modules:
 - `lib/native_notification.py` — Qt widget (Phase 3 candidate)
+- `lib/params.py`, `lib/param_widgets.py` — Parameter management (Medium)
+- `lib/serial_handler.py` — Serial communication (Medium-Hard)
+- `lib/vcp_utils.py` — VCP utilities (Easy-Medium)
+- `lib/gcode_file_parser.py` — G-code parsing (Medium)
+- `lib/enum.py` — Enum utilities (Easy)
+- `lib/qt_property_types.py` — Qt property types (Easy)
+- `lib/color_utils.py` — Color utilities (Easy)
+- `lib/param_manager.py` — Parameter manager (Medium)
+- `lib/message_bus.py` — Message bus (Medium)
+- `lib/hal_component.py` — HAL component (Hard - HAL dep)
 
 All Phase 1 modules now have tests:
 - `utilities/settings.py` — 65 tests (Medium effort, uses mocked SETTINGS dict) ✅ **COMPLETE**
@@ -52,6 +62,9 @@ All Phase 1 modules now have tests:
 - `lib/dbus_notification.py` — 36 tests (Medium effort, dbus mocking, notification lifecycle, action callbacks, hint setters, DBus interface mocking) ✅ **COMPLETE**
 - `ops/base_op.py` + `ops/drill_ops.py` — 71 tests (Easy-Medium, BaseGenerator init/start/end + DrillOps G-code cycles: drill/dwell/peck/chip_break/tap/rigid_tap/manual/hole_circle) ✅ **COMPLETE**
 - `utilities/encode_utils.py` — 13 tests (Trivial, encoding list content verification) ✅ **COMPLETE**
+- `utilities/system_diagnostics.py` — 84 tests (Medium effort, pure functions for system info: _run_command, _parse_colon_kv, _read_first_line, _human_gb_from_kb, _cpu_model, _network_interfaces, _linux_pretty_name, _graphics_lines_from_glxinfo, _linuxcnc_version, _probe_basic_version, build_system_diagnostics_report_lines) ✅ **COMPLETE**
+- `plugins/persistent_data_manager.py` — 35 tests (Medium effort, JSON/Pickle serialization, getData/setData lifecycle, initialise/terminate with temp files) ✅ **COMPLETE**
+- `actions/__init__.py` — 20 tests (Easy-Medium, InvalidAction exception, bindWidget string parsing: hyphen replacement, arg splitting, numeric conversion, toggle/jog-axis detection, IN_DESIGNER flag) ✅ **COMPLETE**
 
 ### Missing from Phase 2 (DB + Plugins tier) — PARTIAL
 
@@ -92,7 +105,7 @@ Run via:
 poetry run pytest tests/
 ```
 
-This gives you ~436 tests covering GCode generation (BaseGenerator, DrillOps canned cycles), FaceOps, misc utilities, path normalization, config loading, settings management, decorators, enum values, program load performance summary, and DBus notifications.
+This gives you ~620 tests covering GCode generation (BaseGenerator, DrillOps canned cycles), FaceOps, misc utilities, path normalization, config loading, settings management, decorators, enum values, program load performance summary, DBus notifications, system diagnostics report builder, persistent data manager (JSON/Pickle), and action string parsing.
 
 ### Phase 2: DB Models + Plugin Registry (Week 2) — COMPLETED
 
@@ -209,6 +222,9 @@ Plugins that are testable with proper mocking (no HAL/LinuxCNC dependency in cor
 |--------|------------|--------|--------|
 | `plugins/clock.py` | ~30 | 39 | ✅ Complete |
 | `plugins/settings.py` | ~15 | 17 | ✅ Complete |
+| `plugins/persistent_data_manager.py` | ~20 | 35 | ✅ Complete |
+| `actions/__init__.py` | ~15 | 20 | ✅ Complete |
+| `utilities/system_diagnostics.py` | ~40 | 84 | ✅ Complete |
 | `plugins/notifications.py` | ~40 | — | ⏳ Phase 4 (linuxcnc.error_channel) |
 | `plugins/file_locations.py` | ~25 | — | ⏳ Phase 4 (pyudev, OS calls) |
 | `plugins/positions.py` | ~30 | — | ⏳ Phase 4 (STATUS/INFO) |
