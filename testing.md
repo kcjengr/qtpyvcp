@@ -2,7 +2,7 @@
 
 ## Current State
 
-**1754 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
+**1813 tests passing**, covering pure Python modules, DB models, plugin infrastructure, and Qt widgets (headless). No HAL/LinuxCNC integration tests yet. The `video_tests/` apps still render widgets visually without assertions.
 
 ### Line Coverage
 
@@ -25,7 +25,7 @@
 | Tier | Description | Total | Tested | Transitive | Not Tested |
 |------|-------------|-------|--------|------------|------------|
 | Tier 1 | Pure Python, no HAL/LinuxCNC | 61 | 27 | 15 | **19** |
-| Tier 2 | Qt widgets, pytest-qt required | 37 | 14 | 9 | **14** |
+| Tier 2 | Qt widgets, pytest-qt required | 37 | 18 | 9 | **10** |
 | Tier 3 | Plugins with some HAL dependency | 18 | 5 | 11 | 2 |
 | Tier 4+ | Require LinuxCNC/HAL integration | 52 | 6 | 29 | 17 |
 
@@ -34,24 +34,20 @@
 | Phase | Tests | Modules Covered |
 |-------|-------|-----------------|
 | Phase 1 (Easy) | 620 | `drill_ops`, `gcode_file`, `face_ops`, `misc`, `types`, `colored_formatter`, `runtime_config`, `settings`, `decorators`, `enums`, `yaml_filters`, `load_perf_summary` (52 tests), `dbus_notification` (36 tests), `base_op` + `drill_ops` (71 tests), `encode_utils` (13 tests), `system_diagnostics` (84 tests), `persistent_data_manager` (35 tests), `actions/__init__` (20 tests) |
-| Phase 3 (Qt Widgets) | 579 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `stylesheet` (14 tests) (22 modules, ~579 tests) |
+| Phase 3 (Qt Widgets) | 601 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `stylesheet` (14 tests), `shutdown_dialog` (13 tests), `probesim_dialog` (14 tests), `dro_label` (10 tests), `toolchange_dialog` (22 tests) (26 modules, ~601 tests) |
 | Phase 2 (DB + Plugins) | 213 | `tool_table`, `plasma_processes`, `base_plugins`, `plugin_registry`, `clock` (39 tests), `settings` (17 tests) |
-| Phase 3 (Qt Widgets) | 565 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget` (21 modules, ~565 tests) |
+| Phase 3 (Qt Widgets) | 601 | `LEDWidget`, `BarIndicatorBase`, `StatusLabel`, `EvalLineEdit`, `StatusLED`, `VCPFrame`, `VCPStackedWidget`, `BaseDialog`, `ErrorDialog`, `dialogs/__init__`, `RulesEditor`, `_DesignerPlugin`, `ActionButton`, `MDIButton`, `SubCallButton`, `ActionCheckBox`, `ActionSpinBox`, `VCPLineEdit`, `LEDButton`, `DialogButton`, `AboutDialog`, `ActiveGcodesTable`, `NotificationWidget`, `shutdown_dialog` (13 tests), `probesim_dialog` (14 tests), `dro_label` (10 tests), `toolchange_dialog` (22 tests) (25 modules, ~601 tests) |
 
 ### Missing from Phase 1 (Easy tier) — PARTIAL
 
-Remaining untested Tier 1 modules:
-- `lib/native_notification.py` — Qt widget (Phase 3 candidate)
-- `lib/params.py`, `lib/param_widgets.py` — Parameter management (Medium)
-- `lib/serial_handler.py` — Serial communication (Medium-Hard)
-- `lib/vcp_utils.py` — VCP utilities (Easy-Medium)
-- `lib/gcode_file_parser.py` — G-code parsing (Medium)
-- `lib/enum.py` — Enum utilities (Easy)
-- `lib/qt_property_types.py` — Qt property types (Easy)
-- `lib/color_utils.py` — Color utilities (Easy)
-- `lib/param_manager.py` — Parameter manager (Medium)
-- `lib/message_bus.py` — Message bus (Medium)
-- `lib/hal_component.py` — HAL component (Hard - HAL dep)
+Note: Many modules listed below no longer exist in the codebase. Updated inventory:
+
+Remaining untested Tier 1/2 modules (verified to exist):
+- `lib/native_notification.py` — Qt widget, BaseDialog subclass (Medium)
+- `utilities/machine_parameters.py` — .var file parsing (Easy)
+- `utilities/obj_status.py` — LinuxCNC STATUS wrapper (Hard - HAL dep)
+- `utilities/info.py` — INI file reader (Hard - linuxcnc.ini dep)
+- `lib/logger.py` — TTYHandler with pyserial (Medium-Hard)
 
 All Phase 1 modules now have tests:
 - `utilities/settings.py` — 65 tests (Medium effort, uses mocked SETTINGS dict) ✅ **COMPLETE**
@@ -180,13 +176,23 @@ These inherit from `VCPWidget`, which pulls in `from qtpyvcp import hal` at the 
 | `display_widgets/active_gcodes_table.py` | `ActiveGcodesTable`, `ActiveGcodesModel` | ~30 | 31 | ✅ Complete |
 | `display_widgets/notification_widget.py` | `NotificationWidget` | ~40 | 54 | ✅ Complete |
 
+**Tier 2 — HAL component mocking (`qtpyvcp.hal.getComponent` pattern)**
+
+These use `hal.getComponent()` to create userspace HAL components with pins and listeners. Mock the return value of `getComponent()` with a MagicMock that has `addPin()` and `addListener()` methods returning mock pin objects with `.value` attributes.
+
+| Module | Classes | Est. Tests | Actual | Status |
+|--------|---------|------------|--------|--------|
+| `dialogs/shutdown_dialog.py` | `ShutDownDialog` | ~10 | 13 | ✅ Complete |
+| `dialogs/probesim_dialog.py` | `ProbeSim` | ~10 | 14 | ✅ Complete |
+| `display_widgets/dro_label.py` / `dro_base_widget.py` | `DROLabel`, `DROBaseWidget` | ~8 | 10 | ✅ Complete |
+| `dialogs/toolchange_dialog.py` | `ToolChangeDialog` | ~15 | 22 | ✅ Complete |
+
 **Tier 2 — Deferred (requires deeper mocking)**
 
 These have module-level `INFO = Info()` or `linuxcnc.command/stat()` calls that block instantiation. Better suited for Phase 3B/4:
 
 | Module | Classes | Notes | Status |
 |--------|---------|-------|--------|
-| `display_widgets/dro_label.py` / `dro_base_widget.py` | `DROLabel`, `DROBaseWidget` | `INFO = Info()` at module level + `getPlugin('status')`/`position` | Phase 3B |
 | `form_widgets/probe_widget/probe.py` | `SubCaller` | `linuxcnc.command/stat()`, loads .ui file, needs subroutine path | Phase 4 |
 
 **Tier 3A — VCPButton subclasses with mock status plugin in conftest**
