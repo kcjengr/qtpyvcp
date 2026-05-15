@@ -1,5 +1,9 @@
 import pytest
+from pathlib import Path
 from unittest.mock import MagicMock
+
+_REPO_ROOT = Path(__file__).parent.parent.parent
+_SRC_DIR = _REPO_ROOT / "src"
 
 # Register mock plugins at module level so VCPWidget subclasses
 # can be instantiated during tests without LinuxCNC/HAL running.
@@ -109,8 +113,8 @@ def status_label(qtbot):
     import importlib.util
 
     spec = importlib.util.spec_from_file_location(
-        "status_label",
-        "/home/james/dev/qtpyvcp/src/qtpyvcp/widgets/display_widgets/status_label.py",
+        "qtpyvcp.widgets.display_widgets.status_label",
+        str(_SRC_DIR / "qtpyvcp" / "widgets" / "display_widgets" / "status_label.py"),
     )
     module = importlib.util.module_from_spec(spec)
     sys.modules["qtpyvcp.widgets.display_widgets.status_label"] = module
@@ -127,8 +131,8 @@ def status_led(qtbot):
     import importlib.util
 
     spec = importlib.util.spec_from_file_location(
-        "status_led",
-        "/home/james/dev/qtpyvcp/src/qtpyvcp/widgets/display_widgets/status_led.py",
+        "qtpyvcp.widgets.display_widgets.status_led",
+        str(_SRC_DIR / "qtpyvcp" / "widgets" / "display_widgets" / "status_led.py"),
     )
     module = importlib.util.module_from_spec(spec)
     sys.modules["qtpyvcp.widgets.display_widgets.status_led"] = module

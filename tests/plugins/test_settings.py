@@ -1,16 +1,20 @@
 """Tests for qtpyvcp.plugins.settings.Settings plugin."""
 
 import pytest
+from pathlib import Path
 import sys
 import importlib.util
 from unittest.mock import MagicMock, patch
+
+_REPO_ROOT = Path(__file__).parent.parent.parent
+_SRC_DIR = _REPO_ROOT / "src"
 
 
 def _load_settings_module():
     """Load the settings module directly from file to avoid caching issues."""
     spec = importlib.util.spec_from_file_location(
         "qtpyvcp.plugins.settings",
-        "/home/james/dev/qtpyvcp/src/qtpyvcp/plugins/settings.py",
+        str(_SRC_DIR / "qtpyvcp" / "plugins" / "settings.py"),
     )
     module = importlib.util.module_from_spec(spec)
     sys.modules["qtpyvcp.plugins.settings"] = module
