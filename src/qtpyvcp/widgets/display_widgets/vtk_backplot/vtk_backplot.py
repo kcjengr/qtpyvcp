@@ -610,6 +610,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
             self._datasource.toolInSpindleChanged.connect(self.update_tool)
+
+            # Also react to QtPyVCP tooltable plugin updates (remark/comment-only edits
+            # may not produce a LinuxCNC status tool_table change event).
+            tooltable_plugin = getattr(self._datasource, '_tooltable', None)
+            tooltable_changed = getattr(tooltable_plugin, 'tool_table_changed', None)
+            if tooltable_changed is not None and hasattr(tooltable_changed, 'connect'):
+                tooltable_changed.connect(self.update_tool)
             # self.status.g5x_index.notify(self.update_g5x_index)
             
             self.offsetTableColumnsIndex = self._datasource.getOffsetColumns()
@@ -918,34 +925,45 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if self._use_cpp_backplot:
                 draw_start = time.perf_counter()
-                cpp_result = build_backplot_from_file(
-                    fname,
-                    self._datasource,
-                    path_colors=self.path_colors,
-                    unitcode=unitcode,
-                    initcode=initcode,
-                    parameter_file=self.parameter_file,
-                    temp_parameter_file=self.temp_parameter_file,
-                )
+                try:
+                    cpp_result = build_backplot_from_file(
+                        fname,
+                        self._datasource,
+                        path_colors=self.path_colors,
+                        unitcode=unitcode,
+                        initcode=initcode,
+                        parameter_file=self.parameter_file,
+                        temp_parameter_file=self.temp_parameter_file,
+                    )
+                except Exception:
+                    LOG.exception(
+                        "C++ backplot builder raised an exception; falling back to Python parser for %s",
+                        fname,
+                    )
+                    cpp_result = None
                 if cpp_result is None:
-                    raise RuntimeError("C++ backplot builder returned no result in cpp-only mode")
+                    LOG.warning(
+                        "C++ backplot builder returned no result; falling back to Python parser for %s",
+                        fname,
+                    )
+                else:
+                    parse_ms = float(cpp_result.parse_ms)
 
-                parse_ms = float(cpp_result.parse_ms)
+                    self.path_actors = cpp_result.path_actors
+                    self.offset_transitions = cpp_result.offset_transitions or list()
+                    self.canon.added_segments = int(cpp_result.added_segments)
+                    draw_ms = float(cpp_result.draw_ms)
+                    if draw_ms <= 0.0:
+                        draw_ms = (time.perf_counter() - draw_start) * 1000.0
+                    draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+                    # Parse and draw both complete inside the same native call. We only get one
+                    # wall-clock checkpoint on return, so estimate parse completion by subtracting
+                    # measured native draw time from the draw completion checkpoint.
+                    if draw_done_elapsed_ms is not None:
+                        parse_done_elapsed_ms = max(0.0, float(draw_done_elapsed_ms) - float(draw_ms))
+                    cpp_backplot_used = True
 
-                self.path_actors = cpp_result.path_actors
-                self.offset_transitions = cpp_result.offset_transitions or list()
-                self.canon.added_segments = int(cpp_result.added_segments)
-                draw_ms = float(cpp_result.draw_ms)
-                if draw_ms <= 0.0:
-                    draw_ms = (time.perf_counter() - draw_start) * 1000.0
-                draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
-                # Parse and draw both complete inside the same native call. We only get one
-                # wall-clock checkpoint on return, so estimate parse completion by subtracting
-                # measured native draw time from the draw completion checkpoint.
-                if draw_done_elapsed_ms is not None:
-                    parse_done_elapsed_ms = max(0.0, float(draw_done_elapsed_ms) - float(draw_ms))
-                cpp_backplot_used = True
-            else:
+            if not cpp_backplot_used:
                 parse_start = time.perf_counter()
                 try:
                     if os.path.exists(self.parameter_file):

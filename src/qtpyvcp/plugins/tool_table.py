@@ -363,7 +363,7 @@ class ToolTable(DataPlugin):
         if tool_count == 0:
             LOG.warning("Tool table is empty after load: path=%s", tool_file)
         else:
-            LOG.info("Tool table loaded: path=%s tools=%s", tool_file, tool_count)
+            LOG.debug("Tool table loaded: path=%s tools=%s", tool_file, tool_count)
 
         # import json
         # print(json.dumps(table, sort_keys=True, indent=4))

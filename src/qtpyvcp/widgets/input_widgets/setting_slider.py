@@ -1,5 +1,5 @@
 import os
-from PySide6.QtCore import Property, QLocale
+from PySide6.QtCore import Property, QLocale, Slot
 from PySide6.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
 from PySide6.QtGui import QIntValidator, QDoubleValidator
 
@@ -188,6 +188,26 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     def onReturnPressed(self):
         self.clearFocus()
+
+    @Slot()
+    def clearValue(self):
+        """Clear field while committing the new value through setting channels.
+
+        This is intended for Qt Designer signal-slot connections that need a
+        no-argument slot. For numeric settings, it writes zero (instead of an
+        empty string) so downstream consumers do not keep stale values.
+        """
+        if self._setting is None:
+            self.clear()
+            return
+
+        value_type = self._effective_value_type()
+        if value_type is int:
+            self.setValue(0)
+        elif value_type is float:
+            self.setValue(0.0)
+        else:
+            self.setValue("")
 
     def setDisplayValue(self, value):
         self.blockSignals(True)
