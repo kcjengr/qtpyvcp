@@ -1,6 +1,6 @@
 import os
 
-from PySide6.QtWidgets import qApp
+from qtpy.QtWidgets import QApplication
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
@@ -35,7 +35,7 @@ class UserManagement(DataPlugin):
         Any rules that change a widget enable status need to handle the security
         considerations themselves via the datachannel methods below.
         """
-        for w in qApp.allWidgets():
+        for w in QApplication.allWidgets():
             if hasattr(w, 'security') and hasattr(w, 'setEnabled'):
                 # test security level and enablement
                 w.setEnabled(self.checkPermissions(w.security))

@@ -15,3 +15,4 @@ poetry-core
 versioneer[toml]
 sqlalchemy
 vtk
+poetry>=2.4.0
