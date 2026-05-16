@@ -21,6 +21,9 @@ def shut_system_down_prompt():
     except Exception as e:
         LOG.warning("Couldn't shut system down: {}".format(e))
 
+shut_system_down_prompt.ok = lambda *args, **kwargs: True
+shut_system_down_prompt.bindOk = lambda *args, **kwargs: None
+
 def shut_system_down_now():
     import subprocess
     try:
@@ -33,3 +36,6 @@ def shut_system_down_now():
                 raise
     except Exception as e:
         LOG.warning("Couldn't shut system down: {}".format(e))
+
+shut_system_down_now.ok = lambda *args, **kwargs: True
+shut_system_down_now.bindOk = lambda *args, **kwargs: None
