@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QLineEdit, QListWidgetItem, QCompleter
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.qt_safety import safe_qt_callback
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
@@ -46,6 +47,11 @@ class MDIEntry(QLineEdit, CMDWidget):
         # or disabled as needed.
         self._completer_enabled = True
         self._show_completer_on_focus = False
+
+        # Track signal subscription for proper cleanup in terminate().
+        # notify() wraps slots via safe_qt_callback (new closure each call),
+        # so we store the wrapper here to enable disconnect().
+        self._mdi_history_subscribed = False
 
         self.returnPressed.connect(self.submit)
 
@@ -128,9 +134,43 @@ class MDIEntry(QLineEdit, CMDWidget):
             completer.setModel(self.model)
             self.setCompleter(completer)
             self.model.setStringList(history)
-            STATUS.mdi_history.notify(self.model.setStringList)
 
+            # Store the wrapper so terminate() can disconnect it.
+            # notify() creates a new closure via safe_qt_callback each call,
+            # so we capture our own reference to enable proper cleanup.
+            self._mdi_history_wrapper = safe_qt_callback(
+                self.model, self.model.setStringList
+            )
+            STATUS.mdi_history.signal.connect(self._mdi_history_wrapper)
+            self._mdi_history_subscribed = True
+
+        # Save previous value so terminate() can restore it.
+        try:
+            self._prev_max_mdi_history_length = STATUS.max_mdi_history_length.value
+        except AttributeError:
+            self._prev_max_mdi_history_length = None
         STATUS.max_mdi_history_length = self.mdi_history_size
 
     def terminate(self):
-        pass
+        if self._mdi_history_subscribed:
+            try:
+                STATUS.mdi_history.signal.disconnect(self._mdi_history_wrapper)
+            except (RuntimeError, TypeError):
+                pass
+            self._mdi_history_subscribed = False
+
+        if hasattr(self, '_prev_max_mdi_history_length'):
+            try:
+                STATUS.max_mdi_history_length = self._prev_max_mdi_history_length
+            except Exception:
+                pass
+            del self._prev_max_mdi_history_length
+
+        completer = self.completer()
+        if completer is not None:
+            self.setCompleter(None)
+            completer.deleteLater()
+
+        if hasattr(self, 'model'):
+            self.model.deleteLater()
+            del self.model
