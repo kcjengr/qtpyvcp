@@ -316,7 +316,8 @@ class TestMDIEntry:
         widget = MDIEntry()
         qtbot.addWidget(widget)
         widget.initialize()
-        mock_status.mdi_history.notify.assert_called_once_with(widget.model.setStringList)
+        assert widget._mdi_history_subscribed is True
+        mock_status.mdi_history.signal.connect.assert_called_once()
 
     @patch('qtpyvcp.widgets.input_widgets.mdientry_widget.STATUS')
     def test_initialize_sets_max_mdi_history_length(self, mock_status, qtbot):
@@ -338,7 +339,21 @@ class TestMDIEntry:
         widget.initialize()
         assert widget.completer() is None
 
-    def test_terminate_is_noop(self, qtbot):
+    def test_terminate_cleanup_after_initialize(self, qtbot):
+        from unittest.mock import patch
+        from qtpyvcp.widgets.input_widgets.mdientry_widget import MDIEntry
+
+        with patch('qtpyvcp.widgets.input_widgets.mdientry_widget.STATUS') as mock_status:
+            widget = MDIEntry()
+            qtbot.addWidget(widget)
+            widget.initialize()
+            assert widget._mdi_history_subscribed is True
+
+            widget.terminate()
+            assert widget._mdi_history_subscribed is False
+            mock_status.mdi_history.signal.disconnect.assert_called_once()
+
+    def test_terminate_without_initialize(self, qtbot):
         from qtpyvcp.widgets.input_widgets.mdientry_widget import MDIEntry
 
         widget = MDIEntry()
