@@ -2,7 +2,7 @@
 
 **Run Date:** 2026-05-17  
 **Command:** `python -m pytest tests/ --tb=short -q`  
-**Results:** 15 failed, 1879 passed, 21 warnings (1894 total)
+**Results:** 13 failed, 1881 passed, 10 warnings (1894 total)
 
 ---
 
@@ -10,22 +10,28 @@
 
 | Category | Before | After | Delta |
 |----------|--------|-------|-------|
-| Failed   | 26     | 15    | -11 fixed |
-| Passed   | 1868   | 1879  | +11 fixed |
+| Failed   | 14     | 13    | -1 fixed |
+| Passed   | 1880   | 1881  | +1 fixed |
 
 ### Fixed
+- **Category B — `test_base_plugins.py`** (1 test): Added missing `return` in `DataChannel.getter()` wrapper in `base_plugins.py:162`. The inner function called `fget()` but didn't return its result, causing `getValue()` to always return `None`.
+
+### Fixed (Previous Session)
+- **Category B — `test_decorators.py`** (1 test): Changed `LOG.warn(msg)` to `LOG.warning(msg)` in `decorators.py:42`. The `warn()` method is deprecated in Python's logging module and was not being captured by the mock, causing the assertion on `.warning.called` to fail.
 - **Category D — `test_shutdown_dialog.py`** (13 tests): Added `.ok` and `.bindOk` attributes to `power.shut_system_down_prompt()` and `power.shut_system_down_now()` in `power_actions.py`. The `bindWidget()` function expects actions to have these attributes for validation, but the power actions were plain functions without them. This caused `'function' object has no attribute 'ok'` errors when the shutdown dialog's ActionButton tried to bind to `power.shut_system_down_now` via the UI file's `actionName` property.
 
 ### Changes Since First Run (baseline)
 
 | Category | First Run | Now | Delta |
 |----------|-----------|-----|-------|
-| Failed   | 124       | 15  | -109 fixed |
-| Passed   | 1769      | 1879| +110 fixed |
+| Failed   | 124       | 13  | -111 fixed |
+| Passed   | 1769      | 1881| +112 fixed |
 
 ### Fixed Since Baseline
 - **Category B — `test_error_dialog.py`** (12 tests): Added `.ui.` prefix to all widget attribute accesses. All 25 error dialog tests now pass.
 - **Category B — `test_designer_plugin.py`** (2 tests): Changed DOM assertions from double-quoted to single-quoted to match PySide6 XML output. All 23 designer plugin tests now pass.
+- **Category B — `test_decorators.py`** (1 test): Changed `LOG.warn(msg)` to `LOG.warning(msg)` in `decorators.py:42`. The `warn()` method is deprecated and not captured by mocks.
+- **Category B — `test_base_plugins.py`** (1 test): Added missing `return` in `DataChannel.getter()` wrapper in `base_plugins.py:162`. The inner function called `fget()` but didn't return its result.
 - **`test_misc.py` (TestInsertPath)** (5 tests): Retired from Category A — was an isolation issue, not a source bug. Now passes consistently.
 - **Category C — `test_user_managment.py`** (31 tests): Replaced `qApp` import with `QApplication` via qtpy. All 31 user management tests now pass.
 - **Category D — `test_mdientry_widget.py`** (39 tests): Fixed `terminate()` for proper cleanup of signal subscriptions and shared state.
@@ -40,7 +46,7 @@
 | B — Test Bugs | **0** | ✅ All fixed |
 | ~~C — Import Errors~~ | ~~0~~ | ✅ **Fixed** (`qApp` → `QApplication` via qtpy) |
 | ~~D — Test Isolation Issues~~ | ~~0~~ | ✅ **All fixed** (mdientry terminate() cleanup + power actions .ok/.bindOk resolved isolation) |
-| E — Real Test Failures | **15** | Remaining real failures needing investigation |
+| E — Real Test Failures | **13** | Remaining real failures needing investigation |
 
 ---
 
@@ -58,6 +64,8 @@
 |------|-------|-------|--------|
 | `test_error_dialog.py` | 12 | Accessed `error_dialog.errorType` but source uses `self.ui.errorType` — added `.ui.` prefix to all widget attribute accesses | ✅ Fixed (25/25 pass) |
 | `test_designer_plugin.py` | 2 | Asserted double-quoted DOM (`name="framewidget"`) but PySide6 outputs single-quoted (`name='framewidget'`) | ✅ Fixed (23/23 pass) |
+| `lib/test_decorators.py` | 1 | `LOG.warn(msg)` is deprecated — changed to `LOG.warning(msg)` in source | ✅ Fixed (22/22 pass) |
+| `plugins/test_base_plugins.py` | 1 | `DataChannel.getter()` wrapper missing `return` — changed to `return fget(*args, **kwargs)` | ✅ Fixed (all pass) |
 
 ### C. Import Errors (source uses direct PySide6 APIs that are missing) ✅ **FIXED**
 
@@ -75,8 +83,8 @@
 
 | File | Tests | Issue |
 |------|-------|-------|
-| `lib/test_decorators.py` | 1 | `@deprecated` logs at decoration time, not call time — patch applied too late |
-| `plugins/test_base_plugins.py` | 1 | `DataChannel.getValue()` returns None — getter decorator issue |
+| ~~`lib/test_decorators.py`~~ | ~~1~~ | ✅ **Fixed** — `LOG.warn()` → `LOG.warning()` |
+| ~~`plugins/test_base_plugins.py`~~ | ~~1~~ | ✅ **Fixed** — added missing `return` in `DataChannel.getter()` wrapper |
 | `widgets/test_probesim_dialog.py` | 1 | VTK/OpenGL setup (expected Qt6 incompatibility) |
 | `widgets/test_about_dialog.py` | 1 | UI file loading issue |
 | `widgets/test_base_dialog.py` | 1 | Nonexistent file logging |
@@ -93,5 +101,5 @@
 ## Key Takeaways
 
 1. **Category D (test isolation) is fully resolved** — the mdientry `terminate()` fix + power actions `.ok`/`.bindOk` attributes eliminated all remaining isolation issues (59 tests now pass in the full suite).
-2. **109 tests fixed since baseline** (124→15 failed): error_dialog attribute access, designer plugin DOM quoting, user_managment qApp removal, misc.py false positive, mdientry/mdihistory isolation, and shutdown dialog power action binding.
-3. **15 remaining failures are all Category E (real test failures)** — these fail even in isolation and need source-level investigation or test fixes. The largest groups are `test_settings_widgets.py` (3) and `test_dialogs_init.py` + `test_subcall_button.py` (4 combined).
+2. **111 tests fixed since baseline** (124→13 failed): error_dialog attribute access, designer plugin DOM quoting, user_managment qApp removal, misc.py false positive, mdientry/mdihistory isolation, shutdown dialog power action binding, deprecated `LOG.warn()` → `LOG.warning()`, and `DataChannel.getter()` missing return.
+3. **13 remaining failures are all Category E (real test failures)** — these fail even in isolation and need source-level investigation or test fixes. The largest groups are `test_settings_widgets.py` (3) and `test_dialogs_init.py` + `test_subcall_button.py` (4 combined).
