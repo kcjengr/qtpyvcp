@@ -109,7 +109,7 @@ def load(fname, add_to_recents=True, isreload=False, _skip_preclear=False):
     if add_to_recents:
         addToRecents(fname)
     
-    QTimer.singleShot(300, STATUS.removeLock)
+    STATUS.removeLock()
 
 load.ok = lambda *args, **kwargs: True
 load.bindOk = lambda *args, **kwargs: True
