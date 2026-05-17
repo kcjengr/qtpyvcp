@@ -18,7 +18,7 @@
 
 import subprocess
 
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Qt
 from PySide6.QtWidgets import QPushButton, QVBoxLayout, QCheckBox
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
@@ -58,7 +58,7 @@ class ProbeSim(BaseDialog):
 
     def touch_on(self):
 
-        if self.pulse_checkbox.checkState():
+        if self.pulse_checkbox.checkState() == Qt.CheckState.Checked:
             self.timer.start(1000)
             subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '1'])
             
@@ -67,7 +67,7 @@ class ProbeSim(BaseDialog):
 
     def touch_off(self):
 
-        if self.pulse_checkbox.checkState():
+        if self.pulse_checkbox.checkState() == Qt.CheckState.Checked:
             return
 
         subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '0'])

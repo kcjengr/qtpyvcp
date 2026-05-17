@@ -2,7 +2,7 @@
 
 **Run Date:** 2026-05-17  
 **Command:** `python -m pytest tests/ --tb=short -q`  
-**Results:** 4 failed, 1888 passed, 10 warnings (1892 total)
+**Results:** 0 failed, 1892 passed, 10 warnings (1892 total)
 
 ---
 
@@ -10,13 +10,15 @@
 
 | Category | Before | After | Delta |
 |----------|--------|-------|-------|
-| Failed   | 13     | 4     | -9 fixed |
-| Passed   | 1881   | 1888  | +7 fixed |
+| Failed   | 3      | 0     | -3 fixed (all resolved) |
 
 ### Fixed
-- **Category B — `test_base_plugins.py`** (1 test): Added missing `return` in `DataChannel.getter()` wrapper in `base_plugins.py:162`. The inner function called `fget()` but didn't return its result, causing `getValue()` to always return `None`.
+- **Category E — `test_probesim_dialog.py`** (1 test): Source bug in `probesim_dialog.py:61,70` — `bool(Qt.CheckState.Unchecked)` returns `True` in PySide6 because enum objects are always truthy. Changed to explicit comparison `== Qt.CheckState.Checked`. Also fixed test assertion that relied on falsy behavior.
+- **Category E — `test_action_button.py`** (1 test): Source bug in `action_button.py:19` — constructor set `self._action_name = action` directly, bypassing property setter that calls `bindWidget()`. Changed to `self.actionName = action`.
+- **Category D — `test_subcall_button.py`** (1 test): Module-level state pollution — `SUBROUTINE_SEARCH_DIRS` cached as MagicMock from previous tests that mocked `info` module. Fixed by deleting cached module from `sys.modules` before import in test, and added cleanup to fixture teardown.
 
 ### Fixed (Current Session)
+- **Category B — `test_base_dialog.py`** (1 test): Added try/except around `PySide6Ui().load()` in `loadUiFile()`. Catches `FileNotFoundError`, logs error with `"does not exist"`, and returns `None` instead of raising.
 - **Category B — `test_about_dialog.py`** (1 test): Patched `PySide6Ui` instead of `qtpy.uic.loadUi` to match actual source code. Test was mocking the wrong function.
 - **Category B — `test_dro_label.py`** (1 test): Changed assertion from `"1.0000" in widget.text()` to `widget.text() == ''`. DROLabel has no default text without position signals being connected.
 - **Category B — `test_dialogs_init.py`** (2 tests): Patched `QMessageBox.question` directly and returned actual `QMessageBox.StandardButton` enum values instead of MagicMock objects, so equality comparisons work correctly.
@@ -31,8 +33,8 @@
 
 | Category | First Run | Now | Delta |
 |----------|-----------|-----|-------|
-| Failed   | 124       | 4   | -120 fixed |
-| Passed   | 1769      | 1888| +119 fixed |
+| Failed   | 124       | 0   | -124 fixed (all resolved) |
+| Passed   | 1769      | 1892| +123 fixed |
 
 ### Fixed Since Baseline
 - **Category B — `test_error_dialog.py`** (12 tests): Added `.ui.` prefix to all widget attribute accesses. All 25 error dialog tests now pass.
@@ -49,6 +51,9 @@
 - **Category B — `test_dialogs_init.py`** (2 tests): Patched `QMessageBox.question` directly with actual enum values instead of MagicMock.
 - **Category B — `test_settings_widgets.py`** (3 tests): Removed assertions for non-existent `textFormat` attribute; fixed `formatValue` tests to use `_display_decimals`.
 - **Category B — `test_rules_editor.py`** (2 tests): Updated assertions to accept both `int` and `Qt.CheckState` enum from PySide6.
+- **Category E — `test_probesim_dialog.py`** (1 test): Source bug in `probesim_dialog.py:61,70` — `bool(Qt.CheckState.Unchecked)` truthy bug. Changed to explicit `== Qt.CheckState.Checked` comparison.
+- **Category E — `test_action_button.py`** (1 test): Source bug in `action_button.py:19` — constructor bypassed property setter. Changed to `self.actionName = action`.
+- **Category D — `test_subcall_button.py`** (1 test): Module-level state pollution of `SUBROUTINE_SEARCH_DIRS`. Fixed by deleting cached module before import and adding fixture teardown cleanup.
 
 ### Remaining Categories Summary
 
@@ -57,8 +62,16 @@
 | ~~A — Source Code Bugs~~ | ~~0~~ | ✅ **Retired** (false positive — was test isolation) |
 | B — Test Bugs | **0** | ✅ All fixed |
 | ~~C — Import Errors~~ | ~~0~~ | ✅ **Fixed** (`qApp` → `QApplication` via qtpy) |
-| ~~D — Test Isolation Issues~~ | ~~0~~ | ✅ **All fixed** (mdientry terminate() cleanup + power actions .ok/.bindOk resolved isolation) |
-| E — Real Test Failures | **4** | Remaining failures needing investigation |
+| ~~D — Test Isolation Issues~~ | ~~0~~ | ✅ **All fixed** (mdientry terminate() cleanup + power actions .ok/.bindOk + subcall_button cache cleanup) |
+| ~~E — Real Test Failures~~ | ~~0~~ | ✅ **All fixed** |
+
+---
+
+## All Tests Passing
+
+**Total: 1892 tests, 0 failures, 10 warnings**
+
+All categories fully resolved. No remaining issues.
 
 ---
 
@@ -97,34 +110,22 @@
 |------|-------|-------|--------|
 | ~~`lib/test_decorators.py`~~ | ~~1~~ | ✅ **Fixed** — `LOG.warn()` → `LOG.warning()` | ✅ Fixed |
 | ~~`plugins/test_base_plugins.py`~~ | ~~1~~ | ✅ **Fixed** — added missing `return` in `DataChannel.getter()` wrapper | ✅ Fixed |
-| ~~`widgets/test_probesim_dialog.py`~~ | ~~1~~ | ✅ **Fixed** — `bool(Qt.CheckState.Unchecked)` truthy bug | ✅ Fixed* |
+| ~~`widgets/test_probesim_dialog.py`~~ | ~~1~~ | ✅ **Fixed** — `bool(Qt.CheckState.Unchecked)` truthy bug | ✅ Fixed |
 | ~~`widgets/test_about_dialog.py`~~ | ~~1~~ | ✅ **Fixed** — patched wrong mock target | ✅ Fixed |
-| `widgets/test_base_dialog.py` | 1 | Nonexistent file logging | ❌ Source: `loadUiFile()` raises unhandled `FileNotFoundError` |
+| ~~`widgets/test_base_dialog.py`~~ | ~~1~~ | ✅ **Fixed** — added try/except with logging for FileNotFoundError | ✅ Fixed |
 | ~~`widgets/test_dro_label.py`~~ | ~~1~~ | ✅ **Fixed** — assertion expected default text that doesn't exist | ✅ Fixed |
 | ~~`widgets/test_active_gcodes_table.py`~~ | ~~1~~ | ~~Text color role for inactive code~~ | ✅ Now passes (31/31) |
 | ~~`widgets/test_dialogs_init.py`~~ | ~~2~~ | ✅ **Fixed** — MagicMock vs actual enum comparison | ✅ Fixed |
 | ~~`widgets/test_settings_widgets.py`~~ | ~~3~~ | ✅ **Fixed** — non-existent `textFormat` attribute and `_text_format` | ✅ Fixed |
-| `widgets/test_subcall_button.py` | 1 | File not found handling | ❌ Category D (passes in isolation) |
-| ~~`widgets/test_action_button.py`~~ | ~~1~~ | ✅ **Fixed** — constructor bypassed property setter | ✅ Fixed* |
+| ~~`widgets/test_subcall_button.py`~~ | ~~1~~ | ✅ **Fixed** — module-level state pollution of `SUBROUTINE_SEARCH_DIRS` | ✅ Fixed |
+| ~~`widgets/test_action_button.py`~~ | ~~1~~ | ✅ **Fixed** — constructor bypassed property setter | ✅ Fixed |
 | ~~`widgets/test_rules_editor.py`~~ | ~~2~~ | ✅ **Fixed** — `checkState()` returns enum, not int | ✅ Fixed |
-
-\* These tests now pass but expose source code bugs (see remaining issues below).
-
----
-
-## Remaining Issues After Current Session
-
-| # | File | Test | Type | Issue |
-|---|------|------|------|-------|
-| 1 | `widgets/test_base_dialog.py` | `test_load_nonexistent_file_logs_error` | Source bug | `loadUiFile()` at line 101 raises unhandled `FileNotFoundError` instead of catching and logging |
-| 2 | `widgets/test_probesim_dialog.py` | `test_touch_off_without_pulse_calls_subprocess_zero` | Source bug | `bool(Qt.CheckState.Unchecked)` returns `True` in PySide6 — need `cs.value != 0` or `cs == Qt.CheckState.Checked` |
-| 3 | `widgets/test_action_button.py` | `test_init_with_action_sets_action_name` | Source bug | Constructor at line 19 uses `self._action_name = action` instead of `self.actionName = action`, bypassing property setter that calls `bindWidget()` |
-| 4 | `widgets/test_subcall_button.py` | `test_subroutine_search_dirs_is_list` | Category D | Passes in isolation, fails in full suite (module-level state pollution) |
 
 ---
 
 ## Key Takeaways
 
-1. **Category D (test isolation) is fully resolved** — the mdientry `terminate()` fix + power actions `.ok`/`.bindOk` attributes eliminated all remaining isolation issues (59 tests now pass in the full suite).
-2. **120 tests fixed since baseline** (124→4 failed): error_dialog attribute access, designer plugin DOM quoting, user_managment qApp removal, misc.py false positive, mdientry/mdihistory isolation, shutdown dialog power action binding, deprecated `LOG.warn()` → `LOG.warning()`, `DataChannel.getter()` missing return, about_dialog wrong mock target, dro_label default text assertion, dialogs_init enum comparison, settings_widgets non-existent attributes, rules_editor enum vs int.
-3. **4 remaining failures**: 3 are source code bugs that tests correctly catch (base_dialog error handling, probesim_dialog bool(enum) truthiness, action_button constructor bypassing property), 1 is a Category D isolation issue (subcall_button).
+1. **All 124 failures since baseline have been resolved** (124→0 failed).
+2. **Categories A, C fully retired**, Categories B, D, E all fully fixed.
+3. **Key fixes**: error_dialog attribute access, designer plugin DOM quoting, user_managment qApp removal, mdientry/mdihistory isolation, shutdown dialog power action binding, deprecated `LOG.warn()` → `LOG.warning()`, `DataChannel.getter()` missing return, base_dialog error handling, about_dialog wrong mock target, dro_label default text assertion, dialogs_init enum comparison, settings_widgets non-existent attributes, rules_editor enum vs int, probesim_dialog bool(enum) truthiness, action_button constructor bypassing property, subcall_button module cache cleanup.
+4. **1892 tests now pass** with 0 failures and 10 warnings (deprecation warnings for QMouseEvent and LOG.warn).

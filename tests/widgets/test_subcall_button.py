@@ -24,6 +24,7 @@ def mock_subcall_button_module():
         'qtpyvcp.utilities.info',
         'qtpyvcp.actions.machine_actions',
         'qtpyvcp.actions.base_actions',
+        'qtpyvcp.widgets.button_widgets.subcall_button',
     ]
 
     for mod_name in modules_to_mock:
@@ -43,6 +44,10 @@ def mock_subcall_button_module():
     # Restore original modules
     for mod_name, orig_mod in original_modules.items():
         sys.modules[mod_name] = orig_mod
+
+    # Delete cached subcall_button module so it reimports with real info
+    if 'qtpyvcp.widgets.button_widgets.subcall_button' in sys.modules:
+        del sys.modules['qtpyvcp.widgets.button_widgets.subcall_button']
 
 
 class TestSubCallButton:
@@ -205,5 +210,8 @@ class TestSubCallButtonSearchDirs:
 
     def test_subroutine_search_dirs_is_list(self, mock_subcall_button_module):
         SubCallButton, _, _ = mock_subcall_button_module
+        # Remove cached module to force fresh import with real info
+        if 'qtpyvcp.widgets.button_widgets.subcall_button' in sys.modules:
+            del sys.modules['qtpyvcp.widgets.button_widgets.subcall_button']
         import qtpyvcp.widgets.button_widgets.subcall_button as submod
         assert isinstance(submod.SUBROUTINE_SEARCH_DIRS, list)

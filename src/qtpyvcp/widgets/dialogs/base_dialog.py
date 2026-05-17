@@ -92,15 +92,14 @@ class BaseDialog(QDialog):
         """
 
         file_path = os.path.join(os.path.dirname(__file__), ui_file)
-        #ui_file = QFile(file_path)
-        #ui_file.open(QFile.ReadOnly)
         
-        #loader = QUiLoader()
-        #self.ui = loader.load(ui_file, self)
-        #self.ui.show()
-        form_class, base_class = PySide6Ui(file_path).load()
-        self.ui = form_class()
-        self.ui.setupUi(self)
+        try:
+            form_class, base_class = PySide6Ui(file_path).load()
+            self.ui = form_class()
+            self.ui.setupUi(self)
+        except FileNotFoundError:
+            LOG.error("UI file does not exist: %s", file_path)
+            return None
 
     def setWindowFlag(self, flag, on):
         """BackPort QWidget.setWindowFlag() implementation from Qt 5.9

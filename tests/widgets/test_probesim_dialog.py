@@ -79,13 +79,9 @@ class TestProbeSim:
             from qtpyvcp.widgets.dialogs.probesim_dialog import ProbeSim
             dlg = ProbeSim()
             qtbot.addWidget(dlg)
-            cs = dlg.pulse_checkbox.checkState()
-            assert cs == Qt.CheckState.Unchecked, f'Expected unchecked, got {cs!r}, bool={bool(cs)}, type={type(cs)}'
+            assert dlg.pulse_checkbox.checkState() == Qt.CheckState.Unchecked
             with patch.object(mod.subprocess, 'Popen') as mock_popen:
-                # Simulate touch_off logic to verify the issue
-                cs = dlg.pulse_checkbox.checkState()
-                is_truthy = bool(cs)
-                assert not is_truthy, f'checkState={cs!r}, type={type(cs).__module__}.{type(cs).__name__} should be falsy but is truthy'
+                dlg.touch_off()
                 assert mock_popen.call_count == 1
                 call_args = mock_popen.call_args[0][0]
                 assert 'motion.probe-input' in call_args
