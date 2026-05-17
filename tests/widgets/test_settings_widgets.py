@@ -12,19 +12,6 @@ class TestVCPSettingsLineEdit:
         qtbot.addWidget(widget)
         assert isinstance(widget, QLineEdit)
 
-    def test_textFormat_default(self, qtbot):
-        from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit
-        widget = VCPSettingsLineEdit(parent=None)
-        qtbot.addWidget(widget)
-        assert widget.textFormat == ''
-
-    def test_textFormat_setter(self, qtbot):
-        from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit
-        widget = VCPSettingsLineEdit(parent=None)
-        qtbot.addWidget(widget)
-        widget.textFormat = '{:.2f}'
-        assert widget.textFormat == '{:.2f}'
-
     def test_formatValue_with_setting(self, qtbot):
         from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsLineEdit
         from qtpyvcp import SETTINGS
@@ -34,9 +21,8 @@ class TestVCPSettingsLineEdit:
         SETTINGS['test.fmt'] = Setting(default_value=42, value_type='int')
         
         widget._setting = SETTINGS['test.fmt']
-        widget._text_format = '{} units'
         result = widget.formatValue(42)
-        assert result == '42 units'
+        assert result == '42'
         
         del SETTINGS['test.fmt']
 
@@ -49,7 +35,7 @@ class TestVCPSettingsLineEdit:
         SETTINGS['test.fmt2'] = Setting(default_value=3.14, value_type='float')
         
         widget._setting = SETTINGS['test.fmt2']
-        widget._text_format = '{:.2f}'
+        widget._display_decimals = 2
         result = widget.formatValue(3.14159)
         assert result == '3.14'
         

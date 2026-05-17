@@ -126,16 +126,18 @@ class TestAskQuestion:
     def test_ask_question_yes(self, qtbot):
         from qtpyvcp.widgets.dialogs import askQuestion
 
-        with patch('qtpyvcp.widgets.dialogs.QMessageBox') as MockMsgBox:
-            MockMsgBox.question.return_value = MockMsgBox.Yes
+        with patch('qtpyvcp.widgets.dialogs.QMessageBox.question') as mock_question:
+            from qtpy.QtWidgets import QMessageBox
+            mock_question.return_value = QMessageBox.StandardButton.Yes
             result = askQuestion('Title', 'Message')
             assert result is True
 
     def test_ask_question_no(self, qtbot):
         from qtpyvcp.widgets.dialogs import askQuestion
 
-        with patch('qtpyvcp.widgets.dialogs.QMessageBox') as MockMsgBox:
-            MockMsgBox.question.return_value = MockMsgBox.No
+        with patch('qtpyvcp.widgets.dialogs.QMessageBox.question') as mock_question:
+            from qtpy.QtWidgets import QMessageBox
+            mock_question.return_value = QMessageBox.StandardButton.No
             result = askQuestion('Title', 'Message')
             assert result is False
 

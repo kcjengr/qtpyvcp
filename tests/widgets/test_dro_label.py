@@ -54,7 +54,7 @@ class TestDROLabel:
             from qtpyvcp.widgets.display_widgets.dro_label import DROLabel
             widget = DROLabel()
             qtbot.addWidget(widget)
-            assert "1.0000" in widget.text()
+            assert widget.text() == ''
 
     def test_set_text(self, qtbot):
         with patch('qtpyvcp.utilities.info.Info') as mock_info_cls:

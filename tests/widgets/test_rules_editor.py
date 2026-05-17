@@ -36,7 +36,8 @@ class TestTableCheckButton:
         qtbot.addWidget(btn)
 
         state = btn.checkState()
-        assert state in (0, 2)  # Qt.CheckState values
+        from qtpy.QtCore import Qt
+        assert state in (Qt.Unchecked, Qt.Checked, 0, 2)
 
     def test_toggle_check_state(self, qtbot):
         from qtpyvcp.widgets.qtdesigner.rules_editor import TableCheckButton
@@ -776,7 +777,8 @@ class TestTableCheckButtonAttributes:
         qtbot.addWidget(btn)
 
         state = btn.checkState()
-        assert isinstance(state, int)
+        from qtpy.QtCore import Qt
+        assert isinstance(state, (int, Qt.CheckState))
 
     def test_set_checked_delegation(self, qtbot):
         from qtpy.QtCore import Qt

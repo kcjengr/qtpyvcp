@@ -16,10 +16,17 @@ class TestAboutDialogInit:
         from qtpy.QtWidgets import QDialog
         from qtpyvcp.widgets.dialogs.about_dialog import AboutDialog
 
-        with patch('qtpy.uic.loadUi') as mock_load:
+        mock_form_class = MagicMock()
+        mock_form_instance = MagicMock()
+        mock_form_class.return_value = mock_form_instance
+
+        with patch('qtpyvcp.widgets.dialogs.about_dialog.PySide6Ui') as MockPySide6Ui:
+            MockPySide6Ui.return_value.load.return_value = (mock_form_class, None)
             dialog = AboutDialog(ui_file='custom.ui')
             qtbot.addWidget(dialog)
-            mock_load.assert_called_once_with('custom.ui', dialog)
+            MockPySide6Ui.assert_called_once()
+            call_args = MockPySide6Ui.call_args
+            assert 'custom.ui' in call_args[0][0] or call_args[0][0].endswith('custom.ui')
 
     def test_init_stay_on_top(self, qtbot):
         from qtpy.QtCore import Qt
