@@ -160,7 +160,7 @@ class VCPApplication(QApplication):
             raise ValueError("Invalid File Format."
                              " {} has no class inheriting from VCPMainWindow.".format(pyfile))
         if len(classes) > 1:
-            LOG.warn("More than one VCPMainWindow class in file yellow<{}>."
+            LOG.warning("More than one VCPMainWindow class in file yellow<{}>."
                      " The first occurrence (in alphabetical order) will be used: {}"
             .format(pyfile, classes[0].__name__))
         cls = classes[0]

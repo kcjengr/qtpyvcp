@@ -858,7 +858,7 @@ class VCPMainWindow(QMainWindow):
                     continue
 
                 if not isinstance(item, dict):
-                    LOG.warn("Skipping unrecognized menu item: %s", item)
+                    LOG.warning("Skipping unrecognized menu item: %s", item)
                     continue
 
                 title = item.get('title') or ''

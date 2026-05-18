@@ -387,7 +387,7 @@ class ToolTable(DataPlugin):
         """
 
         if self.db_prog is not None:
-            LOG.warn("Tool Table Plugin trying to write to DB Data Storage - ignoring request.")
+            LOG.warning("Tool Table Plugin trying to write to DB Data Storage - ignoring request.")
             return
 
         columns = self.validateColumns(columns) or self.columns
