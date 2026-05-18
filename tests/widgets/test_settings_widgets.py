@@ -253,21 +253,13 @@ class TestVCPSettingsSlider:
         assert widget.value() == 50
 
     def test_mouseDoubleClickEvent(self, qtbot):
-        from qtpy.QtCore import Qt
-        from qtpy.QtGui import QMouseEvent
+        from qtpy.QtCore import Qt, QPoint
         from qtpyvcp.widgets.input_widgets.setting_slider import VCPSettingsSlider
         widget = VCPSettingsSlider(parent=None)
         qtbot.addWidget(widget)
         widget.setRange(0, 100)
         widget.setValue(0)
-        event = QMouseEvent(
-            QMouseEvent.Type.MouseButtonPress,
-            widget.rect().center(),
-            Qt.LeftButton,
-            Qt.LeftButton,
-            Qt.NoModifier
-        )
-        widget.mouseDoubleClickEvent(event)
+        qtbot.mouseDClick(widget, Qt.LeftButton, pos=QPoint(widget.rect().center()))
         assert widget.value() == 100
 
     def test_initialize_no_setting(self, qtbot):

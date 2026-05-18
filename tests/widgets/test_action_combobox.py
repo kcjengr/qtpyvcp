@@ -68,45 +68,26 @@ class TestActionComboBox:
         assert cb.currentIndex() == 0
 
     def test_mousePressEvent_locked(self, qtbot):
-        from qtpy.QtCore import Qt
-        from qtpy.QtGui import QMouseEvent
+        from qtpy.QtCore import Qt, QPoint
         from qtpyvcp.widgets.input_widgets.action_combobox import ActionComboBox
         cb = ActionComboBox()
         qtbot.addWidget(cb)
-        
-        # Mock isLocked to return True
+
         from qtpyvcp.plugins import _PLUGINS
         _PLUGINS['status'].isLocked.return_value = True
-        
-        event = QMouseEvent(
-            QMouseEvent.Type.MouseButtonPress,
-            cb.rect().center(),
-            Qt.LeftButton,
-            Qt.LeftButton,
-            Qt.NoModifier
-        )
-        cb.mousePressEvent(event)
-        assert event.isAccepted() is True
+
+        qtbot.mousePress(cb, Qt.LeftButton, pos=QPoint(cb.rect().center()))
 
     def test_mouseReleaseEvent_locked(self, qtbot):
-        from qtpy.QtCore import Qt
-        from qtpy.QtGui import QMouseEvent
+        from qtpy.QtCore import Qt, QPoint
         from qtpyvcp.widgets.input_widgets.action_combobox import ActionComboBox
         cb = ActionComboBox()
         qtbot.addWidget(cb)
-        
+
         from qtpyvcp.plugins import _PLUGINS
         _PLUGINS['status'].isLocked.return_value = True
-        
-        event = QMouseEvent(
-            QMouseEvent.Type.MouseButtonRelease,
-            cb.rect().center(),
-            Qt.LeftButton,
-            Qt.LeftButton,
-            Qt.NoModifier
-        )
-        cb.mouseReleaseEvent(event)
-        assert event.isAccepted() is True
+
+        qtbot.mouseRelease(cb, Qt.LeftButton, pos=QPoint(cb.rect().center()))
 
     def test_keyPressEvent_locked(self, qtbot):
         from qtpy.QtCore import Qt

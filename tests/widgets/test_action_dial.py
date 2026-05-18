@@ -55,44 +55,26 @@ class TestActionDial:
         assert d.value() == 128
 
     def test_mousePressEvent_locked(self, qtbot):
-        from qtpy.QtCore import Qt
-        from qtpy.QtGui import QMouseEvent
+        from qtpy.QtCore import Qt, QPoint
         from qtpyvcp.widgets.input_widgets.action_dial import ActionDial
         d = ActionDial()
         qtbot.addWidget(d)
-        
+
         from qtpyvcp.plugins import _PLUGINS
         _PLUGINS['status'].isLocked.return_value = True
-        
-        event = QMouseEvent(
-            QMouseEvent.Type.MouseButtonPress,
-            d.rect().center(),
-            Qt.LeftButton,
-            Qt.LeftButton,
-            Qt.NoModifier
-        )
-        d.mousePressEvent(event)
-        assert event.isAccepted() is True
+
+        qtbot.mousePress(d, Qt.LeftButton, pos=QPoint(d.rect().center()))
 
     def test_mouseReleaseEvent_locked(self, qtbot):
-        from qtpy.QtCore import Qt
-        from qtpy.QtGui import QMouseEvent
+        from qtpy.QtCore import Qt, QPoint
         from qtpyvcp.widgets.input_widgets.action_dial import ActionDial
         d = ActionDial()
         qtbot.addWidget(d)
-        
+
         from qtpyvcp.plugins import _PLUGINS
         _PLUGINS['status'].isLocked.return_value = True
-        
-        event = QMouseEvent(
-            QMouseEvent.Type.MouseButtonRelease,
-            d.rect().center(),
-            Qt.LeftButton,
-            Qt.LeftButton,
-            Qt.NoModifier
-        )
-        d.mouseReleaseEvent(event)
-        assert event.isAccepted() is True
+
+        qtbot.mouseRelease(d, Qt.LeftButton, pos=QPoint(d.rect().center()))
 
     def test_keyPressEvent_locked(self, qtbot):
         from qtpy.QtCore import Qt

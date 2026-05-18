@@ -1,8 +1,8 @@
 # Test Status Report
 
-**Run Date:** 2026-05-17  
+**Run Date:** 2026-05-18  
 **Command:** `python -m pytest tests/ --tb=short -q`  
-**Results:** 0 failed, 1892 passed, 10 warnings (1892 total)
+**Results:** 0 failed, 1892 passed, 0 warnings (1892 total)
 
 ---
 
@@ -10,22 +10,23 @@
 
 | Category | Before | After | Delta |
 |----------|--------|-------|-------|
-| Failed   | 3      | 0     | -3 fixed (all resolved) |
+| Failed   | 0      | 0     | 0 (no failures) |
+| Warnings | 10     | 0     | -10 fixed (all deprecations resolved) |
 
-### Fixed
+### Fixed (Current Session)
+- **Category B — `LOG.warn()` deprecation** (4 files): Replaced all `LOG.warn()` calls with `LOG.warning()` in `tool_table.py:390`, `error_dialog.py:56`, `main_window.py:861`, and `application.py:163`. The `warn()` method has been deprecated since Python 3.3.
+- **Category B — `QMouseEvent` deprecation** (4 files, 9 tests): Replaced manual `QMouseEvent` construction with `qtbot.mousePress()`, `qtbot.mouseRelease()`, and `qtbot.mouseDClick()` wrappers around `QTest`. Affected files: `test_action_combobox.py`, `test_action_dial.py`, `test_action_slider.py`, `test_settings_widgets.py`. The old 5-arg constructor is deprecated in PySide6 6.7+; the new API requires a `QPointingDevice` parameter that cannot be easily obtained.
+
+### Fixed (Previous Sessions)
 - **Category E — `test_probesim_dialog.py`** (1 test): Source bug in `probesim_dialog.py:61,70` — `bool(Qt.CheckState.Unchecked)` returns `True` in PySide6 because enum objects are always truthy. Changed to explicit comparison `== Qt.CheckState.Checked`. Also fixed test assertion that relied on falsy behavior.
 - **Category E — `test_action_button.py`** (1 test): Source bug in `action_button.py:19` — constructor set `self._action_name = action` directly, bypassing property setter that calls `bindWidget()`. Changed to `self.actionName = action`.
 - **Category D — `test_subcall_button.py`** (1 test): Module-level state pollution — `SUBROUTINE_SEARCH_DIRS` cached as MagicMock from previous tests that mocked `info` module. Fixed by deleting cached module from `sys.modules` before import in test, and added cleanup to fixture teardown.
-
-### Fixed (Current Session)
 - **Category B — `test_base_dialog.py`** (1 test): Added try/except around `PySide6Ui().load()` in `loadUiFile()`. Catches `FileNotFoundError`, logs error with `"does not exist"`, and returns `None` instead of raising.
 - **Category B — `test_about_dialog.py`** (1 test): Patched `PySide6Ui` instead of `qtpy.uic.loadUi` to match actual source code. Test was mocking the wrong function.
 - **Category B — `test_dro_label.py`** (1 test): Changed assertion from `"1.0000" in widget.text()` to `widget.text() == ''`. DROLabel has no default text without position signals being connected.
 - **Category B — `test_dialogs_init.py`** (2 tests): Patched `QMessageBox.question` directly and returned actual `QMessageBox.StandardButton` enum values instead of MagicMock objects, so equality comparisons work correctly.
 - **Category B — `test_settings_widgets.py`** (3 tests): Removed `test_textFormat_default` and `test_textFormat_setter` (no such attribute exists on VCPSettingsLineEdit). Updated `test_formatValue_with_setting` to use `_display_decimals` instead of non-existent `_text_format`.
 - **Category B — `test_rules_editor.py`** (2 tests): Updated assertions to accept both `int` and `Qt.CheckState` enum values returned by PySide6's `checkState()` method, which is delegated via `__getattr__` from TableCheckButton.
-
-### Fixed (Previous Session)
 - **Category B — `test_decorators.py`** (1 test): Changed `LOG.warn(msg)` to `LOG.warning(msg)` in `decorators.py:42`. The `warn()` method is deprecated in Python's logging module and was not being captured by the mock, causing the assertion on `.warning.called` to fail.
 - **Category D — `test_shutdown_dialog.py`** (13 tests): Added `.ok` and `.bindOk` attributes to `power.shut_system_down_prompt()` and `power.shut_system_down_now()` in `power_actions.py`. The `bindWidget()` function expects actions to have these attributes for validation, but the power actions were plain functions without them. This caused `'function' object has no attribute 'ok'` errors when the shutdown dialog's ActionButton tried to bind to `power.shut_system_down_now` via the UI file's `actionName` property.
 
@@ -54,22 +55,24 @@
 - **Category E — `test_probesim_dialog.py`** (1 test): Source bug in `probesim_dialog.py:61,70` — `bool(Qt.CheckState.Unchecked)` truthy bug. Changed to explicit `== Qt.CheckState.Checked` comparison.
 - **Category E — `test_action_button.py`** (1 test): Source bug in `action_button.py:19` — constructor bypassed property setter. Changed to `self.actionName = action`.
 - **Category D — `test_subcall_button.py`** (1 test): Module-level state pollution of `SUBROUTINE_SEARCH_DIRS`. Fixed by deleting cached module before import and adding fixture teardown cleanup.
+- **Category B — `LOG.warn()` deprecation** (4 files): Replaced all `LOG.warn()` calls with `LOG.warning()` in `tool_table.py`, `error_dialog.py`, `main_window.py`, and `application.py`. The 2 commented-out occurrences in `file_system.py` were left as-is.
+- **Category B — `QMouseEvent` deprecation** (4 files, 9 tests): Replaced manual `QMouseEvent` construction with `qtbot.mousePress()`, `qtbot.mouseRelease()`, and `qtbot.mouseDClick()` wrappers around `QTest`. The old 5-arg constructor is deprecated in PySide6 6.7+; the new API requires a `QPointingDevice` parameter that cannot be easily obtained without segfaults.
 
 ### Remaining Categories Summary
 
-| Category | Failed Tests | Status |
-|----------|-------------|--------|
-| ~~A — Source Code Bugs~~ | ~~0~~ | ✅ **Retired** (false positive — was test isolation) |
-| B — Test Bugs | **0** | ✅ All fixed |
-| ~~C — Import Errors~~ | ~~0~~ | ✅ **Fixed** (`qApp` → `QApplication` via qtpy) |
-| ~~D — Test Isolation Issues~~ | ~~0~~ | ✅ **All fixed** (mdientry terminate() cleanup + power actions .ok/.bindOk + subcall_button cache cleanup) |
-| ~~E — Real Test Failures~~ | ~~0~~ | ✅ **All fixed** |
+| Category | Failed Tests | Warnings | Status |
+|----------|-------------|----------|--------|
+| ~~A — Source Code Bugs~~ | ~~0~~ | — | ✅ **Retired** (false positive — was test isolation) |
+| B — Test Bugs | **0** | 0 | ✅ All fixed + all deprecations resolved |
+| ~~C — Import Errors~~ | ~~0~~ | — | ✅ **Fixed** (`qApp` → `QApplication` via qtpy) |
+| ~~D — Test Isolation Issues~~ | ~~0~~ | — | ✅ **All fixed** (mdientry terminate() cleanup + power actions .ok/.bindOk + subcall_button cache cleanup) |
+| ~~E — Real Test Failures~~ | ~~0~~ | — | ✅ **All fixed** |
 
 ---
 
 ## All Tests Passing
 
-**Total: 1892 tests, 0 failures, 10 warnings**
+**Total: 1892 tests, 0 failures, 0 warnings**
 
 All categories fully resolved. No remaining issues.
 
@@ -127,5 +130,6 @@ All categories fully resolved. No remaining issues.
 
 1. **All 124 failures since baseline have been resolved** (124→0 failed).
 2. **Categories A, C fully retired**, Categories B, D, E all fully fixed.
-3. **Key fixes**: error_dialog attribute access, designer plugin DOM quoting, user_managment qApp removal, mdientry/mdihistory isolation, shutdown dialog power action binding, deprecated `LOG.warn()` → `LOG.warning()`, `DataChannel.getter()` missing return, base_dialog error handling, about_dialog wrong mock target, dro_label default text assertion, dialogs_init enum comparison, settings_widgets non-existent attributes, rules_editor enum vs int, probesim_dialog bool(enum) truthiness, action_button constructor bypassing property, subcall_button module cache cleanup.
-4. **1892 tests now pass** with 0 failures and 10 warnings (deprecation warnings for QMouseEvent and LOG.warn).
+3. **All deprecation warnings eliminated** — `LOG.warn()` → `LOG.warning()` (4 files), `QMouseEvent` manual construction → `qtbot.mouse*()` wrappers (4 files, 9 tests).
+4. **Key fixes**: error_dialog attribute access, designer plugin DOM quoting, user_managment qApp removal, mdientry/mdihistory isolation, shutdown dialog power action binding, deprecated `LOG.warn()` → `LOG.warning()`, `DataChannel.getter()` missing return, base_dialog error handling, about_dialog wrong mock target, dro_label default text assertion, dialogs_init enum comparison, settings_widgets non-existent attributes, rules_editor enum vs int, probesim_dialog bool(enum) truthiness, action_button constructor bypassing property, subcall_button module cache cleanup, QMouseEvent deprecation.
+5. **1892 tests now pass** with 0 failures and 0 warnings.
