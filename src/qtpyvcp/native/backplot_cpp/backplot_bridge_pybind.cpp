@@ -475,10 +475,15 @@ private:
             native_segments.push_back(std::move(native_segment));
         }
 
+        // Keep loaded program geometry independent from runtime tool-table TLO.
+        const double tlo_x = 0.0;
+        const double tlo_y = 0.0;
+        const double tlo_z = 0.0;
+
         auto adjust = [&](const std::array<double, 9> &src, std::array<double, 3> &out) {
-            out[0] = src[0] + tool_offsets[0] - active_wcs_initial_x;
-            out[1] = src[1] + tool_offsets[1] - active_wcs_initial_y;
-            out[2] = src[2] - tool_offsets[2] - active_wcs_initial_z;
+            out[0] = src[0] + tlo_x - active_wcs_initial_x;
+            out[1] = src[1] + tlo_y - active_wcs_initial_y;
+            out[2] = src[2] - tlo_z - active_wcs_initial_z;
         };
 
         std::array<double, 3> start_xyz{};
@@ -647,7 +652,7 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
     std::optional<int> first_cut_wcs;
     for (const auto &segment : native_segments) {
         for (const auto &line : segment.lines) {
-            if (line.type_code != 0) {
+            if (line.type_code == 1 || line.type_code == 2) {
                 first_cut_wcs = segment.wcs_index;
                 break;
             }
@@ -662,6 +667,7 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
     struct WcsPayloadAccum {
         int wcs_index{0};
         ssize_t segment_count{0};
+        bool has_motion_segment{false};
         std::vector<double> points_xyz;
         std::vector<std::uint8_t> colors_rgba;
         std::vector<int> line_numbers;
@@ -694,9 +700,10 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
         }
 
         for (const auto &line : segment.lines) {
-            // First traverse in each segment has no provable start point in
-            // preview context; skip rendering it as segment geometry.
-            if (acc.segment_count == 0 && line.type_code == 0) {
+            // First traverse has no provable start point in preview context.
+            // Ignore non-motion markers (user/dwell) when deciding if motion
+            // has started.
+            if (!acc.has_motion_segment && line.type_code == 0) {
                 continue;
             }
 
@@ -714,6 +721,9 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
             acc.line_numbers.push_back(line.seq_num);
 
             acc.segment_count += 1;
+            if (line.type_code == 0 || line.type_code == 1 || line.type_code == 2) {
+                acc.has_motion_segment = true;
+            }
             added_segment_count += 1;
         }
     }
@@ -776,7 +786,7 @@ static py::dict build_from_native_canon(NativeCanon &canon, py::object datasourc
                 };
                 summary.has_end = true;
 
-                if (line.type_code != 0) {
+                if (line.type_code == 1 || line.type_code == 2) {
                     summary.has_cut = true;
 
                     if (!summary.has_first_cut_start) {
@@ -900,7 +910,7 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
         for (auto line_obj : lines) {
             py::tuple line_item = line_obj.cast<py::tuple>();
             const auto line_type = decode_line_type(line_item[0]);
-            if (!line_type.is_traverse) {
+            if (line_type.color_key == "feed" || line_type.color_key == "arcfeed") {
                 has_cut = true;
                 break;
             }
@@ -925,6 +935,7 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
     struct WcsPayloadAccum {
         int wcs_index{0};
         ssize_t segment_count{0};
+        bool has_motion_segment{false};
         std::vector<double> points_xyz;
         std::vector<std::uint8_t> colors_rgba;
     };
@@ -959,7 +970,7 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
             const auto line_type = decode_line_type(line_item[0]);
             py::handle line_data = line_item[1];
 
-            if (path_actor_count > 1 && acc.segment_count == 0 && line_type.is_traverse && !first_cut_wcs.is_none() && !py_equals(wcs_key, first_cut_wcs)) {
+            if (path_actor_count > 1 && !acc.has_motion_segment && line_type.is_traverse && !first_cut_wcs.is_none() && !py_equals(wcs_key, first_cut_wcs)) {
                 continue;
             }
 
@@ -983,6 +994,9 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
             acc.colors_rgba.push_back(rgba[3]);
 
             acc.segment_count += 1;
+            if (line_type.is_traverse || line_type.color_key == "feed" || line_type.color_key == "arcfeed") {
+                acc.has_motion_segment = true;
+            }
             added_segment_count += 1;
         }
     }
@@ -1031,7 +1045,7 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
                 const auto segment_line_type = decode_line_type(segment_line_item[0]);
                 py::handle segment_line_data = segment_line_item[1];
 
-                if (!segment_line_type.is_traverse) {
+                if (segment_line_type.color_key == "feed" || segment_line_type.color_key == "arcfeed") {
                     segment_has_cut_motion = true;
                 }
 
@@ -1072,7 +1086,7 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
             for (auto seg_line_obj : segment_data) {
                 py::tuple segment_line_item = seg_line_obj.cast<py::tuple>();
                 const auto segment_line_type = decode_line_type(segment_line_item[0]);
-                if (segment_line_type.is_traverse) {
+                if (!(segment_line_type.color_key == "feed" || segment_line_type.color_key == "arcfeed")) {
                     continue;
                 }
                 const auto line_points = line_points_xyz(segment_line_item[1], multiplication_factor);

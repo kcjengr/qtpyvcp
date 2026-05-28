@@ -15,6 +15,26 @@
 #include <QTextDocument>
 #include <QTextStream>
 #include <QVBoxLayout>
+#include <QFileInfo>
+#include <QDir>
+#include <QSettings>
+
+namespace {
+QString g_lastSaveDirectory;
+const char* kLastSaveDirectoryKey = "gcode_editor/last_save_directory";
+
+QString persistedLastSaveDirectory()
+{
+	QSettings settings;
+	return settings.value(kLastSaveDirectoryKey, QString()).toString();
+}
+
+void persistLastSaveDirectory(const QString &path)
+{
+	QSettings settings;
+	settings.setValue(kLastSaveDirectoryKey, path);
+}
+}
 
 void GCodeEditor::applyExtraSelections()
 {
@@ -413,19 +433,37 @@ void GCodeEditor::saveFile()
 
 	QTextStream out(&file);
 	out << toPlainText();
+	g_lastSaveDirectory = QFileInfo(currentFilePath).absolutePath();
+	persistLastSaveDirectory(g_lastSaveDirectory);
 }
 
 void GCodeEditor::saveFileAs()
 {
+	if (g_lastSaveDirectory.isEmpty()) {
+		g_lastSaveDirectory = persistedLastSaveDirectory();
+	}
+
+	QString initialPath = currentFilePath;
+	if (!g_lastSaveDirectory.isEmpty()) {
+		const QString baseName = QFileInfo(currentFilePath).fileName();
+		if (!baseName.isEmpty()) {
+			initialPath = QDir(g_lastSaveDirectory).filePath(baseName);
+		} else {
+			initialPath = g_lastSaveDirectory;
+		}
+	}
+
 	const QString path = QFileDialog::getSaveFileName(this,
 									  tr("Save G-code As"),
-									  currentFilePath,
+									  initialPath,
 									  tr("G-code Files (*.ngc *.nc *.tap *.txt);;All Files (*)"));
 	if (path.isEmpty()) {
 		return;
 	}
 
 	currentFilePath = path;
+	g_lastSaveDirectory = QFileInfo(path).absolutePath();
+	persistLastSaveDirectory(g_lastSaveDirectory);
 	saveFile();
 }
 

@@ -284,15 +284,21 @@ class VCPBaseWidget(VCPPrimitiveWidget):
             # Rules are compiled as zero-arg lambdas, but channel notifications
             # may pass payload args. Accept and ignore payload args so callbacks
             # stay stable across signal signatures.
-            def _rule_callback(*_args, **_kwargs):
-                try:
-                    exp()
-                except Exception:
-                    LOG.exception(
-                        "Error calling rules expression '%s' from %s:",
-                        rule_name,
-                        widget_name,
-                    )
+            # NOTE: Keep per-rule callback binding here to avoid loop-scope
+            # expression bleed regressions (see report around b1b5419f298e).
+            def _make_rule_callback(exp_cb, cb_rule_name, cb_widget_name):
+                def _rule_callback(*_args, **_kwargs):
+                    try:
+                        exp_cb()
+                    except Exception:
+                        LOG.exception(
+                            "Error calling rules expression '%s' from %s:",
+                            cb_rule_name,
+                            cb_widget_name,
+                        )
+                return _rule_callback
+
+            _rule_callback = _make_rule_callback(exp, rule_name, widget_name)
 
             # initial call to update
             _rule_callback()

@@ -59,6 +59,8 @@ class VTKCanon(StatCanon):
         self._preview_switchkins_type = 0
         self._preview_program_units = None
         self._last_units_factor_log = None
+        self._pending_tool_event_motion = False
+        self._pending_tool_event_traverse_suppressed = 0
 
         g5x = self._datasource.getActiveWcsOffsets()
 
@@ -70,6 +72,35 @@ class VTKCanon(StatCanon):
         self.foam_z = 0.0
         self.foam_w = 0.0
         LOG.debug("VTKCanon --- Init Done ---")
+
+    def change_tool(self, pocket):
+        super().change_tool(pocket)
+        # StatCanon.change_tool() updates tool table state but does not reset
+        # path continuity flags used by backplot geometry.
+        self.first_move = True
+        self.path_initialized = False
+        self._pending_tool_event_motion = True
+        self._pending_tool_event_traverse_suppressed = 0
+
+    def tool_offset(self, xo, yo, zo, ao, bo, co, uo, vo, wo):
+        # Keep preview geometry independent from runtime tool table offsets.
+        # BaseCanon.tool_offset() remaps last_pos using TLO deltas, which can
+        # create synthetic connector moves in loaded-path rendering.
+        self.first_move = True
+        self.path_initialized = False
+
+        self.tlo_x = xo
+        self.tlo_y = yo
+        self.tlo_z = zo
+        self.tlo_a = ao
+        self.tlo_b = bo
+        self.tlo_c = co
+        self.tlo_u = uo
+        self.tlo_v = vo
+        self.tlo_w = wo
+        self.tool_offsets = (xo, yo, zo, ao, bo, co, uo, vo, wo)
+        self._pending_tool_event_motion = True
+        self._pending_tool_event_traverse_suppressed = 0
 
     def next_line(self, st):
         super().next_line(st)
@@ -426,6 +457,7 @@ class VTKCanon(StatCanon):
 
         if len(self.path_segments) == 0 or self.path_segments[-1]['wcs_index'] != self.active_wcs_index:
             self.path_segments.append({'wcs_index': self.active_wcs_index, 'lines': list()})
+        segment_index = len(self.path_segments) - 1
 
         # Normalize parsed coordinates into machine units at ingest time.
         # This keeps downstream WCS/pivot math unit-consistent regardless of
@@ -434,6 +466,9 @@ class VTKCanon(StatCanon):
         start_point_scaled = self._scale_linear_axes(start_point, program_to_machine)
         end_point_scaled = self._scale_linear_axes(end_point, program_to_machine)
         tool_offsets_scaled = self._scale_linear_axes(self.tool_offsets, program_to_machine)
+        # Keep loaded program geometry independent from runtime tool-table TLO.
+        # Programmed coordinates already define the intended path shape.
+        tool_offsets_scaled = [0.0] * len(tool_offsets_scaled)
         wcs_offsets_scaled = self._scale_linear_axes(
             self.initial_wcs_offsets[self.active_wcs_index],
             program_to_machine,
@@ -476,6 +511,31 @@ class VTKCanon(StatCanon):
 
         line_number = int(getattr(self, 'seq_num', -1))
 
+        skip_render = False
+        if self._pending_tool_event_motion and line_type in ("traverse", "feed", "arcfeed"):
+            if line_type == "traverse":
+                # Always suppress the first rapid after a tool/TLO event.
+                if self._pending_tool_event_traverse_suppressed == 0:
+                    skip_render = True
+                    self._pending_tool_event_traverse_suppressed = 1
+                else:
+                    # Additional artifact often appears as centerline (X≈0)
+                    # rapid while TLO state settles; suppress those too.
+                    x_eps = 1e-7
+                    on_centerline = (
+                        abs(start_point_scaled[0]) <= x_eps
+                        and abs(end_point_scaled[0]) <= x_eps
+                    )
+                    if on_centerline:
+                        skip_render = True
+                    else:
+                        self._pending_tool_event_motion = False
+                        self._pending_tool_event_traverse_suppressed = 0
+            else:
+                # First cutting motion reached; resume normal rapid rendering.
+                self._pending_tool_event_motion = False
+                self._pending_tool_event_traverse_suppressed = 0
+
         if not self._cpp_mode:
             self.path_points.get(self.active_wcs_index).append(
                 (
@@ -484,6 +544,8 @@ class VTKCanon(StatCanon):
                     int(self._preview_switchkins_type),
                     float(program_to_machine),
                     line_number,
+                    segment_index,
+                    bool(skip_render),
                 )
             )
         self.path_segments[-1]['lines'].append((line_type_token, line))
@@ -495,7 +557,7 @@ class VTKCanon(StatCanon):
 
         first_cut_wcs_index = None
         for segment in self.path_segments:
-            if any(line_type != "traverse" for line_type, _ in segment['lines']):
+            if any(line_type in ("feed", "arcfeed") for line_type, _ in segment['lines']):
                 first_cut_wcs_index = segment['wcs_index']
                 break
 
@@ -508,10 +570,32 @@ class VTKCanon(StatCanon):
             if path_actor is not None:
                 last_point = None
                 point_count = 0
+                has_motion_segment = False
+                current_segment_index = None
                 segment_line_numbers = []
 
                 for row in data:
-                    if len(row) >= 5:
+                    if len(row) >= 7:
+                        line_type, line_data, switchkins_type, row_program_to_machine, line_number, segment_index, skip_render = (
+                            row[0],
+                            row[1],
+                            row[2],
+                            row[3],
+                            row[4],
+                            row[5],
+                            row[6],
+                        )
+                    elif len(row) >= 6:
+                        line_type, line_data, switchkins_type, row_program_to_machine, line_number, segment_index = (
+                            row[0],
+                            row[1],
+                            row[2],
+                            row[3],
+                            row[4],
+                            row[5],
+                        )
+                        skip_render = False
+                    elif len(row) >= 5:
                         line_type, line_data, switchkins_type, row_program_to_machine, line_number = (
                             row[0],
                             row[1],
@@ -519,18 +603,33 @@ class VTKCanon(StatCanon):
                             row[3],
                             row[4],
                         )
+                        segment_index = -1
+                        skip_render = False
                     elif len(row) >= 4:
                         line_type, line_data, switchkins_type, row_program_to_machine = row[0], row[1], row[2], row[3]
                         line_number = -1
+                        segment_index = -1
+                        skip_render = False
                     elif len(row) >= 3:
                         line_type, line_data, switchkins_type = row[0], row[1], row[2]
                         row_program_to_machine = 1.0
                         line_number = -1
+                        segment_index = -1
+                        skip_render = False
                     else:
                         line_type, line_data = row[0], row[1]
                         switchkins_type = 0
                         row_program_to_machine = 1.0
                         line_number = -1
+                        segment_index = -1
+                        skip_render = False
+
+                    if segment_index != current_segment_index:
+                        current_segment_index = segment_index
+                        has_motion_segment = False
+
+                    if skip_render:
+                        continue
 
                     start_point = line_data[0]
                     end_point = line_data[1]
@@ -580,14 +679,14 @@ class VTKCanon(StatCanon):
 
                     else:
                         # LOG.debug(f"--------- Points:")
-                        # The first traverse in a segment has no provable
-                        # start point in preview context, so do not render it
-                        # as geometry.
-                        if (point_count == 0) and (line_type == "traverse"):
+                        # The first traverse has no provable start point in
+                        # preview context. Ignore non-motion markers (user/
+                        # dwell) when deciding whether motion has started.
+                        if (not has_motion_segment) and (line_type == "traverse"):
                             continue
 
                         def _insert_xyz_segment(seg_start_xyz, seg_end_xyz):
-                            nonlocal point_count, added_segment_count
+                            nonlocal point_count, added_segment_count, has_motion_segment
                             path_actor.points.InsertNextPoint(seg_end_xyz[0] * multiplication_factor,
                                                               seg_end_xyz[1] * multiplication_factor,
                                                               seg_end_xyz[2] * multiplication_factor)
@@ -606,6 +705,9 @@ class VTKCanon(StatCanon):
 
                             point_count += 2
                             added_segment_count += 1
+
+                            if line_type in ("traverse", "feed", "arcfeed"):
+                                has_motion_segment = True
 
                         sampled_points = self._sample_table_rotary_motion_points(
                             start_point,
@@ -664,7 +766,7 @@ class VTKCanon(StatCanon):
                     segment_start_point = segment_line_data[0]
                     segment_end_point = segment_line_data[1]
 
-                    if segment_line_type != "traverse":
+                    if segment_line_type in ("feed", "arcfeed"):
                         segment_has_cut_motion = True
 
                         if first_cut_start is None:

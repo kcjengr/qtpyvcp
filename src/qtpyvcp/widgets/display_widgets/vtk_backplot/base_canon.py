@@ -176,7 +176,7 @@ class BaseCanon(QObject):
 
         self.last_pos = (
             x - xo + self.tlo_x, y - yo + self.tlo_y, z - zo + self.tlo_z,
-            a - ao + self.tlo_a, b - bo + self.tlo_b, c - bo + self.tlo_b,
+            a - ao + self.tlo_a, b - bo + self.tlo_b, c - co + self.tlo_c,
             u - uo + self.tlo_u, v - vo + self.tlo_v, w - wo + self.tlo_w)
 
         self.tlo_x = xo

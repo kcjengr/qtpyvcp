@@ -577,8 +577,52 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
             try:
                 return value_type(text)
             except ValueError:
+                # If combo labels are semantic strings (e.g. inch/mm, CSS/RPM)
+                # but the setting is numeric, infer the numeric value from the
+                # setting range and current item index.
+                inferred = self._infer_numeric_value_from_index(index)
+                if inferred is not None:
+                    return inferred
                 return text
         return text
+
+    def _infer_numeric_value_from_index(self, index):
+        """Infer numeric setting value from combo index using setting range.
+
+        This supports legacy configs where int/float settings use semantic
+        combo labels without enum options.
+        """
+        if self._setting is None:
+            return None
+
+        value_type = self._setting.value_type
+        if value_type not in (int, float):
+            return None
+
+        min_value = getattr(self._setting, 'min_value', None)
+        max_value = getattr(self._setting, 'max_value', None)
+
+        if min_value is None or max_value is None:
+            return None
+
+        count = self.count()
+        if count <= 0:
+            return None
+
+        if count == 1:
+            candidate = float(min_value)
+        else:
+            span = float(max_value) - float(min_value)
+            step = span / float(count - 1)
+            candidate = float(min_value) + (step * float(index))
+
+        if value_type is int:
+            rounded = round(candidate)
+            if abs(candidate - rounded) > 1e-9:
+                return None
+            return int(rounded)
+
+        return float(candidate)
 
     def _set_display_from_value(self, value):
         """Select combobox entry matching a persisted setting value.
@@ -657,8 +701,8 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
 
             value = self._setting.getValue()
 
-            # Backward compatibility: accept stored text and map to index
-            if isinstance(value, str):
+            # Backward compatibility for index-storage combos only.
+            if self._stores_index() and isinstance(value, str):
                 idx = self.findText(value)
                 if idx != -1:
                     value = idx
