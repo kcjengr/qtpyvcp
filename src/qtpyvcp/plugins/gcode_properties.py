@@ -17,6 +17,7 @@ YAML configuration:
 
 """
 import os
+import re
 import shutil
 
 import linuxcnc
@@ -81,8 +82,37 @@ class GCodeProperties(DataPlugin):
         self.parameter_file = os.path.join(self.config_dir, temp)
         self.temp_parameter_file = os.path.join(self.parameter_file + '.temp')
         
+        self.stock_list = []
+        
         self.stat = STATUS
         self.stat.file.notify(self._file_event)
+
+    @DataChannel
+    def parts_stock(self, chan):
+        """The size and origin of the 3D plot stock.
+
+        Args:
+            None
+
+        Returns:
+            a dictionary with the size and origin 
+
+        Channel syntax::
+
+            gcode_properties:stock
+
+        """
+
+        if not self.parts_stock:
+            chan.value = "No Stock defined"
+            
+        return chan.value
+
+    @parts_stock.tostring
+    def parts_stock(self, chan):
+        return chan.value
+
+
 
     @DataChannel
     def file_name(self, chan):
@@ -714,6 +744,8 @@ class GCodeProperties(DataPlugin):
         file_size = os.stat(self.loaded_file).st_size
         file_lines = self.canon.num_lines
         
+        self.parts_stock.setValue(self.canon.stock)
+        
         tools = self.canon.tools
         tool_calls = self.canon.tool_calls
 
@@ -919,6 +951,13 @@ class PropertiesCanon(BaseCanon):
         self.rotation_cos = 1
         self.rotation_sin = 0
 
+        self.stock = {
+            "stock_origin": {"x": 0.0, "y": 0.0, "z": 0.0},
+            "stock_size": {"x": 0.0, "y": 0.0, "z": 0.0}
+        }
+
+
+
     def set_g5x_offset(self, offset, x, y, z, a, b, c, u, v, w):
         try:
             self.g5x_offset_dict[str(offset)] = (x, y, z, a, b, c, u, v, w)
@@ -945,14 +984,32 @@ class PropertiesCanon(BaseCanon):
         # print(("set feed rate", arg))
 
     def comment(self, comment):
-        pass
-        # print(("#", comment))
-
+        
+        # Check for STOCK_SIZE
+        size_match = re.search(r'STOCK_SIZE\s+([\d\.\-]+)\s+([\d\.\-]+)\s+([\d\.\-]+)', comment)
+        origin_match = re.search(r'STOCK_ORIGIN\s+([\d\.\-]+)\s+([\d\.\-]+)\s+([\d\.\-]+)', comment)
+        
+        
+        
+        if size_match:
+            self.stock["stock_size"] = {
+                "x": float(size_match.group(1)),
+                "y": float(size_match.group(2)),
+                "z": float(size_match.group(3))
+            }
+        
+        if origin_match:
+            self.stock["stock_origin"] = {
+                "x": float(origin_match.group(1)),
+                "y": float(origin_match.group(2)),
+                "z": float(origin_match.group(3))
+            }
+        
+        
     def straight_traverse(self, x, y, z, a, b, c, u, v, w):
         try:
             if self.suppress > 0:
-                 return
-
+                return
             pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
             if not self.first_move:
                 self.traverse.append([self.last_pos, pos])

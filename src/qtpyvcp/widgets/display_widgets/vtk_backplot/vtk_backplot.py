@@ -62,6 +62,7 @@ from .points_surface import PointsSurfaceActor
 from .program_bounds_actor import ProgramBoundsActor
 from .spindle_actor import SpindleActor
 from .table_actor import TableActor
+from .stock_actor import StockActor
 from .tool_actor import ToolActor, ToolBitActor
 from .vtk_canon import COLOR_MAP, VTKCanon
 
@@ -530,6 +531,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                         
                         self.machine_parts_actor = MachinePartsASM(self.machine_parts_data)
             
+
+
+            self.stock_actor = StockActor(self._datasource)
             self.tool_actor = ToolActor(self._datasource)
             self.tool_bit_actor = ToolBitActor(self._datasource)
 
@@ -663,6 +667,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(self.spindle_actor)
 
 
+            self.renderer.AddActor(self.stock_actor)
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
             tool_in_spindle = self._tool_in_spindle()

@@ -21,6 +21,7 @@ mocked for testing the VTK outside of a linuxcnc context.
 
 
 class LinuxCncDataSource(QObject):
+    stockUpdated = Signal(object)
     programLoaded = Signal(str)
     positionChanged = Signal(tuple)
     motionTypeChanged = Signal(int)
@@ -109,6 +110,7 @@ class LinuxCncDataSource(QObject):
 
         self._info = Info()
         self._status = getPlugin('status')
+        self._gcode = getPlugin('gcode_properties')
         self._tooltable = getPlugin('tooltable')
         self._offsettable = getPlugin('offsettable')
         self._inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
@@ -155,6 +157,7 @@ class LinuxCncDataSource(QObject):
             'B': False,
             'C': False,
         }
+        self._vtk_parts_stock = None
         self._vtk_machine_parts_file = None
         self._vtk_machine_parts_loaded = False
         self._vtk_machine_parts_axes = {}
@@ -182,6 +185,9 @@ class LinuxCncDataSource(QObject):
 
         self._configure_vtk_machine_axes()
         
+        
+        self._gcode.parts_stock.notify(self.__handleStockUpdated)
+        
         self._status.file.notify(self.__handleProgramLoaded)
         self._status.position.notify(self.__handlePositionChanged)
         self._status.motion_type.notify(self.__handleMotionTypeChanged)
@@ -198,6 +204,13 @@ class LinuxCncDataSource(QObject):
         self._status.tool_table.notify(self.__handleToolTableChanged)
         self._status.tool_in_spindle.notify(self.__handleToolInSpindleChanged)
 
+
+
+    def __handleStockUpdated(self, data):
+        self._vtk_parts_stock = data
+        
+        self.stockUpdated.emit(data)
+
     def __handleProgramLoaded(self, fname):
         if self._status.task_mode.getValue() == linuxcnc.MODE_MDI:
             LOG.debug("Skipping backplot reload while in MDI mode: %s", fname)
@@ -205,6 +218,7 @@ class LinuxCncDataSource(QObject):
 
         PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='datasource-program-loaded', percent=45)
         self.programLoaded.emit(fname)
+
 
     def __handlePositionChanged(self, position):
         self.positionChanged.emit(position)
@@ -692,4 +706,5 @@ class LinuxCncDataSource(QObject):
 
     def getRotaryAxisWrapped(self):
         return dict(self._vtk_rotary_axis_wrapped)
+
 
