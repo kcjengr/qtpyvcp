@@ -396,6 +396,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_position = (0.0, 0.0, 0.0)
         self.machine_motion_position = (0.0, 0.0, 0.0)
         self.spindle_rotation = (0.0, 0.0, 0.0)
+        self._runtime_tool_offset = (0.0,) * 9
         self.tooltip_position = (0.0, 0.0, 0.0)
         self.current_motion_type = None
         self._breadcrumbs_armed = False
@@ -405,6 +406,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         if not IN_DESIGNER:
             self.joints = self._datasource._status.joint
+            self._runtime_tool_offset = self._read_tool_offset()
 
         self.foam_offset = [0.0, 0.0]
 
@@ -1680,6 +1682,40 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             return None
         return (x, y, z)
 
+    @staticmethod
+    def _coerce_tool_offset_tuple(value):
+        if not isinstance(value, (list, tuple)):
+            return None
+
+        parsed = []
+        for idx in range(9):
+            if idx < len(value):
+                parsed_val = VTKBackPlot._coerce_float(value[idx], None)
+                if parsed_val is None:
+                    parsed_val = 0.0
+            else:
+                parsed_val = 0.0
+            parsed.append(float(parsed_val))
+
+        return tuple(parsed)
+
+    def _read_tool_offset(self):
+        status_obj = getattr(self._datasource, '_status', None)
+
+        channel = getattr(status_obj, 'tool_offset', None)
+        channel_value = getattr(channel, 'value', None)
+        parsed = self._coerce_tool_offset_tuple(channel_value)
+        if parsed is not None:
+            return parsed
+
+        stat_obj = getattr(status_obj, 'stat', None)
+        stat_value = getattr(stat_obj, 'tool_offset', None)
+        parsed = self._coerce_tool_offset_tuple(stat_value)
+        if parsed is not None:
+            return parsed
+
+        return (0.0,) * 9
+
     def _tool_in_spindle(self):
         status_obj = getattr(self._datasource, '_status', None)
         stat_obj = getattr(status_obj, 'stat', None)
@@ -2415,10 +2451,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             machine_position = self._table_aware_linear_position(position)
             self.machine_motion_position = machine_position
             self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
+            runtime_tlo = self._read_tool_offset()
+            self._runtime_tool_offset = runtime_tlo
 
             current_switchkins_type = self._current_switchkins_type()
             breadcrumb_world = self._current_tool_tip_world(
-                (0.0, 0.0, 0.0),
+                runtime_tlo,
                 machine_position,
                 switchkins_type=current_switchkins_type,
             )
@@ -2446,6 +2484,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         machine_position = self._table_aware_linear_position(position)
         self.machine_motion_position = machine_position
         self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
+        runtime_tlo = self._read_tool_offset()
+        self._runtime_tool_offset = runtime_tlo
         self.spindle_rotation = position[3:6]
         prev_switchkins_type = int(self._runtime_switchkins_type)
         current_switchkins_type = self._current_switchkins_type()
@@ -2523,7 +2563,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.tool_bit_actor.set_position_cnc(tuple(visual_position))
 
         breadcrumb_world = self._current_tool_tip_world(
-            (0.0, 0.0, 0.0),
+            runtime_tlo,
             machine_position,
             switchkins_type=current_switchkins_type,
         )
@@ -2900,6 +2940,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._request_render()
 
     def update_tool(self, *_args):
+        self._runtime_tool_offset = self._read_tool_offset()
+
         self.renderer.RemoveActor(self.tool_actor)
         self.renderer.RemoveActor(self.tool_bit_actor)
 
