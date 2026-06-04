@@ -40,9 +40,9 @@ from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
+STATUS = None
 if not IN_DESIGNER:
     STATUS = getPlugin('status')
-    STAT = STATUS.stat
 INFO = Info()
 
 
@@ -159,12 +159,18 @@ class ToolTable(DataPlugin):
     def reload_tool(self):
         if self.remember_tool_in_spindle and STATUS.all_axes_homed.value and STATUS.enabled.value:
             tnum = self.data_manager.getData('tool-in-spindle', 0)
-            LOG.debug("reload_tool: tool in spindle: %i new tool: %i" % (STAT.tool_in_spindle, tnum))
-            if STAT.tool_in_spindle == 0 and tnum != STAT.tool_in_spindle:
+            tool_in_spindle = self.getCurrentToolNumber()
+            LOG.debug("reload_tool: tool in spindle: %i new tool: %i" % (tool_in_spindle, tnum))
+            if tool_in_spindle == 0 and tnum != tool_in_spindle:
                 LOG.info("Reloading tool in spindle: %i", tnum)
                 cmd = "M61 Q{0} G43".format(tnum)
                 # give LinuxCNC time to switch modes
                 QTimer.singleShot(200, lambda: issue_mdi(cmd))
+
+    def getCurrentToolNumber(self):
+        if IN_DESIGNER:
+            return 0
+        return STATUS.tool_in_spindle.getValue()
 
     @DataChannel
     def current_tool(self, chan, item=None):
@@ -197,9 +203,11 @@ class ToolTable(DataPlugin):
         :param item: the name of the tool data item to get
         :return: dict, int, float, str
         """
+        tool_number = self.getCurrentToolNumber()
+        tool_data = self.TOOL_TABLE[tool_number]
         if item is None:
-            return self.TOOL_TABLE[STAT.tool_in_spindle]
-        return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
+            return tool_data
+        return tool_data.get(item[0].upper())
 
     def initialise(self):
         if self.db_prog is None:
@@ -210,7 +218,7 @@ class ToolTable(DataPlugin):
             self.fs_watcher = None
 
     def terminate(self):
-        self.data_manager.setData('tool-in-spindle', STAT.tool_in_spindle)
+        self.data_manager.setData('tool-in-spindle', self.getCurrentToolNumber())
 
     @staticmethod
     def validateColumns(columns):
