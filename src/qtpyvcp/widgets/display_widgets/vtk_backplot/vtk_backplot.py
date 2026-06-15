@@ -16,23 +16,24 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import math
 import os
 import re
-import time
-import logging
 import shutil
-from operator import add
+import time
 from collections import OrderedDict, defaultdict
+from operator import add
 
 import gcode
-import linuxcnc
 import vtk
 import yaml
-from PySide6.QtCore import QObject, Property, QEvent, Qt, QTimer, Slot
+from PySide6.QtCore import Property, QEvent, QObject, Qt, QTimer, Slot
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QWidget
 from vtkmodules.vtkCommonCore import VTK_VERSION_NUMBER, vtkVersion
+
+import linuxcnc
 
 IN_DESIGNER = os.getenv("DESIGNER", False)
 
@@ -61,8 +62,8 @@ from .path_cache_actor import PathCacheActor
 from .points_surface import PointsSurfaceActor
 from .program_bounds_actor import ProgramBoundsActor
 from .spindle_actor import SpindleActor
-from .table_actor import TableActor
 from .stock_actor import StockActor
+from .table_actor import TableActor
 from .tool_actor import ToolActor, ToolBitActor
 from .vtk_canon import COLOR_MAP, VTKCanon
 
@@ -89,19 +90,21 @@ def vtk_version_ok(major, minor):
     :param minor: Minor version.
     :return: True if the requested VTK version is greater or equal to the actual VTK version.
     """
-    needed_version = 10000000000 * int(major) \
-                     + 100000000 * int(minor)
+    needed_version = 10000000000 * int(major) + 100000000 * int(minor)
     try:
         vtk_version_number = VTK_VERSION_NUMBER
     except AttributeError:
         # Expand component-wise comparisons for VTK versions < 8.90.
         ver = vtkVersion()
-        vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() \
-                             + 100000000 * ver.GetVTKMinorVersion()
+        vtk_version_number = (
+            10000000000 * ver.GetVTKMajorVersion()
+            + 100000000 * ver.GetVTKMinorVersion()
+        )
     if vtk_version_number == needed_version:
         return True
     else:
         return False
+
 
 class InteractorEventFilter(QObject):
     def __init__(self, parent=None, jog_safety_off=True):
@@ -115,9 +118,11 @@ class InteractorEventFilter(QObject):
         # Treat either LATHE=1 or BACK_TOOL_LATHE=1 as lathe mode for backplot logic
         lathe_val = (inifile.find("DISPLAY", "LATHE") or "0").strip()
         back_tool_val = (inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
-        self._lathe_mode = (lathe_val not in ["0", "false", "no", "n", ""]) or (back_tool_val not in ["0", "false", "no", "n", ""])
+        self._lathe_mode = (lathe_val not in ["0", "false", "no", "n", ""]) or (
+            back_tool_val not in ["0", "false", "no", "n", ""]
+        )
         self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
-        self._lathe_plan_view = 'XZ' if self._back_tool_lathe else 'XZ2'
+        self._lathe_plan_view = "XZ" if self._back_tool_lathe else "XZ2"
         # Store reference to parent for jog speed slider access
         self._parent = parent
         # Get linuxcnc status for max_velocity
@@ -154,17 +159,17 @@ class InteractorEventFilter(QObject):
                 # Invert X axis only if BACK_TOOL_LATHE is enabled
                 x_sign = -1 if self._back_tool_lathe else 1
                 if event.key() == Qt.Key_Up:
-                    actions.machine.jog.axis('X', -1 * jog_active * x_sign, speed=speed)
+                    actions.machine.jog.axis("X", -1 * jog_active * x_sign, speed=speed)
                 elif event.key() == Qt.Key_Down:
-                    actions.machine.jog.axis('X', 1 * jog_active * x_sign, speed=speed)
+                    actions.machine.jog.axis("X", 1 * jog_active * x_sign, speed=speed)
                 elif event.key() == Qt.Key_Left:
-                    actions.machine.jog.axis('Z', -1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("Z", -1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_Right:
-                    actions.machine.jog.axis('Z', 1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("Z", 1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_PageUp:
-                    actions.machine.jog.axis('Y', 1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("Y", 1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_PageDown:
-                    actions.machine.jog.axis('Y', -1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("Y", -1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_Minus:
                     self.slow_jog = True
                     self.rapid_jog = False
@@ -174,17 +179,17 @@ class InteractorEventFilter(QObject):
             else:
                 # Default mill mapping
                 if event.key() == Qt.Key_Up:
-                    actions.machine.jog.axis('Y', 1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("Y", 1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_Down:
-                    actions.machine.jog.axis('Y', -1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("Y", -1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_Left:
-                    actions.machine.jog.axis('X', -1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("X", -1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_Right:
-                    actions.machine.jog.axis('X', 1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("X", 1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_PageUp:
-                    actions.machine.jog.axis('Z', 1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("Z", 1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_PageDown:
-                    actions.machine.jog.axis('Z', -1 * jog_active, speed=speed)
+                    actions.machine.jog.axis("Z", -1 * jog_active, speed=speed)
                 elif event.key() == Qt.Key_Minus:
                     self.slow_jog = True
                     self.rapid_jog = False
@@ -199,17 +204,17 @@ class InteractorEventFilter(QObject):
             if self._lathe_mode:
                 x_sign = -1 if self._back_tool_lathe else 1
                 if event.key() == Qt.Key_Up:
-                    actions.machine.jog.axis('X', 0)
+                    actions.machine.jog.axis("X", 0)
                 elif event.key() == Qt.Key_Down:
-                    actions.machine.jog.axis('X', 0)
+                    actions.machine.jog.axis("X", 0)
                 elif event.key() == Qt.Key_Left:
-                    actions.machine.jog.axis('Z', 0)
+                    actions.machine.jog.axis("Z", 0)
                 elif event.key() == Qt.Key_Right:
-                    actions.machine.jog.axis('Z', 0)
+                    actions.machine.jog.axis("Z", 0)
                 elif event.key() == Qt.Key_PageUp:
-                    actions.machine.jog.axis('Y', 0)
+                    actions.machine.jog.axis("Y", 0)
                 elif event.key() == Qt.Key_PageDown:
-                    actions.machine.jog.axis('Y', 0)
+                    actions.machine.jog.axis("Y", 0)
                 elif event.key() == Qt.Key_Minus:
                     self.slow_jog = False
                 elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
@@ -217,17 +222,17 @@ class InteractorEventFilter(QObject):
             else:
                 # Default mill mapping
                 if event.key() == Qt.Key_Up:
-                    actions.machine.jog.axis('Y', 0)
+                    actions.machine.jog.axis("Y", 0)
                 elif event.key() == Qt.Key_Down:
-                    actions.machine.jog.axis('Y', 0)
+                    actions.machine.jog.axis("Y", 0)
                 elif event.key() == Qt.Key_Left:
-                    actions.machine.jog.axis('X', 0)
+                    actions.machine.jog.axis("X", 0)
                 elif event.key() == Qt.Key_Right:
-                    actions.machine.jog.axis('X', 0)
+                    actions.machine.jog.axis("X", 0)
                 elif event.key() == Qt.Key_PageUp:
-                    actions.machine.jog.axis('Z', 0)
+                    actions.machine.jog.axis("Z", 0)
                 elif event.key() == Qt.Key_PageDown:
-                    actions.machine.jog.axis('Z', 0)
+                    actions.machine.jog.axis("Z", 0)
                 elif event.key() == Qt.Key_Minus:
                     self.slow_jog = False
                 elif event.key() in [Qt.Key_Plus, Qt.Key_Equal]:
@@ -235,10 +240,11 @@ class InteractorEventFilter(QObject):
 
         return super().eventFilter(obj, event)
 
+
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
-        
+
         # Disable VTK debug warnings (only if VTK is available)
         if not IN_DESIGNER:
             vtk.vtkObject.GlobalWarningDisplayOff()
@@ -250,26 +256,38 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._is_machine_jet = self._datasource.isMachineJet()
 
         self.axis_motion_owner = self._datasource.getAxisMotionOwners()
-        self.rotary_axis_origin = {'A': None, 'B': None, 'C': None}
+        self.rotary_axis_origin = {"A": None, "B": None, "C": None}
         self.rotary_axis_origin.update(self._datasource.getRotaryAxisOrigins())
         self._overlay_pivot_log_cache = None
-        
+
         # Detect lathe mode for backplot view logic (LATHE=1 or BACK_TOOL_LATHE=1)
         inifile = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
         lathe_val = (inifile.find("DISPLAY", "LATHE") or "0").strip()
         back_tool_val = (inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
-        transform_debug_val = str(inifile.find("VTK", "TRANSFORM_DEBUG") or "0").strip().lower()
+        transform_debug_val = (
+            str(inifile.find("VTK", "TRANSFORM_DEBUG") or "0").strip().lower()
+        )
         self._transform_debug = transform_debug_val in ("1", "true", "yes", "on")
-        breadcrumb_frame = str(inifile.find("VTK", "BREADCRUMB_FRAME") or "auto").strip().lower()
+        breadcrumb_frame = (
+            str(inifile.find("VTK", "BREADCRUMB_FRAME") or "auto").strip().lower()
+        )
         if breadcrumb_frame in ("world", "machine"):
             self._breadcrumb_frame = "world"
         elif breadcrumb_frame in ("tool",):
             self._breadcrumb_frame = "tool"
         else:
-            has_table_linear = any(self.axis_motion_owner.get(axis, 'head') == 'table' for axis in ('X', 'Y', 'Z'))
-            has_table_rotary = any(self.axis_motion_owner.get(axis, 'head') == 'table' for axis in ('A', 'B', 'C'))
-            self._breadcrumb_frame = 'tool' if (has_table_linear or has_table_rotary) else 'world'
-        self._breadcrumb_world_frame = (self._breadcrumb_frame == "world")
+            has_table_linear = any(
+                self.axis_motion_owner.get(axis, "head") == "table"
+                for axis in ("X", "Y", "Z")
+            )
+            has_table_rotary = any(
+                self.axis_motion_owner.get(axis, "head") == "table"
+                for axis in ("A", "B", "C")
+            )
+            self._breadcrumb_frame = (
+                "tool" if (has_table_linear or has_table_rotary) else "world"
+            )
+        self._breadcrumb_world_frame = self._breadcrumb_frame == "world"
         LOG.debug(
             "VTK breadcrumb mode resolved: requested=%s resolved=%s owners=%s",
             breadcrumb_frame,
@@ -277,28 +295,41 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.axis_motion_owner,
         )
 
-        cpp_backplot_val = str(inifile.find("VTK", "CPP_BACKPLOT") or "1").strip().lower()
+        cpp_backplot_val = (
+            str(inifile.find("VTK", "CPP_BACKPLOT") or "1").strip().lower()
+        )
         cpp_backplot_requested = cpp_backplot_val in ("1", "true", "yes", "on")
-        has_table_rotary = any(self.axis_motion_owner.get(axis, 'head') == 'table' for axis in ('A', 'B', 'C'))
+        has_table_rotary = any(
+            self.axis_motion_owner.get(axis, "head") == "table"
+            for axis in ("A", "B", "C")
+        )
         # Prefer Python backplot for table-rotary kinematics so program paths
         # can include kinematics-aware shaping during load, not only at runtime.
         self._use_cpp_backplot = bool(cpp_backplot_requested and not has_table_rotary)
 
-        self._lathe_mode = (lathe_val not in ["0", "false", "no", "n", ""]) or (back_tool_val not in ["0", "false", "no", "n", ""])
+        self._lathe_mode = (lathe_val not in ["0", "false", "no", "n", ""]) or (
+            back_tool_val not in ["0", "false", "no", "n", ""]
+        )
         self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
-        
+
         # Keyboard jogging is handled at the global level.
-        if self._datasource.getKeyboardJog().lower() in ['true', '1', 't', 'y', 'yes']:
-            jog_safety_off = self._datasource.getKeyboardJogLock().lower() in ['true', '1', 't', 'y', 'yes']
+        if self._datasource.getKeyboardJog().lower() in ["true", "1", "t", "y", "yes"]:
+            jog_safety_off = self._datasource.getKeyboardJogLock().lower() in [
+                "true",
+                "1",
+                "t",
+                "y",
+                "yes",
+            ]
             event_filter = InteractorEventFilter(self, jog_safety_off)
             self.installEventFilter(event_filter)
             # Ensure this widget does not keep focus after mouse clicks
             self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
         self.current_time = round(time.time() * 1000)
-        self.plot_interval = 1000/self._datasource.getFPS()  # 1 second / 30 fps
+        self.plot_interval = 1000 / self._datasource.getFPS()  # 1 second / 30 fps
         self.prev_plot_time = 0
-        
+
         self.parent = parent
         self.ploter_enabled = True
         self.touch_enabled = False
@@ -306,9 +337,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.breadcrumbs_plotted = True
 
         machine_ext_scale_setting = getSetting("backplot.machine-ext-scale")
-        machine_ext_scale_value = getattr(machine_ext_scale_setting, 'value', 1.0)
+        machine_ext_scale_value = getattr(machine_ext_scale_setting, "value", 1.0)
         self.machine_ext_scale = self._coerce_float(machine_ext_scale_value, 1.0)
-        
+
         # Set default view for lathe/back-tool-lathe
         if self._is_machine_lathe:
             self.default_view = "M"
@@ -316,15 +347,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             view_default_setting = getSetting("backplot.view").value
             view_options_setting = getSetting("backplot.view").enum_options
             view_options = list()
-            
+
             for option in view_options_setting:
-                view_options.append(option.split(':')[0])
+                view_options.append(option.split(":")[0])
 
             self.default_view = view_options[view_default_setting]
 
-        
         self.program_view_when_loading_program = False
-        self.program_view_when_loading_program_view = 'p'
+        self.program_view_when_loading_program_view = "p"
         self.pan_mode = False
         self.line = None
         self._last_filename = str()
@@ -332,7 +362,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.panning = 0
         self.zooming = 0
         self._render_scheduled = False
-        
+
         self.machine_parts = None
         self.machine_parts_data = None
         self.kinematics_overlay_shift = (0.0, 0.0, 0.0)
@@ -352,17 +382,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._line_cell_picker = None
         self._left_button_press_pos = None
         self._left_button_dragged = False
-        
+
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
-        
-        #used to set the perspective view direction
+
+        # used to set the perspective view direction
         self.view_x_vec = 1
         self.view_y_vec = -1
         self.view_z_vec = 1
 
         self._plot_machine = True
-        
+
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
         self._enableProgramTicks = True
@@ -378,7 +408,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._feed_color = self._default_feed_color
         self._dwel_color = self._default_dwell_color
         self._user_color = self._default_user_color
-        
+
         if IN_DESIGNER:
             return
 
@@ -404,7 +434,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._path_cache_seeded = False
         self._last_breadcrumb_world = None
         self._last_breadcrumb_motion_line = None
-        
+
         if not IN_DESIGNER:
             self.joints = self._datasource._status.joint
             self._runtime_tool_offset = self._read_tool_offset()
@@ -414,7 +444,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if not IN_DESIGNER:
             self.camera = vtk.vtkCamera()
             self.camera.ParallelProjectionOn()
-        
+
             self.path_actors = OrderedDict()
 
             self.path_end_point = OrderedDict()
@@ -426,9 +456,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.offset_change_start_actor = OrderedDict()
             self.offset_change_end_actor = OrderedDict()
             self.offset_change_line_actor = OrderedDict()
-        
+
         if self._datasource.isMachineMetric():
-            self.position_mult = 1000 #500 here works for me
+            self.position_mult = 1000  # 500 here works for me
             self.clipping_range_near = 0.01
             self.clipping_range_far = 10000.0
         else:
@@ -437,41 +467,54 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.clipping_range_far = 1000.0
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        
+
         if self._datasource.getAntialias():
-            #self.camera.SetUseAntialiasing(True)  # VTK 9.x+
+            # self.camera.SetUseAntialiasing(True)  # VTK 9.x+
             pass
-        
+
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
+
+        # Replace the default headlight with two spotlights from the
+        # top-left and top-right, both pointing down at the work area.
+        self.renderer.RemoveAllLights()
+        for sx, sy, sz in ((-300, -200, 300), (300, 200, 300)):
+            light = vtk.vtkLight()
+            light.SetPosition(sx, sy, sz)
+            light.SetFocalPoint(0, 0, 0)
+            light.SetLightTypeToSceneLight()
+            light.SetIntensity(0.55)
+            self.renderer.AddLight(light)
 
         self.renderer_window = self.GetRenderWindow()
         self.renderer_window.AddRenderer(self.renderer)
 
         # self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
-        self.nav_style = vtk.vtkInteractorStyleMultiTouchCamera() if self.touch_enabled else None
+        self.nav_style = (
+            vtk.vtkInteractorStyleMultiTouchCamera() if self.touch_enabled else None
+        )
 
         self.interactor = self.renderer_window.GetInteractor()
         self.interactor.SetInteractorStyle(self.nav_style)
         self.interactor.render_window = self.renderer_window
         # self.interactor.SetRenderWindow(self.renderer_window)
-        
-        if self._datasource.getAntialias() in ["true", "True", "TRUE", 1, "1"]:
-            self.renderer_window.SetMultiSamples(8)  # Enable 8x multisampling for antialiasing
 
-            
+        if self._datasource.getAntialias() in ["true", "True", "TRUE", 1, "1"]:
+            self.renderer_window.SetMultiSamples(
+                8
+            )  # Enable 8x multisampling for antialiasing
+
         if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
             self.cam_orient_manipulator = vtkCameraOrientationWidget()
             self.cam_orient_manipulator.SetParentRenderer(self.renderer)
-            
+
         if not IN_DESIGNER:
-            
             bounds_type = self._datasource.getMachineBounds()
             if bounds_type == "line":
                 self.machine_actor = MachineLineActor(self._datasource)
             else:
                 self.machine_actor = MachineCubeActor(self._datasource)
-            
+
             self.machine_actor.SetCamera(self.camera)
 
             self.axes_actor = AxesActor(self._datasource)
@@ -479,8 +522,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             transform = vtk.vtkTransform()
             transform.Translate(*self.active_wcs_offset[:3])
             transform.RotateZ(self._datasource.getRotationOfActiveWcs())
-            
-            
+
             # Machine-space transform intentionally not applied to global axes actor.
             # self.axes_actor.SetUserTransform(transform)
             self.path_actors = OrderedDict()
@@ -499,7 +541,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             x_vec = float(self._datasource._inifile.find("VTK", "VIEW_X") or 0.0)
             y_vec = float(self._datasource._inifile.find("VTK", "VIEW_Y") or 0.0)
             z_vec = float(self._datasource._inifile.find("VTK", "VIEW_Z") or 0.0)
-            
+
             if x_vec:
                 self.view_x_vec = x_vec
             if y_vec:
@@ -507,18 +549,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if z_vec:
                 self.view_z_vec = z_vec
 
-            self.spindle_model = self._datasource._inifile.find("VTK", "SPINDLE") or False
+            self.spindle_model = (
+                self._datasource._inifile.find("VTK", "SPINDLE") or False
+            )
 
             if self.spindle_model:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
-            
-            
+
             if self._plot_machine:
-                
-                self.machine_parts = self._datasource._inifile.find("VTK", "MACHINE_PARTS")
-            
+                self.machine_parts = self._datasource._inifile.find(
+                    "VTK", "MACHINE_PARTS"
+                )
+
                 if self.machine_parts:
-                    with open(self.machine_parts, 'r') as f:
+                    with open(self.machine_parts, "r") as f:
                         self.machine_parts_data = yaml.load(f, Loader=yaml.SafeLoader)
                         axis_dataset = self._datasource.getAxisConfigurationDataset()
 
@@ -526,41 +570,40 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                             "VTK rotary setup: owners=%s origins=%s validation=%s",
                             self.axis_motion_owner,
                             self.rotary_axis_origin,
-                            axis_dataset.get('validation'),
+                            axis_dataset.get("validation"),
                         )
-                        
-                        self.machine_parts_actor = MachinePartsASM(self.machine_parts_data)
-            
 
+                        self.machine_parts_actor = MachinePartsASM(
+                            self.machine_parts_data
+                        )
 
             self.stock_actor = StockActor(self._datasource)
             self.tool_actor = ToolActor(self._datasource)
             self.tool_bit_actor = ToolBitActor(self._datasource)
 
-
             # view settings
-            connectSetting('backplot.show-spindle', self.showSpindle)
-            connectSetting('backplot.show-grid', self.showGrid)
-            connectSetting('backplot.show-program-bounds', self.showProgramBounds)
+            connectSetting("backplot.show-spindle", self.showSpindle)
+            connectSetting("backplot.show-grid", self.showGrid)
+            connectSetting("backplot.show-program-bounds", self.showProgramBounds)
             # connectSetting('backplot.show-program-labels', self.showProgramLabels)
             # connectSetting('backplot.show-program-ticks', self.showProgramTicks)
-            connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
-            connectSetting('backplot.show-machine-labels', self.showMachineLabels)
-            connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
-            connectSetting('backplot.show-machine', self.showMachine)
-            connectSetting('backplot.show-points-surface', self.showSurface)
-            connectSetting('backplot.perspective-view', self.viewPerspective)
-            connectSetting('backplot.view', self.setView)
-            connectSetting('backplot.multitool-colors', self.showMultiColorPath)
-            connectSetting('backplot.show-machine-model', self.showMachine)
+            connectSetting("backplot.show-machine-bounds", self.showMachineBounds)
+            connectSetting("backplot.show-machine-labels", self.showMachineLabels)
+            connectSetting("backplot.show-machine-ticks", self.showMachineTicks)
+            connectSetting("backplot.show-machine", self.showMachine)
+            connectSetting("backplot.show-points-surface", self.showSurface)
+            connectSetting("backplot.perspective-view", self.viewPerspective)
+            connectSetting("backplot.view", self.setView)
+            connectSetting("backplot.multitool-colors", self.showMultiColorPath)
+            connectSetting("backplot.show-machine-model", self.showMachine)
 
-
-            self.path_colors = {'traverse': self._traverse_color,
-                           'arcfeed': self._arcfeed_color,
-                           'feed': self._feed_color,
-                           'dwell': QColor(0, 0, 255, 255),
-                           'user': QColor(0, 100, 255, 255)
-                       }
+            self.path_colors = {
+                "traverse": self._traverse_color,
+                "arcfeed": self._arcfeed_color,
+                "feed": self._feed_color,
+                "dwell": QColor(0, 0, 255, 255),
+                "user": QColor(0, 100, 255, 255),
+            }
 
             self.offset_axes = OrderedDict()
             self.program_bounds_actors = OrderedDict()
@@ -575,11 +618,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.interactor.AddObserver("RightButtonReleaseEvent", self.button_event)
             self.interactor.AddObserver("MouseMoveEvent", self.mouse_move)
             self.interactor.AddObserver("KeyPressEvent", self.keypress)
-            self.interactor.AddObserver("MouseWheelForwardEvent", self.mouse_scroll_forward)
-            self.interactor.AddObserver("MouseWheelBackwardEvent", self.mouse_scroll_backward)
+            self.interactor.AddObserver(
+                "MouseWheelForwardEvent", self.mouse_scroll_forward
+            )
+            self.interactor.AddObserver(
+                "MouseWheelBackwardEvent", self.mouse_scroll_backward
+            )
 
-
-            
             self.interactor.Initialize()
             self.renderer_window.Render()
 
@@ -587,55 +632,69 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             # Add the observers to watch for particular events. These invoke Python functions.
             self._datasource.programLoaded.connect(self.load_program)
-            
+
             self._datasource.positionChanged.connect(self.update_position)
             self._datasource.motionTypeChanged.connect(self.motion_type)
-            
+
             # self._datasource.rotationXYChanged.connect(self.update_rotation_xy)
             self._datasource.g5xIndexChanged.connect(self.update_g5x_index)
             self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
 
-            motion_line_channel = getattr(self._datasource._status, 'motion_line', None)
-            motion_line_notify = getattr(motion_line_channel, 'notify', None)
+            motion_line_channel = getattr(self._datasource._status, "motion_line", None)
+            motion_line_notify = getattr(motion_line_channel, "notify", None)
             if callable(motion_line_notify):
                 motion_line_notify(self._on_motion_line_changed)
 
-            selected_line_channel = getattr(self._datasource._status, 'selected_program_line', None)
-            selected_line_notify = getattr(selected_line_channel, 'notify', None)
+            selected_line_channel = getattr(
+                self._datasource._status, "selected_program_line", None
+            )
+            selected_line_notify = getattr(selected_line_channel, "notify", None)
             if callable(selected_line_notify):
                 selected_line_notify(self._on_selected_program_line_changed)
 
-            selected_lines_channel = getattr(self._datasource._status, 'selected_program_lines', None)
-            selected_lines_notify = getattr(selected_lines_channel, 'notify', None)
+            selected_lines_channel = getattr(
+                self._datasource._status, "selected_program_lines", None
+            )
+            selected_lines_notify = getattr(selected_lines_channel, "notify", None)
             if callable(selected_lines_notify):
                 selected_lines_notify(self._on_selected_program_lines_changed)
-            
+
             self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
             self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
-            
+
             self._datasource.toolTableChanged.connect(self.update_tool)
             self._datasource.toolOffsetChanged.connect(self.update_tool)
             self._datasource.toolInSpindleChanged.connect(self.update_tool)
 
             # Also react to QtPyVCP tooltable plugin updates (remark/comment-only edits
             # may not produce a LinuxCNC status tool_table change event).
-            tooltable_plugin = getattr(self._datasource, '_tooltable', None)
-            tooltable_changed = getattr(tooltable_plugin, 'tool_table_changed', None)
-            if tooltable_changed is not None and hasattr(tooltable_changed, 'connect'):
+            tooltable_plugin = getattr(self._datasource, "_tooltable", None)
+            tooltable_changed = getattr(tooltable_plugin, "tool_table_changed", None)
+            if tooltable_changed is not None and hasattr(tooltable_changed, "connect"):
                 tooltable_changed.connect(self.update_tool)
             # self.status.g5x_index.notify(self.update_g5x_index)
-            
+
             self.offsetTableColumnsIndex = self._datasource.getOffsetColumns()
-            
+
             self.canon = VTKCanon(colors=self.path_colors)
 
             self.path_actors = self.canon.get_path_actors()
 
             for wcs_index, path_actor in list(self.path_actors.items()):
-                current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
-                r_column = self.offsetTableColumnsIndex.get('R') if self.offsetTableColumnsIndex else None
-                rotation = current_offsets[r_column] if r_column is not None and r_column < len(current_offsets) else 0.0
+                current_offsets = self._safe_get_offsets(
+                    wcs_index, self.offsetTableColumnsIndex
+                )
+                r_column = (
+                    self.offsetTableColumnsIndex.get("R")
+                    if self.offsetTableColumnsIndex
+                    else None
+                )
+                rotation = (
+                    current_offsets[r_column]
+                    if r_column is not None and r_column < len(current_offsets)
+                    else 0.0
+                )
 
                 actor_transform = vtk.vtkTransform()
                 actor_transform.Translate(*current_offsets[:3])
@@ -655,17 +714,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
                 self.renderer.AddActor(path_actor)
-                
+
             if self._plot_machine:
                 if self.machine_parts:
                     self.renderer.AddActor(self.machine_parts_actor)
-                
+
                 if self.table_model is not None:
                     self.renderer.AddActor(self.table_actor)
 
             if self.spindle_model:
                 self.renderer.AddActor(self.spindle_actor)
-
 
             self.renderer.AddActor(self.stock_actor)
             self.renderer.AddActor(self.tool_actor)
@@ -690,7 +748,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.setView(self.default_view)
 
             self.interactor.ReInitialize()
-            
+
             self.renderer.ResetCameraClippingRange()
             self.renderer_window.Render()
 
@@ -760,7 +818,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         centerY = center[1] / 2.0
 
         if self.rotating:
-            self.rotate(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
+            self.rotate(
+                self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY
+            )
         elif self.panning:
             self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
         elif self.zooming:
@@ -769,7 +829,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def keypress(self, obj, event):
         key = obj.GetKeySym()
         LOG.debug("VTK - keypress for w or s")
-        if key == 'w' or key == 's':
+        if key == "w" or key == "s":
             self._setRepresentation(key)
 
     # Functions that translate the events into camera motions.
@@ -827,13 +887,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             RPoint1 = RPoint1 / RPoint3
             RPoint2 = RPoint2 / RPoint3
 
-        camera.SetFocalPoint((FPoint0 - RPoint0) / 1.0 + FPoint0,
-                             (FPoint1 - RPoint1) / 1.0 + FPoint1,
-                             (FPoint2 - RPoint2) / 1.0 + FPoint2)
+        camera.SetFocalPoint(
+            (FPoint0 - RPoint0) / 1.0 + FPoint0,
+            (FPoint1 - RPoint1) / 1.0 + FPoint1,
+            (FPoint2 - RPoint2) / 1.0 + FPoint2,
+        )
 
-        camera.SetPosition((FPoint0 - RPoint0) / 1.0 + PPoint0,
-                           (FPoint1 - RPoint1) / 1.0 + PPoint1,
-                           (FPoint2 - RPoint2) / 1.0 + PPoint2)
+        camera.SetPosition(
+            (FPoint0 - RPoint0) / 1.0 + PPoint0,
+            (FPoint1 - RPoint1) / 1.0 + PPoint1,
+            (FPoint2 - RPoint2) / 1.0 + PPoint2,
+        )
 
         self._render_frame(interactive=True)
 
@@ -855,10 +919,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         actors.InitTraversal()
         actor = actors.GetNextItem()
         while actor:
-            if keyPressed == 's':
+            if keyPressed == "s":
                 # sets the representation of all actors to surface.
                 actor.GetProperty().SetRepresentationToSurface()
-            elif keyPressed == 'w':
+            elif keyPressed == "w":
                 # sets the representation of all actors to wireframe.
                 actor.GetProperty().SetRepresentationToWireframe()
             actor = actors.GetNextItem()
@@ -873,7 +937,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
         self._datasource._status.addLock()
-        PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='vtk-load-program-enter', percent=48)
+        PROGRAM_LOAD_PERF_SUMMARY.mark_phase(
+            fname, phase="vtk-load-program-enter", percent=48
+        )
         perf_start = time.perf_counter()
         self._index_runtime_switchkins_commands(fname)
         self._line_cells_by_wcs = {}
@@ -916,7 +982,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.RemoveActor(actor)
                 self.renderer.RemoveActor(program_bounds_actor)
 
-
             self.path_actors.clear()
             self.offset_axes.clear()
             self.program_bounds_actors.clear()
@@ -925,7 +990,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 return
 
             # Keep VTKCanon instance for downstream state consumers and perf accounting.
-            self.canon = VTKCanon(colors=self.path_colors, cpp_mode=self._use_cpp_backplot)
+            self.canon = VTKCanon(
+                colors=self.path_colors, cpp_mode=self._use_cpp_backplot
+            )
 
             unitcode = "G%d" % (20 + (self.stat.linear_units == 1))
             initcode = self.ini.find("RS274NGC", "RS274NGC_STARTUP_CODE") or ""
@@ -962,12 +1029,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     draw_ms = float(cpp_result.draw_ms)
                     if draw_ms <= 0.0:
                         draw_ms = (time.perf_counter() - draw_start) * 1000.0
-                    draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+                    draw_done_elapsed_ms = (
+                        PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+                    )
                     # Parse and draw both complete inside the same native call. We only get one
                     # wall-clock checkpoint on return, so estimate parse completion by subtracting
                     # measured native draw time from the draw completion checkpoint.
                     if draw_done_elapsed_ms is not None:
-                        parse_done_elapsed_ms = max(0.0, float(draw_done_elapsed_ms) - float(draw_ms))
+                        parse_done_elapsed_ms = max(
+                            0.0, float(draw_done_elapsed_ms) - float(draw_ms)
+                        )
                     cpp_backplot_used = True
 
             if not cpp_backplot_used:
@@ -979,22 +1050,31 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     result, seq = gcode.parse(fname, self.canon, unitcode, initcode)
                     if result > gcode.MIN_ERROR:
                         msg = gcode.strerror(result)
-                        LOG.warning("Python backplot parse error in %s line %s: %s", fname, seq - 1, msg)
+                        LOG.warning(
+                            "Python backplot parse error in %s line %s: %s",
+                            fname,
+                            seq - 1,
+                            msg,
+                        )
                         return
                 finally:
                     if os.path.isfile(self.temp_parameter_file):
                         os.unlink(self.temp_parameter_file)
-                    bak_file = self.temp_parameter_file + '.bak'
+                    bak_file = self.temp_parameter_file + ".bak"
                     if os.path.isfile(bak_file):
                         os.unlink(bak_file)
 
                 parse_ms = (time.perf_counter() - parse_start) * 1000.0
-                parse_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+                parse_done_elapsed_ms = (
+                    PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+                )
 
                 draw_start = time.perf_counter()
                 self.canon.draw_lines()
                 draw_ms = (time.perf_counter() - draw_start) * 1000.0
-                draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+                draw_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(
+                    fname
+                )
 
                 self.path_actors = self.canon.get_path_actors()
                 self.offset_transitions = self.canon.get_offset_transitions() or list()
@@ -1010,8 +1090,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 )
                 return
 
-            active_offsets = self._safe_get_offsets(self.active_wcs_index, self._datasource.getOffsetColumns())
-            offsets_len = len(self.wcs_offsets) if hasattr(self.wcs_offsets, '__len__') else 'n/a'
+            active_offsets = self._safe_get_offsets(
+                self.active_wcs_index, self._datasource.getOffsetColumns()
+            )
+            offsets_len = (
+                len(self.wcs_offsets) if hasattr(self.wcs_offsets, "__len__") else "n/a"
+            )
 
             LOG.debug(
                 "VTKBackPlot load_program context: active_wcs=%s offsets_len=%s active_offsets=%s",
@@ -1021,7 +1105,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             )
 
             if self._is_machine_foam:
-
                 self.foam_offset = self.canon.get_foam()
                 LOG.warning(self.foam_offset)
                 z = self.foam_offset[0]
@@ -1051,8 +1134,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 # Scale up the axes for the active WCS to provide visual feedback
                 if wcs_index == self.active_wcs_index:
-                    axes_transform.Scale(1.5, 1.5, 1.5)  # Make active WCS axes 50% larger
-
+                    axes_transform.Scale(
+                        1.5, 1.5, 1.5
+                    )  # Make active WCS axes 50% larger
 
                 actor.SetUserTransform(actor_transform)
 
@@ -1063,7 +1147,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.offset_axes[wcs_index] = axes
                 self.program_bounds_actors[wcs_index] = program_bounds_actor
 
-                axes.SetUserTransform(axes_transform)  # Keep per-WCS axes aligned with path actor transform.
+                axes.SetUserTransform(
+                    axes_transform
+                )  # Keep per-WCS axes aligned with path actor transform.
 
                 self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
@@ -1071,14 +1157,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self._rebuild_transition_actors(offset_columns)
             self._rebuild_gcode_line_index()
-            self._update_backplot_line_highlight(self._preferred_program_line(), force=True)
+            self._update_backplot_line_highlight(
+                self._preferred_program_line(), force=True
+            )
             # self.renderer.AddActor(self.axes_actor)
             self._request_render()
             actor_build_ms = (time.perf_counter() - actor_start) * 1000.0
-            actor_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+            actor_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(
+                fname
+            )
 
             total_ms = (time.perf_counter() - perf_start) * 1000.0
-            backplot_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(fname)
+            backplot_done_elapsed_ms = PROGRAM_LOAD_PERF_SUMMARY.elapsed_since_start_ms(
+                fname
+            )
             LOG.debug(
                 "[backplot-perf] file=%s parse_ms=%.2f draw_ms=%.2f actor_build_ms=%.2f total_ms=%.2f cpp_requested=%s cpp_used=%s",
                 fname,
@@ -1091,7 +1183,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             )
             PROGRAM_LOAD_PERF_SUMMARY.update_backplot(
                 fname,
-                added_segments=getattr(self.canon, 'added_segments', 0),
+                added_segments=getattr(self.canon, "added_segments", 0),
                 interp_ms=parse_ms,
                 draw_ms=draw_ms,
                 actor_build_ms=actor_build_ms,
@@ -1152,14 +1244,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         return []
 
     def _selected_program_line_value(self):
-        status_obj = getattr(self._datasource, '_status', None)
-        selected_chan = getattr(status_obj, 'selected_program_line', None)
-        return self._coerce_int(getattr(selected_chan, 'value', None), 0)
+        status_obj = getattr(self._datasource, "_status", None)
+        selected_chan = getattr(status_obj, "selected_program_line", None)
+        return self._coerce_int(getattr(selected_chan, "value", None), 0)
 
     def _selected_program_line_values(self):
-        status_obj = getattr(self._datasource, '_status', None)
-        selected_lines_chan = getattr(status_obj, 'selected_program_lines', None)
-        selected_lines = self._normalize_selected_lines(getattr(selected_lines_chan, 'value', None))
+        status_obj = getattr(self._datasource, "_status", None)
+        selected_lines_chan = getattr(status_obj, "selected_program_lines", None)
+        selected_lines = self._normalize_selected_lines(
+            getattr(selected_lines_chan, "value", None)
+        )
         if selected_lines:
             return selected_lines
 
@@ -1184,7 +1278,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if (dx * dx + dy * dy) > 4:
             return
 
-        picked_lines = self._pick_program_lines_at_display_pos(event_pos[0], event_pos[1])
+        picked_lines = self._pick_program_lines_at_display_pos(
+            event_pos[0], event_pos[1]
+        )
         if not picked_lines:
             return
 
@@ -1192,7 +1288,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if interactor is not None:
             additive = bool(interactor.GetShiftKey() or interactor.GetControlKey())
 
-        self._publish_selected_program_lines_from_backplot(picked_lines, additive=additive)
+        self._publish_selected_program_lines_from_backplot(
+            picked_lines, additive=additive
+        )
 
     def _pick_program_lines_at_display_pos(self, x_pos, y_pos):
         if not self.path_actors or not self._line_by_cell_by_wcs:
@@ -1239,8 +1337,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         return [line_no]
 
-    def _publish_selected_program_lines_from_backplot(self, line_numbers, additive=False):
-        status_obj = getattr(self._datasource, '_status', None)
+    def _publish_selected_program_lines_from_backplot(
+        self, line_numbers, additive=False
+    ):
+        status_obj = getattr(self._datasource, "_status", None)
         if status_obj is None:
             return
 
@@ -1255,15 +1355,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Mark source so editor-side sync can distinguish backplot picks from
         # editor-originated cursor/selection updates.
-        setattr(status_obj, '_selected_program_line_source', 'backplot')
+        setattr(status_obj, "_selected_program_line_source", "backplot")
 
-        selected_lines_channel = getattr(status_obj, 'selected_program_lines', None)
-        set_lines = getattr(selected_lines_channel, 'setValue', None)
+        selected_lines_channel = getattr(status_obj, "selected_program_lines", None)
+        set_lines = getattr(selected_lines_channel, "setValue", None)
         if callable(set_lines):
             set_lines(merged_lines)
 
-        selected_line_channel = getattr(status_obj, 'selected_program_line', None)
-        set_line = getattr(selected_line_channel, 'setValue', None)
+        selected_line_channel = getattr(status_obj, "selected_program_line", None)
+        set_line = getattr(selected_line_channel, "setValue", None)
         if callable(set_line):
             set_line(picked_lines[0])
 
@@ -1280,7 +1380,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         indexed_by_cell = {}
 
         for wcs_index, path_actor in self.path_actors.items():
-            poly_data = getattr(path_actor, 'poly_data', None)
+            poly_data = getattr(path_actor, "poly_data", None)
             if poly_data is None:
                 continue
 
@@ -1321,7 +1421,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             highlight_actor.SetUserTransform(path_actor.GetUserTransform())
 
     def _build_highlight_actor_for_line_cells(self, path_actor, cell_ids):
-        source_poly = getattr(path_actor, 'poly_data', None)
+        source_poly = getattr(path_actor, "poly_data", None)
         if source_poly is None:
             return None
 
@@ -1414,7 +1514,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if path_actor is None:
                 continue
 
-            highlight_actor = self._build_highlight_actor_for_line_cells(path_actor, cell_ids)
+            highlight_actor = self._build_highlight_actor_for_line_cells(
+                path_actor, cell_ids
+            )
             if highlight_actor is None:
                 continue
 
@@ -1425,14 +1527,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._request_render()
 
     def _current_motion_line(self):
-        status_obj = getattr(self._datasource, '_status', None)
-        motion_line_chan = getattr(status_obj, 'motion_line', None)
-        line_no = self._coerce_int(getattr(motion_line_chan, 'value', None), None)
+        status_obj = getattr(self._datasource, "_status", None)
+        motion_line_chan = getattr(status_obj, "motion_line", None)
+        line_no = self._coerce_int(getattr(motion_line_chan, "value", None), None)
         if line_no is not None:
             return line_no
 
-        stat_obj = getattr(status_obj, 'stat', None)
-        return self._coerce_int(getattr(stat_obj, 'motion_line', None), None)
+        stat_obj = getattr(status_obj, "stat", None)
+        return self._coerce_int(getattr(stat_obj, "motion_line", None), None)
 
     @staticmethod
     def _project_point_onto_segment(point, seg_start, seg_end):
@@ -1467,7 +1569,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         return (qx, qy, qz), (dx * dx + dy * dy + dz * dz)
 
     def _segment_in_breadcrumb_frame(self, path_actor, cell_id, id_list):
-        poly_data = getattr(path_actor, 'poly_data', None)
+        poly_data = getattr(path_actor, "poly_data", None)
         if poly_data is None:
             return None
 
@@ -1487,13 +1589,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             p0_world = (float(p0[0]), float(p0[1]), float(p0[2]))
             p1_world = (float(p1[0]), float(p1[1]), float(p1[2]))
         else:
-            p0_world = actor_transform.TransformPoint(float(p0[0]), float(p0[1]), float(p0[2]))
-            p1_world = actor_transform.TransformPoint(float(p1[0]), float(p1[1]), float(p1[2]))
+            p0_world = actor_transform.TransformPoint(
+                float(p0[0]), float(p0[1]), float(p0[2])
+            )
+            p1_world = actor_transform.TransformPoint(
+                float(p1[0]), float(p1[1]), float(p1[2])
+            )
 
         if self._breadcrumb_world_frame:
             return p0_world, p1_world
 
-        return self._active_path_local_point(p0_world), self._active_path_local_point(p1_world)
+        return self._active_path_local_point(p0_world), self._active_path_local_point(
+            p1_world
+        )
 
     def _line_segments_in_breadcrumb_frame(self, line_no):
         line_id = self._coerce_int(line_no, None)
@@ -1576,7 +1684,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # Require geometric agreement to avoid injecting wrong corners when
         # motion-line reports briefly lead/lag the plotted segment mapping.
         corner_merge_tol = 0.25 if self._datasource.isMachineMetric() else 0.01
-        if best_dist_sq is not None and best_dist_sq <= (corner_merge_tol * corner_merge_tol):
+        if best_dist_sq is not None and best_dist_sq <= (
+            corner_merge_tol * corner_merge_tol
+        ):
             return best
         return None
 
@@ -1593,7 +1703,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 continue
 
             for seg_start, seg_end in segments:
-                projected, dist_sq = self._project_point_onto_segment(raw_point, seg_start, seg_end)
+                projected, dist_sq = self._project_point_onto_segment(
+                    raw_point, seg_start, seg_end
+                )
                 if best_dist_sq is None or dist_sq < best_dist_sq:
                     best_dist_sq = dist_sq
                     best_point = projected
@@ -1616,11 +1728,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             and current_motion_line is not None
             and current_motion_line != previous_motion_line
         ):
-            corner = self._shared_corner_for_lines(previous_motion_line, current_motion_line)
+            corner = self._shared_corner_for_lines(
+                previous_motion_line, current_motion_line
+            )
             if corner is not None:
                 self.path_cache_actor.add_line_point(corner)
 
-        snapped_point = self._snap_breadcrumb_to_motion_line(raw_point, current_motion_line)
+        snapped_point = self._snap_breadcrumb_to_motion_line(
+            raw_point, current_motion_line
+        )
         self.path_cache_actor.add_line_point(snapped_point)
         self._path_cache_seeded = True
         self._last_breadcrumb_world = snapped_point
@@ -1629,9 +1745,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def _should_plot_breadcrumb_for_motion(self):
         mt = self.current_motion_type
         if mt is None:
-            status_obj = getattr(self._datasource, '_status', None)
-            stat_obj = getattr(status_obj, 'stat', None)
-            mt = getattr(stat_obj, 'motion_type', None)
+            status_obj = getattr(self._datasource, "_status", None)
+            stat_obj = getattr(status_obj, "stat", None)
+            mt = getattr(stat_obj, "motion_type", None)
 
         if mt == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             return False
@@ -1652,10 +1768,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if isinstance(value, float):
             return int(value) if value.is_integer() else default
 
-        text = str(value or '').strip()
+        text = str(value or "").strip()
         if not text:
             return default
-        signless = text[1:] if text[0] in ('+', '-') else text
+        signless = text[1:] if text[0] in ("+", "-") else text
         if signless.isdigit():
             return int(text)
         return default
@@ -1667,11 +1783,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if isinstance(value, (int, float)):
             return float(value)
 
-        text = str(value or '').strip()
+        text = str(value or "").strip()
         if not text:
             return default
 
-        float_pattern = r'^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$'
+        float_pattern = r"^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$"
         if re.fullmatch(float_pattern, text):
             return float(text)
         return default
@@ -1705,16 +1821,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         return tuple(parsed)
 
     def _read_tool_offset(self):
-        status_obj = getattr(self._datasource, '_status', None)
+        status_obj = getattr(self._datasource, "_status", None)
 
-        channel = getattr(status_obj, 'tool_offset', None)
-        channel_value = getattr(channel, 'value', None)
+        channel = getattr(status_obj, "tool_offset", None)
+        channel_value = getattr(channel, "value", None)
         parsed = self._coerce_tool_offset_tuple(channel_value)
         if parsed is not None:
             return parsed
 
-        stat_obj = getattr(status_obj, 'stat', None)
-        stat_value = getattr(stat_obj, 'tool_offset', None)
+        stat_obj = getattr(status_obj, "stat", None)
+        stat_value = getattr(stat_obj, "tool_offset", None)
         parsed = self._coerce_tool_offset_tuple(stat_value)
         if parsed is not None:
             return parsed
@@ -1722,9 +1838,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         return (0.0,) * 9
 
     def _tool_in_spindle(self):
-        status_obj = getattr(self._datasource, '_status', None)
-        stat_obj = getattr(status_obj, 'stat', None)
-        raw = getattr(stat_obj, 'tool_in_spindle', 0)
+        status_obj = getattr(self._datasource, "_status", None)
+        stat_obj = getattr(status_obj, "stat", None)
+        raw = getattr(stat_obj, "tool_in_spindle", 0)
         return self._coerce_int(raw, 0)
 
     @staticmethod
@@ -1734,8 +1850,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Remove semicolon comments and parenthesized comments for simple
         # runtime M-code line tagging.
-        text = line.split(';', 1)[0]
-        return re.sub(r'\([^\)]*\)', ' ', text)
+        text = line.split(";", 1)[0]
+        return re.sub(r"\([^\)]*\)", " ", text)
 
     def _index_runtime_switchkins_commands(self, fname):
         self._runtime_switchkins_cmd_lines = {}
@@ -1746,10 +1862,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         command_lines = {}
         try:
-            with open(fname, 'r', encoding='utf-8', errors='ignore') as handle:
+            with open(fname, "r", encoding="utf-8", errors="ignore") as handle:
                 for line_number, raw_line in enumerate(handle, start=1):
                     stripped = self._strip_gcode_comments(raw_line)
-                    codes = re.findall(r'(?<!\d)M\s*(428|429|430)(?!\d)', stripped, flags=re.IGNORECASE)
+                    codes = re.findall(
+                        r"(?<!\d)M\s*(428|429|430)(?!\d)", stripped, flags=re.IGNORECASE
+                    )
                     if codes:
                         command_lines[line_number] = tuple(f"M{code}" for code in codes)
         except Exception as exc:
@@ -1758,23 +1876,26 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._runtime_switchkins_cmd_lines = command_lines
         if command_lines:
-            details = ', '.join(
-                f"L{line}={'/'.join(codes)}" for line, codes in sorted(command_lines.items())
+            details = ", ".join(
+                f"L{line}={'/'.join(codes)}"
+                for line, codes in sorted(command_lines.items())
             )
             LOG.warning("VTK runtime switchkins commands indexed: %s", details)
 
-    def _log_runtime_switchkins_command_hit(self, current_switchkins_type, motion_line_value=None):
+    def _log_runtime_switchkins_command_hit(
+        self, current_switchkins_type, motion_line_value=None
+    ):
         if not self._runtime_switchkins_cmd_lines:
             return
 
-        status_obj = getattr(self._datasource, '_status', None)
-        stat_obj = getattr(status_obj, 'stat', None)
+        status_obj = getattr(self._datasource, "_status", None)
+        stat_obj = getattr(status_obj, "stat", None)
         if stat_obj is None:
             return
 
         motion_line = self._coerce_int(motion_line_value, None)
         if motion_line is None:
-            motion_line = self._coerce_int(getattr(stat_obj, 'motion_line', None), None)
+            motion_line = self._coerce_int(getattr(stat_obj, "motion_line", None), None)
         if motion_line is None:
             return
 
@@ -1787,20 +1908,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.warning(
             "VTK runtime switchkins command reached: line=%s codes=%s switchkins_type=%s interp_state=%s",
             motion_line,
-            '/'.join(codes),
+            "/".join(codes),
             int(current_switchkins_type),
-            getattr(stat_obj, 'interp_state', None),
+            getattr(stat_obj, "interp_state", None),
         )
         self._runtime_switchkins_logged_lines.add(motion_line)
 
     def _graphics_diagnostics_enabled(self):
-        inifile = getattr(self._datasource, '_inifile', None)
-        inifile_find = getattr(inifile, 'find', None)
+        inifile = getattr(self._datasource, "_inifile", None)
+        inifile_find = getattr(inifile, "find", None)
         if not callable(inifile_find):
             return False
 
         # Keep expensive graphics diagnostics strictly opt-in.
-        advanced_logging = str(inifile_find("DISPLAY", "ADVANCED_LOGGING") or "").strip().lower()
+        advanced_logging = (
+            str(inifile_find("DISPLAY", "ADVANCED_LOGGING") or "").strip().lower()
+        )
         return advanced_logging in ("1", "true", "yes", "on")
 
     @staticmethod
@@ -1849,10 +1972,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         ogl_window = vtk.vtkOpenGLRenderWindow.SafeDownCast(self.renderer_window)
         if ogl_window is not None:
-            get_vendor = getattr(ogl_window, 'GetOpenGLVendor', None)
-            get_renderer = getattr(ogl_window, 'GetOpenGLRenderer', None)
-            get_major = getattr(ogl_window, 'GetOpenGLMajorVersion', None)
-            get_minor = getattr(ogl_window, 'GetOpenGLMinorVersion', None)
+            get_vendor = getattr(ogl_window, "GetOpenGLVendor", None)
+            get_renderer = getattr(ogl_window, "GetOpenGLRenderer", None)
+            get_major = getattr(ogl_window, "GetOpenGLMajorVersion", None)
+            get_minor = getattr(ogl_window, "GetOpenGLMinorVersion", None)
             if callable(get_vendor):
                 ogl_info["vendor"] = str(get_vendor() or "unknown")
             if callable(get_renderer):
@@ -1895,12 +2018,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             )
 
     def _log_overlay_rotation_sources(self):
-        axis_specs = [('A', 0), ('B', 1), ('C', 2)]
+        axis_specs = [("A", 0), ("B", 1), ("C", 2)]
         active = []
         missing = []
 
         for axis_name, idx in axis_specs:
-            if self.axis_motion_owner.get(axis_name, 'head') != 'table':
+            if self.axis_motion_owner.get(axis_name, "head") != "table":
                 continue
 
             angle = float(self.kinematics_overlay_rotation[idx])
@@ -1914,7 +2037,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 active.append((axis_name, tuple(origin), angle))
 
         if active:
-            log_key = ('active', tuple(active), tuple(missing))
+            log_key = ("active", tuple(active), tuple(missing))
             if self._overlay_pivot_log_cache != log_key:
                 LOG.debug(
                     "VTK overlay pivots active: %s missing=%s overlay_rotation=%s",
@@ -1925,7 +2048,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self._overlay_pivot_log_cache = log_key
             return
 
-        table_axes = [axis for axis, _ in axis_specs if self.axis_motion_owner.get(axis, 'head') == 'table']
+        table_axes = [
+            axis
+            for axis, _ in axis_specs
+            if self.axis_motion_owner.get(axis, "head") == "table"
+        ]
         fallback = []
         for axis_name in table_axes:
             origin = self.rotary_axis_origin.get(axis_name)
@@ -1933,7 +2060,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 fallback.append((axis_name, tuple(origin)))
 
         if fallback:
-            log_key = ('fallback', tuple(fallback))
+            log_key = ("fallback", tuple(fallback))
             if self._overlay_pivot_log_cache != log_key:
                 LOG.debug(
                     "VTK overlay pivots fallback: %s overlay_rotation=%s",
@@ -1943,7 +2070,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self._overlay_pivot_log_cache = log_key
             return
 
-        log_key = ('none', tuple(table_axes))
+        log_key = ("none", tuple(table_axes))
         if self._overlay_pivot_log_cache != log_key:
             LOG.debug(
                 "VTK overlay pivots missing: table_axes=%s owners=%s origins=%s overlay_rotation=%s",
@@ -1957,11 +2084,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @staticmethod
     def _apply_axis_rotation_about_pivot(transform, axis_name, angle_deg, pivot_local):
         transform.Translate(pivot_local[0], pivot_local[1], pivot_local[2])
-        if axis_name == 'A':
+        if axis_name == "A":
             transform.RotateX(angle_deg)
-        elif axis_name == 'B':
+        elif axis_name == "B":
             transform.RotateY(angle_deg)
-        elif axis_name == 'C':
+        elif axis_name == "C":
             transform.RotateZ(angle_deg)
         transform.Translate(-pivot_local[0], -pivot_local[1], -pivot_local[2])
 
@@ -1970,9 +2097,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if origin is None:
             return None
 
-        shift_x = self.kinematics_overlay_shift[0] if self.axis_motion_owner.get('X', 'head') == 'table' else 0.0
-        shift_y = self.kinematics_overlay_shift[1] if self.axis_motion_owner.get('Y', 'head') == 'table' else 0.0
-        shift_z = self.kinematics_overlay_shift[2] if self.axis_motion_owner.get('Z', 'head') == 'table' else 0.0
+        shift_x = (
+            self.kinematics_overlay_shift[0]
+            if self.axis_motion_owner.get("X", "head") == "table"
+            else 0.0
+        )
+        shift_y = (
+            self.kinematics_overlay_shift[1]
+            if self.axis_motion_owner.get("Y", "head") == "table"
+            else 0.0
+        )
+        shift_z = (
+            self.kinematics_overlay_shift[2]
+            if self.axis_motion_owner.get("Z", "head") == "table"
+            else 0.0
+        )
 
         return (
             float(origin[0] + shift_x),
@@ -1983,11 +2122,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def _overlay_rotary_axis_order(self):
         # Apply rotary transforms parent-to-child so downstream axes inherit
         # upstream tilt (e.g. C riding on A in xyzac machine assemblies).
-        table_a = self.axis_motion_owner.get('A', 'head') == 'table'
-        table_c = self.axis_motion_owner.get('C', 'head') == 'table'
+        table_a = self.axis_motion_owner.get("A", "head") == "table"
+        table_c = self.axis_motion_owner.get("C", "head") == "table"
         if table_a and table_c:
-            return ('A', 'B', 'C')
-        return ('A', 'B', 'C')
+            return ("A", "B", "C")
+        return ("A", "B", "C")
 
     def _transform_debug_enabled(self):
         return self._transform_debug and LOG.isEnabledFor(logging.DEBUG)
@@ -2023,9 +2162,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         ry = float(self.kinematics_overlay_rotation[1])
         rz = float(self.kinematics_overlay_rotation[2])
         angles_by_axis = {
-            'A': rx,
-            'B': ry,
-            'C': rz,
+            "A": rx,
+            "B": ry,
+            "C": rz,
         }
 
         transform = vtk.vtkTransform()
@@ -2043,7 +2182,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             origin = self._overlay_rotary_pivot_absolute(axis_name)
             if origin is None:
                 # Missing pivot: rotate around local origin as a safe fallback.
-                self._apply_axis_rotation_about_pivot(transform, axis_name, angle, (0.0, 0.0, 0.0))
+                self._apply_axis_rotation_about_pivot(
+                    transform, axis_name, angle, (0.0, 0.0, 0.0)
+                )
                 continue
 
             pivot_local = (
@@ -2067,7 +2208,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     float(pivot_world_before[1]),
                     float(pivot_world_before[2]),
                 )
-            self._apply_axis_rotation_about_pivot(transform, axis_name, angle, pivot_local)
+            self._apply_axis_rotation_about_pivot(
+                transform, axis_name, angle, pivot_local
+            )
             if self._transform_debug_enabled():
                 pivot_world_after = transform.TransformPoint(
                     float(pivot_local[0]),
@@ -2098,13 +2241,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         y = machine_position[1]
         z = machine_position[2]
 
-        if self.axis_motion_owner.get('X', 'head') == 'table':
+        if self.axis_motion_owner.get("X", "head") == "table":
             x = 0.0
 
-        if self.axis_motion_owner.get('Y', 'head') == 'table':
+        if self.axis_motion_owner.get("Y", "head") == "table":
             y = 0.0
 
-        if self.axis_motion_owner.get('Z', 'head') == 'table':
+        if self.axis_motion_owner.get("Z", "head") == "table":
             z = 0.0
 
         return (x, y, z)
@@ -2124,8 +2267,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         return int(switchkins_type) == 1
 
     def _has_table_owned_axes(self):
-        for axis in ['X', 'Y', 'Z', 'A', 'B', 'C']:
-            if self.axis_motion_owner.get(axis, 'head') == 'table':
+        for axis in ["X", "Y", "Z", "A", "B", "C"]:
+            if self.axis_motion_owner.get(axis, "head") == "table":
                 return True
         return False
 
@@ -2133,10 +2276,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # In TCP switchkins mode, status position is already in the controlled
         # tool-point/world frame, so applying table overlay shift again causes
         # backplot/cache actor drift.
-        if self._is_tcp_switchkins_active(switchkins_type) and (not self._has_table_owned_axes()):
+        if self._is_tcp_switchkins_active(switchkins_type) and (
+            not self._has_table_owned_axes()
+        ):
             return (0.0, 0.0, 0.0)
 
-        if all(self.axis_motion_owner.get(axis, 'head') == 'head' for axis in ['X', 'Y', 'Z']):
+        if all(
+            self.axis_motion_owner.get(axis, "head") == "head"
+            for axis in ["X", "Y", "Z"]
+        ):
             return (0.0, 0.0, 0.0)
 
         sx = float(self.spindle_position[0] - machine_position[0])
@@ -2144,11 +2292,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         sz = float(self.spindle_position[2] - machine_position[2])
 
         # Table-owned axes should not drift when only WCS origin changes.
-        if self.axis_motion_owner.get('X', 'head') == 'table':
+        if self.axis_motion_owner.get("X", "head") == "table":
             sx = float(-machine_position[0])
-        if self.axis_motion_owner.get('Y', 'head') == 'table':
+        if self.axis_motion_owner.get("Y", "head") == "table":
             sy = float(-machine_position[1])
-        if self.axis_motion_owner.get('Z', 'head') == 'table':
+        if self.axis_motion_owner.get("Z", "head") == "table":
             sz = float(-machine_position[2])
 
         return (
@@ -2157,25 +2305,32 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             sz,
         )
 
-    def _compute_kinematics_overlay_rotation(self, machine_rotation, switchkins_type=None):
+    def _compute_kinematics_overlay_rotation(
+        self, machine_rotation, switchkins_type=None
+    ):
         # In TCP switchkins mode, tool-point coordinates are already solved in
         # world space, so applying table overlay rotation here doubles rotary
         # motion in loaded/active path transforms.
-        if self._is_tcp_switchkins_active(switchkins_type) and (not self._has_table_owned_axes()):
+        if self._is_tcp_switchkins_active(switchkins_type) and (
+            not self._has_table_owned_axes()
+        ):
             return (0.0, 0.0, 0.0)
 
-        if all(self.axis_motion_owner.get(axis, 'head') == 'head' for axis in ['A', 'B', 'C']):
+        if all(
+            self.axis_motion_owner.get(axis, "head") == "head"
+            for axis in ["A", "B", "C"]
+        ):
             return (0.0, 0.0, 0.0)
 
         rx = 0.0
         ry = 0.0
         rz = 0.0
 
-        if self.axis_motion_owner.get('A', 'head') == 'table':
+        if self.axis_motion_owner.get("A", "head") == "table":
             rx = -float(machine_rotation[0])
-        if self.axis_motion_owner.get('B', 'head') == 'table':
+        if self.axis_motion_owner.get("B", "head") == "table":
             ry = -float(machine_rotation[1])
-        if self.axis_motion_owner.get('C', 'head') == 'table':
+        if self.axis_motion_owner.get("C", "head") == "table":
             rz = -float(machine_rotation[2])
 
         return (rx, ry, rz)
@@ -2205,9 +2360,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         ry = float(self.kinematics_overlay_rotation[1])
         rz = float(self.kinematics_overlay_rotation[2])
         angles_by_axis = {
-            'A': rx,
-            'B': ry,
-            'C': rz,
+            "A": rx,
+            "B": ry,
+            "C": rz,
         }
 
         for axis_name in self._overlay_rotary_axis_order():
@@ -2217,7 +2372,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             origin = self._overlay_rotary_pivot_absolute(axis_name)
             if origin is None:
-                self._apply_axis_rotation_about_pivot(shift_transform, axis_name, angle, (0.0, 0.0, 0.0))
+                self._apply_axis_rotation_about_pivot(
+                    shift_transform, axis_name, angle, (0.0, 0.0, 0.0)
+                )
                 continue
 
             pivot_local = (
@@ -2225,7 +2382,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 float(origin[1] - sy),
                 float(origin[2] - sz),
             )
-            self._apply_axis_rotation_about_pivot(shift_transform, axis_name, angle, pivot_local)
+            self._apply_axis_rotation_about_pivot(
+                shift_transform, axis_name, angle, pivot_local
+            )
             if self._transform_debug_enabled():
                 cache_pivot_after = shift_transform.TransformPoint(
                     float(pivot_local[0]),
@@ -2292,16 +2451,30 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # In TCP switchkins mode with tool-owned axes, status position already
         # represents the controlled tool point in world space.
-        if self._is_tcp_switchkins_active(switchkins_type) and (not self._has_table_owned_axes()):
+        if self._is_tcp_switchkins_active(switchkins_type) and (
+            not self._has_table_owned_axes()
+        ):
             return (
                 float(machine_position[0]),
                 float(machine_position[1]),
                 float(machine_position[2]),
             )
 
-        src_x = float(machine_position[0]) if self.axis_motion_owner.get('X', 'head') == 'table' else float(self.spindle_position[0])
-        src_y = float(machine_position[1]) if self.axis_motion_owner.get('Y', 'head') == 'table' else float(self.spindle_position[1])
-        src_z = float(machine_position[2]) if self.axis_motion_owner.get('Z', 'head') == 'table' else float(self.spindle_position[2])
+        src_x = (
+            float(machine_position[0])
+            if self.axis_motion_owner.get("X", "head") == "table"
+            else float(self.spindle_position[0])
+        )
+        src_y = (
+            float(machine_position[1])
+            if self.axis_motion_owner.get("Y", "head") == "table"
+            else float(self.spindle_position[1])
+        )
+        src_z = (
+            float(machine_position[2])
+            if self.axis_motion_owner.get("Z", "head") == "table"
+            else float(self.spindle_position[2])
+        )
 
         tlo_x = float(tlo[0]) if len(tlo) > 0 else 0.0
         tlo_y = float(tlo[1]) if len(tlo) > 1 else 0.0
@@ -2317,17 +2490,41 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # Build tooltip sample in the same local frame as path actor points.
         # For table-owned linear axes, spindle_position is intentionally pinned,
         # so use machine_position to preserve XY breadcrumb motion.
-        src_x = float(machine_position[0]) if self.axis_motion_owner.get('X', 'head') == 'table' else float(self.spindle_position[0])
-        src_y = float(machine_position[1]) if self.axis_motion_owner.get('Y', 'head') == 'table' else float(self.spindle_position[1])
-        src_z = float(machine_position[2]) if self.axis_motion_owner.get('Z', 'head') == 'table' else float(self.spindle_position[2])
+        src_x = (
+            float(machine_position[0])
+            if self.axis_motion_owner.get("X", "head") == "table"
+            else float(self.spindle_position[0])
+        )
+        src_y = (
+            float(machine_position[1])
+            if self.axis_motion_owner.get("Y", "head") == "table"
+            else float(self.spindle_position[1])
+        )
+        src_z = (
+            float(machine_position[2])
+            if self.axis_motion_owner.get("Z", "head") == "table"
+            else float(self.spindle_position[2])
+        )
 
         tx = float(src_x + tlo[0])
         ty = float(src_y + tlo[1])
         tz = float(src_z - tlo[2])
 
-        x_col = self.offsetTableColumnsIndex.get('X') if self.offsetTableColumnsIndex else None
-        y_col = self.offsetTableColumnsIndex.get('Y') if self.offsetTableColumnsIndex else None
-        z_col = self.offsetTableColumnsIndex.get('Z') if self.offsetTableColumnsIndex else None
+        x_col = (
+            self.offsetTableColumnsIndex.get("X")
+            if self.offsetTableColumnsIndex
+            else None
+        )
+        y_col = (
+            self.offsetTableColumnsIndex.get("Y")
+            if self.offsetTableColumnsIndex
+            else None
+        )
+        z_col = (
+            self.offsetTableColumnsIndex.get("Z")
+            if self.offsetTableColumnsIndex
+            else None
+        )
 
         if isinstance(active_wcs_offset, (list, tuple)):
             if x_col is not None and x_col < len(active_wcs_offset):
@@ -2340,8 +2537,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         return [tx, ty, tz]
 
     def _machine_linear_axis_value(self, axis_name, axis_value):
-        owner = self.axis_motion_owner.get(axis_name.upper(), 'head')
-        if owner == 'table':
+        owner = self.axis_motion_owner.get(axis_name.upper(), "head")
+        if owner == "table":
             return -float(axis_value)
         return float(axis_value)
 
@@ -2350,7 +2547,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # When table-owned linear axes are present, joint feedback reflects
         # real table motion more reliably than Cartesian status.position.
         axis_order = "XYZABCUVW"
-        idx = axis_order.find(str(axis_name or '').upper())
+        idx = axis_order.find(str(axis_name or "").upper())
         if idx < 0:
             return None
 
@@ -2360,11 +2557,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             return None
 
         joint_channel = self.joints[idx]
-        if not hasattr(joint_channel, 'input'):
+        if not hasattr(joint_channel, "input"):
             return None
 
         input_channel = joint_channel.input
-        if not hasattr(input_channel, 'value'):
+        if not hasattr(input_channel, "value"):
             return None
 
         return self._coerce_float(input_channel.value, None)
@@ -2381,47 +2578,58 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             return (x, y, z)
 
         table_linear_active = any(
-            self.axis_motion_owner.get(axis, 'head') == 'table'
-            for axis in ['X', 'Y', 'Z']
+            self.axis_motion_owner.get(axis, "head") == "table"
+            for axis in ["X", "Y", "Z"]
         )
 
         # Keep XYZ from one timing domain when table kinematics is active.
         # Mixing joint-backed X/Y with status-backed Z can introduce slight
         # breadcrumb offsets on vertical-plane arcs (G18/G19).
         if table_linear_active:
-            xj = self._axis_joint_feedback('X')
-            yj = self._axis_joint_feedback('Y')
-            zj = self._axis_joint_feedback('Z')
+            xj = self._axis_joint_feedback("X")
+            yj = self._axis_joint_feedback("Y")
+            zj = self._axis_joint_feedback("Z")
             if xj is not None and yj is not None and zj is not None:
                 return (xj, yj, zj)
 
-        if self.axis_motion_owner.get('X', 'head') == 'table':
-            xj = self._axis_joint_feedback('X')
+        if self.axis_motion_owner.get("X", "head") == "table":
+            xj = self._axis_joint_feedback("X")
             if xj is not None:
                 x = xj
-        if self.axis_motion_owner.get('Y', 'head') == 'table':
-            yj = self._axis_joint_feedback('Y')
+        if self.axis_motion_owner.get("Y", "head") == "table":
+            yj = self._axis_joint_feedback("Y")
             if yj is not None:
                 y = yj
-        if self.axis_motion_owner.get('Z', 'head') == 'table':
-            zj = self._axis_joint_feedback('Z')
+        if self.axis_motion_owner.get("Z", "head") == "table":
+            zj = self._axis_joint_feedback("Z")
             if zj is not None:
                 z = zj
 
         return (x, y, z)
 
     def _machine_angular_axis_value(self, axis_name, axis_value):
-        owner = self.axis_motion_owner.get(axis_name.upper(), 'head')
-        if owner == 'table':
+        owner = self.axis_motion_owner.get(axis_name.upper(), "head")
+        if owner == "table":
             return -float(axis_value)
         return float(axis_value)
 
     def _visual_tool_rotation(self, machine_rotation):
-        rx = 0.0 if self.axis_motion_owner.get('A', 'head') == 'table' else float(machine_rotation[0])
-        ry = 0.0 if self.axis_motion_owner.get('B', 'head') == 'table' else float(machine_rotation[1])
-        rz = 0.0 if self.axis_motion_owner.get('C', 'head') == 'table' else float(machine_rotation[2])
+        rx = (
+            0.0
+            if self.axis_motion_owner.get("A", "head") == "table"
+            else float(machine_rotation[0])
+        )
+        ry = (
+            0.0
+            if self.axis_motion_owner.get("B", "head") == "table"
+            else float(machine_rotation[1])
+        )
+        rz = (
+            0.0
+            if self.axis_motion_owner.get("C", "head") == "table"
+            else float(machine_rotation[2])
+        )
         return (rx, ry, rz)
-
 
     def get_asm_parts(self, parts):
         # helper function to iterate over machine parts tree
@@ -2436,9 +2644,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     #     yield p
             # elif isinstance(part, vtk.vtkActor):
             #     yield part
-                    
+
     def update_position(self, position):  # the tool movement
-        
+
         self.current_time = round(time.time() * 1000)
 
         scene_update_due = self.current_time - self.prev_plot_time >= self.plot_interval
@@ -2447,7 +2655,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         else:
             # Keep breadcrumb sampling at motion callback rate so trails hug
             # the true toolpath, even when scene rendering is FPS-throttled.
-            active_wcs_offset = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
+            active_wcs_offset = self._safe_get_offsets(
+                self.active_wcs_index, self.offsetTableColumnsIndex
+            )
             if self._is_machine_jet:
                 list_pos = list(position)
                 list_pos[2] = active_wcs_offset[2]
@@ -2455,7 +2665,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             machine_position = self._table_aware_linear_position(position)
             self.machine_motion_position = machine_position
-            self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
+            self.spindle_position = self._visual_spindle_position(
+                machine_position, active_wcs_offset
+            )
             runtime_tlo = self._read_tool_offset()
             self._runtime_tool_offset = runtime_tlo
 
@@ -2477,18 +2689,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             return
 
         # Plots the movement of the tool and leaves a trace line
-        
-        active_wcs_offset = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
+
+        active_wcs_offset = self._safe_get_offsets(
+            self.active_wcs_index, self.offsetTableColumnsIndex
+        )
         if self._is_machine_jet:
             # update the position for JET machines so spindle/tool is
             # aligned to active WCS
             list_pos = list(position)
             list_pos[2] = active_wcs_offset[2]
             position = tuple(list_pos)
-            
+
         machine_position = self._table_aware_linear_position(position)
         self.machine_motion_position = machine_position
-        self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
+        self.spindle_position = self._visual_spindle_position(
+            machine_position, active_wcs_offset
+        )
         runtime_tlo = self._read_tool_offset()
         self._runtime_tool_offset = runtime_tlo
         self.spindle_rotation = position[3:6]
@@ -2503,33 +2719,35 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._runtime_switchkins_type = int(current_switchkins_type)
         self._log_runtime_switchkins_command_hit(current_switchkins_type)
 
-        new_overlay_shift = self._compute_kinematics_overlay_shift(machine_position, current_switchkins_type)
-        new_overlay_rotation = self._compute_kinematics_overlay_rotation(self.spindle_rotation, current_switchkins_type)
-        if tuple(new_overlay_shift) != tuple(self.kinematics_overlay_shift) or tuple(new_overlay_rotation) != tuple(self.kinematics_overlay_rotation):
+        new_overlay_shift = self._compute_kinematics_overlay_shift(
+            machine_position, current_switchkins_type
+        )
+        new_overlay_rotation = self._compute_kinematics_overlay_rotation(
+            self.spindle_rotation, current_switchkins_type
+        )
+        if tuple(new_overlay_shift) != tuple(self.kinematics_overlay_shift) or tuple(
+            new_overlay_rotation
+        ) != tuple(self.kinematics_overlay_rotation):
             self.kinematics_overlay_shift = tuple(new_overlay_shift)
             self.kinematics_overlay_rotation = tuple(new_overlay_rotation)
             self._apply_kinematics_overlay_shift()
             if len(self.path_actors) > 0:
                 self.rotate_and_translate()
-        
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
-        #tool_transform.RotateX(-self.spindle_rotation[0])
-        #tool_transform.RotateY(-self.spindle_rotation[1])
-        #tool_transform.RotateZ(-self.spindle_rotation[2])
-        
+        # tool_transform.RotateX(-self.spindle_rotation[0])
+        # tool_transform.RotateY(-self.spindle_rotation[1])
+        # tool_transform.RotateZ(-self.spindle_rotation[2])
 
         if self.spindle_model:
             self.spindle_actor.SetUserTransform(tool_transform)
 
         if self._plot_machine:
             if self.machine_parts:
-
-
                 # self.machine_parts_actor.InitPathTraversal()
                 # parts = self.machine_parts_actor.GetParts()
-                
+
                 self.machine_parts_actor.InitPathTraversal()
                 for part in self.get_asm_parts(self.machine_parts_actor):
                     # part_prop = path.GetViewProp()
@@ -2539,11 +2757,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                         self.move_part(part)
                     #
 
-                        # for p in part.GetParts():
-                        #     if isinstance(p, vtk.vtkActor):
-                        #         self.move_part(p)
-                        #     # if isinstance(p, vtk.vtkAssembly):
-                            #     self.move_part(p)
+                    # for p in part.GetParts():
+                    #     if isinstance(p, vtk.vtkActor):
+                    #         self.move_part(p)
+                    #     # if isinstance(p, vtk.vtkAssembly):
+                    #     self.move_part(p)
 
         self.tool_actor.SetUserTransform(tool_transform)
 
@@ -2583,26 +2801,63 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.breadcrumbs_plotted and self._should_plot_breadcrumb_for_motion():
             current_tip = tuple(self.tooltip_position[:3])
             self._append_breadcrumb_point(current_tip)
+
+        # collision detection
+        self._update_stock_collision_and_cut()
+
         self._request_render()
-        
+
+    def _update_stock_collision_and_cut(self):
+        """Check tool/stock collision and apply boolean cut when in contact."""
+        stock = getattr(self, "stock_actor", None)
+        if stock is None:
+            return
+
+        tool_bit = getattr(self, "tool_bit_actor", None)
+        if tool_bit is None:
+            return
+
+        # Resolve tool geometry from the active ToolBitActor.
+        # ToolBitActor stores the current tool via self.tool.
+        tool = getattr(tool_bit, "tool", None)
+        if tool is None:
+            return
+
+        radius = float(getattr(tool, "diameter", 0.0)) / 2.0
+        height = float(getattr(tool, "zoffset", 0.0))
+
+        if radius <= 0.001:
+            return  # placeholder / unknown tool — skip
+
+        tip = tuple(self.tooltip_position[:3])
+
+        # Fast AABB collision check (cheap, every frame).
+        # NB: check_collision() internally throttles and applies cuts during contact,
+        # so the caller no longer needs a separate apply_boolean_cut() call.
+        in_collision = stock.check_collision(tip, radius, height)
+
+        # Change stock colour to blue while colliding.
+        if in_collision:
+            stock.GetProperty().SetColor(0.30, 0.55, 0.85)  # clear blue
+        else:
+            stock.GetProperty().SetColor(0.62, 0.64, 0.68)  # clear grey
+
     def move_part(self, part):
-                
+
         position = part.GetPartPosition()
-        pivot = part.GetPartOrigin() if hasattr(part, 'GetPartOrigin') else None
+        pivot = part.GetPartOrigin() if hasattr(part, "GetPartOrigin") else None
         if pivot is None:
             pivot = position
         machine_position = self.machine_motion_position
-        
+
         part_axis = part.GetPartAxis()
         part_type = part.GetPartType()
 
+        part_transform = vtk.vtkTransform()
 
-        part_transform = vtk.vtkTransform()  
-        
         if part_type == "linear":
+            # part_position = self.joints[part_joint].input.value
 
-            #part_position = self.joints[part_joint].input.value
-            
             # if part_axis == "x":
             #     part.SetPosition(self.spindle_position[0], 0, 0)
             # elif part_axis == "y":
@@ -2615,10 +2870,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             #     part.SetPosition(0, -self.spindle_position[1], 0)
             # elif part_axis == "-z":
             #     part.SetPosition(0, 0, -self.spindle_position[2])
-                
-            x_delta = self._machine_linear_axis_value('X', machine_position[0])
-            y_delta = self._machine_linear_axis_value('Y', machine_position[1])
-            z_delta = self._machine_linear_axis_value('Z', machine_position[2])
+
+            x_delta = self._machine_linear_axis_value("X", machine_position[0])
+            y_delta = self._machine_linear_axis_value("Y", machine_position[1])
+            z_delta = self._machine_linear_axis_value("Z", machine_position[2])
 
             if part_axis == "x":
                 part_transform.Translate(x_delta, 0, 0)
@@ -2632,12 +2887,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 part_transform.Translate(0, -y_delta, 0)
             elif part_axis == "-z":
                 part_transform.Translate(0, 0, -z_delta)
-            
 
         elif part_type == "angular":
-            
             # part_position = self.joints[part_joint].input.value
-            
+
             # if part_axis == "a":
             #     part.SetOrientation(self.spindle_rotation[0], 0, 0)
             # elif part_axis== "b":
@@ -2650,16 +2903,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             #     part.SetOrientation(0, -self.spindle_rotation[1], 0)
             # elif part_axis == "-c":
             #     part.SetOrientation(0, 0, -self.spindle_rotation[2])
- 
+
             part_transform.Translate(pivot[0], pivot[1], pivot[2])
 
-            a_delta = self._machine_angular_axis_value('A', self.spindle_rotation[0])
-            b_delta = self._machine_angular_axis_value('B', self.spindle_rotation[1])
-            c_delta = self._machine_angular_axis_value('C', self.spindle_rotation[2])
-            
+            a_delta = self._machine_angular_axis_value("A", self.spindle_rotation[0])
+            b_delta = self._machine_angular_axis_value("B", self.spindle_rotation[1])
+            c_delta = self._machine_angular_axis_value("C", self.spindle_rotation[2])
+
             if part_axis == "a":
                 part_transform.RotateX(a_delta)
-            elif part_axis== "b":
+            elif part_axis == "b":
                 part_transform.RotateY(b_delta)
             elif part_axis == "c":
                 part_transform.RotateZ(c_delta)
@@ -2669,12 +2922,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 part_transform.RotateY(-b_delta)
             elif part_axis == "-c":
                 part_transform.RotateZ(-c_delta)
-            
+
             part_transform.Translate(-pivot[0], -pivot[1], -pivot[2])
 
             if self._transform_debug_enabled():
-                part_name = part.GetPartName() if hasattr(part, 'GetPartName') else '<unknown>'
-                pivot_world = part_transform.TransformPoint(pivot[0], pivot[1], pivot[2])
+                part_name = (
+                    part.GetPartName() if hasattr(part, "GetPartName") else "<unknown>"
+                )
+                pivot_world = part_transform.TransformPoint(
+                    pivot[0], pivot[1], pivot[2]
+                )
                 LOG.debug(
                     "VTK move_part angular: part=%s axis=%s pivot=%s deltas=(A=%.6f,B=%.6f,C=%.6f) "
                     "pivot_world_after=(%.6f, %.6f, %.6f)",
@@ -2688,16 +2945,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     float(pivot_world[1]),
                     float(pivot_world[2]),
                 )
-            
+
         part.SetUserTransform(part_transform)
-        
 
     def update_joints(self, joints):
         self.joints = joints
-        
+
     def on_offset_table_changed(self, offset_table):
         if offset_table is None:
-            LOG.warning("VTKBackPlot: received None offset table; keeping existing offsets")
+            LOG.warning(
+                "VTKBackPlot: received None offset table; keeping existing offsets"
+            )
             return
 
         # Accept whatever came in (including empty), matching PyQt5 flow.
@@ -2711,7 +2969,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.wcs_offsets:
             return True
 
-        LOG.warning("VTKBackPlot: offsets not ready; skipping draw to avoid G53 placement")
+        LOG.warning(
+            "VTKBackPlot: offsets not ready; skipping draw to avoid G53 placement"
+        )
         return False
 
     def _set_wcs_offsets(self, offsets):
@@ -2724,7 +2984,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 if int_key is None:
                     continue
                 normalized_offsets[int_key] = value
-            self.wcs_offsets = normalized_offsets if normalized_offsets else dict(offsets)
+            self.wcs_offsets = (
+                normalized_offsets if normalized_offsets else dict(offsets)
+            )
         else:
             self.wcs_offsets = offsets
 
@@ -2747,37 +3009,67 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     column_count = max(values) + 1
 
             offsets = [0.0] * column_count
-            LOG.warning("Missing WCS offsets for index %s, defaulting to zeros", wcs_index)
+            LOG.warning(
+                "Missing WCS offsets for index %s, defaulting to zeros", wcs_index
+            )
 
         return offsets
 
     def _resolve_wcs_components(self, wcs_index, current_offsets, offset_columns):
-        x_column = offset_columns.get('X') if offset_columns else None
-        y_column = offset_columns.get('Y') if offset_columns else None
-        z_column = offset_columns.get('Z') if offset_columns else None
-        r_column = offset_columns.get('R') if offset_columns else None
+        x_column = offset_columns.get("X") if offset_columns else None
+        y_column = offset_columns.get("Y") if offset_columns else None
+        z_column = offset_columns.get("Z") if offset_columns else None
+        r_column = offset_columns.get("R") if offset_columns else None
 
-        x = current_offsets[x_column] if x_column is not None and x_column < len(current_offsets) else 0.0
-        y = current_offsets[y_column] if y_column is not None and y_column < len(current_offsets) else 0.0
-        z = current_offsets[z_column] if z_column is not None and z_column < len(current_offsets) else 0.0
-        rotation = current_offsets[r_column] if r_column is not None and r_column < len(current_offsets) else 0.0
+        x = (
+            current_offsets[x_column]
+            if x_column is not None and x_column < len(current_offsets)
+            else 0.0
+        )
+        y = (
+            current_offsets[y_column]
+            if y_column is not None and y_column < len(current_offsets)
+            else 0.0
+        )
+        z = (
+            current_offsets[z_column]
+            if z_column is not None and z_column < len(current_offsets)
+            else 0.0
+        )
+        rotation = (
+            current_offsets[r_column]
+            if r_column is not None and r_column < len(current_offsets)
+            else 0.0
+        )
 
         # For active WCS, use live status values to avoid stale offset-table snapshots.
         # linuxcnc g5x_offset is always ordered (X, Y, Z, A, B, C, U, V, W) at fixed indices,
         # regardless of how many axes are configured in OFFSET_COLUMNS.
-        _LCNC_AXIS_IDX = {'X': 0, 'Y': 1, 'Z': 2, 'A': 3, 'B': 4, 'C': 5, 'U': 6, 'V': 7, 'W': 8}
-        if wcs_index == self.active_wcs_index and isinstance(self.active_wcs_offset, (list, tuple)):
+        _LCNC_AXIS_IDX = {
+            "X": 0,
+            "Y": 1,
+            "Z": 2,
+            "A": 3,
+            "B": 4,
+            "C": 5,
+            "U": 6,
+            "V": 7,
+            "W": 8,
+        }
+        if wcs_index == self.active_wcs_index and isinstance(
+            self.active_wcs_offset, (list, tuple)
+        ):
             live = self.active_wcs_offset
             if x_column is not None:
-                live_x = _LCNC_AXIS_IDX['X']
+                live_x = _LCNC_AXIS_IDX["X"]
                 if live_x < len(live):
                     x = live[live_x]
             if y_column is not None:
-                live_y = _LCNC_AXIS_IDX['Y']
+                live_y = _LCNC_AXIS_IDX["Y"]
                 if live_y < len(live):
                     y = live[live_y]
             if z_column is not None:
-                live_z = _LCNC_AXIS_IDX['Z']
+                live_z = _LCNC_AXIS_IDX["Z"]
                 if live_z < len(live):
                     z = live[live_z]
             rotation = float(self.active_rotation or 0.0)
@@ -2787,25 +3079,25 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_rotation_xy(self, rot):
         self.active_rotation = rot
         self.rotation_xy_table[self.active_wcs_index] = rot
-        
+
         self.rotate_and_translate()
-        
+
     def update_g5x_offset(self, offset):
         self.active_wcs_offset = offset
 
         self.rotate_and_translate()
-        
+
         # Future optimization: add rapid-only recalculation path.
-        
+
     def rotate_and_translate(self):
         # self.axes_actor.SetUserTransform(transform)
 
         for wcs_index, path_actor in self.path_actors.items():
-
             axes_actor = path_actor.get_axes_actor()
-        
-            
-            current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
+
+            current_offsets = self._safe_get_offsets(
+                wcs_index, self.offsetTableColumnsIndex
+            )
             x, y, z, rotation = self._resolve_wcs_components(
                 wcs_index,
                 current_offsets,
@@ -2832,24 +3124,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     float(actor_origin[1]),
                     float(actor_origin[2]),
                 )
-            
+
             # Scale up the axes for the active WCS to provide visual feedback
             if wcs_index == self.active_wcs_index:
                 axes_transform.Scale(1.5, 1.5, 1.5)  # Make active WCS axes 50% larger
 
             axes_actor.SetUserTransform(axes_transform)
-            #LOG.debug(f"-------- Path Actor Matrix BEFORE User transform:  {path_actor.GetMatrix()}")
-            #LOG.debug(f"-------- Path Actor User transform BEFORE apply new:  {path_actor.GetUserTransform()}")
+            # LOG.debug(f"-------- Path Actor Matrix BEFORE User transform:  {path_actor.GetMatrix()}")
+            # LOG.debug(f"-------- Path Actor User transform BEFORE apply new:  {path_actor.GetUserTransform()}")
             path_actor.SetUserTransform(actor_transform)
-            #LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
-            #LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
+            # LOG.debug(f"-------- Path Actor Matrix AFTER User transform:  {path_actor.GetMatrix()}")
+            # LOG.debug(f"-------- Path Actor User transform AFTER apply new:  {path_actor.GetUserTransform()}")
 
             self._sync_program_bounds_actor(wcs_index, path_actor)
-        
+
             xyz = self.active_wcs_offset[:3]
             rotation = self.active_rotation
             _ = xyz, rotation
-                           
 
         if len(self.path_actors) > 1:
             self._update_transition_actors(self.offsetTableColumnsIndex)
@@ -2861,14 +3152,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._sync_gcode_line_highlight_transforms()
         self._request_render()
-        
+
     def update_g5x_index(self, index):
         self.active_wcs_index = index
         if len(self.path_actors) > 0:
             self.rotate_and_translate()
         # Refresh offsets in case the table changed with the new active WCS.
         self._set_wcs_offsets(self._datasource.getWcsOffsets())
-    
+
     def update_active_wcs(self, wcs_index):
         prev_wcs_index = self.active_wcs_index
         self.active_wcs_index = wcs_index
@@ -2876,14 +3167,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._set_wcs_offsets(self._datasource.getWcsOffsets())
 
         if self._transform_debug_enabled():
-            active_offsets = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
+            active_offsets = self._safe_get_offsets(
+                self.active_wcs_index, self.offsetTableColumnsIndex
+            )
             LOG.debug(
                 "VTK update_active_wcs: prev=%s new=%s offsets=%s",
                 prev_wcs_index,
                 self.active_wcs_index,
                 active_offsets,
             )
-        
+
         # Update the visual scale of axes to highlight the active WCS
         # This is done by calling rotate_and_translate which will rebuild
         # the scene with the proper scaling for the active WCS
@@ -2906,7 +3199,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             for wcs_index, actor in list(self.path_actors.items()):
                 # determine change in g92 offset since path was drawn
 
-                current_offsets = self._safe_get_offsets(wcs_index, self.offsetTableColumnsIndex)
+                current_offsets = self._safe_get_offsets(
+                    wcs_index, self.offsetTableColumnsIndex
+                )
                 x, y, z, rotation = self._resolve_wcs_components(
                     wcs_index,
                     current_offsets,
@@ -2938,7 +3233,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 self._sync_program_bounds_actor(wcs_index, actor)
 
-            if (not self._breadcrumb_world_frame) and (self.path_cache_actor is not None):
+            if (not self._breadcrumb_world_frame) and (
+                self.path_cache_actor is not None
+            ):
                 self.path_cache_actor.SetUserTransform(self._active_path_transform)
 
             self._sync_gcode_line_highlight_transforms()
@@ -3014,79 +3311,80 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(object)
     def setView(self, view):
 
-        if isinstance(view, int):            
+        if isinstance(view, int):
             view_options_setting = getSetting("backplot.view").enum_options
             view_options = list()
-            
-            for option in view_options_setting:
-                view_options.append(option.split(':')[0])
-            
-            view = view_options[view]
 
+            for option in view_options_setting:
+                view_options.append(option.split(":")[0])
+
+            view = view_options[view]
 
         view = view.upper()
 
-        if view == 'X':
+        if view == "X":
             self.setViewX()
-        elif view == 'XZ':
+        elif view == "XZ":
             self.setViewXZ()
-        elif view == 'XZ2':
+        elif view == "XZ2":
             self.setViewXZ2()
-        elif view == 'Y':
+        elif view == "Y":
             self.setViewY()
-        elif view == 'Z':
+        elif view == "Z":
             self.setViewZ()
-        elif view == 'Z2':
+        elif view == "Z2":
             self.setViewZ2()
-        elif view == 'P':
+        elif view == "P":
             self.setViewP()
-        elif view == 'M':
+        elif view == "M":
             self.setViewMachine()
 
     @Slot()
     def setViewP(self):
-        self.active_view = 'P'
+        self.active_view = "P"
 
         position_x, position_y, position_z = self._get_active_wcs_xyz()
 
-        self.camera.SetPosition(self.position_mult * self.view_x_vec, 
-            self.position_mult * self.view_y_vec, 
-            self.position_mult * self.view_z_vec)
+        self.camera.SetPosition(
+            self.position_mult * self.view_x_vec,
+            self.position_mult * self.view_y_vec,
+            self.position_mult * self.view_z_vec,
+        )
         self.camera.SetFocalPoint(position_x, position_y, position_z)
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewX(self):
-        self.active_view = 'X'
-        
+        self.active_view = "X"
+
         if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
             self.active_wcs_index = 0
 
-        position = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
+        position = self._safe_get_offsets(
+            self.active_wcs_index, self.offsetTableColumnsIndex
+        )
         ot_columns_index = self.offsetTableColumnsIndex
-        
-        column_x = ot_columns_index.get('X')
-        column_y = ot_columns_index.get('Y')
-        column_z = ot_columns_index.get('Z')
-        
-        
+
+        column_x = ot_columns_index.get("X")
+        column_y = ot_columns_index.get("Y")
+        column_z = ot_columns_index.get("Z")
+
         if column_x is not None:
             position_x = position[column_x]
         else:
             position_x = 0.0
-            
+
         if column_y is not None:
             position_y = position[column_y]
         else:
             position_y = 0.0
-            
+
         if column_z is not None:
             position_z = position[column_z]
         else:
             position_z = 0.0
-        
-        
+
         self.camera.SetPosition(position_x, position_y - self.position_mult, position_z)
         self.camera.SetFocalPoint((position_x, position_y, position_z))
         self.camera.SetViewUp(0, 0, 1)
@@ -3094,8 +3392,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewXZ(self):
-        self.active_view = 'XZ'
-        self._lathe_plan_view = 'XZ'
+        self.active_view = "XZ"
+        self._lathe_plan_view = "XZ"
 
         position_x, position_y, position_z = self._get_active_wcs_xyz()
 
@@ -3106,8 +3404,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewXZ2(self):
-        self.active_view = 'XZ2'
-        self._lathe_plan_view = 'XZ2'
+        self.active_view = "XZ2"
+        self._lathe_plan_view = "XZ2"
 
         position_x, position_y, position_z = self._get_active_wcs_xyz()
 
@@ -3118,7 +3416,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewY(self):
-        self.active_view = 'Y'
+        self.active_view = "Y"
 
         position_x, position_y, position_z = self._get_active_wcs_xyz()
 
@@ -3129,7 +3427,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewZ(self):
-        self.active_view = 'Z'
+        self.active_view = "Z"
 
         position_x, position_y, position_z = self._get_active_wcs_xyz()
 
@@ -3140,7 +3438,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewZ2(self):
-        self.active_view = 'Z2'
+        self.active_view = "Z2"
 
         position_x, position_y, position_z = self._get_active_wcs_xyz()
 
@@ -3151,49 +3449,56 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewMachine(self):
-        previous_view = str(self.active_view).upper() if self.active_view else 'P'
-        view_for_fit = previous_view if previous_view in ['X', 'Y', 'Z', 'Z2', 'XZ', 'XZ2'] else 'P'
-        self.active_view = 'M'
+        previous_view = str(self.active_view).upper() if self.active_view else "P"
+        view_for_fit = (
+            previous_view
+            if previous_view in ["X", "Y", "Z", "Z2", "XZ", "XZ2"]
+            else "P"
+        )
+        self.active_view = "M"
         machine_bounds = self.machine_actor.GetBounds()
-        machine_center = ((machine_bounds[0] + machine_bounds[1]) / 2,
-                          (machine_bounds[2] + machine_bounds[3]) / 2,
-                          (machine_bounds[4] + machine_bounds[5]) / 2
-                          )
+        machine_center = (
+            (machine_bounds[0] + machine_bounds[1]) / 2,
+            (machine_bounds[2] + machine_bounds[3]) / 2,
+            (machine_bounds[4] + machine_bounds[5]) / 2,
+        )
 
         self.camera = self.renderer.GetActiveCamera()
 
-        self.camera.SetFocalPoint(machine_center[0],
-                                  machine_center[1],
-                                  machine_center[2])
+        self.camera.SetFocalPoint(
+            machine_center[0], machine_center[1], machine_center[2]
+        )
 
         if self._lathe_mode:
             lathe_view = self._resolve_lathe_plan_view()
-            if lathe_view == 'XZ2':
-                self.camera.SetPosition(machine_center[0], machine_center[1] - self.position_mult, machine_center[2])
+            if lathe_view == "XZ2":
+                self.camera.SetPosition(
+                    machine_center[0],
+                    machine_center[1] - self.position_mult,
+                    machine_center[2],
+                )
                 self.camera.SetViewUp(-1, 0, 0)
             else:
-                self.camera.SetPosition(machine_center[0], machine_center[1] + self.position_mult, machine_center[2])
+                self.camera.SetPosition(
+                    machine_center[0],
+                    machine_center[1] + self.position_mult,
+                    machine_center[2],
+                )
                 self.camera.SetViewUp(1, 0, 0)
         else:
             self._set_camera_pose_from_view(machine_center, view_for_fit)
-        
+
         x_dist = abs(machine_bounds[0] - machine_bounds[1])
         y_dist = abs(machine_bounds[2] - machine_bounds[3])
         z_dist = abs(machine_bounds[4] - machine_bounds[5])
 
         if self._lathe_mode:
             new_scale = self._fit_parallel_scale_for_plane(
-                vertical_span=x_dist,
-                horizontal_span=z_dist,
-                padding=EXTENTS_PADDING
+                vertical_span=x_dist, horizontal_span=z_dist, padding=EXTENTS_PADDING
             )
         else:
             new_scale = self._fit_parallel_scale_for_view(
-                view_for_fit,
-                x_dist,
-                y_dist,
-                z_dist,
-                EXTENTS_PADDING
+                view_for_fit, x_dist, y_dist, z_dist, EXTENTS_PADDING
             )
 
         self.camera.SetParallelScale(new_scale)
@@ -3201,27 +3506,27 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if not self.camera.GetParallelProjection():
             self._move_camera_to_perspective_fit(machine_center, x_dist, y_dist, z_dist)
 
-        if not self._lathe_mode and view_for_fit == 'P':
+        if not self._lathe_mode and view_for_fit == "P":
             self.camera.SetViewUp(0, 0, 1)
-        
+
         self.__doCommonSetViewWork()
 
     @Slot()
-    def setViewProgram(self,view='p'):
-        if not self._lathe_mode and str(view).lower() == 'p':
-            current_view = str(self.active_view).upper() if self.active_view else 'P'
-            if current_view in ['X', 'Y', 'Z', 'Z2', 'XZ', 'XZ2']:
+    def setViewProgram(self, view="p"):
+        if not self._lathe_mode and str(view).lower() == "p":
+            current_view = str(self.active_view).upper() if self.active_view else "P"
+            if current_view in ["X", "Y", "Z", "Z2", "XZ", "XZ2"]:
                 view = current_view.lower()
 
-        if self._lathe_mode and str(view).lower() == 'p':
+        if self._lathe_mode and str(view).lower() == "p":
             view = self._resolve_lathe_plan_view().lower()
-        
+
         if len(self.program_bounds_actors) == 0:
             return
 
         program_bounds_actor = self._get_active_program_bounds_actor()
         if program_bounds_actor is None:
-            LOG.warning('-----setViewProgram skipped, no active wcs')
+            LOG.warning("-----setViewProgram skipped, no active wcs")
             return
 
         program_bounds = program_bounds_actor.GetBounds()
@@ -3231,19 +3536,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if shifted_bounds is not None:
                 program_bounds = shifted_bounds
 
-        program_center = ((program_bounds[0] + program_bounds[1]) / 2,
-                          (program_bounds[2] + program_bounds[3]) / 2,
-                          (program_bounds[4] + program_bounds[5]) / 2)
+        program_center = (
+            (program_bounds[0] + program_bounds[1]) / 2,
+            (program_bounds[2] + program_bounds[3]) / 2,
+            (program_bounds[4] + program_bounds[5]) / 2,
+        )
 
         self.camera = self.renderer.GetActiveCamera()
-        self.camera.SetFocalPoint(program_center[0],
-                                  program_center[1],
-                                  program_center[2])
+        self.camera.SetFocalPoint(
+            program_center[0], program_center[1], program_center[2]
+        )
 
         # self.camera.SetPosition(program_center[0] + self.position_mult,
         #                         -(program_center[1] + self.position_mult),
         #                         program_center[2] + self.position_mult)
-
 
         self._set_camera_pose_from_view(program_center, view)
 
@@ -3260,24 +3566,28 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.__doCommonSetViewWork()
         self.clearLivePlot()
 
-
-
     @Slot()
     def setViewPath(self):
         position_x, position_y, position_z = self._get_active_wcs_xyz()
 
         if self._lathe_mode:
             lathe_view = self._resolve_lathe_plan_view()
-            if lathe_view == 'XZ2':
-                self.camera.SetPosition(position_x, position_y - self.position_mult, position_z)
+            if lathe_view == "XZ2":
+                self.camera.SetPosition(
+                    position_x, position_y - self.position_mult, position_z
+                )
                 self.camera.SetViewUp(-1, 0, 0)
             else:
-                self.camera.SetPosition(position_x, position_y + self.position_mult, position_z)
+                self.camera.SetPosition(
+                    position_x, position_y + self.position_mult, position_z
+                )
                 self.camera.SetViewUp(1, 0, 0)
         else:
-            self.camera.SetPosition((position_x + self.position_mult) * self.view_x_vec,
-                                    (position_y + self.position_mult) * self.view_y_vec,
-                                    (position_z + self.position_mult) * self.view_z_vec)
+            self.camera.SetPosition(
+                (position_x + self.position_mult) * self.view_x_vec,
+                (position_y + self.position_mult) * self.view_y_vec,
+                (position_z + self.position_mult) * self.view_z_vec,
+            )
 
         self.camera.SetFocalPoint(position_x, position_y, position_z)
         if not self._lathe_mode:
@@ -3318,14 +3628,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             program_bounds_actor.SetCamera(self.camera)
             program_bounds_actor.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
             program_bounds_actor.SetUseRanges(1)
-            program_bounds_actor.SetRanges(0, x_max - x_min, 0, y_max - y_min, 0, z_max - z_min)
+            program_bounds_actor.SetRanges(
+                0, x_max - x_min, 0, y_max - y_min, 0, z_max - z_min
+            )
 
         program_bounds_actor.showProgramBounds(self.show_program_bounds)
         return program_bounds_actor
 
     def _make_wcs_transform(self, wcs_index, offset_columns):
         current_offsets = self.wcs_offsets.get(wcs_index, [])
-        x, y, z, rotation = self._resolve_wcs_components(wcs_index, current_offsets, offset_columns)
+        x, y, z, rotation = self._resolve_wcs_components(
+            wcs_index, current_offsets, offset_columns
+        )
 
         return self._compose_wcs_transform(x, y, z, rotation)
 
@@ -3400,30 +3714,30 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             return
 
         for transition_index, transition in enumerate(self.offset_transitions):
-            from_wcs = transition['from_wcs']
-            to_wcs = transition['to_wcs']
-            from_end = transition['from_end']
-            to_start = transition['to_start']
-            debug_mul = transition.get('debug_mul')
-            debug_prev_raw_end = transition.get('debug_prev_raw_end')
-            debug_prev_last_type = transition.get('debug_prev_last_type')
-            debug_prev_scaled_last_cut_end = transition.get('debug_prev_scaled_last_cut_end')
-            debug_next_raw_start = transition.get('debug_next_raw_start')
-            debug_next_first_type = transition.get('debug_next_first_type')
-            debug_next_scaled_first_cut_start = transition.get('debug_next_scaled_first_cut_start')
+            from_wcs = transition["from_wcs"]
+            to_wcs = transition["to_wcs"]
+            from_end = transition["from_end"]
+            to_start = transition["to_start"]
+            debug_mul = transition.get("debug_mul")
+            debug_prev_raw_end = transition.get("debug_prev_raw_end")
+            debug_prev_last_type = transition.get("debug_prev_last_type")
+            debug_prev_scaled_last_cut_end = transition.get(
+                "debug_prev_scaled_last_cut_end"
+            )
+            debug_next_raw_start = transition.get("debug_next_raw_start")
+            debug_next_first_type = transition.get("debug_next_first_type")
+            debug_next_scaled_first_cut_start = transition.get(
+                "debug_next_scaled_first_cut_start"
+            )
 
             from_transform = self._make_wcs_transform(from_wcs, offset_columns)
             to_transform = self._make_wcs_transform(to_wcs, offset_columns)
 
             start_actor = self._make_transition_point_actor(
-                to_start,
-                self.path_colors.get("arcfeed").getRgb()[0:3],
-                to_transform
+                to_start, self.path_colors.get("arcfeed").getRgb()[0:3], to_transform
             )
             end_actor = self._make_transition_point_actor(
-                from_end,
-                self.path_colors.get("user").getRgb()[0:3],
-                from_transform
+                from_end, self.path_colors.get("user").getRgb()[0:3], from_transform
             )
 
             self.offset_change_start_actor[transition_index] = start_actor
@@ -3432,16 +3746,28 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(start_actor)
             self.renderer.AddActor(end_actor)
 
-            from_world = self._transform_transition_point(from_wcs, from_end, offset_columns)
-            to_world = self._transform_transition_point(to_wcs, to_start, offset_columns)
+            from_world = self._transform_transition_point(
+                from_wcs, from_end, offset_columns
+            )
+            to_world = self._transform_transition_point(
+                to_wcs, to_start, offset_columns
+            )
 
             LOG.info(
                 "WCS transition %d: from_end local=(%.6f, %.6f, %.6f) world=(%.6f, %.6f, %.6f) | cyan to_start local=(%.6f, %.6f, %.6f) world=(%.6f, %.6f, %.6f) from_wcs=%s to_wcs=%s",
                 transition_index,
-                from_end[0], from_end[1], from_end[2],
-                from_world[0], from_world[1], from_world[2],
-                to_start[0], to_start[1], to_start[2],
-                to_world[0], to_world[1], to_world[2],
+                from_end[0],
+                from_end[1],
+                from_end[2],
+                from_world[0],
+                from_world[1],
+                from_world[2],
+                to_start[0],
+                to_start[1],
+                to_start[2],
+                to_world[0],
+                to_world[1],
+                to_world[2],
                 from_wcs,
                 to_wcs,
             )
@@ -3473,10 +3799,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.offset_change_line_actor.clear()
 
         for transition_index, transition in enumerate(self.offset_transitions):
-            from_wcs = transition['from_wcs']
-            to_wcs = transition['to_wcs']
-            from_end = transition['from_end']
-            to_start = transition['to_start']
+            from_wcs = transition["from_wcs"]
+            to_wcs = transition["to_wcs"]
+            from_end = transition["from_end"]
+            to_start = transition["to_start"]
 
             start_actor = self.offset_change_start_actor.get(transition_index)
             end_actor = self.offset_change_end_actor.get(transition_index)
@@ -3484,19 +3810,35 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if start_actor is None or end_actor is None:
                 continue
 
-            start_actor.SetUserTransform(self._make_wcs_transform(to_wcs, offset_columns))
-            end_actor.SetUserTransform(self._make_wcs_transform(from_wcs, offset_columns))
+            start_actor.SetUserTransform(
+                self._make_wcs_transform(to_wcs, offset_columns)
+            )
+            end_actor.SetUserTransform(
+                self._make_wcs_transform(from_wcs, offset_columns)
+            )
 
-            from_world = self._transform_transition_point(from_wcs, from_end, offset_columns)
-            to_world = self._transform_transition_point(to_wcs, to_start, offset_columns)
+            from_world = self._transform_transition_point(
+                from_wcs, from_end, offset_columns
+            )
+            to_world = self._transform_transition_point(
+                to_wcs, to_start, offset_columns
+            )
 
             LOG.info(
                 "WCS transition %d update: from_end local=(%.6f, %.6f, %.6f) world=(%.6f, %.6f, %.6f) | cyan to_start local=(%.6f, %.6f, %.6f) world=(%.6f, %.6f, %.6f) from_wcs=%s to_wcs=%s",
                 transition_index,
-                from_end[0], from_end[1], from_end[2],
-                from_world[0], from_world[1], from_world[2],
-                to_start[0], to_start[1], to_start[2],
-                to_world[0], to_world[1], to_world[2],
+                from_end[0],
+                from_end[1],
+                from_end[2],
+                from_world[0],
+                from_world[1],
+                from_world[2],
+                to_start[0],
+                to_start[1],
+                to_start[2],
+                to_world[0],
+                to_world[1],
+                to_world[2],
                 from_wcs,
                 to_wcs,
             )
@@ -3614,7 +3956,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if active_index in self.program_bounds_actors:
             return self.program_bounds_actors[active_index]
 
-        if active_index + 1 in self.program_bounds_actors and 0 not in self.program_bounds_actors:
+        if (
+            active_index + 1 in self.program_bounds_actors
+            and 0 not in self.program_bounds_actors
+        ):
             return self.program_bounds_actors[active_index + 1]
 
         if 0 in self.program_bounds_actors:
@@ -3627,55 +3972,72 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if not (0 <= self.active_wcs_index < len(self.wcs_offsets)):
             self.active_wcs_index = 0
 
-        position = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
+        position = self._safe_get_offsets(
+            self.active_wcs_index, self.offsetTableColumnsIndex
+        )
         ot_columns_index = self.offsetTableColumnsIndex
 
-        column_x = ot_columns_index.get('X')
-        column_y = ot_columns_index.get('Y')
-        column_z = ot_columns_index.get('Z')
+        column_x = ot_columns_index.get("X")
+        column_y = ot_columns_index.get("Y")
+        column_z = ot_columns_index.get("Z")
 
-        position_x = position[column_x] if column_x is not None and column_x < len(position) else 0.0
-        position_y = position[column_y] if column_y is not None and column_y < len(position) else 0.0
-        position_z = position[column_z] if column_z is not None and column_z < len(position) else 0.0
+        position_x = (
+            position[column_x]
+            if column_x is not None and column_x < len(position)
+            else 0.0
+        )
+        position_y = (
+            position[column_y]
+            if column_y is not None and column_y < len(position)
+            else 0.0
+        )
+        position_z = (
+            position[column_z]
+            if column_z is not None and column_z < len(position)
+            else 0.0
+        )
         return position_x, position_y, position_z
 
     def _set_camera_pose_from_view(self, center, view):
         cx, cy, cz = center
         view_name = str(view).lower()
 
-        if view_name == 'x':
+        if view_name == "x":
             self.camera.SetPosition(cx, cy - self.position_mult, cz)
             self.camera.SetViewUp(0, 0, 1)
-        elif view_name == 'y':
+        elif view_name == "y":
             self.camera.SetPosition(cx + self.position_mult, cy, cz)
             self.camera.SetViewUp(0, 0, 1)
-        elif view_name == 'z':
+        elif view_name == "z":
             self.camera.SetPosition(cx, cy, cz + self.position_mult)
             self.camera.SetViewUp(0, 1, 0)
-        elif view_name == 'z2':
+        elif view_name == "z2":
             self.camera.SetPosition(cx, cy, cz + self.position_mult)
             self.camera.SetViewUp(1, 0, 0)
-        elif view_name == 'xz':
+        elif view_name == "xz":
             self.camera.SetPosition(cx, cy + self.position_mult, cz)
             self.camera.SetViewUp(1, 0, 0)
-        elif view_name == 'xz2':
+        elif view_name == "xz2":
             self.camera.SetPosition(cx, cy - self.position_mult, cz)
             self.camera.SetViewUp(-1, 0, 0)
         else:
-            self.camera.SetPosition((cx + self.position_mult) * self.view_x_vec,
-                                    (cy + self.position_mult) * self.view_y_vec,
-                                    (cz + self.position_mult) * self.view_z_vec)
+            self.camera.SetPosition(
+                (cx + self.position_mult) * self.view_x_vec,
+                (cy + self.position_mult) * self.view_y_vec,
+                (cz + self.position_mult) * self.view_z_vec,
+            )
             self.camera.SetViewUp(0, 0, 1)
 
     def _resolve_lathe_plan_view(self):
-        return self._lathe_plan_view if self._lathe_plan_view in ['XZ', 'XZ2'] else ('XZ' if self._back_tool_lathe else 'XZ2')
+        return (
+            self._lathe_plan_view
+            if self._lathe_plan_view in ["XZ", "XZ2"]
+            else ("XZ" if self._back_tool_lathe else "XZ2")
+        )
 
     def _move_camera_to_perspective_fit(self, center, x_span, y_span, z_span):
         distance = self._fit_perspective_distance_for_bounds(
-            x_span=x_span,
-            y_span=y_span,
-            z_span=z_span,
-            padding=EXTENTS_PADDING
+            x_span=x_span, y_span=y_span, z_span=z_span, padding=EXTENTS_PADDING
         )
 
         cx, cy, cz = center
@@ -3688,34 +4050,40 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             dx, dy, dz = self.view_x_vec, self.view_y_vec, self.view_z_vec
             mag = math.sqrt(dx * dx + dy * dy + dz * dz)
         ux, uy, uz = dx / mag, dy / mag, dz / mag
-        self.camera.SetPosition(cx + ux * distance, cy + uy * distance, cz + uz * distance)
+        self.camera.SetPosition(
+            cx + ux * distance, cy + uy * distance, cz + uz * distance
+        )
 
     def _fit_program_parallel_scale(self, view, x_span, y_span, z_span):
         view_name = str(view).lower()
 
         if self._lathe_mode:
-            if view_name in ['x', 'xz', 'xz2']:
+            if view_name in ["x", "xz", "xz2"]:
                 return self._fit_parallel_scale_for_plane(
                     vertical_span=x_span,
                     horizontal_span=z_span,
-                    padding=EXTENTS_PADDING
+                    padding=EXTENTS_PADDING,
                 )
-            if view_name == 'y':
+            if view_name == "y":
                 return self._fit_parallel_scale_for_plane(
                     vertical_span=z_span,
                     horizontal_span=y_span,
-                    padding=EXTENTS_PADDING
+                    padding=EXTENTS_PADDING,
                 )
-            if view_name in ['z', 'z2']:
+            if view_name in ["z", "z2"]:
                 return self._fit_parallel_scale_for_plane(
                     vertical_span=x_span,
                     horizontal_span=y_span,
-                    padding=EXTENTS_PADDING
+                    padding=EXTENTS_PADDING,
                 )
 
-        return self._fit_parallel_scale_for_view(view_name, x_span, y_span, z_span, EXTENTS_PADDING)
+        return self._fit_parallel_scale_for_view(
+            view_name, x_span, y_span, z_span, EXTENTS_PADDING
+        )
 
-    def _fit_parallel_scale_for_plane(self, vertical_span, horizontal_span, padding=EXTENTS_PADDING):
+    def _fit_parallel_scale_for_plane(
+        self, vertical_span, horizontal_span, padding=EXTENTS_PADDING
+    ):
 
         size = self.renderer_window.GetSize()
         width = float(size[0]) if size and size[0] else 1.0
@@ -3728,23 +4096,27 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         return required * max(float(padding), 1.0)
 
-    def _fit_parallel_scale_for_view(self, view, x_span, y_span, z_span, padding=EXTENTS_PADDING):
+    def _fit_parallel_scale_for_view(
+        self, view, x_span, y_span, z_span, padding=EXTENTS_PADDING
+    ):
 
         view_name = str(view).lower()
-        if view_name == 'x':
+        if view_name == "x":
             return self._fit_parallel_scale_for_plane(z_span, x_span, padding)
-        if view_name == 'y':
+        if view_name == "y":
             return self._fit_parallel_scale_for_plane(z_span, y_span, padding)
-        if view_name == 'z':
+        if view_name == "z":
             return self._fit_parallel_scale_for_plane(y_span, x_span, padding)
-        if view_name == 'z2':
+        if view_name == "z2":
             return self._fit_parallel_scale_for_plane(x_span, y_span, padding)
-        if view_name in ['xz', 'xz2']:
+        if view_name in ["xz", "xz2"]:
             return self._fit_parallel_scale_for_plane(x_span, z_span, padding)
 
         return self._fit_parallel_scale_for_isometric(x_span, y_span, z_span, padding)
 
-    def _fit_parallel_scale_for_isometric(self, x_span, y_span, z_span, padding=EXTENTS_PADDING):
+    def _fit_parallel_scale_for_isometric(
+        self, x_span, y_span, z_span, padding=EXTENTS_PADDING
+    ):
         focal = self.camera.GetFocalPoint()
         position = self.camera.GetPosition()
         view_up = self.camera.GetViewUp()
@@ -3752,10 +4124,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         view_dir_x = focal[0] - position[0]
         view_dir_y = focal[1] - position[1]
         view_dir_z = focal[2] - position[2]
-        view_dir_mag = math.sqrt((view_dir_x * view_dir_x) + (view_dir_y * view_dir_y) + (view_dir_z * view_dir_z))
+        view_dir_mag = math.sqrt(
+            (view_dir_x * view_dir_x)
+            + (view_dir_y * view_dir_y)
+            + (view_dir_z * view_dir_z)
+        )
         if view_dir_mag <= 1e-9:
-            view_dir_x, view_dir_y, view_dir_z = self.view_x_vec, self.view_y_vec, self.view_z_vec
-            view_dir_mag = math.sqrt((view_dir_x * view_dir_x) + (view_dir_y * view_dir_y) + (view_dir_z * view_dir_z))
+            view_dir_x, view_dir_y, view_dir_z = (
+                self.view_x_vec,
+                self.view_y_vec,
+                self.view_z_vec,
+            )
+            view_dir_mag = math.sqrt(
+                (view_dir_x * view_dir_x)
+                + (view_dir_y * view_dir_y)
+                + (view_dir_z * view_dir_z)
+            )
 
         view_dir_x /= view_dir_mag
         view_dir_y /= view_dir_mag
@@ -3774,9 +4158,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         right_x = (view_dir_y * up_z) - (view_dir_z * up_y)
         right_y = (view_dir_z * up_x) - (view_dir_x * up_z)
         right_z = (view_dir_x * up_y) - (view_dir_y * up_x)
-        right_mag = math.sqrt((right_x * right_x) + (right_y * right_y) + (right_z * right_z))
+        right_mag = math.sqrt(
+            (right_x * right_x) + (right_y * right_y) + (right_z * right_z)
+        )
         if right_mag <= 1e-9:
-            return max(float(x_span), float(y_span), float(z_span)) * 0.5 * max(float(padding), 1.0)
+            return (
+                max(float(x_span), float(y_span), float(z_span))
+                * 0.5
+                * max(float(padding), 1.0)
+            )
 
         right_x /= right_mag
         right_y /= right_mag
@@ -3806,15 +4196,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         vertical_span *= projection_safety
         horizontal_span *= projection_safety
 
-        return self._fit_parallel_scale_for_plane(vertical_span, horizontal_span, padding)
+        return self._fit_parallel_scale_for_plane(
+            vertical_span, horizontal_span, padding
+        )
 
-    def _fit_perspective_distance_for_bounds(self, x_span, y_span, z_span, padding=EXTENTS_PADDING):
+    def _fit_perspective_distance_for_bounds(
+        self, x_span, y_span, z_span, padding=EXTENTS_PADDING
+    ):
 
         x_span = max(float(x_span), 0.0)
         y_span = max(float(y_span), 0.0)
         z_span = max(float(z_span), 0.0)
 
-        half_diagonal = 0.5 * math.sqrt(x_span * x_span + y_span * y_span + z_span * z_span)
+        half_diagonal = 0.5 * math.sqrt(
+            x_span * x_span + y_span * y_span + z_span * z_span
+        )
         if half_diagonal <= 0.0:
             return self.position_mult
 
@@ -3850,6 +4246,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._last_breadcrumb_motion_line = None
         self._request_render()
 
+        if hasattr(self, "stock_actor"):
+            self.stock_actor.reset_cut()
+
     @Slot(bool)
     def enableBreadcrumbs(self, enable):
         self.breadcrumbs_plotted = enable
@@ -3863,7 +4262,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.touch_enabled = enabled
 
     @Slot(bool)
-    def setProgramViewWhenLoadingProgram(self, enabled, view='p'):
+    def setProgramViewWhenLoadingProgram(self, enabled, view="p"):
         self.program_view_when_loading_program = enabled
         self.program_view_when_loading_program_view = view
 
@@ -3902,7 +4301,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showSurface(self, surface):
-        LOG.debug('show surface')
+        LOG.debug("show surface")
         self.points_surface_actor.showSurface(surface)
         self.renderer_window.Render()
 
@@ -4000,7 +4399,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self._request_render()
 
-
     @Property(QColor)
     def backgroundColor(self):
         return self._background_color
@@ -4018,7 +4416,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     #
     #     self.renderer.GradientBackgroundOff()
     #     self._request_render()
-
 
     @Property(QColor)
     def backgroundColor2(self):
@@ -4121,4 +4518,3 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     # @userColor.reset
     # def userColor(self):
     #     self._user_color = self._default_user_color
-

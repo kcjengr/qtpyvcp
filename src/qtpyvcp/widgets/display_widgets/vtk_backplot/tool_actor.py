@@ -615,7 +615,7 @@ class ToolBitActor(vtk.vtkActor):
         # Allow per-tool lathe edge width override via tool remark, e.g. "width: 0.1181".
         tip_edge = _extract_width_from_tool_remark(self.tool, tip_edge, self._datasource)
 
-        # FOAM TOOL
+        # LATHE TOOL
 
         if self._datasource.isMachineLathe():
 
@@ -823,7 +823,7 @@ class ToolBitActor(vtk.vtkActor):
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputConnection(transform_filter.GetOutputPort())
 
-        # LATHE TOOL
+        # FOAM TOOL
 
         elif self._datasource.isMachineFoam():
 
