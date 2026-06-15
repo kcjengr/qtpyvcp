@@ -7,13 +7,13 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 _MIN_CUT_RADIUS = 0.1
-_MIN_CUT_FACTOR = 0.10  # Cut after tool moves ~20% of its radius
+_MIN_CUT_FACTOR = 0.20  # Cut after tool moves ~20% of its radius
 _MAX_CUTS_PER_SEC = 10
 _COLLISION_CLEARANCE = 0.1  # mm clearance — tool must penetrate stock this far
 
 # Sample-dimension budget: max samples in the largest stock dimension.
 # The other two axes are scaled proportionally (clamped to a floor).
-_SAMPLE_BUDGET = 90  # global resolution (faster contour = higher budget)
+_SAMPLE_BUDGET = 110  # global resolution (volume mode = no contour overhead)
 _SAMPLE_FLOOR = 5  # minimum samples per axis
 _LOCAL_BUDGET = 7  # local high-res (carries all cut detail)
 _REFRESH_EVERY = 10  # re-contour every N cuts
@@ -180,13 +180,56 @@ class StockActor(vtk.vtkActor):
         # Colour is set here (blue) and toggled to red by the caller on collision.
         self.SetMapper(self._mapper_lo)
         self.GetProperty().SetColor(0.62, 0.64, 0.68)  # clear grey
-        self.GetProperty().SetOpacity(0.75)
+        self.GetProperty().SetOpacity(1.0)
         # Metallic surface: moderate ambient and diffuse for good visibility
         # through the transparency, with a tight specular highlight for shine.
         self.GetProperty().SetAmbient(0.50)
         self.GetProperty().SetDiffuse(0.50)
         self.GetProperty().SetSpecular(0.60)
         self.GetProperty().SetSpecularPower(80.0)
+
+        # --- Volume rendering pipeline (alternative to mesh) ---
+        # Renders the sampled SDF grid directly as a 3D texture on the GPU,
+        # skipping contour extraction, smoothing, normals, and unswap.
+        self._use_volume = True
+
+        self._volume_mapper = vtk.vtkSmartVolumeMapper()
+        self._volume_mapper.SetInputConnection(self._sample_lo.GetOutputPort())
+
+        # Transfer function: inside stock = opaque grey, outside = transparent.
+        # SDF convention: negative = inside remaining stock, positive = outside.
+        opacity_tf = vtk.vtkPiecewiseFunction()
+        opacity_tf.AddPoint(-500.0, 0.8)  # deep inside: opaque
+        opacity_tf.AddPoint(-0.5, 0.8)  # near surface: opaque
+        opacity_tf.AddPoint(0.0, 0.35)  # on surface: semi-transparent
+        opacity_tf.AddPoint(0.5, 0.0)  # just outside: transparent
+        opacity_tf.AddPoint(500.0, 0.0)  # far outside: transparent
+
+        color_tf = vtk.vtkColorTransferFunction()
+        color_tf.AddRGBPoint(-500.0, 0.62, 0.64, 0.68)
+        color_tf.AddRGBPoint(500.0, 0.62, 0.64, 0.68)
+
+        self._volume_property = vtk.vtkVolumeProperty()
+        self._volume_property.SetScalarOpacity(opacity_tf)
+        self._volume_property.SetColor(color_tf)
+        self._volume_property.SetInterpolationTypeToLinear()
+        self._volume_property.ShadeOn()
+        self._volume_property.SetAmbient(0.50)
+        self._volume_property.SetDiffuse(0.50)
+        self._volume_property.SetSpecular(0.60)
+        self._volume_property.SetSpecularPower(80.0)
+
+        self._volume = vtk.vtkVolume()
+        self._volume.SetMapper(self._volume_mapper)
+        self._volume.SetProperty(self._volume_property)
+        self._volume.SetVisibility(0)  # hidden by default
+
+        # Combined transform: unswap(Y↔Z) → UserTransform(rotation/translation).
+        # The sample data is in implicit space; this chain maps to world.
+        self._volume_transform = vtk.vtkTransform()
+        self._volume_transform.Scale(1.0, 1.0, -1.0)
+        self._volume_transform.RotateX(-90.0)
+        self._volume.SetUserTransform(self._volume_transform)
 
         # --- Transform for WCS positioning ---
         self._transform = vtk.vtkTransform()
@@ -289,8 +332,33 @@ class StockActor(vtk.vtkActor):
         self._transform.DeepCopy(t)
         self.SetPosition(position[0], position[1], position[2])
 
+        # Sync volume: unswap(Y↔Z) → UserTransform → Position
+        self._volume_transform.Identity()
+        self._volume_transform.Scale(1.0, 1.0, -1.0)
+        self._volume_transform.RotateX(-90.0)
+        self._volume_transform.Concatenate(t)
+        self._volume.SetPosition(position[0], position[1], position[2])
+        self._volume.SetUserTransform(self._volume_transform)
+
     def get_source(self):
         return self._stock_box
+
+    def get_volume(self):
+        """Return the companion vtkVolume for GPU volume rendering.
+
+        The caller must add this to the renderer alongside the StockActor.
+        """
+        return self._volume
+
+    def set_use_volume(self, use):
+        """Toggle between mesh (polydata) and volume rendering modes.
+
+        In volume mode the global + local mesh pipelines are hidden and
+        the sampled SDF grid is rendered directly as a 3D texture.
+        """
+        self._use_volume = use
+        self.SetVisibility(not use)  # mesh actor hidden when volume
+        self._volume.SetVisibility(use)  # volume shown when active
 
     # ------------------------------------------------------------------
     # Collision detection
@@ -433,8 +501,9 @@ class StockActor(vtk.vtkActor):
         self._last_cut_time = now
         self._cut_count += 1
 
-        # Update local refinement box to track the tool
-        self._update_local_refine(world_pos, radius, height)
+        # Update local refinement box (mesh mode only)
+        if not self._use_volume:
+            self._update_local_refine(world_pos, radius, height)
 
         # Ensure the first cut of a contact is visible immediately;
         # thereafter rebuild the contour every N cuts.
@@ -501,11 +570,25 @@ class StockActor(vtk.vtkActor):
         self._local_refine_active = True
 
     def _rebuild_contour(self):
-        """Re-sample the implicit boolean and rebuild the contour surface."""
+        """Re-sample the implicit boolean and rebuild the display surface."""
         if not self._cutting_enabled:
             return
         self._sample_lo.Modified()
         self._sample_lo.Update()
+
+        if self._use_volume:
+            # Volume mode: skip mesh pipeline entirely.
+            # The volume mapper reads from _sample_lo and renders on GPU.
+            self._volume_mapper.Update()
+            if self._cut_count > 0:
+                LOG.debug(
+                    "StockActor: volume rebuilt — %d cuts, union functions: %d",
+                    self._cut_count,
+                    self._union_function_count,
+                )
+            return
+
+        # Mesh mode: full polydata pipeline
         self._contour_lo.Update()
         self._clean_lo.Update()
         self._smooth_lo.Update()

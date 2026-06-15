@@ -726,6 +726,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.renderer.AddActor(self.spindle_actor)
 
             self.renderer.AddActor(self.stock_actor)
+            self.renderer.AddVolume(self.stock_actor.get_volume())
             self.renderer.AddActor(self.tool_actor)
             self.renderer.AddActor(self.tool_bit_actor)
             tool_in_spindle = self._tool_in_spindle()
