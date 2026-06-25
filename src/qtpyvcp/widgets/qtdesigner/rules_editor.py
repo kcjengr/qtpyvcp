@@ -381,13 +381,34 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.setup_ui()
 
+        # Load and normalize the widget.rules value. Some widgets (or older
+        # code paths) store non-dict rule formats (e.g. list-of-lists used by
+        # syntax highlighters). The editor expects a list of dicts; ignore
+        # other formats with a warning so the editor can open safely.
         try:
-            self.rules = json.loads(widget.rules)
-        except:
+            raw_rules = widget.rules
+            if isinstance(raw_rules, str):
+                parsed = json.loads(raw_rules)
+            else:
+                parsed = raw_rules
+            normalized = []
+            if isinstance(parsed, list):
+                for entry in parsed:
+                    if isinstance(entry, dict):
+                        normalized.append(entry)
+                    else:
+                        LOG.warning("RulesEditor: ignoring non-dict rule entry for widget '%s': %r", widget.objectName(), entry)
+            else:
+                LOG.warning("RulesEditor: widget.rules is not a list for widget '%s' (type=%s)", widget.objectName(), type(parsed).__name__)
+            self.rules = normalized
+        except Exception:
+            LOG.exception("Failed to parse widget.rules for widget '%s'", getattr(widget, 'objectName', lambda: '<unknown>')())
             self.rules = []
 
+        # Populate the rule list UI with loaded rule names
         for ac in self.rules:
-            self.lst_rules.addItem(ac.get("name", ''))
+            name = ac.get("name") if isinstance(ac, dict) else ''
+            self.lst_rules.addItem(name or '')
 
     def setup_ui(self):
         """Create the UI elements for the form."""

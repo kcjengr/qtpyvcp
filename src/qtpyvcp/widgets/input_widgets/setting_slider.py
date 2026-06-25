@@ -1,4 +1,5 @@
 import os
+import re
 from PySide6.QtCore import Property, QLocale, Slot
 from PySide6.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
 from PySide6.QtGui import QIntValidator, QDoubleValidator
@@ -577,6 +578,16 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
             try:
                 return value_type(text)
             except ValueError:
+                # Labels like "2x" or "0.5x" carry the actual numeric value
+                # plus a unit/multiplier suffix - extract it directly rather
+                # than falling back to interpolation, which only works when
+                # combo values are evenly spaced (e.g. "1x/2x/4x/8x/...").
+                match = re.match(r'^\s*([-+]?\d*\.?\d+)', text)
+                if match:
+                    try:
+                        return value_type(float(match.group(1)))
+                    except ValueError:
+                        pass
                 # If combo labels are semantic strings (e.g. inch/mm, CSS/RPM)
                 # but the setting is numeric, infer the numeric value from the
                 # setting range and current item index.
@@ -650,7 +661,12 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
         """Persist selected value (not index) when storeIndex is disabled."""
         if self._setting is None or index < 0:
             return
-        self._setting.setValue(self._item_value(index))
+        value = self._item_value(index)
+        try:
+            self._setting.setValue(value)
+        except (ValueError, TypeError):
+            LOG.warning("Could not store combo value %r for setting %r",
+                        value, getattr(self._setting, 'name', None))
 
     def _apply_setting_update_store_index(self, value):
         """Update display for store-index mode from either index or item value."""

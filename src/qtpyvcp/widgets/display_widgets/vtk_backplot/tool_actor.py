@@ -21,6 +21,7 @@ from qtpyvcp.plugins.db_tool_table import DBToolTable
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
 from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
+from qtpyvcp.lib.lathe_insert_geometry import compute_live_insert_profile
 
 
 LOG = logger.getLogger(__name__)
@@ -57,73 +58,6 @@ _ISO_THSC_LETTER_KAPPA_DEG = {
     's': 45.0,
     'v': 72.5,
 }
-
-
-def _resolve_machine_config_dir():
-    config_dir = str(os.environ.get('CONFIG_DIR') or '').strip()
-    if config_dir:
-        return os.path.abspath(os.path.expanduser(config_dir))
-
-    ini_file_name = str(os.environ.get('INI_FILE_NAME') or '').strip()
-    if ini_file_name:
-        ini_dir = os.path.dirname(os.path.abspath(os.path.expanduser(ini_file_name)))
-        if ini_dir:
-            return ini_dir
-
-    return ''
-
-
-def _has_insert_profiles(profile_dir):
-    if not profile_dir or not os.path.isdir(profile_dir):
-        return False
-
-    if os.path.isfile(os.path.join(profile_dir, 'manifest.json')):
-        return True
-
-    for file_name in os.listdir(profile_dir):
-        if file_name.startswith('T') and file_name.endswith('.insert.json'):
-            return True
-
-    return False
-
-
-def _resolve_user_insert_profile_dir():
-    machine_config_dir = _resolve_machine_config_dir()
-    if not machine_config_dir or not os.path.isdir(machine_config_dir):
-        return ''
-
-    preferred_dirs = [
-        os.path.join(machine_config_dir, 'tool_models'),
-        os.path.join(machine_config_dir, 'qtpyvcp', 'vtk_backplot', 'tool_insert_profiles'),
-        os.path.join(machine_config_dir, 'vtk_backplot', 'tool_insert_profiles'),
-    ]
-    for profile_dir in preferred_dirs:
-        if _has_insert_profiles(profile_dir):
-            return profile_dir
-
-    for current_root, _, file_names in os.walk(machine_config_dir):
-        if 'manifest.json' in file_names and _has_insert_profiles(current_root):
-            return current_root
-
-    return ''
-
-
-_INSERT_PROFILE_DIR = _resolve_user_insert_profile_dir()
-_INSERT_PROFILE_CACHE_BY_TOOL = {}
-
-
-def _get_insert_profile_dir():
-    global _INSERT_PROFILE_DIR
-
-    if _INSERT_PROFILE_DIR and os.path.isdir(_INSERT_PROFILE_DIR):
-        return _INSERT_PROFILE_DIR
-
-    resolved_dir = _resolve_user_insert_profile_dir()
-    if resolved_dir != _INSERT_PROFILE_DIR:
-        _INSERT_PROFILE_DIR = resolved_dir
-        _INSERT_PROFILE_CACHE_BY_TOOL.clear()
-
-    return _INSERT_PROFILE_DIR
 
 
 def _coerce_int(value, default=0):
@@ -301,13 +235,6 @@ def _has_active_fusion_tool_data(fusion_tool, active_tool_number):
     return int(fusion_tool_number) == int(active_tool_number)
 
 
-def _resolve_insert_profile_path(tool_number):
-    profile_dir = _get_insert_profile_dir()
-    if not profile_dir:
-        return ''
-    return os.path.join(profile_dir, f'T{int(tool_number):03d}.insert.json')
-
-
 def _resolve_tool_number_field(tool_entry):
     for attr in ('tool', 'toolno', 'tool_no', 'number', 'id'):
         raw_value = tool_entry.get(attr) if isinstance(tool_entry, dict) else getattr(tool_entry, attr, None)
@@ -352,33 +279,6 @@ def _resolve_tool_axis_offset(tool_entry, axis_name):
         if parsed is not None:
             return float(parsed)
     return 0.0
-
-
-def _load_insert_profile(tool_number):
-    tool_num = int(tool_number)
-    profile_path = _resolve_insert_profile_path(tool_num)
-
-    if not profile_path or not os.path.isfile(profile_path):
-        return None
-
-    path_stat = os.stat(profile_path)
-    mtime_ns = int(path_stat.st_mtime_ns)
-
-    cached = _INSERT_PROFILE_CACHE_BY_TOOL.get(tool_num)
-    if isinstance(cached, dict) and cached.get('mtime_ns') == mtime_ns:
-        return cached.get('doc')
-
-    with open(profile_path, 'r', encoding='utf-8') as handle:
-        parsed_doc = json.load(handle)
-
-    if not isinstance(parsed_doc, dict):
-        return None
-
-    _INSERT_PROFILE_CACHE_BY_TOOL[tool_num] = {
-        'mtime_ns': mtime_ns,
-        'doc': parsed_doc,
-    }
-    return parsed_doc
 
 
 def _resolve_active_tool(tool_table, datasource):
@@ -1253,14 +1153,20 @@ class ToolBitActor(vtk.vtkActor):
             return None
 
         control_point = self._resolve_profile_control_point_xz(profile_doc)
+        profile_family = str(profile_doc.get('family') or '').strip().lower()
         if control_point is not None:
             anchor_x, anchor_z = control_point
+        elif profile_family in ('drill', 'tap'):
+            # Drill/tap profiles are generated centered on the spindle
+            # centerline (X=0) with the cutting tip at Z=0, so the tip-edge
+            # tangent anchor used for turning inserts (which picks the
+            # min/max X point - the OD edge, not the centerline) does not
+            # apply here; anchoring at the origin keeps the bore on-center.
+            anchor_x, anchor_z = 0.0, 0.0
         else:
             profile_dims = profile_doc.get('dimensions')
             if not isinstance(profile_dims, dict):
                 profile_dims = {}
-
-            profile_family = str(profile_doc.get('family') or '').strip().lower()
 
             nose_radius = _parse_number(profile_dims.get('nose_radius'), 0.0)
             if nose_radius is None or nose_radius <= 0.0:
@@ -1327,7 +1233,7 @@ class ToolBitActor(vtk.vtkActor):
         style_type = str(_dict_get(fusion_tool, 'geometry', 'SCTY') or '').strip().lower()
         holder_style = str(_dict_get(fusion_tool, 'holder', 'THSC') or '').strip().lower()
 
-        if 'drill' in tool_type:
+        if 'drill' in tool_type or 'tap' in tool_type:
             return 0.0
 
         if (
@@ -1478,7 +1384,7 @@ class ToolBitActor(vtk.vtkActor):
 
         tool_number = _resolve_active_tool_number(self.tool, self._datasource)
         if tool_number > 0:
-            profile_doc = _load_insert_profile(tool_number)
+            profile_doc = compute_live_insert_profile(fusion_tool)
         else:
             profile_doc = None
 
@@ -1513,7 +1419,7 @@ class ToolBitActor(vtk.vtkActor):
 
         is_groove = ('groove' in tool_type) or (style_type == 'g')
         is_thread = 'thread' in tool_type
-        is_drill = 'drill' in tool_type
+        is_drill = ('drill' in tool_type) or ('tap' in tool_type)
 
         if is_groove:
             holder_style = str(holder.get('THSC') or '').strip().lower()
@@ -1675,15 +1581,15 @@ class ToolBitActor(vtk.vtkActor):
                 if profile_family == 'thread':
                     enforce_x_axis_tangency = True
                     enforce_z_axis_tangency = True
-                elif profile_family != 'drill':
+                elif profile_family not in ('drill', 'tap'):
                     enforce_z_axis_tangency = True
                     if not neutral_hand_tool:
                         enforce_x_axis_tangency = True
 
-            # Canonical generated thread/drill profiles are already oriented in
-            # the same local frame as the preview SVG. Avoid extra runtime
+            # Canonical generated thread/drill/tap profiles are already oriented
+            # in the same local frame as the preview SVG. Avoid extra runtime
             # rotation so backplot matches preview geometry directly.
-            if profile_format >= 1 and profile_family in ('thread', 'drill'):
+            if profile_format >= 1 and profile_family in ('thread', 'drill', 'tap'):
                 profile_local_rotation_deg = 0.0
 
             insert_mapper = self._build_insert_polygon_from_profile(
