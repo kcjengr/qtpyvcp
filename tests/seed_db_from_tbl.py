@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Seed a tool database from a LinuxCNC .tbl file (Phase 1 spike).
+"""Quick-seed a schema-v1 tool database from a LinuxCNC .tbl file.
 
 Usage:
     python3 seed_db_from_tbl.py [tbl_file] [db_file]
@@ -8,22 +8,21 @@ Defaults to the Probe Basic lathe sim config:
     tbl: ~/dev/probe_basic/configs/probe_basic_lathe/lathe.tbl
     db:  ~/dev/probe_basic/configs/probe_basic_lathe/tool_table.db
 
-Note: D values are imported VERBATIM. The ratified D = diameter convention
-(plan §5.1) is applied by the real Phase 7 bootstrap wizard, which knows each
-tool's type (radius-doubling applies to turning-family tools only, and type
-is not derivable from a bare .tbl). For the Phase 1 gate demo the D semantics
-are irrelevant — the gate exercises offsets, touch-off, and add/delete.
+Note: D values are imported VERBATIM (no radius/diameter conversion, no
+tool_lathe extras). For the ratified D = diameter conversion (plan §5.1) and
+real lathe-extras data, use pb_lathe_conv's
+docs/schema_v1/generate_seed.py -> seed.sql instead; this script is a quick,
+core-columns-only seed for backend/protocol testing.
 """
 
 import os
-import re
 import sys
 
 sys.path.insert(0, os.path.expanduser('~/dev/qtpyvcp/src'))
 
-from qtpyvcp.lib.db_tool.base import (Session, Base, configure_database,
-                                      get_engine)
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
+from qtpyvcp.lib.db_tool.base import Session, configure_database, get_engine
+from qtpyvcp.lib.db_tool.tool_table import Tool
+from qtpyvcp.lib.db_tool.migrate import run_migrations
 
 DEFAULT_TBL = os.path.expanduser(
     '~/dev/probe_basic/configs/probe_basic_lathe/lathe.tbl')
@@ -52,9 +51,9 @@ def parse_tbl(path):
             'a_offset': 0.0, 'b_offset': 0.0, 'c_offset': 0.0,
             'u_offset': 0.0, 'v_offset': 0.0, 'w_offset': 0.0,
             'diameter': float(tokens.get('D', 0.0)),
-            'i_offset': float(tokens.get('I', 0.0)),
-            'j_offset': float(tokens.get('J', 0.0)),
-            'q_offset': int(float(tokens.get('Q', 0))),
+            'front_angle': float(tokens.get('I', 0.0)),
+            'back_angle': float(tokens.get('J', 0.0)),
+            'orientation': int(float(tokens.get('Q', 0))),
             'in_use': 0,
             'remark': remark.strip(),
         })
@@ -72,13 +71,10 @@ def main():
     rows = parse_tbl(tbl)
 
     configure_database(db)
-    Base.metadata.create_all(get_engine())
+    run_migrations(get_engine())
     session = Session()
-    table = ToolTable(name='Lathe Tool Table')
-    session.add(table)
-    session.flush()
     for row in rows:
-        session.add(Tool(tool_table_id=table.id, **row))
+        session.add(Tool(**row))
     session.commit()
     session.close()
 

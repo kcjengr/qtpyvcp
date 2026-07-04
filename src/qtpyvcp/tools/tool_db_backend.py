@@ -29,15 +29,15 @@ import tooldb as _tooldb
 from tooldb import tooldb_callbacks  # functions (g,p,l,u)
 from tooldb import tooldb_tools      # list of tool numbers
 
-from qtpyvcp.lib.db_tool.base import Session, Base, configure_database, get_engine
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
+from qtpyvcp.lib.db_tool.base import Base, Session, configure_database, get_engine
+from qtpyvcp.lib.db_tool.tool_table import Tool, ToolTable, ToolModel
+from qtpyvcp.lib.db_tool.migrate import run_migrations
 
 DEBUG = bool(os.getenv('DB_DEBUG'))
 
 TOKEN_RE = re.compile(r'([TPXYZABCUVWDIJQ])\s*([-+]?[0-9.]+)')
 
-# Tool model columns keyed by tool-table letter (I/J/Q live in the *_offset
-# columns of the current model; schema v1 renames them — Phase 2).
+# Tool model columns keyed by tool-table letter (schema v1).
 LETTER_TO_ATTR = {
     'T': 'tool_no',
     'P': 'pocket',
@@ -51,9 +51,9 @@ LETTER_TO_ATTR = {
     'V': 'v_offset',
     'W': 'w_offset',
     'D': 'diameter',
-    'I': 'i_offset',
-    'J': 'j_offset',
-    'Q': 'q_offset',
+    'I': 'front_angle',
+    'J': 'back_angle',
+    'Q': 'orientation',
 }
 
 INT_LETTERS = ('T', 'P', 'Q')
@@ -146,9 +146,9 @@ class DataBaseManager(object):
                 if val:
                     parts.append('%s%s' % (letter, fmt_num(val)))
             parts.append('D%s' % fmt_num(tool.diameter))
-            parts.append('I%s' % fmt_num(tool.i_offset))
-            parts.append('J%s' % fmt_num(tool.j_offset))
-            parts.append('Q%d' % int(tool.q_offset or 0))
+            parts.append('I%s' % fmt_num(tool.front_angle))
+            parts.append('J%s' % fmt_num(tool.back_angle))
+            parts.append('Q%d' % int(tool.orientation or 0))
             remark = (tool.remark or '').strip()
             line = ' '.join(parts)
             if remark:
@@ -240,7 +240,12 @@ def main():
     db_path = resolve_db_path(sys.argv)
     log('database: %s' % db_path)
     configure_database(db_path)
-    Base.metadata.create_all(get_engine())
+    run_migrations(get_engine())
+    # ToolTable/ToolModel (mill per-tool STL reference) aren't part of the
+    # versioned lathe schema; create them here if absent, same as the GUI
+    # plugin, so either process can be first to touch a fresh DB file.
+    Base.metadata.create_all(get_engine(), tables=[
+        ToolTable.__table__, ToolModel.__table__])
 
     DataBaseManager()
 

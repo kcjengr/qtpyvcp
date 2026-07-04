@@ -26,25 +26,24 @@ for suffix in ("-wal", "-shm"):
         os.remove(DB + suffix)
 
 sys.path.insert(0, QTPYVCP_SRC)
-from qtpyvcp.lib.db_tool.base import Session, Base, configure_database, get_engine
-from qtpyvcp.lib.db_tool.tool_table import Tool, ToolTable
+from qtpyvcp.lib.db_tool.base import Session, configure_database, get_engine
+from qtpyvcp.lib.db_tool.tool_table import Tool
+from qtpyvcp.lib.db_tool.migrate import run_migrations
 
 # ---- seed two lathe tools (GUI-process role) ----
 configure_database(DB)
-Base.metadata.create_all(get_engine())
+run_migrations(get_engine())
 s = Session()
-s.add(ToolTable(id=1, name="Harness Tool Table"))
-s.flush()
 s.add(Tool(tool_no=2, pocket=-1, x_offset=0.0, z_offset=0.0,
            y_offset=0, a_offset=0, b_offset=0, c_offset=0,
            u_offset=0, v_offset=0, w_offset=0,
-           diameter=0.03125, i_offset=85.0, j_offset=5.0, q_offset=2,
-           in_use=0, remark="SCLCR-CCGT-21.51-RH TURNING TOOL", tool_table_id=1))
+           diameter=0.03125, front_angle=85.0, back_angle=5.0, orientation=2,
+           in_use=0, remark="SCLCR-CCGT-21.51-RH TURNING TOOL"))
 s.add(Tool(tool_no=20, pocket=-1, x_offset=0.0, z_offset=0.0,
            y_offset=0, a_offset=0, b_offset=0, c_offset=0,
            u_offset=0, v_offset=0, w_offset=0,
-           diameter=0.4531, i_offset=0.0, j_offset=0.0, q_offset=9,
-           in_use=0, remark="29/64 DRILL", tool_table_id=1))
+           diameter=0.4531, front_angle=0.0, back_angle=0.0, orientation=9,
+           in_use=0, remark="29/64 DRILL"))
 s.commit()
 
 # ---- spawn the backend exactly as LinuxCNC would ----
@@ -105,8 +104,8 @@ expect("touch-off X persisted to DB (%r)" % x_now, abs(x_now - 0.123456) < 1e-9)
 gui = Session()
 gui.add(Tool(tool_no=55, pocket=-1, x_offset=0, y_offset=0, z_offset=0,
              a_offset=0, b_offset=0, c_offset=0, u_offset=0, v_offset=0,
-             w_offset=0, diameter=0.02, i_offset=87.0, j_offset=3.0,
-             q_offset=3, in_use=0, remark="ADDED LIVE", tool_table_id=1))
+             w_offset=0, diameter=0.02, front_angle=87.0, back_angle=3.0,
+             orientation=3, in_use=0, remark="ADDED LIVE"))
 gui.query(Tool).filter(Tool.tool_no == 20).delete()
 gui.commit()
 gui.close()

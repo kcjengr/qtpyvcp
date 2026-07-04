@@ -35,9 +35,13 @@ import linuxcnc
 
 from PySide6.QtCore import QTimer, Signal
 
-from qtpyvcp.lib.db_tool.base import (Session, Base, configure_database,
-                                      get_engine)
-from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
+from qtpyvcp.lib.db_tool.base import Base, Session, configure_database, get_engine
+from qtpyvcp.lib.db_tool.tool_table import (Tool, ToolTable, ToolModel,
+                                            ToolLathe, CustomFieldDef,
+                                            CustomFieldValue)
+from qtpyvcp.lib.db_tool.migrate import run_migrations
+
+CUSTOM_FIELD_VALUE_TYPES = ('float', 'int', 'text', 'bool')
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
@@ -121,9 +125,9 @@ LETTER_ATTRS = (
     ('V', 'v_offset'),
     ('W', 'w_offset'),
     ('D', 'diameter'),
-    ('I', 'i_offset'),
-    ('J', 'j_offset'),
-    ('Q', 'q_offset'),
+    ('I', 'front_angle'),
+    ('J', 'back_angle'),
+    ('Q', 'orientation'),
     ('R', 'remark'),
 )
 
@@ -171,6 +175,14 @@ class DBToolTable(DataPlugin):
     # which uses Signal(object) for the identical reason.
     tool_table_changed = Signal(object)
 
+    # Per-tool/extras/custom-field change signals (plan §6 Phase 2). Narrower
+    # than tool_table_changed: a widget interested in only one tool's extras,
+    # or only the set of custom columns, doesn't need to re-render on every
+    # core-table reload.
+    tool_changed = Signal(int)     # tool_no whose core row was added/edited/removed
+    extras_changed = Signal(int)   # tool_no whose tool_lathe row changed
+    fields_changed = Signal()      # a custom_field_def or *_value changed
+
     def __init__(self, columns='TPXZDIJQR', db_file=None, **kwargs):
         super(DBToolTable, self).__init__()
 
@@ -185,7 +197,12 @@ class DBToolTable(DataPlugin):
         db_path = self.db_file or _default_db_path()
         LOG.info("Tool database: %s", db_path)
         configure_database(db_path)
-        Base.metadata.create_all(get_engine())
+        run_migrations(get_engine())
+        # ToolTable/ToolModel (mill per-tool STL reference) aren't part of the
+        # versioned lathe schema; create them here if absent (no-op once they
+        # exist -- create_all checks first).
+        Base.metadata.create_all(get_engine(), tables=[
+            ToolTable.__table__, ToolModel.__table__])
 
         self.loadToolTable()
 
@@ -332,13 +349,8 @@ class DBToolTable(DataPlugin):
         del columns
 
         session = Session()
+        changed = set()
         try:
-            table_row = session.query(ToolTable).first()
-            if table_row is None:
-                table_row = ToolTable(name='Tool Table')
-                session.add(table_row)
-                session.flush()
-
             existing = {int(t.tool_no): t
                         for t in session.query(Tool).all()
                         if t.tool_no is not None}
@@ -351,15 +363,21 @@ class DBToolTable(DataPlugin):
             for tnum, tdata in wanted.items():
                 tool = existing.get(tnum)
                 if tool is None:
-                    tool = Tool(tool_no=tnum, in_use=0,
-                                tool_table_id=table_row.id)
+                    tool = Tool(tool_no=tnum, in_use=0)
                     session.add(tool)
-                self._apply_dict_to_tool(tool, tdata)
+                    self._apply_dict_to_tool(tool, tdata)
+                    changed.add(tnum)
+                else:
+                    before = self._tool_to_dict(tool)
+                    self._apply_dict_to_tool(tool, tdata)
+                    if self._tool_to_dict(tool) != before:
+                        changed.add(tnum)
 
             # delete removed tools
             for tnum, tool in existing.items():
                 if tnum not in wanted:
                     session.delete(tool)
+                    changed.add(tnum)
 
             session.commit()
         except Exception:
@@ -370,6 +388,196 @@ class DBToolTable(DataPlugin):
 
         self.loadToolTable()
         self._request_machine_reload()
+        for tnum in changed:
+            self.tool_changed.emit(tnum)
+
+    def renumberTool(self, old_tool_no, new_tool_no):
+        """Change a tool's number in place -- a single UPDATE on `tool.id`'s
+        row, not a delete+recreate.
+
+        Schema v1 keys `tool_lathe`/`custom_field_value` off `tool.id`, not
+        `tool_no`, specifically so renumbering is safe (§4): going through
+        the generic add/delete path in :meth:`saveToolTable` instead (i.e.
+        removing old_tool_no and adding new_tool_no as if it were a brand
+        new tool) would give the new row a new `id`, and ON DELETE CASCADE
+        would silently wipe that tool's extras and custom-field values.
+        """
+        old_tool_no, new_tool_no = int(old_tool_no), int(new_tool_no)
+        if old_tool_no == new_tool_no:
+            return
+        if new_tool_no == 0:
+            raise ValueError("T0 is reserved (no tool); can't renumber to it")
+
+        session = Session()
+        try:
+            tool = session.query(Tool).filter(
+                Tool.tool_no == old_tool_no).one_or_none()
+            if tool is None:
+                raise LookupError('tool %s not in database' % old_tool_no)
+            if session.query(Tool).filter(
+                    Tool.tool_no == new_tool_no).first() is not None:
+                raise ValueError('tool %s already exists' % new_tool_no)
+            tool.tool_no = new_tool_no
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+        self.loadToolTable()
+        self._request_machine_reload()
+        self.tool_changed.emit(old_tool_no)
+        self.tool_changed.emit(new_tool_no)
+
+    # ------------------------------------------------------------ extras
+    # (tool_lathe: consumed by the UI/VTK/conversational; never sent to
+    # LinuxCNC, so no machine-reload/interp-idle guard applies here.)
+
+    _EXTRAS_COLUMNS = [c.name for c in ToolLathe.__table__.columns
+                       if c.name != 'tool_id']
+
+    def getToolExtras(self, tool_no):
+        """Return the tool_lathe extras dict for tool_no, or None if the
+        tool has no extras row (a bare core-only tool is valid, §4)."""
+        session = Session()
+        try:
+            tool = session.query(Tool).filter(
+                Tool.tool_no == int(tool_no)).one_or_none()
+            if tool is None or tool.lathe is None:
+                return None
+            return {name: getattr(tool.lathe, name)
+                    for name in self._EXTRAS_COLUMNS}
+        finally:
+            session.close()
+
+    def saveToolExtras(self, tool_no, extras):
+        """Upsert the tool_lathe extras row for tool_no."""
+        session = Session()
+        try:
+            tool = session.query(Tool).filter(
+                Tool.tool_no == int(tool_no)).one_or_none()
+            if tool is None:
+                raise LookupError('tool %s not in database' % tool_no)
+            if tool.lathe is None:
+                tool.lathe = ToolLathe()
+            for name in self._EXTRAS_COLUMNS:
+                if name in extras:
+                    setattr(tool.lathe, name, extras[name])
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+        self.extras_changed.emit(int(tool_no))
+
+    # ------------------------------------------------------------ custom fields
+    # (plan §5.7: definition + typed EAV value tables; UI/DB-only by design.)
+
+    @staticmethod
+    def _cast_custom_value(raw, value_type):
+        if raw is None:
+            return None
+        if value_type == 'float':
+            return float(raw)
+        if value_type == 'int':
+            return int(raw)
+        if value_type == 'bool':
+            return str(raw).strip().lower() in ('1', 'true', 'yes', 'y')
+        return raw  # text
+
+    def getCustomFieldDefs(self):
+        """List of custom field definitions, in display order."""
+        session = Session()
+        try:
+            defs = session.query(CustomFieldDef).order_by(
+                CustomFieldDef.display_order, CustomFieldDef.id).all()
+            return [{'name': d.name, 'label': d.label,
+                     'value_type': d.value_type, 'unit': d.unit,
+                     'default_value': d.default_value,
+                     'display_order': d.display_order} for d in defs]
+        finally:
+            session.close()
+
+    def addCustomField(self, name, label, value_type, unit=None,
+                       default_value=None, display_order=None):
+        """Define a new custom column. Grows the table immediately -- no
+        schema migration, no restart (plan §5.7)."""
+        if value_type not in CUSTOM_FIELD_VALUE_TYPES:
+            raise ValueError('invalid value_type %r (must be one of %s)' %
+                             (value_type, CUSTOM_FIELD_VALUE_TYPES))
+        session = Session()
+        try:
+            if session.query(CustomFieldDef).filter(
+                    CustomFieldDef.name == name).first() is not None:
+                raise ValueError('custom field %r already exists' % name)
+            session.add(CustomFieldDef(
+                name=name, label=label, value_type=value_type, unit=unit,
+                default_value=default_value, display_order=display_order))
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+        self.fields_changed.emit()
+
+    def removeCustomField(self, name):
+        """Remove a custom field definition and all its values (cascades)."""
+        session = Session()
+        try:
+            field = session.query(CustomFieldDef).filter(
+                CustomFieldDef.name == name).one_or_none()
+            if field is not None:
+                session.delete(field)
+                session.commit()
+        except Exception:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+        self.fields_changed.emit()
+
+    def getCustomFieldValues(self, tool_no):
+        """dict of {field_name: typed value} for every custom value set on
+        tool_no (fields with no value set for this tool are omitted)."""
+        session = Session()
+        try:
+            tool = session.query(Tool).filter(
+                Tool.tool_no == int(tool_no)).one_or_none()
+            if tool is None:
+                return {}
+            return {cv.field.name: self._cast_custom_value(cv.value, cv.field.value_type)
+                    for cv in tool.custom_values}
+        finally:
+            session.close()
+
+    def setCustomFieldValue(self, tool_no, field_name, value):
+        session = Session()
+        try:
+            tool = session.query(Tool).filter(
+                Tool.tool_no == int(tool_no)).one_or_none()
+            if tool is None:
+                raise LookupError('tool %s not in database' % tool_no)
+            field = session.query(CustomFieldDef).filter(
+                CustomFieldDef.name == field_name).one_or_none()
+            if field is None:
+                raise LookupError('custom field %r not defined' % field_name)
+            cv = session.query(CustomFieldValue).filter(
+                CustomFieldValue.tool_id == tool.id,
+                CustomFieldValue.field_id == field.id).one_or_none()
+            if cv is None:
+                cv = CustomFieldValue(tool_id=tool.id, field_id=field.id)
+                session.add(cv)
+            cv.value = None if value is None else str(value)
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+        self.fields_changed.emit()
 
     # ------------------------------------------------------------ sync
 
