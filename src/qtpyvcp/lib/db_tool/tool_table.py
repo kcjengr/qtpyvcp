@@ -21,7 +21,10 @@ class Tool(Base):
     id = Column(Integer, primary_key=True)
     
     remark = Column(Text)
-    tool_no = Column(Integer)
+    # unique: tool_no is the join key everywhere, and ToolModel.tool_no
+    # declares a FK to it -- SQLite rejects FKs to non-unique columns once
+    # PRAGMA foreign_keys is enforced (it always should have been).
+    tool_no = Column(Integer, unique=True)
     in_use = Column(Integer)
     pocket = Column(Integer)
     
