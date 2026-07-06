@@ -219,6 +219,86 @@ def test_malformed_db():
 
 
 # ------------------------------------------------------------- orphan rows
+def test_batch_extras_and_custom_values_use_one_commit_each():
+    """Regression coverage for a real perf bug: the probe_basic widget used
+    to call saveToolExtras()/setCustomFieldValue() once per tool (each its
+    own session+commit) when saving the whole table -- 23 tools alone made
+    a single-cell edit take ~1.6s (47 commits, ~35ms/commit measured on a
+    dev SSD; worse on typical machine-control hardware). saveAllToolExtras/
+    setCustomFieldValues must commit once for the whole batch regardless of
+    how many tools are in it."""
+    db = fresh_db('phase2_batch_commits.db')
+    configure_database(db)
+    run_migrations(get_engine())
+
+    plugin = DBToolTable()
+    plugin.loadToolTable()
+    table = plugin.getToolTable()
+    tnums = [10, 11, 12, 13, 14]
+    for tnum in tnums:
+        table[tnum] = plugin.newTool(tnum=tnum)
+    plugin.saveToolTable(table)
+    plugin.addCustomField('coating', 'Coating', 'text')
+
+    import sqlalchemy
+    commit_count = [0]
+    orig_commit = sqlalchemy.orm.Session.commit
+
+    def counting_commit(self, *a, **kw):
+        commit_count[0] += 1
+        return orig_commit(self, *a, **kw)
+
+    sqlalchemy.orm.Session.commit = counting_commit
+    try:
+        plugin.saveAllToolExtras({tnum: {'type': 'turning', 'insert_shape': 'C'}
+                                  for tnum in tnums})
+        expect('saveAllToolExtras commits once for a 5-tool batch, not once per tool',
+               commit_count[0] == 1)
+
+        commit_count[0] = 0
+        plugin.setCustomFieldValues({tnum: {'coating': 'TiAlN'} for tnum in tnums})
+        expect('setCustomFieldValues commits once for a 5-tool batch, not once per tool',
+               commit_count[0] == 1)
+    finally:
+        sqlalchemy.orm.Session.commit = orig_commit
+
+    plugin2 = DBToolTable()
+    plugin2.loadToolTable()
+    expect('batched extras actually landed for every tool in the batch',
+           all(plugin2.getToolExtras(t) is not None and
+               plugin2.getToolExtras(t)['insert_shape'] == 'C' for t in tnums))
+    expect('batched custom values actually landed for every tool in the batch',
+           all(plugin2.getCustomFieldValues(t).get('coating') == 'TiAlN' for t in tnums))
+
+
+def test_visible_columns_persist():
+    """Schema v2 (migrations/002_ui_visible_columns.sql): which columns are
+    checked visible should survive a restart -- Chris found custom columns
+    reverting to hidden every time the app relaunched, since visibility was
+    only ever tracked in the widget's own memory."""
+    db = fresh_db('phase2_visible_columns.db')
+    configure_database(db)
+    run_migrations(get_engine())
+
+    plugin = DBToolTable()
+    expect('a never-touched database has no persisted preference yet',
+           plugin.getVisibleColumns() is None)
+
+    plugin.setVisibleColumns(['T', 'X', 'Z', 'custom:weight'])
+
+    # fresh plugin instance -- simulates a restart, not just re-reading
+    # this same instance's own state back.
+    plugin2 = DBToolTable()
+    expect('persisted visible columns round-trip through a fresh instance',
+           plugin2.getVisibleColumns() == ['T', 'X', 'Z', 'custom:weight'])
+
+    plugin2.setVisibleColumns(['T', 'X'])
+    plugin3 = DBToolTable()
+    expect('a later setVisibleColumns() call replaces the set atomically, '
+           'not appends to it',
+           plugin3.getVisibleColumns() == ['T', 'X'])
+
+
 def test_orphan_tool_lathe():
     db = fresh_db('phase2_orphan.db')
     configure_database(db)
@@ -241,6 +321,8 @@ if __name__ == '__main__':
     test_round_trip()
     test_renumber_preserves_extras_and_custom_values()
     test_concurrent_writer()
+    test_batch_extras_and_custom_values_use_one_commit_each()
+    test_visible_columns_persist()
     test_version_gate()
     test_malformed_db()
     test_orphan_tool_lathe()

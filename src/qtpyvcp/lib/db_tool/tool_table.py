@@ -4,8 +4,9 @@
 ``Tool`` (+ ``ToolLathe``/``CustomFieldDef``/``CustomFieldValue``/``Meta``) map
 schema v1 (frozen 2026-07-03, see ``migrations/001_initial.sql`` -- the
 authoritative DDL; these Column definitions mirror it for ORM use, they do
-not create it. Use :func:`qtpyvcp.lib.db_tool.migrate.run_migrations` to
-create/upgrade the actual tables.
+not create it. ``VisibleColumn`` is schema v2 (``migrations/
+002_ui_visible_columns.sql``). Use :func:`qtpyvcp.lib.db_tool.migrate.run_migrations`
+to create/upgrade the actual tables.
 
 ``ToolTable``/``ToolModel`` are an unrelated, currently-unused stub for a
 per-tool custom STL model file (mill VTK display, see
@@ -140,6 +141,17 @@ class CustomFieldValue(Base):
     value = Column(Text)
 
     field = relationship("CustomFieldDef")
+
+
+class VisibleColumn(Base):
+    """One row per tool-table column key currently checked visible (schema
+    v2, plan §6 Phase 3 follow-up) -- core, extras, and custom columns
+    alike. The whole table is replaced atomically on every visibility
+    change (see DBToolTable.setVisibleColumns), so its rows are always
+    exactly "whatever's checked right now," not an event log."""
+    __tablename__ = 'ui_visible_column'
+
+    column_key = Column(Text, primary_key=True)
 
 
 class ToolModel(Base):

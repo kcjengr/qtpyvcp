@@ -38,7 +38,7 @@ from PySide6.QtCore import QTimer, Signal
 from qtpyvcp.lib.db_tool.base import Base, Session, configure_database, get_engine
 from qtpyvcp.lib.db_tool.tool_table import (Tool, ToolTable, ToolModel,
                                             ToolLathe, CustomFieldDef,
-                                            CustomFieldValue)
+                                            CustomFieldValue, VisibleColumn)
 from qtpyvcp.lib.db_tool.migrate import run_migrations
 
 CUSTOM_FIELD_VALUE_TYPES = ('float', 'int', 'text', 'bool')
@@ -453,24 +453,40 @@ class DBToolTable(DataPlugin):
 
     def saveToolExtras(self, tool_no, extras):
         """Upsert the tool_lathe extras row for tool_no."""
+        self.saveAllToolExtras({int(tool_no): extras})
+
+    def saveAllToolExtras(self, extras_by_tool):
+        """Upsert tool_lathe extras rows for many tools in one transaction.
+
+        A per-tool loop calling saveToolExtras() (one SQLAlchemy session +
+        commit each) turns a single "Save" click into as many disk-sync'd
+        commits as there are rows in the table -- 23 tools alone made a
+        small single-cell edit take ~1.6s (measured: 35ms/commit average).
+        One session/commit for the whole batch instead.
+        """
         session = Session()
         try:
-            tool = session.query(Tool).filter(
-                Tool.tool_no == int(tool_no)).one_or_none()
-            if tool is None:
-                raise LookupError('tool %s not in database' % tool_no)
-            if tool.lathe is None:
-                tool.lathe = ToolLathe()
-            for name in self._EXTRAS_COLUMNS:
-                if name in extras:
-                    setattr(tool.lathe, name, extras[name])
+            tool_nos = [int(t) for t in extras_by_tool]
+            tools = {t.tool_no: t for t in session.query(Tool).filter(
+                Tool.tool_no.in_(tool_nos)).all()}
+            for tool_no in tool_nos:
+                tool = tools.get(tool_no)
+                if tool is None:
+                    raise LookupError('tool %s not in database' % tool_no)
+                if tool.lathe is None:
+                    tool.lathe = ToolLathe()
+                extras = extras_by_tool[tool_no]
+                for name in self._EXTRAS_COLUMNS:
+                    if name in extras:
+                        setattr(tool.lathe, name, extras[name])
             session.commit()
         except Exception:
             session.rollback()
             raise
         finally:
             session.close()
-        self.extras_changed.emit(int(tool_no))
+        for tool_no in extras_by_tool:
+            self.extras_changed.emit(int(tool_no))
 
     # ------------------------------------------------------------ custom fields
     # (plan §5.7: definition + typed EAV value tables; UI/DB-only by design.)
@@ -554,23 +570,42 @@ class DBToolTable(DataPlugin):
             session.close()
 
     def setCustomFieldValue(self, tool_no, field_name, value):
+        self.setCustomFieldValues({int(tool_no): {field_name: value}})
+
+    def setCustomFieldValues(self, values_by_tool):
+        """Upsert custom_field_value rows for many tools/fields in one
+        transaction -- see saveAllToolExtras for why this matters (a
+        per-tool-per-field loop calling setCustomFieldValue() one at a time
+        made every custom column multiply the cost of a Save by however
+        many tools are in the table)."""
+        values_by_tool = {int(t): v for t, v in values_by_tool.items()}
         session = Session()
         try:
-            tool = session.query(Tool).filter(
-                Tool.tool_no == int(tool_no)).one_or_none()
-            if tool is None:
-                raise LookupError('tool %s not in database' % tool_no)
-            field = session.query(CustomFieldDef).filter(
-                CustomFieldDef.name == field_name).one_or_none()
-            if field is None:
-                raise LookupError('custom field %r not defined' % field_name)
-            cv = session.query(CustomFieldValue).filter(
-                CustomFieldValue.tool_id == tool.id,
-                CustomFieldValue.field_id == field.id).one_or_none()
-            if cv is None:
-                cv = CustomFieldValue(tool_id=tool.id, field_id=field.id)
-                session.add(cv)
-            cv.value = None if value is None else str(value)
+            tool_nos = list(values_by_tool)
+            tools = {t.tool_no: t for t in session.query(Tool).filter(
+                Tool.tool_no.in_(tool_nos)).all()}
+            field_names = {name for fields in values_by_tool.values() for name in fields}
+            field_defs = {f.name: f for f in session.query(CustomFieldDef).filter(
+                CustomFieldDef.name.in_(field_names)).all()}
+            existing_values = {
+                (cv.tool_id, cv.field_id): cv
+                for cv in session.query(CustomFieldValue).filter(
+                    CustomFieldValue.tool_id.in_(t.id for t in tools.values()))}
+
+            for tool_no, fields in values_by_tool.items():
+                tool = tools.get(tool_no)
+                if tool is None:
+                    raise LookupError('tool %s not in database' % tool_no)
+                for field_name, value in fields.items():
+                    field = field_defs.get(field_name)
+                    if field is None:
+                        raise LookupError('custom field %r not defined' % field_name)
+                    cv = existing_values.get((tool.id, field.id))
+                    if cv is None:
+                        cv = CustomFieldValue(tool_id=tool.id, field_id=field.id)
+                        session.add(cv)
+                        existing_values[(tool.id, field.id)] = cv
+                    cv.value = None if value is None else str(value)
             session.commit()
         except Exception:
             session.rollback()
@@ -578,6 +613,36 @@ class DBToolTable(DataPlugin):
         finally:
             session.close()
         self.fields_changed.emit()
+
+    # ------------------------------------------------------- UI preferences
+    # (schema v2, plan §6 Phase 3 follow-up: which columns are checked
+    # visible -- core, extras, custom alike -- so a widget restart shows
+    # the same columns the user last left checked.)
+
+    def getVisibleColumns(self):
+        """Column keys the user last had checked visible, or None if never
+        explicitly set (caller should fall back to its own default -- a
+        fresh/never-touched database has no opinion here)."""
+        session = Session()
+        try:
+            rows = session.query(VisibleColumn).all()
+            return [r.column_key for r in rows] or None
+        finally:
+            session.close()
+
+    def setVisibleColumns(self, columns):
+        """Persist exactly this set of column keys as visible -- replaces
+        whatever was stored before, atomically."""
+        session = Session()
+        try:
+            session.query(VisibleColumn).delete()
+            session.add_all(VisibleColumn(column_key=c) for c in columns)
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
+        finally:
+            session.close()
 
     # ------------------------------------------------------------ sync
 
