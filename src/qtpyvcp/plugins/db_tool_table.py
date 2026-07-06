@@ -40,6 +40,10 @@ from qtpyvcp.lib.db_tool.tool_table import (Tool, ToolTable, ToolModel,
                                             ToolLathe, CustomFieldDef,
                                             CustomFieldValue, VisibleColumn)
 from qtpyvcp.lib.db_tool.migrate import run_migrations
+from qtpyvcp.lib.db_tool.tool_data_sub import (generate_tool_data_ngc,
+                                               NUMBER_KEY, SUB_FILE_NAME)
+
+from sqlalchemy import Text as _SAText
 
 CUSTOM_FIELD_VALUE_TYPES = ('float', 'int', 'text', 'bool')
 
@@ -160,6 +164,26 @@ def _default_db_path():
     return os.path.join(config_dir, 'tool_table.db')
 
 
+def _default_sub_path():
+    """tool_data.ngc under the ini's first SUBROUTINE_PATH entry, or None
+    when that can't be resolved (Designer, tests, no ini) -- generation is
+    simply skipped then; there is no interpreter around to read it anyway."""
+    config_dir = getattr(INFO, 'CONFIG_DIR', None)
+    sub_dirs = None
+    try:
+        sub_dirs = INFO.ini.find('RS274NGC', 'SUBROUTINE_PATH')
+    except Exception:
+        pass
+    if not (config_dir and sub_dirs):
+        return None
+    first = str(sub_dirs).split(':')[0].strip()
+    if not os.path.isabs(first):
+        first = os.path.join(config_dir, first)
+    if not os.path.isdir(first):
+        return None
+    return os.path.join(os.path.abspath(first), SUB_FILE_NAME)
+
+
 class DBToolTable(DataPlugin):
 
     TOOL_TABLE = {0: NO_TOOL}
@@ -183,13 +207,25 @@ class DBToolTable(DataPlugin):
     extras_changed = Signal(int)   # tool_no whose tool_lathe row changed
     fields_changed = Signal()      # a custom_field_def or *_value changed
 
-    def __init__(self, columns='TPXZDIJQR', db_file=None, **kwargs):
+    def __init__(self, columns='TPXZDIJQR', db_file=None, sub_file=None,
+                 **kwargs):
         super(DBToolTable, self).__init__()
 
         self.columns = self.validateColumns(columns) or [c for c in 'TPXZDIJQR']
         self.db_file = db_file
+        self.sub_file = sub_file  # tool_data.ngc override (tests); else ini
         self._pending_reload = False
         self._refresh_scheduled = False
+
+        # Composed record served by the current_tool channel: core letters
+        # + extras (bare column names) + custom values ('custom:<name>').
+        # Cached and refreshed on change signals rather than recomposed on
+        # every channel read -- Rules expressions poll getValue() freely.
+        self._current_tool_no = 0
+        self._current_tool_record = dict(NO_TOOL)
+        self.tool_table_changed.connect(self._refreshCurrentToolRecord)
+        self.fields_changed.connect(self._refreshCurrentToolRecord)
+        self.extras_changed.connect(self._onExtrasChangedRefreshCurrent)
 
     # ------------------------------------------------------------ lifecycle
 
@@ -205,6 +241,7 @@ class DBToolTable(DataPlugin):
             ToolTable.__table__, ToolModel.__table__])
 
         self.loadToolTable()
+        self.regenerateToolDataSub()  # file exists and is current from boot
 
         if STATUS is not None:
             # machine -> UI: touch-off etc. lands in the DB via the
@@ -223,18 +260,28 @@ class DBToolTable(DataPlugin):
     def current_tool(self, chan, item=None):
         """Current Tool Info
 
-        Available items: T, P, X, Y, Z, A, B, C, U, V, W, I, J, Q, R
+        The full composed record for the tool in the spindle: core columns
+        (letter keys), lathe extras (their column names), and custom
+        columns ('custom:' + machine key). Refreshed on tool change and on
+        every table/extras/custom edit.
 
         Rules channel syntax::
 
             tooltable:current_tool
             tooltable:current_tool?X
+            tooltable:current_tool?groove_width
+            tooltable:current_tool?custom:coating
+
+        Single-letter core items keep their historical behavior (anything
+        starting with the letter works: ?X, ?xoffset); extras/custom items
+        must match the machine key exactly.
         """
-        tool_no = STAT.tool_in_spindle if STAT is not None else 0
-        tool = self.TOOL_TABLE.get(tool_no, NO_TOOL)
+        record = self._current_tool_record
         if item is None:
-            return tool
-        return tool.get(item[0].upper())
+            return record
+        if item in record:
+            return record[item]
+        return record.get(item[0].upper())
 
     # ------------------------------------------------------------ helpers
 
@@ -264,10 +311,39 @@ class DBToolTable(DataPlugin):
 
     def setCurrentToolNumber(self, tool_num):
         try:
-            self.current_tool.setValue(
-                self.TOOL_TABLE.get(int(tool_num), NO_TOOL))
+            self._current_tool_no = int(tool_num)
         except (TypeError, ValueError):
-            pass
+            return
+        self._refreshCurrentToolRecord()
+
+    def _onExtrasChangedRefreshCurrent(self, tool_no):
+        # extras_changed fires once per tool in a batch save; only the
+        # current tool's row affects the channel record.
+        if int(tool_no) == self._current_tool_no:
+            self._refreshCurrentToolRecord()
+
+    def _refreshCurrentToolRecord(self, *_args):
+        """*_args: connected to signals with varying payloads
+        (tool_table_changed passes the table dict, fields_changed nothing);
+        the payload is never needed -- the record recomposes from the DB."""
+        self._current_tool_record = self._composeCurrentToolRecord()
+        self.current_tool.setValue(self._current_tool_record)
+
+    def _composeCurrentToolRecord(self):
+        tool_no = self._current_tool_no
+        record = dict(self.TOOL_TABLE.get(tool_no, NO_TOOL))
+        if tool_no and tool_no in self.TOOL_TABLE:
+            try:
+                extras = self.getToolExtras(tool_no)
+                if extras:
+                    record.update(extras)
+                for name, value in self.getCustomFieldValues(tool_no).items():
+                    record['custom:' + name] = value
+            except Exception:
+                # DB not configured yet (early startup) -- core-only record.
+                LOG.debug("current_tool extras/custom compose skipped",
+                          exc_info=True)
+        return record
 
     @staticmethod
     def _tool_to_dict(tool):
@@ -390,6 +466,7 @@ class DBToolTable(DataPlugin):
         self._request_machine_reload()
         for tnum in changed:
             self.tool_changed.emit(tnum)
+        self.regenerateToolDataSub()
 
     def renumberTool(self, old_tool_no, new_tool_no):
         """Change a tool's number in place -- a single UPDATE on `tool.id`'s
@@ -429,6 +506,7 @@ class DBToolTable(DataPlugin):
         self._request_machine_reload()
         self.tool_changed.emit(old_tool_no)
         self.tool_changed.emit(new_tool_no)
+        self.regenerateToolDataSub()
 
     # ------------------------------------------------------------ extras
     # (tool_lathe: consumed by the UI/VTK/conversational; never sent to
@@ -436,6 +514,44 @@ class DBToolTable(DataPlugin):
 
     _EXTRAS_COLUMNS = [c.name for c in ToolLathe.__table__.columns
                        if c.name != 'tool_id']
+    # G-code-representable extras (RS274 has no strings): drives which
+    # columns tool_data.ngc publishes as #<_tool_*> parameters.
+    _NUMERIC_EXTRAS = [c.name for c in ToolLathe.__table__.columns
+                       if c.name != 'tool_id'
+                       and not isinstance(c.type, _SAText)]
+
+    def regenerateToolDataSub(self):
+        """Regenerate subroutines/tool_data.ngc from the database.
+
+        Called after every GUI-side mutation (save/renumber/extras/custom
+        edits, column add/remove) -- all of which the widget locks to
+        interp-idle, so the file can never change under a running program
+        (whose interpreter holds byte offsets into it; see the module
+        docstring of lib.db_tool.tool_data_sub). Machine-driven writes
+        (G10/touch-off) are core-only and core is deliberately not
+        mirrored in the file, so they never require regeneration.
+
+        Never raises: a file-write problem must not break the save that
+        triggered it (worst case is stale G-code parameters, logged)."""
+        path = self.sub_file or _default_sub_path()
+        if not path:
+            return
+        try:
+            tool_nos = [t for t in self.TOOL_TABLE if t != 0]
+            text = generate_tool_data_ngc(
+                tool_nos,
+                {t: self.getToolExtras(t) for t in tool_nos},
+                self.getCustomFieldDefs(),
+                {t: self.getCustomFieldValues(t) for t in tool_nos},
+                self._NUMERIC_EXTRAS)
+            tmp = path + '.tmp'
+            with open(tmp, 'w') as fh:
+                fh.write(text)
+            os.replace(tmp, path)  # atomic: never a half-written file
+        except Exception:
+            LOG.exception("tool_data.ngc regeneration failed (%s); G-code "
+                          "tool parameters may be stale until the next "
+                          "successful save", path)
 
     def getToolExtras(self, tool_no):
         """Return the tool_lathe extras dict for tool_no, or None if the
@@ -487,6 +603,7 @@ class DBToolTable(DataPlugin):
             session.close()
         for tool_no in extras_by_tool:
             self.extras_changed.emit(int(tool_no))
+        self.regenerateToolDataSub()
 
     # ------------------------------------------------------------ custom fields
     # (plan §5.7: definition + typed EAV value tables; UI/DB-only by design.)
@@ -523,6 +640,13 @@ class DBToolTable(DataPlugin):
         if value_type not in CUSTOM_FIELD_VALUE_TYPES:
             raise ValueError('invalid value_type %r (must be one of %s)' %
                              (value_type, CUSTOM_FIELD_VALUE_TYPES))
+        # The machine key becomes a G-code parameter name (#<_tool_<name>>,
+        # tool_data.ngc) shared with the extras columns -- a colliding key
+        # would silently shadow the built-in column's parameter.
+        if name in self._EXTRAS_COLUMNS or name == NUMBER_KEY:
+            raise ValueError(
+                'the name %r is already a built-in tool parameter '
+                '(#<_tool_%s>) -- pick a different machine key' % (name, name))
         session = Session()
         try:
             if session.query(CustomFieldDef).filter(
@@ -538,6 +662,7 @@ class DBToolTable(DataPlugin):
         finally:
             session.close()
         self.fields_changed.emit()
+        self.regenerateToolDataSub()
 
     def removeCustomField(self, name):
         """Remove a custom field definition and all its values (cascades)."""
@@ -554,6 +679,7 @@ class DBToolTable(DataPlugin):
         finally:
             session.close()
         self.fields_changed.emit()
+        self.regenerateToolDataSub()
 
     def getCustomFieldValues(self, tool_no):
         """dict of {field_name: typed value} for every custom value set on
@@ -613,6 +739,7 @@ class DBToolTable(DataPlugin):
         finally:
             session.close()
         self.fields_changed.emit()
+        self.regenerateToolDataSub()
 
     # ------------------------------------------------------- UI preferences
     # (schema v2, plan §6 Phase 3 follow-up: which columns are checked
