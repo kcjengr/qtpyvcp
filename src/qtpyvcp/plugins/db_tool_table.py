@@ -38,7 +38,8 @@ from PySide6.QtCore import QTimer, Signal
 from qtpyvcp.lib.db_tool.base import Base, Session, configure_database, get_engine
 from qtpyvcp.lib.db_tool.tool_table import (Tool, ToolTable, ToolModel,
                                             ToolLathe, CustomFieldDef,
-                                            CustomFieldValue, VisibleColumn)
+                                            CustomFieldValue, VisibleColumn,
+                                            Meta)
 from qtpyvcp.lib.db_tool.migrate import run_migrations
 from qtpyvcp.lib.db_tool.tool_data_sub import (generate_tool_data_ngc,
                                                NUMBER_KEY, SUB_FILE_NAME)
@@ -411,6 +412,16 @@ class DBToolTable(DataPlugin):
 
     def getToolTable(self):
         return self.TOOL_TABLE.copy()
+
+    def getUnits(self):
+        """The database's single canonical unit system ('inch' or 'mm',
+        meta.units) -- one system for every tool by design (plan §5.5)."""
+        session = Session()
+        try:
+            meta = session.query(Meta).first()
+            return meta.units if meta is not None else 'inch'
+        finally:
+            session.close()
 
     # ------------------------------------------------------------ save
 

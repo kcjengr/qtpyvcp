@@ -34,8 +34,16 @@ def expect(desc, cond):
         failures.append(desc)
 
 
+# All test-generated files (scratch DBs, WAL/SHM sidecars, pre-migration
+# backups, generated .ngc) land in the central dev scratch area OUTSIDE
+# the repo (~/dev/scratch/README.md) so the working tree stays clean;
+# recreated on every run, safe to empty anytime.
+SCRATCH = os.path.expanduser('~/dev/scratch/qtpyvcp')
+
+
 def fresh_db(name):
-    path = os.path.join(HERE, name)
+    os.makedirs(SCRATCH, exist_ok=True)
+    path = os.path.join(SCRATCH, name)
     for suffix in ('', '-wal', '-shm'):
         p = path + suffix
         if os.path.exists(p):
@@ -211,11 +219,11 @@ def test_malformed_db():
         raised = True
     expect('run_migrations refuses a pre-v1 (malformed) database', raised)
 
-    backups = [f for f in os.listdir(HERE)
+    backups = [f for f in os.listdir(SCRATCH)
                if f.startswith(os.path.basename(db) + '.pre-migration-')]
     expect('a backup of the malformed DB was made before refusing', bool(backups))
     for f in backups:
-        os.remove(os.path.join(HERE, f))
+        os.remove(os.path.join(SCRATCH, f))
 
 
 # ------------------------------------------------------------- orphan rows
@@ -312,7 +320,7 @@ def test_tool_data_sub_and_current_tool_channel():
     configure_database(db)
     run_migrations(get_engine())
 
-    sub_path = os.path.join(HERE, 'tool_data_test.ngc')
+    sub_path = os.path.join(SCRATCH, 'tool_data_test.ngc')
     for p in (sub_path, sub_path + '.tmp'):
         if os.path.exists(p):
             os.remove(p)

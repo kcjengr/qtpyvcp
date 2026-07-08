@@ -14,7 +14,11 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DB = os.path.join(HERE, "harness_tools.db")
+# test-generated files live in the central dev scratch area outside the
+# repo (~/dev/scratch/README.md) -- disposable, recreated per run
+SCRATCH = os.path.expanduser("~/dev/scratch/qtpyvcp")
+os.makedirs(SCRATCH, exist_ok=True)
+DB = os.path.join(SCRATCH, "harness_tools.db")
 QTPYVCP_SRC = os.path.abspath(os.path.join(HERE, "..", "src"))
 LCNC_PY = os.environ.get("LINUXCNC_PYTHON", os.path.expanduser("~/dev/linuxcnc/lib/python"))
 PY = sys.executable

@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
-import json
 import re
 
 from math import cos, sin, radians
@@ -21,7 +19,11 @@ from qtpyvcp.plugins.db_tool_table import DBToolTable
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
 from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
-from qtpyvcp.lib.lathe_insert_geometry import compute_live_insert_profile
+from qtpyvcp.lib.db_tool.insert_profile import (insert_record,
+                                                compute_insert_profile,
+                                                holder_style_code,
+                                                is_internal_groove,
+                                                internal_groove_max_depth)
 
 
 LOG = logger.getLogger(__name__)
@@ -30,9 +32,6 @@ LOG = logger.getLogger(__name__)
 WIDTH_REMARK_PATTERN = re.compile(r'\bwidth\s*:\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)', re.IGNORECASE)
 NUMBER_PATTERN = re.compile(r'[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?')
 
-_FUSION_TOOL_CACHE_PATH = ''
-_FUSION_TOOL_CACHE_MTIME_NS = 0
-_FUSION_TOOL_CACHE_BY_NUMBER = {}
 
 # ISO holder style letter -> entering angle (kappa_r) in degrees.
 # LinuxCNC conversion:
@@ -115,82 +114,6 @@ def _read_setting_value(setting_name):
     return getter()
 
 
-def _normalize_tool_source(raw_value):
-    normalized = str(raw_value or '').strip().lower()
-    if normalized in ('fusion-json', 'fusion', 'json'):
-        return 'fusion-json'
-    if normalized in ('linuxcnc', 'tooltable', 'tool-table'):
-        return 'linuxcnc'
-    return ''
-
-
-def _resolve_fusion_tool_library_path():
-    source_value = _normalize_tool_source(_read_setting_value('lathe-conv.tool-data-source'))
-    if source_value != 'fusion-json':
-        return ''
-
-    raw_path = str(_read_setting_value('lathe-conv.tool-library-json-path') or '').strip()
-    if not raw_path:
-        return ''
-
-    normalized_path = os.path.abspath(os.path.expanduser(raw_path))
-    if not os.path.isfile(normalized_path):
-        return ''
-
-    return normalized_path
-
-
-def _extract_fusion_tool_number(tool_entry):
-    post_number = _parse_number(_dict_get(tool_entry, 'post-process', 'number'), None)
-    if post_number is not None and int(post_number) > 0:
-        return int(post_number)
-
-    expr_number = _parse_number(_dict_get(tool_entry, 'expressions', 'tool_number'), None)
-    if expr_number is not None and int(expr_number) > 0:
-        return int(expr_number)
-
-    return 0
-
-
-def _load_fusion_tools_by_number(json_path):
-    global _FUSION_TOOL_CACHE_PATH
-    global _FUSION_TOOL_CACHE_MTIME_NS
-    global _FUSION_TOOL_CACHE_BY_NUMBER
-
-    path_stat = os.stat(json_path)
-    mtime_ns = int(path_stat.st_mtime_ns)
-
-    if _FUSION_TOOL_CACHE_PATH == json_path and _FUSION_TOOL_CACHE_MTIME_NS == mtime_ns:
-        return _FUSION_TOOL_CACHE_BY_NUMBER
-
-    with open(json_path, 'r', encoding='utf-8') as handle:
-        parsed_doc = json.load(handle)
-
-    raw_tools = parsed_doc.get('data')
-    if not isinstance(raw_tools, list):
-        _FUSION_TOOL_CACHE_PATH = json_path
-        _FUSION_TOOL_CACHE_MTIME_NS = mtime_ns
-        _FUSION_TOOL_CACHE_BY_NUMBER = {}
-        return _FUSION_TOOL_CACHE_BY_NUMBER
-
-    tools_by_number = {}
-    for entry in raw_tools:
-        if not isinstance(entry, dict):
-            continue
-
-        tool_number = _extract_fusion_tool_number(entry)
-        if tool_number <= 0:
-            continue
-
-        if tool_number not in tools_by_number:
-            tools_by_number[tool_number] = entry
-
-    _FUSION_TOOL_CACHE_PATH = json_path
-    _FUSION_TOOL_CACHE_MTIME_NS = mtime_ns
-    _FUSION_TOOL_CACHE_BY_NUMBER = tools_by_number
-    return _FUSION_TOOL_CACHE_BY_NUMBER
-
-
 def _resolve_active_tool_number(tool, datasource):
     if tool is not None:
         for attr in ('tool', 'toolno', 'tool_no', 'number', 'id'):
@@ -204,35 +127,31 @@ def _resolve_active_tool_number(tool, datasource):
     return max(0, _coerce_int(getattr(stat, 'tool_in_spindle', 0), 0))
 
 
-def _resolve_active_fusion_tool(tool, datasource):
-    json_path = _resolve_fusion_tool_library_path()
-    if not json_path:
-        return None
-
+def _resolve_active_insert_record(tool, datasource):
+    """Insert-display record for the active tool, straight from the
+    unified tool database -- the ONLY insert-geometry source (the
+    database the probe_basic tool table edits is the single source of
+    truth; there are no tool library files). None when the DB-backed
+    tooltable plugin isn't running (classic .tbl configs, mills,
+    Designer, tests) or the tool isn't in the table -- callers then fall
+    back to the generic tool marker exactly as always."""
     tool_number = _resolve_active_tool_number(tool, datasource)
     if tool_number <= 0:
         return None
-
     try:
-        tools_by_number = _load_fusion_tools_by_number(json_path)
-    except (OSError, json.JSONDecodeError, ValueError):
+        plugin = getPlugin('tooltable')
+    except Exception:
+        plugin = None
+    if plugin is None or not hasattr(plugin, 'getToolExtras'):
         return None
-
-    return tools_by_number.get(tool_number)
-
-
-def _has_active_fusion_tool_data(fusion_tool, active_tool_number):
-    if not isinstance(fusion_tool, dict):
-        return False
-
-    if int(active_tool_number or 0) <= 0:
-        return False
-
-    fusion_tool_number = _extract_fusion_tool_number(fusion_tool)
-    if fusion_tool_number <= 0:
-        return False
-
-    return int(fusion_tool_number) == int(active_tool_number)
+    try:
+        core = (plugin.getToolTable() or {}).get(int(tool_number))
+        if core is None:
+            return None
+        return insert_record(core, plugin.getToolExtras(int(tool_number)))
+    except Exception:
+        LOG.exception("tool DB insert lookup failed for T%s", tool_number)
+        return None
 
 
 def _resolve_tool_number_field(tool_entry):
@@ -520,18 +439,19 @@ class ToolBitActor(vtk.vtkActor):
         if self._datasource.isMachineLathe():
 
             active_tool_number = _resolve_active_tool_number(self.tool, self._datasource)
-            fusion_tool = _resolve_active_fusion_tool(self.tool, self._datasource)
-            fusion_mapper = None
-            if self.tool.id not in (0, -1) and _has_active_fusion_tool_data(fusion_tool, active_tool_number):
-                fusion_mapper = self._make_fusion_lathe_silhouette_mapper(
-                    fusion_tool=fusion_tool,
+            insert_rec = _resolve_active_insert_record(self.tool, self._datasource)
+            insert_mapper = None
+            if (self.tool.id not in (0, -1) and insert_rec is not None
+                    and insert_rec['tool_no'] == active_tool_number):
+                insert_mapper = self._make_lathe_insert_silhouette_mapper(
+                    record=insert_rec,
                     default_tip_edge=tip_edge,
                     default_tip_length=tip_length,
                     default_profile_length=profile_length,
                 )
 
-            if fusion_mapper is not None:
-                mapper = fusion_mapper
+            if insert_mapper is not None:
+                mapper = insert_mapper
             elif self.tool.id == 0 or self.tool.id == -1:
                 source = vtk.vtkRegularPolygonSource()
                 source.SetNumberOfSides(64)
@@ -1213,105 +1133,60 @@ class ToolBitActor(vtk.vtkActor):
 
         return self._make_double_sided_polygon_mapper(world_points)
 
-    def _resolve_insert_rotation_deg(self, fusion_tool, holder, expressions):
-        def _extract_thsc_letter(raw_style):
-            style_text = str(raw_style or '').strip().lower()
-            if not style_text:
-                return ''
-            if style_text == 'custom':
-                return ''
-            if len(style_text) == 1 and style_text.isalpha():
-                return style_text
+    def _resolve_insert_rotation_deg(self, record):
+        """Kappa rotation for ISO turning inserts, from the DB holder
+        style. Groove/thread/drill/tap template polygons are built in
+        final orientation and never rotate. Falls back to the live tool
+        table's own front angle (I) when the holder style carries no
+        recognizable ISO style letter."""
+        style_code = holder_style_code(record)
 
-            boring_match = re.match(r'^boring\s+bar\s+([a-z])$', style_text)
+        if record['is_round_tool']:
+            return 0.0
+        if (record['type'] in ('grooving', 'parting', 'threading')
+                or style_code.startswith('groove')
+                or style_code.startswith('thread')):
+            return 0.0
+
+        style_letter = ''
+        if len(style_code) == 1 and style_code.isalpha():
+            style_letter = style_code
+        else:
+            boring_match = re.match(r'^boring\s+bar\s+([a-z])$', style_code)
             if boring_match is not None:
-                return boring_match.group(1)
-
-            return ''
-
-        tool_type = str(fusion_tool.get('type') if isinstance(fusion_tool, dict) else '').strip().lower()
-        style_type = str(_dict_get(fusion_tool, 'geometry', 'SCTY') or '').strip().lower()
-        holder_style = str(_dict_get(fusion_tool, 'holder', 'THSC') or '').strip().lower()
-
-        if 'drill' in tool_type or 'tap' in tool_type:
-            return 0.0
-
-        if (
-            'groov' in tool_type
-            or 'thread' in tool_type
-            or style_type == 'g'
-            or holder_style.startswith('groove')
-            or holder_style.startswith('thread')
-        ):
-            return 0.0
-
-        style_letter = _extract_thsc_letter(holder_style)
+                style_letter = boring_match.group(1)
 
         kappa_deg = _ISO_THSC_LETTER_KAPPA_DEG.get(style_letter)
         if kappa_deg is not None:
             return float(kappa_deg) - 90.0
 
-        lead_angle = _parse_number(holder.get('tool_leadingAngle'), None)
-        if lead_angle is None:
-            lead_angle = _parse_number(expressions.get('tool_leadingAngle'), None)
-        if lead_angle is not None:
-            return -float(lead_angle)
-
         tool_front_angle = _resolve_tool_angle_field(self.tool, 'front')
         if tool_front_angle is not None and 0.0 <= float(tool_front_angle) <= 180.0:
             return float(tool_front_angle) - 90.0
 
-        fusion_front_angle = _parse_number(
-            fusion_tool.get('linuxcnc_i') if isinstance(fusion_tool, dict) else None,
-            None,
-        )
-        if fusion_front_angle is None:
-            fusion_front_angle = _parse_number(_dict_get(fusion_tool, 'post-process', 'linuxcnc_i'), None)
-        if fusion_front_angle is None:
-            fusion_front_angle = _parse_number(_dict_get(fusion_tool, 'post-process', 'linuxcnc-i'), None)
-        if fusion_front_angle is None:
-            fusion_front_angle = _parse_number(_dict_get(fusion_tool, 'expressions', 'linuxcnc_i'), None)
-        if fusion_front_angle is not None and 0.0 <= float(fusion_front_angle) <= 180.0:
-            return float(fusion_front_angle) - 90.0
-
         return 0.0
 
-    def _resolve_profile_orientation(self, raw_orientation, fusion_tool, profile_doc):
+    def _resolve_profile_orientation(self, raw_orientation, record, profile_doc):
         orientation = _coerce_int(raw_orientation, 0)
-
-        if not isinstance(fusion_tool, dict):
-            fusion_tool = {}
         if not isinstance(profile_doc, dict):
             profile_doc = {}
 
-        tool_type = str(fusion_tool.get('type') or profile_doc.get('type') or '').strip().lower()
-        description = str(fusion_tool.get('description') or profile_doc.get('description') or '').strip().lower()
-        holder_style = str(_dict_get(fusion_tool, 'holder', 'THSC') or '').strip().lower()
-        is_thread = ('thread' in tool_type) or (str(profile_doc.get('family') or '').strip().lower() == 'thread')
-        is_internal = 'internal' in description
-        is_external = 'external' in description
+        remark = record['remark'].lower()
+        style_code = holder_style_code(record)
+        is_thread = (record['type'] == 'threading'
+                     or str(profile_doc.get('family') or '').strip().lower() == 'thread')
+        is_internal = 'internal' in remark
+        is_external = 'external' in remark
 
         hand = ''
-        if ' lh' in description or '-lh' in description:
+        if ' lh' in remark or '-lh' in remark:
             hand = 'L'
-        elif ' rh' in description or '-rh' in description:
+        elif ' rh' in remark or '-rh' in remark:
             hand = 'R'
+        if not hand and record['holder_hand'] in ('L', 'R'):
+            hand = record['holder_hand']
 
-        if not hand:
-            setup_hand_raw = _dict_get(fusion_tool, 'setup', 'HAND')
-            setup_hand_text = str(setup_hand_raw or '').strip().lower()
-            if setup_hand_raw is True or setup_hand_text in ('true', '1', 'yes', 'on'):
-                hand = 'R'
-            elif setup_hand_raw is False or setup_hand_text in ('false', '0', 'no', 'off'):
-                hand = 'L'
-
-        if not hand:
-            holder_hand = str(_dict_get(fusion_tool, 'holder', 'HAND') or '').strip().upper()
-            if holder_hand in ('L', 'R'):
-                hand = holder_hand
-
-        is_boring_style = 'boring bar' in holder_style
-        if is_boring_style:
+        if record['type'] == 'boring' or 'boring bar' in style_code:
             return 3
 
         if orientation in (1, 2, 3, 4):
@@ -1358,125 +1233,59 @@ class ToolBitActor(vtk.vtkActor):
                 return float(parsed)
         return 0.0
 
-    def _make_fusion_lathe_silhouette_mapper(self, fusion_tool, default_tip_edge, default_tip_length, default_profile_length):
+    def _make_lathe_insert_silhouette_mapper(self, record, default_tip_edge, default_tip_length, default_profile_length):
+        """Insert/holder silhouette for the active lathe tool, computed
+        entirely from its tool database record (schema column names,
+        direct reads -- the DB is typed and canonical, so there are no
+        fallback chains here, only display defaults for blank fields)."""
         orientation = _coerce_int(_resolve_tool_orientation_field(self.tool), 0)
 
-        # Keep active tool-table orientation authoritative when present.
-        # This preserves user table edits (e.g. Q2/Q3 thread orientation)
-        # and avoids stale Fusion metadata overriding runtime behavior.
-        if orientation < 1 or orientation > 9:
-            fusion_orientation_candidates = [
-                fusion_tool.get('linuxcnc_q') if isinstance(fusion_tool, dict) else None,
-                _dict_get(fusion_tool, 'post-process', 'linuxcnc_q'),
-                _dict_get(fusion_tool, 'post-process', 'linuxcnc-q'),
-                _dict_get(fusion_tool, 'expressions', 'linuxcnc_q'),
-                _dict_get(fusion_tool, 'expressions', 'tool_q'),
-                _dict_get(fusion_tool, 'expressions', 'tool_orientation_q'),
-            ]
-            for candidate in fusion_orientation_candidates:
-                candidate_num = _parse_number(candidate, None)
-                if candidate_num is None:
-                    continue
-                candidate_q = int(candidate_num)
-                if 1 <= candidate_q <= 9:
-                    orientation = candidate_q
-                    break
-
-        tool_number = _resolve_active_tool_number(self.tool, self._datasource)
-        if tool_number > 0:
-            profile_doc = compute_live_insert_profile(fusion_tool)
-        else:
-            profile_doc = None
-
-        if profile_doc is not None:
-            orientation = self._resolve_profile_orientation(orientation, fusion_tool, profile_doc)
+        profile_doc = compute_insert_profile(record)
+        orientation = self._resolve_profile_orientation(orientation, record, profile_doc)
 
         if orientation not in (1, 2, 3, 4):
             return None
 
-        geometry = _dict_get(fusion_tool, 'geometry')
-        holder = _dict_get(fusion_tool, 'holder')
-        expressions = _dict_get(fusion_tool, 'expressions')
-
-        if not isinstance(geometry, dict):
-            geometry = {}
-        if not isinstance(holder, dict):
-            holder = {}
-        if not isinstance(expressions, dict):
-            expressions = {}
-
-        tool_type = str(fusion_tool.get('type') or '').strip().lower()
-        style_type = str(geometry.get('SCTY') or '').strip().lower()
+        is_groove = record['type'] in ('grooving', 'parting')
+        is_thread = record['type'] == 'threading'
+        is_drill = record['is_round_tool']
 
         insert_size = self._first_positive_number(
-            geometry.get('tool_insertSize'),
-            expressions.get('tool_insertSize'),
-            geometry.get('INSD'),
-            expressions.get('tool_cuttingWidth'),
-            holder.get('CW'),
+            record['insert_size'],
+            record['holder_cut_width'],
             default_profile_length,
         )
 
-        is_groove = ('groove' in tool_type) or (style_type == 'g')
-        is_thread = 'thread' in tool_type
-        is_drill = ('drill' in tool_type) or ('tap' in tool_type)
-
         if is_groove:
-            holder_style = str(holder.get('THSC') or '').strip().lower()
-            description = str(fusion_tool.get('description') or '').strip().lower()
-            is_internal_groove = (
-                ('internal' in holder_style)
-                or ('internal' in description and 'external' not in description)
-            )
-
-            internal_groove_max_depth = None
-            if is_internal_groove:
-                holder_cw = _parse_number(holder.get('CW'), None)
-                holder_w = _parse_number(holder.get('W'), None)
-                if holder_cw is not None and holder_w is not None:
-                    internal_groove_max_depth = float(holder_cw) - (0.5 * float(holder_w))
+            internal_depth = (internal_groove_max_depth(record)
+                              if is_internal_groove(record) else None)
 
             insert_width = self._first_positive_number(
-                geometry.get('tool_grooveWidth'),
-                expressions.get('tool_grooveWidth'),
-                geometry.get('tool_insertWidth'),
-                expressions.get('tool_insertWidth'),
+                record['groove_width'],
                 insert_size,
                 default_tip_edge,
             )
 
             insert_length = self._first_positive_number(
-                internal_groove_max_depth,
-                geometry.get('H'),
-                holder.get('H'),
-                expressions.get('tool_maxDOC'),
-                expressions.get('tool_maxDepthOfCut'),
-                geometry.get('S'),
-                geometry.get('INSD'),
-                geometry.get('tool_insertSize'),
-                expressions.get('tool_insertSize'),
-                expressions.get('tool_cuttingWidth'),
-                holder.get('CW'),
-                holder.get('LH'),
+                internal_depth,
+                record['max_depth_of_cut'],
+                record['insert_thickness'],
+                record['insert_size'],
+                record['holder_cut_width'],
                 default_profile_length,
                 default_tip_length,
             )
         elif is_thread:
             insert_length = self._first_positive_number(
-                geometry.get('OAL'),
-                expressions.get('tool_overallLength'),
-                geometry.get('INSD'),
-                geometry.get('tool_insertSize'),
-                expressions.get('tool_insertSize'),
-                geometry.get('S'),
-                expressions.get('tool_thickness'),
+                record['overall_length'],
+                record['insert_size'],
+                record['insert_thickness'],
                 default_profile_length,
                 default_tip_length,
             )
 
             thread_thickness = self._first_positive_number(
-                geometry.get('S'),
-                expressions.get('tool_thickness'),
+                record['insert_thickness'],
                 0.0,
             )
 
@@ -1487,56 +1296,31 @@ class ToolBitActor(vtk.vtkActor):
             )
 
             insert_width = self._first_positive_number(
-                geometry.get('thread-body-width'),
-                expressions.get('thread-body-width'),
                 template_width,
-                geometry.get('S'),
-                expressions.get('tool_thickness'),
-                geometry.get('tool_insertWidth'),
-                expressions.get('tool_insertWidth'),
-                geometry.get('INSD'),
-                geometry.get('tool_insertSize'),
-                expressions.get('tool_insertSize'),
+                record['insert_thickness'],
+                record['insert_size'],
                 default_tip_edge,
             )
         else:
             insert_width = self._first_positive_number(
-                geometry.get('tool_insertWidth'),
-                expressions.get('tool_insertWidth'),
-                geometry.get('tool_insertSize'),
-                expressions.get('tool_insertSize'),
-                geometry.get('INSD'),
-                expressions.get('tool_cuttingWidth'),
+                record['insert_size'],
                 insert_size,
                 default_tip_edge,
             )
 
-        nose_radius = self._first_positive_number(
-            geometry.get('RE'),
-            geometry.get('thread-tip-radius'),
-            expressions.get('tool_cornerRadius'),
-            0.0,
-        )
+        nose_radius = self._first_positive_number(record['nose_radius'], 0.0)
         if nose_radius > 0.0:
             insert_width = max(insert_width, 2.0 * nose_radius)
 
         if not is_groove and not is_thread:
             insert_length = self._first_positive_number(
-                geometry.get('INSD'),
-                geometry.get('tool_insertSize'),
-                expressions.get('tool_insertSize'),
-                expressions.get('tool_cuttingWidth'),
-                holder.get('CW'),
-                holder.get('LH'),
+                record['insert_size'],
+                record['holder_cut_width'],
                 default_profile_length,
                 default_tip_length,
             )
 
-        insert_rotation_deg = self._resolve_insert_rotation_deg(
-            fusion_tool,
-            holder,
-            expressions,
-        )
+        insert_rotation_deg = self._resolve_insert_rotation_deg(record)
 
         base_x = float(-_resolve_tool_axis_offset(self.tool, 'x'))
         base_z = float(-_resolve_tool_axis_offset(self.tool, 'z'))
@@ -1571,7 +1355,7 @@ class ToolBitActor(vtk.vtkActor):
             profile_local_rotation_deg = float(insert_rotation_deg)
             profile_format = _coerce_int(profile_doc.get('profile_format'), 0)
             profile_family = str(profile_doc.get('family') or '').strip().lower()
-            holder_hand = str(_dict_get(fusion_tool, 'holder', 'HAND') or '').strip().upper()
+            holder_hand = record['holder_hand']
             neutral_hand_tool = bool(is_drill) or holder_hand == 'N'
 
             enforce_x_axis_tangency = False
