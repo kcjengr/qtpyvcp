@@ -1,17 +1,20 @@
-"""Live lathe insert/drill/tap cutting-profile geometry.
+"""Lathe insert/drill/tap cutting-profile shape math.
 
-Given a raw Fusion tool dict (the same dict structure stored in a Fusion
-lathe tool-library JSON), computes a 2D XZ cutting-profile polygon in a
-canonical local frame: cutting tip at the origin, +X away from the tip,
-and (for drill/tap/thread families) the body extending toward -Z.
+Computes 2D XZ cutting-profile polygons in a canonical local frame:
+cutting tip at the origin, +X away from the tip, and (for drill/tap/
+thread families) the body extending toward -Z.
 
-This is the single source of truth for insert/drill/tap shape math, used
-live by both the 3D VTK tool viewer (tool_actor.py) and the pb_lathe_conv
-2D conversational simulation, so geometry always reflects whichever tool
-library is currently active with no on-disk cache to go stale.
+This qtpyvcp copy contains the SHAPE MATH ONLY -- the database-native
+entry point that feeds it lives in
+:mod:`qtpyvcp.lib.db_tool.insert_profile` (probe_basic's VTK tool
+rendering reads insert geometry exclusively from the unified tool
+database; there is no tool-library-file reader in qtpyvcp). The
+conversational add-on maintains its own copy of this shape math for its
+2D QML preview, and its golden suite pins the two pipelines'
+polygons against each other so the renderers can never silently
+disagree.
 
-Pure stdlib, no qtpyvcp/Qt imports, so it is also importable by the
-standalone offline preview-generation script.
+Pure stdlib, no qtpyvcp/Qt imports.
 """
 
 from __future__ import annotations
@@ -80,14 +83,6 @@ def parse_number(raw_value, default=None):
 
     return float(match.group(0))
 
-
-def dict_get(mapping, *keys):
-    current = mapping
-    for key in keys:
-        if not isinstance(current, dict) or key not in current:
-            return None
-        current = current[key]
-    return current
 
 
 def first_positive(*values):
@@ -461,68 +456,6 @@ def _build_tap_profile_points(major_diameter, pitch, flute_length, overall_lengt
     return [(float(x), float(z)) for (x, z) in right + left]
 
 
-def build_tap_shape(tool):
-    geometry = dict_get(tool, "geometry") or {}
-    expressions = dict_get(tool, "expressions") or {}
-
-    major_diameter = first_positive(
-        geometry.get("DC"),
-        geometry.get("tool_diameter"),
-        expressions.get("tool_diameter"),
-        0.5,
-    )
-    pitch = first_positive(
-        geometry.get("TP"),
-        geometry.get("TPX"),
-        geometry.get("TPN"),
-        expressions.get("tool_threadPitch"),
-        0.05,
-    )
-    flute_length = first_positive(
-        geometry.get("LCF"),
-        geometry.get("LB"),
-        expressions.get("tool_fluteLength"),
-        1.2,
-    )
-    overall_length = first_positive(
-        geometry.get("OAL"),
-        expressions.get("tool_overallLength"),
-        3.0,
-    )
-    shaft_diameter = first_positive(
-        geometry.get("SFDM"),
-        expressions.get("tool_shaftDiameter"),
-        major_diameter * 0.75,
-    )
-    thread_angle = first_positive(
-        geometry.get("thread-profile-angle"),
-        60.0,
-    )
-    chamfer_threads = first_positive(
-        geometry.get("tap_chamfer_threads"),
-        2.5,
-    )
-
-    points = _build_tap_profile_points(
-        major_diameter, pitch, flute_length, overall_length, shaft_diameter, chamfer_threads,
-    )
-
-    return InsertShape(
-        family="tap",
-        points_xz=ensure_ccw(points),
-        dims={
-            "diameter": float(major_diameter),
-            "pitch": float(pitch),
-            "flute_length_z": float(flute_length),
-            "overall_length_z": float(overall_length),
-            "shaft_diameter": float(shaft_diameter),
-            "thread_angle_deg": float(thread_angle),
-            "chamfer_threads": float(chamfer_threads),
-            "tip_angle_deg": 180.0,
-        },
-    )
-
-
 def build_thread_shape(length_x, width_z, thread_angle_deg, tip_type, tip_radius, thread_pitch_max):
     theta = max(30.0, min(120.0, float(thread_angle_deg)))
     body_length = max(float(length_x) * THREAD_DXF_X_EXTENT_FROM_OAL, 0.001)
@@ -799,242 +732,3 @@ def build_regular_polygon_shape(length_x, width_z, sides, style_key, nose_radius
             "sides": int(side_count),
         },
     )
-
-
-def build_insert_shape(tool):
-    geometry = dict_get(tool, "geometry") or {}
-    holder = dict_get(tool, "holder") or {}
-    expressions = dict_get(tool, "expressions") or {}
-
-    style_raw = geometry.get("SC")
-    scty = str(geometry.get("SCTY") or "").strip().lower()
-    style_key = normalize_style_key(style_raw)
-
-    tool_type = str(tool.get("type") or "").strip().lower()
-
-    if "tap" in tool_type:
-        return build_tap_shape(tool)
-
-    if "drill" in tool_type:
-        drill_diameter = first_positive(
-            geometry.get("DC"),
-            geometry.get("tool_diameter"),
-            expressions.get("tool_diameter"),
-            geometry.get("SFDM"),
-            0.125,
-        )
-        drill_tip_angle = first_positive(
-            geometry.get("SIG"),
-            expressions.get("tool_tipAngle"),
-            118.0,
-        )
-        drill_body_length = first_positive(
-            geometry.get("LCF"),
-            geometry.get("LB"),
-            expressions.get("tool_fluteLength"),
-            expressions.get("tool_bodyLength"),
-            geometry.get("OAL"),
-            expressions.get("tool_overallLength"),
-            1.0,
-        )
-
-        return build_drill_shape(drill_body_length, drill_diameter, drill_tip_angle)
-
-    if "thread" in tool_type:
-        style_key = "thread"
-    elif style_key == "generic" and scty == "g":
-        style_key = "groove"
-
-    holder_style = str(holder.get("THSC") or "").strip().lower()
-    description = str(tool.get("description") or "").strip().lower()
-    is_internal_groove = (
-        style_key == "groove"
-        and (
-            ("internal" in holder_style)
-            or ("internal" in description and "external" not in description)
-        )
-    )
-
-    internal_groove_max_depth = None
-    if is_internal_groove:
-        holder_cw = parse_number(holder.get("CW"), None)
-        holder_w = parse_number(holder.get("W"), None)
-        if holder_cw is not None and holder_w is not None:
-            internal_groove_max_depth = float(holder_cw) - (0.5 * float(holder_w))
-
-    nose_radius = first_positive(
-        geometry.get("RE"),
-        geometry.get("thread-tip-radius"),
-        expressions.get("tool_cornerRadius"),
-        0.0,
-    )
-
-    insert_size = first_positive(
-        geometry.get("INSD"),
-        geometry.get("tool_insertSize"),
-        expressions.get("tool_insertSize"),
-        expressions.get("tool_cuttingWidth"),
-        holder.get("CW"),
-        geometry.get("S"),
-        0.24,
-    )
-
-    if style_key == "thread":
-        insert_length = first_positive(
-            geometry.get("OAL"),
-            expressions.get("tool_overallLength"),
-            geometry.get("INSD"),
-            geometry.get("tool_insertSize"),
-            expressions.get("tool_insertSize"),
-            geometry.get("S"),
-            expressions.get("tool_thickness"),
-            0.24,
-        )
-        # Width parameter is accepted for compatibility, but DXF template
-        # scaling is driven by thread angle + length + pitch parameters.
-        insert_width = first_positive(
-            geometry.get("thread-body-width"),
-            expressions.get("thread-body-width"),
-            geometry.get("S"),
-            expressions.get("tool_thickness"),
-            geometry.get("tool_insertWidth"),
-            expressions.get("tool_insertWidth"),
-            geometry.get("INSD"),
-            geometry.get("tool_insertSize"),
-            expressions.get("tool_insertSize"),
-            insert_length,
-            0.06,
-        )
-    elif style_key == "groove":
-        insert_length = first_positive(
-            internal_groove_max_depth,
-            geometry.get("H"),
-            holder.get("H"),
-            expressions.get("tool_maxDOC"),
-            expressions.get("tool_maxDepthOfCut"),
-            geometry.get("S"),
-            geometry.get("INSD"),
-            geometry.get("tool_insertSize"),
-            expressions.get("tool_insertSize"),
-            expressions.get("tool_cuttingWidth"),
-            holder.get("CW"),
-            0.24,
-        )
-        insert_width = first_positive(
-            geometry.get("tool_grooveWidth"),
-            expressions.get("tool_grooveWidth"),
-            geometry.get("tool_insertWidth"),
-            expressions.get("tool_insertWidth"),
-            geometry.get("INSD"),
-            expressions.get("tool_insertSize"),
-            holder.get("CW"),
-            0.06,
-        )
-    else:
-        insert_length = float(insert_size)
-        insert_width = first_positive(
-            geometry.get("tool_insertWidth"),
-            expressions.get("tool_insertWidth"),
-            geometry.get("tool_insertSize"),
-            expressions.get("tool_insertSize"),
-            geometry.get("INSD"),
-            expressions.get("tool_cuttingWidth"),
-            insert_length,
-            0.06,
-        )
-
-    if style_key == "groove":
-        return build_groove_shape(insert_length, insert_width, nose_radius)
-
-    if style_key == "thread":
-        thread_angle = first_positive(geometry.get("thread-profile-angle"), 60.0)
-        tip_type = str(geometry.get("thread-tip-type") or "").strip().lower() or "point"
-        thread_tip_radius = first_positive(geometry.get("thread-tip-radius"), nose_radius, 0.0)
-        thread_pitch_max = first_positive(
-            geometry.get("TPX"),
-            geometry.get("TP"),
-            geometry.get("TPN"),
-            expressions.get("tool_maxThreadPitch"),
-            expressions.get("tool_threadPitch"),
-            0.0,
-        )
-        return build_thread_shape(
-            insert_length,
-            insert_width,
-            thread_angle,
-            tip_type,
-            thread_tip_radius,
-            thread_pitch_max,
-        )
-
-    style_spec = ISO_INSERT_STYLE_SPECS.get(style_key)
-    if style_spec is None:
-        style_spec = ISO_INSERT_STYLE_SPECS["c"]
-
-    style_family = str(style_spec.get("family") or "diamond")
-    nose_angle_deg = style_spec.get("nose_angle_deg")
-    if nose_angle_deg is None:
-        nose_angle_deg = 80.0
-    nose_angle_deg = float(nose_angle_deg)
-
-    if style_family == "trigon":
-        return build_trigon_shape(insert_length, insert_width, nose_angle_deg, style_key, nose_radius)
-
-    if style_family == "triangle":
-        return build_regular_polygon_shape(insert_length, insert_width, 3, style_key, nose_radius)
-
-    if style_family == "round":
-        return build_round_shape(insert_length, insert_width, nose_radius, style_key)
-
-    if style_family == "hexagon":
-        return build_regular_polygon_shape(insert_length, insert_width, 6, style_key, nose_radius)
-
-    if style_family == "octagon":
-        return build_regular_polygon_shape(insert_length, insert_width, 8, style_key, nose_radius)
-
-    if style_family == "pentagon":
-        return build_regular_polygon_shape(insert_length, insert_width, 5, style_key, nose_radius)
-
-    size_mode = str(geometry.get("SIZE_SPECIFICATION_MODE") or "").strip().upper()
-    if style_family in ("diamond", "parallelogram") and size_mode == "IC":
-        return build_iso_ic_diamond_shape(insert_size, nose_angle_deg, style_key, nose_radius)
-
-    return build_rhombic_shape(insert_length, insert_width, nose_angle_deg, nose_radius, style_key)
-
-
-def compute_live_insert_profile(tool):
-    """Compute the live profile_doc-shaped dict for `tool` (a raw Fusion tool dict).
-
-    Returns {profile_format, family, insert_polygon_xz, dimensions}. Anchor
-    (control_point_xz) is intentionally omitted -- callers resolve that live
-    from their own currently-active orientation via _resolve_profile_anchor_xz.
-    """
-    if not isinstance(tool, dict):
-        return None
-
-    geometry = dict_get(tool, "geometry") or {}
-    style_key = normalize_style_key(geometry.get("SC"))
-    style_spec = ISO_INSERT_STYLE_SPECS.get(style_key)
-    iso_nose_angle = style_spec.get("nose_angle_deg") if isinstance(style_spec, dict) else None
-
-    shape = build_insert_shape(tool)
-
-    insert_polygon_xz = [[float(x), float(z)] for x, z in shape.points_xz]
-
-    sidecut_zero_offset_deg = _resolve_sidecut_zero_edge_offset_deg(shape, iso_nose_angle)
-    if abs(float(sidecut_zero_offset_deg)) > 1e-12:
-        rotated_points = _rotate_profile_points_xz(
-            insert_polygon_xz, sidecut_zero_offset_deg, origin_x=0.0, origin_z=0.0,
-        )
-        if rotated_points:
-            insert_polygon_xz = [
-                [float(x_val), float(z_val)]
-                for x_val, z_val in ensure_ccw(rotated_points)
-            ]
-
-    return {
-        "profile_format": 1,
-        "family": shape.family,
-        "insert_polygon_xz": insert_polygon_xz,
-        "dimensions": shape.dims,
-    }

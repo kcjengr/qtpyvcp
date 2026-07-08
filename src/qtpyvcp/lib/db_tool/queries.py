@@ -1,14 +1,12 @@
 # coding=utf-8
+"""Example: list every tool in the database (schema v1)."""
 
-from .tool_table import ToolTable, Tool
+from .tool_table import Tool
 from .base import Session
 
 session = Session()
 
-tool_tables = session.query(ToolTable).all()
+for tool in session.query(Tool).order_by(Tool.tool_no).all():
+    print(tool.tool_no, tool.remark, tool.x_offset, tool.y_offset)
 
-for tool_table in tool_tables:
-    for tools in tool_table.tools:
-        print(tools.id, tools.remark, tools.x_offset, tools.y_offset)
-        
 session.close()

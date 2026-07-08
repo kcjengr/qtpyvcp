@@ -9,7 +9,6 @@ from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import connectSetting, getSetting
-from qtpyvcp.plugins.db_tool_table import DBToolTable
 from qtpyvcp.actions import IN_DESIGNER
 
 LOG = getLogger(__name__)
@@ -126,11 +125,13 @@ class ToolModel(QStandardItemModel):
 
         self.status.tool_in_spindle.notify(self.refreshModel)
         self.tt.tool_table_changed.connect(self.updateModel)
-        
+
+        # Row 0 in the view always corresponds to the first REAL tool, never
+        # the synthetic {0: NO_TOOL} spindle-empty placeholder that every
+        # tooltable plugin (file- and DB-backed alike) keeps at key 0. Do not
+        # special-case DBToolTable here: an earlier DB plugin implementation
+        # didn't add a key-0 placeholder, but the current one always does.
         self.row_offset = 1
-        tool_table = getPlugin("tooltable")
-        if isinstance(tool_table, DBToolTable):
-            self.row_offset = 0
 
 
     def refreshModel(self):
@@ -230,9 +231,13 @@ class ToolModel(QStandardItemModel):
         return True
 
     def addTool(self):
+        # Next unused tool number -- deliberately independent of row_offset
+        # (that offset is only for row<->tool_no display mapping; reusing it
+        # here previously caused the new tool to collide with and silently
+        # overwrite the highest-numbered existing tool).
         try:
-            tnum = sorted(self._tool_table)[-1] + self.row_offset
-        except IndexError:
+            tnum = max(self._tool_table) + 1
+        except ValueError:
             tnum = 1
 
         row = len(self._tool_table) - 1
