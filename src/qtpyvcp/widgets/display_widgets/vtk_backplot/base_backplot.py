@@ -51,7 +51,7 @@ class BaseBackPlot(object):
         if filename is None or not os.path.isfile(filename):
             self.canon = None
             self.notification.notification_dispatcher.setNotify("3D plot", "Can't load backplot, invalid file: {}".format(filename))
-            # raise ValueError("Can't load backplot, invalid file: {}".format(filename))
+            return
 
         self.last_filename = filename
 
@@ -74,18 +74,25 @@ class BaseBackPlot(object):
             if result > gcode.MIN_ERROR:
                 msg = gcode.strerror(result)
                 fname = os.path.basename(filename)
-                self.notification.notification_dispatcher.setNotify("3D plot", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
-                # raise SyntaxError("Error in %s line %i: %s" % (fname, seq - 1, msg))
+                self.notification.notification_dispatcher.setNotify(
+                    "3D plot",
+                    "Error in {} line {}\n{}".format(fname, seq - 1, msg)
+                )
+                return
 
         except KeyboardInterrupt:
             # probably raised by an (AXIS, stop) comment in the G-code file
             # abort generating the backplot
-            pass
+            return
         except Exception as e:
-            LOG.warning(f"CANON ERROR {e}")
-        # clean up temp var file and the backup
-        os.unlink(self.temp_parameter_file)
-        os.unlink(self.temp_parameter_file + '.bak')
+            LOG.warning("CANON ERROR %s", e)
+        finally:
+            # clean up temp var file and the backup
+            if os.path.isfile(self.temp_parameter_file):
+                os.unlink(self.temp_parameter_file)
+            bak_file = self.temp_parameter_file + '.bak'
+            if os.path.isfile(bak_file):
+                os.unlink(bak_file)
 
 
 if __name__ == "__main__":

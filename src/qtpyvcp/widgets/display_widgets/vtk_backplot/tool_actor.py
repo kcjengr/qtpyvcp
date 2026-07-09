@@ -23,11 +23,38 @@ from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
 
 LOG = logger.getLogger(__name__)
 
+def _coerce_int(value, default=0):
+    if isinstance(value, bool):
+        return int(value)
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value) if value.is_integer() else default
+
+    text = str(value or '').strip()
+    if not text:
+        return default
+    signless = text[1:] if text[0] in ('+', '-') else text
+    if signless.isdigit():
+        return int(text)
+    return default
+
 
 def _resolve_active_tool(tool_table, datasource):
     status = getattr(datasource, '_status', None)
     stat = getattr(status, 'stat', None)
     active_tool = getattr(stat, 'tool_in_spindle', 0)
+    active_tool = _coerce_int(active_tool, 0)
+
+    def _entry_tool_number(entry):
+        for attr in ('id', 'tool', 'toolno', 'number'):
+            value = getattr(entry, attr, None)
+            if value is None:
+                continue
+            parsed = _coerce_int(value, None)
+            if parsed is not None:
+                return parsed
+        return None
 
     if isinstance(tool_table, dict):
         if active_tool in tool_table:
@@ -37,16 +64,19 @@ def _resolve_active_tool(tool_table, datasource):
         values = list(tool_table.values())
         return values[0] if values else None
 
-    try:
-        if active_tool is not None and 0 <= int(active_tool) < len(tool_table):
-            return tool_table[int(active_tool)]
-    except Exception:
-        pass
+    # LinuxCNC stat.tool_table is often pocket-indexed, not tool-number-indexed.
+    # Match by tool ID first to avoid selecting the wrong geometry.
+    if isinstance(tool_table, (list, tuple)):
+        for entry in tool_table:
+            if _entry_tool_number(entry) == active_tool:
+                return entry
 
-    try:
-        return tool_table[0]
-    except Exception:
-        return None
+        if 0 <= active_tool < len(tool_table):
+            return tool_table[active_tool]
+
+        return tool_table[0] if tool_table else None
+
+    return None
 
 class ToolActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
