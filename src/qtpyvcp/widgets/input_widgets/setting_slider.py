@@ -220,6 +220,24 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             self.setText(str(value) if value is not None else "")
         self.blockSignals(False)
 
+    def onSettingChanged(self, value):
+        """Apply an external setting change to the widget.
+
+        Refreshes the high-precision internal cache BEFORE updating the display
+        -- setSetting()-driven restores (e.g. loading a stored operation back
+        into a page) must be reflected by value(), not just by the visible
+        text, otherwise value() keeps returning whatever was last typed into
+        the field even though the field displays the restored number.
+        normalizeValue() is lossless for in-range floats, so the setting's
+        value is safe to adopt as the new full-precision cache.
+        """
+        if self._high_precision_storage and self._effective_value_type() is float:
+            try:
+                self._internal_value = float(value)
+            except (TypeError, ValueError):
+                pass
+        self.setDisplayValue(value)
+
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
@@ -241,9 +259,9 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             if self._tmp_value:
                 self.setValue(self._tmp_value)
             else:
-                self.setDisplayValue(self._setting.getValue())
+                self.onSettingChanged(self._setting.getValue())
 
-            self._setting.notify(safe_qt_callback(self, self.setDisplayValue))
+            self._setting.notify(safe_qt_callback(self, self.onSettingChanged))
 
             self.editingFinished.connect(self.onEditingFinished)
 
