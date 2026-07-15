@@ -143,8 +143,11 @@ class TestClockToString:
         clock = Clock()
         s = clock.time.getString(format="%I:%M %p")
         # Should contain AM or PM
-        assert 'AM' in s.upper() or 'PM' in s.upper()
 
+        # Normalize locale-dependent AM/PM formatting: glibc >=2.40 may use
+        # narrow non-breaking spaces (U+202F) and dots (e.g. "p.\u202fm.")
+        s_normalized = s.replace('\u202f', '').replace('.', '').upper()
+        assert 'AM' in s_normalized or 'PM' in s_normalized
 
 class TestClockTick:
     def test_tick_updates_time_value(self):
