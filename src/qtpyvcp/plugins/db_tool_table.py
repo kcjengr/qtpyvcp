@@ -30,6 +30,9 @@ YAML configuration:
 """
 
 import os
+import re
+import shutil
+import time
 
 import linuxcnc
 
@@ -136,12 +139,43 @@ INT_LETTERS = ('T', 'P', 'Q')
 
 
 def _default_db_path():
-    """DB path from the INI (DB_PROGRAM first arg), else config dir default.
+    """DB path from the INI: [EMCIO] TOOL_DB_FILE if set, else a DB_PROGRAM
+    argument (legacy convention -- some db_program scripts take the path as
+    a CLI arg), else config dir default.
 
-    Kept in sync with tool_db_backend.resolve_db_path(): both processes must
-    open the same file.
+    Kept in sync with tool_db.sh's own INI lookup and
+    tool_db_backend.resolve_db_path(): all must agree on the same file, or
+    the GUI and the LinuxCNC-spawned backend silently disagree about which
+    database is "live". TOOL_DB_FILE is the documented way to name/swap
+    tool database files (backups, per-job variants, ...) without touching
+    DB_PROGRAM itself -- switch which one is active by changing this one
+    line and restarting; nothing is "the" database except by this explicit
+    reference, so nothing can be clobbered by picking a different name.
     """
     config_dir = getattr(INFO, 'CONFIG_DIR', None) or os.getcwd()
+
+    def _resolve(value):
+        if not os.path.isabs(value):
+            value = os.path.join(config_dir, value)
+        return os.path.abspath(os.path.expanduser(value))
+
+    def _strip_inline_comment(value):
+        # ini.find() returns the raw rest of the line -- it does no comment
+        # handling itself. Strip a trailing "# ..." the same way tool_db.sh's
+        # own ini_get does, so a config author who annotates a line (quite
+        # likely once they're naming multiple backup/variant files) can't
+        # produce a value here that disagrees with what the LinuxCNC-spawned
+        # backend actually opens.
+        return re.sub(r'\s*#.*$', '', value).strip()
+
+    try:
+        tool_db_file = INFO.ini.find('EMCIO', 'TOOL_DB_FILE')
+    except Exception:
+        tool_db_file = None
+    if tool_db_file:
+        tool_db_file = _strip_inline_comment(str(tool_db_file))
+        if tool_db_file:
+            return _resolve(tool_db_file)
 
     db_program = None
     try:
@@ -154,11 +188,91 @@ def _default_db_path():
         for arg in args:
             if arg.lower() in ('debug', '-d', '--debug'):
                 continue
-            if not os.path.isabs(arg):
-                arg = os.path.join(config_dir, arg)
-            return os.path.abspath(os.path.expanduser(arg))
+            return _resolve(arg)
 
     return os.path.join(config_dir, 'tool_table.db')
+
+
+_EMCIO_SECTION_RE = re.compile(r'^\s*\[EMCIO\]\s*$')
+_SECTION_RE = re.compile(r'^\s*\[')
+_TOOL_DB_FILE_KEY_RE = re.compile(r'^\s*TOOL_DB_FILE\s*=')
+_DB_PROGRAM_KEY_RE = re.compile(r'^\s*DB_PROGRAM\s*=')
+
+
+def set_tool_db_file(ini_path, db_path):
+    """Write/update [EMCIO] TOOL_DB_FILE in ini_path so it points at
+    db_path, as the write-side counterpart of _default_db_path() -- same
+    section, same key, so a value written here is guaranteed to be read
+    back identically by both the GUI and tool_db.sh.
+
+    A surgical line-level edit, NOT a generic ini-parser rewrite: every
+    other line in the file (including every comment, which these configs
+    carry heavily) is left byte-for-byte untouched. Existing TOOL_DB_FILE
+    line gets replaced in place; otherwise a new one is inserted right
+    after DB_PROGRAM (or after the [EMCIO] header if DB_PROGRAM isn't
+    found) so the two lines that determine "which database is live" stay
+    visually adjacent, matching the documented convention.
+
+    Writes db_path as a bare filename when it lives directly in the same
+    directory as the ini file (the common case, and the cleanest to read),
+    else as a full absolute path.
+
+    Backs up ini_path first (this edits a file LinuxCNC reads at machine
+    startup) -- same pattern as migrate.py's pre-migration db backup.
+    Returns (action, backup_path) where action is 'replaced' or 'inserted'.
+    """
+    ini_path = os.path.abspath(os.path.expanduser(ini_path))
+    if not os.path.isfile(ini_path):
+        raise FileNotFoundError("INI file not found: %s" % ini_path)
+
+    ini_dir = os.path.dirname(ini_path)
+    db_path = os.path.abspath(os.path.expanduser(db_path))
+    if os.path.dirname(db_path) == ini_dir:
+        value = os.path.basename(db_path)
+    else:
+        value = db_path
+
+    with open(ini_path, 'r') as fh:
+        lines = fh.readlines()
+
+    backup_path = '%s.pre-tool-db-file-edit-%s.bak' % (
+        ini_path, time.strftime('%Y%m%d-%H%M%S'))
+    shutil.copy2(ini_path, backup_path)
+
+    new_line = 'TOOL_DB_FILE = %s\n' % value
+
+    in_emcio = False
+    emcio_start = None
+    replace_idx = None
+    db_program_idx = None
+    for idx, line in enumerate(lines):
+        if _EMCIO_SECTION_RE.match(line):
+            in_emcio = True
+            emcio_start = idx
+            continue
+        if in_emcio and _SECTION_RE.match(line):
+            break  # next section -- stop scanning
+        if in_emcio and _TOOL_DB_FILE_KEY_RE.match(line):
+            replace_idx = idx
+            break
+        if in_emcio and _DB_PROGRAM_KEY_RE.match(line):
+            db_program_idx = idx
+
+    if emcio_start is None:
+        raise ValueError("No [EMCIO] section found in %s" % ini_path)
+
+    if replace_idx is not None:
+        lines[replace_idx] = new_line
+        action = 'replaced'
+    else:
+        insert_at = (db_program_idx + 1) if db_program_idx is not None else (emcio_start + 1)
+        lines.insert(insert_at, new_line)
+        action = 'inserted'
+
+    with open(ini_path, 'w') as fh:
+        fh.writelines(lines)
+
+    return action, backup_path
 
 
 class DBToolTable(DataPlugin):
