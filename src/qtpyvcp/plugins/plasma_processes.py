@@ -331,32 +331,55 @@ class PlasmaProcesses(Plugin):
         if IN_DESIGNER:
             return
 
-        # open DB and expose the DB type and if relevant the
-        # connection string to the environment.  This makes for a simple
-        # measn to unform the tool DB prog and the filter prog.
-        if kwargs["db_type"] != "sqlite":
-            self._engine = create_engine(kwargs["connect_string"], echo=False)
-        else:
-            self._persistence_file = normalizePath(path='plasma_table.db',
-                                              base=os.getenv('CONFIG_DIR', './'))
-            self._engine = create_engine('sqlite:///'+self._persistence_file, echo=False)
-            os.environ['PLASMA_DB'] = 'sqlite'
+        # allow external engine/session injection (for testing)
+        if '_engine' not in kwargs or '_session' not in kwargs:
+            # open DB and expose the DB type and if relevant the
+            # connection string to the environment.  This makes for a simple
+            # measn to unform the tool DB prog and the filter prog.
+            if kwargs["db_type"] != "sqlite":
+                self._engine = create_engine(kwargs["connect_string"], echo=False)
+            else:
+                self._persistence_file = normalizePath(path='plasma_table.db',
+                                                      base=os.getenv('CONFIG_DIR', './'))
+                self._engine = create_engine('sqlite:///'+self._persistence_file, echo=False)
+                os.environ['PLASMA_DB'] = 'sqlite'
 
-        # create the database for anything not already in place
-        BASE.metadata.create_all(self._engine)
-        # create and hold session for use of transactions
-        self._session_maker = sessionmaker(bind=self._engine)
-        self._session = self._session_maker()
-        # Build base filter items, get the IDs and store for later use
-        if INFO.getIsMachineMetric():
-            linear_setting = 'mm'
+            # create the database for anything not already in place
+            BASE.metadata.create_all(self._engine)
+            # create and hold session for use of transactions
+            self._session_maker = sessionmaker(bind=self._engine)
+            self._session = self._session_maker()
         else:
-            linear_setting = 'inch'
-        pressure_setting = INFO.ini.find('PLASMAC', 'PRESSURE')
-        machine = INFO.ini.find('PLASMAC', 'MACHINE')
-        self._measurementid = LinearSystem.get_by_key(self._session, 'name', linear_setting)[0].id
-        self._pressureid = PressureSystem.get_by_key(self._session, 'name', pressure_setting)[0].id
-        self._machineid = Machine.get_by_key(self._session, 'name', machine)[0].id
+            self._engine = kwargs['_engine']
+            self._session = kwargs['_session']
+            LOG.debug(f"DEBUG: Using injected engine and session")
+        # Build base filter items, get the IDs and store for later use
+        linear_setting = INFO.ini.find('TRAJ', 'LINEAR_UNITS') or INFO.ini.find('AXIS_X', 'UNITS') or 'inch'
+        if linear_setting in ['mm', 'metric']:
+            is_machine_metric = True
+        else:
+            is_machine_metric = False
+        pressure_setting = INFO.ini.find('PLASMAC', 'PRESSURE') or 'psi'
+        machine = INFO.ini.find('PLASMAC', 'MACHINE') or 'MyMachine'
+        LOG.debug(f"DEBUG: is_machine_metric={is_machine_metric}, linear_setting={linear_setting}, pressure_setting={pressure_setting}, machine={machine}")
+        ls_result = LinearSystem.get_by_key(self._session, 'name', linear_setting)
+        if ls_result:
+            self._measurementid = ls_result[0].id
+        else:
+            self._measurementid = None
+            self._measurement_name = linear_setting
+        ps_result = PressureSystem.get_by_key(self._session, 'name', pressure_setting)
+        if ps_result:
+            self._pressureid = ps_result[0].id
+        else:
+            self._pressureid = None
+            self._pressure_name = pressure_setting
+        m_result = Machine.get_by_key(self._session, 'name', machine)
+        if m_result:
+            self._machineid = m_result[0].id
+        else:
+            self._machineid = None
+            self._machine_name = machine
         self._measurement_name = linear_setting
         self._pressure_name = pressure_setting
         self._machine_name = machine

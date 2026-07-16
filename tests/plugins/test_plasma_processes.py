@@ -4,14 +4,19 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# Must be set before importing plasma_processes (which reads it at module level)
-os.environ['DESIGNER'] = '1'
-
 from qtpyvcp.plugins.plasma_processes import (
     Gas, Machine, Material, LinearSystem, Thickness,
     PressureSystem, Operation, Quality, Consumable, HoleCut, Cutchart,
     crudMixin, BASE
 )
+
+
+@pytest.fixture(autouse=True)
+def _ensure_designer_env():
+    """Set DESIGNER=1 before importing plasma_processes (which reads it at module level)."""
+    os.environ['DESIGNER'] = '1'
+    yield
+    os.environ.pop('DESIGNER', None)
 
 
 @pytest.fixture()
@@ -378,6 +383,11 @@ class TestPlasmaProcessesPlugin:
         BASE.metadata.create_all(self.engine)
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
+        # Seed minimal data required by PlasmaProcesses constructor
+        # Default: inch (not mm), psi (not None), MyMachine (not None)
+        LinearSystem.create(self.session, name='inch', unit_per_inch=1)
+        PressureSystem.create(self.session, name='psi', unit_per_psi=1)
+        Machine.create(self.session, name='MyMachine', service_height=100)
 
     def teardown_method(self):
         self.session.close()
@@ -385,9 +395,7 @@ class TestPlasmaProcessesPlugin:
 
     def _make_plugin(self):
         from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
-        p = PlasmaProcesses(db_type='sqlite')
-        p._engine = self.engine
-        p._session = self.session
+        p = PlasmaProcesses(db_type='sqlite', _engine=self.engine, _session=self.session)
         return p
 
     def test_drop_all_and_build_all(self):
@@ -415,7 +423,7 @@ class TestPlasmaProcessesPlugin:
         p = self._make_plugin()
         Machine.create(self.session, name='M1', service_height=100)
         result = p.machines()
-        assert len(result) == 1
+        assert len(result) == 2  # seed 'MyMachine' + test 'M1'
 
     def test_add_machine(self):
         p = self._make_plugin()
@@ -456,20 +464,20 @@ class TestPlasmaProcessesPlugin:
         p = self._make_plugin()
         LinearSystem.create(self.session, name='mm', unit_per_inch=24.5)
         result = p.linearsystems()
-        assert len(result) == 1
+        assert len(result) == 2  # seed 'inch' + test 'mm'
 
     def test_add_linearsystems(self):
         p = self._make_plugin()
-        id_ = p.add_linearsystems('inch', 1.0)
+        id_ = p.add_linearsystems('mm', 24.5)
         ls = self.session.get(LinearSystem, id_)
-        assert ls.name == 'inch'
-        assert ls.unit_per_inch == 1.0
+        assert ls.name == 'mm'
+        assert ls.unit_per_inch == 24.5
 
     def test_pressuresystems_method(self):
         p = self._make_plugin()
-        PressureSystem.create(self.session, name='psi', unit_per_psi=1.0)
+        PressureSystem.create(self.session, name='bar', unit_per_psi=0.0689476)
         result = p.pressuresystems()
-        assert len(result) == 1
+        assert len(result) == 2  # seed 'psi' + test 'bar'
 
     def test_add_pressuresystems(self):
         p = self._make_plugin()
@@ -539,9 +547,7 @@ class TestSeedDataBase:
 
     def _make_plasma_plugin(self, engine, session):
         from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
-        p = PlasmaProcesses(db_type='sqlite')
-        p._engine = engine
-        p._session = session
+        p = PlasmaProcesses(db_type='sqlite', _engine=engine, _session=session)
         return p
 
     def test_seed_data_base_populates_tables(self, csv_file):
