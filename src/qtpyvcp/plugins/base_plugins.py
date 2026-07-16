@@ -158,7 +158,7 @@ class DataChannel(QObject):
 
     def getter(self, fget):
         def inner(*args, **kwargs):
-            fget(*args, **kwargs)
+            return fget(*args, **kwargs)
 
         self.fget = inner
         return self

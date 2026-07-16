@@ -29,7 +29,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import Integer, String, Float, LargeBinary, Boolean
 from sqlalchemy import and_
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm.session import sessionmaker
 
 #import pydevd;pydevd.settrace()
@@ -54,7 +54,7 @@ class crudMixin(object):
         session.commit()
 
     @classmethod
-    def delete(cls, sesson, qry):
+    def delete(cls, session, qry):
         session.delete(qry)
         session.commit()
 

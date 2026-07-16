@@ -13,9 +13,6 @@ authors = [
 description = "Qt and Python based Virtual Control Panel framework for LinuxCNC."
 readme = "README.md"
 version = "0.0.0"
-dynamic = ["version"]
-
-
 packages = [
     { include = "examples", from = "src" },
     { include = "qtpyvcp", from = "src" },
@@ -24,7 +21,17 @@ packages = [
 
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
+qtpy = "^2.4.3"
+pyqt5 = "^5.15.11"
+hiyapyco = "^0.7.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4"
+pytest-qt = "^4.2"
+pytest-xvfb = "^3.1"
+pytest-env = "^1.1"
 
 
 [tool.poetry.scripts]
@@ -62,6 +69,13 @@ versionfile_source = "qtpyvcp/_version.py"
 versionfile_build = "qtpyvcp/_version.py"
 tag_prefix = ""
 parentdir_prefix = ""
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.pytest_env]
+QT_API = "pyqt5"
+PYTEST_QT_API = "pyqt5"
 
 [tool.poetry-dynamic-versioning]
 enable = true

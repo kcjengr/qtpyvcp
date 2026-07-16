@@ -70,3 +70,6 @@ qtpyvcp.files
 
 qtpyvcp.includes
 .clang-format
+/.pytest_cache/
+
+.coverage
