@@ -7,50 +7,6 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 
-def pytest_configure(config):
-    """Clear DESIGNER env var before any test modules are imported.
-
-    This prevents pollution from test_plasma_processes.py (which sets DESIGNER='1'
-    at module level) leaking into qtpyvcp.actions IN_DESIGNER flag, which causes
-    bindWidget() to exit early without connecting signals in subsequent tests.
-    """
-    os.environ.pop('DESIGNER', None)
-
-
-def pytest_collection_finish(session):
-    """Patch os.getenv to return False for DESIGNER after collection.
-
-    test_plasma_processes.py sets os.environ['DESIGNER'] = '1' at module level during
-    collection. This causes qtpyvcp.actions.IN_DESIGNER to be True when it's imported
-    later during collection. We patch os.getenv here so that any subsequent code that
-    reads os.getenv('DESIGNER') gets False instead, and reload qtpyvcp.actions to reset
-    its IN_DESIGNER flag.
-
-    The patch checks if DESIGNER is currently set in os.environ - if it is (e.g., a test
-    explicitly set it), we return that value. This allows tests like TestDesignModeFlag
-    to work while preventing pollution from test_plasma_processes.py.
-    """
-    original_getenv = os.getenv
-
-    def patched_getenv(key, default=None):
-        if key == 'DESIGNER':
-            # Return the current value from os.environ if set, otherwise return False
-            # This allows tests that explicitly set DESIGNER='1' to work
-            return os.environ.get('DESIGNER', False)
-        return original_getenv(key, default)
-
-    os.getenv = patched_getenv
-
-    # Reload qtpyvcp.actions to reset IN_DESIGNER flag
-    if 'qtpyvcp.actions' in sys.modules:
-        import importlib
-        import qtpyvcp.actions as actions_mod
-        try:
-            importlib.reload(actions_mod)
-        except Exception:
-            pass
-
-
 class _FakeInfo:
     """Minimal Info singleton mock to avoid INI file dependencies."""
 
@@ -160,9 +116,6 @@ def _ensure_status_mock():
         _PLUGINS['status'] = mock
 
 
-import pytest
-
-
 @pytest.fixture(autouse=True)
 def mock_linuxcnc():
     """Mock linuxcnc module so all qtpyvcp modules can be imported."""
@@ -179,6 +132,38 @@ def mock_status_plugin():
     _ensure_status_mock()
     from qtpyvcp.plugins import _PLUGINS
     yield _PLUGINS.get('status', MagicMock())
+
+
+# @pytest.fixture(autouse=True)
+# def reset_all_modules():
+#     """Ensure all modules are reloaded with correct IN_DESIGNER value after each test.
+#
+#     Some tests set os.environ['DESIGNER'] = '1' at module level or in fixtures.
+#     Since qtpyvcp modules read IN_DESIGNER at import time, this leaks into
+#     subsequent tests and causes modules to skip STATUS/plugin assignments.
+#     This fixture reloads all affected modules after each test.
+#     """
+#     import importlib
+#     modules_to_reload = [
+#         'qtpyvcp.actions',
+#         'qtpyvcp.widgets.input_widgets.action_combobox',
+#         'qtpyvcp.widgets.input_widgets.action_dial',
+#         'qtpyvcp.widgets.input_widgets.action_slider',
+#         'qtpyvcp.widgets.input_widgets.mdientry_widget',
+#         'qtpyvcp.widgets.input_widgets.mdihistory_widget',
+#         'qtpyvcp.widgets.input_widgets.recent_file_combobox',
+#         'qtpyvcp.widgets.button_widgets.subcall_button',
+#         'qtpyvcp.widgets.display_widgets.active_gcodes_table',
+#         'qtpyvcp.widgets.display_widgets.dro_widget',
+#         'qtpyvcp.widgets.form_widgets.main_window',
+#     ]
+#     yield
+#     for mod_name in modules_to_reload:
+#         if mod_name in sys.modules:
+#             try:
+#                 importlib.reload(sys.modules[mod_name])
+#             except Exception:
+#                 pass
 
 
 @pytest.fixture(autouse=True)
