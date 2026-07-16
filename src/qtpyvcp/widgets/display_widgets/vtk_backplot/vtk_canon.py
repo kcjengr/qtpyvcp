@@ -167,13 +167,11 @@ class VTKCanon(StatCanon):
         # VTK or linuxcnc assumes everything is in inches.
         # Therefore no scale change for inches
         if program_units == 200:
-            to_mm = 1
-        # nonsense test as only valid linuxcnc codes are G20 and G21
-        # elif program_units == 3:
-        #     to_mm = 10.0
-        else:
-            # mm units.  Need to be scaled up to render correctly in VTK
+            # inches program.  Convert to mm so the machine frame is consistent.
             to_mm = 25.4
+        else:
+            # mm program.  Already in mm, no conversion needed.
+            to_mm = 1.0
 
         # mm -> machine units
         if machine_is_metric:
