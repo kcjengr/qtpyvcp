@@ -16,7 +16,7 @@ class ActionButton(VCPButton):
 
         self._action_name = ''
         if action is not None:
-            self.actionName = action
+            self._action_name = action
 
     @Property(str)
     def actionName(self):
