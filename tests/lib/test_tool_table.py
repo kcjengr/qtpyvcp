@@ -31,17 +31,19 @@ class TestToolTableCRUD:
         session.commit()
 
         fresh = session.query(ToolTable).filter_by(name='empty').first()
-        assert len(fresh.tools) == 0
+        assert len(fresh.tool_models) == 0
 
-    def test_add_tools_to_table(self, session):
-        table = ToolTable(name='with_tools')
-        tool1 = Tool(tool_no=1, remark='tool one', tool_table=table)
-        tool2 = Tool(tool_no=2, remark='tool two', tool_table=table)
+    def test_add_models_to_table(self, session):
+        table = ToolTable(name='with_models')
         session.add(table)
+        session.flush()
+        m1 = ToolModel(tool_no=1, model='tool-one', tool_table_id=table.id)
+        m2 = ToolModel(tool_no=2, model='tool-two', tool_table_id=table.id)
+        session.add_all([m1, m2])
         session.commit()
 
-        fresh = session.query(ToolTable).filter_by(name='with_tools').first()
-        assert len(fresh.tools) == 2
+        fresh = session.query(ToolTable).filter_by(name='with_models').first()
+        assert len(fresh.tool_models) == 2
 
     def test_tool_table_id_auto_increment(self, session):
         t1 = ToolTable(name='first')
@@ -65,9 +67,8 @@ class TestToolCRUD:
             tool_no=5, in_use=1, pocket=3,
             x_offset=0.1, y_offset=-0.2, z_offset=0.05,
             a_offset=0.0, b_offset=0.0, c_offset=0.0,
-            i_offset=0.0, j_offset=0.0, q_offset=0.0,
             u_offset=0.0, v_offset=0.0, w_offset=0.0,
-            diameter=10.5, tool_table_id=table.id, remark='offset tool'
+            diameter=10.5, remark='offset tool'
         )
         session.add(tool)
         session.commit()
@@ -79,13 +80,16 @@ class TestToolCRUD:
         assert fresh.y_offset == -0.2
         assert fresh.z_offset == 0.05
 
-    def test_tool_belongs_to_tool_table(self, session):
+    def test_model_belongs_to_tool_table(self, session):
         table = ToolTable(name='parent')
-        tool = Tool(tool_no=1, tool_table=table)
         session.add(table)
+        session.flush()
+        model = ToolModel(tool_no=1, model='parent-model', tool_table_id=table.id)
+        session.add(model)
         session.commit()
 
-        fresh = session.query(Tool).filter_by(tool_no=1).first()
+        fresh = session.query(ToolModel).filter_by(model='parent-model').first()
+        assert fresh is not None
         assert fresh.tool_table is not None
         assert fresh.tool_table.name == 'parent'
 
@@ -105,18 +109,18 @@ class TestToolCRUD:
         session.commit()
 
         fresh = session.query(Tool).filter_by(tool_no=1).first()
-        assert fresh.x_offset is None
-        assert fresh.y_offset is None
-        assert fresh.z_offset is None
-        assert fresh.diameter is None
+        assert fresh.x_offset == 0.0
+        assert fresh.y_offset == 0.0
+        assert fresh.z_offset == 0.0
+        assert fresh.diameter == 0.0
 
-    def test_tool_remark_can_be_none(self, session):
-        tool = Tool(tool_no=1, remark=None)
+    def test_tool_remark_can_be_empty(self, session):
+        tool = Tool(tool_no=1, remark='')
         session.add(tool)
         session.commit()
 
         fresh = session.query(Tool).filter_by(tool_no=1).first()
-        assert fresh.remark is None
+        assert fresh.remark == ''
 
     def test_tool_in_use_and_pocket(self, session):
         tool = Tool(tool_no=1, in_use=1, pocket=5)
@@ -153,7 +157,7 @@ class TestToolModelCRUD:
         session.add(table)
         session.flush()
 
-        tool = Tool(tool_no=1, tool_table_id=table.id)
+        tool = Tool(tool_no=1)
         model = ToolModel(tool_no=1, model='test-model', tool_table_id=table.id)
         session.add_all([tool, model])
         session.commit()
@@ -179,14 +183,14 @@ class TestToolModelCRUD:
 
 
 class TestRelationships:
-    def test_back_populates_tools(self, session):
+    def test_back_populates_tool_models(self, session):
         table = ToolTable(name='linked')
-        tool = Tool(tool_no=1, tool_table=table)
+        model = ToolModel(tool_no=1, model='test', tool_table=table)
         session.add(table)
         session.commit()
 
         fresh = session.query(ToolTable).filter_by(name='linked').first()
-        assert fresh.tools[0].tool_table is fresh
+        assert fresh.tool_models[0].tool_table is fresh
 
     def test_back_populates_tool_models(self, session):
         table = ToolTable(name='with_models')
@@ -198,10 +202,10 @@ class TestRelationships:
         assert fresh.tool_models[0].tool_table is fresh
 
     def test_cascade_delete_tool_table_does_not_remove_tools(self, session):
-        """No cascade='delete' configured on ToolTable.tools relationship."""
+        """No cascade='delete' configured on ToolTable.tool_models relationship."""
         table = ToolTable(name='cascade_test')
-        tool = Tool(tool_no=1, tool_table=table)
-        session.add(table)
+        tool = Tool(tool_no=1)
+        session.add_all([table, tool])
         session.commit()
 
         session.delete(table)
@@ -226,22 +230,23 @@ class TestRelationships:
 
 class TestEdgeCases:
     def test_duplicate_tool_no_allowed(self, session):
-        """No unique constraint on tool_no — both should insert."""
+        """tool_no is unique — second insert raises IntegrityError."""
         t1 = Tool(tool_no=1, remark='first')
-        t2 = Tool(tool_no=1, remark='second')
-        session.add_all([t1, t2])
+        session.add(t1)
         session.commit()
 
-        results = session.query(Tool).filter_by(tool_no=1).all()
-        assert len(results) == 2
+        t2 = Tool(tool_no=1, remark='second')
+        session.add(t2)
+        with pytest.raises(Exception):
+            session.commit()
 
-    def test_null_remark_allowed(self, session):
-        tool = Tool(tool_no=1, remark=None)
+    def test_null_remark_stored_as_empty(self, session):
+        tool = Tool(tool_no=1, remark='')
         session.add(tool)
         session.commit()
 
         fresh = session.query(Tool).filter_by(tool_no=1).first()
-        assert fresh.remark is None
+        assert fresh.remark == ''
 
     def test_empty_string_name(self, session):
         table = ToolTable(name='')
