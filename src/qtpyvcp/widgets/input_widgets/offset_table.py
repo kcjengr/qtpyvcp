@@ -20,7 +20,8 @@ import os
 
 from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
 from PySide6.QtGui import QStandardItemModel, QColor, QBrush
-from PySide6.QtWidgets import QTableView, QHeaderView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
+from PySide6.QtWidgets import (QTableView, QHeaderView, QStyledItemDelegate,
+                               QDoubleSpinBox, QMessageBox, QMenu)
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
@@ -80,6 +81,11 @@ class ItemDelegate(QStyledItemDelegate):
 
 
 class OffsetModel(QStandardItemModel):
+    # persistent_data_manager key for the visible-columns set -- one entry,
+    # scoped by the plugin's own per-config-folder persistence file, so no
+    # per-machine namespacing needed here.
+    VISIBLE_COLUMNS_KEY = 'offset_table_visible_columns'
+
     def __init__(self, parent=None):
         super(OffsetModel, self).__init__(parent)
 
@@ -91,6 +97,7 @@ class OffsetModel(QStandardItemModel):
         if IN_DESIGNER:
             # In designer mode, set up dummy data to show the table structure
             self._columns = [c for c in 'XYZABC']  # Default columns for designer
+            self._visible_columns = list(self._columns)
             self._rows = list(range(1, 11))  # 10 rows for designer preview
             self.setColumnCount(len(self._columns))
             self.setRowCount(len(self._rows))
@@ -99,8 +106,8 @@ class OffsetModel(QStandardItemModel):
                 self.setHeaderData(i, Qt.Horizontal, col, Qt.DisplayRole)
             for i, row in enumerate(self._rows):
                 self.setHeaderData(i, Qt.Vertical, f"G5{i+1}", Qt.DisplayRole)
-            return 
-        
+            return
+
         self._columns = self.ot.columns
         self._rows = self.ot.rows
 
@@ -108,6 +115,21 @@ class OffsetModel(QStandardItemModel):
         self._row_labels = self.ot.ROW_LABELS
 
         self._offset_table = self.ot.getOffsetTable()
+
+        # Column *visibility* is a pure display-layer concern, independent
+        # of self._columns above (the full set the ini's OFFSET_COLUMNS
+        # configures, and the positional index space the underlying
+        # offset_table array/save-to-LinuxCNC path is keyed on -- see
+        # data()/setData()/saveOffsetTable() below, none of which are
+        # affected by which columns are currently visible). Persisted
+        # per config folder (same mechanism .vcp_persistent_data.pickle
+        # already uses), not per axis-letter default -- a fresh/never-
+        # toggled config shows every configured column, same as before
+        # this feature existed.
+        self._data_manager = getPlugin('persistent_data_manager')
+        persisted = self._filterToKnownColumns(
+            self._data_manager.getData(self.VISIBLE_COLUMNS_KEY, None))
+        self._visible_columns = persisted or list(self._columns)
 
         self.setColumnCount(len(self._columns))
         self.setRowCount(len(self._rows))  # (self.rowCount())
@@ -133,9 +155,56 @@ class OffsetModel(QStandardItemModel):
         self._columns = columns
         self.setColumnCount(len(columns))
 
+    # ------------------------------------------------------ visibility
+
+    def allColumns(self):
+        """Every column this machine is configured for (OFFSET_COLUMNS),
+        regardless of current visibility -- the toggle menu's universe."""
+        return list(self._columns)
+
+    def visibleColumns(self):
+        return list(self._visible_columns)
+
+    def _filterToKnownColumns(self, columns):
+        """Drop any letter not in self._columns (e.g. a persisted set from
+        before OFFSET_COLUMNS changed) -- never surface a column the
+        underlying offset_table array has no slot for. Also normalizes to
+        self._columns' own canonical order regardless of what order
+        `columns` arrives in, so a column that gets hidden and re-shown
+        always lands back in its original position instead of at the end
+        of whatever order it was toggled in (setVisibleColumns() callers
+        naturally build the list in toggle order, not display order).
+        Returns None (not an empty list) if nothing valid remains, so
+        callers can fall back to a sane default instead of rendering zero
+        columns."""
+        if not columns:
+            return None
+        wanted = set(columns)
+        ordered = [c for c in self._columns if c in wanted]
+        return ordered or None
+
+    def setVisibleColumns(self, columns):
+        visible = self._filterToKnownColumns(columns) or list(self._columns)
+        self.beginResetModel()
+        self._visible_columns = visible
+        self.endResetModel()
+        if not IN_DESIGNER:
+            self._data_manager.setData(self.VISIBLE_COLUMNS_KEY, visible)
+
+    def _realColumnIndex(self, visible_col):
+        """Map a QTableView column position (an index into
+        self._visible_columns) to its real position in self._columns --
+        the fixed index space self._offset_table rows and the plugin's
+        column.index(letter) lookups (loadOffsetTable/saveOffsetTable) are
+        keyed on. Hiding a column never changes that mapping, only which
+        positions the view exposes -- see data()/setData() below."""
+        return self._columns.index(self._visible_columns[visible_col])
+
+    # ---------------------------------------------------------------
+
     def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
         if role == Qt.ItemDataRole.DisplayRole and orientation == Qt.Orientation.Horizontal:
-            return self._columns[section]
+            return self._visible_columns[section]
         elif role == Qt.ItemDataRole.DisplayRole and orientation == Qt.Orientation.Vertical:
             return self._row_labels[section]
 
@@ -144,7 +213,7 @@ class OffsetModel(QStandardItemModel):
     def columnCount(self, parent=None):
         if IN_DESIGNER:
             return 0
-        return len(self._columns)
+        return len(self._visible_columns)
 
     def rowCount(self, parent=None):
         if IN_DESIGNER:
@@ -156,7 +225,7 @@ class OffsetModel(QStandardItemModel):
 
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         if (role == Qt.ItemDataRole.DisplayRole or role == Qt.ItemDataRole.EditRole) and len(self._offset_table) > 0:
-            columns_index = index.column()
+            columns_index = self._realColumnIndex(index.column())
             rows_index = index.row()
 
             # column_index = self._columns[index.column()]
@@ -189,7 +258,7 @@ class OffsetModel(QStandardItemModel):
         return QStandardItemModel.data(self, index, role)
 
     def setData(self, index, value, role):
-        columns_index = index.column()
+        columns_index = self._realColumnIndex(index.column())
         rows_index = index.row()
 
         # column_index = self._columns[index.column()]
@@ -270,6 +339,12 @@ class OffsetTable(QTableView):
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
 
+        if not IN_DESIGNER:
+            # per-column visibility menu, same UX as the tool table's
+            header = self.horizontalHeader()
+            header.setContextMenuPolicy(Qt.CustomContextMenu)
+            header.customContextMenuRequested.connect(self._onHeaderContextMenu)
+
         if IN_DESIGNER:
             return
         STATUS.all_axes_homed.notify(self.handle_home_signal)
@@ -279,6 +354,43 @@ class OffsetTable(QTableView):
             self.setEnabled(True)
         else:
             self.setEnabled(False)
+
+    # ------------------------------------------------------- column menu
+
+    def _onHeaderContextMenu(self, position):
+        header = self.horizontalHeader()
+        menu = QMenu(self)
+
+        show_all = menu.addAction('Show All Columns')
+        menu.addSeparator()
+
+        visible = set(self.offset_model.visibleColumns())
+        toggles = {}
+        for key in self.offset_model.allColumns():
+            action = menu.addAction(key)
+            action.setCheckable(True)
+            action.setChecked(key in visible)
+            toggles[action] = key
+
+        selected = menu.exec(header.mapToGlobal(position))
+        if selected is None:
+            return
+
+        if selected == show_all:
+            self.offset_model.setVisibleColumns(self.offset_model.allColumns())
+        elif selected in toggles:
+            key = toggles[selected]
+            cols = self.offset_model.visibleColumns()
+            if selected.isChecked():
+                if key not in cols:
+                    cols.append(key)
+            else:
+                cols = [c for c in cols if c != key]
+                if not cols:
+                    QMessageBox.warning(self, 'Offset Table',
+                                        'At least one column must remain visible.')
+                    return
+            self.offset_model.setVisibleColumns(cols)
 
     @Slot(int)
     def _onActiveOffsetChanged(self, offset_num):

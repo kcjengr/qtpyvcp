@@ -179,6 +179,18 @@ class OffsetTablePlugin(_DesignerPlugin):
     def objectName(self):
         return 'offset_table'
 
+from qtpyvcp.widgets.input_widgets.tool_table_editor import ToolTableEditor
+class ToolTableEditorPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ToolTableEditor
+    def objectName(self):
+        return 'tool_table_editor'
+    def toolTip(self):
+        return ('Unified tool table editor: core columns, machine-flavor '
+                'extras, and user-defined custom columns. Works against '
+                'either the classic file-based ToolTable plugin or the '
+                'DB-backed DBToolTable plugin.')
+
 from qtpyvcp.widgets.input_widgets.dro_line_edit import DROLineEdit
 from qtpyvcp.widgets.qtdesigner.dro_editor import DroEditorExtension
 class DROLineEditPlugin(_DesignerPlugin):
