@@ -1,4 +1,5 @@
 import os
+import re
 from PySide6.QtCore import Property, QLocale, Slot
 from PySide6.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
 from PySide6.QtGui import QIntValidator, QDoubleValidator
@@ -219,6 +220,24 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             self.setText(str(value) if value is not None else "")
         self.blockSignals(False)
 
+    def onSettingChanged(self, value):
+        """Apply an external setting change to the widget.
+
+        Refreshes the high-precision internal cache BEFORE updating the display
+        -- setSetting()-driven restores (e.g. loading a stored operation back
+        into a page) must be reflected by value(), not just by the visible
+        text, otherwise value() keeps returning whatever was last typed into
+        the field even though the field displays the restored number.
+        normalizeValue() is lossless for in-range floats, so the setting's
+        value is safe to adopt as the new full-precision cache.
+        """
+        if self._high_precision_storage and self._effective_value_type() is float:
+            try:
+                self._internal_value = float(value)
+            except (TypeError, ValueError):
+                pass
+        self.setDisplayValue(value)
+
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
@@ -240,9 +259,9 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             if self._tmp_value:
                 self.setValue(self._tmp_value)
             else:
-                self.setDisplayValue(self._setting.getValue())
+                self.onSettingChanged(self._setting.getValue())
 
-            self._setting.notify(safe_qt_callback(self, self.setDisplayValue))
+            self._setting.notify(safe_qt_callback(self, self.onSettingChanged))
 
             self.editingFinished.connect(self.onEditingFinished)
 
@@ -577,8 +596,62 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
             try:
                 return value_type(text)
             except ValueError:
+                # Labels like "2x" or "0.5x" carry the actual numeric value
+                # plus a unit/multiplier suffix - extract it directly rather
+                # than falling back to interpolation, which only works when
+                # combo values are evenly spaced (e.g. "1x/2x/4x/8x/...").
+                match = re.match(r'^\s*([-+]?\d*\.?\d+)', text)
+                if match:
+                    try:
+                        return value_type(float(match.group(1)))
+                    except ValueError:
+                        pass
+                # If combo labels are semantic strings (e.g. inch/mm, CSS/RPM)
+                # but the setting is numeric, infer the numeric value from the
+                # setting range and current item index.
+                inferred = self._infer_numeric_value_from_index(index)
+                if inferred is not None:
+                    return inferred
                 return text
         return text
+
+    def _infer_numeric_value_from_index(self, index):
+        """Infer numeric setting value from combo index using setting range.
+
+        This supports legacy configs where int/float settings use semantic
+        combo labels without enum options.
+        """
+        if self._setting is None:
+            return None
+
+        value_type = self._setting.value_type
+        if value_type not in (int, float):
+            return None
+
+        min_value = getattr(self._setting, 'min_value', None)
+        max_value = getattr(self._setting, 'max_value', None)
+
+        if min_value is None or max_value is None:
+            return None
+
+        count = self.count()
+        if count <= 0:
+            return None
+
+        if count == 1:
+            candidate = float(min_value)
+        else:
+            span = float(max_value) - float(min_value)
+            step = span / float(count - 1)
+            candidate = float(min_value) + (step * float(index))
+
+        if value_type is int:
+            rounded = round(candidate)
+            if abs(candidate - rounded) > 1e-9:
+                return None
+            return int(rounded)
+
+        return float(candidate)
 
     def _set_display_from_value(self, value):
         """Select combobox entry matching a persisted setting value.
@@ -606,7 +679,12 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
         """Persist selected value (not index) when storeIndex is disabled."""
         if self._setting is None or index < 0:
             return
-        self._setting.setValue(self._item_value(index))
+        value = self._item_value(index)
+        try:
+            self._setting.setValue(value)
+        except (ValueError, TypeError):
+            LOG.warning("Could not store combo value %r for setting %r",
+                        value, getattr(self._setting, 'name', None))
 
     def _apply_setting_update_store_index(self, value):
         """Update display for store-index mode from either index or item value."""
@@ -657,8 +735,8 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
 
             value = self._setting.getValue()
 
-            # Backward compatibility: accept stored text and map to index
-            if isinstance(value, str):
+            # Backward compatibility for index-storage combos only.
+            if self._stores_index() and isinstance(value, str):
                 idx = self.findText(value)
                 if idx != -1:
                     value = idx

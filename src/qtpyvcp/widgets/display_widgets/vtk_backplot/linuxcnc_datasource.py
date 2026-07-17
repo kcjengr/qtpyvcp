@@ -199,6 +199,10 @@ class LinuxCncDataSource(QObject):
         self._status.tool_in_spindle.notify(self.__handleToolInSpindleChanged)
 
     def __handleProgramLoaded(self, fname):
+        if self._status.task_mode.getValue() == linuxcnc.MODE_MDI:
+            LOG.debug("Skipping backplot reload while in MDI mode: %s", fname)
+            return
+
         PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='datasource-program-loaded', percent=45)
         self.programLoaded.emit(fname)
 

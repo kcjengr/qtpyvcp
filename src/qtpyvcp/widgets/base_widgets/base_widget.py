@@ -278,16 +278,33 @@ class VCPBaseWidget(VCPPrimitiveWidget):
                             prop[0], rule['expression']).encode('utf-8')
             exp = eval(eval_exp, eval_env)
 
+            widget_name = self.objectName()
+            rule_name = rule.get('name', '<unnamed rule>')
+
+            # Rules are compiled as zero-arg lambdas, but channel notifications
+            # may pass payload args. Accept and ignore payload args so callbacks
+            # stay stable across signal signatures.
+            # NOTE: Keep per-rule callback binding here to avoid loop-scope
+            # expression bleed regressions (see report around b1b5419f298e).
+            def _make_rule_callback(exp_cb, cb_rule_name, cb_widget_name):
+                def _rule_callback(*_args, **_kwargs):
+                    try:
+                        exp_cb()
+                    except Exception:
+                        LOG.exception(
+                            "Error calling rules expression '%s' from %s:",
+                            cb_rule_name,
+                            cb_widget_name,
+                        )
+                return _rule_callback
+
+            _rule_callback = _make_rule_callback(exp, rule_name, widget_name)
+
             # initial call to update
-            try:
-                exp()
-            except:
-                widget_name = self.objectName()
-                LOG.exception(f'Error calling rules expression from {widget_name}:')
-                continue
+            _rule_callback()
 
             for trigger in triggers:
-                trigger(exp)
+                trigger(_rule_callback)
 
 
 class VCPWidget(VCPBaseWidget):

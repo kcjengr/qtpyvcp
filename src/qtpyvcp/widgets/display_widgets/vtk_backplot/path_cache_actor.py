@@ -35,6 +35,9 @@ class PathCacheActor(vtk.vtkActor):
         self.GetProperty().SetBackfaceCulling(1)
 
     def add_line_point(self, point):
+        if point is None or len(point) < 3:
+            return
+
         if not self.first_sample_seeded:
             # First live sample only seeds the breadcrumb origin to avoid a
             # synthetic startup segment from an unknown position.
@@ -45,6 +48,14 @@ class PathCacheActor(vtk.vtkActor):
             self.index = 0
             return
 
+        last = self.current_position
+        if last is not None:
+            dx = float(point[0]) - float(last[0])
+            dy = float(point[1]) - float(last[1])
+            dz = float(point[2]) - float(last[2])
+            if (dx * dx + dy * dy + dz * dz) <= 1e-24:
+                return
+
         self.index += 1
 
         self.points.InsertNextPoint(point)
@@ -54,3 +65,4 @@ class PathCacheActor(vtk.vtkActor):
         self.lines.InsertCellPoint(self.index - 1)
         self.lines.InsertCellPoint(self.index)
         self.lines.Modified()
+        self.current_position = point

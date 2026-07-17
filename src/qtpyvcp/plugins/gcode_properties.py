@@ -17,7 +17,6 @@ YAML configuration:
 
 """
 import os
-import pprint
 import shutil
 
 import linuxcnc
@@ -676,6 +675,9 @@ class GCodeProperties(DataPlugin):
     def _file_event(self, file_path):
         """" This function gets notified about files begin loaded """
 
+        if self.stat.task_mode.getValue() == linuxcnc.MODE_MDI:
+            return
+
         if not os.path.exists(file_path):
             return
 
@@ -806,7 +808,6 @@ class GCodeProperties(DataPlugin):
         #     if a != b:
         #             props[c] = ("%(a)f to %(b)f = %(diff)f %(units)s").replace("%f", fmt) % {'a': a, 'b': b, 'diff': b-a, 'units': units}
         # # properties(root_window, _("G-Code Properties"), property_names, props)
-        # pprint.pprint(props)
 
     def calc_extents(self):
         self.canon.calc_extents()

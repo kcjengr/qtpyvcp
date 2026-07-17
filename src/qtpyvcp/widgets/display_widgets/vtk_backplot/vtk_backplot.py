@@ -396,14 +396,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_position = (0.0, 0.0, 0.0)
         self.machine_motion_position = (0.0, 0.0, 0.0)
         self.spindle_rotation = (0.0, 0.0, 0.0)
+        self._runtime_tool_offset = (0.0,) * 9
         self.tooltip_position = (0.0, 0.0, 0.0)
         self.current_motion_type = None
         self._breadcrumbs_armed = False
         self._path_cache_seeded = False
         self._last_breadcrumb_world = None
+        self._last_breadcrumb_motion_line = None
         
         if not IN_DESIGNER:
             self.joints = self._datasource._status.joint
+            self._runtime_tool_offset = self._read_tool_offset()
 
         self.foam_offset = [0.0, 0.0]
 
@@ -689,7 +692,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # self.setViewP()
             # self.renderer.ResetCamera()
             if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
-                print("NAV 2")
                 # Enable the widget.
                 self.cam_orient_manipulator.On()
 
@@ -1099,7 +1101,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if self.program_view_when_loading_program:
                 self.setViewProgram(self.program_view_when_loading_program_view)
 
-            QTimer.singleShot(300, self._datasource._status.removeLock)
+            self._datasource._status.removeLock()
 
     def motion_type(self, value):
         self.current_motion_type = value
@@ -1417,6 +1419,208 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._highlighted_selected_lines = selected_signature
         self._request_render()
 
+    def _current_motion_line(self):
+        status_obj = getattr(self._datasource, '_status', None)
+        motion_line_chan = getattr(status_obj, 'motion_line', None)
+        line_no = self._coerce_int(getattr(motion_line_chan, 'value', None), None)
+        if line_no is not None:
+            return line_no
+
+        stat_obj = getattr(status_obj, 'stat', None)
+        return self._coerce_int(getattr(stat_obj, 'motion_line', None), None)
+
+    @staticmethod
+    def _project_point_onto_segment(point, seg_start, seg_end):
+        px, py, pz = float(point[0]), float(point[1]), float(point[2])
+        ax, ay, az = float(seg_start[0]), float(seg_start[1]), float(seg_start[2])
+        bx, by, bz = float(seg_end[0]), float(seg_end[1]), float(seg_end[2])
+
+        vx = bx - ax
+        vy = by - ay
+        vz = bz - az
+        seg_len_sq = (vx * vx) + (vy * vy) + (vz * vz)
+
+        if seg_len_sq <= 1e-24:
+            dx = px - ax
+            dy = py - ay
+            dz = pz - az
+            return (ax, ay, az), (dx * dx + dy * dy + dz * dz)
+
+        ux = px - ax
+        uy = py - ay
+        uz = pz - az
+        t = ((ux * vx) + (uy * vy) + (uz * vz)) / seg_len_sq
+        t = max(0.0, min(1.0, float(t)))
+
+        qx = ax + (vx * t)
+        qy = ay + (vy * t)
+        qz = az + (vz * t)
+
+        dx = px - qx
+        dy = py - qy
+        dz = pz - qz
+        return (qx, qy, qz), (dx * dx + dy * dy + dz * dz)
+
+    def _segment_in_breadcrumb_frame(self, path_actor, cell_id, id_list):
+        poly_data = getattr(path_actor, 'poly_data', None)
+        if poly_data is None:
+            return None
+
+        points = poly_data.GetPoints()
+        if points is None:
+            return None
+
+        poly_data.GetCellPoints(int(cell_id), id_list)
+        if id_list.GetNumberOfIds() < 2:
+            return None
+
+        p0 = points.GetPoint(id_list.GetId(0))
+        p1 = points.GetPoint(id_list.GetId(1))
+
+        actor_transform = path_actor.GetUserTransform()
+        if actor_transform is None:
+            p0_world = (float(p0[0]), float(p0[1]), float(p0[2]))
+            p1_world = (float(p1[0]), float(p1[1]), float(p1[2]))
+        else:
+            p0_world = actor_transform.TransformPoint(float(p0[0]), float(p0[1]), float(p0[2]))
+            p1_world = actor_transform.TransformPoint(float(p1[0]), float(p1[1]), float(p1[2]))
+
+        if self._breadcrumb_world_frame:
+            return p0_world, p1_world
+
+        return self._active_path_local_point(p0_world), self._active_path_local_point(p1_world)
+
+    def _line_segments_in_breadcrumb_frame(self, line_no):
+        line_id = self._coerce_int(line_no, None)
+        if line_id is None or line_id <= 0:
+            return []
+
+        segments = []
+        id_list = vtk.vtkIdList()
+        for wcs_index, line_map in self._line_cells_by_wcs.items():
+            cell_ids = line_map.get(int(line_id), None)
+            if not cell_ids:
+                continue
+
+            path_actor = self.path_actors.get(wcs_index)
+            if path_actor is None:
+                continue
+
+            for cell_id in cell_ids:
+                seg = self._segment_in_breadcrumb_frame(path_actor, cell_id, id_list)
+                if seg is None:
+                    continue
+                segments.append(seg)
+
+        return segments
+
+    @staticmethod
+    def _point_dist_sq(a, b):
+        dx = float(a[0]) - float(b[0])
+        dy = float(a[1]) - float(b[1])
+        dz = float(a[2]) - float(b[2])
+        return (dx * dx) + (dy * dy) + (dz * dz)
+
+    def _candidate_motion_lines(self, motion_line):
+        line_id = self._coerce_int(motion_line, None)
+        if line_id is None or line_id <= 0:
+            return []
+
+        candidates = [int(line_id)]
+        if line_id > 1:
+            candidates.append(int(line_id - 1))
+        candidates.append(int(line_id + 1))
+
+        prev_line = self._coerce_int(self._last_breadcrumb_motion_line, None)
+        if prev_line is not None and prev_line > 0 and prev_line not in candidates:
+            candidates.append(int(prev_line))
+
+        return candidates
+
+    def _shared_corner_for_lines(self, prev_line, curr_line):
+        prev_segments = self._line_segments_in_breadcrumb_frame(prev_line)
+        curr_segments = self._line_segments_in_breadcrumb_frame(curr_line)
+        if not prev_segments or not curr_segments:
+            return None
+
+        prev_points = []
+        curr_points = []
+        for seg_start, seg_end in prev_segments:
+            prev_points.append(seg_start)
+            prev_points.append(seg_end)
+        for seg_start, seg_end in curr_segments:
+            curr_points.append(seg_start)
+            curr_points.append(seg_end)
+
+        best = None
+        best_dist_sq = None
+        for pa in prev_points:
+            for pb in curr_points:
+                d2 = self._point_dist_sq(pa, pb)
+                if best_dist_sq is None or d2 < best_dist_sq:
+                    best_dist_sq = d2
+                    best = (
+                        0.5 * (float(pa[0]) + float(pb[0])),
+                        0.5 * (float(pa[1]) + float(pb[1])),
+                        0.5 * (float(pa[2]) + float(pb[2])),
+                    )
+
+        if best is None:
+            return None
+
+        # Require geometric agreement to avoid injecting wrong corners when
+        # motion-line reports briefly lead/lag the plotted segment mapping.
+        corner_merge_tol = 0.25 if self._datasource.isMachineMetric() else 0.01
+        if best_dist_sq is not None and best_dist_sq <= (corner_merge_tol * corner_merge_tol):
+            return best
+        return None
+
+    def _snap_breadcrumb_to_motion_line(self, raw_point, motion_line):
+        candidate_lines = self._candidate_motion_lines(motion_line)
+        if not candidate_lines:
+            return raw_point
+
+        best_point = None
+        best_dist_sq = None
+        for line_no in candidate_lines:
+            segments = self._line_segments_in_breadcrumb_frame(line_no)
+            if not segments:
+                continue
+
+            for seg_start, seg_end in segments:
+                projected, dist_sq = self._project_point_onto_segment(raw_point, seg_start, seg_end)
+                if best_dist_sq is None or dist_sq < best_dist_sq:
+                    best_dist_sq = dist_sq
+                    best_point = projected
+
+        if best_point is None:
+            return raw_point
+
+        snap_limit = 5.0 if self._datasource.isMachineMetric() else 0.2
+        if best_dist_sq is None or best_dist_sq > (snap_limit * snap_limit):
+            return raw_point
+
+        return best_point
+
+    def _append_breadcrumb_point(self, raw_point):
+        current_motion_line = self._current_motion_line()
+        previous_motion_line = self._last_breadcrumb_motion_line
+
+        if (
+            previous_motion_line is not None
+            and current_motion_line is not None
+            and current_motion_line != previous_motion_line
+        ):
+            corner = self._shared_corner_for_lines(previous_motion_line, current_motion_line)
+            if corner is not None:
+                self.path_cache_actor.add_line_point(corner)
+
+        snapped_point = self._snap_breadcrumb_to_motion_line(raw_point, current_motion_line)
+        self.path_cache_actor.add_line_point(snapped_point)
+        self._path_cache_seeded = True
+        self._last_breadcrumb_world = snapped_point
+        self._last_breadcrumb_motion_line = current_motion_line
+
     def _should_plot_breadcrumb_for_motion(self):
         mt = self.current_motion_type
         if mt is None:
@@ -1477,6 +1681,40 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if x is None or y is None or z is None:
             return None
         return (x, y, z)
+
+    @staticmethod
+    def _coerce_tool_offset_tuple(value):
+        if not isinstance(value, (list, tuple)):
+            return None
+
+        parsed = []
+        for idx in range(9):
+            if idx < len(value):
+                parsed_val = VTKBackPlot._coerce_float(value[idx], None)
+                if parsed_val is None:
+                    parsed_val = 0.0
+            else:
+                parsed_val = 0.0
+            parsed.append(float(parsed_val))
+
+        return tuple(parsed)
+
+    def _read_tool_offset(self):
+        status_obj = getattr(self._datasource, '_status', None)
+
+        channel = getattr(status_obj, 'tool_offset', None)
+        channel_value = getattr(channel, 'value', None)
+        parsed = self._coerce_tool_offset_tuple(channel_value)
+        if parsed is not None:
+            return parsed
+
+        stat_obj = getattr(status_obj, 'stat', None)
+        stat_value = getattr(stat_obj, 'tool_offset', None)
+        parsed = self._coerce_tool_offset_tuple(stat_value)
+        if parsed is not None:
+            return parsed
+
+        return (0.0,) * 9
 
     def _tool_in_spindle(self):
         status_obj = getattr(self._datasource, '_status', None)
@@ -2046,10 +2284,28 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 float(machine_position[1]),
                 float(machine_position[2]),
             )
+
+        # In TCP switchkins mode with tool-owned axes, status position already
+        # represents the controlled tool point in world space.
+        if self._is_tcp_switchkins_active(switchkins_type) and (not self._has_table_owned_axes()):
+            return (
+                float(machine_position[0]),
+                float(machine_position[1]),
+                float(machine_position[2]),
+            )
+
+        src_x = float(machine_position[0]) if self.axis_motion_owner.get('X', 'head') == 'table' else float(self.spindle_position[0])
+        src_y = float(machine_position[1]) if self.axis_motion_owner.get('Y', 'head') == 'table' else float(self.spindle_position[1])
+        src_z = float(machine_position[2]) if self.axis_motion_owner.get('Z', 'head') == 'table' else float(self.spindle_position[2])
+
+        tlo_x = float(tlo[0]) if len(tlo) > 0 else 0.0
+        tlo_y = float(tlo[1]) if len(tlo) > 1 else 0.0
+        tlo_z = float(tlo[2]) if len(tlo) > 2 else 0.0
+
         return (
-            float(self.spindle_position[0] + tlo[0]),
-            float(self.spindle_position[1] + tlo[1]),
-            float(self.spindle_position[2] - tlo[2]),
+            float(src_x - tlo_x),
+            float(src_y - tlo_y),
+            float(src_z - tlo_z),
         )
 
     def _tooltip_point_in_path_frame(self, active_wcs_offset, tlo, machine_position):
@@ -2179,13 +2435,42 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_position(self, position):  # the tool movement
         
         self.current_time = round(time.time() * 1000)
-        
-        if self.current_time - self.prev_plot_time >= self.plot_interval:
+
+        scene_update_due = self.current_time - self.prev_plot_time >= self.plot_interval
+        if scene_update_due:
             self.prev_plot_time = self.current_time
         else:
+            # Keep breadcrumb sampling at motion callback rate so trails hug
+            # the true toolpath, even when scene rendering is FPS-throttled.
+            active_wcs_offset = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
+            if self._is_machine_jet:
+                list_pos = list(position)
+                list_pos[2] = active_wcs_offset[2]
+                position = tuple(list_pos)
+
+            machine_position = self._table_aware_linear_position(position)
+            self.machine_motion_position = machine_position
+            self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
+            runtime_tlo = self._read_tool_offset()
+            self._runtime_tool_offset = runtime_tlo
+
+            current_switchkins_type = self._current_switchkins_type()
+            breadcrumb_world = self._current_tool_tip_world(
+                runtime_tlo,
+                machine_position,
+                switchkins_type=current_switchkins_type,
+            )
+            if self._breadcrumb_world_frame:
+                self.tooltip_position = breadcrumb_world
+            else:
+                self.tooltip_position = self._active_path_local_point(breadcrumb_world)
+
+            if self.breadcrumbs_plotted and self._should_plot_breadcrumb_for_motion():
+                current_tip = tuple(self.tooltip_position[:3])
+                self._append_breadcrumb_point(current_tip)
+
             return
-        
-        
+
         # Plots the movement of the tool and leaves a trace line
         
         active_wcs_offset = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
@@ -2199,6 +2484,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         machine_position = self._table_aware_linear_position(position)
         self.machine_motion_position = machine_position
         self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
+        runtime_tlo = self._read_tool_offset()
+        self._runtime_tool_offset = runtime_tlo
         self.spindle_rotation = position[3:6]
         prev_switchkins_type = int(self._runtime_switchkins_type)
         current_switchkins_type = self._current_switchkins_type()
@@ -2275,26 +2562,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.tool_bit_actor.set_position_cnc(tuple(visual_position))
 
-        tlo = self._datasource.getToolOffset()
-        tool_tip_world = self._current_tool_tip_world(
-            tlo[:3],
+        breadcrumb_world = self._current_tool_tip_world(
+            runtime_tlo,
             machine_position,
             switchkins_type=current_switchkins_type,
         )
         if self._breadcrumb_world_frame:
-            self.tooltip_position = tool_tip_world
+            self.tooltip_position = breadcrumb_world
         else:
-            self.tooltip_position = self._active_path_local_point(tool_tip_world)
+            self.tooltip_position = self._active_path_local_point(breadcrumb_world)
 
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
 
         if self.breadcrumbs_plotted and self._should_plot_breadcrumb_for_motion():
             current_tip = tuple(self.tooltip_position[:3])
-            self.path_cache_actor.add_line_point(current_tip)
-            self._path_cache_seeded = True
-
-            self._last_breadcrumb_world = current_tip
+            self._append_breadcrumb_point(current_tip)
         self._request_render()
         
     def move_part(self, part):
@@ -2657,6 +2940,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._request_render()
 
     def update_tool(self, *_args):
+        self._runtime_tool_offset = self._read_tool_offset()
+
         self.renderer.RemoveActor(self.tool_actor)
         self.renderer.RemoveActor(self.tool_bit_actor)
 
@@ -3557,6 +3842,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._breadcrumbs_armed = False
         self._path_cache_seeded = False
         self._last_breadcrumb_world = tuple(self.tooltip_position[:3])
+        self._last_breadcrumb_motion_line = None
         self._request_render()
 
     @Slot(bool)
