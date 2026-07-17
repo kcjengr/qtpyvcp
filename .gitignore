@@ -73,3 +73,5 @@ qtpyvcp.files
 qtpyvcp.includes
 .clang-format
 
+
+opencode.json
