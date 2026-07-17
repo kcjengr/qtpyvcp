@@ -39,16 +39,12 @@ Usage:
 
 import argparse
 import json
-import os
 import re
 import sys
 import zipfile
 
-from sqlalchemy import create_engine, event
-from sqlalchemy.orm import sessionmaker
-
-from .migrate import run_migrations
-from .tool_table import Meta, Tool, ToolLathe
+from .import_common import guard_overwrite, new_tool_db_session, validate_units
+from .tool_table import Tool, ToolLathe
 
 NUM_RE = re.compile(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?")
 HOLDER_CODE_RE = re.compile(r"\b(S[A-Z]{2,5}[RLN])\b")
@@ -59,23 +55,6 @@ TURNING_FAMILY = ("turning", "boring", "grooving", "parting", "threading")
 LENGTH = "length"            # 25.4 mm/inch
 ANGLE = "angle"              # never converted (degrees, thread counts, ...)
 SURFACE_SPEED = "surface"    # 0.3048 m/ft (SFM <-> SMM)
-
-
-def _make_standalone_engine(db_path):
-    """Fresh engine bound only to db_path -- same standalone pattern (and
-    same rationale) as import_legacy_tbl: never touches the process-global
-    db_tool engine a running GUI may have open."""
-    eng = create_engine('sqlite:///%s' % db_path, echo=False)
-
-    @event.listens_for(eng, 'connect')
-    def _sqlite_pragmas(dbapi_conn, _record):
-        cursor = dbapi_conn.cursor()
-        cursor.execute('PRAGMA journal_mode=WAL')
-        cursor.execute('PRAGMA foreign_keys=ON')
-        cursor.execute('PRAGMA busy_timeout=5000')
-        cursor.close()
-
-    return eng
 
 
 def load_fusion_library(path):
@@ -275,16 +254,8 @@ def import_fusion_to_db(src_path, db_path, units='inch', overwrite=False):
     own standalone engine -- safe to call from inside a running GUI process
     (same guarantees as import_legacy_tbl.import_tbl_to_db).
     """
-    if units not in ('inch', 'mm'):
-        raise ValueError("units must be 'inch' or 'mm', got %r" % units)
-
-    if os.path.exists(db_path):
-        if not overwrite:
-            raise FileExistsError(
-                "%s already exists -- pass overwrite=True (or --overwrite) "
-                "to replace it. This creates a new starting-point database, "
-                "it does not merge into an existing one." % db_path)
-        os.remove(db_path)
+    validate_units(units)
+    guard_overwrite(db_path, overwrite)
 
     entries = load_fusion_library(src_path)
 
@@ -338,24 +309,12 @@ def import_fusion_to_db(src_path, db_path, units='inch', overwrite=False):
         raise ValueError("No usable tools found in %s -- nothing to import"
                           % src_path)
 
-    engine = _make_standalone_engine(db_path)
-    run_migrations(engine)
-
-    session = sessionmaker(bind=engine)()
-    try:
-        meta = session.query(Meta).first()
-        meta.units = units
-
+    with new_tool_db_session(db_path, units) as session:
         for tool_no in sorted(tools):
             record = tools[tool_no]
             tool_row = Tool(**record['core'])
             tool_row.lathe = ToolLathe(**record['extras'])
             session.add(tool_row)
-
-        session.commit()
-    finally:
-        session.close()
-        engine.dispose()
 
     return sorted(tools.keys()), skipped
 

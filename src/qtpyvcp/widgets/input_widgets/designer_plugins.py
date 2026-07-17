@@ -191,6 +191,27 @@ class ToolTableEditorPlugin(_DesignerPlugin):
                 'either the classic file-based ToolTable plugin or the '
                 'DB-backed DBToolTable plugin.')
 
+from qtpyvcp.widgets.input_widgets.lathe_tool_table import LatheToolTable
+class LatheToolTablePlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return LatheToolTable
+    def objectName(self):
+        return 'lathe_tool_table'
+    def toolTip(self):
+        return ('Tool table editor, lathe flavor: pairs with the "lathe" '
+                'DBToolTable extras (insert/holder vocabulary, threading '
+                'parameters).')
+
+from qtpyvcp.widgets.input_widgets.mill_tool_table import MillToolTable
+class MillToolTablePlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return MillToolTable
+    def objectName(self):
+        return 'mill_tool_table'
+    def toolTip(self):
+        return ('Tool table editor, mill flavor: pairs with the "mill" '
+                'DBToolTable extras (ATC storable flag).')
+
 from qtpyvcp.widgets.input_widgets.dro_line_edit import DROLineEdit
 from qtpyvcp.widgets.qtdesigner.dro_editor import DroEditorExtension
 class DROLineEditPlugin(_DesignerPlugin):

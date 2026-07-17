@@ -28,41 +28,11 @@ Usage:
 """
 
 import argparse
-import os
 import re
 import sys
 
-from sqlalchemy import create_engine, event
-from sqlalchemy.orm import sessionmaker
-
-from .migrate import run_migrations
-from .tool_table import Meta, Tool
-
-
-def _make_standalone_engine(db_path):
-    """A fresh SQLAlchemy engine bound only to db_path.
-
-    Deliberately NOT qtpyvcp.lib.db_tool.base's global engine/Session
-    singleton -- that singleton is the SAME connection a running app's live
-    DBToolTable plugin uses (base.configure_database rebinds it process-
-    wide). Importing a .tbl is a one-shot write to a brand new file; using
-    the global here would silently hijack whatever tool database a caller
-    already has open, whether that's another CLI run or a GUI action
-    embedded in a live probe_basic session. Same SQLite pragmas as
-    base._make_engine (WAL + FK + busy timeout) for two-process-safe access
-    to the resulting file, applied here since we're deliberately not
-    sharing that helper's engine/global state."""
-    eng = create_engine('sqlite:///%s' % db_path, echo=False)
-
-    @event.listens_for(eng, 'connect')
-    def _sqlite_pragmas(dbapi_conn, _record):
-        cursor = dbapi_conn.cursor()
-        cursor.execute('PRAGMA journal_mode=WAL')
-        cursor.execute('PRAGMA foreign_keys=ON')
-        cursor.execute('PRAGMA busy_timeout=5000')
-        cursor.close()
-
-    return eng
+from .import_common import guard_overwrite, new_tool_db_session, validate_units
+from .tool_table import Tool
 
 # Same field-extraction regex as qtpyvcp.plugins.tool_table.DataPlugin.
 # loadToolTable (the live legacy-.tbl loader) -- proven against real files,
@@ -140,42 +110,22 @@ def import_tbl_to_db(tbl_path, db_path, units='inch', overwrite=False):
     Refuses to touch an existing file unless overwrite=True -- this always
     generates a NEW starting-point database, it never merges into one.
 
-    Uses its own standalone engine/session (see _make_standalone_engine),
-    NOT qtpyvcp.lib.db_tool.base's process-global one -- safe to call from
-    anywhere, including from inside a running probe_basic GUI process that
-    already has a different tool database open; this never touches that
-    connection.
+    Uses its own standalone engine/session (see import_common.
+    new_tool_db_session), NOT qtpyvcp.lib.db_tool.base's process-global one
+    -- safe to call from anywhere, including from inside a running
+    probe_basic GUI process that already has a different tool database
+    open; this never touches that connection.
     """
-    if units not in ('inch', 'mm'):
-        raise ValueError("units must be 'inch' or 'mm', got %r" % units)
-
-    if os.path.exists(db_path):
-        if not overwrite:
-            raise FileExistsError(
-                "%s already exists -- pass overwrite=True (or --overwrite) "
-                "to replace it. This creates a new starting-point database, "
-                "it does not merge into an existing one." % db_path)
-        os.remove(db_path)
+    validate_units(units)
+    guard_overwrite(db_path, overwrite)
 
     tools = parse_tbl(tbl_path)
     if not tools:
         raise ValueError("No tools found in %s -- nothing to import" % tbl_path)
 
-    engine = _make_standalone_engine(db_path)
-    run_migrations(engine)
-
-    session = sessionmaker(bind=engine)()
-    try:
-        meta = session.query(Meta).first()
-        meta.units = units
-
+    with new_tool_db_session(db_path, units) as session:
         for tool_no, row in sorted(tools.items()):
             session.add(Tool(tool_no=tool_no, **row))
-
-        session.commit()
-    finally:
-        session.close()
-        engine.dispose()
 
     return sorted(tools.keys())
 

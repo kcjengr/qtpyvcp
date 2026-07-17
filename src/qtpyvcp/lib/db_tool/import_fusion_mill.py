@@ -30,17 +30,12 @@ Usage:
 """
 
 import argparse
-import os
 import sys
 
-from sqlalchemy.orm import sessionmaker
-
-from .import_fusion_tools import (
-    _Numbers, _make_standalone_engine, load_fusion_library,
-)
+from .import_common import guard_overwrite, new_tool_db_session, validate_units
+from .import_fusion_tools import _Numbers, load_fusion_library
 from .import_merged import _fusion_tools_by_number
-from .migrate import run_migrations
-from .tool_table import Meta, Tool
+from .tool_table import Tool
 
 
 def fusion_mill_diameter(geo, num):
@@ -59,16 +54,8 @@ def import_fusion_to_db_mill(src_path, db_path, units='inch', overwrite=False):
     refuses an existing db_path unless overwrite=True, runs on its own
     standalone engine, so it is safe to call from a running GUI process.
     """
-    if units not in ('inch', 'mm'):
-        raise ValueError("units must be 'inch' or 'mm', got %r" % units)
-
-    if os.path.exists(db_path):
-        if not overwrite:
-            raise FileExistsError(
-                "%s already exists -- pass overwrite=True (or --overwrite) "
-                "to replace it. This creates a new starting-point database, "
-                "it does not merge into an existing one." % db_path)
-        os.remove(db_path)
+    validate_units(units)
+    guard_overwrite(db_path, overwrite)
 
     skipped = []
     by_number = _fusion_tools_by_number(load_fusion_library(src_path), skipped)
@@ -76,14 +63,7 @@ def import_fusion_to_db_mill(src_path, db_path, units='inch', overwrite=False):
         raise ValueError("No usable tools found in %s -- nothing to import"
                           % src_path)
 
-    engine = _make_standalone_engine(db_path)
-    run_migrations(engine)
-
-    session = sessionmaker(bind=engine)()
-    try:
-        meta = session.query(Meta).first()
-        meta.units = units
-
+    with new_tool_db_session(db_path, units) as session:
         for tool_no in sorted(by_number):
             tool = by_number[tool_no]
             num = _Numbers(tool.get('unit'), units)
@@ -94,11 +74,6 @@ def import_fusion_to_db_mill(src_path, db_path, units='inch', overwrite=False):
                 diameter=fusion_mill_diameter(geo, num),
                 remark=str(tool.get('description') or ''),
             ))
-
-        session.commit()
-    finally:
-        session.close()
-        engine.dispose()
 
     return sorted(by_number), skipped
 

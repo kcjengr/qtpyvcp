@@ -29,17 +29,14 @@ Usage:
 """
 
 import argparse
-import os
 import sys
 
-from sqlalchemy.orm import sessionmaker
-
+from .import_common import guard_overwrite, new_tool_db_session, validate_units
 from .import_legacy_tbl import parse_tbl
-from .import_fusion_tools import _Numbers, _make_standalone_engine, load_fusion_library
+from .import_fusion_tools import _Numbers, load_fusion_library
 from .import_fusion_mill import fusion_mill_diameter
 from .import_merged import _fusion_tools_by_number
-from .migrate import run_migrations
-from .tool_table import Meta, Tool
+from .tool_table import Tool
 
 
 def import_merged_to_db_mill(tbl_path, fusion_path, db_path, units='inch',
@@ -53,16 +50,8 @@ def import_merged_to_db_mill(tbl_path, fusion_path, db_path, units='inch',
     per-tool caveats (Fusion-only tools starting with zeroed offsets/
     pocket). Same file-safety guarantees as the other importers.
     """
-    if units not in ('inch', 'mm'):
-        raise ValueError("units must be 'inch' or 'mm', got %r" % units)
-
-    if os.path.exists(db_path):
-        if not overwrite:
-            raise FileExistsError(
-                "%s already exists -- pass overwrite=True (or --overwrite) "
-                "to replace it. This creates a new starting-point database, "
-                "it does not merge into an existing one." % db_path)
-        os.remove(db_path)
+    validate_units(units)
+    guard_overwrite(db_path, overwrite)
 
     tbl_rows = parse_tbl(tbl_path)
 
@@ -111,21 +100,9 @@ def import_merged_to_db_mill(tbl_path, fusion_path, db_path, units='inch',
                           'no .tbl match -- offsets and pocket start at 0 '
                           '(set by touch-off and the tool table editor)'))
 
-    engine = _make_standalone_engine(db_path)
-    run_migrations(engine)
-
-    session = sessionmaker(bind=engine)()
-    try:
-        meta = session.query(Meta).first()
-        meta.units = units
-
+    with new_tool_db_session(db_path, units) as session:
         for tool_no in tool_numbers:
             session.add(Tool(**records[tool_no]))
-
-        session.commit()
-    finally:
-        session.close()
-        engine.dispose()
 
     return tool_numbers, notes
 
