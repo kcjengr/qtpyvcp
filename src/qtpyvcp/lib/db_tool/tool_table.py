@@ -5,7 +5,8 @@
 schema v1 (frozen 2026-07-03, see ``migrations/001_initial.sql`` -- the
 authoritative DDL; these Column definitions mirror it for ORM use, they do
 not create it. ``VisibleColumn`` is schema v2 (``migrations/
-002_ui_visible_columns.sql``). Use :func:`qtpyvcp.lib.db_tool.migrate.run_migrations`
+002_ui_visible_columns.sql``); ``ToolMill`` is schema v3 (``migrations/
+003_tool_mill.sql``). Use :func:`qtpyvcp.lib.db_tool.migrate.run_migrations`
 to create/upgrade the actual tables.
 
 ``ToolTable``/``ToolModel`` are an unrelated, currently-unused stub for a
@@ -16,7 +17,7 @@ longer carries a ``tool_table_id`` FK per schema v1).
 """
 
 from sqlalchemy import (Column, String, Integer, Table, ForeignKey, Float,
-                         Text, CheckConstraint)
+                         Text, Boolean, CheckConstraint)
 from sqlalchemy.orm import relationship
 
 from .base import Base
@@ -67,6 +68,8 @@ class Tool(Base):
 
     lathe = relationship("ToolLathe", uselist=False, back_populates="tool",
                           cascade="all, delete-orphan")
+    mill = relationship("ToolMill", uselist=False, back_populates="tool",
+                         cascade="all, delete-orphan")
     custom_values = relationship("CustomFieldValue", cascade="all, delete-orphan")
 
 
@@ -116,6 +119,22 @@ class ToolLathe(Base):
     depth_of_cut = Column(Float)
 
     notes = Column(Text, nullable=False, default='')
+
+
+class ToolMill(Base):
+    """Mill extras (schema v3): consumed by the mill UI and machine macros;
+    never sent to LinuxCNC. A tool with no row here reads as the column
+    defaults (rows appear lazily on first save)."""
+    __tablename__ = 'tool_mill'
+
+    tool_id = Column(Integer, ForeignKey('tool.id', ondelete='CASCADE'),
+                      primary_key=True)
+    tool = relationship("Tool", back_populates="mill")
+
+    # storable in the ATC carousel: False = the tool does not physically fit
+    # between carousel pockets (oversize) and the M6 remap must never
+    # auto-stow it into, or auto-fetch it from, the carousel.
+    atc = Column(Boolean, nullable=False, default=True, server_default='1')
 
 
 class CustomFieldDef(Base):

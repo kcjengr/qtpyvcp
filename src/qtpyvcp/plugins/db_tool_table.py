@@ -27,6 +27,9 @@ YAML configuration:
         provider: qtpyvcp.plugins.db_tool_table:DBToolTable
         kwargs:
           columns: TPXZDIJQR
+          extras: lathe    # which per-machine extras table this config
+                           # serves: 'lathe' (tool_lathe, the default) or
+                           # 'mill' (tool_mill, schema v3)
 """
 
 import os
@@ -40,12 +43,22 @@ from PySide6.QtCore import QTimer, Signal
 
 from qtpyvcp.lib.db_tool.base import Base, Session, configure_database, get_engine
 from qtpyvcp.lib.db_tool.tool_table import (Tool, ToolTable, ToolModel,
-                                            ToolLathe, CustomFieldDef,
+                                            ToolLathe, ToolMill,
+                                            CustomFieldDef,
                                             CustomFieldValue, VisibleColumn,
                                             Meta)
 from qtpyvcp.lib.db_tool.migrate import run_migrations
 
 CUSTOM_FIELD_VALUE_TYPES = ('float', 'int', 'text', 'bool')
+
+# Per-machine extras table this plugin instance serves ('extras' kwarg):
+# (ORM model, Tool relationship attribute). One flavor per config -- the
+# widget promoted in that config's .ui (LatheToolTable/MillToolTable) must
+# match, it renders these columns by name.
+EXTRAS_TABLES = {
+    'lathe': (ToolLathe, 'lathe'),
+    'mill': (ToolMill, 'mill'),
+}
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
@@ -298,11 +311,19 @@ class DBToolTable(DataPlugin):
     extras_changed = Signal(int)   # tool_no whose tool_lathe row changed
     fields_changed = Signal()      # a custom_field_def or *_value changed
 
-    def __init__(self, columns='TPXZDIJQR', db_file=None, **kwargs):
+    def __init__(self, columns='TPXZDIJQR', db_file=None, extras='lathe',
+                 **kwargs):
         super(DBToolTable, self).__init__()
 
         self.columns = self.validateColumns(columns) or [c for c in 'TPXZDIJQR']
         self.db_file = db_file
+        try:
+            self._extras_model, self._extras_attr = EXTRAS_TABLES[extras]
+        except KeyError:
+            raise ValueError("invalid extras %r (must be one of %s)"
+                             % (extras, ', '.join(sorted(EXTRAS_TABLES))))
+        self._EXTRAS_COLUMNS = [c.name for c in self._extras_model.__table__.columns
+                                if c.name != 'tool_id']
         self._pending_reload = False
         self._refresh_scheduled = False
 
@@ -605,32 +626,33 @@ class DBToolTable(DataPlugin):
         self.tool_changed.emit(new_tool_no)
 
     # ------------------------------------------------------------ extras
-    # (tool_lathe: consumed by the UI/VTK/conversational; never sent to
-    # LinuxCNC, so no machine-reload/interp-idle guard applies here.)
-
-    _EXTRAS_COLUMNS = [c.name for c in ToolLathe.__table__.columns
-                       if c.name != 'tool_id']
+    # (tool_lathe/tool_mill per the 'extras' kwarg: consumed by the UI/
+    # VTK/conversational/machine macros; never sent to LinuxCNC, so no
+    # machine-reload/interp-idle guard applies here.)
 
     def getToolExtras(self, tool_no):
-        """Return the tool_lathe extras dict for tool_no, or None if the
-        tool has no extras row (a bare core-only tool is valid, §4)."""
+        """Return the extras dict for tool_no, or None if the tool has no
+        extras row (a bare core-only tool is valid, §4)."""
         session = Session()
         try:
             tool = session.query(Tool).filter(
                 Tool.tool_no == int(tool_no)).one_or_none()
-            if tool is None or tool.lathe is None:
+            if tool is None:
                 return None
-            return {name: getattr(tool.lathe, name)
+            extras_row = getattr(tool, self._extras_attr)
+            if extras_row is None:
+                return None
+            return {name: getattr(extras_row, name)
                     for name in self._EXTRAS_COLUMNS}
         finally:
             session.close()
 
     def saveToolExtras(self, tool_no, extras):
-        """Upsert the tool_lathe extras row for tool_no."""
+        """Upsert the extras row for tool_no."""
         self.saveAllToolExtras({int(tool_no): extras})
 
     def saveAllToolExtras(self, extras_by_tool):
-        """Upsert tool_lathe extras rows for many tools in one transaction.
+        """Upsert extras rows for many tools in one transaction.
 
         A per-tool loop calling saveToolExtras() (one SQLAlchemy session +
         commit each) turns a single "Save" click into as many disk-sync'd
@@ -647,12 +669,14 @@ class DBToolTable(DataPlugin):
                 tool = tools.get(tool_no)
                 if tool is None:
                     raise LookupError('tool %s not in database' % tool_no)
-                if tool.lathe is None:
-                    tool.lathe = ToolLathe()
+                extras_row = getattr(tool, self._extras_attr)
+                if extras_row is None:
+                    extras_row = self._extras_model()
+                    setattr(tool, self._extras_attr, extras_row)
                 extras = extras_by_tool[tool_no]
                 for name in self._EXTRAS_COLUMNS:
                     if name in extras:
-                        setattr(tool.lathe, name, extras[name])
+                        setattr(extras_row, name, extras[name])
             session.commit()
         except Exception:
             session.rollback()
