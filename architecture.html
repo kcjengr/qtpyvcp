@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Architecture &mdash; QtPyVCP 6.0.3</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=c8077636"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stable Update Release Notes" href="update_notes_stable.html" />
+    <link rel="prev" title="Native Widgets Consolidation Plan" href="development/native_widgets_consolidation_plan.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Project Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#package-layout">Package Layout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#application-bootstrap">Application Bootstrap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plugin-system">Plugin System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#widgets">Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hal-integration">HAL Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cli-tools">CLI Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#examples-tests">Examples &amp; Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#versioning-packaging">Versioning &amp; Packaging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-guidelines">Development Guidelines</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Project Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/architecture.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="project-architecture">
+<h1>Project Architecture<a class="headerlink" href="#project-architecture" title="Link to this heading"></a></h1>
+<p>This document provides an overview of the structure and major components of the
+QtPyVCP project.  It is intended for developers who need to understand how the
+code is organised and where to make changes when extending or maintaining the
+framework.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview" id="id1">Overview</a></p></li>
+<li><p><a class="reference internal" href="#package-layout" id="id2">Package Layout</a></p>
+<ul>
+<li><p><a class="reference internal" href="#application-bootstrap" id="id3">Application Bootstrap</a></p></li>
+<li><p><a class="reference internal" href="#plugin-system" id="id4">Plugin System</a></p></li>
+<li><p><a class="reference internal" href="#widgets" id="id5">Widgets</a></p></li>
+<li><p><a class="reference internal" href="#hal-integration" id="id6">HAL Integration</a></p></li>
+<li><p><a class="reference internal" href="#cli-tools" id="id7">CLI Tools</a></p></li>
+<li><p><a class="reference internal" href="#configuration" id="id8">Configuration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#examples-tests" id="id9">Examples &amp; Tests</a></p></li>
+<li><p><a class="reference internal" href="#documentation" id="id10">Documentation</a></p></li>
+<li><p><a class="reference internal" href="#versioning-packaging" id="id11">Versioning &amp; Packaging</a></p></li>
+<li><p><a class="reference internal" href="#development-guidelines" id="id12">Development Guidelines</a></p></li>
+</ul>
+</nav>
+<section id="overview">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>QtPyVCP is a <strong>Qt and Python based Virtual Control Panel framework</strong> designed to
+be used with LinuxCNC.  The repository follows a <code class="docutils literal notranslate"><span class="pre">src/</span></code> layout with the
+Python packages under <code class="docutils literal notranslate"><span class="pre">src/</span></code> and a number of supporting directories for
+documentation, examples and packaging.</p>
+<p>Key pieces of the project include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">qtpyvcp</span></code> package containing the framework code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">examples</span></code> and <code class="docutils literal notranslate"><span class="pre">video_tests</span></code> packages providing runnable demos and tests.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs/</span></code> with Sphinx source documentation.</p></li>
+<li><p>Console scripts and plugins declared in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p></li>
+</ul>
+<p>The top-level package <code class="docutils literal notranslate"><span class="pre">qtpyvcp</span></code> is where most of the action happens; its
+subpackages can broadly be grouped as:</p>
+<ul class="simple">
+<li><p>application bootstrap and launcher (<code class="docutils literal notranslate"><span class="pre">app</span></code>)</p></li>
+<li><p>plugin system (<code class="docutils literal notranslate"><span class="pre">plugins</span></code>)</p></li>
+<li><p>Qt widgets (<code class="docutils literal notranslate"><span class="pre">widgets</span></code>)</p></li>
+<li><p>HAL integration (<code class="docutils literal notranslate"><span class="pre">hal</span></code>)</p></li>
+<li><p>Utility libraries (<code class="docutils literal notranslate"><span class="pre">utilities</span></code>, <code class="docutils literal notranslate"><span class="pre">yaml_lib</span></code>)</p></li>
+<li><p>Command–line tools (<code class="docutils literal notranslate"><span class="pre">tools</span></code>)</p></li>
+<li><p>Example VCPs (under <code class="docutils literal notranslate"><span class="pre">src/examples</span></code>)</p></li>
+</ul>
+</section>
+<section id="package-layout">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Package Layout</a><a class="headerlink" href="#package-layout" title="Link to this heading"></a></h2>
+<p>The structure beneath <code class="docutils literal notranslate"><span class="pre">src/qtpyvcp</span></code> is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>app/              # main() entrypoint and VCP launcher
+plugins/          # plugin registration and base classes
+widgets/          # custom Qt widgets used by panels
+hal/              # LinuxCNC HAL helpers
+tools/            # standalone CLI utilities
+utilities/        # miscellaneous helpers (logging, config, etc.)
+yaml_lib/         # YAML loader/formats used by the chooser
+lib/              # miscellaneous library code (db helpers, etc.)
+actions/          # legacy or specialised action modules
+vcp_chooser/      # graphical chooser implementation
+ops/              # operation definitions used by examples
+</pre></div>
+</div>
+<p>Each directory usually contains its own <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> and may define API
+classes, helpers and state.  The project uses an <code class="docutils literal notranslate"><span class="pre">examples</span></code> package to hold
+runnable VCP demos, and <code class="docutils literal notranslate"><span class="pre">video_tests</span></code> for automated GUI recording tests.</p>
+<section id="application-bootstrap">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Application Bootstrap</a><a class="headerlink" href="#application-bootstrap" title="Link to this heading"></a></h3>
+<p>The entry point for the application is <code class="docutils literal notranslate"><span class="pre">qtpyvcp.app.main</span></code> which is exposed as
+the <code class="docutils literal notranslate"><span class="pre">qtpyvcp</span></code> console script (see <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>).  The argument parser
+is generated from the module docstring.  Command‑line options are normalised via
+<code class="docutils literal notranslate"><span class="pre">qtpyvcp.utilities.opt_parser</span></code> before the VCP is launched by
+<code class="docutils literal notranslate"><span class="pre">qtpyvcp.app.launcher</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">qtpyvcp.app</span></code> also exports <code class="docutils literal notranslate"><span class="pre">run()</span></code> which is used by individual VCP
+<code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> files; this allows panels defined as Python packages to start
+the framework with a configuration object.</p>
+</section>
+<section id="plugin-system">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Plugin System</a><a class="headerlink" href="#plugin-system" title="Link to this heading"></a></h3>
+<p>Plugins form the backbone of data access and extensible behaviour.  The
+<code class="docutils literal notranslate"><span class="pre">qtpyvcp.plugins</span></code> package provides helpers to register, initialise and
+terminate plugins.  A plugin is defined as a subclass of <code class="docutils literal notranslate"><span class="pre">Plugin</span></code> (or
+<code class="docutils literal notranslate"><span class="pre">DataPlugin</span></code>) in <code class="docutils literal notranslate"><span class="pre">qtpyvcp.plugins.base_plugins</span></code>.  Useful characteristics of
+the plugin system are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">registerPlugin</span></code> and <code class="docutils literal notranslate"><span class="pre">registerPluginFromClass</span></code> allow configuration-driven
+registration (YAML spec in <code class="docutils literal notranslate"><span class="pre">qtpyvcp/utilities/config_loader.py</span></code>).</p></li>
+<li><p>Plugins are stored in an ordered dict so initialisation and termination are
+deterministic and in the opposite order.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getPlugin</span></code> returns a plugin instance or a <code class="docutils literal notranslate"><span class="pre">NullPlugin</span></code> when running in
+Qt Designer mode, supporting live widget editing.</p></li>
+<li><p>Designer-specific plugins are auto-loaded by <code class="docutils literal notranslate"><span class="pre">_initializeDesignerPlugins</span></code>
+to make the designer usable without a full LinuxCNC backend.</p></li>
+</ul>
+<p>Plugins cover functionality such as status monitors, tool tables, inputs,
+notifications, and more.  See <code class="docutils literal notranslate"><span class="pre">src/qtpyvcp/plugins</span></code> for available plugin
+classes and examples.</p>
+</section>
+<section id="widgets">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Widgets</a><a class="headerlink" href="#widgets" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">qtpyvcp.widgets</span></code> package contains custom Qt widgets grouped by their
+role, e.g. <code class="docutils literal notranslate"><span class="pre">input_widgets</span></code>, <code class="docutils literal notranslate"><span class="pre">display_widgets</span></code>, <code class="docutils literal notranslate"><span class="pre">hal_widgets</span></code>,
+<code class="docutils literal notranslate"><span class="pre">button_widgets</span></code> and others.  Many of these widgets are backed by plugins and
+are the building blocks for VCP user interfaces.  A Qt Designer plugin is also
+exported via the <code class="docutils literal notranslate"><span class="pre">pyside6.designer</span></code> entry point to enable dragging these
+widgets into <code class="docutils literal notranslate"><span class="pre">.ui</span></code> files.</p>
+</section>
+<section id="hal-integration">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">HAL Integration</a><a class="headerlink" href="#hal-integration" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">hal</span></code> package provides helpers for interacting with LinuxCNC’s HAL layer.
+Widgets or plugins that need to read or write HAL pins can use utilities from
+this package.</p>
+</section>
+<section id="cli-tools">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">CLI Tools</a><a class="headerlink" href="#cli-tools" title="Link to this heading"></a></h3>
+<p>Small command‑line utilities live in <code class="docutils literal notranslate"><span class="pre">qtpyvcp.tools</span></code>.  Each module exposes a
+<code class="docutils literal notranslate"><span class="pre">main()</span></code> function and is registered under <code class="docutils literal notranslate"><span class="pre">[tool.poetry.scripts]</span></code> in
+<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.  Examples include <code class="docutils literal notranslate"><span class="pre">qcompile</span></code> (compile <code class="docutils literal notranslate"><span class="pre">.ui</span></code> files),
+<code class="docutils literal notranslate"><span class="pre">plasma_gcode_preprocessor</span></code> and others.  Refer to the module docstrings for
+usage details.</p>
+</section>
+<section id="configuration">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Configuration</a><a class="headerlink" href="#configuration" title="Link to this heading"></a></h3>
+<p>The framework prefers YAML configuration files alongside computed defaults and
+INI-derived settings.  <code class="docutils literal notranslate"><span class="pre">qtpyvcp.utilities.config_loader</span></code> merges multiple
+sources.  A default config file path is defined in <code class="docutils literal notranslate"><span class="pre">qtpyvcp.DEFAULT_CONFIG_FILE</span></code>.</p>
+</section>
+</section>
+<section id="examples-tests">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Examples &amp; Tests</a><a class="headerlink" href="#examples-tests" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">src/examples</span></code> contains example VCPs such as <code class="docutils literal notranslate"><span class="pre">mini</span></code> and <code class="docutils literal notranslate"><span class="pre">brender</span></code>.  Each
+example package typically defines a minimal <code class="docutils literal notranslate"><span class="pre">__init__</span></code> that calls
+<code class="docutils literal notranslate"><span class="pre">qtpyvcp.app.run</span></code> after setting up configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src/video_tests</span></code> holds lightweight GUI tests used by the CI pipeline and
+for local smoke testing.  They are also available as console scripts.</p></li>
+</ul>
+</section>
+<section id="documentation">
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Documentation</a><a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<p>Sphinx documentation lives in <code class="docutils literal notranslate"><span class="pre">docs/source</span></code>.  New pages should be added under
+relevant subsections (<code class="docutils literal notranslate"><span class="pre">development/</span></code>, <code class="docutils literal notranslate"><span class="pre">widgets/</span></code>, <code class="docutils literal notranslate"><span class="pre">tools/</span></code>, etc.) and
+built with <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">-C</span> <span class="pre">docs</span> <span class="pre">html</span></code>.  The <code class="docutils literal notranslate"><span class="pre">architecture.rst</span></code> file you are
+reading is referenced from <code class="docutils literal notranslate"><span class="pre">docs/source/index.rst</span></code> when appropriate.</p>
+</section>
+<section id="versioning-packaging">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Versioning &amp; Packaging</a><a class="headerlink" href="#versioning-packaging" title="Link to this heading"></a></h2>
+<p>Version numbers are controlled by <code class="docutils literal notranslate"><span class="pre">versioneer</span></code> and
+<code class="docutils literal notranslate"><span class="pre">poetry-dynamic-versioning</span></code>.  The package metadata is in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.
+New console scripts or plugin entry points should be added there rather than
+hard‑coding them in code.</p>
+</section>
+<section id="development-guidelines">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Development Guidelines</a><a class="headerlink" href="#development-guidelines" title="Link to this heading"></a></h2>
+<p>Refer to the project-specific instructions in
+<code class="docutils literal notranslate"><span class="pre">.github/copilot-instructions.md</span></code> for conventions on editing UI files,
+registering plugins, writing tools, and running examples.</p>
+<hr class="docutils" />
+<p><em>Generated on 27 February 2026.</em></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="update_notes_stable.html" class="btn btn-neutral float-right" title="Stable Update Release Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="development/native_widgets_consolidation_plan.html" class="btn btn-neutral float-left" title="Native Widgets Consolidation Plan" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
