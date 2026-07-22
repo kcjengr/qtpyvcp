@@ -140,6 +140,6 @@ jobs:
             DEB_NAME=$(basename "$deb")
             cat "$deb" | ssh -i ~/.ssh/deploy_key -p 422 -o StrictHostKeyChecking=accept-new \
               "${APT_USER}@${APT_HOST}" \
-              "cat > /tmp/$$.deb && aptly repo add -force-replace -config=/home/buildbot/.aptly.conf trixie /tmp/$$.deb && (aptly publish update -force-overwrite -config=/home/buildbot/.aptly.conf apt/trixie || aptly publish repo -force-overwrite -config=/home/buildbot/.aptly.conf -distribution=trixie -architectures=amd64,arm64 -prefix=apt trixie) && rm /tmp/$$.deb"
+              "cat > /tmp/$$.deb && aptly repo add -force-replace -config=/home/buildbot/.aptly.conf trixie /tmp/$$.deb && (aptly publish update -force-overwrite -config=/home/buildbot/.aptly.conf apt/trixie || aptly publish repo -force-overwrite -config=/home/buildbot/.aptly.conf -distribution=trixie -architectures=amd64,arm64 trixie apt) && rm /tmp/$$.deb"
           done
           rm -f ~/.ssh/deploy_key
