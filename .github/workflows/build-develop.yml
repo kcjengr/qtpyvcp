@@ -7,7 +7,7 @@ on:
     branches: [pyside6]
   workflow_dispatch:
 
-jobs:
+jobs:z
   build:
     name: Develop .deb (${{ matrix.arch }})
     strategy:
@@ -130,6 +130,5 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           DEB_NAME=$(basename /tmp/debs/python3-qtpyvcp_*.deb)
           cat /tmp/debs/"$DEB_NAME" | ssh -i ~/.ssh/deploy_key -p 422 -o StrictHostKeyChecking=accept-new \
-            "${APT_USER}@${APT_HOST}" \
-            "cat > /tmp/$$.deb && aptly repo add -force-replace -config=/home/buildbot/.aptly.conf trixie-dev /tmp/$$.deb && (aptly publish update -config=/home/buildbot/.aptly.conf trixie-dev || aptly publish repo -config=/home/buildbot/.aptly.conf -distribution=trixie-dev -architectures=amd64,arm64 trixie-dev) && rm /tmp/$$.deb"
+            "${APT_USER}@${APT_HOST}" \            "cat > /tmp/$$.deb && aptly repo add -force-replace -config=/home/buildbot/.aptly.conf trixie-dev /tmp/$$.deb && (aptly publish update -force-overwrite -config=/home/buildbot/.aptly.conf trixie-dev || aptly publish repo -force-overwrite -config=/home/buildbot/.aptly.conf -distribution=trixie-dev -architectures=amd64,arm64 trixie-dev) && rm /tmp/$$.deb""
           rm -f ~/.ssh/deploy_key
