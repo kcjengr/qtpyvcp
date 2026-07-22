@@ -29,13 +29,14 @@ jobs:
           apt-get install -y --no-install-recommends \
             build-essential devscripts debhelper dh-python \
             pybuild-plugin-pyproject \
+            python3-pip python3-setuptools python3-poetry-core \
+            python3-poetry-dynamic-versioning \
             git ca-certificates curl gnupg
 
       - name: Install build dependencies
         run: |
           apt-get install -y --no-install-recommends \
-            python3-pip python3-setuptools python3-poetry-core \
-            python3-poetry-dynamic-versioning python3-yaml \
+            python3-yaml \
             python3-pyside6.qtcore python3-pyside6.qtdbus \
             python3-pyside6.qtdesigner python3-pyside6.qtopengl \
             python3-pyside6.qtwidgets python3-pyside6.qtmultimedia \
