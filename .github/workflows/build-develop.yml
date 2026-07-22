@@ -126,7 +126,7 @@ jobs:
           APT_HOST: ${{ secrets.APT_HOST }}
         run: |
           mkdir -p ~/.ssh
-          echo "$APT_SSH_KEY" > ~/.ssh/deploy_key
+          printf '%s\n' "$APT_SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           DEB_NAME=$(basename /tmp/debs/python3-qtpyvcp_*.deb)
           cat /tmp/debs/"$DEB_NAME" | ssh -i ~/.ssh/deploy_key -p 422 -o StrictHostKeyChecking=accept-new \
