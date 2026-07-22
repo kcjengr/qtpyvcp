@@ -1,0 +1,110 @@
+name: Build Release .deb
+
+on:
+  push:
+    tags: ['*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Release .deb (${{ matrix.arch }})
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+        include:
+          - arch: amd64
+            runs-on: ubuntu-latest
+          - arch: arm64
+            runs-on: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runs-on }}
+    container:
+      image: debian:trixie-slim
+
+    steps:
+      - name: Install system dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            build-essential devscripts git ca-certificates curl gnupg \
+            dh-python pybuild-plugin-pyproject debhelper \
+            python3-pip python3-setuptools python3-poetry-core \
+            python3-poetry-dynamic-versioning python3-yaml \
+            python3-pyside6.qtcore python3-pyside6.qtdbus \
+            python3-pyside6.qtdesigner python3-pyside6.qtopengl \
+            python3-pyside6.qtwidgets python3-pyside6.qtmultimedia \
+            python3-pyside6.qtquick python3-pyside6.qtuitools \
+            python3-pyside6.qsci python3-pyqt5.qsci \
+            pyside6-tools python3-qtpy \
+            python3-six python3-docopt python3-pyudev \
+            python3-psutil python3-markupsafe python3-opengl \
+            python3-vtk9 python3-pyqtgraph python3-simpleeval \
+            python3-jinja2 python3-deepdiff python3-sqlalchemy \
+            python3-serial python3-distro \
+            gstreamer1.0-plugins-bad libqt5multimedia5-plugins \
+            qt6-base-dev-tools qt6-base-dev qt6-tools-dev \
+            cmake pybind11-dev || true
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Mark repo as safe for git
+        run: |
+          git config --system --add safe.directory "$GITHUB_WORKSPACE"
+          git config --system --add safe.directory /__w/qtpyvcp/qtpyvcp
+
+      - name: Set release version
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          export DEBFULLNAME="Kcjengr" DEBEMAIL="kcjengr@gmail.com"
+          TAG_VERSION="${GITHUB_REF#refs/tags/}"
+          TAG_VERSION="${TAG_VERSION#v}"
+          if [ ! -f debian/changelog ]; then
+            dch --create --package qtpyvcp -v "${TAG_VERSION}" \
+              --distribution unstable "Release ${TAG_VERSION}"
+          else
+            dch --newversion "${TAG_VERSION}" \
+              --distribution unstable "Release ${TAG_VERSION}"
+          fi
+
+      - name: Build .deb package
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          dpkg-buildpackage -b -us -uc -d
+          mkdir -p /tmp/debs
+          mv ../*.deb /tmp/debs/
+
+      - name: Show built packages
+        run: |
+          ls -la /tmp/debs/
+          dpkg --info /tmp/debs/*.deb
+
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qtpyvcp-release-${{ matrix.arch }}
+          path: /tmp/debs/*.deb
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all .deb artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: qtpyvcp-release-*
+          path: debs
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref }}
+          files: debs/*.deb
+          generate_release_notes: true
