@@ -31,6 +31,8 @@ jobs:
             pybuild-plugin-pyproject \
             python3-pip python3-setuptools python3-poetry-core \
             python3-poetry-dynamic-versioning \
+            pyside6-tools cmake \
+            qt6-base-dev-tools qt6-base-dev qt6-tools-dev pybind11-dev \
             git ca-certificates curl gnupg
 
       - name: Install build dependencies
@@ -42,15 +44,13 @@ jobs:
             python3-pyside6.qtwidgets python3-pyside6.qtmultimedia \
             python3-pyside6.qtquick python3-pyside6.qtuitools \
             python3-pyside6.qsci python3-pyqt5.qsci \
-            pyside6-tools python3-qtpy \
+            python3-qtpy \
             python3-six python3-docopt python3-pyudev \
             python3-psutil python3-markupsafe python3-opengl \
             python3-vtk9 python3-pyqtgraph python3-simpleeval \
             python3-jinja2 python3-deepdiff python3-sqlalchemy \
             python3-serial python3-distro \
-            gstreamer1.0-plugins-bad libqt5multimedia5-plugins \
-            qt6-base-dev-tools qt6-base-dev qt6-tools-dev \
-            cmake pybind11-dev || true
+            gstreamer1.0-plugins-bad libqt5multimedia5-plugins || true
 
       - name: Checkout
         uses: actions/checkout@v4
