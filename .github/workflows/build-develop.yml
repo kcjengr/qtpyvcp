@@ -131,5 +131,5 @@ jobs:
           DEB_NAME=$(basename /tmp/debs/python3-qtpyvcp_*.deb)
           cat /tmp/debs/"$DEB_NAME" | ssh -i ~/.ssh/deploy_key -p 422 -o StrictHostKeyChecking=accept-new \
             "${APT_USER}@${APT_HOST}" \
-            "cat > /tmp/$$.deb && aptly repo add -force-replace -config=/home/buildbot/.aptly.conf trixie-dev /tmp/$$.deb && (aptly publish update -force-overwrite -config=/home/buildbot/.aptly.conf apt/trixie-dev || aptly publish repo -force-overwrite -config=/home/buildbot/.aptly.conf -distribution=trixie-dev -architectures=amd64,arm64 trixie-dev apt) && rm /tmp/$$.deb"
+            "cat > /tmp/$$.deb && aptly repo add -force-replace -config=/home/buildbot/.aptly.conf trixie-dev /tmp/$$.deb && (aptly publish update -force-overwrite -config=/home/buildbot/.aptly.conf trixie-dev apt || aptly publish repo -force-overwrite -config=/home/buildbot/.aptly.conf -distribution=trixie-dev -architectures=amd64,arm64 trixie-dev apt) && rm /tmp/$$.deb"
           rm -f ~/.ssh/deploy_key
