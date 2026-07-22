@@ -107,7 +107,10 @@ jobs:
       - name: Show built packages
         run: |
           ls -la /tmp/debs/
-          dpkg --info /tmp/debs/*.deb
+          for deb in /tmp/debs/*.deb; do
+            echo "--- $deb ---"
+            dpkg --info "$deb"
+          done
 
       - name: Upload .deb artifact
         uses: actions/upload-artifact@v4
@@ -115,3 +118,15 @@ jobs:
           name: qtpyvcp-develop-${{ matrix.arch }}
           path: /tmp/debs/*.deb
           retention-days: 7
+
+      - name: Setup SSH for apt deployment
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.APT_SSH_KEY }}
+
+      - name: Upload to apt repo
+        run: |
+          DEB_NAME=$(basename /tmp/debs/python3-qtpyvcp_*.deb)
+          cat /tmp/debs/"$DEB_NAME" | ssh -p 422 -o StrictHostKeyChecking=accept-new \
+            ${{ secrets.APT_USER }}@${{ secrets.APT_HOST }} \
+            "cat > /tmp/$$.deb && aptly repo add -force-replace -config=/home/buildbot/.aptly.conf trixie-dev /tmp/$$.deb && (aptly publish update -config=/home/buildbot/.aptly.conf trixie-dev || aptly publish repo -config=/home/buildbot/.aptly.conf -distribution=trixie-dev -architectures=amd64,arm64 trixie-dev) && rm /tmp/$$.deb"
