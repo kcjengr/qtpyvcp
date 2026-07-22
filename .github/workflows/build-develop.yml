@@ -128,6 +128,8 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "$APT_SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          echo "Key format check:"
+          head -n 1 ~/.ssh/deploy_key
           DEB_NAME=$(basename /tmp/debs/python3-qtpyvcp_*.deb)
           cat /tmp/debs/"$DEB_NAME" | ssh -i ~/.ssh/deploy_key -p 422 -o StrictHostKeyChecking=accept-new \
             "${APT_USER}@${APT_HOST}" \
