@@ -61,6 +61,15 @@ jobs:
           git config --system --add safe.directory "$GITHUB_WORKSPACE"
           git config --system --add safe.directory /__w/qtpyvcp/qtpyvcp
 
+      - name: Clean stale native artifacts
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          if [ "${{ matrix.arch }}" = "arm64" ]; then
+            find src/qtpyvcp/native -type f \( -name '*x86_64-linux-gnu.so' -o -name '*amd64*.so' \) -delete || true
+          elif [ "${{ matrix.arch }}" = "amd64" ]; then
+            find src/qtpyvcp/native -type f \( -name '*aarch64-linux-gnu.so' -o -name '*arm64*.so' \) -delete || true
+          fi
+
       - name: Set release version
         run: |
           cd "$GITHUB_WORKSPACE"
