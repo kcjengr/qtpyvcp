@@ -33,7 +33,7 @@ jobs:
             python3-poetry-dynamic-versioning \
             pyside6-tools cmake \
             qt6-base-dev-tools qt6-base-dev qt6-tools-dev pybind11-dev \
-            git ca-certificates curl gnupg
+            git ca-certificates curl gnupg openssh-client
 
       - name: Install build dependencies
         run: |
