@@ -594,6 +594,54 @@ class ToolTableEditorModel(QStandardItemModel):
         self.endRemoveRows()
         return True
 
+    def duplicateTool(self, row):
+        """Copy one tool -- core, extras, and custom data alike, since
+        `row` here is already the flattened dict _load_full_table builds --
+        into the first unused tool number: fills a gap left by a deleted
+        tool (e.g. deleting T3 out of 1,2,3,4 means the next duplicate
+        reuses 3) rather than only ever growing past the current max, the
+        way addTool()'s max+1 does. Same in-memory staging as addTool():
+        the new row exists only in _tool_table until the next Save.
+
+        Pocket resets to -1 (unassigned) rather than copying the source's:
+        silently cloning a turret/carousel pocket assignment would leave two
+        tools claiming the same physical slot, a real ATC collision risk,
+        not just a cosmetic default worth preserving.
+
+        Returns the new tool number, or None if the table is already full.
+        """
+        if len(self._tool_table) - 1 >= 1000:
+            return None  # max 1000 tools, matches addTool's limit
+
+        tnum = self._tool_no_for_row(row)
+        new_tnum = 1
+        while new_tnum in self._tool_table:
+            new_tnum += 1
+
+        new_row = dict(self._tool_table[tnum])
+        new_row['T'] = new_tnum
+        new_row['P'] = -1
+
+        # Rows display in tool-number sorted order (_tool_no_for_row), not
+        # insertion order -- a gap-filled tool number can land in the
+        # middle of the table, not just at the end, so the insertion index
+        # Qt is told about has to reflect where it will actually sort to.
+        new_row_index = self.rowForToolNumber(new_tnum, _pending_insert=True)
+
+        self.beginInsertRows(QModelIndex(), new_row_index, new_row_index)
+        self._tool_table[new_tnum] = new_row
+        self.endInsertRows()
+        self._set_dirty(True)
+        return new_tnum
+
+    def rowForToolNumber(self, tnum, _pending_insert=False):
+        """Inverse of _tool_no_for_row: which row `tnum` occupies (or will
+        occupy, if `_pending_insert` -- tnum isn't in _tool_table yet)."""
+        keys = list(self._tool_table)
+        if _pending_insert:
+            keys = keys + [tnum]
+        return sorted(keys).index(tnum) - self.row_offset
+
     def renumberTool(self, row, new_tool_no):
         """Commits immediately (unlike core-column edits, which stage in
         memory until Save) -- the DB backend makes this a single UPDATE
@@ -1151,8 +1199,13 @@ class ToolTableEditor(QTableView):
         if not index.isValid():
             return
         menu = QMenu(self)
+        duplicate_action = menu.addAction('Duplicate Tool')
         params_action = menu.addAction('Parameter Names (G-code / Rules)...')
-        if menu.exec(self.viewport().mapToGlobal(position)) is params_action:
+        chosen = menu.exec(self.viewport().mapToGlobal(position))
+        if chosen is duplicate_action:
+            self.selectRow(index.row())
+            self.duplicateSelectedTool()
+        elif chosen is params_action:
             source = self.proxy_model.mapToSource(index)
             self._showParameterNamesDialog(
                 source.row(),
@@ -1266,6 +1319,41 @@ class ToolTableEditor(QTableView):
             self.tool_model.renumberTool(current_row, new_tnum)
         except (LookupError, ValueError) as exc:
             QMessageBox.warning(self, 'Renumber Tool', str(exc))
+
+    @Slot()
+    def duplicateSelectedTool(self):
+        """Copy the selected tool -- core, extras, and custom data alike --
+        into the first unused tool number, staged the same as addTool() (a
+        Save commits it). Available from the row right-click menu; also
+        exposed as a plain slot so a VCP can wire a toolbar button to it in
+        Designer, same as addTool/deleteSelectedTool/renumberSelectedTool.
+
+        Uses selectedRow() the same (proxy-row-as-source-row) way
+        deleteSelectedTool/renumberSelectedTool already do -- see those for
+        the caveat about self.model() actually being the sorting proxy."""
+        current_row = self.selectedRow()
+        if current_row == -1:
+            return
+
+        new_tnum = self.tool_model.duplicateTool(current_row)
+        if new_tnum is None:
+            QMessageBox.warning(self, 'Duplicate Tool',
+                                'Tool table is full (1000 tools max).')
+            return
+
+        # A gap-filled tool number can land anywhere in the sorted table,
+        # not just at the end -- resolve its actual row and make sure it's
+        # both selected and scrolled into view rather than assuming it's
+        # the last one. scrollTo() needs a real QModelIndex; take Qt's own
+        # (selectionModel().currentIndex(), just set by selectRow() above)
+        # rather than building one by hand -- this model's data()/flags()/
+        # etc. are all overridden to read _tool_table directly, with no
+        # backing QStandardItem objects, so a manually-constructed
+        # index(row, col) is not guaranteed to come back valid.
+        new_row = self.tool_model.rowForToolNumber(new_tnum)
+        self.selectRow(new_row)
+        self.scrollTo(self.selectionModel().currentIndex(),
+                      QAbstractItemView.ScrollHint.EnsureVisible)
 
     @Slot()
     def selectPrevious(self):
