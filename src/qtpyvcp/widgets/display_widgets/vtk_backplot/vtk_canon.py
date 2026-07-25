@@ -177,34 +177,29 @@ class VTKCanon(StatCanon):
         return float(default)
 
     def _program_to_machine_length_factor(self):
-        # Convert parsed program coordinates into configured machine units.
-        # Avoid deriving from machine units alone: G20/G21 can change per file.
+        # Convert parsed preview coordinates into configured machine units.
+        #
+        # gcode.parse() ALWAYS hands the Python canon INCHES, whatever the
+        # program's own G20/G21 mode is: LinuxCNC's preview canon
+        # (src/emc/rs274ngc/gcodemodule.cc) divides every linear coordinate
+        # by 25.4 in STRAIGHT_FEED/STRAIGHT_TRAVERSE/ARC_FEED/... whenever
+        # USE_LENGTH_UNITS() has put it in metric mode, so a G21 program's
+        # mm values arrive here already converted to inches, and a G20
+        # program's inch values arrive unconverted -- inches either way.
+        # (Verified empirically against the real interpreter, not inferred:
+        # a 64mm G21 target and an equivalent 2.519685in G20 target both
+        # arrive as 2.519685. get_external_length_units() does not affect
+        # this either -- it feeds arc-chord tolerance, not coordinates.)
+        #
+        # So this factor depends ONLY on the machine's units: inches ->
+        # machine units. Deriving it from the program's G20/G21 (what this
+        # did before) silently produced 1.0 for a metric machine running a
+        # metric program -- leaving the whole backplot 25.4x too small
+        # while the DRO, tool and crosshairs (which never route through the
+        # preview canon) stayed correct. It only ever looked right because
+        # inch programs happen to yield the correct factor by coincidence.
         machine_is_metric = bool(self._datasource.isMachineMetric())
-
-        program_units = self._preview_program_units
-        if program_units is None:
-            # Fallback to status string when preview state isn't available yet.
-            units_text = str(self._datasource.getProgramUnits() or '').strip().lower()
-            if units_text in ('in', 'inch', 'inches'):
-                program_units = 1
-            elif units_text in ('mm', 'metric', 'millimeter', 'millimeters'):
-                program_units = 2
-            elif units_text in ('cm', 'centimeter', 'centimeters'):
-                program_units = 3
-
-        # program_units -> mm
-        if program_units == 1:
-            to_mm = 25.4
-        elif program_units == 3:
-            to_mm = 10.0
-        else:
-            to_mm = 1.0
-
-        # mm -> machine units
-        if machine_is_metric:
-            factor = float(to_mm)
-        else:
-            factor = float(to_mm / 25.4)
+        factor = 25.4 if machine_is_metric else 1.0
 
         fallback_program_units = str(self._datasource.getProgramUnits() or '').strip().lower()
         log_key = (
