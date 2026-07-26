@@ -78,3 +78,19 @@ Updating
 
         sudo apt update
         sudo apt upgrade
+
+
+Uninstall
+^^^^^^^^^
+
+    To completely remove QtPyVCP and all VCPs (Probe Basic, TurboNC,
+    MonoKrom), along with the APT repository and its signing key, run:
+
+    .. code-block:: bash
+
+        curl -fsSL https://repository.qtpyvcp.com/uninstall.sh | sudo sh
+
+    This works even if ``apt update`` is currently failing. It removes only
+    this repository's packages, sources and keys -- other repositories on
+    your machine, and your LinuxCNC configs in ``~/linuxcnc``, are left
+    untouched.
