@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Debian 11 (Bullseye) install for Python 3 &mdash; QtPyVCP 6.0.3</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+  <title>Debian 11 (Bullseye) install for Python 3 &mdash; QtPyVCP 0.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=c8077636"></script>
+      <script src="../_static/documentation_options.js?v=32bbf270"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
@@ -61,14 +61,20 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
 <ul>
@@ -76,6 +82,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
 <ul>
@@ -120,6 +127,28 @@
              
   <section id="debian-11-bullseye-install-for-python-3">
 <h1>Debian 11 (Bullseye) install for Python 3<a class="headerlink" href="#debian-11-bullseye-install-for-python-3" title="Link to this heading"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Seeing a “Missing key” error? Fix it here first.</strong></p>
+<p>Older versions of these instructions installed the wrong signing key.
+If <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">update</span></code> shows a line like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Missing</span> <span class="n">key</span> <span class="mi">50</span><span class="n">F874571F20C5B0BA225E2F0CDFCCE0388CFA48</span><span class="p">,</span> <span class="n">which</span> <span class="ow">is</span> <span class="n">needed</span> <span class="n">to</span> <span class="n">verify</span> <span class="n">signature</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><strong>Step 1 - copy this, paste it into a terminal, press Enter:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://repository.qtpyvcp.com/uninstall.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sh
+</pre></div>
+</div>
+<p>This removes the old repository and its keys. It does not touch any
+other software on your machine, and your LinuxCNC configs in
+<code class="docutils literal notranslate"><span class="pre">~/linuxcnc</span></code> are left alone.</p>
+<p><strong>Step 2 - check that it worked:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</pre></div>
+</div>
+<p>The “Missing key” message should be gone.</p>
+<p><strong>Step 3 - carry on with the normal installation below.</strong></p>
+</div>
 <p>This installation method should be used if you want to run the latest
 version of <cite>QtPyVCP</cite> under Python 3 and LinuxCNC 2.9pre.</p>
 <p>This type of installation is editable, meaning you can make changes to

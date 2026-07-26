@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Install from apt repository &mdash; QtPyVCP 6.0.3</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+  <title>Install from apt repository &mdash; QtPyVCP 0.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=c8077636"></script>
+      <script src="../_static/documentation_options.js?v=32bbf270"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
@@ -61,14 +61,20 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
 <ul>
@@ -76,6 +82,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
 <ul>
@@ -120,70 +127,114 @@
              
   <section id="install-from-apt-repository">
 <h1>Install from apt repository<a class="headerlink" href="#install-from-apt-repository" title="Link to this heading"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Seeing a “Missing key” error? Fix it here first.</strong></p>
+<p>Older versions of these instructions installed the wrong signing key.
+If <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">update</span></code> shows a line like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Missing</span> <span class="n">key</span> <span class="mi">50</span><span class="n">F874571F20C5B0BA225E2F0CDFCCE0388CFA48</span><span class="p">,</span> <span class="n">which</span> <span class="ow">is</span> <span class="n">needed</span> <span class="n">to</span> <span class="n">verify</span> <span class="n">signature</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><strong>Step 1 - copy this, paste it into a terminal, press Enter:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://repository.qtpyvcp.com/uninstall.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sh
+</pre></div>
+</div>
+<p>This removes the old repository and its keys. It does not touch any
+other software on your machine, and your LinuxCNC configs in
+<code class="docutils literal notranslate"><span class="pre">~/linuxcnc</span></code> are left alone.</p>
+<p><strong>Step 2 - check that it worked:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</pre></div>
+</div>
+<p>The “Missing key” message should be gone.</p>
+<p><strong>Step 3 - carry on with the normal installation below.</strong></p>
+</div>
 <section id="update-the-system">
 <h2>Update the System<a class="headerlink" href="#update-the-system" title="Link to this heading"></a></h2>
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
-
-
 sudo<span class="w"> </span>apt<span class="w"> </span>upgrade
 </pre></div>
 </div>
 </div></blockquote>
 </section>
-<section id="add-the-apt-repository-for-the-installation-type">
-<h2>Add the APT Repository for the Installation type<a class="headerlink" href="#add-the-apt-repository-for-the-installation-type" title="Link to this heading"></a></h2>
+<section id="add-the-apt-repository">
+<h2>Add the APT Repository<a class="headerlink" href="#add-the-apt-repository" title="Link to this heading"></a></h2>
 <blockquote>
-<div><p><strong>AMD64 for PC Installation Repository:</strong></p>
+<div><p>Run the following command. It detects your Debian release (Bookworm or
+Trixie) and your architecture (AMD64 or ARM64) and configures the
+correct repository and signing key for you:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://repository.qtpyvcp.com/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sh
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not add the repository by hand. Adding the wrong suite for your
+Debian release installs packages built for the wrong Qt version,
+and putting the signing key in the wrong place causes
+<code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">update</span></code> to fail with a “Missing key” error.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">update</span></code> already reports:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Missing</span> <span class="n">key</span> <span class="mi">50</span><span class="n">F874571F20C5B0BA225E2F0CDFCCE0388CFA48</span><span class="p">,</span> <span class="n">which</span> <span class="ow">is</span> <span class="n">needed</span> <span class="n">to</span> <span class="n">verify</span> <span class="n">signature</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>your machine has an old or incomplete repository configuration.
+Clear it out first, then run the install command above:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://repository.qtpyvcp.com/uninstall.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sh
+</pre></div>
+</div>
+<p>This removes only this repository’s configuration, keys and
+packages. Other repositories on your machine and your LinuxCNC
+configs in <code class="docutils literal notranslate"><span class="pre">~/linuxcnc</span></code> are left untouched.</p>
+</div>
+</div></blockquote>
+</section>
+<section id="install-qtpyvcp">
+<h2>Install QtPyVCP<a class="headerlink" href="#install-qtpyvcp" title="Link to this heading"></a></h2>
 <blockquote>
-<div><p>Run the following commands in the main terminal one at a time:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>curl
-
-
-<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;deb [arch=amd64] https://repository.qtpyvcp.com/apt stable main&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/kcjengr.list
-
-
-curl<span class="w"> </span>-sS<span class="w"> </span>https://repository.qtpyvcp.com/repo/kcjengr.key<span class="w"> </span><span class="p">|</span><span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/trusted.gpg.d/kcjengr.gpg
-
-
-gpg<span class="w"> </span>--keyserver<span class="w"> </span>keys.openpgp.org<span class="w"> </span>--recv-key<span class="w"> </span>2DEC041F290DF85A
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-qtpyvcp
 </pre></div>
 </div>
 </div></blockquote>
-<p><strong>NEW - ARM64 Raspberry Pi 4 and 5 Installation Repository:</strong></p>
+</section>
+<section id="install-a-vcp">
+<h2>Install a VCP<a class="headerlink" href="#install-a-vcp" title="Link to this heading"></a></h2>
 <blockquote>
-<div><p>Run the following commands in the main terminal one at a time:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>curl
-
-
-<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;deb [arch=arm64] https://repository.qtpyvcp.com/apt stable main&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/kcjengr.list
-
-
-curl<span class="w"> </span>-sS<span class="w"> </span>https://repository.qtpyvcp.com/repo/kcjengr.key<span class="w"> </span><span class="p">|</span><span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/trusted.gpg.d/kcjengr.gpg
-
-
-gpg<span class="w"> </span>--keyserver<span class="w"> </span>keys.openpgp.org<span class="w"> </span>--recv-key<span class="w"> </span>2DEC041F290DF85A
+<div><p>There are three VCPs in the repository. They all come from the same
+repository you just added, so no extra setup is needed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-probe-basic
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-monokrom
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-turbonc
 </pre></div>
 </div>
 </div></blockquote>
+</section>
+<section id="updating">
+<h2>Updating<a class="headerlink" href="#updating" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>QtPyVCP and the VCPs update through normal APT upgrades:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>upgrade
+</pre></div>
+</div>
 </div></blockquote>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</section>
+<section id="uninstall">
+<h2>Uninstall<a class="headerlink" href="#uninstall" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>To completely remove QtPyVCP and all VCPs (Probe Basic, TurboNC,
+MonoKrom), along with the APT repository and its signing key, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://repository.qtpyvcp.com/uninstall.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sh
 </pre></div>
 </div>
-<p>Install qtpyvcp</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-qtpyvcp
-</pre></div>
-</div>
-<p>Install some vcps, for now there are 3 in the repository</p>
-<p>Probe Basic
-Monokrom
-Turbonc</p>
-<p>to install them just run</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-probe-basic
-$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-monokrom
-$<span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>python3-turbonc
-</pre></div>
-</div>
+<p>This works even if <code class="docutils literal notranslate"><span class="pre">apt</span> <span class="pre">update</span></code> is currently failing. It removes only
+this repository’s packages, sources and keys – other repositories on
+your machine, and your LinuxCNC configs in <code class="docutils literal notranslate"><span class="pre">~/linuxcnc</span></code>, are left
+untouched.</p>
+</div></blockquote>
 </section>
 </section>
 
