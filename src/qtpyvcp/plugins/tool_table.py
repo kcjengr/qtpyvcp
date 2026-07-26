@@ -339,7 +339,7 @@ class ToolTable(DataPlugin):
         else:
             # build tool table from linxcnc status object
             table = {0: NO_TOOL,}
-            lcnc_tools = STAT.tool_table
+            lcnc_tools = STATUS.tool_table
             for tool in lcnc_tools:
                 if int(tool.id) != -1:
                     newtool = DEFAULT_TOOL.copy()
