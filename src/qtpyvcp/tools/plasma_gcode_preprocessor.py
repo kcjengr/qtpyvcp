@@ -1352,7 +1352,7 @@ class PreProcessor:
         # leadin_feed_percent = hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
         leadin_radius = hal.get_value('qtpyvcp.plasma-leadin-radius.out')
         
-        kerf_width = hal.get_value('qtpyvcp.param-kirfwidth.out')
+        kerf_width = hal.get_value('qtpyvcp.param-kerfwidth.out')
         hole_kerf = hal.get_value('qtpyvcp.plasma-hole-kerf.out')
         if hole_kerf != 0:
             kerf_width = hole_kerf
