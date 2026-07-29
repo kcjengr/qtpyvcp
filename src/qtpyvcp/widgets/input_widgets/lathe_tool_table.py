@@ -142,6 +142,32 @@ class LatheToolModel(ToolTableEditorModel):
     TRAILING_CORE_COLUMNS = ()
     DESIGNER_STUB_COLUMNS = ['T', 'P', 'X', 'Z', 'D', 'I', 'J', 'Q', 'R']
 
+    # Shading rules -- REQUIRED_BY_TYPE / USED_BY_TYPE / REQUIRED_ALWAYS
+    # and the internal-vs-external rule-key split -- are deliberately NOT
+    # defined here. They encode which fields a *consumer* of the tool data
+    # reads: a conversational addon's G-code builders and its collision
+    # checks. This module cannot verify any of that, and a second copy of
+    # rules that live somewhere else is a copy that drifts -- it did, twice,
+    # in a single afternoon.
+    #
+    # The owner registers them instead:
+    #
+    #     LatheToolModel.registerRules(required_by_type=..., used_by_type=...,
+    #                                  required_always=..., rule_key=...)
+    #
+    # Nothing registered means no shading, which is the correct behaviour for
+    # a VCP with no such consumer -- see ToolTableEditorModel.registerRules().
+    #
+    # REQUIREMENT_KEY stays here: which column selects a rule set is a fact
+    # about this schema, not about any consumer of it.
+    REQUIREMENT_KEY = 'type'
+
+    # Dead for every tool type -- the same list the default column layout
+    # leaves hidden. Tinted whenever they hold a value. A property of the
+    # lathe extras schema rather than of any one consumer, so it keeps its
+    # default here; registerRules() can still override it.
+    UNUSED_COLUMNS = frozenset(REFERENCE_ONLY_EXTRAS)
+
     def openVocabOptionsFor(self, key, row_data):
         tool_type = row_data.get('type')
         if key == 'insert_shape':

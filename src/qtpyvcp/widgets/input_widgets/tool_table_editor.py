@@ -31,7 +31,7 @@ with a different widget class promoted:
 
 from PySide6.QtCore import (Qt, Slot, Signal, Property, QModelIndex, QTimer,
                             QSortFilterProxyModel)
-from PySide6.QtGui import QStandardItemModel, QColor, QBrush
+from PySide6.QtGui import QStandardItemModel, QColor, QBrush, QValidator
 from PySide6.QtWidgets import (QTableView, QHeaderView, QAbstractItemView,
                                QStyledItemDelegate, QDoubleSpinBox, QSpinBox,
                                QLineEdit, QComboBox, QMessageBox, QMenu,
@@ -108,6 +108,44 @@ class ToolTableEditorModel(QStandardItemModel):
     STRICT_ENUM_OPTIONS = {}                 # DB CHECK-constrained: non-editable pick-lists
     OPEN_VOCAB_SEED_OPTIONS = frozenset()    # editable combo; see openVocabOptionsFor()
     EXTRAS_GROUP_LABEL = 'Extras'            # header-menu section title
+    # Columns that must be filled in, keyed by the value of REQUIREMENT_KEY
+    # for that row. Cells that are required and still empty are shaded, so
+    # a part-filled tool is visible at a glance instead of only surfacing
+    # later when something refuses to run. Empty here: a machine flavor
+    # that has no such rules simply gets no shading.
+    REQUIRED_BY_TYPE = {}
+    REQUIREMENT_KEY = None                   # column whose value selects the rule set
+    # Columns required on every tool whatever its type -- core fields, which
+    # REQUIRED_BY_TYPE does not cover. Text columns only: a numeric core
+    # field like D or Q can legitimately hold 0 (a sharp tool, an axial
+    # drill), and the blank test here treats 0 as unset.
+    REQUIRED_ALWAYS = ()
+    # Shading for a required-but-empty cell -- amber: an unfinished row is a
+    # to-do, not an error. A class attribute, and an RGB tuple rather than a
+    # QColor, so it exists on every construction path (the real one and
+    # Designer's stub) without depending on __init__ order or a live
+    # QApplication. data() is called from C++, where a missing attribute
+    # segfaults instead of raising.
+    REQUIRED_EMPTY_BG = (255, 214, 102)
+    # Every column this tool type's geometry is built from, keyed the same
+    # way as REQUIRED_BY_TYPE. Wider than "required": it also covers fields
+    # that are read when present but tolerated blank.
+    #
+    # A cell holding a value whose column is NOT in its type's set is tinted
+    # -- the value came in on an import and nothing consumes it for a tool
+    # of this type. Tinted rather than blanked, so it is clear the data is
+    # still there. Columns nothing reads for *any* type go in
+    # UNUSED_COLUMNS and are tinted regardless of type.
+    #
+    # Deliberately low contrast -- a shade or two above the alternating
+    # row backgrounds (roughly 120,120,120 and 90,90,90), against normal
+    # text at ~244. The value stays legible if you look for it, but recedes
+    # rather than competing with the data that actually drives something.
+    # Class attributes and RGB tuples, as data() is called from C++ where a
+    # missing attribute segfaults.
+    USED_BY_TYPE = {}
+    UNUSED_COLUMNS = frozenset()
+    UNUSED_TEXT_COLOR = (150, 150, 150)
     # Core columns forced to render AFTER extras/custom instead of in their
     # normal core position -- e.g. a wide free-text Remark column, so
     # machine extras sit between the numeric offsets and it. Empty by
@@ -365,6 +403,64 @@ class ToolTableEditorModel(QStandardItemModel):
             return self._extras_labels[key]
         return self._custom_labels.get(key, key)
 
+    # Optional callable(row_data, base_key) -> rule key, supplied through
+    # registerRules(). See rowRuleKey().
+    RULE_KEY_HOOK = None
+
+    @classmethod
+    def registerRules(cls, required_by_type=None, used_by_type=None,
+                      required_always=None, unused_columns=None,
+                      rule_key=None):
+        """Publish the tool-data rules this table should shade against.
+
+        The table knows *how* to shade a cell; it does not know which cells
+        matter. That is a fact about whatever consumes the tool data -- a
+        conversational addon's G-code builders and collision checks, say --
+        so the consumer registers it here rather than this module carrying
+        a copy of rules it cannot verify.
+
+        Everything is optional and anything omitted is left as-is. Register
+        nothing and the table simply does not shade: `_is_required_and_empty`
+        and `_is_unused_value` both no-op on empty rules, so a VCP with no
+        such consumer gets a plain tool table with no extra code path.
+
+        Args:
+            required_by_type: {rule key: (column, ...)} that must be filled.
+            used_by_type: {rule key: (column, ...)} the tool's geometry is
+                built from -- wider than required; anything outside its
+                type's set is greyed as "present but not read".
+            required_always: (column, ...) required whatever the type.
+            unused_columns: columns no rule set ever reads.
+            rule_key: callable(row_data, base_key) -> key, for when the type
+                alone is too coarse to pick a rule set.
+        """
+        if required_by_type is not None:
+            cls.REQUIRED_BY_TYPE = dict(required_by_type)
+        if used_by_type is not None:
+            cls.USED_BY_TYPE = dict(used_by_type)
+        if required_always is not None:
+            cls.REQUIRED_ALWAYS = tuple(required_always)
+        if unused_columns is not None:
+            cls.UNUSED_COLUMNS = frozenset(unused_columns)
+        if rule_key is not None:
+            cls.RULE_KEY_HOOK = staticmethod(rule_key)
+
+    def rowRuleKey(self, row_data):
+        """Which entry of USED_BY_TYPE / REQUIRED_BY_TYPE applies to a row.
+
+        Defaults to REQUIREMENT_KEY's value, refined by RULE_KEY_HOOK when
+        one is registered -- the type alone is sometimes too coarse. An
+        internal and an external grooving tool are both type 'grooving',
+        but they read different holder dimensions, and only the holder
+        style says which is which.
+        """
+        if not self.REQUIREMENT_KEY:
+            return ''
+        key = str(row_data.get(self.REQUIREMENT_KEY) or '').strip().lower()
+        if self.RULE_KEY_HOOK is not None:
+            return self.RULE_KEY_HOOK(row_data, key)
+        return key
+
     def columnGroup(self, key):
         if key in self._core_columns:
             return 'core'
@@ -505,20 +601,100 @@ class ToolTableEditorModel(QStandardItemModel):
         elif role == Qt.ItemDataRole.ForegroundRole:
             if self.stat.tool_in_spindle == tnum:
                 return QBrush(self.current_tool_color)
+            if self._is_unused_value(key, tnum):
+                return QBrush(QColor(*self.UNUSED_TEXT_COLOR))
             return QStandardItemModel.data(self, index, role)
 
-        elif role == Qt.ItemDataRole.BackgroundRole and self.current_tool_bg is not None:
-            if self.stat.tool_in_spindle == tnum:
+        elif role == Qt.ItemDataRole.BackgroundRole:
+            if (self.current_tool_bg is not None
+                    and self.stat.tool_in_spindle == tnum):
                 return QBrush(self.current_tool_bg)
+            if self._is_required_and_empty(key, tnum):
+                return QBrush(QColor(*self.REQUIRED_EMPTY_BG))
             return QStandardItemModel.data(self, index, role)
 
         return QStandardItemModel.data(self, index, role)
+
+    def _is_unused_value(self, key, tnum):
+        """True when this cell holds a value nothing reads for this tool.
+
+        Two ways to qualify: the column is dead for every type
+        (UNUSED_COLUMNS), or it is simply not part of *this* type's
+        geometry -- a groove width on a turning tool, say. Empty cells are
+        never tinted; there is nothing to explain about a blank.
+        """
+        row_data = (getattr(self, '_tool_table', None) or {}).get(tnum) or {}
+
+        if key not in self.UNUSED_COLUMNS:
+            # USED_BY_TYPE describes extras only. Core columns are
+            # LinuxCNC's own fields -- always live, whatever the tool type
+            # -- and custom columns are the user's, so neither is ours to
+            # call unused. Without this guard every core column falls
+            # outside the type's set and the whole table tints.
+            if self.columnGroup(key) != 'extras':
+                return False
+            if not (self.USED_BY_TYPE and self.REQUIREMENT_KEY):
+                return False
+            row_type = self.rowRuleKey(row_data)
+            # No type yet: nothing is known to be unused, so tint nothing.
+            if not row_type or row_type not in self.USED_BY_TYPE:
+                return False
+            if key == self.REQUIREMENT_KEY or key in self.USED_BY_TYPE[row_type]:
+                return False
+
+        value = row_data.get(key)
+        if value is None:
+            return False
+        if isinstance(value, str):
+            return bool(value.strip())
+        return bool(value)
+
+    def _is_required_and_empty(self, key, tnum):
+        """True when `key` is required for this tool's type and still blank.
+
+        Driven off REQUIREMENT_KEY's current value, so the shading follows
+        the row as it is filled in: set the type and that type's fields
+        light up; fill one and it clears.
+        """
+        row_data = (getattr(self, '_tool_table', None) or {}).get(tnum) or {}
+
+        # Core fields required on every tool, independent of type.
+        if key in self.REQUIRED_ALWAYS:
+            value = row_data.get(key)
+            return value is None or not str(value).strip()
+
+        if not self.REQUIRED_BY_TYPE or not self.REQUIREMENT_KEY:
+            return False
+
+        row_type = self.rowRuleKey(row_data)
+
+        # The type cell itself is required before anything else can be known.
+        if key == self.REQUIREMENT_KEY:
+            return not row_type
+
+        if key not in self.REQUIRED_BY_TYPE.get(row_type, ()):
+            return False
+
+        value = row_data.get(key)
+        if value is None:
+            return True
+        if isinstance(value, str):
+            return not value.strip()
+        return not value          # 0 / 0.0 count as unset for these fields
 
     def setData(self, index, value, role):
         key = self._visible_columns[index.column()]
         tnum = self._tool_no_for_row(index.row())
         self._tool_table[tnum][key] = value
         self._set_dirty(True)
+        # Changing the type changes which of the *other* columns are
+        # required, so the whole row has to repaint -- not just the cell
+        # that was edited.
+        if key == self.REQUIREMENT_KEY and self.columnCount():
+            row = index.row()
+            self.dataChanged.emit(self.index(row, 0),
+                                  self.index(row, self.columnCount() - 1),
+                                  [Qt.ItemDataRole.BackgroundRole])
         return True
 
     def _set_dirty(self, dirty):
@@ -768,6 +944,69 @@ class ToolTableEditorModel(QStandardItemModel):
         return True
 
 
+class _NullableSpinBoxMixin(object):
+    """Lets a spin box be left blank, so a nullable column can be cleared
+    back to NULL rather than only ever down to 0.
+
+    A stock QAbstractSpinBox has no concept of "no value": clearing the
+    text leaves it in the Intermediate validation state, and interpretText()
+    (fired on focus-out, before the delegate reads the value) silently
+    restores whatever was there before. Qt's usual escape hatch,
+    setSpecialValueText(), is not one here -- an *empty* special text
+    disables the feature outright (QAbstractSpinBoxPrivate only matches it
+    when specialValueText.size() > 0), so a blank-looking sentinel can't be
+    expressed that way.
+
+    Instead: minimum() doubles as the "no value" sentinel, and the three
+    text<->value hooks are overridden to map it to/from empty text. That
+    round trip is closed -- '' -> valueFromText -> minimum ->
+    textFromValue -> '' -- so interpretText() re-blanking the field is
+    harmless rather than something to race.
+
+    Only for columns the database actually allows to be NULL (extras and
+    custom fields). Core letters are NOT NULL with a 0.0/0 default, where a
+    blank cell would be a display fiction the schema can't store.
+    """
+
+    def validate(self, text, pos):
+        if not text.strip():
+            return (QValidator.State.Acceptable, text, pos)
+        return super(_NullableSpinBoxMixin, self).validate(text, pos)
+
+    def valueFromText(self, text):
+        if not text.strip():
+            return self.minimum()
+        return super(_NullableSpinBoxMixin, self).valueFromText(text)
+
+    def textFromValue(self, value):
+        if value <= self.minimum():
+            return ''
+        return super(_NullableSpinBoxMixin, self).textFromValue(value)
+
+    def stepBy(self, steps):
+        # Stepping off the sentinel would otherwise land on minimum + 1
+        # step (-99999.9999), which is nobody's intent; a blank cell that
+        # gets nudged means "start at zero".
+        if self.isEmpty():
+            self.setValue(0)
+            return
+        super(_NullableSpinBoxMixin, self).stepBy(steps)
+
+    def isEmpty(self):
+        return self.value() <= self.minimum()
+
+    def setEmpty(self):
+        self.setValue(self.minimum())
+
+
+class NullableDoubleSpinBox(_NullableSpinBoxMixin, QDoubleSpinBox):
+    pass
+
+
+class NullableSpinBox(_NullableSpinBoxMixin, QSpinBox):
+    pass
+
+
 class ToolTableEditorDelegate(QStyledItemDelegate):
 
     def __init__(self, model, table=None):
@@ -884,13 +1123,16 @@ class ToolTableEditorDelegate(QStyledItemDelegate):
             # invalid entry can't be typed in the first place.
             value_type = self._model._custom_value_types.get(key)
             if value_type == 'int':
-                editor = QSpinBox(parent)
+                # Nullable: custom values round-trip through
+                # _cast_custom_value(), which maps None to None (no row
+                # value), so a cleared cell is storable as such.
+                editor = NullableSpinBox(parent)
                 editor.setFrame(False)
                 editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 editor.setRange(-999999, 999999)
                 return editor
             if value_type == 'float':
-                editor = QDoubleSpinBox(parent)
+                editor = NullableDoubleSpinBox(parent)
                 editor.setFrame(False)
                 editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 editor.setDecimals(FLOAT_DECIMALS)
@@ -921,11 +1163,19 @@ class ToolTableEditorDelegate(QStyledItemDelegate):
             editor.setMaximum(9 if key == 'Q' else 99999)
             return editor
 
-        # everything else (X/Z/D/I/J offsets, numeric extras) is a float
-        editor = QDoubleSpinBox(parent)
+        # everything else (X/Z/D/I/J offsets, numeric extras) is a float.
+        # Extras are nullable, so they can be cleared back to blank -- a
+        # tool that has no Max DOC reads differently from one measured at
+        # zero, and the yellow "required but missing" highlight is only
+        # honest if a value can actually be taken back out. The core
+        # letters are NOT NULL with a 0.0 default and stay plain.
+        if group == 'extras':
+            editor = NullableDoubleSpinBox(parent)
+        else:
+            editor = QDoubleSpinBox(parent)
         editor.setFrame(False)
         editor.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        editor.setDecimals(4)
+        editor.setDecimals(FLOAT_DECIMALS)
         editor.setRange(-100000, 100000)
         return editor
 
@@ -934,11 +1184,32 @@ class ToolTableEditorDelegate(QStyledItemDelegate):
             value = bool(index.data(Qt.ItemDataRole.EditRole))
             editor.setCurrentIndex(editor.findText('True' if value else 'False'))
             return
+        if isinstance(editor, _NullableSpinBoxMixin):
+            # Qt's own implementation would push a NULL through
+            # QVariant->setValue() as 0, i.e. open an unset cell already
+            # showing a fabricated zero -- which is exactly the value the
+            # user is trying not to have.
+            value = index.data(Qt.ItemDataRole.EditRole)
+            try:
+                # Coerced through the spin box's own numeric type (float
+                # for the double box, int for the plain one) so a legacy
+                # row carrying the number as text still opens on its value
+                # rather than raising TypeError inside setValue's C++ slot.
+                editor.setValue(type(editor.minimum())(value))
+            except (TypeError, ValueError):
+                editor.setEmpty()  # None, '', or unparseable -> blank
+            return
         super(ToolTableEditorDelegate, self).setEditorData(editor, index)
 
     def setModelData(self, editor, model, index):
         if isinstance(editor, QComboBox) and editor.property(BOOL_EDITOR_PROP):
             model.setData(index, editor.currentText() == 'True',
+                          Qt.ItemDataRole.EditRole)
+            return
+        if isinstance(editor, _NullableSpinBoxMixin):
+            editor.interpretText()  # commit in-progress typing to value()
+            model.setData(index,
+                          None if editor.isEmpty() else editor.value(),
                           Qt.ItemDataRole.EditRole)
             return
         super(ToolTableEditorDelegate, self).setModelData(editor, model, index)
