@@ -18,9 +18,9 @@ dynamic = ["version"]
 
 
 packages = [
-    { include = "examples", from = "src" },
+    { include = "qtpyvcp_examples", from = "src" },
     { include = "qtpyvcp", from = "src" },
-    { include = "video_tests", from = "src" },
+    { include = "qtpyvcp_video_tests", from = "src" },
 ]
 
 
@@ -55,14 +55,14 @@ widgets_test = "video_tests.widgets_test:main"
 pyside6 = ["PySide6"]
 
 [tool.poetry.plugins."qtpyvcp.example_vcp"]
-mini = "examples.mini"
-brender = "examples.brender"
-actions = "examples.actions"
+mini = "qtpyvcp_examples.mini"
+brender = "qtpyvcp_examples.brender"
+actions = "qtpyvcp_examples.actions"
 
 [tool.poetry.plugins."qtpyvcp.test_vcp"]
-vtk_test = "video_tests.vtk_test"
-qtpyvcp_test = "video_tests.qtpyvcp_test"
-widgets_test = "video_tests.widgets_test"
+vtk_test = "qtpyvcp_video_tests.vtk_test"
+qtpyvcp_test = "qtpyvcp_video_tests.qtpyvcp_test"
+widgets_test = "qtpyvcp_video_tests.widgets_test"
 
 [tool.poetry.plugins."pyside6.designer"]
 qtpyvcp_designer = "qtpyvcp.widgets:qtdesigner_plugin"
@@ -88,4 +88,3 @@ format-jinja = """
         {{ base }}+{{ distance }}.g{{ commit }}
     {%- endif -%}
 """
-
