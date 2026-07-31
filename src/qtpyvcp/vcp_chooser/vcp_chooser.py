@@ -18,7 +18,7 @@ from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 CHOOSER_DIR = os.path.abspath(os.path.dirname(__file__))
 
 CUSTOM_VCP_DIR = os.path.expanduser('~/linuxcnc/vcps')
-EXAMPLE_VCP_DIR = os.path.join(TOP_DIR, 'examples')
+EXAMPLE_VCP_DIR = os.path.join(TOP_DIR, 'qtpyvcp_examples')
 
 class VCPChooser(QDialog):
     def __init__(self, opts):

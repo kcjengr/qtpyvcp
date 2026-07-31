@@ -46,9 +46,10 @@ merge2db-mill = "qtpyvcp.lib.db_tool.import_merged_mill:main"
 mini = "qtpyvcp_examples.mini:main"
 brender = "qtpyvcp_examples.brender:main"
 actions = "qtpyvcp_examples.actions:main"
-vtk_test = "video_tests.vtk_test:main"
-qtpyvcp_test = "video_tests.qtpyvcp_test:main"
-widgets_test = "video_tests.widgets_test:main"
+vtk_test = "qtpyvcp_video_tests.vtk_test:main"
+qtpyvcp_test = "qtpyvcp_video_tests.qtpyvcp_test:main"
+widgets_test = "qtpyvcp_video_tests.widgets_test:main"
+opengl_test = "qtpyvcp_video_tests.opengl_test:main"
 
 
 
@@ -64,6 +65,7 @@ actions = "qtpyvcp_examples.actions"
 vtk_test = "qtpyvcp_video_tests.vtk_test"
 qtpyvcp_test = "qtpyvcp_video_tests.qtpyvcp_test"
 widgets_test = "qtpyvcp_video_tests.widgets_test"
+opengl_test = "qtpyvcp_video_tests.opengl_test"
 
 [tool.poetry.plugins."pyside6.designer"]
 qtpyvcp_designer = "qtpyvcp.widgets:qtdesigner_plugin"
