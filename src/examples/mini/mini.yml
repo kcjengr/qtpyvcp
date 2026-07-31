@@ -21,7 +21,7 @@ vcp:
 data_plugins:
   status:
     kwargs:
-      cycle_time: {{ ini.DISPLAY.cycle_time }}
+     cycle_time: 100
 
   clock:
     provider: qtpyvcp.plugins.clock:Clock
@@ -34,7 +34,7 @@ windows:
   mainwindow:
     provider: mini:MiniVCP
     kwargs:
-      title: ( vcp.name ) ( vcp.version ) on {{ ini.EMC.machine }}
+      title: ( vcp.name ) ( vcp.version )
       ui_file: {{ file.dir }}/mini.ui
       confirm_exit: no
 
