@@ -155,7 +155,7 @@ def launch_designer(opts=DotDict()) -> None:
 
         example_vcps = eps.select(group='qtpyvcp.example_vcp')
         vcps = eps.select(group='qtpyvcp.vcp')
-        
+
         for example_vcp in example_vcps:
             entry_points2[example_vcp.name] = example_vcp
 
@@ -173,12 +173,7 @@ def launch_designer(opts=DotDict()) -> None:
             LOG.error(INSTALLED_ERROR_MSG)
             sys.exit(1)
 
-    if distro.id() == "gentoo":
-        cmd = ["designer"]
-    elif distro.id() == "arch":
-        cmd = ["designer6"]
-    else:
-        cmd = ["pyside6-designer"]
+    cmd = ["pyside6-designer"]
 
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
@@ -229,7 +224,7 @@ def launch_designer(opts=DotDict()) -> None:
         cmd.append(fname)
 
         LOG.info(f"Loading UI file: {fname}")
-        
+
         # Handle --qss-file option for standalone UI files
         if opts.qss_file:
             qss_file = opts.qss_file
@@ -254,7 +249,7 @@ def launch_designer(opts=DotDict()) -> None:
     cxx_designer_plugins_root = os.path.join(base, "..", "qt_plugins")
     cxx_designer_plugins_dir = os.path.join(cxx_designer_plugins_root, "designer")
     cxx_dev_plugins_dir = os.path.join(base, "..", "native", "widgets_cpp", "gcode_editor")
-    
+
     # Set environment for designer
     os.environ['QTPYVCP_LOG_FILE'] = opts.log_file
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
@@ -266,12 +261,12 @@ def launch_designer(opts=DotDict()) -> None:
     if os.getenv('XDG_SESSION_TYPE', '').lower() == 'x11' and 'QT_XCB_NO_XI2' not in os.environ:
         os.environ['QT_XCB_NO_XI2'] = '1'
         LOG.info('Set QT_XCB_NO_XI2=1 for Qt Designer wheel-event compatibility on X11')
-    
+
     # Add qtpyvcp paths to PYTHONPATH so pyside6-designer can import our modules
     existing_pythonpath = os.environ.get('PYTHONPATH', '')
     new_pythonpath = f"{widgets_path}:{qtpyvcp_path}/src:{existing_pythonpath}"
     os.environ['PYTHONPATH'] = new_pythonpath
-    
+
     # Add our plugin path without clobbering existing Qt plugin paths.
     qt_plugin_paths = []
     if os.path.isdir(cxx_designer_plugins_root):
@@ -361,7 +356,7 @@ def launch_designer(opts=DotDict()) -> None:
         LOG.error(f"Exception occured: {e}")
         return False
 
-    
+
     else:
         # no exception was raised
         LOG.info(f"EditVCP finished exit({exitcode})")
