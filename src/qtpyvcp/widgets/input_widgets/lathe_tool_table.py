@@ -46,11 +46,13 @@ EXTRAS_LABELS = {
     'holder_hand': 'Hand',
     'holder_shank_width': 'Shank W',
     'holder_cut_width': 'Cut W',
+    'holder_head_length': 'Head Length',
     'holder_oal': 'Holder OAL',
     'groove_width': 'Groove W',
     'max_depth_of_cut': 'Max DOC',
     'drill_point_angle': 'Point Angle',
     'flute_length': 'Flute Len',
+    'length_below_holder': 'Len Below Holder',
     'overall_length': 'Overall Len',
     'shaft_diameter': 'Shaft Dia',
     'chamfer_threads': 'Chamfer Thds',
@@ -75,9 +77,15 @@ TEXT_EXTRAS = {'type', 'insert_shape', 'insert_size_mode', 'holder_style',
 # The others excluded here are reference-only (nothing reads them back --
 # same-named values elsewhere are per-operation user inputs, not tool-table
 # reads).
+#
+# holder_oal is reference-only: it is the holder's full physical length,
+# most of which is clamped in the tool block. Reach and slenderness are
+# calculated from Head Length instead, so OAL feeds nothing and showing it
+# by default invited it being read as the stickout -- which is exactly the
+# mistake it caused before.
 REFERENCE_ONLY_EXTRAS = ('holder_hand', 'thread_tip_type', 'chamfer_threads',
                          'surface_speed', 'feed_per_rev', 'depth_of_cut',
-                         'notes')
+                         'notes', 'holder_oal')
 DEFAULT_VISIBLE_EXTRAS = [c for c in EXTRAS_ORDER
                           if c not in REFERENCE_ONLY_EXTRAS]
 

@@ -201,6 +201,10 @@ def extras_from_fusion(tool, ttype, num):
         "holder_hand": hand if not is_round_tool else None,
         "holder_shank_width": num.first_positive(holder.get("W")) if not is_round_tool else None,
         "holder_cut_width": num.first_positive(holder.get("CW")) if not is_round_tool else None,
+        # LH is the protruding head -- what actually enters a bore. OAL is
+        # the whole holder including what the block clamps, so it is not a
+        # stickout and nothing should size a cut from it.
+        "holder_head_length": num.first_positive(holder.get("LH")) if not is_round_tool else None,
         "holder_oal": num.first_positive(holder.get("OAL")) if not is_round_tool else None,
         "groove_width": num.first_positive(
             geo.get("tool_grooveWidth"), expr.get("tool_grooveWidth"),
@@ -214,7 +218,13 @@ def extras_from_fusion(tool, ttype, num):
             geo.get("SIG"), expr.get("tool_tipAngle"), kind=ANGLE,
         ) if ttype == "drill" else None,
         "flute_length": num.first_positive(
-            geo.get("LCF"), geo.get("LB"), expr.get("tool_fluteLength"),
+            geo.get("LCF"), expr.get("tool_fluteLength"),
+        ) if is_round_tool else None,
+        # LB is its own measurement, not a stand-in for LCF -- see
+        # migrations/004. Folding it into flute_length lost it whenever both
+        # were present and mislabelled it whenever only LB was.
+        "length_below_holder": num.first_positive(
+            geo.get("LB"), expr.get("tool_lengthBelowHolder"),
         ) if is_round_tool else None,
         "overall_length": num.first_positive(
             geo.get("OAL"), expr.get("tool_overallLength"),

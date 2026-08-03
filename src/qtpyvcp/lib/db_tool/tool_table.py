@@ -95,7 +95,10 @@ class ToolLathe(Base):
     holder_hand = Column(Text)         # R | L
     holder_shank_width = Column(Float) # W
     holder_cut_width = Column(Float)   # CW; internal-groove max depth = CW - W/2
-    holder_oal = Column(Float)         # holder overall length
+    holder_head_length = Column(Float)  # holder LH; protruding head --
+                                       # the stickout that governs reach
+    holder_oal = Column(Float)         # holder OAL; full physical length,
+                                       # mostly clamped. Not a stickout.         # holder overall length
 
     # grooving / parting
     groove_width = Column(Float)       # cutting edge width
@@ -103,7 +106,9 @@ class ToolLathe(Base):
 
     # drills / taps (round tools; no holder rows apply)
     drill_point_angle = Column(Float)  # SIG, e.g. 118 / 135
-    flute_length = Column(Float)       # LCF/LB; drill body & tap flute display length
+    flute_length = Column(Float)       # LCF; fluted portion of a drill/tap
+    length_below_holder = Column(Float)  # LB; protrusion from the holder --
+                                         # what bounds how deep it can be driven
     overall_length = Column(Float)     # tool OAL (tap/drill; thread insert length)
     shaft_diameter = Column(Float)     # SFDM; tap/drill shank
     chamfer_threads = Column(Float)    # tap lead/chamfer threads (e.g. 2.5)
