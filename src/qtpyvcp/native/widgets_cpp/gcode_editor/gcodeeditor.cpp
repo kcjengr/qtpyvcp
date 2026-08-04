@@ -40,7 +40,7 @@ void GCodeEditor::applyExtraSelections()
 {
 	QList<QTextEdit::ExtraSelection> extraSelections = searchExtraSelections;
 
-	if (!isReadOnly() && currentLineHighlight) {
+	if (currentLineHighlight) {
 		QTextEdit::ExtraSelection selection;
 		selection.format.setBackground(currentLineBackgroundColor);
 		selection.format.setForeground(currentLineTextColor);
