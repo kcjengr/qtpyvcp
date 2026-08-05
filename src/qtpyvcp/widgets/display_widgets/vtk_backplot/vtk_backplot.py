@@ -3323,6 +3323,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def backgroundColor(self, color):
         self._background_color = color
 
+        if IN_DESIGNER:
+            return
+
         self.renderer.SetBackground(color.getRgbF()[:3])
         self._request_render()
 
@@ -3341,6 +3344,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @backgroundColor2.setter
     def backgroundColor2(self, color2):
         self._background_color2 = color2
+
+        if IN_DESIGNER:
+            return
 
         self.renderer.GradientBackgroundOn()
         self.renderer.SetBackground2(color2.getRgbF()[:3])

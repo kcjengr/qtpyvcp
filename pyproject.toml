@@ -23,7 +23,11 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.9"
 qtpy = "^2.4.3"
-pyqt5 = "^5.15.11"
+# Must stay >=5.15.9 (not ^5.15.11) so the Debian Bookworm python3-pyqt5 package
+# satisfies it. A tighter pin forces pip to pull the PyQt5 wheel, which bundles
+# its own Qt and shadows the system one -- breaking Qt Designer (editvcp), whose
+# binary is linked against system Qt and cannot resolve the wheel's private symbols.
+pyqt5 = ">=5.15.9"
 hiyapyco = "^0.7.0"
 
 

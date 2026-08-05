@@ -43,7 +43,7 @@ import distro
 
 from io import TextIOWrapper
 
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 from pkg_resources import iter_entry_points
 
 from docopt import docopt
@@ -195,6 +195,8 @@ def launch_designer(opts=DotDict()) -> None:
 
     LOG.info("Starting QtDesigner ...")
 
+    process = None
+
     try:
         process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
 
@@ -208,6 +210,24 @@ def launch_designer(opts=DotDict()) -> None:
                   sudo apt install qttools5-dev qttools5-dev-tools""")
         LOG.error(f'Exception occured: {exception}')
         LOG.error('Subprocess failed')
+        return False
+    except KeyboardInterrupt:
+        # Ctrl+C reaches us while we are blocked reading designer's output. Without
+        # this, the traceback is dumped and designer is left orphaned for the user
+        # to close by hand, so shut the child down before returning.
+        LOG.info('Interrupted, closing QtDesigner ...')
+        if process is None:
+            # interrupted before designer was even started
+            return False
+        process.terminate()
+        try:
+            # Designer ignores SIGTERM while it has a modal prompt open, so keep the
+            # grace period short and fall through to SIGKILL rather than hanging.
+            process.wait(timeout=5)
+        except TimeoutExpired:
+            LOG.warning('QtDesigner did not exit, killing it')
+            process.kill()
+            process.wait()
         return False
     else:
         # no exception was raised
