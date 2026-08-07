@@ -23,8 +23,6 @@ class ToolSTLField(QWidget):
     def __init__(self, parent=None):
         super(ToolSTLField, self).__init__(parent)
         
-        self.session = Session()
-        
         self.tool_selected = None
         
         self.layout = QHBoxLayout(self)
@@ -59,10 +57,12 @@ class ToolSTLField(QWidget):
     def toolSelected(self, tool_no):
         self.tool_selected = tool_no
         
-        tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool_no).first()
-        
-        if tool_data:
-            self.setFilename(tool_data.model)
+        with Session() as session:
+            tool_data = session.query(ToolModel).filter(ToolModel.tool_no == tool_no).first()
+            model = tool_data.model if tool_data else None
+
+        if model:
+            self.setFilename(model)
         else:
             self.clearFilename()
     
@@ -70,11 +70,13 @@ class ToolSTLField(QWidget):
     def saveField(self):
         if self.tool_selected is not None:
             
-            tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == self.tool_selected).first()
-        
-            if tool_data:
-                tool_data.model = self.filename
-                self.session.commit()
+            with Session() as session:
+                tool_data = session.query(ToolModel).filter(
+                    ToolModel.tool_no == self.tool_selected).first()
+
+                if tool_data:
+                    tool_data.model = self.filename
+                    session.commit()
         
     def setFilename(self, name):
         self.filename = name

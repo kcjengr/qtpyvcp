@@ -241,8 +241,6 @@ class ToolActor(vtk.vtkActor):
         back_tool_val = (self._datasource._inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
         self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
 
-        self.session = Session()
-
         colors = vtkNamedColors()
 
         if self._datasource.isMachineMetric():
@@ -309,11 +307,17 @@ class ToolActor(vtk.vtkActor):
                 mapper = vtk.vtkPolyDataMapper()
 
                 if isinstance(tool_table_plugin, DBToolTable):
-                    tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool_id).first()
+                    # Short-lived session, closed before we build any VTK
+                    # objects: update_tool() rebuilds this actor on every tool
+                    # change, and a session kept alive on the actor holds its
+                    # pooled connection checked out until the actor is
+                    # collected -- which exhausts the pool after ~15 changes.
+                    with Session() as session:
+                        tool_data = session.query(ToolModel).filter(
+                            ToolModel.tool_no == tool_id).first()
+                        filename = tool_data.model if tool_data else None
 
-                    if tool_data:
-
-                        filename = tool_data.model
+                    if filename:
 
                         source = vtk.vtkSTLReader()
                         source.SetFileName(filename)
