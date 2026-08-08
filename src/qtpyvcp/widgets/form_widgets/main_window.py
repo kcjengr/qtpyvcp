@@ -10,7 +10,8 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
 from PySide6.QtCore import Qt, Slot, QTimer, QFile, QObject, QCoreApplication
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QVBoxLayout, QButtonGroup, QWidget, QGridLayout, QBoxLayout
+    QMenu, QMenuBar, QLineEdit, QVBoxLayout, QButtonGroup, QWidget, QGridLayout, QBoxLayout, \
+    QAbstractItemView
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -1094,8 +1095,29 @@ class VCPMainWindow(QMainWindow):
 
     def focusChangedEvent(self, old_w, new_w):
         # Only handle QLineEdit selection, no jog stop needed here anymore
-        if issubclass(new_w.__class__, QLineEdit):
-            QTimer.singleShot(0, new_w.selectAll)
+        if not issubclass(new_w.__class__, QLineEdit):
+            return
+
+        # Item view cell editors are excluded. Qt already selects their text
+        # when the editor opens, and when the editor was opened by a keystroke
+        # that keystroke is delivered synchronously from openEditor() -- i.e.
+        # before this queued selectAll() runs. Selecting there would leave the
+        # character the user just typed selected, so the next one replaces it
+        # instead of appending.
+        if self._isItemViewEditor(new_w):
+            return
+
+        QTimer.singleShot(0, new_w.selectAll)
+
+    @staticmethod
+    def _isItemViewEditor(widget):
+        """Return True when widget is a delegate editor inside an item view."""
+        parent = widget.parentWidget()
+        while parent is not None:
+            if isinstance(parent, QAbstractItemView):
+                return True
+            parent = parent.parentWidget()
+        return False
 
     def _jogSafetyCheck(self):
         # Only stop axes if keyboard jog is currently active and window is not focused
