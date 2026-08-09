@@ -37,8 +37,6 @@ from qtpyvcp.utilities.config_loader import load_config_files
 
 PREPROC_VERSION = '00.30'
 
-PREPROC_VERSION = '00.30'
-
 INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
 preprocessor_log_name = normalizePath(path='gcode_preprocessor.log', base=os.getenv('CONFIG_DIR', '~/'))
 # Construct LOG from qtpyvcp standard logging framework
@@ -74,7 +72,7 @@ try:
     h = hal.component('dummy')
     LOG.debug('Python HAL is available')
 except Exception as e:
-    LOG.warn(f'Python HAL is NOT available: {e}')
+    LOG.warning(f'Python HAL is NOT available: {e}')
 
 
 # Define some globals that will be referenced from anywhere
@@ -574,7 +572,7 @@ class CodeLine:
         if len(cut_process) == 0:
             # rewrite the raw line as an error comment
             self.raw = f"; ERROR: Invalid Cutchart ID in Tx. Check CAM Tools: {self.raw}"
-            LOG.warn(f'Tool {tool} not a valid cut process in DB')
+            LOG.warning(f'Tool {tool} not a valid cut process in DB')
         else:
             self.cutchart_id = tool
             self._parent.active_cutchart = tool
@@ -1183,7 +1181,7 @@ class HiDefHole:
             # 3. test if metric changes between hole bounds.  If not then no scaling and use bottom value. Else do #4
             # 4. result:  (target_hole_size - bottom_boundry_hole_size) x metric_delta + bottom_boundary_metric             
             if self.hole_list[i-1]['hole'] <= holesize and holesize <= self.hole_list[i]['hole']:
-                if attribute == 'straight_leadin':
+                if attribute is 'straight_leadin':
                     lr = self.hole_list[i][f'{attribute}']
                     LOG.debug(f'HiDefHole get_attribute: holesize={holesize}, attribute={attribute}, lr={lr}')
                     return lr
@@ -1368,6 +1366,10 @@ class PreProcessor:
             
         # marking_voltage = hal.get_value('qtpyvcp.spot-threshold.out')
         marking_delay = hal.get_value('qtpyvcp.spot-delay.out')
+        
+        # only look for hidef if qtpyvcp.plasma-use-hidef.checked is true
+        use_hidef = hal.get_value('qtpyvcp.plasma-use-hidef.checked')
+        
         LOG.debug("Got all info from HAL pins")
         
         # old school loop so we can easily peek forward or back of the current
@@ -1419,7 +1421,7 @@ class PreProcessor:
                         circumferance = diameter * pi
                         
                         # see if can find hidef data for this hole scenario
-                        if self.active_materialid is not None:
+                        if self.active_materialid is not None and use_hidef:
                             LOG.debug(f"Look for HiDef data on this machine/material/thickness {(self.active_machineid, self.active_materialid, self.active_thicknessid)}")
                             hidef_data = PLASMADB.hidef_holes(self.active_machineid, self.active_materialid, self.active_thicknessid)
                         else:
@@ -1924,12 +1926,12 @@ def main():
             p.flag_pierce()
             LOG.debug('... Flag piercing done')
     
-        # pass file to stdio and set any hal pins
-        LOG.debug('Dump parsed file')
-        p.dump_parsed()
         # Set hal pin on UI for cutchart.id
         LOG.debug('Set UI param data via cutchart pin')
         p.set_ui_hal_cutchart_pin()
+        # pass file to stdio
+        LOG.debug('Dump parsed file')
+        p.dump_parsed()
     else:
         p.dump_raw()
     
@@ -1951,4 +1953,3 @@ if __name__ == '__main__':
     # export CONFIG_DIR=`pwd`
     # export INI_FILE_NAME=`pwd`/xyz.ini
     main()
-
