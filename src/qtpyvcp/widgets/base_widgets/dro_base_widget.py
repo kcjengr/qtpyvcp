@@ -95,7 +95,23 @@ class DROBaseWidget(VCPWidget):
         getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
 
         if self._is_lathe:
+            # Seed from the current modal state before subscribing. gcodes only
+            # emits on *change*, and widgets loaded from the config dir are
+            # often built after the startup code has already applied G7, so
+            # waiting for a notification leaves them showing radius forever.
+            self._g7_active = 'G7' in (self.status.gcodes.getValue() or ())
             self.status.gcodes.notify(self.updateDiameterMode)
+
+            if self._anum == Axis.X:
+                # No Qt calls here (no objectName(), no setText()): QUiLoader is
+                # still constructing this widget and touching the QObject from
+                # __init__ segfaults PySide6.
+                LOG.info("LATHE-DRO seed: class=%s axis=X lathe_mode=%s "
+                         "g7_flag=%s gcodes=[%s]",
+                         self.__class__.__name__,
+                         getattr(self._lathe_mode, 'name', self._lathe_mode),
+                         self._g7_active,
+                         " ".join(self.status.gcodes.getValue() or ()))
 
         if self._use_global_fmt_settings:
 
@@ -141,6 +157,11 @@ class DROBaseWidget(VCPWidget):
         self.updateValue()
 
     def initialize(self):
+        if self._is_lathe:
+            # Re-seed before the first updateValue(): the modal state can have
+            # changed between construction and initialization.
+            self._g7_active = 'G7' in (self.status.gcodes.getValue() or ())
+
         getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
         self.updateValue()
         LOG.info(
@@ -169,8 +190,55 @@ class DROBaseWidget(VCPWidget):
             except AttributeError:  # settings not found
                 pass
 
+    def latheG7Actual(self):
+        """Whether the interpreter reports G7 (diameter mode) right now."""
+        try:
+            return 'G7' in (self.status.gcodes.getValue() or ())
+        except Exception:
+            return False
+
+    def latheG7Mismatch(self):
+        """True when this widget's cached G7 flag disagrees with the interpreter.
+
+        That disagreement is the bug: LinuxCNC halves every X word while G7 is
+        active, so a DRO that does not know about G7 shows (and accepts) radius
+        where the operator means diameter.
+        """
+        return self._is_lathe and self._g7_active != self.latheG7Actual()
+
+    def latheStateSummary(self):
+        """One-line diameter/radius state, for troubleshooting logs.
+
+        Only call this after construction -- it touches the QObject.
+        """
+        try:
+            gcodes = self.status.gcodes.getValue() or ()
+        except Exception:
+            gcodes = ()
+        try:
+            name = self.objectName() or self.__class__.__name__
+        except Exception:
+            name = self.__class__.__name__
+        try:
+            axis = 'XYZABCUVW'[self._anum]
+        except (IndexError, TypeError):
+            axis = str(self._anum)
+        return (
+            "widget=%s axis=%s lathe_mode=%s g7_flag=%s g7_actual=%s gcodes=[%s]"
+            % (name,
+               axis,
+               getattr(self._lathe_mode, 'name', self._lathe_mode),
+               self._g7_active,
+               'G7' in gcodes,
+               " ".join(gcodes))
+        )
+
     def updateDiameterMode(self, gcodes):
+        was = self._g7_active
         self._g7_active = 'G7' in gcodes
+        if was != self._g7_active and self._anum == Axis.X:
+            LOG.info("LATHE-DRO g7 changed %s->%s: %s",
+                     was, self._g7_active, self.latheStateSummary())
         self.updateValue()
 
     def updateValue(self, pos=None):
