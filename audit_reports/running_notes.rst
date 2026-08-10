@@ -40,6 +40,32 @@ Files
    - src/qtpyvcp/path/to/file.py
 
 
+2026-05-25
+----------
+
+Area
+   App Python VCP file loader
+
+Summary
+   Restored loading of `.py` VCP files on Python versions where `imp` has been
+   removed.
+
+Changes
+   - Replaced the removed `imp.load_source()` path with
+     `importlib.util.spec_from_file_location()` and `module_from_spec()`.
+   - Kept the loaded module registered as `python_vcp` so existing attribute
+     access and class discovery continue to use the historical module name.
+
+Validation
+   - Static validation only: `git diff --check HEAD~1..HEAD`.
+   - Targeted search confirmed `application.py` no longer uses `load_source`.
+   - Not run locally: QtPyVCP/LinuxCNC runtime and example VCPs.
+
+Files
+   - src/qtpyvcp/app/application.py
+   - audit_reports/running_notes.rst
+
+
 2026-02-20
 ----------
 
