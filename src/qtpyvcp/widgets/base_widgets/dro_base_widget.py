@@ -56,7 +56,25 @@ class DROBaseWidget(VCPWidget):
     """
 
     def __init__(self):
+        # PySide6's QWidget bases chain cooperatively through the MRO, so
+        # DROLabel/DROLineEdit's `super().__init__(parent)` already reaches
+        # this body before their explicit DROBaseWidget.__init__(self) call
+        # runs it a second time. That doubled every subscription made below.
+        # Guard rather than drop the explicit call, which is still what makes
+        # this run at all if a subclass's chain does not reach us.
+        if getattr(self, '_dro_base_ready', False):
+            return
+        self._dro_base_ready = True
+
         super(DROBaseWidget, self).__init__()
+
+        # Channels this widget has already connected to, so the deliberate
+        # overlap between __init__ and initialize() cannot stack up duplicates.
+        self._subscribed = set()
+        # The single position channel this DRO listens to, and the handle that
+        # lets it stop listening when referenceType changes.
+        self._pos_channel = None
+        self._pos_handle = None
 
         self.status = getPlugin('status')
         self.pos = getPlugin('position')
@@ -92,11 +110,11 @@ class DROBaseWidget(VCPWidget):
         # super not called errors.
         #self.updateValue()
 
-        self.status.program_units.notify(self.updateUnits, 'string')
+        self._subscribeOnce(self.status.program_units, self.updateUnits, 'string')
 
         # Wire position change signals immediately; initialize() is sometimes
         # bypassed in designer-loaded widgets under Qt6/PySide6.
-        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
+        self._connectPositionChannel()
 
         if self._is_lathe:
             # Seed from the current modal state before subscribing. gcodes only
@@ -104,7 +122,7 @@ class DROBaseWidget(VCPWidget):
             # often built after the startup code has already applied G7, so
             # waiting for a notification leaves them showing radius forever.
             self._g7_active = 'G7' in (self.status.gcodes.getValue() or ())
-            self.status.gcodes.notify(self.updateDiameterMode)
+            self._subscribeOnce(self.status.gcodes, self.updateDiameterMode)
 
             if self._anum == Axis.X:
                 # No Qt calls here (no objectName(), no setText()): QUiLoader is
@@ -122,7 +140,7 @@ class DROBaseWidget(VCPWidget):
             # -- but the interpreter halves every X word regardless while G7 is
             # active. Watch for that pairing and say so, rather than quietly
             # showing the operator half of what they typed.
-            self.status.gcodes.notify(self.checkUndeclaredLatheG7)
+            self._subscribeOnce(self.status.gcodes, self.checkUndeclaredLatheG7)
             self.checkUndeclaredLatheG7(self.status.gcodes.getValue())
 
         if self._use_global_fmt_settings:
@@ -133,13 +151,48 @@ class DROBaseWidget(VCPWidget):
             self.lathe_mode_setting = getSetting('dro.lathe-radius-mode')
 
             try:
-                self.in_fmt_setting.notify(self.setInchFormat)
-                self.mm_fmt_setting.notify(self.setMillimeterFormat)
-                self.deg_fmt_setting.notify(self.setDegreeFormat)
-                self.lathe_mode_setting.notify(self.setLatheMode)
+                self._subscribeOnce(self.in_fmt_setting, self.setInchFormat)
+                self._subscribeOnce(self.mm_fmt_setting, self.setMillimeterFormat)
+                self._subscribeOnce(self.deg_fmt_setting, self.setDegreeFormat)
+                self._subscribeOnce(self.lathe_mode_setting, self.setLatheMode)
 
             except AttributeError:  # settings not found
                 pass
+
+    def _subscribeOnce(self, channel, slot, *args):
+        """Connect `slot` to `channel`, at most once for this widget.
+
+        __init__ and initialize() deliberately wire the same channels, and
+        neither can be dropped: getSetting() can still return None during
+        construction, while initialize() is skipped for some designer-loaded
+        widgets under PySide6. So track what is already connected instead.
+        """
+        # Not repr(slot): this runs mid-construction, where repr() on a
+        # half-built QObject raises "base class __init__ not called".
+        key = (channel, getattr(slot, '__name__', None) or id(slot))
+        if key in self._subscribed:
+            return
+        channel.notify(slot, *args)     # raises AttributeError if channel is None
+        self._subscribed.add(key)
+
+    def _connectPositionChannel(self):
+        """Listen to exactly the position channel `referenceType` names.
+
+        Designer properties are applied after construction, so a DRO has to
+        subscribe once under the default RefType before it is ever told what
+        it displays. The position plugin emits rel, abs and dtg on every poll,
+        so a leftover subscription is not harmless: the DRO would repaint with
+        another reference type's value before its own. Drop the previous
+        connection before making the new one, which also makes repeated
+        __init__/initialize()/property writes idempotent.
+        """
+        channel = getattr(self.pos, self._ref_typ.name)
+        if self._pos_channel is channel and self._pos_handle is not None:
+            return
+        if self._pos_handle is not None:
+            self._pos_channel.unnotify(self._pos_handle)
+        self._pos_channel = channel
+        self._pos_handle = channel.notify(self.updateValue)
 
     def updateUnits(self, units=None):
         """Force update of DRO display units.
@@ -174,7 +227,7 @@ class DROBaseWidget(VCPWidget):
             # changed between construction and initialization.
             self._g7_active = 'G7' in (self.status.gcodes.getValue() or ())
 
-        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
+        self._connectPositionChannel()
         self.updateValue()
         LOG.info(
             "DRO initialized axis=%s ref=%s value=%s",
@@ -184,7 +237,7 @@ class DROBaseWidget(VCPWidget):
         )
 
         if self._is_lathe:
-            self.status.gcodes.notify(self.updateDiameterMode)
+            self._subscribeOnce(self.status.gcodes, self.updateDiameterMode)
 
         if self._use_global_fmt_settings:
 
@@ -194,10 +247,10 @@ class DROBaseWidget(VCPWidget):
             self.lathe_mode_setting = getSetting('dro.lathe-radius-mode')
 
             try:
-                self.in_fmt_setting.notify(self.setInchFormat)
-                self.mm_fmt_setting.notify(self.setMillimeterFormat)
-                self.deg_fmt_setting.notify(self.setDegreeFormat)
-                self.lathe_mode_setting.notify(self.setLatheMode)
+                self._subscribeOnce(self.in_fmt_setting, self.setInchFormat)
+                self._subscribeOnce(self.mm_fmt_setting, self.setMillimeterFormat)
+                self._subscribeOnce(self.deg_fmt_setting, self.setDegreeFormat)
+                self._subscribeOnce(self.lathe_mode_setting, self.setLatheMode)
 
             except AttributeError:  # settings not found
                 pass
@@ -324,7 +377,7 @@ class DROBaseWidget(VCPWidget):
     def referenceType(self, ref_type):
         # Rewire to the newly requested reference source (abs/rel/dtg).
         self._ref_typ = RefType(ref_type)
-        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
+        self._connectPositionChannel()
         self.updateValue()
 
     @Property(int)
