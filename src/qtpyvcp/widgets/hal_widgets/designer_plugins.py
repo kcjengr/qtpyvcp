@@ -35,6 +35,11 @@ class HalButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalButton
 
+from qtpyvcp.widgets.hal_widgets.hal_led_button import HALLEDButton
+class HALLEDButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HALLEDButton
+
 from qtpyvcp.widgets.hal_widgets.hal_lcd import HalLCDNumber
 class HalLCDNumberPlugin(_DesignerPlugin):
     def pluginClass(self):
