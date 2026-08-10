@@ -21,6 +21,10 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 LOG = logger.getLogger(__name__)
 INFO = Info()
 
+# Set once the undeclared-G7 config error below has been reported, so it lands
+# in the log without every X DRO repeating it on every modal change.
+_WARNED_UNDECLARED_LATHE = False
+
 
 class Axis(IntEnum):
     ALL = -1
@@ -112,6 +116,14 @@ class DROBaseWidget(VCPWidget):
                          getattr(self._lathe_mode, 'name', self._lathe_mode),
                          self._g7_active,
                          " ".join(self.status.gcodes.getValue() or ()))
+
+        elif self._anum == Axis.X:
+            # No lathe flag in the INI, so none of the G7 handling above runs
+            # -- but the interpreter halves every X word regardless while G7 is
+            # active. Watch for that pairing and say so, rather than quietly
+            # showing the operator half of what they typed.
+            self.status.gcodes.notify(self.checkUndeclaredLatheG7)
+            self.checkUndeclaredLatheG7(self.status.gcodes.getValue())
 
         if self._use_global_fmt_settings:
 
@@ -205,6 +217,50 @@ class DROBaseWidget(VCPWidget):
         where the operator means diameter.
         """
         return self._is_lathe and self._g7_active != self.latheG7Actual()
+
+    def latheUndeclaredG7(self):
+        """True when the interpreter is in G7 but the INI declares no lathe.
+
+        LinuxCNC's own GUIs gate their diameter handling on the INI exactly as
+        this widget does -- see the `lathe` check in axis.py's touch off prompt
+        and gmoccapy's `if self.lathe_mode:` around its G7/G8 test. So this
+        combination is a config error, not a gating error: the INI needs
+        [DISPLAY]LATHE, and until it has it nothing here converts X.
+        """
+        return not self._is_lathe and self.latheG7Actual()
+
+    def checkUndeclaredLatheG7(self, gcodes):
+        """Warn once per session when G7 turns up in a non-lathe config.
+
+        Subscribed for the X DRO only, and only where the INI declares no
+        lathe -- the one case the rest of this class cannot compensate for.
+        """
+        global _WARNED_UNDECLARED_LATHE
+        if _WARNED_UNDECLARED_LATHE or self._is_lathe:
+            return
+        if 'G7' not in (gcodes or ()):
+            return
+        _WARNED_UNDECLARED_LATHE = True
+        self.warnUndeclaredLatheG7()
+
+    def warnUndeclaredLatheG7(self, entered=None, sent=None):
+        """Spell out the INI error behind a silently halved X DRO.
+
+        Safe to call during construction -- it touches no Qt state.
+        """
+        LOG.warning("bgred<==== G7 DIAMETER MODE, BUT NO LATHE IN THE INI ====>")
+        if entered is not None:
+            LOG.warning("bgred<LATHE-DRO> typed=%s sent=%s", entered, sent)
+        LOG.warning("bgred<LATHE-DRO> The interpreter is in G7 (diameter "
+                    "mode), but neither LATHE nor BACK_TOOL_LATHE is set in "
+                    "the INI [DISPLAY] section, so the DROs run as a mill and "
+                    "never convert X.")
+        LOG.warning("bgred<LATHE-DRO> The X DRO reads radius while the machine "
+                    "works in diameter: type 20 and it reads back 10. The "
+                    "stored offset itself is correct.")
+        LOG.warning("bgred<LATHE-DRO> Fix the INI: add 'LATHE = 1' under "
+                    "[DISPLAY], plus 'BACK_TOOL_LATHE = 1' as well for a back "
+                    "tool post machine.")
 
     def latheStateSummary(self):
         """One-line diameter/radius state, for troubleshooting logs.

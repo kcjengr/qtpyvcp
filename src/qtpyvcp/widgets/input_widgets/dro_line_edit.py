@@ -67,6 +67,12 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
                     LOG.info("cyan<LATHE-DRO entry> typed=%s sent=%s cmd=%r  %s",
                              entered, val, cmd, self.latheStateSummary())
 
+            elif self._anum == Axis.X and self.latheUndeclaredG7():
+                # The moment the operator is actually bitten, so log it on
+                # every entry rather than once -- this is what sits next to
+                # the complaint in a submitted log.
+                self.warnUndeclaredLatheG7(entered=entered, sent=val)
+
             issue_mdi(cmd)
         except Exception:
             LOG.exception("Error setting work coordinate offset.")
