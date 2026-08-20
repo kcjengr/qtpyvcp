@@ -502,6 +502,15 @@ class VCPMainWindow(QMainWindow):
                         normalized_name = "vtk"
                     real_vtk.setObjectName(normalized_name)
 
+                    # Carry over dynamic properties set on the placeholder in
+                    # the .ui file (e.g. the navHelper* camera-gizmo settings).
+                    # The backplot picks them up on its deferred startup pass.
+                    for prop_name in placeholder.dynamicPropertyNames():
+                        prop_name_str = prop_name.data().decode("utf-8",
+                                                                "replace")
+                        real_vtk.setProperty(prop_name_str,
+                                             placeholder.property(prop_name_str))
+
                     # Prefer Qt's built-in replacement API, which can resolve
                     # nested layout ownership better than indexOf() alone.
                     replaced_item = None

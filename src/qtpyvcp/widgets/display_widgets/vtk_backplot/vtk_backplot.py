@@ -29,7 +29,7 @@ import gcode
 import linuxcnc
 import vtk
 import yaml
-from PySide6.QtCore import QObject, Property, QEvent, Qt, QTimer, Slot
+from PySide6.QtCore import QObject, Property, QEvent, Qt, QTimer, Slot, QSize
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QWidget
 from vtkmodules.vtkCommonCore import VTK_VERSION_NUMBER, vtkVersion
@@ -42,7 +42,8 @@ if not IN_DESIGNER:
 
     vtk_qt.QVTKRWIBase = "QWidget"
     from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-    from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
+    from vtkmodules.vtkInteractionWidgets import (vtkCameraOrientationWidget,
+                                                  vtkCameraOrientationRepresentation)
 else:
     QVTKRenderWindowInteractor = QWidget
 
@@ -325,6 +326,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.program_view_when_loading_program = False
         self.program_view_when_loading_program_view = 'p'
         self.pan_mode = False
+        # nav-helper camera-gizmo qproperties (set from the .ui file)
+        self._nav_helper_props = {}
         self.line = None
         self._last_filename = str()
         self.rotating = 0
@@ -458,11 +461,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._datasource.getAntialias() in ["true", "True", "TRUE", 1, "1"]:
             self.renderer_window.SetMultiSamples(8)  # Enable 8x multisampling for antialiasing
 
-            
-        if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
-            self.cam_orient_manipulator = vtkCameraOrientationWidget()
-            self.cam_orient_manipulator.SetParentRenderer(self.renderer)
-            
         if not IN_DESIGNER:
             
             bounds_type = self._datasource.getMachineBounds()
@@ -554,9 +552,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_colors = {'traverse': self._traverse_color,
                            'arcfeed': self._arcfeed_color,
                            'feed': self._feed_color,
-                           'dwell': QColor(0, 0, 255, 255),
-                           'user': QColor(0, 100, 255, 255)
-                       }
+                           'dwell': self._dwel_color,
+                           'user': self._user_color}
 
             self.offset_axes = OrderedDict()
             self.program_bounds_actors = OrderedDict()
@@ -691,9 +688,236 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             # self.setViewP()
             # self.renderer.ResetCamera()
-            if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
-                # Enable the widget.
-                self.cam_orient_manipulator.On()
+            # Create/show the camera-orientation gizmo and apply its config.
+            # A deferred pass runs once the event loop starts so qproperties
+            # copied from the .ui placeholder are honored as well.
+            self._ensure_nav_helper()
+            QTimer.singleShot(0, self._ensure_nav_helper)
+
+    # ------------------------------------------------------------------
+    # Camera-orientation gizmo ("nav helper") personalization
+    # ------------------------------------------------------------------
+    # The gizmo is driven solely by the ``navHelperEnabled`` qproperty (set
+    # from the .ui file or by the ``backplot.show-nav-helper`` setting). All
+    # settings come from the widget's ``navHelper*`` qproperties; unset
+    # properties keep VTK's native defaults, so they are purely additive.
+
+    def _nav_helper_config(self):
+        """Personalization dict for the camera-orientation gizmo, built from
+        the widget's ``navHelper*`` qproperties (set from the .ui file)."""
+        cfg = {}
+        props = self._nav_helper_props
+
+        def _set(key, convert):
+            if props.get(key) is not None:
+                try:
+                    cfg[key] = convert(props[key])
+                except Exception:
+                    LOG.warning("nav helper: ignoring invalid %s qproperty",
+                                key)
+
+        _set("enabled", bool)
+        _set("animate", bool)
+        _set("should_reset_camera", bool)
+        _set("container_visibility", bool)
+        _set("dragable", bool)
+        _set("pickable", bool)
+        _set("handle_visibility", bool)
+        _set("labels_visible", bool)
+        _set("labels", lambda v: [str(x) for x in v])
+        _set("total_length", float)
+        _set("handle_size", float)
+        _set("normalized_handle_dia", float)
+        _set("shaft_resolution", int)
+        _set("handle_resolution", int)
+        _set("container_circumferential_resolution", int)
+        _set("container_radial_resolution", int)
+        _set("animator_total_frames", int)
+        _set("process_events", bool)
+        _set("manages_cursor", bool)
+        _set("priority", float)
+        _set("key_activation", str)
+        _set("anchor", str)
+        _set("padding", lambda v: [v.width(), v.height()])
+        _set("size", lambda v: [v.width(), v.height()])
+        _set("x_axis_color", lambda v: v.name())
+        _set("y_axis_color", lambda v: v.name())
+        _set("z_axis_color", lambda v: v.name())
+        _set("axis_color", lambda v: v.name())
+        return cfg
+
+    def _nav_helper_enabled(self):
+        """True when the camera-orientation gizmo should be created/shown.
+
+        Driven solely by the ``navHelperEnabled`` qproperty (set from the
+        .ui file or by the ``backplot.show-nav-helper`` setting); defaults
+        to off when unset."""
+        try:
+            enabled = self._nav_helper_config().get("enabled")
+            if enabled is not None:
+                return bool(enabled)
+        except Exception:
+            LOG.exception("Failed to read nav-helper enabled flag")
+        return False
+
+    def _ensure_nav_helper(self):
+        """Create (if needed), show and configure the camera-orientation
+        gizmo. When disabled, an existing gizmo is turned off. No-op in
+        designer mode."""
+        if IN_DESIGNER:
+            return
+        if not self._nav_helper_enabled():
+            if hasattr(self, "cam_orient_manipulator"):
+                self.cam_orient_manipulator.Off()
+                # Off() removes the gizmo from the renderer, but the change
+                # only becomes visible when the render window repaints. Without
+                # this the gizmo stays on screen until the next natural render
+                # (e.g. restart), making the toggle look broken.
+                self._request_render()
+            return
+        if not hasattr(self, "cam_orient_manipulator"):
+            self.cam_orient_manipulator = vtkCameraOrientationWidget()
+            self.cam_orient_manipulator.SetParentRenderer(self.renderer)
+        self.cam_orient_manipulator.On()
+        self._apply_nav_helper_config()
+        self._request_render()
+
+    @Slot()
+    def reapplyNavHelperConfig(self):
+        """(Re)create and configure the camera-orientation gizmo from the
+        current ``navHelper*`` qproperties. Called on theme change so the
+        gizmo colors follow the active theme."""
+        self._ensure_nav_helper()
+
+    def _apply_nav_helper_config(self):
+        """Apply the nav-helper qproperty personalization to the
+        camera-orientation gizmo. Invalid values are logged and skipped,
+        never fatal."""
+        cfg = self._nav_helper_config()
+        if not cfg:
+            return
+        widget = self.cam_orient_manipulator
+        try:
+            rep = widget.GetRepresentation()
+        except Exception:
+            LOG.warning("nav helper: no gizmo representation to configure")
+            return
+
+        def _rgb(hex_color):
+            color = QColor(hex_color)
+            if not color.isValid():
+                raise ValueError("invalid color %r" % (hex_color,))
+            return [color.redF(), color.greenF(), color.blueF()]
+
+        def _apply(name, func, convert):
+            if name not in cfg:
+                return
+            try:
+                func(convert(cfg[name]))
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid %s=%r",
+                            name, cfg[name])
+
+        _apply("animate", widget.SetAnimate, bool)
+        _apply("should_reset_camera", widget.SetShouldResetCamera, bool)
+        _apply("animator_total_frames", widget.SetAnimatorTotalFrames, int)
+        _apply("process_events", widget.SetProcessEvents, bool)
+        _apply("manages_cursor", widget.SetManagesCursor, bool)
+        _apply("priority", widget.SetPriority, float)
+        _apply("dragable", rep.SetDragable, bool)
+        _apply("pickable", rep.SetPickable, bool)
+        _apply("container_visibility", rep.SetContainerVisibility, bool)
+        _apply("total_length", rep.SetTotalLength, float)
+        _apply("handle_size", rep.SetHandleSize, float)
+        _apply("normalized_handle_dia", rep.SetNormalizedHandleDia, float)
+        _apply("shaft_resolution", rep.SetShaftResolution, int)
+        _apply("handle_resolution",
+               rep.SetHandleCircumferentialResolution, int)
+        _apply("container_circumferential_resolution",
+               rep.SetContainerCircumferentialResolution, int)
+        _apply("container_radial_resolution",
+               rep.SetContainerRadialResolution, int)
+
+        # rotate-arrow (handle) visibility: collapse the handles to nothing
+        if cfg.get("handle_visibility") is False:
+            try:
+                rep.SetNormalizedHandleDia(0.0)
+            except Exception:
+                LOG.warning("nav helper: failed to hide handles")
+
+        # axis labels: per-axis text, blanked entirely when hidden
+        if "labels" in cfg or "labels_visible" in cfg:
+            defaults = ("X+", "X-", "Y+", "Y-", "Z+", "Z-")
+            if isinstance(cfg.get("labels"), list):
+                labels = list(cfg["labels"]) + [""] * max(0, 6 - len(cfg["labels"]))
+            else:
+                labels = list(defaults)
+            hide = cfg.get("labels_visible") is False
+            setters = (rep.SetXPlusLabelText, rep.SetXMinusLabelText,
+                       rep.SetYPlusLabelText, rep.SetYMinusLabelText,
+                       rep.SetZPlusLabelText, rep.SetZMinusLabelText)
+            for i, setter in enumerate(setters):
+                try:
+                    setter("" if hide else str(labels[i]))
+                except Exception:
+                    LOG.warning("nav helper: invalid label %d", i)
+
+        # master axis color overrides the per-axis colors
+        if "axis_color" in cfg:
+            try:
+                rgb = _rgb(cfg["axis_color"])
+                for ax in (0, 1, 2):
+                    rep.SetAxisColor(ax, rgb)
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid axis_color=%r",
+                            cfg["axis_color"])
+
+        if "key_activation" in cfg:
+            try:
+                widget.SetKeyPressActivation(ord(str(cfg["key_activation"])[0]))
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid key_activation=%r",
+                            cfg["key_activation"])
+
+        if "anchor" in cfg:
+            try:
+                anchor = str(cfg["anchor"]).strip().lower()
+                at = vtkCameraOrientationRepresentation.AnchorType
+                rep.SetAnchorPosition({
+                    "lower_left": at.LowerLeft,
+                    "upper_left": at.UpperLeft,
+                    "lower_right": at.LowerRight,
+                    "upper_right": at.UpperRight,
+                }[anchor])
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid anchor=%r",
+                            cfg["anchor"])
+
+        if "padding" in cfg:
+            try:
+                x, y = cfg["padding"]
+                rep.SetPadding(int(x), int(y))
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid padding=%r",
+                            cfg["padding"])
+
+        if "size" in cfg:
+            try:
+                w, h = cfg["size"]
+                rep.SetSize(int(w), int(h))
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid size=%r",
+                            cfg["size"])
+
+        for key, setter in (("x_axis_color", rep.SetXAxisColor),
+                            ("y_axis_color", rep.SetYAxisColor),
+                            ("z_axis_color", rep.SetZAxisColor)):
+            if key in cfg:
+                try:
+                    setter(_rgb(cfg[key]))
+                except Exception:
+                    LOG.warning("nav helper: ignoring invalid %s=%r",
+                                key, cfg[key])
 
     def button_event(self, obj, event):
 
@@ -4051,6 +4275,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @traverseColor.setter
     def traverseColor(self, color):
         self._traverse_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["traverse"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @traverseColor.reset
@@ -4066,6 +4292,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @arcfeedColor.setter
     def arcfeedColor(self, color):
         self._arcfeed_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["arcfeed"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @arcfeedColor.reset
@@ -4081,6 +4309,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @feedColor.setter
     def feedColor(self, color):
         self._feed_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["feed"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @feedColor.reset
@@ -4096,6 +4326,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @dwellColor.setter
     def dwellColor(self, color):
         self._dwel_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["dwell"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @dwellColor.reset
@@ -4111,9 +4343,59 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @userColor.setter
     def userColor(self, color):
         self._user_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["user"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @userColor.reset
     # def userColor(self):
     #     self._user_color = self._default_user_color
+
+    # ------------------------------------------------------------------
+    # Camera-orientation gizmo ("nav helper") qproperties
+    # ------------------------------------------------------------------
+    # Settable from the .ui file; stored in ``_nav_helper_props`` and turned
+    # into the gizmo configuration by _nav_helper_config().
+
+    @staticmethod
+    def _nav_prop(qt_type, key):
+        def _get(self):
+            return self._nav_helper_props.get(key)
+
+        def _set(self, value):
+            self._nav_helper_props[key] = value
+
+        return Property(qt_type, _get, _set)
+
+    navHelperEnabled = _nav_prop(bool, "enabled")
+    navHelperAnimate = _nav_prop(bool, "animate")
+    navHelperShouldResetCamera = _nav_prop(bool, "should_reset_camera")
+    navHelperKeyActivation = _nav_prop(str, "key_activation")
+    navHelperAnchor = _nav_prop(str, "anchor")
+    navHelperPadding = _nav_prop(QSize, "padding")
+    navHelperSize = _nav_prop(QSize, "size")
+    navHelperTotalLength = _nav_prop(float, "total_length")
+    navHelperHandleSize = _nav_prop(float, "handle_size")
+    navHelperNormalizedHandleDia = _nav_prop(float, "normalized_handle_dia")
+    navHelperContainerVisibility = _nav_prop(bool, "container_visibility")
+    navHelperDragable = _nav_prop(bool, "dragable")
+    navHelperPickable = _nav_prop(bool, "pickable")
+    navHelperShaftResolution = _nav_prop(int, "shaft_resolution")
+    navHelperHandleResolution = _nav_prop(int, "handle_resolution")
+    navHelperXAxisColor = _nav_prop(QColor, "x_axis_color")
+    navHelperYAxisColor = _nav_prop(QColor, "y_axis_color")
+    navHelperZAxisColor = _nav_prop(QColor, "z_axis_color")
+    # show/hide + extra behavior knobs
+    navHelperHandleVisibility = _nav_prop(bool, "handle_visibility")
+    navHelperLabelsVisible = _nav_prop(bool, "labels_visible")
+    navHelperLabels = _nav_prop("QStringList", "labels")
+    navHelperAxisColor = _nav_prop(QColor, "axis_color")
+    navHelperContainerCircumferentialResolution = _nav_prop(
+        int, "container_circumferential_resolution")
+    navHelperContainerRadialResolution = _nav_prop(
+        int, "container_radial_resolution")
+    navHelperAnimatorTotalFrames = _nav_prop(int, "animator_total_frames")
+    navHelperProcessEvents = _nav_prop(bool, "process_events")
+    navHelperManagesCursor = _nav_prop(bool, "manages_cursor")
+    navHelperPriority = _nav_prop(float, "priority")
 

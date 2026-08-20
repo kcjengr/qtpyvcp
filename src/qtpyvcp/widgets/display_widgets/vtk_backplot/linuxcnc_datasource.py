@@ -123,7 +123,6 @@ class LinuxCncDataSource(QObject):
         self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
         self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
         self._machine_bounds = str(self._inifile.find("DISPLAY", "BOUNDARIES"))
-        self._nav_helper = bool(self._inifile.find("DISPLAY", "NAV")) or False
         self._antialias = bool(self._inifile.find("DISPLAY", "ANTIALIAS")) or False
         self._fps = int(self._inifile.find("DISPLAY", "FPS") or 0)
         if self._fps == 0:
@@ -404,9 +403,6 @@ class LinuxCncDataSource(QObject):
 
     def getMachineBounds(self):
         return self._machine_bounds
-    
-    def getNavHelper(self):
-        return self._nav_helper
     
     def getAntialias(self):
         return self._antialias
