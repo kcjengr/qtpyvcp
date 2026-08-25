@@ -61,6 +61,9 @@ class VTKCanon(StatCanon):
         self._last_units_factor_log = None
         self._pending_tool_event_motion = False
         self._pending_tool_event_traverse_suppressed = 0
+        # WCS indices whose paths ever established an absolute position.
+        # Anything with points but no entry here is a floating (G91-only) path.
+        self._anchored_wcs = set()
 
         g5x = self._datasource.getActiveWcsOffsets()
 
@@ -441,6 +444,15 @@ class VTKCanon(StatCanon):
         self.rotation_sin = math.sin(theta)
 
 
+    def get_floating_wcs(self):
+        """WCS indices whose loaded path never established an absolute position.
+
+        A G91-only program describes a shape relative to wherever the machine
+        happens to be, so these paths must be anchored at runtime rather than
+        drawn at WCS zero.
+        """
+        return {wcs for wcs in self.path_actors if wcs not in self._anchored_wcs}
+
     def add_path_point(self, line_type, start_point, end_point):
         # As the points come through with the active wcs offsets baked in
         # remove them to allow vtk setusertransforms to work correctly.
@@ -468,6 +480,13 @@ class VTKCanon(StatCanon):
             self.initial_wcs_offsets[self.active_wcs_index],
             program_to_machine,
         )
+
+        # Record whether this path ever had its position pinned down by a
+        # G90 move. Geometry stays in program coordinates either way; the
+        # widget anchors floating paths via the actor transform so the anchor
+        # can stay live instead of being frozen at load time.
+        if self.position_anchored:
+            self._anchored_wcs.add(self.active_wcs_index)
 
         if self._cpp_mode:
             start_xyz = (

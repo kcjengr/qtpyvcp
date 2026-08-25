@@ -7,6 +7,7 @@
 #include <cmath>
 #include <cstdint>
 #include <optional>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -126,6 +127,15 @@ public:
             seq_num = py::int_(state.attr("sequence_number"));
         } catch (...) {
             seq_num = -1;
+        }
+
+        // 900 == G90 (absolute), 910 == G91 (incremental). Mirrors
+        // BaseCanon.next_line() so the native path classifies floating
+        // (G91-only) programs the same way the Python canon does.
+        try {
+            distance_mode = py::int_(state.attr("distance_mode"));
+        } catch (...) {
+            distance_mode = 0;
         }
 
         if (should_trace_seq()) {
@@ -409,6 +419,19 @@ public:
 
     const std::vector<NativeSegment> &native_segments_ref() const { return native_segments; }
 
+    // WCS indices whose loaded path never established an absolute position.
+    // The widget anchors these at the machine instead of drawing them at WCS
+    // zero. Mirrors VTKCanon.get_floating_wcs().
+    py::set get_floating_wcs() const {
+        py::set floating;
+        for (int wcs : wcs_with_points) {
+            if (anchored_wcs.find(wcs) == anchored_wcs.end()) {
+                floating.add(py::int_(wcs));
+            }
+        }
+        return floating;
+    }
+
 private:
     void append_segment(int wcs_index) {
         py::dict segment;
@@ -444,6 +467,12 @@ private:
     }
 
     std::array<double, 9> rotate_and_translate(double x, double y, double z, double a, double b, double c, double u, double v, double w) const {
+        // Reached only from motion callbacks, so a G90 block here means the
+        // resulting position is absolute and the path no longer floats.
+        if (distance_mode == DISTANCE_MODE_ABSOLUTE) {
+            position_anchored = true;
+        }
+
         std::array<double, 9> p{x, y, z, a, b, c, u, v, w};
 
         for (int i = 0; i < 9; ++i) {
@@ -485,6 +514,11 @@ private:
             out[1] = src[1] + tlo_y - active_wcs_initial_y;
             out[2] = src[2] - tlo_z - active_wcs_initial_z;
         };
+
+        wcs_with_points.insert(active_wcs_index);
+        if (position_anchored) {
+            anchored_wcs.insert(active_wcs_index);
+        }
 
         std::array<double, 3> start_xyz{};
         std::array<double, 3> end_xyz{};
@@ -537,6 +571,11 @@ private:
     double active_wcs_initial_y{0.0};
     double active_wcs_initial_z{0.0};
     std::unordered_map<int, std::array<double, 3>> initial_wcs_offsets_native;
+    static constexpr int DISTANCE_MODE_ABSOLUTE = 900;
+    int distance_mode{0};
+    mutable bool position_anchored{false};
+    std::set<int> anchored_wcs;
+    std::set<int> wcs_with_points;
     py::object arc_to_segments_fn;
     py::object trace_logger{py::none()};
     std::vector<NativeSegment> native_segments;
@@ -1192,6 +1231,7 @@ PYBIND11_MODULE(_backplot_cpp, m) {
         .def("set_axis_mask", &NativeCanon::set_axis_mask)
         .def("get_block_delete", &NativeCanon::get_block_delete)
         .def("calc_extents", &NativeCanon::calc_extents)
+        .def("get_floating_wcs", &NativeCanon::get_floating_wcs)
         .def_readwrite("path_colors", &NativeCanon::path_colors)
         .def_readwrite("path_segments", &NativeCanon::path_segments)
         .def_readwrite("initial_wcs_offsets", &NativeCanon::initial_wcs_offsets)
