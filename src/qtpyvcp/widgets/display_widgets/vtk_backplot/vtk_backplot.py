@@ -345,6 +345,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._cache_overlay_transform = vtk.vtkTransform()
         self._active_path_transform = vtk.vtkTransform()
         self._machine_bounds_base = None
+        # Floating-path anchoring. A G91-only program has no absolute position
+        # until the machine actually runs it, so the anchor tracks the machine
+        # while idle and latches at the position execution began.
+        self._floating_wcs = set()
+        self._anchor_offset = (0.0, 0.0, 0.0)
+        self._anchor_latched = False
+        self._program_running = False
         self._line_cells_by_wcs = {}
         self._line_by_cell_by_wcs = {}
         self._highlight_line_actors = OrderedDict()
@@ -532,6 +539,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.tool_bit_actor = ToolBitActor(self._datasource)
 
 
+            # Program-bounds state must exist before the settings below are
+            # connected: connectSetting() pushes the current (persisted) value
+            # into showProgramBounds() immediately, and that slot caches it in
+            # self.show_program_bounds. Initialising these after the connect
+            # silently reset the cache to False while the button/menu still
+            # showed the setting as on.
+            self.offset_axes = OrderedDict()
+            self.program_bounds_actors = OrderedDict()
+            self.show_program_bounds = False
+
             # view settings
             connectSetting('backplot.show-spindle', self.showSpindle)
             connectSetting('backplot.show-grid', self.showGrid)
@@ -554,10 +571,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                            'feed': self._feed_color,
                            'dwell': self._dwel_color,
                            'user': self._user_color}
-
-            self.offset_axes = OrderedDict()
-            self.program_bounds_actors = OrderedDict()
-            self.show_program_bounds = bool()
 
             # Add the observers to watch for particular events. These invoke Python functions.
             self.interactor.AddObserver("LeftButtonPressEvent", self.button_event)
@@ -604,6 +617,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if callable(selected_lines_notify):
                 selected_lines_notify(self._on_selected_program_lines_changed)
             
+            # Run-state edges drive the floating anchor's latch/release. These
+            # must come from the interpreter state, not position updates, which
+            # stop arriving once the machine is stationary.
+            self._datasource.runStateChanged.connect(self.on_run_state_changed)
+
             self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
             self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
             
@@ -919,7 +937,47 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     LOG.warning("nav helper: ignoring invalid %s=%r",
                                 key, cfg[key])
 
+    def _navigation_active(self):
+        return bool(self.rotating or self.panning or self.zooming)
+
+    def _end_navigation(self):
+        self.rotating = 0
+        self.panning = 0
+        self.zooming = 0
+
+    # QVTKRenderWindowInteractor sends every mouse release as if it came from
+    # the button pressed last, so pressing a second button part way through a
+    # drag makes the first button's release go missing and leaves the camera
+    # stuck following the mouse. Point each release at the button that was
+    # actually let go, and drop navigation once no button is held.
+    def mouseReleaseEvent(self, ev):
+        self._ActiveButton = ev.button()
+        super(VTKBackPlot, self).mouseReleaseEvent(ev)
+        if not ev.buttons():
+            self._ActiveButton = Qt.MouseButton.NoButton
+            self._end_navigation()
+
+    # Catches a release that never reached the widget at all, so the camera
+    # cannot keep tracking a mouse with no buttons down.
+    def mouseMoveEvent(self, ev):
+        if not ev.buttons():
+            self._end_navigation()
+        super(VTKBackPlot, self).mouseMoveEvent(ev)
+
     def button_event(self, obj, event):
+        # Only the first button down drives the camera: extra buttons pressed
+        # mid-drag are ignored and any release ends navigation, so a fumbled
+        # second click can never lock the viewport into rotate or pan.
+        if event in ("LeftButtonReleaseEvent",
+                     "MiddleButtonReleaseEvent",
+                     "RightButtonReleaseEvent"):
+            self._end_navigation()
+            if event == "LeftButtonReleaseEvent":
+                self._handle_backplot_left_click_pick(obj)
+            return
+
+        if self._navigation_active():
+            return
 
         if event == "LeftButtonPressEvent":
             self._left_button_press_pos = tuple(self.interactor.GetEventPosition())
@@ -929,29 +987,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             else:
                 self.rotating = 1
 
-        elif event == "LeftButtonReleaseEvent":
-            if self.pan_mode is True:
-                self.panning = 0
-            else:
-                self.rotating = 0
-            self._handle_backplot_left_click_pick(obj)
-
         elif event == "MiddleButtonPressEvent":
             if self.pan_mode is True:
                 self.rotating = 1
             else:
                 self.panning = 1
 
-        elif event == "MiddleButtonReleaseEvent":
-            if self.pan_mode is True:
-                self.rotating = 0
-            else:
-                self.panning = 0
-
         elif event == "RightButtonPressEvent":
             self.zooming = 1
-        elif event == "RightButtonReleaseEvent":
-            self.zooming = 0
 
     def mouse_scroll_backward(self, obj, event):
         self.zoomOut()
@@ -1126,19 +1169,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # Do this for each WCS.
             for wcs_index, actor in self.path_actors.items():
                 axes_actor = actor.get_axes_actor()
-                program_bounds_actor = self.program_bounds_actors[wcs_index]
+                # A load that bails out after path_actors is assigned leaves
+                # keys here with no matching bounds actor, so look it up
+                # defensively rather than letting a KeyError escape.
+                program_bounds_actor = self.program_bounds_actors.get(wcs_index)
 
                 # if wcs_index == self.active_wcs_index:
 
                 self.renderer.RemoveActor(axes_actor)
 
                 self.renderer.RemoveActor(actor)
-                self.renderer.RemoveActor(program_bounds_actor)
+                if program_bounds_actor is not None:
+                    self.renderer.RemoveActor(program_bounds_actor)
 
 
             self.path_actors.clear()
             self.offset_axes.clear()
             self.program_bounds_actors.clear()
+            self._floating_wcs = set()
 
             if not fname:
                 return
@@ -1250,6 +1298,28 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             offset_columns = self._datasource.getOffsetColumns()
 
+            # A G91-only program has no absolute position until the machine
+            # runs it. Record which paths float and seed the anchor now; it
+            # keeps tracking the machine until execution latches it.
+            self._floating_wcs = set()
+            if cpp_backplot_used:
+                self._floating_wcs = set(getattr(cpp_result, 'floating_wcs', None) or ())
+            else:
+                floating_getter = getattr(self.canon, 'get_floating_wcs', None)
+                if callable(floating_getter):
+                    self._floating_wcs = set(floating_getter())
+            self._anchor_latched = False
+            self._program_running = False
+            if self._floating_wcs:
+                seeded_anchor = self._compute_anchor_offset()
+                if seeded_anchor is not None:
+                    self._anchor_offset = seeded_anchor
+                LOG.info(
+                    "[anchor] floating path(s) %s tracking machine position %s",
+                    sorted(self._floating_wcs),
+                    self._anchor_offset,
+                )
+
             actor_start = time.perf_counter()
             for wcs_index, actor in self.path_actors.items():
                 current_offsets = self._safe_get_offsets(wcs_index, offset_columns)
@@ -1262,7 +1332,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 if 0 <= wcs_index < len(self.rotation_xy_table):
                     self.rotation_xy_table[wcs_index] = rotation
 
-                actor_transform = self._compose_wcs_transform(x, y, z, rotation)
+                actor_transform = self._path_transform_for(wcs_index, x, y, z, rotation)
                 axes_transform = self._compose_wcs_transform(x, y, z, rotation)
 
                 if wcs_index == self.active_wcs_index:
@@ -2211,6 +2281,95 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def _transform_debug_enabled(self):
         return self._transform_debug and LOG.isEnabledFor(logging.DEBUG)
 
+    def _compose_anchor_transform(self):
+        """Placement for a floating (G91-only) path.
+
+        Its coordinates are deltas from a start the preview interpreter
+        assumed was 0, so the WCS offset is meaningless here -- the shape is
+        anchored at the machine position instead.
+        """
+        transform = vtk.vtkTransform()
+        transform.Translate(*self._anchor_offset)
+        return transform
+
+    def _path_transform_for(self, wcs_index, x, y, z, rotation=0.0):
+        """WCS placement for a normal path, machine anchoring for a floating one."""
+        if wcs_index in self._floating_wcs:
+            return self._compose_anchor_transform()
+        return self._compose_wcs_transform(x, y, z, rotation)
+
+    def _compute_anchor_offset(self):
+        """Machine position with any baked-in G92 removed, in machine units."""
+        machine_position = self._datasource.getMachinePosition()
+        if machine_position is None:
+            return None
+
+        g92 = self.g92_offset or ()
+
+        def _axis(values, index):
+            try:
+                return float(values[index])
+            except (IndexError, TypeError, ValueError, KeyError):
+                return 0.0
+
+        return tuple(_axis(machine_position, i) - _axis(g92, i) for i in range(3))
+
+    ANCHOR_DEADBAND = 1e-6
+
+    @classmethod
+    def _position_deviates(cls, position, reference):
+        """True when a position has moved meaningfully away from a reference."""
+        if position is None or reference is None:
+            return True
+        return any(
+            abs(float(position[i]) - float(reference[i])) > cls.ANCHOR_DEADBAND
+            for i in range(3)
+        )
+
+    def _update_floating_anchor(self):
+        """Keep a floating (G91-only) path anchored sensibly at all times.
+
+        Two states:
+
+        TRACKING  not executing -- the anchor follows the machine, so the plot
+                  always depicts what will happen if cycle start is pressed
+                  from here. Deliberately predictive: after a run it snaps to
+                  where the program left the machine, because that is where
+                  the next cycle would actually begin.
+        LATCHED   AUTO execution in progress -- frozen at the origin the
+                  interpreter actually started from.
+
+        Position updates drive tracking; run-state changes drive latch and
+        release. The latter must not be derived from position, which stops
+        updating once the machine is stationary.
+        """
+        if not self._floating_wcs:
+            return
+
+        machine_position = self._compute_anchor_offset()
+        if machine_position is None:
+            return
+
+        running = self._datasource.isProgramRunning()
+
+        if running != self._program_running:
+            self._program_running = running
+            self._anchor_latched = running
+            LOG.debug(
+                "[anchor] %s at %s",
+                "latched for execution" if running else "released, tracking machine",
+                self._anchor_offset,
+            )
+
+        if self._anchor_latched:
+            return
+
+        if not self._position_deviates(machine_position, self._anchor_offset):
+            return
+
+        self._anchor_offset = machine_position
+        self.rotate_and_translate()
+
     def _compose_wcs_transform(self, x, y, z, rotation=0.0):
         # LinuxCNC-style chain for table machines:
         # 1) place WCS, 2) apply table linear shift, 3) apply table rotary axes
@@ -2695,6 +2854,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             return
 
+        self._update_floating_anchor()
+
         # Plots the movement of the tool and leaves a trace line
         
         active_wcs_offset = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
@@ -2914,6 +3075,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_joints(self, joints):
         self.joints = joints
         
+    @Slot(bool)
+    def on_run_state_changed(self, _running=False):
+        self._update_floating_anchor()
+
     def on_offset_table_changed(self, offset_table):
         if offset_table is None:
             LOG.warning("VTKBackPlot: received None offset table; keeping existing offsets")
@@ -3031,7 +3196,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.offsetTableColumnsIndex,
             )
 
-            actor_transform = self._compose_wcs_transform(x, y, z, rotation)
+            actor_transform = self._path_transform_for(wcs_index, x, y, z, rotation)
             axes_transform = self._compose_wcs_transform(x, y, z, rotation)
 
             if wcs_index == self.active_wcs_index:
@@ -3141,7 +3306,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 axes = actor.get_axes_actor()
 
-                path_transform = self._compose_wcs_transform(
+                path_transform = self._path_transform_for(
+                    wcs_index,
                     x,
                     y,
                     z,
@@ -4136,16 +4302,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def showProgramBounds(self, show):
         self.show_program_bounds = show
         for wcs_index, actor in list(self.path_actors.items()):
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
+            program_bounds_actor = self.program_bounds_actors.get(wcs_index)
             if program_bounds_actor is not None:
                 program_bounds_actor.showProgramBounds(self.show_program_bounds)
         self._request_render()
 
     @Slot()
     def toggleProgramBounds(self):
-        for wcs_index, actor in list(self.path_actors.items()):
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
+        for wcs_index in list(self.path_actors.keys()):
+            program_bounds_actor = self.program_bounds_actors.get(wcs_index)
+            if program_bounds_actor is None:
+                continue
+            # showProgramBounds() applies to every actor, so decide once from
+            # the first one we have and stop; continuing would re-read an actor
+            # this call just updated and flip the state back.
             self.showProgramBounds(not program_bounds_actor.GetXAxisVisibility())
+            return
 
     @Slot(bool)
     @Slot(object)
