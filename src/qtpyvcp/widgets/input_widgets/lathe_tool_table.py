@@ -56,6 +56,8 @@ EXTRAS_LABELS = {
     'overall_length': 'Overall Len',
     'shaft_diameter': 'Shaft Dia',
     'chamfer_threads': 'Chamfer Thds',
+    'thread_pitch': 'Thread Pitch',
+    'thread_pitch_min': 'Min Pitch',
     'thread_pitch_max': 'Max Pitch',
     'thread_angle': 'Thread Angle',
     'thread_tip_type': 'Tip Type',
@@ -83,9 +85,22 @@ TEXT_EXTRAS = {'type', 'insert_shape', 'insert_size_mode', 'holder_style',
 # calculated from Head Length instead, so OAL feeds nothing and showing it
 # by default invited it being read as the stickout -- which is exactly the
 # mistake it caused before.
-REFERENCE_ONLY_EXTRAS = ('holder_hand', 'thread_tip_type', 'chamfer_threads',
+#
+# overall_length is the same trap one field along. It is the drill or tap's
+# full length, and nothing calculates from it: reach for a round tool comes
+# from Len Below Holder. Its only reader draws the tool body in the
+# simulation, where a missing value falls back to a default. Shown beside
+# Len Below Holder and Flute Len it reads like a third reach figure, so it
+# is off by default and available for anyone who wants the drawn tool to
+# match their real one.
+REFERENCE_ONLY_EXTRAS = ('holder_hand', 'chamfer_threads',
                          'surface_speed', 'feed_per_rev', 'depth_of_cut',
-                         'notes', 'holder_oal')
+                         'notes', 'holder_oal', 'overall_length', 'groove_width')
+
+# thread_tip_type is NOT reference-only: it decides whether the crest is a
+# point, a flat or an arc, and D is read differently for each. Hidden by
+# default it was unreachable for the one tool type that needs it.
+
 DEFAULT_VISIBLE_EXTRAS = [c for c in EXTRAS_ORDER
                           if c not in REFERENCE_ONLY_EXTRAS]
 
@@ -98,7 +113,10 @@ INSERT_SIZE_MODE_OPTIONS = ['IC', 'edge_length']
 HOLDER_HAND_OPTIONS = ['R', 'L']
 # Not DB-enforced, but a documented closed convention:
 # "D=0 remains for thread_tip_type='point' inserts and is valid data".
-THREAD_TIP_TYPE_OPTIONS = ['point', 'flat', 'radius']
+# Fusion's own three, spelled Fusion's way: an import writes 'round', so
+# offering only 'radius' meant picking from the drop-down disagreed with every
+# imported row. 'radius' stays accepted as a synonym by the geometry builder.
+THREAD_TIP_TYPE_OPTIONS = ['point', 'flat', 'round']
 
 STRICT_ENUM_OPTIONS = {
     'type': TYPE_OPTIONS,
@@ -126,6 +144,21 @@ THREADING_TYPES = {'threading'}
 GENERAL_INSERT_SHAPES = ['C', 'D', 'V', 'W', 'T', 'S', 'R']
 GROOVING_INSERT_SHAPES = ['GROOVE SQUARE', 'GROOVE ROUND']
 THREADING_INSERT_SHAPES = ['THREAD ISO TRIPLE', 'THREAD ISO DOUBLE']
+
+# ISO shapes whose catalogue size is the cutting EDGE rather than the
+# inscribed circle. A parallelogram has no single inscribed circle to quote,
+# and a THREAD ISO DOUBLE is a bar quoted by its long edge. Everything else
+# -- round, square, triangle, trigon, the diamonds, the regular polygons --
+# is quoted by its inscribed circle.
+EDGE_LENGTH_INSERT_SHAPES = frozenset(
+    ['A', 'B', 'K', 'N', 'X', 'THREAD ISO DOUBLE'])
+
+
+def size_mode_for_insert_shape(insert_shape):
+    """'IC' or 'edge_length' for an insert shape. See EDGE_LENGTH_INSERT_SHAPES."""
+    shape = str(insert_shape or '').strip().upper()
+    return 'edge_length' if shape in EDGE_LENGTH_INSERT_SHAPES else 'IC'
+
 
 GROOVING_HOLDER_STYLES = ['GROOVE EXTERNAL', 'GROOVE INTERNAL', 'GROOVE FACE']
 THREADING_HOLDER_STYLES = ['THREAD STRAIGHT', 'THREAD FACE',
@@ -169,6 +202,91 @@ class LatheToolModel(ToolTableEditorModel):
     # REQUIREMENT_KEY stays here: which column selects a rule set is a fact
     # about this schema, not about any consumer of it.
     REQUIREMENT_KEY = 'type'
+
+    def storageKeyFor(self, row_data, key):
+        """Insert Size shows the groove width on a blade.
+
+        A grooving or parting blade has no inscribed circle and no edge length
+        to quote -- the one size that describes it is the width it cuts. Rather
+        than carry a second size column that is blank on every other tool type,
+        the Insert Size cell reads and writes `groove_width` for those rows.
+
+        Storage does not move: `groove_width` remains the single home for the
+        value, so everything that already reads it -- the G-code builders, the
+        simulation, the Fusion import -- is untouched.
+        """
+        if key == 'insert_size':
+            tool_type = str(row_data.get('type') or '').strip().lower()
+            if tool_type in GROOVING_TYPES:
+                return 'groove_width'
+        return key
+
+    def isDerivedCell(self, row_data, key):
+        """Size Mode is worked out from Type and Insert Shape, never typed.
+
+        It was editable when it was a question. It is not one any more: the
+        shape decides which measurement the size is, so a pick-list here would
+        offer choices that the next Insert Shape edit overwrites -- and on a
+        blade, one the schema cannot store at all.
+        """
+        if key != 'insert_size_mode':
+            return False
+        tool_type = str(row_data.get('type') or '').strip().lower()
+        if tool_type in NO_INSERT_TYPES:
+            return False              # blank and inert -- leave it alone
+        if tool_type in GROOVING_TYPES:
+            return True               # shows "Groove Width", nothing to pick
+        return bool(str(row_data.get('insert_shape') or '').strip())
+
+    def displayValueFor(self, row_data, key, value):
+        """Size Mode reads "Groove Width" on a blade.
+
+        Not stored: the schema's CHECK allows only IC and edge_length, and a
+        blade needs neither -- nothing reads Size Mode for one. Rebuilding the
+        table to store a value nothing consumes would be a migration in service
+        of a label. So the label is all this is.
+        """
+        if key == 'insert_size_mode':
+            tool_type = str(row_data.get('type') or '').strip().lower()
+            if tool_type in GROOVING_TYPES:
+                return 'Groove Width'
+        return value
+
+    def requirementCarriedElsewhere(self, row_data, key):
+        """Groove W does not shade on a blade -- Insert Size shows it instead."""
+        if key == 'groove_width':
+            tool_type = str(row_data.get('type') or '').strip().lower()
+            return tool_type in GROOVING_TYPES
+        return False
+
+    def deriveValuesForRow(self, row_data):
+        """Size Mode, worked out from Type and Insert Shape.
+
+        Insert Size is one number that can mean two different measurements,
+        and which one it is has never been the operator's choice -- it is a
+        property of the insert they already named. Left to be typed it is a
+        blank cell with no clue what to put in it; derived, it reads back as
+        an instruction: measure the inscribed circle, or measure the edge.
+
+            parallelogram (A B K N X)  edge length -- a parallelogram has no
+                                       single inscribed circle to quote
+            THREAD ISO DOUBLE          edge length -- a bar is quoted by its
+                                       long edge
+            every other insert shape   inscribed circle
+
+        Grooving and parting blades are left alone: nothing reads Size Mode
+        for them, so writing one in would be inventing data.
+        """
+        tool_type = str(row_data.get('type') or '').strip().lower()
+        if tool_type in NO_INSERT_TYPES or tool_type in GROOVING_TYPES:
+            return {}
+
+        shape = str(row_data.get('insert_shape') or '').strip()
+        if not shape:
+            return {}          # nothing to derive from yet
+
+        return {'insert_size_mode': size_mode_for_insert_shape(shape)}
+
 
     # Dead for every tool type -- the same list the default column layout
     # leaves hidden. Tinted whenever they hold a value. A property of the

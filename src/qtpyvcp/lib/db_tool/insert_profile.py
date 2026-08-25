@@ -95,6 +95,9 @@ def insert_record(core, extras, remark=''):
         'shaft_diameter': _num(extras.get('shaft_diameter')),
         'chamfer_threads': _num(extras.get('chamfer_threads')),
         'thread_pitch_max': _num(extras.get('thread_pitch_max')),
+        # Kept distinct from the max: the two ends size different things --
+        # TPX the tooth, TPN the nose radius.
+        'thread_pitch_min': _num(extras.get('thread_pitch_min')),
         'thread_angle': _num(extras.get('thread_angle')),
         'thread_tip_type': _text(extras.get('thread_tip_type')).lower(),
         'holder_style': _text(extras.get('holder_style')),
@@ -178,28 +181,45 @@ def _compute_shape(record):
                                  record['insert_thickness'], 0.24)
 
     if tool_type == 'threading':
-        length = first_positive(record['overall_length'],
-                                record['insert_size'],
+        # Built as a construction from driven dimensions, so length/width only
+        # survive as fallbacks for a row with no insert size. See
+        # build_thread_shape.
+        #
+        # Length is the INSERT's overall length, never the holder's -- the two
+        # are different blocks in the Fusion export and mean different things.
+        # On a DOUBLE it is the bar tip to tip.
+        # A threading insert is dimensioned from insert_size and insert_width,
+        # never from an overall length -- an insert has one and so does its
+        # holder, and the two mean different things. These two only survive as
+        # fallbacks for a row that records neither.
+        length = first_positive(record['insert_size'],
                                 record['insert_thickness'], 0.24)
-        width = first_positive(record['insert_thickness'],
-                               record['insert_size'], length, 0.06)
+        width = first_positive(record['insert_thickness'], length, 0.06)
         return build_thread_shape(
             length, width,
             first_positive(record['thread_angle'], 60.0),
             record['thread_tip_type'] or 'point',
             nose_radius,
-            first_positive(record['thread_pitch_max'], 0.0))
+            first_positive(record['thread_pitch_max'], 0.0),
+            first_positive(record['thread_pitch_min'], 0.0),
+            first_positive(record['insert_size'], 0.0),
+            record['insert_size_mode'],
+            # Which body to build: TRIPLE is a triangle, DOUBLE a 2-ended bar.
+            record['insert_shape'])
 
     if tool_type in ('grooving', 'parting'):
         internal_depth = (internal_groove_max_depth(record)
                           if is_internal_groove(record) else None)
+        # insert_size is deliberately NOT in either chain. On a blade the
+        # tool table shows groove_width in the Insert Size cell, so a stored
+        # insert_size is a shadowed value the operator cannot see -- reading
+        # it as a fallback would draw the tool from a number that is not on
+        # screen anywhere.
         length = first_positive(internal_depth,
                                 record['max_depth_of_cut'],
                                 record['insert_thickness'],
-                                record['insert_size'],
                                 record['holder_cut_width'], 0.24)
         width = first_positive(record['groove_width'],
-                               record['insert_size'],
                                record['holder_cut_width'], 0.06)
         return build_groove_shape(length, width, nose_radius)
 

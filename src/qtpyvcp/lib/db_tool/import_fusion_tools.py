@@ -177,13 +177,35 @@ def extras_from_fusion(tool, ttype, num):
         hand = "R" if setup_hand is True else ("L" if setup_hand is False else None)
 
     size_mode_raw = str(geo.get("SIZE_SPECIFICATION_MODE") or "").strip().upper()
-    insert_size = num.first_positive(
-        geo.get("INSD"), geo.get("tool_insertSize"), expr.get("tool_insertSize"),
-        expr.get("tool_cuttingWidth"), holder.get("CW"), geo.get("S"),
-    )
+    shape_raw = str(geo.get("SC") or "").strip().lower()
+    # A rectangular full-profile threading insert is sized by the width ACROSS
+    # the bar, which Fusion records as tool_insertWidth -- a field that was
+    # otherwise consumed for grooving only. Without it the chain fell all the
+    # way through to geo.S, the insert THICKNESS, and sized the tool off the
+    # wrong axis entirely.
+    if "double" in shape_raw:
+        # The bar's own length. Fusion states it as the insert's OAL -- read
+        # here, but stored as an edge length so the tool table never carries a
+        # column that could mean the holder's OAL instead.
+        insert_size = num.first_positive(
+            geo.get("tool_insertLength"), expr.get("tool_insertLength"),
+            geo.get("OAL"), geo.get("INSD"),
+        )
+    else:
+        insert_size = num.first_positive(
+            geo.get("INSD"), geo.get("tool_insertSize"), expr.get("tool_insertSize"),
+            expr.get("tool_cuttingWidth"), holder.get("CW"), geo.get("S"),
+        )
     size_mode = None
     if insert_size is not None:
-        size_mode = "IC" if size_mode_raw == "IC" else "edge_length"
+        # The shape says how to read the number: a triangle is quoted by its
+        # inscribed circle, a bar by the width across it.
+        if "double" in shape_raw:
+            size_mode = "edge_length"
+        elif "triple" in shape_raw:
+            size_mode = "IC"
+        else:
+            size_mode = "IC" if size_mode_raw == "IC" else "edge_length"
 
     is_groove = ttype in ("grooving", "parting")
     is_round_tool = ttype in ("drill", "tap")
@@ -235,10 +257,19 @@ def extras_from_fusion(tool, ttype, num):
         "chamfer_threads": num.first_positive(
             geo.get("tap_chamfer_threads"), kind=ANGLE,
         ) if ttype == "tap" else None,
+        # Three distinct keys, kept distinct. A tap is ground for one pitch
+        # and exports it as TP; a threading insert exports the range it can
+        # cut as TPN/TPX. Reading TPX-or-TP-or-TPN into one column lost the
+        # minimum and put a tap's pitch in a field meaning "maximum".
+        "thread_pitch": num.first_positive(
+            geo.get("TP"), expr.get("tool_threadPitch"),
+        ) if ttype == "tap" else None,
+        "thread_pitch_min": num.first_positive(
+            geo.get("TPN"), expr.get("tool_minThreadPitch"),
+        ) if is_thread else None,
         "thread_pitch_max": num.first_positive(
-            geo.get("TPX"), geo.get("TP"), geo.get("TPN"),
-            expr.get("tool_maxThreadPitch"), expr.get("tool_threadPitch"),
-        ) if (is_thread or ttype == "tap") else None,
+            geo.get("TPX"), expr.get("tool_maxThreadPitch"),
+        ) if is_thread else None,
         "thread_angle": (num.first_positive(geo.get("thread-profile-angle"), kind=ANGLE) or 60.0)
                         if (is_thread or ttype == "tap") else None,
         "thread_tip_type": (str(geo.get("thread-tip-type") or "").strip().lower() or "point")
@@ -301,6 +332,12 @@ def import_fusion_to_db(src_path, db_path, units='inch', overwrite=False):
         # doubles the nose radius.
         if ttype in ('drill', 'tap'):
             d_val = num.first_positive(geo.get('DC'), geo.get('SFDM')) or 0.0
+        elif str(geo.get('thread-tip-type') or '').strip().lower() == 'flat':
+            # D is the dimension ACROSS the tip whichever kind it is. On a flat
+            # tip that IS the flat width, so it goes in as-is -- doubling it
+            # here would draw a crest twice the width Fusion states.
+            d_val = num.first_positive(
+                geo.get('thread-tip-width'), geo.get('tool_threadTipWidth')) or 0.0
         else:
             d_val = 2.0 * (num.first_positive(
                 geo.get('RE'), geo.get('thread-tip-radius')) or 0.0)

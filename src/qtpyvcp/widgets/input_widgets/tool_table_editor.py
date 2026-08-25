@@ -35,7 +35,7 @@ from PySide6.QtGui import QStandardItemModel, QColor, QBrush, QValidator
 from PySide6.QtWidgets import (QTableView, QHeaderView, QAbstractItemView,
                                QStyledItemDelegate, QDoubleSpinBox, QSpinBox,
                                QLineEdit, QComboBox, QMessageBox, QMenu,
-                               QInputDialog)
+                               QInputDialog, QStyle)
 
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.utilities.logger import getLogger
@@ -115,6 +115,9 @@ class ToolTableEditorModel(QStandardItemModel):
     # that has no such rules simply gets no shading.
     REQUIRED_BY_TYPE = {}
     REQUIREMENT_KEY = None                   # column whose value selects the rule set
+    # Columns where 0 is the unset value rather than a measurement, so a 0
+    # shades amber like a blank. Registered by the flavor; empty here.
+    ZERO_MEANS_EMPTY = ()
     # Columns required on every tool whatever its type -- core fields, which
     # REQUIRED_BY_TYPE does not cover. Text columns only: a numeric core
     # field like D or Q can legitimately hold 0 (a sharp tool, an axial
@@ -385,6 +388,16 @@ class ToolTableEditorModel(QStandardItemModel):
         # invalid inserted rows reported by source model"). Fixed capacity
         # sidesteps this the same way the row model already does.
         visible = self._filterToKnownColumns(columns)
+        # A column holding a required-and-empty value cannot be hidden. Its
+        # amber shading is the only warning the operator gets, and off
+        # screen it warns nobody -- the failure then surfaces as a refused
+        # G-code generation naming a field they cannot see. Enforced here
+        # rather than at the call sites so every path obeys it: the header
+        # menu, Reset Default Columns, and the persisted set restored at
+        # startup.
+        forced = [c for c in self.columnsRequiringValues() if c not in visible]
+        if forced:
+            visible = self._filterToKnownColumns(visible + forced)
         self.beginResetModel()
         self._visible_columns = visible
         self.endResetModel()
@@ -395,6 +408,77 @@ class ToolTableEditorModel(QStandardItemModel):
             # actually currently shown, with no special-casing over who
             # triggered the change.
             self.tt.setVisibleColumns(visible)
+
+    # ------------------------------------------------- required-value reveal
+
+    def columnsRequiringValues(self):
+        """Every column holding a required-and-empty cell, hidden or not.
+
+        A column the user has turned off can still contain a value the
+        machine needs. Left alone, the amber shading that would have said so
+        is simply not on screen, and the first anyone hears of it is a
+        refused G-code generation naming a field they cannot see.
+
+        These columns cannot be hidden -- see setVisibleColumns() -- and the
+        header menu shows them locked. Fill the value in and the lock lifts.
+        """
+        table = getattr(self, '_tool_table', None) or {}
+        if not table:
+            return []
+        tools = [t for t in table if t != 0]
+        return [c for c in self.allColumns()
+                if any(self._is_required_and_empty(c, t) for t in tools)]
+
+    def columnsRequiredByRules(self):
+        """Every column the rules require for the tools present, filled or not.
+
+        Wider than columnsRequiringValues(), which only names the ones
+        currently blank. A required column that every row happens to have
+        filled is still a column the operator has to be able to SEE -- it
+        drives geometry or a safety check, and they cannot change what is not
+        on screen.
+
+        This is what lets a rules change reach an existing setup. The visible
+        set is persisted per user, so a saved selection made before a column
+        became required would otherwise win forever and quietly hide it.
+        Revealed, not locked: hide it again and re-save if you want it gone.
+        """
+        table = getattr(self, '_tool_table', None) or {}
+        if not table or not self.REQUIRED_BY_TYPE or not self.REQUIREMENT_KEY:
+            return list(self.REQUIRED_ALWAYS)
+        keys = set(self.REQUIRED_ALWAYS)
+        keys.add(self.REQUIREMENT_KEY)
+        for tnum, row_data in table.items():
+            if tnum == 0 or not isinstance(row_data, dict):
+                continue
+            rule = self.rowRuleKey(row_data)
+            if rule:
+                keys.update(self.REQUIRED_BY_TYPE.get(rule, ()))
+        return [c for c in self.allColumns() if c in keys]
+
+    def toolsMissingValue(self, key):
+        """Tool numbers whose `key` is required and blank. For the tooltip."""
+        table = getattr(self, '_tool_table', None) or {}
+        return [t for t in sorted(table)
+                if t != 0 and self._is_required_and_empty(key, t)]
+
+    def revealColumnsWithMissingValues(self):
+        """Bring every required column into view. Returns what was added.
+
+        setVisibleColumns() forces in the required-and-EMPTY ones by itself
+        and locks them. This adds the rest of the required set -- the ones
+        already filled -- which are revealed but stay hideable.
+
+        Without this a saved column selection outlives the rules it was made
+        under: add a column to a type's requirements and every existing setup
+        keeps it hidden, so the operator is asked for a value in a cell that
+        is not on screen.
+        """
+        before = set(self._visible_columns)
+        wanted = list(self._visible_columns)
+        wanted += [c for c in self.columnsRequiredByRules() if c not in before]
+        self.setVisibleColumns(wanted)
+        return [c for c in self._visible_columns if c not in before]
 
     def columnLabel(self, key):
         if key in self._core_labels:
@@ -410,7 +494,7 @@ class ToolTableEditorModel(QStandardItemModel):
     @classmethod
     def registerRules(cls, required_by_type=None, used_by_type=None,
                       required_always=None, unused_columns=None,
-                      rule_key=None):
+                      rule_key=None, zero_means_empty=None):
         """Publish the tool-data rules this table should shade against.
 
         The table knows *how* to shade a cell; it does not know which cells
@@ -444,6 +528,8 @@ class ToolTableEditorModel(QStandardItemModel):
             cls.UNUSED_COLUMNS = frozenset(unused_columns)
         if rule_key is not None:
             cls.RULE_KEY_HOOK = staticmethod(rule_key)
+        if zero_means_empty is not None:
+            cls.ZERO_MEANS_EMPTY = tuple(zero_means_empty)
 
     def rowRuleKey(self, row_data):
         """Which entry of USED_BY_TYPE / REQUIRED_BY_TYPE applies to a row.
@@ -502,7 +588,18 @@ class ToolTableEditorModel(QStandardItemModel):
         self._tool_table = table
         self.endResetModel()
         self._set_dirty(False)
+        # A required value can sit in a column the user has turned off,
+        # where its amber shading is invisible and the only symptom is a
+        # refused G-code generation naming a field they cannot see.
+        self._revealRequiredColumns()
         LOG.debug("ToolTableEditorModel reload: tools=%s", len(table) - 1)
+
+    def _revealRequiredColumns(self):
+        """Pull in any hidden column now holding a required-and-empty cell."""
+        revealed = self.revealColumnsWithMissingValues()
+        if revealed:
+            LOG.info("Revealed hidden column(s) with required values missing: %s",
+                     ', '.join(revealed))
 
     def _onExtrasChanged(self, tool_no):
         # saveAllToolExtras() emits this once per tool in the batch (a
@@ -575,6 +672,15 @@ class ToolTableEditorModel(QStandardItemModel):
             # whether LinuxCNC's own interpreter reads that column live.
             return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable
 
+        # A derived cell states what the row already says. Offering an editor
+        # would show a pick-list whose choices are either overwritten on the
+        # next edit or, where the display has no stored equivalent, cannot be
+        # saved at all.
+        row_data = (getattr(self, '_tool_table', None) or {}).get(
+            self._tool_no_for_row(index.row())) or {}
+        if self.isDerivedCell(row_data, col_key):
+            return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable
+
         return (Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable |
                 Qt.ItemFlag.ItemIsEditable)
 
@@ -584,7 +690,11 @@ class ToolTableEditorModel(QStandardItemModel):
         tnum = self._tool_no_for_row(row)
 
         if role in (Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole):
-            return self._tool_table[tnum].get(key)
+            row_data = self._tool_table[tnum]
+            value = row_data.get(self.storageKeyFor(row_data, key))
+            if role == Qt.ItemDataRole.DisplayRole:
+                return self.displayValueFor(row_data, key, value)
+            return value
 
         elif role == Qt.ItemDataRole.TextAlignmentRole:
             if self.columnGroup(key) == 'custom':
@@ -606,11 +716,16 @@ class ToolTableEditorModel(QStandardItemModel):
             return QStandardItemModel.data(self, index, role)
 
         elif role == Qt.ItemDataRole.BackgroundRole:
+            # Amber first, ahead of the current-tool tint. Both are
+            # backgrounds and only one can win; the missing-value warning is
+            # the one that has to. Tested the other way round and the tool in
+            # the spindle -- the single most likely row to be looked at -- was
+            # the one row whose amber never showed.
+            if self._is_required_and_empty(key, tnum):
+                return QBrush(QColor(*self.REQUIRED_EMPTY_BG))
             if (self.current_tool_bg is not None
                     and self.stat.tool_in_spindle == tnum):
                 return QBrush(self.current_tool_bg)
-            if self._is_required_and_empty(key, tnum):
-                return QBrush(QColor(*self.REQUIRED_EMPTY_BG))
             return QStandardItemModel.data(self, index, role)
 
         return QStandardItemModel.data(self, index, role)
@@ -657,11 +772,31 @@ class ToolTableEditorModel(QStandardItemModel):
         light up; fill one and it clears.
         """
         row_data = (getattr(self, '_tool_table', None) or {}).get(tnum) or {}
+        # Checked on the column as displayed, before the alias is resolved:
+        # a column whose warning is shown on another cell must not shade too.
+        if self.requirementCarriedElsewhere(row_data, key):
+            return False
+        # An aliased cell shades on the column it actually stores into, so the
+        # amber lands where the operator types rather than on a hidden column.
+        key = self.storageKeyFor(row_data, key)
 
         # Core fields required on every tool, independent of type.
         if key in self.REQUIRED_ALWAYS:
             value = row_data.get(key)
-            return value is None or not str(value).strip()
+            if value is None or not str(value).strip():
+                return True
+            # A core column cannot be blank -- clearing one leaves 0, not an
+            # empty cell -- so for the columns where 0 is not a legal value,
+            # 0 IS the empty state and has to shade like one. Listed rather
+            # than assumed: 0 is real data on D (a point threading insert has
+            # no nose radius) and on I/J (drills and taps), which is exactly
+            # why those are required per-type instead of always.
+            if key in self.ZERO_MEANS_EMPTY:
+                try:
+                    return float(value) == 0.0
+                except (TypeError, ValueError):
+                    return False
+            return False
 
         if not self.REQUIRED_BY_TYPE or not self.REQUIREMENT_KEY:
             return False
@@ -685,8 +820,22 @@ class ToolTableEditorModel(QStandardItemModel):
     def setData(self, index, value, role):
         key = self._visible_columns[index.column()]
         tnum = self._tool_no_for_row(index.row())
-        self._tool_table[tnum][key] = value
+        required_before = set(self.columnsRequiringValues())
+        store = self.storageKeyFor(self._tool_table[tnum], key)
+        self._tool_table[tnum][store] = value
         self._set_dirty(True)
+
+        # Some columns are not a question for the operator -- they are a
+        # statement about what the row already says. Filling them in as soon
+        # as the row can answer them means the operator reads what to enter
+        # instead of guessing at a blank cell.
+        derived = self.deriveValuesForRow(self._tool_table[tnum])
+        for derived_key, derived_value in (derived or {}).items():
+            if derived_key == key or derived_key not in self.allColumns():
+                continue          # never fight the edit that just happened
+            if self._tool_table[tnum].get(derived_key) == derived_value:
+                continue
+            self._tool_table[tnum][derived_key] = derived_value
         # Changing the type changes which of the *other* columns are
         # required, so the whole row has to repaint -- not just the cell
         # that was edited.
@@ -695,7 +844,68 @@ class ToolTableEditorModel(QStandardItemModel):
             self.dataChanged.emit(self.index(row, 0),
                                   self.index(row, self.columnCount() - 1),
                                   [Qt.ItemDataRole.BackgroundRole])
+
+        # That same edit can make a column required that is currently hidden
+        # -- set a tool to threading and its pitch range becomes required, or
+        # change holder_style and the rule key flips to a type wanting
+        # different fields. Until now the reveal only ran on a full reload,
+        # so the amber shading stayed off screen until the next save or
+        # restart and the first anyone heard of it was a refused G-code
+        # generation naming a field they could not see.
+        #
+        # Deferred: revealing resets the model, which must not happen inside
+        # the delegate's commit that called us.
+        if set(self.columnsRequiringValues()) - required_before:
+            QTimer.singleShot(0, self._revealRequiredColumns)
         return True
+
+    def isDerivedCell(self, row_data, key):
+        """True when this cell is worked out from the row, not typed into it.
+
+        Derived cells are shown but not editable -- see flags(). Nothing is
+        derived in the base table.
+        """
+        return False
+
+    def displayValueFor(self, row_data, key, value):
+        """What a cell SHOWS, where that differs from what it stores.
+
+        Display only -- EditRole still hands back the stored value, so an
+        editor opens on the real data and nothing round-trips through the
+        label. For a column whose whole job is to say what a number means,
+        this lets it say something the database has no column value for.
+        """
+        return value
+
+    def requirementCarriedElsewhere(self, row_data, key):
+        """True when this column's amber is shown on a DIFFERENT cell.
+
+        The pair to storageKeyFor: if one cell is aliased onto another
+        column, only one of the two should shade, or the operator sees the
+        same missing value flagged twice and the hidden one is pinned open
+        for a warning that is already on screen.
+        """
+        return False
+
+    def storageKeyFor(self, row_data, key):
+        """Which stored column a displayed cell actually reads and writes.
+
+        Identity here -- the base table shows what it stores. A flavor can
+        alias one cell onto another column so a value has ONE home in the
+        database while still appearing under the heading that makes sense for
+        that row's tool type.
+        """
+        return key
+
+    def deriveValuesForRow(self, row_data):
+        """Columns this row can fill in for itself. {column: value}.
+
+        Overridden per flavor -- the base table derives nothing, so a VCP
+        that wires up no rules gets a plain editor with no surprise writes.
+        Only ever called from setData, and never allowed to overwrite the
+        cell the operator just edited.
+        """
+        return {}
 
     def _set_dirty(self, dirty):
         """Track unsaved edits staged in memory since the last save/reload;
@@ -1026,6 +1236,38 @@ class ToolTableEditorDelegate(QStyledItemDelegate):
         if proxy is not None and index.model() is proxy:
             index = proxy.mapToSource(index)
         return index.row()
+
+    def _isRequiredAndEmpty(self, index):
+        """True when this cell is one of the amber ones."""
+        model = self._model
+        try:
+            key = model._visible_columns[index.column()]
+            tnum = model._tool_no_for_row(self._sourceRowForIndex(index))
+        except Exception:
+            return False
+        return bool(model._is_required_and_empty(key, tnum))
+
+    def initStyleOption(self, option, index):
+        """Keep the amber visible under a selection.
+
+        Selecting a row paints the highlight straight over BackgroundRole, so
+        the one cell the operator most needs to see goes blue like every other
+        cell in the row -- and the amber, which the manual describes as the
+        only warning that a value is missing, disappears exactly when they
+        click the row to look at it.
+
+        Dropping State_Selected for that cell alone leaves the rest of the row
+        selected normally, and takes the highlight's text color with it, so
+        the value stays dark-on-amber and readable rather than white-on-amber.
+        """
+        super(ToolTableEditorDelegate, self).initStyleOption(option, index)
+        if not self._isRequiredAndEmpty(index):
+            return
+        option.state &= ~QStyle.StateFlag.State_Selected
+        option.backgroundBrush = QBrush(QColor(*self._model.REQUIRED_EMPTY_BG))
+        option.palette.setColor(option.palette.ColorRole.Text, QColor(26, 26, 26))
+        option.palette.setColor(option.palette.ColorRole.HighlightedText,
+                                QColor(26, 26, 26))
 
     def displayText(self, value, locale):
         if isinstance(value, float):
@@ -1422,15 +1664,40 @@ class ToolTableEditor(QTableView):
 
         group_labels = dict(GROUP_LABELS,
                             extras=self.tool_model.EXTRAS_GROUP_LABEL)
+        # Columns holding a required-and-empty cell are shown locked on: in
+        # the same amber as the cell itself, and not clickable. Hiding one
+        # would take the only warning off screen, so the toggle is refused
+        # rather than silently undone by setVisibleColumns().
+        locked = set(self.tool_model.columnsRequiringValues())
+        amber = 'rgb(%d, %d, %d)' % self.tool_model.REQUIRED_EMPTY_BG
+        menu.setToolTipsVisible(True)
+
         toggles = {}
         for group in ('core', 'extras', 'custom'):
             keys = sections[group]
             if not keys:
                 continue
             section_menu = menu.addMenu(group_labels[group])
+            section_menu.setToolTipsVisible(True)
+            if any(k in locked for k in keys):
+                # Locked entries are the only disabled items in this submenu,
+                # so scoping the colour to :disabled hits exactly them.
+                section_menu.setStyleSheet(
+                    'QMenu::item:disabled { color: %s; }' % amber)
             for key in keys:
                 action = section_menu.addAction(self.tool_model.columnLabel(key))
                 action.setCheckable(True)
+                if key in locked:
+                    tools = self.tool_model.toolsMissingValue(key)
+                    named = ', '.join('T%s' % t for t in tools[:6])
+                    if len(tools) > 6:
+                        named += ' and %d more' % (len(tools) - 6)
+                    action.setChecked(True)
+                    action.setEnabled(False)
+                    action.setToolTip(
+                        '%s needs a value here \u2014 cannot be hidden until it is filled in'
+                        % named)
+                    continue
                 action.setChecked(key in visible)
                 toggles[action] = key
 

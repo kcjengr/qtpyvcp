@@ -124,6 +124,9 @@ def import_merged_to_db(tbl_path, fusion_path, db_path, units='inch',
         else:
             d_val = 2.0 * tbl_d if tbl_d > 0.0 else 2.0 * (
                 num.first_positive(geo.get('RE'), geo.get('thread-tip-radius')) or 0.0)
+            if str(geo.get('thread-tip-type') or '').strip().lower() == 'flat':
+                # Flat tips state a width, not a radius -- D takes it directly.
+                d_val = num.first_positive(geo.get('thread-tip-width')) or d_val
 
         remark = (row.get('remark', '') if row else '') or \
                  (str(ftool.get('description') or '') if ftool else '')
