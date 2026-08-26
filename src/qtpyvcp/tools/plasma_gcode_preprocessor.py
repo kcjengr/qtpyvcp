@@ -288,11 +288,14 @@ class CodeLine:
                 # look for G90
                 if code == 'G90':
                     self._parent.set_active_g_modal('G90')
-                # look for G90
+                # look for G91
                 if code == 'G91':
                     self._parent.set_active_g_modal('G91')
             # look for Tx M6 combo
-            f = re.findall(r"T\s*\d+|M6", line.upper().strip())
+            if re.fullmatch(r"T\s*\d+\s*M6", line.upper().strip()):
+                f = re.findall(r"T\s*\d+|M6", line.upper().strip())
+            else:
+                f = []
             if len(f) == 2:
                 # we have a tool change combo. Assume in form Tx M6
                 self.parse_toolchange(combo=True)
