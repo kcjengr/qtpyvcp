@@ -29,7 +29,7 @@ import gcode
 import linuxcnc
 import vtk
 import yaml
-from PySide6.QtCore import QObject, Property, QEvent, Qt, QTimer, Slot
+from PySide6.QtCore import QObject, Property, QEvent, Qt, QTimer, Slot, QSize
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QWidget
 from vtkmodules.vtkCommonCore import VTK_VERSION_NUMBER, vtkVersion
@@ -42,7 +42,8 @@ if not IN_DESIGNER:
 
     vtk_qt.QVTKRWIBase = "QWidget"
     from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-    from vtkmodules.vtkInteractionWidgets import vtkCameraOrientationWidget
+    from vtkmodules.vtkInteractionWidgets import (vtkCameraOrientationWidget,
+                                                  vtkCameraOrientationRepresentation)
 else:
     QVTKRenderWindowInteractor = QWidget
 
@@ -325,6 +326,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.program_view_when_loading_program = False
         self.program_view_when_loading_program_view = 'p'
         self.pan_mode = False
+        # nav-helper camera-gizmo qproperties (set from the .ui file)
+        self._nav_helper_props = {}
         self.line = None
         self._last_filename = str()
         self.rotating = 0
@@ -342,6 +345,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._cache_overlay_transform = vtk.vtkTransform()
         self._active_path_transform = vtk.vtkTransform()
         self._machine_bounds_base = None
+        # Floating-path anchoring. A G91-only program has no absolute position
+        # until the machine actually runs it, so the anchor tracks the machine
+        # while idle and latches at the position execution began.
+        self._floating_wcs = set()
+        self._anchor_offset = (0.0, 0.0, 0.0)
+        self._anchor_latched = False
+        self._program_running = False
         self._line_cells_by_wcs = {}
         self._line_by_cell_by_wcs = {}
         self._highlight_line_actors = OrderedDict()
@@ -458,11 +468,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._datasource.getAntialias() in ["true", "True", "TRUE", 1, "1"]:
             self.renderer_window.SetMultiSamples(8)  # Enable 8x multisampling for antialiasing
 
-            
-        if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
-            self.cam_orient_manipulator = vtkCameraOrientationWidget()
-            self.cam_orient_manipulator.SetParentRenderer(self.renderer)
-            
         if not IN_DESIGNER:
             
             bounds_type = self._datasource.getMachineBounds()
@@ -534,6 +539,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.tool_bit_actor = ToolBitActor(self._datasource)
 
 
+            # Program-bounds state must exist before the settings below are
+            # connected: connectSetting() pushes the current (persisted) value
+            # into showProgramBounds() immediately, and that slot caches it in
+            # self.show_program_bounds. Initialising these after the connect
+            # silently reset the cache to False while the button/menu still
+            # showed the setting as on.
+            self.offset_axes = OrderedDict()
+            self.program_bounds_actors = OrderedDict()
+            self.show_program_bounds = False
+
             # view settings
             connectSetting('backplot.show-spindle', self.showSpindle)
             connectSetting('backplot.show-grid', self.showGrid)
@@ -554,13 +569,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_colors = {'traverse': self._traverse_color,
                            'arcfeed': self._arcfeed_color,
                            'feed': self._feed_color,
-                           'dwell': QColor(0, 0, 255, 255),
-                           'user': QColor(0, 100, 255, 255)
-                       }
-
-            self.offset_axes = OrderedDict()
-            self.program_bounds_actors = OrderedDict()
-            self.show_program_bounds = bool()
+                           'dwell': self._dwel_color,
+                           'user': self._user_color}
 
             # Add the observers to watch for particular events. These invoke Python functions.
             self.interactor.AddObserver("LeftButtonPressEvent", self.button_event)
@@ -607,6 +617,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if callable(selected_lines_notify):
                 selected_lines_notify(self._on_selected_program_lines_changed)
             
+            # Run-state edges drive the floating anchor's latch/release. These
+            # must come from the interpreter state, not position updates, which
+            # stop arriving once the machine is stationary.
+            self._datasource.runStateChanged.connect(self.on_run_state_changed)
+
             self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
             self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
             
@@ -691,11 +706,278 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             # self.setViewP()
             # self.renderer.ResetCamera()
-            if self._datasource.getNavHelper() in ["true", "True", "TRUE", 1, "1"]:
-                # Enable the widget.
-                self.cam_orient_manipulator.On()
+            # Create/show the camera-orientation gizmo and apply its config.
+            # A deferred pass runs once the event loop starts so qproperties
+            # copied from the .ui placeholder are honored as well.
+            self._ensure_nav_helper()
+            QTimer.singleShot(0, self._ensure_nav_helper)
+
+    # ------------------------------------------------------------------
+    # Camera-orientation gizmo ("nav helper") personalization
+    # ------------------------------------------------------------------
+    # The gizmo is driven solely by the ``navHelperEnabled`` qproperty (set
+    # from the .ui file or by the ``backplot.show-nav-helper`` setting). All
+    # settings come from the widget's ``navHelper*`` qproperties; unset
+    # properties keep VTK's native defaults, so they are purely additive.
+
+    def _nav_helper_config(self):
+        """Personalization dict for the camera-orientation gizmo, built from
+        the widget's ``navHelper*`` qproperties (set from the .ui file)."""
+        cfg = {}
+        props = self._nav_helper_props
+
+        def _set(key, convert):
+            if props.get(key) is not None:
+                try:
+                    cfg[key] = convert(props[key])
+                except Exception:
+                    LOG.warning("nav helper: ignoring invalid %s qproperty",
+                                key)
+
+        _set("enabled", bool)
+        _set("animate", bool)
+        _set("should_reset_camera", bool)
+        _set("container_visibility", bool)
+        _set("dragable", bool)
+        _set("pickable", bool)
+        _set("handle_visibility", bool)
+        _set("labels_visible", bool)
+        _set("labels", lambda v: [str(x) for x in v])
+        _set("total_length", float)
+        _set("handle_size", float)
+        _set("normalized_handle_dia", float)
+        _set("shaft_resolution", int)
+        _set("handle_resolution", int)
+        _set("container_circumferential_resolution", int)
+        _set("container_radial_resolution", int)
+        _set("animator_total_frames", int)
+        _set("process_events", bool)
+        _set("manages_cursor", bool)
+        _set("priority", float)
+        _set("key_activation", str)
+        _set("anchor", str)
+        _set("padding", lambda v: [v.width(), v.height()])
+        _set("size", lambda v: [v.width(), v.height()])
+        _set("x_axis_color", lambda v: v.name())
+        _set("y_axis_color", lambda v: v.name())
+        _set("z_axis_color", lambda v: v.name())
+        _set("axis_color", lambda v: v.name())
+        return cfg
+
+    def _nav_helper_enabled(self):
+        """True when the camera-orientation gizmo should be created/shown.
+
+        Driven solely by the ``navHelperEnabled`` qproperty (set from the
+        .ui file or by the ``backplot.show-nav-helper`` setting); defaults
+        to off when unset."""
+        try:
+            enabled = self._nav_helper_config().get("enabled")
+            if enabled is not None:
+                return bool(enabled)
+        except Exception:
+            LOG.exception("Failed to read nav-helper enabled flag")
+        return False
+
+    def _ensure_nav_helper(self):
+        """Create (if needed), show and configure the camera-orientation
+        gizmo. When disabled, an existing gizmo is turned off. No-op in
+        designer mode."""
+        if IN_DESIGNER:
+            return
+        if not self._nav_helper_enabled():
+            if hasattr(self, "cam_orient_manipulator"):
+                self.cam_orient_manipulator.Off()
+                # Off() removes the gizmo from the renderer, but the change
+                # only becomes visible when the render window repaints. Without
+                # this the gizmo stays on screen until the next natural render
+                # (e.g. restart), making the toggle look broken.
+                self._request_render()
+            return
+        if not hasattr(self, "cam_orient_manipulator"):
+            self.cam_orient_manipulator = vtkCameraOrientationWidget()
+            self.cam_orient_manipulator.SetParentRenderer(self.renderer)
+        self.cam_orient_manipulator.On()
+        self._apply_nav_helper_config()
+        self._request_render()
+
+    @Slot()
+    def reapplyNavHelperConfig(self):
+        """(Re)create and configure the camera-orientation gizmo from the
+        current ``navHelper*`` qproperties. Called on theme change so the
+        gizmo colors follow the active theme."""
+        self._ensure_nav_helper()
+
+    def _apply_nav_helper_config(self):
+        """Apply the nav-helper qproperty personalization to the
+        camera-orientation gizmo. Invalid values are logged and skipped,
+        never fatal."""
+        cfg = self._nav_helper_config()
+        if not cfg:
+            return
+        widget = self.cam_orient_manipulator
+        try:
+            rep = widget.GetRepresentation()
+        except Exception:
+            LOG.warning("nav helper: no gizmo representation to configure")
+            return
+
+        def _rgb(hex_color):
+            color = QColor(hex_color)
+            if not color.isValid():
+                raise ValueError("invalid color %r" % (hex_color,))
+            return [color.redF(), color.greenF(), color.blueF()]
+
+        def _apply(name, func, convert):
+            if name not in cfg:
+                return
+            try:
+                func(convert(cfg[name]))
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid %s=%r",
+                            name, cfg[name])
+
+        _apply("animate", widget.SetAnimate, bool)
+        _apply("should_reset_camera", widget.SetShouldResetCamera, bool)
+        _apply("animator_total_frames", widget.SetAnimatorTotalFrames, int)
+        _apply("process_events", widget.SetProcessEvents, bool)
+        _apply("manages_cursor", widget.SetManagesCursor, bool)
+        _apply("priority", widget.SetPriority, float)
+        _apply("dragable", rep.SetDragable, bool)
+        _apply("pickable", rep.SetPickable, bool)
+        _apply("container_visibility", rep.SetContainerVisibility, bool)
+        _apply("total_length", rep.SetTotalLength, float)
+        _apply("handle_size", rep.SetHandleSize, float)
+        _apply("normalized_handle_dia", rep.SetNormalizedHandleDia, float)
+        _apply("shaft_resolution", rep.SetShaftResolution, int)
+        _apply("handle_resolution",
+               rep.SetHandleCircumferentialResolution, int)
+        _apply("container_circumferential_resolution",
+               rep.SetContainerCircumferentialResolution, int)
+        _apply("container_radial_resolution",
+               rep.SetContainerRadialResolution, int)
+
+        # rotate-arrow (handle) visibility: collapse the handles to nothing
+        if cfg.get("handle_visibility") is False:
+            try:
+                rep.SetNormalizedHandleDia(0.0)
+            except Exception:
+                LOG.warning("nav helper: failed to hide handles")
+
+        # axis labels: per-axis text, blanked entirely when hidden
+        if "labels" in cfg or "labels_visible" in cfg:
+            defaults = ("X+", "X-", "Y+", "Y-", "Z+", "Z-")
+            if isinstance(cfg.get("labels"), list):
+                labels = list(cfg["labels"]) + [""] * max(0, 6 - len(cfg["labels"]))
+            else:
+                labels = list(defaults)
+            hide = cfg.get("labels_visible") is False
+            setters = (rep.SetXPlusLabelText, rep.SetXMinusLabelText,
+                       rep.SetYPlusLabelText, rep.SetYMinusLabelText,
+                       rep.SetZPlusLabelText, rep.SetZMinusLabelText)
+            for i, setter in enumerate(setters):
+                try:
+                    setter("" if hide else str(labels[i]))
+                except Exception:
+                    LOG.warning("nav helper: invalid label %d", i)
+
+        # master axis color overrides the per-axis colors
+        if "axis_color" in cfg:
+            try:
+                rgb = _rgb(cfg["axis_color"])
+                for ax in (0, 1, 2):
+                    rep.SetAxisColor(ax, rgb)
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid axis_color=%r",
+                            cfg["axis_color"])
+
+        if "key_activation" in cfg:
+            try:
+                widget.SetKeyPressActivation(ord(str(cfg["key_activation"])[0]))
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid key_activation=%r",
+                            cfg["key_activation"])
+
+        if "anchor" in cfg:
+            try:
+                anchor = str(cfg["anchor"]).strip().lower()
+                at = vtkCameraOrientationRepresentation.AnchorType
+                rep.SetAnchorPosition({
+                    "lower_left": at.LowerLeft,
+                    "upper_left": at.UpperLeft,
+                    "lower_right": at.LowerRight,
+                    "upper_right": at.UpperRight,
+                }[anchor])
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid anchor=%r",
+                            cfg["anchor"])
+
+        if "padding" in cfg:
+            try:
+                x, y = cfg["padding"]
+                rep.SetPadding(int(x), int(y))
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid padding=%r",
+                            cfg["padding"])
+
+        if "size" in cfg:
+            try:
+                w, h = cfg["size"]
+                rep.SetSize(int(w), int(h))
+            except Exception:
+                LOG.warning("nav helper: ignoring invalid size=%r",
+                            cfg["size"])
+
+        for key, setter in (("x_axis_color", rep.SetXAxisColor),
+                            ("y_axis_color", rep.SetYAxisColor),
+                            ("z_axis_color", rep.SetZAxisColor)):
+            if key in cfg:
+                try:
+                    setter(_rgb(cfg[key]))
+                except Exception:
+                    LOG.warning("nav helper: ignoring invalid %s=%r",
+                                key, cfg[key])
+
+    def _navigation_active(self):
+        return bool(self.rotating or self.panning or self.zooming)
+
+    def _end_navigation(self):
+        self.rotating = 0
+        self.panning = 0
+        self.zooming = 0
+
+    # QVTKRenderWindowInteractor sends every mouse release as if it came from
+    # the button pressed last, so pressing a second button part way through a
+    # drag makes the first button's release go missing and leaves the camera
+    # stuck following the mouse. Point each release at the button that was
+    # actually let go, and drop navigation once no button is held.
+    def mouseReleaseEvent(self, ev):
+        self._ActiveButton = ev.button()
+        super(VTKBackPlot, self).mouseReleaseEvent(ev)
+        if not ev.buttons():
+            self._ActiveButton = Qt.MouseButton.NoButton
+            self._end_navigation()
+
+    # Catches a release that never reached the widget at all, so the camera
+    # cannot keep tracking a mouse with no buttons down.
+    def mouseMoveEvent(self, ev):
+        if not ev.buttons():
+            self._end_navigation()
+        super(VTKBackPlot, self).mouseMoveEvent(ev)
 
     def button_event(self, obj, event):
+        # Only the first button down drives the camera: extra buttons pressed
+        # mid-drag are ignored and any release ends navigation, so a fumbled
+        # second click can never lock the viewport into rotate or pan.
+        if event in ("LeftButtonReleaseEvent",
+                     "MiddleButtonReleaseEvent",
+                     "RightButtonReleaseEvent"):
+            self._end_navigation()
+            if event == "LeftButtonReleaseEvent":
+                self._handle_backplot_left_click_pick(obj)
+            return
+
+        if self._navigation_active():
+            return
 
         if event == "LeftButtonPressEvent":
             self._left_button_press_pos = tuple(self.interactor.GetEventPosition())
@@ -705,29 +987,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             else:
                 self.rotating = 1
 
-        elif event == "LeftButtonReleaseEvent":
-            if self.pan_mode is True:
-                self.panning = 0
-            else:
-                self.rotating = 0
-            self._handle_backplot_left_click_pick(obj)
-
         elif event == "MiddleButtonPressEvent":
             if self.pan_mode is True:
                 self.rotating = 1
             else:
                 self.panning = 1
 
-        elif event == "MiddleButtonReleaseEvent":
-            if self.pan_mode is True:
-                self.rotating = 0
-            else:
-                self.panning = 0
-
         elif event == "RightButtonPressEvent":
             self.zooming = 1
-        elif event == "RightButtonReleaseEvent":
-            self.zooming = 0
 
     def mouse_scroll_backward(self, obj, event):
         self.zoomOut()
@@ -902,19 +1169,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # Do this for each WCS.
             for wcs_index, actor in self.path_actors.items():
                 axes_actor = actor.get_axes_actor()
-                program_bounds_actor = self.program_bounds_actors[wcs_index]
+                # A load that bails out after path_actors is assigned leaves
+                # keys here with no matching bounds actor, so look it up
+                # defensively rather than letting a KeyError escape.
+                program_bounds_actor = self.program_bounds_actors.get(wcs_index)
 
                 # if wcs_index == self.active_wcs_index:
 
                 self.renderer.RemoveActor(axes_actor)
 
                 self.renderer.RemoveActor(actor)
-                self.renderer.RemoveActor(program_bounds_actor)
+                if program_bounds_actor is not None:
+                    self.renderer.RemoveActor(program_bounds_actor)
 
 
             self.path_actors.clear()
             self.offset_axes.clear()
             self.program_bounds_actors.clear()
+            self._floating_wcs = set()
 
             if not fname:
                 return
@@ -1026,6 +1298,28 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             offset_columns = self._datasource.getOffsetColumns()
 
+            # A G91-only program has no absolute position until the machine
+            # runs it. Record which paths float and seed the anchor now; it
+            # keeps tracking the machine until execution latches it.
+            self._floating_wcs = set()
+            if cpp_backplot_used:
+                self._floating_wcs = set(getattr(cpp_result, 'floating_wcs', None) or ())
+            else:
+                floating_getter = getattr(self.canon, 'get_floating_wcs', None)
+                if callable(floating_getter):
+                    self._floating_wcs = set(floating_getter())
+            self._anchor_latched = False
+            self._program_running = False
+            if self._floating_wcs:
+                seeded_anchor = self._compute_anchor_offset()
+                if seeded_anchor is not None:
+                    self._anchor_offset = seeded_anchor
+                LOG.info(
+                    "[anchor] floating path(s) %s tracking machine position %s",
+                    sorted(self._floating_wcs),
+                    self._anchor_offset,
+                )
+
             actor_start = time.perf_counter()
             for wcs_index, actor in self.path_actors.items():
                 current_offsets = self._safe_get_offsets(wcs_index, offset_columns)
@@ -1038,7 +1332,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 if 0 <= wcs_index < len(self.rotation_xy_table):
                     self.rotation_xy_table[wcs_index] = rotation
 
-                actor_transform = self._compose_wcs_transform(x, y, z, rotation)
+                actor_transform = self._path_transform_for(wcs_index, x, y, z, rotation)
                 axes_transform = self._compose_wcs_transform(x, y, z, rotation)
 
                 if wcs_index == self.active_wcs_index:
@@ -1987,6 +2281,95 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def _transform_debug_enabled(self):
         return self._transform_debug and LOG.isEnabledFor(logging.DEBUG)
 
+    def _compose_anchor_transform(self):
+        """Placement for a floating (G91-only) path.
+
+        Its coordinates are deltas from a start the preview interpreter
+        assumed was 0, so the WCS offset is meaningless here -- the shape is
+        anchored at the machine position instead.
+        """
+        transform = vtk.vtkTransform()
+        transform.Translate(*self._anchor_offset)
+        return transform
+
+    def _path_transform_for(self, wcs_index, x, y, z, rotation=0.0):
+        """WCS placement for a normal path, machine anchoring for a floating one."""
+        if wcs_index in self._floating_wcs:
+            return self._compose_anchor_transform()
+        return self._compose_wcs_transform(x, y, z, rotation)
+
+    def _compute_anchor_offset(self):
+        """Machine position with any baked-in G92 removed, in machine units."""
+        machine_position = self._datasource.getMachinePosition()
+        if machine_position is None:
+            return None
+
+        g92 = self.g92_offset or ()
+
+        def _axis(values, index):
+            try:
+                return float(values[index])
+            except (IndexError, TypeError, ValueError, KeyError):
+                return 0.0
+
+        return tuple(_axis(machine_position, i) - _axis(g92, i) for i in range(3))
+
+    ANCHOR_DEADBAND = 1e-6
+
+    @classmethod
+    def _position_deviates(cls, position, reference):
+        """True when a position has moved meaningfully away from a reference."""
+        if position is None or reference is None:
+            return True
+        return any(
+            abs(float(position[i]) - float(reference[i])) > cls.ANCHOR_DEADBAND
+            for i in range(3)
+        )
+
+    def _update_floating_anchor(self):
+        """Keep a floating (G91-only) path anchored sensibly at all times.
+
+        Two states:
+
+        TRACKING  not executing -- the anchor follows the machine, so the plot
+                  always depicts what will happen if cycle start is pressed
+                  from here. Deliberately predictive: after a run it snaps to
+                  where the program left the machine, because that is where
+                  the next cycle would actually begin.
+        LATCHED   AUTO execution in progress -- frozen at the origin the
+                  interpreter actually started from.
+
+        Position updates drive tracking; run-state changes drive latch and
+        release. The latter must not be derived from position, which stops
+        updating once the machine is stationary.
+        """
+        if not self._floating_wcs:
+            return
+
+        machine_position = self._compute_anchor_offset()
+        if machine_position is None:
+            return
+
+        running = self._datasource.isProgramRunning()
+
+        if running != self._program_running:
+            self._program_running = running
+            self._anchor_latched = running
+            LOG.debug(
+                "[anchor] %s at %s",
+                "latched for execution" if running else "released, tracking machine",
+                self._anchor_offset,
+            )
+
+        if self._anchor_latched:
+            return
+
+        if not self._position_deviates(machine_position, self._anchor_offset):
+            return
+
+        self._anchor_offset = machine_position
+        self.rotate_and_translate()
+
     def _compose_wcs_transform(self, x, y, z, rotation=0.0):
         # LinuxCNC-style chain for table machines:
         # 1) place WCS, 2) apply table linear shift, 3) apply table rotary axes
@@ -2471,6 +2854,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             return
 
+        self._update_floating_anchor()
+
         # Plots the movement of the tool and leaves a trace line
         
         active_wcs_offset = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
@@ -2690,6 +3075,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_joints(self, joints):
         self.joints = joints
         
+    @Slot(bool)
+    def on_run_state_changed(self, _running=False):
+        self._update_floating_anchor()
+
     def on_offset_table_changed(self, offset_table):
         if offset_table is None:
             LOG.warning("VTKBackPlot: received None offset table; keeping existing offsets")
@@ -2807,7 +3196,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 self.offsetTableColumnsIndex,
             )
 
-            actor_transform = self._compose_wcs_transform(x, y, z, rotation)
+            actor_transform = self._path_transform_for(wcs_index, x, y, z, rotation)
             axes_transform = self._compose_wcs_transform(x, y, z, rotation)
 
             if wcs_index == self.active_wcs_index:
@@ -2917,7 +3306,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 axes = actor.get_axes_actor()
 
-                path_transform = self._compose_wcs_transform(
+                path_transform = self._path_transform_for(
+                    wcs_index,
                     x,
                     y,
                     z,
@@ -3912,16 +4302,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def showProgramBounds(self, show):
         self.show_program_bounds = show
         for wcs_index, actor in list(self.path_actors.items()):
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
+            program_bounds_actor = self.program_bounds_actors.get(wcs_index)
             if program_bounds_actor is not None:
                 program_bounds_actor.showProgramBounds(self.show_program_bounds)
         self._request_render()
 
     @Slot()
     def toggleProgramBounds(self):
-        for wcs_index, actor in list(self.path_actors.items()):
-            program_bounds_actor = self.program_bounds_actors[wcs_index]
+        for wcs_index in list(self.path_actors.keys()):
+            program_bounds_actor = self.program_bounds_actors.get(wcs_index)
+            if program_bounds_actor is None:
+                continue
+            # showProgramBounds() applies to every actor, so decide once from
+            # the first one we have and stop; continuing would re-read an actor
+            # this call just updated and flip the state back.
             self.showProgramBounds(not program_bounds_actor.GetXAxisVisibility())
+            return
 
     @Slot(bool)
     @Slot(object)
@@ -4051,6 +4447,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @traverseColor.setter
     def traverseColor(self, color):
         self._traverse_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["traverse"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @traverseColor.reset
@@ -4066,6 +4464,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @arcfeedColor.setter
     def arcfeedColor(self, color):
         self._arcfeed_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["arcfeed"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @arcfeedColor.reset
@@ -4081,6 +4481,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @feedColor.setter
     def feedColor(self, color):
         self._feed_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["feed"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @feedColor.reset
@@ -4096,6 +4498,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @dwellColor.setter
     def dwellColor(self, color):
         self._dwel_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["dwell"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @dwellColor.reset
@@ -4111,9 +4515,59 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @userColor.setter
     def userColor(self, color):
         self._user_color = color
+        if hasattr(self, "path_colors"):
+            self.path_colors["user"] = color
 
     # PySide6.QtCore.Property has no reset attribute
     # @userColor.reset
     # def userColor(self):
     #     self._user_color = self._default_user_color
+
+    # ------------------------------------------------------------------
+    # Camera-orientation gizmo ("nav helper") qproperties
+    # ------------------------------------------------------------------
+    # Settable from the .ui file; stored in ``_nav_helper_props`` and turned
+    # into the gizmo configuration by _nav_helper_config().
+
+    @staticmethod
+    def _nav_prop(qt_type, key):
+        def _get(self):
+            return self._nav_helper_props.get(key)
+
+        def _set(self, value):
+            self._nav_helper_props[key] = value
+
+        return Property(qt_type, _get, _set)
+
+    navHelperEnabled = _nav_prop(bool, "enabled")
+    navHelperAnimate = _nav_prop(bool, "animate")
+    navHelperShouldResetCamera = _nav_prop(bool, "should_reset_camera")
+    navHelperKeyActivation = _nav_prop(str, "key_activation")
+    navHelperAnchor = _nav_prop(str, "anchor")
+    navHelperPadding = _nav_prop(QSize, "padding")
+    navHelperSize = _nav_prop(QSize, "size")
+    navHelperTotalLength = _nav_prop(float, "total_length")
+    navHelperHandleSize = _nav_prop(float, "handle_size")
+    navHelperNormalizedHandleDia = _nav_prop(float, "normalized_handle_dia")
+    navHelperContainerVisibility = _nav_prop(bool, "container_visibility")
+    navHelperDragable = _nav_prop(bool, "dragable")
+    navHelperPickable = _nav_prop(bool, "pickable")
+    navHelperShaftResolution = _nav_prop(int, "shaft_resolution")
+    navHelperHandleResolution = _nav_prop(int, "handle_resolution")
+    navHelperXAxisColor = _nav_prop(QColor, "x_axis_color")
+    navHelperYAxisColor = _nav_prop(QColor, "y_axis_color")
+    navHelperZAxisColor = _nav_prop(QColor, "z_axis_color")
+    # show/hide + extra behavior knobs
+    navHelperHandleVisibility = _nav_prop(bool, "handle_visibility")
+    navHelperLabelsVisible = _nav_prop(bool, "labels_visible")
+    navHelperLabels = _nav_prop("QStringList", "labels")
+    navHelperAxisColor = _nav_prop(QColor, "axis_color")
+    navHelperContainerCircumferentialResolution = _nav_prop(
+        int, "container_circumferential_resolution")
+    navHelperContainerRadialResolution = _nav_prop(
+        int, "container_radial_resolution")
+    navHelperAnimatorTotalFrames = _nav_prop(int, "animator_total_frames")
+    navHelperProcessEvents = _nav_prop(bool, "process_events")
+    navHelperManagesCursor = _nav_prop(bool, "manages_cursor")
+    navHelperPriority = _nav_prop(float, "priority")
 

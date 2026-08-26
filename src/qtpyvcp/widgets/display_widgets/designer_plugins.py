@@ -54,12 +54,17 @@ class StatusLEDPlugin(_DesignerPlugin):
 # VTK Widget - Cannot be instantiated in designer due to VTK dependencies
 # Create a placeholder class for designer mode only
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, Property, QSize
+from PySide6.QtGui import QColor
+
 
 class VTKBackPlotPlaceholder(QWidget):
     """Placeholder for VTKBackPlot widget in designer mode."""
     def __init__(self, parent=None):
         super().__init__(parent)
+        # nav-helper camera-gizmo qproperties; copied to the real backplot at
+        # runtime by VCPMainWindow._replace_vtk_placeholders_runtime
+        self._nav_helper_props = {}
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         label = QLabel("VTK Backplot\n(3D visualization)")
@@ -231,6 +236,50 @@ class VTKBackPlotPlaceholder(QWidget):
     @Slot(bool)
     def enable_panning(self, _enabled):
         pass
+
+    # nav-helper camera-gizmo qproperties (mirror VTKBackPlot; copied to the
+    # real widget at runtime, see VCPMainWindow._replace_vtk_placeholders_runtime)
+    @staticmethod
+    def _nav_prop(qt_type, key):
+        def _get(self):
+            return self._nav_helper_props.get(key)
+
+        def _set(self, value):
+            self._nav_helper_props[key] = value
+
+        return Property(qt_type, _get, _set)
+
+    navHelperEnabled = _nav_prop(bool, "enabled")
+    navHelperAnimate = _nav_prop(bool, "animate")
+    navHelperShouldResetCamera = _nav_prop(bool, "should_reset_camera")
+    navHelperKeyActivation = _nav_prop(str, "key_activation")
+    navHelperAnchor = _nav_prop(str, "anchor")
+    navHelperPadding = _nav_prop(QSize, "padding")
+    navHelperSize = _nav_prop(QSize, "size")
+    navHelperTotalLength = _nav_prop(float, "total_length")
+    navHelperHandleSize = _nav_prop(float, "handle_size")
+    navHelperNormalizedHandleDia = _nav_prop(float, "normalized_handle_dia")
+    navHelperContainerVisibility = _nav_prop(bool, "container_visibility")
+    navHelperDragable = _nav_prop(bool, "dragable")
+    navHelperPickable = _nav_prop(bool, "pickable")
+    navHelperShaftResolution = _nav_prop(int, "shaft_resolution")
+    navHelperHandleResolution = _nav_prop(int, "handle_resolution")
+    navHelperXAxisColor = _nav_prop(QColor, "x_axis_color")
+    navHelperYAxisColor = _nav_prop(QColor, "y_axis_color")
+    navHelperZAxisColor = _nav_prop(QColor, "z_axis_color")
+    # show/hide + extra behavior knobs
+    navHelperHandleVisibility = _nav_prop(bool, "handle_visibility")
+    navHelperLabelsVisible = _nav_prop(bool, "labels_visible")
+    navHelperLabels = _nav_prop("QStringList", "labels")
+    navHelperAxisColor = _nav_prop(QColor, "axis_color")
+    navHelperContainerCircumferentialResolution = _nav_prop(
+        int, "container_circumferential_resolution")
+    navHelperContainerRadialResolution = _nav_prop(
+        int, "container_radial_resolution")
+    navHelperAnimatorTotalFrames = _nav_prop(int, "animator_total_frames")
+    navHelperProcessEvents = _nav_prop(bool, "process_events")
+    navHelperManagesCursor = _nav_prop(bool, "manages_cursor")
+    navHelperPriority = _nav_prop(float, "priority")
 
 
 # Give Designer a class whose runtime name matches the requested class

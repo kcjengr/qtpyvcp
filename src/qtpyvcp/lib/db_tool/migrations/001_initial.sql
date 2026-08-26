@@ -78,7 +78,7 @@ CREATE TABLE tool_lathe (
   -- threading
   thread_pitch_max REAL,      -- TPX/TP; tap pitch reuses this column
   thread_angle REAL,          -- profile angle, default 60
-  thread_tip_type TEXT,       -- point | flat | radius
+  thread_tip_type TEXT,       -- point | flat | round  (radius accepted as a synonym)
 
   -- feeds & speeds defaults (conversational autofill)
   surface_speed REAL,         -- SFM / SMM per meta.units

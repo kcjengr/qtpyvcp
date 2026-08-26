@@ -42,6 +42,7 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
             g5x_index = self.status.stat.g5x_index
             axis = 'XYZABCUVW'[self._anum]
 
+            entered = val
             if self._is_lathe and self._anum == Axis.X:
                 if self._lathe_mode == LatheMode.Diameter and not self._g7_active:
                     val = val / 2
@@ -49,6 +50,29 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
                     val = val * 2
 
             cmd = 'G10 L20 P{0:d} {1}{2:.12f}'.format(g5x_index, axis, val)
+
+            if self._is_lathe and self._anum == Axis.X:
+                # The most useful record when a user reports the X DRO halving
+                # what they typed. Logged loudly on mismatch so it is findable
+                # in a screen grab of a DEBUG-level terminal.
+                if self.latheG7Mismatch():
+                    LOG.warning("bgred<==== LATHE-DRO G7 MISMATCH ====>")
+                    LOG.warning("bgred<LATHE-DRO> typed=%s sent=%s cmd=%r",
+                                entered, val, cmd)
+                    LOG.warning("bgred<LATHE-DRO> %s", self.latheStateSummary())
+                    LOG.warning("bgred<LATHE-DRO> DRO will display radius while "
+                                "the machine is in diameter mode; the stored "
+                                "offset is correct")
+                else:
+                    LOG.info("cyan<LATHE-DRO entry> typed=%s sent=%s cmd=%r  %s",
+                             entered, val, cmd, self.latheStateSummary())
+
+            elif self._anum == Axis.X and self.latheUndeclaredG7():
+                # The moment the operator is actually bitten, so log it on
+                # every entry rather than once -- this is what sits next to
+                # the complaint in a submitted log.
+                self.warnUndeclaredLatheG7(entered=entered, sent=val)
+
             issue_mdi(cmd)
         except Exception:
             LOG.exception("Error setting work coordinate offset.")

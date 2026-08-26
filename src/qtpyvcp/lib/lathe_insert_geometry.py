@@ -309,6 +309,53 @@ def _resolve_profile_anchor_xz(
     return (float(anchor_local_x), float(anchor_local_z))
 
 
+THREAD_CORNER_ORIENTATIONS = (1, 2, 3, 4)
+
+
+def resolve_thread_control_point(points_xz, leg_tangents_xz, orientation):
+    """Datum a threading tool is set to, in the profile's own frame.
+
+    Threading tooling is measured to an EDGE, not to the insert's centre:
+
+        X   the nose tangent -- the crest of the nose arc, which sets thread
+            depth. Always the profile's minimum X; the shape is built with its
+            cutting tooth toward -X and mirrored downstream per orientation.
+        Z   for a corner orientation (1-4), where the inscribed circle touches
+            the LEADING leg -- +Z side for Q1/Q4, -Z for Q2/Q3, matching the
+            handedness _transform_insert_polygon_xz applies.
+            For a centred orientation, the nose centreline instead, which for a
+            symmetric nose is the tip itself.
+
+    Returns (x, z), or None when there is nothing to work from.
+    """
+    points = [p for p in (points_xz or []) if isinstance(p, (list, tuple)) and len(p) >= 2]
+    if not points:
+        return None
+
+    nose_x = min(float(p[0]) for p in points)
+
+    if int(orientation or 0) not in THREAD_CORNER_ORIENTATIONS:
+        # Centred: Z on the tooth axis. Take it from the nose points rather than
+        # the bounding box so a long insert body cannot drag the datum sideways.
+        tolerance = max(1e-9, abs(nose_x) * 1e-6)
+        nose_band = [float(p[1]) for p in points
+                     if abs(float(p[0]) - nose_x) <= tolerance + 1e-9]
+        if not nose_band:
+            nose_band = [float(p[1]) for p in points]
+        return (nose_x, 0.5 * (min(nose_band) + max(nose_band)))
+
+    tangents = [t for t in (leg_tangents_xz or [])
+                if isinstance(t, (list, tuple)) and len(t) >= 2]
+    if not tangents:
+        return None
+
+    if int(orientation) in (1, 4):
+        lead = max(tangents, key=lambda t: float(t[1]))
+    else:
+        lead = min(tangents, key=lambda t: float(t[1]))
+    return (nose_x, float(lead[1]))
+
+
 def _rotate_profile_points_xz(profile_points_xz, angle_deg, origin_x=0.0, origin_z=0.0):
     if not isinstance(profile_points_xz, list) or not profile_points_xz:
         return []
@@ -456,48 +503,464 @@ def _build_tap_profile_points(major_diameter, pitch, flute_length, overall_lengt
     return [(float(x), float(z)) for (x, z) in right + left]
 
 
-def build_thread_shape(length_x, width_z, thread_angle_deg, tip_type, tip_radius, thread_pitch_max):
-    theta = max(30.0, min(120.0, float(thread_angle_deg)))
-    body_length = max(float(length_x) * THREAD_DXF_X_EXTENT_FROM_OAL, 0.001)
-    _ = width_z
-    _ = thread_pitch_max
+# Sharp-V height for a 60-degree form: H = P / (2 tan30) = 0.8660 P. That is the
+# height that makes the tooth's BASE WIDTH come out at exactly one pitch, which
+# is the check worth remembering -- adjacent thread teeth are one pitch apart,
+# so an insert tooth has to span a pitch at its base to cut the form.
+#
+# Not to be confused with 0.6134 P, the truncated depth a finished thread is
+# cut to. That is how far the tooth goes INTO the work, not how big the tooth
+# is; sizing the insert from it drew every tooth 29% short with a base width of
+# 0.708 P instead of P.
+_THREAD_HEIGHT_PER_PITCH = 0.8660254   # sqrt(3)/2
+_THREAD_ROOT_RADIUS_PER_PITCH = 0.144
 
-    # Use the DXF template's native proportions: one uniform body-length scale
-    # for both depth and lateral coordinates.
-    pitch_scale = 1.0
-    lateral_scale = body_length
+# Threading insert form, taken from the parametric sketch Chris built in
+# SketchBasic (scratch/insert_shapes/thread_insert.sketch). That sketch is the
+# authority on the shape; these are its constraints reduced to numbers.
+#
+# It is an indexable TRIANGULAR insert -- three identical corners produced by a
+# polar array, so symmetry is structural and cannot drift. Its construction:
+#
+#   * a construction circle whose radius is the insert size (inscribed circle)
+#   * three edges tangent to it, mutually 120deg -- an equilateral triangle
+#   * at each corner a cutting tooth: flanks at half the thread angle, tipped
+#     with an arc tangent to both, its crest a driven height above the base
+#
+# Three dimensions drive it and nothing else does, which is the whole point:
+# change the insert size and only the triangle scales; change the nose radius
+# and only the tip changes; change the tooth height and only the tooth grows.
+#
+# Everything below is normalised to inradius = 1 and measured off the solved
+# sketch, so a value here can be checked against it directly.
+#
+# Two things here are derived from the tooth width, not fixed, and freezing
+# either of them is what malforms the insert:
+#
+#   flat length   equal_length to the tooth's base chord, so it tracks the tooth
+#   base offset   where the tooth base line sits out from the centre. The flat
+#                 has to END on the next triangle edge, and that edge is tangent
+#                 to the inscribed circle at 120 degrees. Writing the tangent
+#                 line as 0.5u + (sqrt(3)/2)v = 1 and putting the flat end
+#                 u = -1 + 4w on it gives
+#
+#                     v = sqrt(3) - (4/sqrt(3)) * w
+#
+#                 Pinned to a constant instead, the flat stops landing on the
+#                 edge as soon as pitch changes the tooth width, the legs come
+#                 off tangent and the whole triangle rotates -- which is exactly
+#                 what it did.
+_THREAD_TOOTH_BASE_U = -1.0            # tooth's first base corner, on the edge
+
+
+def _build_thread_flat_tooth_points(depth, half_angle_rad, flat_width):
+    """A tooth whose crest is a flat, not an arc.
+
+    The flanks are cut off where they are `flat_width` apart, so `depth` is the
+    height of the FLAT above the base -- the same convention the radiused tooth
+    uses for its arc crest, which is what keeps the two interchangeable.
+
+    Fusion's own drawing is the check: a 72.00 base at 30 deg would reach a
+    sharp apex at 62.36, and the drawn crest sits at 60.18 -- a truncation of
+    2.18, which puts 2 x 2.18 x tan(30) = 2.52 across the flat, the width the
+    drawing dimensions.
+    """
+    if depth <= 0.0:
+        return []
+
+    half_flat = max(0.0, 0.5 * float(flat_width))
+    # Where the flanks would have met if they ran on to a point.
+    apex = depth + (half_flat / math.tan(half_angle_rad))
+    half_width = apex * math.tan(half_angle_rad)
+    if half_flat <= 0.0 or half_flat >= half_width:
+        return [(0.0, -half_width), (depth, 0.0), (0.0, half_width)]
+
+    return [(0.0, -half_width), (depth, -half_flat),
+            (depth, half_flat), (0.0, half_width)]
+
+
+def _build_thread_tooth_points(depth, half_angle_rad, tip_radius, arc_segments=24):
+    """The cutting tooth in its own frame: (height above base, lateral).
+
+    Flanks at `half_angle_rad` either side of the tooth axis, tipped by an arc
+    of `tip_radius` tangent to both. The arc centre sits r/sin(a) back from
+    where the flanks would have met, which is what makes it tangent rather
+    than merely close; `depth` is the crest height, so it is the arc's outer
+    point that lands on the driven dimension -- matching how the sketch
+    measures it.
+
+    Returned first base corner -> nose -> second base corner.
+    """
+    if depth <= 0.0:
+        return []
+
+    radius = max(0.0, min(float(tip_radius), depth * 0.9))
+    # Height the flanks would reach if they ran on to a sharp point.
+    apex = depth - radius + (radius / math.sin(half_angle_rad)) if radius > 0.0 else depth
+    half_width = apex * math.tan(half_angle_rad)
+
+    if radius <= 0.0:
+        return [(0.0, -half_width), (depth, 0.0), (0.0, half_width)]
+
+    # Arc centre sits r/sin(a) back from the sharp apex, which puts its crest
+    # exactly `depth` above the base -- the dimension the sketch drives.
+    centre = apex - (radius / math.sin(half_angle_rad))
+    # Sweep measured from the tooth axis, so the arc runs from the tangent
+    # point on the first flank, over the crest, to the tangent point on the
+    # second. Starting anywhere else leaves the outline crossing itself.
+    limit = (math.pi / 2.0) - half_angle_rad
+
+    points = [(0.0, -half_width)]
+    for index in range(arc_segments + 1):
+        angle = -limit + ((2.0 * limit) * (index / float(arc_segments)))
+        points.append((centre + (radius * math.cos(angle)),
+                       radius * math.sin(angle)))
+    points.append((0.0, half_width))
+    return points
+
+
+def _thread_points_equal(first, second, tol=1e-9):
+    return (abs(first[0] - second[0]) <= tol
+            and abs(first[1] - second[1]) <= tol)
+
+
+def _finish_thread_bar(tooth, length, width, tooth_height, half_angle,
+                       theta, pitch_min, pitch_max, size, size_mode, tip_type,
+                       nose_radius, flat_width, clamped):
+    """THREAD ISO DOUBLE: a bar carrying a thread form at each end.
+
+    The simple form of the shape: a rectangle, length by width, with the tooth
+    centred on each end and spanning the full width. A full-profile insert is
+    one pitch wide -- the cutting form IS the end of the bar -- so the tooth
+    base and the bar width are the same number and there is no shoulder
+    between them.
+
+        length   insert size, read as an edge length
+        width    max pitch, which the tooth base also equals
+
+    Built from one end and mirrored, so the two forms are identical by
+    construction rather than by arithmetic that could drift apart.
+
+    u runs along the bar, v across it, emitted as (X, Z) = (-u, v): the bar
+    lies along X, sticking out radially, with the cutting tooth at the -X end
+    pointing at the work and the body behind it. Laid along Z instead it would
+    be a blade lying flat down the axis, which is not how an on-edge insert
+    sits in its holder.
+    """
+    half_tw = max(point[1] for point in tooth)
+    half_w = max(0.5 * float(width), half_tw)
+    half_l = max(0.5 * float(length), tooth_height * 1.5)
+    base_u = half_l - tooth_height
+
+    # One end, walked across the bar from +v to -v.
+    end = [(base_u + height, lateral) for height, lateral in reversed(tooth)]
 
     profile = []
-    for lateral_norm, depth_norm in THREAD_DXF_TEMPLATE_POINTS:
-        x_val = (1.0 - float(depth_norm)) * body_length
-        z_val = float(lateral_norm) * lateral_scale
-        profile.append((x_val, z_val))
+    for u, v in end:                       # cutting end, tooth pointing -X
+        profile.append((-u, v))
+    for u, v in end:                       # far end, the same tooth mirrored
+        profile.append((u, -v))            # the loop has to come back the way
+                                           # it went out, so v flips, not u
 
-    profile = _fillet_all_polygon_corners(profile, tip_radius)
-
-    min_x = min(point[0] for point in profile)
-    max_x = max(point[0] for point in profile)
-    min_z = min(point[1] for point in profile)
-    max_z = max(point[1] for point in profile)
-    derived_length = float(max_x - min_x)
-    derived_width = float(max_z - min_z)
+    # Datum: X at the crest -- the deepest the tool reaches, which is what
+    # sets thread depth -- and Z on the bar's own side edge.
+    control_x = -half_l
+    control_z = half_w
+    leg_tangents = ((0.0, -half_w), (0.0, half_w))
 
     return InsertShape(
         family="thread",
         points_xz=ensure_ccw(profile),
         dims={
-            "length_x": float(derived_length),
-            "width_z": float(derived_width),
+            "length_x": float(2.0 * half_l),
+            "width_z": float(2.0 * half_w),
             "thread_angle_deg": float(theta),
-            "thread_pitch_max": float(thread_pitch_max),
-            "thread_pitch_scale": float(pitch_scale),
-            "template": "thread_dxf_v1",
+            "thread_pitch_min": float(pitch_min),
+            "thread_pitch_max": float(pitch_max),
+            "insert_inradius": float(half_w),
+            "insert_size": float(size),
+            "insert_size_mode": str(size_mode or "edge_length"),
+            "tooth_height": float(tooth_height),
+            "tooth_width_z": float(2.0 * half_tw),
+            "template": "thread_bar_v1",
+            "bar_length": float(2.0 * half_l),
+            "bar_width": float(2.0 * half_w),
+            "control_point_xz": (float(control_x), float(control_z)),
+            "leg_tangents_xz": leg_tangents,
+            "inscribed_centre_xz": (0.0, 0.0),
             "tip_type": str(tip_type or ""),
-            "tip_radius": float(tip_radius),
-            "nose_fillet_applied": bool(float(tip_radius or 0.0) > 0.0),
+            "tip_radius": float(nose_radius),
+            "tip_flat_width": float(flat_width),
+            "nose_fillet_applied": bool(nose_radius > 0.0),
+            "tooth_clamped": bool(clamped),
         },
     )
 
+
+def build_thread_shape(length_x, width_z, thread_angle_deg, tip_type, tip_radius,
+                       thread_pitch_max, thread_pitch_min=0.0, insert_ic=0.0,
+                       size_mode='', insert_shape=''):
+    """Threading insert built as a construction, not a point list.
+
+    Three driven dimensions and nothing else -- the arrangement from the
+    SketchBasic model, which is the authority on this shape:
+
+      insert size    inscribed circle radius, so the triangle scales alone
+      tooth height   crest above the base line, from the COARSEST rated pitch
+                     (TPX): 0.6134*P is how deep a thread of that pitch is, so
+                     an insert that cannot reach it cannot cut it
+      nose radius    from the FINEST rated pitch (TPN): the nose has to fit the
+                     root of the finest thread it is rated for. Applied only to
+                     a radiused insert; a 'point' one keeps its sharp V.
+
+    Everything else -- the 120 degree corner spacing, the tangency of the edges
+    to the circle, the tooth flanks meeting the base line, the arc meeting the
+    flanks -- is derived. That is what stops the shape malforming when a
+    dimension moves: there is no vertex to drift, only a construction to
+    re-evaluate.
+    """
+    theta = max(30.0, min(120.0, float(thread_angle_deg)))
+    half_angle = math.radians(theta / 2.0)
+    _ = width_z
+
+    pitch_max = max(0.0, float(thread_pitch_max or 0.0))
+    pitch_min = max(0.0, float(thread_pitch_min or 0.0))
+
+    # LEVER 1 -- insert size.
+    #
+    # Read as the inscribed circle diameter on a TRIPLE and as the bar's
+    # length on a DOUBLE. Size Mode is not consulted: insert_shape already
+    # says which body is being built, and the body determines what its size
+    # measures, so reading both would let two columns disagree about one
+    # number. See is_bar above.
+    #
+    # Falls back to the insert length only when no size is recorded, so an
+    # incomplete row still draws rather than collapsing to nothing.
+    _ = size_mode
+    size = float(insert_ic or 0.0)
+    # On the bar the recorded size is the WIDTH across, not a circle, so half
+    # of it is the half-width rather than an inradius. The name is kept because
+    # every fallback and proportion below is expressed against it.
+    inradius = size / 2.0
+    if inradius <= 0.0:
+        inradius = max(float(length_x) * THREAD_DXF_X_EXTENT_FROM_OAL, 0.001)
+
+    # LEVER 3 -- nose radius from the finest rated pitch, radiused inserts only.
+    # Resolved before the height, because the height depends on it.
+    # A recorded radius always wins, whatever the tip type says. No real insert
+    # comes to a mathematical point, so 'point' means "ground sharp, small tip
+    # radius" rather than "zero" -- and discarding a measured 0.004" because a
+    # text field said point threw away the better number for the worse one.
+    #
+    # Only the DERIVED radius is gated on tip type: inferring 0.144 x TPN for an
+    # insert nobody described as radiused would be inventing geometry.
+    # Fusion offers three tip types and D carries whichever one applies --
+    # it is the dimension ACROSS the tip in every case, so nothing else has
+    # to know which kind of tip this is:
+    #
+    #   point   no entry; D is 0 and stays 0, a documented valid value
+    #   flat    D is the flat width, used as-is
+    #   round   D is the tip diameter, so the radius is D/2 -- already halved
+    #           by the time it reaches here, arriving as `tip_radius`
+    # THREAD ISO DOUBLE is a bar with a form at each end, not a triangle.
+    # `insert_shape` is a rough SIZE DESIGNATOR, not a feature catalogue: it
+    # says how to read the recorded numbers, nothing more.
+    #
+    #   TRIPLE   insert size is the inscribed circle; 3 corners at 120 deg
+    #   DOUBLE   insert size is the bar width; 2 corners at 180 deg, length
+    #            from the insert's own OAL
+    is_bar = 'double' in str(insert_shape or '').strip().lower()
+    # Two numbers, both already recorded, so the DOUBLE needs no column of its
+    # own:
+    #
+    #   length   the insert size, read as an edge length -- the bar's long
+    #            edge. NOT an overall length: an insert has one and so does
+    #            its holder, and reading the wrong one has caused real
+    #            confusion more than once.
+    #   width    the max pitch. A full-profile insert is exactly one pitch
+    #            wide -- the cutting form IS the end of the bar -- so the
+    #            tooth spans the full width and the two are the same number.
+    bar_length = float(insert_ic or 0.0) if is_bar else 0.0
+    bar_width = float(thread_pitch_max or 0.0)
+    if is_bar and bar_length <= 0.0:
+        bar_length = float(length_x or 0.0) or (bar_width * 4.0)
+
+    tip_key = str(tip_type or '').strip().lower()
+    is_radiused = tip_key in ('round', 'radius', 'radiused')
+    is_flat = tip_key == 'flat'
+    nose_radius = 0.0 if is_flat else float(tip_radius or 0.0)
+    flat_width = float(tip_radius or 0.0) if is_flat else 0.0
+    if nose_radius <= 0.0 and is_radiused and pitch_min > 0.0:
+        nose_radius = pitch_min * _THREAD_ROOT_RADIUS_PER_PITCH
+
+    # LEVER 2 -- tooth size from the coarsest rated pitch, via its BASE WIDTH.
+    #
+    # The base width is the dimension that has to be right: thread teeth sit one
+    # pitch apart, so an insert tooth has to span a pitch at its base or it
+    # cannot cut the form. Fix base = P and work back through the flanks:
+    #
+    #     sharp apex = (P/2) / tan(a)          gives base = 2 apex tan(a) = P
+    #     crest      = apex + r - r/sin(a)     the nose shortens the tooth
+    #
+    # Driving the crest height straight off a pitch fraction instead is what put
+    # the base at 1.23 P; doing it off 0.6134 P -- the depth a finished thread is
+    # cut to, not the size of the tooth that cuts it -- put it at 0.71 P.
+    # A flat crest truncates the apex instead of rounding it, so it SHORTENS
+    # the tooth by half_flat/tan(a) where a radius shortens it by
+    # r - r/sin(a). Same base either way, which is the dimension that matters.
+    def _crest_drop():
+        if is_flat:
+            return (0.5 * flat_width) / math.tan(half_angle)
+        return (nose_radius / math.sin(half_angle)) - nose_radius
+
+    def _make_tooth(height):
+        if is_flat:
+            return _build_thread_flat_tooth_points(height, half_angle, flat_width)
+        return _build_thread_tooth_points(height, half_angle, nose_radius)
+
+    # Proportional fallbacks are measured against the dimension the tooth
+    # actually stands on: half the bar's WIDTH, or the triangle's inradius.
+    # Using the inradius for both would scale a bar's tooth off half its
+    # LENGTH, which on a long insert is an order of magnitude out.
+    body_scale = (0.5 * bar_width) if is_bar else inradius
+
+    if pitch_max > 0.0:
+        sharp_apex = (pitch_max / 2.0) / math.tan(half_angle)
+        tooth_height = sharp_apex - _crest_drop()
+    else:
+        tooth_height = body_scale * 0.4        # the sketch's own proportion
+    tooth_height = max(tooth_height, body_scale * 0.02)
+    nose_radius = min(nose_radius, tooth_height * 0.9)
+    flat_width = min(flat_width, tooth_height * 0.9)
+
+    tooth = _make_tooth(tooth_height)
+    if len(tooth) < 3:
+        return InsertShape(family="thread", points_xz=[], dims={})
+
+    # A tooth can only grow until its base line reaches the inscribed circle:
+    # v = sqrt(3)R - (4/sqrt(3))w >= R gives w <= (3 - sqrt(3))/4 * R. Past that
+    # the three corner blocks run into each other and the triangle stops being
+    # a triangle. Clamping here rather than on the height keeps the limit on the
+    # thing that actually collides.
+    #
+    # Hitting this means the insert is too small for the pitch it is rated to
+    # cut, which is a tool-table problem wearing a geometry costume -- so the
+    # clamped height is reported in dims rather than silently swallowed.
+    # Measured, not assumed: sweeping the construction unclamped, the outline
+    # first crosses itself at w = 0.5 R. The previous limit of (3-sqrt3)/4 R
+    # (0.317 R) was a guess about the inscribed circle and cut teeth that were
+    # perfectly valid.
+    # On the DOUBLE bar the limit is simply the bar: a full-profile tooth may
+    # span the whole width -- that is what "full profile" means -- and only a
+    # tooth WIDER than its own body is impossible.
+    if is_bar:
+        width_limit = 0.5 * bar_width
+    else:
+        width_limit = 0.45 * inradius
+    clamped = max(point[1] for point in tooth) > width_limit
+    if clamped:
+        tooth_height = (width_limit / math.tan(half_angle)) - _crest_drop()
+        tooth_height = max(tooth_height, body_scale * 0.02)
+        nose_radius = min(nose_radius, tooth_height * 0.9)
+        flat_width = min(flat_width, tooth_height * 0.9)
+        tooth = _make_tooth(tooth_height)
+        if len(tooth) < 3:
+            return InsertShape(family="thread", points_xz=[], dims={})
+
+    # One corner in its own frame: u along the tooth base line, v outward from
+    # the centre. The tooth's first base corner sits where the triangle edge
+    # meets that line, so the tooth grows along the line rather than off it.
+    if is_bar:
+        return _finish_thread_bar(
+            tooth, bar_length, bar_width, tooth_height, half_angle, theta,
+            pitch_min, pitch_max, size, size_mode, tip_type,
+            nose_radius, flat_width, clamped)
+
+    base_u = _THREAD_TOOTH_BASE_U * inradius
+    half_width = max(point[1] for point in tooth)
+    # Derived, per the note above: keeps the flat ending on the tangent edge
+    # whatever the tooth width, which is what holds the legs square to Z.
+    base_v = (math.sqrt(3.0) * inradius) - ((4.0 / math.sqrt(3.0)) * half_width)
+    axis_u = base_u + half_width
+
+    corner = [(axis_u + lateral, base_v + height) for height, lateral in tooth]
+    # equal_length: the flat matches the tooth's base chord (2 x half width).
+    corner.append((base_u + (4.0 * half_width), base_v))
+
+    # Three corners, 120 degrees apart -- a polar array, as the sketch has it.
+    # Negative: the sketch tiles clockwise (its first corner sits at 130.34 deg
+    # and the next at 10.34). Tiling the other way crosses the outline.
+    #
+    # u runs along the tooth base line and v out from the centre, emitted as
+    # (X, Z) = (-v, u).
+    #
+    # The sign on v points the cutting tooth toward the work (-X, the axis)
+    # with the insert body behind it, and a leg -- a line of constant u --
+    # comes out perpendicular to the Z centreline, which is what lets the tooth
+    # cut its form squarely. Emitted the other way round a leg lies along Z and
+    # skews every thread it cuts.
+    profile = []
+    for index in range(3):
+        angle = -(2.0 * math.pi / 3.0) * index
+        cos_a, sin_a = math.cos(angle), math.sin(angle)
+        for u, v in corner:
+            profile.append((-((u * sin_a) + (v * cos_a)),
+                            (u * cos_a) - (v * sin_a)))
+
+    # The profile is NOT translated to its tip here. Thread/groove/drill/tap
+    # templates are handed back in final orientation and the control point is
+    # resolved separately, per Q orientation, by _resolve_profile_anchor_xz --
+    # see the 'thread' branch in lathe_conv. Pre-anchoring here would fight it.
+    #
+    # What the anchor cannot work out for itself is the threading datum:
+    #
+    #   X   the nose tangent -- the crest of the nose arc, the deepest the tool
+    #       reaches, which is what sets thread depth
+    #   Z   where the inscribed circle touches the leading leg. Threading
+    #       tooling is measured to an edge, not to the insert's centre, so the
+    #       Z reference belongs on the leg rather than under the tooth.
+    #
+    # Reported rather than applied: which leg leads depends on the Q
+    # orientation, and only the caller knows that.
+    control_x = -(base_v + tooth_height)
+    control_z = base_u                      # leg u = -inradius, touched at v = 0
+    # The other two legs, for an orientation whose leading edge is not the first.
+    leg_tangents = []
+    for index in range(3):
+        angle = -(2.0 * math.pi / 3.0) * index
+        cos_a, sin_a = math.cos(angle), math.sin(angle)
+        leg_tangents.append((-(base_u * sin_a), base_u * cos_a))
+
+    min_x = min(point[0] for point in profile)
+    max_x = max(point[0] for point in profile)
+    min_z = min(point[1] for point in profile)
+    max_z = max(point[1] for point in profile)
+
+    return InsertShape(
+        family="thread",
+        points_xz=ensure_ccw(profile),
+        dims={
+            "length_x": float(max_x - min_x),
+            "width_z": float(max_z - min_z),
+            "thread_angle_deg": float(theta),
+            "thread_pitch_min": float(pitch_min),
+            "thread_pitch_max": float(pitch_max),
+            "insert_inradius": float(inradius),
+            "insert_size": float(size),
+            "insert_size_mode": str(size_mode or "edge_length"),
+            "tooth_height": float(tooth_height),
+            "tooth_width_z": float(2.0 * half_width),
+            "template": "thread_sketch_v1",
+            # Threading datum: X at the nose tangent, Z at the inscribed-circle
+            # tangency on the leading leg. See the note where these are built.
+            "control_point_xz": (float(control_x), float(control_z)),
+            "leg_tangents_xz": tuple(leg_tangents),
+            "inscribed_centre_xz": (0.0, 0.0),
+            "tip_type": str(tip_type or ""),
+            "tip_radius": float(nose_radius),
+            "nose_fillet_applied": bool(nose_radius > 0.0),
+        },
+    )
 
 def build_rhombic_shape(length_x, width_z, included_angle_deg, nose_radius, style_key):
     ic = max(20.0, min(120.0, float(included_angle_deg)))

@@ -114,9 +114,19 @@ class ToolLathe(Base):
     chamfer_threads = Column(Float)    # tap lead/chamfer threads (e.g. 2.5)
 
     # threading
-    thread_pitch_max = Column(Float)   # TPX/TP; tap pitch reuses this column
+    # A tap cuts one pitch (TP). A threading insert cuts a RANGE, bounded by
+    # TPN/TPX -- and they really do differ: SIR-375-H11-11IRA60 exports
+    # TPN 0.03 against TPX 0.0625. Collapsing all three into one column lost
+    # the minimum and left a tap's pitch in a field called "max".
+    thread_pitch = Column(Float)       # TP; the tap's fixed pitch
+    # Pitch is the distance between threads, so a SMALL pitch is a fine
+    # thread and a LARGE one is coarse. min/max therefore read the opposite
+    # way round to "fine/coarse", which is worth stating rather than leaving
+    # to be re-derived.
+    thread_pitch_min = Column(Float)   # TPN; finest thread the insert cuts
+    thread_pitch_max = Column(Float)   # TPX; coarsest thread the insert cuts
     thread_angle = Column(Float)       # profile angle, default 60
-    thread_tip_type = Column(Text)     # point | flat | radius
+    thread_tip_type = Column(Text)     # point | flat | round  (radius accepted as a synonym)
 
     # feeds & speeds defaults (conversational autofill)
     surface_speed = Column(Float)      # SFM / SMM per meta.units

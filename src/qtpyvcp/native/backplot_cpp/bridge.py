@@ -83,6 +83,9 @@ class CppBackplotResult:
     added_segments: int
     draw_ms: float
     parse_ms: float = 0.0
+    # WCS indices whose path never established an absolute position (G91-only).
+    # The widget anchors these at the machine rather than drawing at WCS zero.
+    floating_wcs: Any = None
 
 
 def _payload_to_result(payload: Any, datasource, *, file_name: Optional[str], path_actors: Optional[dict] = None, parse_ms: float = 0.0) -> Optional[CppBackplotResult]:
@@ -241,6 +244,22 @@ def build_backplot_from_file(
 
         payload = _backplot_cpp.build_from_canon(canon, datasource)
         cpp_result = _payload_to_result(payload, datasource, file_name=filename, parse_ms=parse_ms)
+        if cpp_result is not None:
+            # A .so built before floating-path support simply won't have this;
+            # fall back to the old behaviour rather than failing the load.
+            floating_getter = getattr(canon, "get_floating_wcs", None)
+            if callable(floating_getter):
+                try:
+                    cpp_result.floating_wcs = set(floating_getter())
+                except Exception:
+                    LOG.exception("native canon get_floating_wcs() failed")
+                    cpp_result.floating_wcs = set()
+            else:
+                LOG.warning(
+                    "native backplot module predates floating-path support; "
+                    "G91-only programs will plot at WCS zero. Rebuild backplot_cpp."
+                )
+                cpp_result.floating_wcs = set()
         return cpp_result
     except Exception:
         LOG.exception("C++ native canon parse/build failed")

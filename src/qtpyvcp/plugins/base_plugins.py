@@ -1,4 +1,5 @@
 import inspect
+import warnings
 
 from PySide6.QtCore import QObject, Signal
 from qtpyvcp.utilities.logger import getLogger, logLevelFromName
@@ -179,20 +180,49 @@ class DataChannel(QObject):
         return self
 
     def notify(self, slot, *args, **kwargs):
+        """Connect `slot` to this channel, and hand back the connection.
+
+        The returned object is the callback actually connected to the signal,
+        which is not `slot` itself -- it is wrapped for QObject-lifetime
+        safety, and for the string/getter variants it is a fresh closure. So
+        the caller cannot undo the connection with `disconnect(slot)` later.
+        Returning the wrapper gives subscribers something to pass to
+        `unnotify()` when they need to stop listening, e.g. a DRO whose
+        reference type changes and must drop the channel it no longer shows.
+        """
         # print('Connecting %s to slot %s' % (self._signal, slot))
         owner = getattr(slot, '__self__', None)
 
         if len(args) == 0 and len(kwargs) == 0:
-            self.signal.connect(safe_qt_callback(owner, slot))
+            callback = safe_qt_callback(owner, slot)
         else:
             if args[0] in ['string', 'str']:
-                self.signal.connect(
-                    safe_qt_callback(owner, lambda *sig_args, **sig_kwargs: slot(self.getString(*args[1:], **kwargs)))
-                )
+                callback = safe_qt_callback(
+                    owner, lambda *sig_args, **sig_kwargs: slot(self.getString(*args[1:], **kwargs)))
             else:
-                self.signal.connect(
-                    safe_qt_callback(owner, lambda *sig_args, **sig_kwargs: slot(self.getValue(*args, **kwargs)))
-                )
+                callback = safe_qt_callback(
+                    owner, lambda *sig_args, **sig_kwargs: slot(self.getValue(*args, **kwargs)))
+
+        self.signal.connect(callback)
+        return callback
+
+    def unnotify(self, callback):
+        """Undo a `notify()`, given the callback that call returned.
+
+        Tolerates a callback that is already disconnected or whose owner Qt
+        object has gone, so callers can tear down unconditionally.
+        """
+        if callback is None:
+            return
+        try:
+            # PySide warns rather than raises when the callback is already
+            # disconnected. Tearing down twice is legitimate here, so keep it
+            # out of the log instead of leaving noise in a user's report.
+            with warnings.catch_warnings():
+                warnings.simplefilter('ignore', RuntimeWarning)
+                self.signal.disconnect(callback)
+        except (RuntimeError, TypeError):
+            pass
 
     # fixme
     onValueChanged = notify

@@ -21,6 +21,10 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 LOG = logger.getLogger(__name__)
 INFO = Info()
 
+# Set once the undeclared-G7 config error below has been reported, so it lands
+# in the log without every X DRO repeating it on every modal change.
+_WARNED_UNDECLARED_LATHE = False
+
 
 class Axis(IntEnum):
     ALL = -1
@@ -52,7 +56,25 @@ class DROBaseWidget(VCPWidget):
     """
 
     def __init__(self):
+        # PySide6's QWidget bases chain cooperatively through the MRO, so
+        # DROLabel/DROLineEdit's `super().__init__(parent)` already reaches
+        # this body before their explicit DROBaseWidget.__init__(self) call
+        # runs it a second time. That doubled every subscription made below.
+        # Guard rather than drop the explicit call, which is still what makes
+        # this run at all if a subclass's chain does not reach us.
+        if getattr(self, '_dro_base_ready', False):
+            return
+        self._dro_base_ready = True
+
         super(DROBaseWidget, self).__init__()
+
+        # Channels this widget has already connected to, so the deliberate
+        # overlap between __init__ and initialize() cannot stack up duplicates.
+        self._subscribed = set()
+        # The single position channel this DRO listens to, and the handle that
+        # lets it stop listening when referenceType changes.
+        self._pos_channel = None
+        self._pos_handle = None
 
         self.status = getPlugin('status')
         self.pos = getPlugin('position')
@@ -88,14 +110,38 @@ class DROBaseWidget(VCPWidget):
         # super not called errors.
         #self.updateValue()
 
-        self.status.program_units.notify(self.updateUnits, 'string')
+        self._subscribeOnce(self.status.program_units, self.updateUnits, 'string')
 
         # Wire position change signals immediately; initialize() is sometimes
         # bypassed in designer-loaded widgets under Qt6/PySide6.
-        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
+        self._connectPositionChannel()
 
         if self._is_lathe:
-            self.status.gcodes.notify(self.updateDiameterMode)
+            # Seed from the current modal state before subscribing. gcodes only
+            # emits on *change*, and widgets loaded from the config dir are
+            # often built after the startup code has already applied G7, so
+            # waiting for a notification leaves them showing radius forever.
+            self._g7_active = 'G7' in (self.status.gcodes.getValue() or ())
+            self._subscribeOnce(self.status.gcodes, self.updateDiameterMode)
+
+            if self._anum == Axis.X:
+                # No Qt calls here (no objectName(), no setText()): QUiLoader is
+                # still constructing this widget and touching the QObject from
+                # __init__ segfaults PySide6.
+                LOG.info("LATHE-DRO seed: class=%s axis=X lathe_mode=%s "
+                         "g7_flag=%s gcodes=[%s]",
+                         self.__class__.__name__,
+                         getattr(self._lathe_mode, 'name', self._lathe_mode),
+                         self._g7_active,
+                         " ".join(self.status.gcodes.getValue() or ()))
+
+        elif self._anum == Axis.X:
+            # No lathe flag in the INI, so none of the G7 handling above runs
+            # -- but the interpreter halves every X word regardless while G7 is
+            # active. Watch for that pairing and say so, rather than quietly
+            # showing the operator half of what they typed.
+            self._subscribeOnce(self.status.gcodes, self.checkUndeclaredLatheG7)
+            self.checkUndeclaredLatheG7(self.status.gcodes.getValue())
 
         if self._use_global_fmt_settings:
 
@@ -105,13 +151,48 @@ class DROBaseWidget(VCPWidget):
             self.lathe_mode_setting = getSetting('dro.lathe-radius-mode')
 
             try:
-                self.in_fmt_setting.notify(self.setInchFormat)
-                self.mm_fmt_setting.notify(self.setMillimeterFormat)
-                self.deg_fmt_setting.notify(self.setDegreeFormat)
-                self.lathe_mode_setting.notify(self.setLatheMode)
+                self._subscribeOnce(self.in_fmt_setting, self.setInchFormat)
+                self._subscribeOnce(self.mm_fmt_setting, self.setMillimeterFormat)
+                self._subscribeOnce(self.deg_fmt_setting, self.setDegreeFormat)
+                self._subscribeOnce(self.lathe_mode_setting, self.setLatheMode)
 
             except AttributeError:  # settings not found
                 pass
+
+    def _subscribeOnce(self, channel, slot, *args):
+        """Connect `slot` to `channel`, at most once for this widget.
+
+        __init__ and initialize() deliberately wire the same channels, and
+        neither can be dropped: getSetting() can still return None during
+        construction, while initialize() is skipped for some designer-loaded
+        widgets under PySide6. So track what is already connected instead.
+        """
+        # Not repr(slot): this runs mid-construction, where repr() on a
+        # half-built QObject raises "base class __init__ not called".
+        key = (channel, getattr(slot, '__name__', None) or id(slot))
+        if key in self._subscribed:
+            return
+        channel.notify(slot, *args)     # raises AttributeError if channel is None
+        self._subscribed.add(key)
+
+    def _connectPositionChannel(self):
+        """Listen to exactly the position channel `referenceType` names.
+
+        Designer properties are applied after construction, so a DRO has to
+        subscribe once under the default RefType before it is ever told what
+        it displays. The position plugin emits rel, abs and dtg on every poll,
+        so a leftover subscription is not harmless: the DRO would repaint with
+        another reference type's value before its own. Drop the previous
+        connection before making the new one, which also makes repeated
+        __init__/initialize()/property writes idempotent.
+        """
+        channel = getattr(self.pos, self._ref_typ.name)
+        if self._pos_channel is channel and self._pos_handle is not None:
+            return
+        if self._pos_handle is not None:
+            self._pos_channel.unnotify(self._pos_handle)
+        self._pos_channel = channel
+        self._pos_handle = channel.notify(self.updateValue)
 
     def updateUnits(self, units=None):
         """Force update of DRO display units.
@@ -141,7 +222,12 @@ class DROBaseWidget(VCPWidget):
         self.updateValue()
 
     def initialize(self):
-        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
+        if self._is_lathe:
+            # Re-seed before the first updateValue(): the modal state can have
+            # changed between construction and initialization.
+            self._g7_active = 'G7' in (self.status.gcodes.getValue() or ())
+
+        self._connectPositionChannel()
         self.updateValue()
         LOG.info(
             "DRO initialized axis=%s ref=%s value=%s",
@@ -151,7 +237,7 @@ class DROBaseWidget(VCPWidget):
         )
 
         if self._is_lathe:
-            self.status.gcodes.notify(self.updateDiameterMode)
+            self._subscribeOnce(self.status.gcodes, self.updateDiameterMode)
 
         if self._use_global_fmt_settings:
 
@@ -161,16 +247,107 @@ class DROBaseWidget(VCPWidget):
             self.lathe_mode_setting = getSetting('dro.lathe-radius-mode')
 
             try:
-                self.in_fmt_setting.notify(self.setInchFormat)
-                self.mm_fmt_setting.notify(self.setMillimeterFormat)
-                self.deg_fmt_setting.notify(self.setDegreeFormat)
-                self.lathe_mode_setting.notify(self.setLatheMode)
+                self._subscribeOnce(self.in_fmt_setting, self.setInchFormat)
+                self._subscribeOnce(self.mm_fmt_setting, self.setMillimeterFormat)
+                self._subscribeOnce(self.deg_fmt_setting, self.setDegreeFormat)
+                self._subscribeOnce(self.lathe_mode_setting, self.setLatheMode)
 
             except AttributeError:  # settings not found
                 pass
 
+    def latheG7Actual(self):
+        """Whether the interpreter reports G7 (diameter mode) right now."""
+        try:
+            return 'G7' in (self.status.gcodes.getValue() or ())
+        except Exception:
+            return False
+
+    def latheG7Mismatch(self):
+        """True when this widget's cached G7 flag disagrees with the interpreter.
+
+        That disagreement is the bug: LinuxCNC halves every X word while G7 is
+        active, so a DRO that does not know about G7 shows (and accepts) radius
+        where the operator means diameter.
+        """
+        return self._is_lathe and self._g7_active != self.latheG7Actual()
+
+    def latheUndeclaredG7(self):
+        """True when the interpreter is in G7 but the INI declares no lathe.
+
+        LinuxCNC's own GUIs gate their diameter handling on the INI exactly as
+        this widget does -- see the `lathe` check in axis.py's touch off prompt
+        and gmoccapy's `if self.lathe_mode:` around its G7/G8 test. So this
+        combination is a config error, not a gating error: the INI needs
+        [DISPLAY]LATHE, and until it has it nothing here converts X.
+        """
+        return not self._is_lathe and self.latheG7Actual()
+
+    def checkUndeclaredLatheG7(self, gcodes):
+        """Warn once per session when G7 turns up in a non-lathe config.
+
+        Subscribed for the X DRO only, and only where the INI declares no
+        lathe -- the one case the rest of this class cannot compensate for.
+        """
+        global _WARNED_UNDECLARED_LATHE
+        if _WARNED_UNDECLARED_LATHE or self._is_lathe:
+            return
+        if 'G7' not in (gcodes or ()):
+            return
+        _WARNED_UNDECLARED_LATHE = True
+        self.warnUndeclaredLatheG7()
+
+    def warnUndeclaredLatheG7(self, entered=None, sent=None):
+        """Spell out the INI error behind a silently halved X DRO.
+
+        Safe to call during construction -- it touches no Qt state.
+        """
+        LOG.warning("bgred<==== G7 DIAMETER MODE, BUT NO LATHE IN THE INI ====>")
+        if entered is not None:
+            LOG.warning("bgred<LATHE-DRO> typed=%s sent=%s", entered, sent)
+        LOG.warning("bgred<LATHE-DRO> The interpreter is in G7 (diameter "
+                    "mode), but neither LATHE nor BACK_TOOL_LATHE is set in "
+                    "the INI [DISPLAY] section, so the DROs run as a mill and "
+                    "never convert X.")
+        LOG.warning("bgred<LATHE-DRO> The X DRO reads radius while the machine "
+                    "works in diameter: type 20 and it reads back 10. The "
+                    "stored offset itself is correct.")
+        LOG.warning("bgred<LATHE-DRO> Fix the INI: add 'LATHE = 1' under "
+                    "[DISPLAY], plus 'BACK_TOOL_LATHE = 1' as well for a back "
+                    "tool post machine.")
+
+    def latheStateSummary(self):
+        """One-line diameter/radius state, for troubleshooting logs.
+
+        Only call this after construction -- it touches the QObject.
+        """
+        try:
+            gcodes = self.status.gcodes.getValue() or ()
+        except Exception:
+            gcodes = ()
+        try:
+            name = self.objectName() or self.__class__.__name__
+        except Exception:
+            name = self.__class__.__name__
+        try:
+            axis = 'XYZABCUVW'[self._anum]
+        except (IndexError, TypeError):
+            axis = str(self._anum)
+        return (
+            "widget=%s axis=%s lathe_mode=%s g7_flag=%s g7_actual=%s gcodes=[%s]"
+            % (name,
+               axis,
+               getattr(self._lathe_mode, 'name', self._lathe_mode),
+               self._g7_active,
+               'G7' in gcodes,
+               " ".join(gcodes))
+        )
+
     def updateDiameterMode(self, gcodes):
+        was = self._g7_active
         self._g7_active = 'G7' in gcodes
+        if was != self._g7_active and self._anum == Axis.X:
+            LOG.info("LATHE-DRO g7 changed %s->%s: %s",
+                     was, self._g7_active, self.latheStateSummary())
         self.updateValue()
 
     def updateValue(self, pos=None):
@@ -200,7 +377,7 @@ class DROBaseWidget(VCPWidget):
     def referenceType(self, ref_type):
         # Rewire to the newly requested reference source (abs/rel/dtg).
         self._ref_typ = RefType(ref_type)
-        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
+        self._connectPositionChannel()
         self.updateValue()
 
     @Property(int)
