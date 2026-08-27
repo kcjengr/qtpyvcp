@@ -712,6 +712,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._ensure_nav_helper()
             QTimer.singleShot(0, self._ensure_nav_helper)
 
+            self._diag_startup()
+            self._diag_machine_state("initial state")
+
     # ------------------------------------------------------------------
     # Camera-orientation gizmo ("nav helper") personalization
     # ------------------------------------------------------------------
@@ -3674,14 +3677,83 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self._request_render()
 
+    # ------------------------------------------------------------------
+    # Temporary display-option diagnostics. Everything below logs at DEBUG
+    # with a "[vtk-diag]" prefix, which reaches ~/qtpyvcp.log by default
+    # (initBaseLogger defaults to DEBUG and the file handler is DEBUG), so a
+    # user needs no config change to capture it. Nothing here may raise -- it
+    # runs inside Qt slots and VTK callbacks. Remove once resolved.
+    # ------------------------------------------------------------------
+    def _diag(self, msg, *args):
+        try:
+            LOG.debug("[vtk-diag] " + msg, *args)
+        except Exception:
+            pass
+
+    @staticmethod
+    def _vtk_get(obj, name, default="n/a"):
+        """Read a VTK getter defensively; not all actor classes have all of them."""
+        try:
+            fn = getattr(obj, name, None)
+            return fn() if callable(fn) else default
+        except Exception:
+            return default
+
+    def _diag_startup(self):
+        """One-shot context banner: answers the config questions up front."""
+        try:
+            actor_cls = type(self.machine_actor).__name__
+            bounds_ini = self._datasource.getMachineBounds()
+            grid_capable = actor_cls != "MachineLineActor"
+            self._diag(
+                "startup: machine_actor=%s grid_supported=%s [DISPLAY]BOUNDARIES=%r "
+                "session=%s wayland_display=%r vtk=%s render_window=%s widget_visible=%s",
+                actor_cls,
+                grid_capable,
+                bounds_ini,
+                os.getenv("XDG_SESSION_TYPE", "<unset>"),
+                os.getenv("WAYLAND_DISPLAY", "<unset>"),
+                vtk.vtkVersion.GetVTKVersion(),
+                type(self.renderer_window).__name__,
+                self.isVisible(),
+            )
+            if not grid_capable:
+                self._diag(
+                    "WARNING: MachineLineActor cannot draw gridlines -- the PLOT "
+                    "GRID button is a no-op with [DISPLAY]BOUNDARIES=line"
+                )
+        except Exception:
+            pass
+
+    def _diag_machine_state(self, label):
+        try:
+            a = self.machine_actor
+            self._diag(
+                "%s -> axis_vis X/Y/Z=%s/%s/%s  gridlines X/Y/Z=%s/%s/%s  visible=%s",
+                label,
+                self._vtk_get(a, "GetXAxisVisibility"),
+                self._vtk_get(a, "GetYAxisVisibility"),
+                self._vtk_get(a, "GetZAxisVisibility"),
+                self._vtk_get(a, "GetDrawXGridlines"),
+                self._vtk_get(a, "GetDrawYGridlines"),
+                self._vtk_get(a, "GetDrawZGridlines"),
+                self._vtk_get(a, "GetVisibility"),
+            )
+        except Exception:
+            pass
+
     def _render_now(self):
         self._render_scheduled = False
+        self._diag("render EXECUTING (widget_visible=%s)", self.isVisible())
         self.renderer_window.Render()
+        self._diag("render DONE")
 
     def _request_render(self):
         if self._render_scheduled:
+            self._diag("render requested but one is ALREADY SCHEDULED (coalesced)")
             return
         self._render_scheduled = True
+        self._diag("render scheduled via QTimer.singleShot(0)")
         QTimer.singleShot(0, self._render_now)
 
     def _render_frame(self, interactive=False):
@@ -4294,17 +4366,31 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showGrid(self, grid):
+        self._diag("showGrid(%r) type=%s  actor=%s",
+                   grid, type(grid).__name__, type(self.machine_actor).__name__)
         self.machine_actor.showGridlines(grid)
+        self._diag_machine_state("after showGrid")
         self._request_render()
 
     @Slot(bool)
     @Slot(object)
     def showProgramBounds(self, show):
+        self._diag("showProgramBounds(%r) type=%s  path_actors=%s bounds_actors=%s",
+                   show, type(show).__name__,
+                   list(self.path_actors.keys()),
+                   list(self.program_bounds_actors.keys()))
         self.show_program_bounds = show
+        applied = []
         for wcs_index, actor in list(self.path_actors.items()):
             program_bounds_actor = self.program_bounds_actors.get(wcs_index)
-            if program_bounds_actor is not None:
-                program_bounds_actor.showProgramBounds(self.show_program_bounds)
+            if program_bounds_actor is None:
+                self._diag("  wcs %s has NO bounds actor -- skipped", wcs_index)
+                continue
+            program_bounds_actor.showProgramBounds(self.show_program_bounds)
+            applied.append(
+                (wcs_index, self._vtk_get(program_bounds_actor, "GetXAxisVisibility"))
+            )
+        self._diag("after showProgramBounds -> per-wcs axis_vis %s", applied)
         self._request_render()
 
     @Slot()
@@ -4322,7 +4408,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showMachineBounds(self, bounds):
+        self._diag("showMachineBounds(%r) type=%s  actor=%s",
+                   bounds, type(bounds).__name__, type(self.machine_actor).__name__)
         self.machine_actor.showMachineBounds(bounds)
+        self._diag_machine_state("after showMachineBounds")
         self._request_render()
 
     @Slot()

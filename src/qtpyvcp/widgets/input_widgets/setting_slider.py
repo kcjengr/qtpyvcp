@@ -520,6 +520,12 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
             # Emit the value in the configured output type
             self.toggled.emit(self.value())
 
+            if str(self._setting_name).startswith('backplot.'):
+                LOG.debug(
+                    "[vtk-diag] button %r bound to %s, initial value %r",
+                    self.objectName(), self._setting_name, value,
+                )
+
             # Use wrapper for settings notification to handle type conversion
             self._setting.notify(safe_qt_callback(self, lambda v: self.setDisplayChecked(bool(v))))
             # Connect to a wrapper that uses the configured output type
@@ -530,6 +536,13 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
         """Internal method to emit the correct value type based on outputAsInt property"""
         if self._setting is not None:
             value_to_store = self.value()  # Uses the configurable output type
+            # Temporary diagnostics for the backplot display-option buttons.
+            # Proves the click reached the setting layer. Remove when resolved.
+            if str(self._setting_name).startswith('backplot.'):
+                LOG.debug(
+                    "[vtk-diag] button %r toggled -> %s = %r (checked=%r)",
+                    self.objectName(), self._setting_name, value_to_store, checked,
+                )
             self._setting.setValue(value_to_store)
 
 
