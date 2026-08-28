@@ -830,8 +830,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 raise ValueError("invalid color %r" % (hex_color,))
             return [color.redF(), color.greenF(), color.blueF()]
 
-        def _apply(name, func, convert):
+        def _apply(name, obj, attr, convert):
             if name not in cfg:
+                return
+            func = getattr(obj, attr, None)
+            if func is None:
+                # Not every VTK build exposes every setter, e.g.
+                # SetShouldResetCamera only exists on VTK >= 9.6.
+                LOG.debug("nav helper: %s not available in this VTK version",
+                          attr)
                 return
             try:
                 func(convert(cfg[name]))
@@ -839,25 +846,25 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 LOG.warning("nav helper: ignoring invalid %s=%r",
                             name, cfg[name])
 
-        _apply("animate", widget.SetAnimate, bool)
-        _apply("should_reset_camera", widget.SetShouldResetCamera, bool)
-        _apply("animator_total_frames", widget.SetAnimatorTotalFrames, int)
-        _apply("process_events", widget.SetProcessEvents, bool)
-        _apply("manages_cursor", widget.SetManagesCursor, bool)
-        _apply("priority", widget.SetPriority, float)
-        _apply("dragable", rep.SetDragable, bool)
-        _apply("pickable", rep.SetPickable, bool)
-        _apply("container_visibility", rep.SetContainerVisibility, bool)
-        _apply("total_length", rep.SetTotalLength, float)
-        _apply("handle_size", rep.SetHandleSize, float)
-        _apply("normalized_handle_dia", rep.SetNormalizedHandleDia, float)
-        _apply("shaft_resolution", rep.SetShaftResolution, int)
-        _apply("handle_resolution",
-               rep.SetHandleCircumferentialResolution, int)
-        _apply("container_circumferential_resolution",
-               rep.SetContainerCircumferentialResolution, int)
-        _apply("container_radial_resolution",
-               rep.SetContainerRadialResolution, int)
+        _apply("animate", widget, "SetAnimate", bool)
+        _apply("should_reset_camera", widget, "SetShouldResetCamera", bool)
+        _apply("animator_total_frames", widget, "SetAnimatorTotalFrames", int)
+        _apply("process_events", widget, "SetProcessEvents", bool)
+        _apply("manages_cursor", widget, "SetManagesCursor", bool)
+        _apply("priority", widget, "SetPriority", float)
+        _apply("dragable", rep, "SetDragable", bool)
+        _apply("pickable", rep, "SetPickable", bool)
+        _apply("container_visibility", rep, "SetContainerVisibility", bool)
+        _apply("total_length", rep, "SetTotalLength", float)
+        _apply("handle_size", rep, "SetHandleSize", float)
+        _apply("normalized_handle_dia", rep, "SetNormalizedHandleDia", float)
+        _apply("shaft_resolution", rep, "SetShaftResolution", int)
+        _apply("handle_resolution", rep,
+               "SetHandleCircumferentialResolution", int)
+        _apply("container_circumferential_resolution", rep,
+               "SetContainerCircumferentialResolution", int)
+        _apply("container_radial_resolution", rep,
+               "SetContainerRadialResolution", int)
 
         # rotate-arrow (handle) visibility: collapse the handles to nothing
         if cfg.get("handle_visibility") is False:
