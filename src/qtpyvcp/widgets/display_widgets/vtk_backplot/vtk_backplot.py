@@ -4399,6 +4399,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             )
         self._diag("after showProgramBounds -> per-wcs axis_vis %s", applied)
         self._request_render()
+        # Persist the change so new actors are created with the correct state
+        setting = getSetting("backplot.show-program-bounds")
+        if setting is not None and setting.value != show:
+            setting.setValue(show)
 
     @Slot()
     def toggleProgramBounds(self):
@@ -4420,6 +4424,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.machine_actor.showMachineBounds(bounds)
         self._diag_machine_state("after showMachineBounds")
         self._request_render()
+        # Persist the change so new actors are created with the correct state
+        setting = getSetting("backplot.show-machine-bounds")
+        if setting is not None and setting.value != bounds:
+            setting.setValue(bounds)
 
     @Slot()
     def toggleMachineBounds(self):
