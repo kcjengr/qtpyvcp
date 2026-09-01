@@ -87,7 +87,8 @@ def vtk_version_ok(major, minor):
 
     :param major: Major version.
     :param minor: Minor version.
-    :return: True if the requested VTK version is greater or equal to the actual VTK version.
+    :return: True if the installed VTK version is greater than or equal
+             to the requested version.
     """
     needed_version = 10000000000 * int(major) \
                      + 100000000 * int(minor)
@@ -98,10 +99,10 @@ def vtk_version_ok(major, minor):
         ver = vtkVersion()
         vtk_version_number = 10000000000 * ver.GetVTKMajorVersion() \
                              + 100000000 * ver.GetVTKMinorVersion()
-    if vtk_version_number == needed_version:
-        return True
-    else:
-        return False
+    # VTK_VERSION_NUMBER also encodes the patch level (e.g. 90600000002 for
+    # 9.6.2), so compare with >=: the requested major/minor without build is
+    # the floor of any 9.6.x install.
+    return vtk_version_number >= needed_version
 
 class InteractorEventFilter(QObject):
     def __init__(self, parent=None, jog_safety_off=True):
@@ -873,7 +874,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             except Exception:
                 LOG.warning("nav helper: failed to hide handles")
 
-        # axis labels: per-axis text, blanked entirely when hidden
+        # axis labels: per-axis text, blanked entirely when hidden. Guarded
+        # with getattr because the label-text setters only exist on newer
+        # VTK builds (missing on e.g. Debian trixie's VTK 9.3).
         if "labels" in cfg or "labels_visible" in cfg:
             defaults = ("X+", "X-", "Y+", "Y-", "Z+", "Z-")
             if isinstance(cfg.get("labels"), list):
@@ -881,14 +884,32 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             else:
                 labels = list(defaults)
             hide = cfg.get("labels_visible") is False
-            setters = (rep.SetXPlusLabelText, rep.SetXMinusLabelText,
-                       rep.SetYPlusLabelText, rep.SetYMinusLabelText,
-                       rep.SetZPlusLabelText, rep.SetZMinusLabelText)
-            for i, setter in enumerate(setters):
+            label_setters = ("SetXPlusLabelText", "SetXMinusLabelText",
+                             "SetYPlusLabelText", "SetYMinusLabelText",
+                             "SetZPlusLabelText", "SetZMinusLabelText")
+            for i, attr in enumerate(label_setters):
+                setter = getattr(rep, attr, None)
+                if setter is None:
+                    LOG.debug("nav helper: %s not available in this VTK version",
+                              attr)
+                    continue
                 try:
                     setter("" if hide else str(labels[i]))
                 except Exception:
                     LOG.warning("nav helper: invalid label %d", i)
+
+        # Gizmo axis colors: the per-axis setters (and SetAxisColor) only
+        # exist on VTK >= 9.6 -- missing on e.g. Debian trixie's VTK 9.3.
+        # The _apply helper skips them there so theme re-application never
+        # crashes; explain that once per apply instead of failing silently.
+        if any(key in cfg for key in ("axis_color", "x_axis_color",
+                                      "y_axis_color", "z_axis_color")):
+            if not vtk_version_ok(9, 6):
+                LOG.info(
+                    "nav helper: gizmo axis colors require VTK >= 9.6 "
+                    "(installed %s); keeping VTK default colors",
+                    vtk.vtkVersion.GetVTKVersion(),
+                )
 
         # master axis color overrides the per-axis colors
         if "axis_color" in cfg:
@@ -937,15 +958,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 LOG.warning("nav helper: ignoring invalid size=%r",
                             cfg["size"])
 
-        for key, setter in (("x_axis_color", rep.SetXAxisColor),
-                            ("y_axis_color", rep.SetYAxisColor),
-                            ("z_axis_color", rep.SetZAxisColor)):
-            if key in cfg:
-                try:
-                    setter(_rgb(cfg[key]))
-                except Exception:
-                    LOG.warning("nav helper: ignoring invalid %s=%r",
-                                key, cfg[key])
+        # Per-axis gizmo colors. The per-axis setters only exist on newer
+        # VTK builds (missing on e.g. Debian trixie's VTK 9.3); the _apply
+        # helper skips them there, so theme re-application never crashes.
+        for key, attr in (("x_axis_color", "SetXAxisColor"),
+                          ("y_axis_color", "SetYAxisColor"),
+                          ("z_axis_color", "SetZAxisColor")):
+            _apply(key, rep, attr, _rgb)
 
     def _navigation_active(self):
         return bool(self.rotating or self.panning or self.zooming)
