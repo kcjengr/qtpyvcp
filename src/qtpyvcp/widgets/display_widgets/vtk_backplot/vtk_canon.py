@@ -59,6 +59,9 @@ class VTKCanon(StatCanon):
         self._preview_switchkins_type = 0
         self._preview_program_units = None
         self._last_units_factor_log = None
+        # WCS indices whose paths ever established an absolute position.
+        # Anything with points but no entry here is a floating (G91-only) path.
+        self._anchored_wcs = set()
 
         g5x = self._datasource.getActiveWcsOffsets()
 
@@ -147,37 +150,29 @@ class VTKCanon(StatCanon):
         return float(default)
 
     def _program_to_machine_length_factor(self):
-        # Convert parsed program coordinates into configured machine units.
-        # Avoid deriving from machine units alone: G20/G21 can change per file.
+        # Convert parsed preview coordinates into configured machine units.
+        #
+        # gcode.parse() ALWAYS hands the Python canon INCHES, whatever the
+        # program's own G20/G21 mode is: LinuxCNC's preview canon
+        # (src/emc/rs274ngc/gcodemodule.cc) divides every linear coordinate
+        # by 25.4 in STRAIGHT_FEED/STRAIGHT_TRAVERSE/ARC_FEED/... whenever
+        # USE_LENGTH_UNITS() has put it in metric mode, so a G21 program's
+        # mm values arrive here already converted to inches, and a G20
+        # program's inch values arrive unconverted -- inches either way.
+        # (Verified empirically against the real interpreter, not inferred:
+        # a 64mm G21 target and an equivalent 2.519685in G20 target both
+        # arrive as 2.519685. get_external_length_units() does not affect
+        # this either -- it feeds arc-chord tolerance, not coordinates.)
+        #
+        # So this factor depends ONLY on the machine's units: inches ->
+        # machine units. Deriving it from the program's G20/G21 (what this
+        # did before) silently produced 1.0 for a metric machine running a
+        # metric program -- leaving the whole backplot 25.4x too small
+        # while the DRO, tool and crosshairs (which never route through the
+        # preview canon) stayed correct. It only ever looked right because
+        # inch programs happen to yield the correct factor by coincidence.
         machine_is_metric = bool(self._datasource.isMachineMetric())
-
-        program_units = self._preview_program_units
-        if program_units is None:
-            # Fallback to status string when preview state isn't available yet.
-            units_text = str(self._datasource.getProgramUnits() or '').strip().lower()
-            if units_text in ('in', 'inch', 'inches'):
-                program_units = 200
-            elif units_text in ('mm', 'metric', 'millimeter', 'millimeters'):
-                program_units = 210
-            # nonsense test as only valid linuxcnc codes are G20 and G21
-            # elif units_text in ('cm', 'centimeter', 'centimeters'):
-            #     program_units = 3
-
-        # program_units -> mm
-        # VTK or linuxcnc assumes everything is in inches.
-        # Therefore no scale change for inches
-        if program_units == 200:
-            # inches program.  Convert to mm so the machine frame is consistent.
-            to_mm = 25.4
-        else:
-            # mm program.  Already in mm, no conversion needed.
-            to_mm = 1.0
-
-        # mm -> machine units
-        if machine_is_metric:
-            factor = float(to_mm)
-        else:
-            factor = float(to_mm / 25.4)
+        factor = 25.4 if machine_is_metric else 1.0
 
         fallback_program_units = str(self._datasource.getProgramUnits() or '').strip().lower()
         log_key = (
@@ -419,6 +414,15 @@ class VTKCanon(StatCanon):
         self.rotation_sin = math.sin(theta)
 
 
+    def get_floating_wcs(self):
+        """WCS indices whose loaded path never established an absolute position.
+
+        A G91-only program describes a shape relative to wherever the machine
+        happens to be, so these paths must be anchored at runtime rather than
+        drawn at WCS zero.
+        """
+        return {wcs for wcs in self.path_actors if wcs not in self._anchored_wcs}
+
     def add_path_point(self, line_type, start_point, end_point):
         # As the points come through with the active wcs offsets baked in
         # remove them to allow vtk setusertransforms to work correctly.
@@ -444,7 +448,14 @@ class VTKCanon(StatCanon):
         )
         
         LOG.debug(f"program_to_machine scale = {program_to_machine}")
-        
+
+        # Record whether this path ever had its position pinned down by a
+        # G90 move. Geometry stays in program coordinates either way; the
+        # widget anchors floating paths via the actor transform so the anchor
+        # can stay live instead of being frozen at load time.
+        if self.position_anchored:
+            self._anchored_wcs.add(self.active_wcs_index)
+
         if self._cpp_mode:
             start_xyz = (
                 start_point_scaled[0] + tool_offsets_scaled[0] - wcs_offsets_scaled[0],

@@ -33,6 +33,14 @@ class BaseCanon(QObject):
         self.seq_num = -1
         self.last_pos = (0,) * 9
 
+        # G90/G91 tracking. The preview interpreter always starts at 0, so a
+        # program that never commands an absolute position (G91 throughout)
+        # describes a path relative to an unknown start. position_anchored
+        # goes True as soon as motion happens in G90, meaning the coordinates
+        # from then on are genuinely absolute and must not be re-anchored.
+        self.distance_mode = None
+        self.position_anchored = False
+
         self.first_move = True
         self.in_arc = False
         self.path_initialized = False
@@ -107,13 +115,22 @@ class BaseCanon(QObject):
         # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
         self.state = st
         self.seq_num = self.state.sequence_number
+        # 900 == G90 (absolute), 910 == G91 (incremental)
+        self.distance_mode = getattr(st, 'distance_mode', None)
 
 
     def calc_extents(self):
         self.min_extents, self.max_extents, self.min_extents_notool, \
         self.max_extents_notool = gcode.calc_extents(self.arcfeed, self.feed, self.traverse)
 
+    DISTANCE_MODE_ABSOLUTE = 900
+
     def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
+        # Reached only from motion callbacks, so a G90 block here means the
+        # resulting position is absolute and the path no longer floats.
+        if self.distance_mode == self.DISTANCE_MODE_ABSOLUTE:
+            self.position_anchored = True
+
         x += self.g92_offset_x
         y += self.g92_offset_y
         z += self.g92_offset_z

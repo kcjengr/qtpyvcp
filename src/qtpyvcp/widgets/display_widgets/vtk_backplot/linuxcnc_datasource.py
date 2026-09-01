@@ -34,6 +34,7 @@ class LinuxCncDataSource(QObject):
     toolTableChanged = Signal(tuple)
     toolOffsetChanged = Signal(tuple)
     toolInSpindleChanged = Signal(int)
+    runStateChanged = Signal(bool)
 
     @staticmethod
     def _normalize_axis_owner(raw_owner, default='head'):
@@ -180,6 +181,12 @@ class LinuxCncDataSource(QObject):
         self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
         # self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
 
+        # Run-state edges must be observed directly. Deriving them from
+        # position updates misses the transition whenever the machine is
+        # stationary at program end -- which is exactly when it matters.
+        self._status.interp_state.notify(self.__handleRunStateChanged)
+        self._status.task_mode.notify(self.__handleRunStateChanged)
+
         self._status.tool_offset.notify(self.__handleToolOffsetChanged)
         self._status.tool_table.notify(self.__handleToolTableChanged)
         self._status.tool_in_spindle.notify(self.__handleToolInSpindleChanged)
@@ -241,6 +248,9 @@ class LinuxCncDataSource(QObject):
         # the first one is g53 - machine coordinates, we're not interested in that one
         current_wcs_index = active_offset_index - 1
         self.activeOffsetChanged.emit(current_wcs_index)
+
+    def __handleRunStateChanged(self, _value=None):
+        self.runStateChanged.emit(self.isProgramRunning())
 
     def __handleToolOffsetChanged(self, tool_offset):
         self.toolOffsetChanged.emit(tool_offset)
@@ -404,6 +414,49 @@ class LinuxCncDataSource(QObject):
 
     def getG92_offset(self):
         return self._status.stat.g92_offset
+
+    def getMachinePosition(self):
+        """Live commanded machine position, in machine units.
+
+        The backplot preview runs its own gcode.parse() whose interpreter
+        always starts at 0. Programs that never command an absolute position
+        (G91 throughout) therefore render at WCS zero instead of wherever the
+        machine actually is. VTKCanon uses this to anchor such paths.
+        """
+        try:
+            return tuple(self._status.stat.position)
+        except Exception:
+            LOG.warning("Could not read machine position for backplot anchoring")
+            return None
+
+    def getToolOffsetValues(self):
+        """Live tool length offset as a plain tuple, in machine units.
+
+        getToolOffset() returns the status *channel* object (it is what
+        .notify() is called on), so it cannot be indexed. Callers that need
+        the values want this instead.
+        """
+        try:
+            return tuple(self._status.stat.tool_offset)
+        except Exception:
+            LOG.warning("Could not read tool offset for backplot anchoring")
+            return None
+
+    def isProgramRunning(self):
+        """True while AUTO-mode program execution is actually in progress.
+
+        Used to latch the floating-path anchor: while this is False the
+        preview tracks the machine, and it freezes at the position where
+        execution began so the plot matches what the interpreter really did.
+        """
+        try:
+            stat = self._status.stat
+            return bool(
+                stat.task_mode == linuxcnc.MODE_AUTO
+                and stat.interp_state != linuxcnc.INTERP_IDLE
+            )
+        except Exception:
+            return False
 
     def getWcsOffsets(self):
         # returns a dictionary with the coordinate systems from 0 to 8 (g54 up to g59.3)
