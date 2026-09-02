@@ -211,10 +211,15 @@ public:
     }
 
     void set_xy_rotation(double rotation) {
-        rotation_xy = rotation;
-        const double theta = rotation * M_PI / 180.0;
-        rotation_cos = std::cos(theta);
-        rotation_sin = std::sin(theta);
+        // Rotation is intentionally neutralized, matching the Python canon
+        // (VTKCanon.set_xy_rotation also forces 0). The WCS R offset is
+        // applied exactly once by the VTK UserTransform (RotateZ) on the
+        // path actor; baking it here as well would rotate the geometry
+        // twice and make the path disagree with the per-WCS axes.
+        (void)rotation;
+        rotation_xy = 0.0;
+        rotation_cos = 1.0;
+        rotation_sin = 0.0;
     }
 
     void tool_offset(double xo, double yo, double zo, double ao, double bo, double co, double uo, double vo, double wo) {
@@ -477,13 +482,6 @@ private:
 
         for (int i = 0; i < 9; ++i) {
             p[i] += g92_offsets[i];
-        }
-
-        if (rotation_xy != 0.0) {
-            const double rotx = p[0] * rotation_cos - p[1] * rotation_sin;
-            const double roty = p[0] * rotation_sin + p[1] * rotation_cos;
-            p[0] = rotx;
-            p[1] = roty;
         }
 
         for (int i = 0; i < 9; ++i) {

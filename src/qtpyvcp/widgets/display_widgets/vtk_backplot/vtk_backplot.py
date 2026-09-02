@@ -597,8 +597,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             
             self._datasource.positionChanged.connect(self.update_position)
             self._datasource.motionTypeChanged.connect(self.motion_type)
-            
-            # self._datasource.rotationXYChanged.connect(self.update_rotation_xy)
+
+            self._datasource.rotationXYChanged.connect(self.update_rotation_xy)
             self._datasource.g5xIndexChanged.connect(self.update_g5x_index)
             self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
             self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
@@ -3194,6 +3194,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 if live_z < len(live):
                     z = live[live_z]
             rotation = float(self.active_rotation or 0.0)
+            if rotation == 0.0 and r_column is not None and r_column < len(current_offsets):
+                # Startup fallback: stat.rotation_xy may not be populated yet
+                # because the LinuxCNC task hasn't finished loading the
+                # parameter file, while the offset table reads R directly
+                # from the var file and always has the persisted value.
+                rotation = float(current_offsets[r_column] or 0.0)
 
         return x, y, z, rotation
 

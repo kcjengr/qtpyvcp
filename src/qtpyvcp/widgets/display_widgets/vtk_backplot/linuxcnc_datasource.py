@@ -189,7 +189,7 @@ class LinuxCncDataSource(QObject):
         self._status.g92_offset.notify(self.__handleG92OffsetChange)
 
         self._status.g5x_index.notify(self.__handleG5xIndexChange)
-        # self._status.rotation_xy.notify(self.__handleRotationChangeXY)
+        self._status.rotation_xy.notify(self.__handleRotationChangeXY)
 
         self._offsettable.offset_table_changed.connect(self.__handleOffsetTableChanged)
         # self._offsettable.active_offset_changed.connect(self.__handleActiveOffsetChanged)
@@ -219,20 +219,10 @@ class LinuxCncDataSource(QObject):
         self.motionTypeChanged.emit(motion_type)
 
     def __handleG5xOffsetChange(self, offset):
-        # the received parameter, its missing the rotation of the current wcs
-        LOG.debug("__handleG5xOffsetChange --- Start")
-        emitted_offset = list(offset)
-        active_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-        #
-        LOG.debug("--------initial offset emitted: {} {}".format(type(offset),offset))
-        LOG.debug("--------active wcs: {} {}".format(type(active_wcs), active_wcs))
-        #
-        # # emitted_offset.append(self.__getRotationOfActiveWcs())
-        # LOG.debug("--------correct_offset: {}".format(emitted_offset))
-        result = tuple(emitted_offset)
-        LOG.debug("--------result: {} {}".format(type(result), result))
-        self.g5xOffsetChanged.emit(offset)
-        LOG.debug("__handleG5xOffsetChange --- End")
+        # stat.g5x_offset only carries the linear (X..W) offsets of the
+        # active WCS; the rotation (R) is delivered separately through the
+        # rotation_xy channel (see __handleRotationChangeXY).
+        self.g5xOffsetChanged.emit(tuple(offset))
 
     def __handleG92OffsetChange(self, offset):
         self.g92OffsetChanged.emit(offset)
