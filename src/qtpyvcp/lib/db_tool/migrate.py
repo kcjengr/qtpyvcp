@@ -13,9 +13,12 @@ schema.
 """
 
 import glob
+import logging
 import os
 import shutil
 import time
+
+LOG = logging.getLogger(__name__)
 
 MIGRATIONS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                'migrations')
@@ -48,6 +51,36 @@ def _backup_db_file(engine):
     return backup_path
 
 
+def _missing_orm_columns(cursor):
+    """Columns the ORM declares that this database does not actually have.
+
+    This is the question that matters when a database is newer than the
+    migrations we ship. A higher schema_version on its own is harmless --
+    every migration so far either adds a nullable column or widens a CHECK,
+    and SQLAlchemy simply ignores columns it does not map. What would
+    genuinely break us is a column we expect being absent, so ask that
+    directly instead of comparing version numbers.
+
+    Imported lazily because tool_table imports from this package.
+    """
+    try:
+        from .base import Base
+        from . import tool_table  # noqa: F401  -- registers the models on Base
+    except Exception:
+        return []
+
+    missing = []
+    for table in Base.metadata.sorted_tables:
+        rows = cursor.execute("PRAGMA table_info(%s)" % table.name).fetchall()
+        if not rows:
+            continue  # table absent entirely; the migrations below will build it
+        present = {row[1] for row in rows}
+        for column in table.columns:
+            if column.name not in present:
+                missing.append('%s.%s' % (table.name, column.name))
+    return missing
+
+
 def _current_version(cursor):
     has_meta = cursor.execute(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='meta'"
@@ -76,11 +109,25 @@ def run_migrations(engine):
         current = _current_version(cursor)
 
         if current > latest_known:
-            raise MigrationError(
-                "database schema_version=%d is newer than this qtpyvcp "
-                "build knows about (latest=%d); refusing to touch it. "
-                "Update qtpyvcp before opening this database." %
-                (current, latest_known))
+            # A newer database is not automatically a problem. It means some
+            # other build applied migrations we do not ship, and in practice
+            # those add nullable columns or widen a CHECK -- neither of which
+            # this build can trip over. Refuse only if something we actually
+            # need has gone missing, and otherwise leave the file alone.
+            missing = _missing_orm_columns(cursor)
+            if missing:
+                raise MigrationError(
+                    "database schema_version=%d is newer than this qtpyvcp "
+                    "build knows about (latest=%d) and is missing column(s) "
+                    "this build requires: %s. Update qtpyvcp before opening "
+                    "this database." %
+                    (current, latest_known, ', '.join(sorted(missing))))
+            LOG.warning(
+                "tool database schema_version=%d is newer than this qtpyvcp "
+                "build knows about (latest=%d), but every column this build "
+                "needs is present -- opening it read/write and leaving the "
+                "extra schema untouched.", current, latest_known)
+            return current
 
         pending = [(v, p) for v, p in scripts if v > current]
         for version, path in pending:

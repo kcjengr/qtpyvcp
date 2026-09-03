@@ -171,10 +171,36 @@ def extras_from_fusion(tool, ttype, num):
     elif str(holder.get("THSC") or "").strip():
         holder_style = str(holder.get("THSC")).strip().upper()
 
+    # Hand, in the order Fusion actually records it.
+    #
+    # N is a real answer and must survive: a neutral insert is symmetric, and
+    # which way the work turns for it comes from the orientation instead. The
+    # old code tested `hand not in ("R","L")`, so every neutral tool fell
+    # through and was relabelled right-hand.
+    #
+    # setup.HAND is deliberately NOT consulted. It looks like a hand and is
+    # not: in this library it is True on three LEFT-hand tools, so the old
+    # `setup_hand is True -> "R"` fallback would mislabel any tool that
+    # reached it. It has only ever been harmless because holder.HAND has
+    # always been present on the holders that have a hand at all.
+    #
+    # Round tools carry it two other ways: a drill as the boolean
+    # geometry.HAND, a tap in its own type string ("tap right hand").
     hand = str(holder.get("HAND") or "").strip().upper() or None
-    if hand not in ("R", "L"):
-        setup_hand = (tool.get("setup") or {}).get("HAND")
-        hand = "R" if setup_hand is True else ("L" if setup_hand is False else None)
+    if hand not in ("R", "L", "N"):
+        hand = None
+    if hand is None:
+        type_text = str(tool.get("type") or "").strip().lower()
+        if "left hand" in type_text:
+            hand = "L"
+        elif "right hand" in type_text:
+            hand = "R"
+    if hand is None:
+        geo_hand = geo.get("HAND")
+        if geo_hand is True:
+            hand = "R"
+        elif geo_hand is False:
+            hand = "L"
 
     size_mode_raw = str(geo.get("SIZE_SPECIFICATION_MODE") or "").strip().upper()
     shape_raw = str(geo.get("SC") or "").strip().lower()

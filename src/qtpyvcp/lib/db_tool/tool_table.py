@@ -128,6 +128,11 @@ class ToolLathe(Base):
     thread_angle = Column(Float)       # profile angle, default 60
     thread_tip_type = Column(Text)     # point | flat | round  (radius accepted as a synonym)
 
+    # FWD/REV. Which way the work must turn for this tool to cut. See
+    # migration 007 -- drills and taps included, since on a lathe the tool is
+    # stationary and the work rotates.
+    spindle_direction = Column(Text)
+
     # feeds & speeds defaults (conversational autofill)
     surface_speed = Column(Float)      # SFM / SMM per meta.units
     feed_per_rev = Column(Float)

@@ -61,6 +61,7 @@ EXTRAS_LABELS = {
     'thread_pitch_max': 'Max Pitch',
     'thread_angle': 'Thread Angle',
     'thread_tip_type': 'Tip Type',
+    'spindle_direction': 'Spindle Dir',
     'surface_speed': 'Surface Speed',
     'feed_per_rev': 'Feed/Rev',
     'depth_of_cut': 'DOC',
@@ -69,7 +70,7 @@ EXTRAS_LABELS = {
 EXTRAS_ORDER = list(EXTRAS_LABELS)  # dict preserves insertion order (py3.7+)
 
 TEXT_EXTRAS = {'type', 'insert_shape', 'insert_size_mode', 'holder_style',
-              'holder_hand', 'thread_tip_type', 'notes'}
+              'holder_hand', 'thread_tip_type', 'spindle_direction', 'notes'}
 
 # Extras columns that feed real machine-facing behavior somewhere -- the
 # VTK insert display and/or conversational-style turning operations (core
@@ -93,7 +94,10 @@ TEXT_EXTRAS = {'type', 'insert_shape', 'insert_size_mode', 'holder_style',
 # Len Below Holder and Flute Len it reads like a third reach figure, so it
 # is off by default and available for anyone who wants the drawn tool to
 # match their real one.
-REFERENCE_ONLY_EXTRAS = ('holder_hand', 'chamfer_threads',
+# holder_hand is NOT reference-only: which way a tool is ground decides
+# which way the work has to turn for it to cut, so it is load-bearing
+# rather than a note about the tool.
+REFERENCE_ONLY_EXTRAS = ('chamfer_threads',
                          'surface_speed', 'feed_per_rev', 'depth_of_cut',
                          'notes', 'holder_oal', 'overall_length', 'groove_width')
 
@@ -110,7 +114,9 @@ DEFAULT_VISIBLE_EXTRAS = [c for c in EXTRAS_ORDER
 TYPE_OPTIONS = ['turning', 'boring', 'grooving', 'parting', 'threading',
                'drill', 'tap', 'custom']
 INSERT_SIZE_MODE_OPTIONS = ['IC', 'edge_length']
-HOLDER_HAND_OPTIONS = ['R', 'L']
+# N is a real answer, not a missing one: a neutral insert is symmetric and
+# cuts either way, so its direction comes from the orientation instead.
+HOLDER_HAND_OPTIONS = ['R', 'L', 'N']
 # Not DB-enforced, but a documented closed convention:
 # "D=0 remains for thread_tip_type='point' inserts and is valid data".
 # Fusion's own three, spelled Fusion's way: an import writes 'round', so
@@ -118,11 +124,17 @@ HOLDER_HAND_OPTIONS = ['R', 'L']
 # imported row. 'radius' stays accepted as a synonym by the geometry builder.
 THREAD_TIP_TYPE_OPTIONS = ['point', 'flat', 'round']
 
+# Which way the work turns for this tool to cut. Named the way the operation
+# pages name it, so the tool table and the cutting column use one word and the
+# check between them compares like with like.
+SPINDLE_DIRECTION_OPTIONS = ['FWD', 'REV']
+
 STRICT_ENUM_OPTIONS = {
     'type': TYPE_OPTIONS,
     'insert_size_mode': INSERT_SIZE_MODE_OPTIONS,
     'holder_hand': HOLDER_HAND_OPTIONS,
     'thread_tip_type': THREAD_TIP_TYPE_OPTIONS,
+    'spindle_direction': SPINDLE_DIRECTION_OPTIONS,
 }
 
 # insert_shape and holder_style are open vocabularies in practice -- real
@@ -161,8 +173,7 @@ def size_mode_for_insert_shape(insert_shape):
 
 
 GROOVING_HOLDER_STYLES = ['GROOVE EXTERNAL', 'GROOVE INTERNAL', 'GROOVE FACE']
-THREADING_HOLDER_STYLES = ['THREAD STRAIGHT', 'THREAD FACE',
-                           'THREAD INTERNAL', 'THREAD OFFSET']
+THREADING_HOLDER_STYLES = ['THREAD EXTERNAL', 'THREAD INTERNAL', 'THREAD FACE']
 
 
 class LatheToolModel(ToolTableEditorModel):
