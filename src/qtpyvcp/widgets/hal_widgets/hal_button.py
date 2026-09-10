@@ -48,23 +48,15 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
         self._pulse_duration = 100
         self.pulse_timer = None
 
-        # Flash-while-checked. The checked state itself is never touched --
-        # toggling it would fight the .check HAL pin and re-emit toggled --
-        # so a `flashState` dynamic property is alternated instead and the
-        # stylesheet selects on it.
+        # Flash-while-checked. The mechanism is on VCPBaseWidget; this is
+        # only the trigger. The checked state itself is never toggled --
+        # that would fight the .check HAL pin and re-emit toggled.
         self._flash_on_checked = False
-        self._flash_rate = 500
-        self._flash_state = True
-        self._flash_timer = QTimer(self)
-        self._flash_timer.setInterval(self._flash_rate)
-        self._flash_timer.timeout.connect(self._toggleFlashState)
 
         self.pressed.connect(self.onPress)
         self.released.connect(self.onRelease)
         self.toggled.connect(self.onCheckedStateChanged)
         self.toggled.connect(self._updateFlashing)
-
-        self._setFlashState(True)
 
     def mousePressEvent(self, event):
         # Test for UI LOCK and consume event but do nothing if LOCK in place
@@ -120,45 +112,25 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
             self._checked_pin.value = checked
 
     # ------------------------------------------------------------ flashing
-
-    def _setFlashState(self, on):
-        """Set the `flashState` dynamic property and repolish.
-
-        Qt only re-evaluates a stylesheet against a dynamic property when the
-        widget is unpolished and polished again, so that has to be explicit.
-        """
-        self._flash_state = bool(on)
-        self.setProperty('flashState', 'true' if on else 'false')
-        style = self.style()
-        if style is not None:
-            style.unpolish(self)
-            style.polish(self)
-
-    def _toggleFlashState(self):
-        self._setFlashState(not self._flash_state)
+    #
+    # The flash mechanism itself lives on VCPBaseWidget so every widget can
+    # use it, driven either by a rule or directly. This only adds the
+    # checked-state trigger, which is specific to a button.
 
     def _updateFlashing(self, checked=None):
-        """Run the timer only while checked and flashing is enabled, and
-        always leave the widget on flashState=true so a stopped flash is
-        never left mid-blink."""
         if checked is None:
             checked = self.isChecked()
-        if checked and self._flash_on_checked:
-            self._setFlashState(True)
-            self._flash_timer.start(self._flash_rate)
-        else:
-            self._flash_timer.stop()
-            self._setFlashState(True)
+        self.setFlashing(bool(checked) and self._flash_on_checked)
 
     @Property(bool)
     def flashOnChecked(self):
         """Flash the button while it is checked.
 
         Alternates the `flashState` dynamic property between `true` and
-        `false`. Style both in the stylesheet, e.g.::
+        `false`. Style both, e.g.::
 
             QPushButton:checked[flashState="true"]  { background: red; }
-            QPushButton:checked[flashState="false"] { background: green; }
+            QPushButton:checked[flashState="false"] { background: yellow; }
 
         Returns:
             bool
@@ -169,22 +141,6 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
     def flashOnChecked(self, flash):
         self._flash_on_checked = bool(flash)
         self._updateFlashing()
-
-    @Property(int)
-    def flashRate(self):
-        """Flash half-period in milliseconds. Default 500.
-
-        Returns:
-            int
-        """
-        return self._flash_rate
-
-    @flashRate.setter
-    def flashRate(self, rate):
-        self._flash_rate = max(50, int(rate))
-        self._flash_timer.setInterval(self._flash_rate)
-        if self._flash_timer.isActive():
-            self._flash_timer.start(self._flash_rate)
 
     @Property(bool)
     def pulseOnPress(self):

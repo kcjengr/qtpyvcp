@@ -9,7 +9,8 @@ all other QtPyVCP widgets are based.
 import os
 import json
 
-from PySide6.QtCore import Qt,Property, Slot
+from PySide6.QtCore import Qt,Property, Slot, QTimer, QEnum
+from enum import Enum
 from PySide6.QtWidgets import QPushButton
 
 from qtpyvcp import hal as qhal
@@ -52,6 +53,22 @@ class VCPPrimitiveWidget(object):
         pass
 
 
+# Style classes in use across probe_basic and qtpyvcp. Declared as a QEnum so
+# QtDesigner offers a drop-down rather than a free-text field. `none` disables
+# flashing; the setter also accepts a plain string, so a class name outside
+# this list can still be set from Python or a hand-edited .ui.
+@QEnum
+class FlashStyleClass(Enum):
+    none = 0
+    active = 1
+    inactive = 2
+    unhomed = 3
+    homing = 4
+
+
+FLASH_STYLE_NAMES = {0: '', 1: 'active', 2: 'inactive', 3: 'unhomed', 4: 'homing'}
+
+
 class VCPBaseWidget(VCPPrimitiveWidget):
     """QtPyVCP Base Widget.
 
@@ -67,6 +84,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         'Visible': ['setVisible', bool],
         'Style Class': ['setStyleClass', str],
         'Style Sheet': ['setStyleSheet', str],
+        'Flashing': ['setFlashing', bool],
     }
 
     def __init__(self, parent=None):
@@ -75,6 +93,13 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._style = ''
         self._data_channels = []
         self._security_level = 0
+        # Flashing. The timer is created on first use, not here -- every
+        # widget in a VCP inherits this class, and a QTimer each for the
+        # ones that never flash is pure overhead.
+        self._flash_timer = None
+        self._flash_rate = 500
+        self._flash_state = True
+        self._flash_on_style = ''
         # self._hal_param_enable = False
         # self._hal_param_name = None
         # self._hal_param_type = "s32"
@@ -172,6 +197,105 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     # Style Rules implementation
     #
 
+    # ---------------------------------------------------------- flashing
+
+    def _setFlashState(self, on):
+        """Alternate the `flashState` dynamic property and repolish.
+
+        The widget's own state is never touched -- toggling `checked` or
+        `enabled` would fight whatever else drives them -- so the stylesheet
+        selects on this instead::
+
+            QPushButton[style="active"][flashState="false"] { ... }
+        """
+        self._flash_state = bool(on)
+        self.setProperty('flashState', 'true' if on else 'false')
+        style = self.style()
+        if style is not None:
+            style.unpolish(self)
+            style.polish(self)
+
+    def _toggleFlashState(self):
+        self._setFlashState(not self._flash_state)
+
+    @Slot(bool)
+    def setFlashing(self, flashing):
+        """Start or stop flashing.
+
+        Exposed as the `Flashing` rule property, so any channel expression
+        can drive it. Re-asserting a flash that is already running is a
+        no-op: rules re-evaluate on every channel update, and restarting the
+        timer each time would leave the flash stuttering.
+        """
+        if flashing:
+            if self._flash_timer is None:
+                self._flash_timer = QTimer(self)
+                self._flash_timer.timeout.connect(self._toggleFlashState)
+            if not self._flash_timer.isActive():
+                self._setFlashState(True)
+                self._flash_timer.start(self._flash_rate)
+        else:
+            if self._flash_timer is not None:
+                self._flash_timer.stop()
+            # Always settle on the lit half, so a stopped flash never leaves
+            # the widget stuck in its dim state.
+            if not self._flash_state:
+                self._setFlashState(True)
+
+    def isFlashing(self):
+        return self._flash_timer is not None and self._flash_timer.isActive()
+
+    def _updateStyleFlash(self):
+        """Start or stop flashing to match flashOnStyleClass."""
+        if self._flash_on_style:
+            self.setFlashing(self._style == self._flash_on_style)
+
+    @Property(str)
+    def flashOnStyleClass(self):
+        """Flash whenever the widget's style class equals this value.
+
+        Lets a widget flash on a condition something else already reports.
+        The cycle start button, for example, is driven to style class
+        `active` by a rule when the program is paused, so setting this to
+        `active` makes it flash while paused with no second rule.
+
+        Leave empty to disable. The flash itself is still available directly
+        via the `Flashing` rule property.
+
+        Returns:
+            str
+        """
+        return self._flash_on_style
+
+    @flashOnStyleClass.setter
+    def flashOnStyleClass(self, style_class):
+        if isinstance(style_class, FlashStyleClass):
+            name = FLASH_STYLE_NAMES.get(style_class.value, '')
+        elif isinstance(style_class, int):
+            name = FLASH_STYLE_NAMES.get(style_class, '')
+        else:
+            name = str(style_class or '').strip()
+        self._flash_on_style = name
+        if self._flash_on_style:
+            self._updateStyleFlash()
+        else:
+            self.setFlashing(False)
+
+    @Property(int)
+    def flashRate(self):
+        """Flash half-period in milliseconds. Default 500.
+
+        Returns:
+            int
+        """
+        return self._flash_rate
+
+    @flashRate.setter
+    def flashRate(self, rate):
+        self._flash_rate = max(50, int(rate))
+        if self._flash_timer is not None and self._flash_timer.isActive():
+            self._flash_timer.start(self._flash_rate)
+
     def setStyleClass(self, style_class):
         """Set the QSS style class for the widget.
 
@@ -183,6 +307,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         # Re-polish so QSS engine sees the property change
         self.style().unpolish(self)
         self.style().polish(self)
+        self._updateStyleFlash()
 
     @Property(str, designable=False)
     def styleClass(self):
