@@ -433,20 +433,37 @@ def build_drill_shape(body_length_x, diameter_z, tip_angle_deg):
     body_length = max(float(body_length_x), 0.001)
     diameter = max(float(diameter_z), 0.001)
     half_width = 0.5 * diameter
-    tip_angle = max(30.0, min(170.0, float(tip_angle_deg)))
+    # 180 is a real, common value -- a flat-bottomed drill. Clamping to 170
+    # drew a shallow cone on a tool that has none, and the old 0.0005 floor
+    # on tip_length meant even an unclamped 180 could not come out flat.
+    tip_angle = max(30.0, min(180.0, float(tip_angle_deg)))
 
     half_angle_rad = math.radians(0.5 * tip_angle)
-    tip_length = half_width / max(1e-6, math.tan(half_angle_rad))
-    tip_length = max(0.0005, float(tip_length))
+    tan_half = math.tan(half_angle_rad)
+    # tan(90) is unbounded, so a 180 point gives no cone at all.
+    tip_length = 0.0 if tan_half <= 0.0 else half_width / tan_half
+    if not math.isfinite(tip_length) or tip_length < 1e-6:
+        tip_length = 0.0
 
     # Drill profile frame: centered on Z axis with tip toward Z-.
-    profile = [
-        (0.0, 0.0),
-        (-half_width, -tip_length),
-        (-half_width, -(tip_length + body_length)),
-        (half_width, -(tip_length + body_length)),
-        (half_width, -tip_length),
-    ]
+    if tip_length <= 0.0:
+        # Flat nose: a plain body, no apex vertex. Emitting a zero-length
+        # cone instead would leave three coincident points at Z0 and a
+        # degenerate face for anything that consumes the polygon.
+        profile = [
+            (-half_width, 0.0),
+            (-half_width, -body_length),
+            (half_width, -body_length),
+            (half_width, 0.0),
+        ]
+    else:
+        profile = [
+            (0.0, 0.0),
+            (-half_width, -tip_length),
+            (-half_width, -(tip_length + body_length)),
+            (half_width, -(tip_length + body_length)),
+            (half_width, -tip_length),
+        ]
 
     return InsertShape(
         family="drill",
