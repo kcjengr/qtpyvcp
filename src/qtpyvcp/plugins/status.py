@@ -82,6 +82,23 @@ class Status(DataPlugin):
             for chan, obj in list(spindle.channels.items()):
                 self.channels['spindle.{}.{}'.format(spindle.snum, chan)] = obj
 
+        # LinuxCNC 2.10+ exposes the motion/task heartbeats and the single-step
+        # flag on the stat object. When present they are picked up by the auto
+        # channel loop above and refreshed every cycle in _periodic(); on older
+        # builds those attributes are absent, so provide explicit channels with
+        # safe defaults to keep them always available to screens.
+        self._motion_status_defaults = {
+            'heartbeat': 0,     # motion controller heartbeat counter
+            'taskbeat': 0,      # task main-loop heartbeat counter
+            'stepping': False,  # motion is running a single step on feed hold
+        }
+        for _name, _default in self._motion_status_defaults.items():
+            if _name not in self.channels:
+                chan = DataChannel(doc=_name, data=_default)
+                chan.setValue(_default)
+                self.channels[_name] = chan
+                setattr(self, _name, chan)
+
         self.all_axes_homed.value = False
         self.homed.notify(self.all_axes_homed.setValue)
         self.enabled.notify(self.all_axes_homed.setValue)
