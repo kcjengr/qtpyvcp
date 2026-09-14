@@ -6,7 +6,7 @@ Build-Depends: debhelper-compat (= 13), dh-python, pybuild-plugin-pyproject, pyt
 Standards-Version: 4.5.1
 Homepage: https://qtpyvcp.com
 Vcs-Git: https://github.com/kcjengr/qtpyvcp.git
-X-Python3-Version: >= 3.7
+X-Python3-Version: >= 3.13
 #Testsuite: autopkgtest-pkg-python
 Rules-Requires-Root: no
 

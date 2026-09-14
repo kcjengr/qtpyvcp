@@ -2,9 +2,6 @@
 
 
 # QtPyVCP - QtPy Virtual Control Panel
-[![Travis CI][Travis-badge]](https://travis-ci.org/kcjengr/qtpyvcp)
-[![pypi version][pypi-badge]](https://pypi.org/project/QtPyVCP/)
-[![LinuxCNC 2.8][linuxcnc-badge]](https://github.com/LinuxCNC/linuxcnc)
 
 
 QtPyVCP is a Qt and Python based framework for building virtual control panels
@@ -35,14 +32,10 @@ See the [documentation](https://www.qtpyvcp.com/).
 
 ## Dependencies
 
-* LinuxCNC 2.9 or 2.10-pre^
-* Python 3.11^
-* Qt 5.15^
-* PyQt5 or PySide2
-
-QtPyVCP is developed and tested using the Debian 11 x64 (bullseye).
-It should run on any system that can have PyQt5 installed, but Debian 11 x64 is the only OS
-that is officially supported.
+* LinuxCNC 2.9
+* Debian 13 Trixie: the `pyside6` branch, Python 3.13, Qt 6 / PySide6
+* Debian 12 Bookworm: the `main` branch, Python 3.11, Qt 5 / PyQt5
+* 64 bit only, `amd64` or `arm64`
 
 
 ## DISCLAIMER

@@ -34,7 +34,7 @@ Application Options:
                        Sets the log level. Default INFO.
   --config-file PATH   Specify the YML config file relative to $CONFIG_DIR.
   --log-file PATH      Specify the log file relative to $CONFIG_DIR.
-  --qt-api (pyqt5 | pyqt | pyside2 | pyside)
+  --qt-api (pyside6)
                        Specify the Qt Python binding to use.
   --perfmon            Monitor and log system performance.
   --develop            Development mode. Enables live reloading of QSS styles.

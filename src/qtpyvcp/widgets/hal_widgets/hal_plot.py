@@ -33,13 +33,25 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
 
     .. table:: Generated HAL Pins
 
-        ================================== =========== =========
-        HAL Pin Name                       Type        Direction
-        ================================== =========== =========
-        qtpyvcp.pinBaseName.seriesXname.in float          in
-        ================================== =========== =========
+        ======================================== ===== =========
+        HAL Pin Name                             Type  Direction
+        ======================================== ===== =========
+        qtpyvcp.<pinBaseName>.<series1name>      float in
+        qtpyvcp.<pinBaseName>.<series2name>      float in
+        qtpyvcp.<pinBaseName>.<series3name>      float in
+        qtpyvcp.<pinBaseName>.<series4name>      float in
+        ======================================== ===== =========
 
-    both pinBaseName and seriesXname can be set in the property editor in QtDesigner.
+    A pin is only created for a series that is enabled. Series 1 is on by
+    default, series 2 to 4 are off. Spaces are removed from the series name,
+    so the default name ``Series 1`` gives a pin ending in ``Series1``.
+
+    ``pinBaseName`` defaults to the widget's objectName, with ``_`` changed to
+    ``-``. For example, a plot named ``halplot`` with series 1 left at its
+    default name has the pin ``qtpyvcp.halplot.Series1``.
+
+    ``pinBaseName``, ``series1name`` to ``series4name`` and ``series1enable``
+    to ``series4enable`` are set in the Qt Designer property editor.
     """
 
     def __init__(self, parent=None):

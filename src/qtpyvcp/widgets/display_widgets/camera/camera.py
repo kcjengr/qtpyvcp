@@ -59,9 +59,6 @@ try:
                                     QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
                                     QMediaRecorder, QVideoEncoderSettings)
 
-    # FixMe: PySide2 is missing QMediaMetaData bingings.
-    #        https://wiki.qt.io/Qt_for_Python_Missing_Bindings
-
     from .settings import Settings
 except ImportError:
     multimedia_available = False

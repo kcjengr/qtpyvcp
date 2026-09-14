@@ -12,4 +12,4 @@ Monokrom
    :align: center
 
 | **Project URL:** https://github.com/kcjengr/monokrom
-| **Install Command:** ``pip install git+https://github.com/kcjengr/monokrom.git``
+| **Install:** ``sudo apt install python3-monokrom``, after :doc:`adding the apt repository </install/apt_install>`

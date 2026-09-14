@@ -20,8 +20,14 @@ import sys
 from unittest import mock
 from importlib.metadata import PackageNotFoundError, version as metadata_version
 
-qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..')
+# The package lives under src/ since the move to a src layout. Putting the
+# repo root on the path found nothing there, so autodoc only ever worked if
+# qtpyvcp happened to be installed in the build environment.
+qtpyvcp_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'src')
 sys.path.insert(0, os.path.abspath(qtpyvcp_dir))
+
+# Some widget modules touch Qt at import; never try to open a display.
+os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 
 def _package_version(*package_names, default="0.0.0+0.gunknown"):
@@ -155,21 +161,20 @@ pygments_style = 'sphinx'
 keep_warnings = True
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
+todo_include_todos = False
 
 # Order autodoc by source rather than alphabetically
 autodoc_member_order = 'bysource'
 
-# Avoid importing runtime-heavy Qt/LinuxCNC modules during docs builds.
+# Mock only what a docs build genuinely cannot have: a running LinuxCNC.
+#
+# qtpyvcp and Qt must NOT be listed here. autodoc generates the Actions,
+# Widgets, Plugins, Designer and Components reference pages from the real
+# classes and their docstrings; mocking the package being documented makes
+# every one of those pages build "successfully" with no entries in it. That
+# is what happened between 2026-05-01 and the fix below -- Sphinx reports no
+# error, so it has to be caught by checking the rendered pages.
 autodoc_mock_imports = [
-    'qtpyvcp',
-    'qtpyvcp.plugins',
-    'qtpy',
-    'qtpy.QtCore',
-    'qtpy.QtGui',
-    'qtpy.QtWidgets',
-    'PyQt5',
-    'PySide6',
     'linuxcnc',
     '_hal',
     'hal',
@@ -412,10 +417,16 @@ class linuxcnc(mock.MagicMock):
         def find(self, *args, **kwargs):
             return None
 
-    class command(mock.MagicMock):
+    # Plain classes, deliberately NOT MagicMock. qtpyvcp stores
+    # linuxcnc.stat() as a class attribute of Qt objects (Status.stat), and
+    # when PySide6 builds a Qt class it inspects every class attribute for
+    # signals, slots and properties. A MagicMock answers yes to everything
+    # it is asked, so PySide6 is handed nonsense and segfaults at import.
+    # PyQt5 tolerated this; PySide6 does not.
+    class command:
         pass
 
-    class stat(mock.MagicMock):
+    class stat:
         pass
 
 
@@ -429,8 +440,55 @@ def _mock_module(name):
     return module
 
 
-for module in ['_hal', 'hal', 'qtpyvcp.plugins.status']:
+for module in ['_hal', 'hal']:
     sys.modules[module] = _mock_module(module)
+
+
+# QScintilla stand-in for building the docs where the PySide6 binding is not
+# installed (Debian ships only python3-pyqt5.qsci). Without it gcode_editor
+# calls sys.exit(1) at import and the GcodeEditor page comes out empty.
+# Real Qt classes as bases, not MagicMock, for the same segfault reason as
+# linuxcnc.stat above.
+try:
+    import PySide6.Qsci  # noqa: F401
+except ImportError:
+    import types
+    import PySide6
+    from PySide6.QtCore import QObject
+    from PySide6.QtWidgets import QWidget
+
+    _qsci = types.ModuleType('PySide6.Qsci')
+
+    class QsciScintilla(QWidget):
+        pass
+
+    class QsciLexerCustom(QObject):
+        pass
+
+    QsciScintilla.__module__ = QsciLexerCustom.__module__ = 'PySide6.Qsci'
+    _qsci.QsciScintilla = QsciScintilla
+    _qsci.QsciLexerCustom = QsciLexerCustom
+    sys.modules['PySide6.Qsci'] = _qsci
+    PySide6.Qsci = _qsci
+
+
+# Import the real package so autodoc documents real classes and docstrings,
+# and stub only the plugin registry. Modules call getPlugin('status') at
+# import time, which needs a running machine; getPlugin() is a plain lookup
+# in _PLUGINS, so a MagicMock there hands every module a usable stand-in.
+# This is how the docs were built until 2026-05-01. Must run after the
+# linuxcnc/hal mocks above, since importing qtpyvcp imports both.
+#
+# qtpyvcp.plugins.status is deliberately NOT mocked: its channel docstrings
+# are the status-items reference that users write widget rules against.
+import qtpyvcp
+import qtpyvcp.plugins
+
+qtpyvcp.plugins._PLUGINS = mock.MagicMock()
+qtpyvcp.plugins.iterPlugins = mock.MagicMock()
+qtpyvcp.WINDOWS = mock.MagicMock()
+qtpyvcp.OPTIONS = mock.MagicMock()
+qtpyvcp.DIALOGS = mock.MagicMock()
 
 
 # MagicMock does not work for inheriting, so use our own Mock for PyQt5

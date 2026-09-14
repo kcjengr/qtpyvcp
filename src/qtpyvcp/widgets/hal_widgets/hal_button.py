@@ -25,13 +25,16 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
         ========================= ===== =========
         qtpyvcp.button.enable     bit   in
         qtpyvcp.button.out        bit   out
+        qtpyvcp.button.check      bit   in
         qtpyvcp.button.checked    bit   out
         qtpyvcp.button.io         bit   io
         ========================= ===== =========
 
     .. note::
 
-        The `qtpyvcp.button.checked` halpin is only present if the :class:`.checkable` property is set to true.
+        The `qtpyvcp.button.check` and `qtpyvcp.button.checked` halpins are
+        only present if the :class:`.checkable` property is set to true.
+        `check` sets the checked state from HAL, and `checked` reports it.
 
     """
     def __init__(self, parent=None):

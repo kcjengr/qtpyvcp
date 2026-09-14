@@ -118,13 +118,9 @@ class GcodeLexer(QsciLexerCustom):
         if end > editor.length():
             end = editor.length()
         if end > start:
-            if sys.hexversion >= 0x02060000:
-                # faster when styling big files, but needs python 2.6
-                source = bytearray(end - start)
-                editor.SendScintilla(
-                    editor.SCI_GETTEXTRANGE, start, end, source)
-            else:
-                source = str(editor.text()).encode('utf-8')[start:end]
+            source = bytearray(end - start)
+            editor.SendScintilla(
+                editor.SCI_GETTEXTRANGE, start, end, source)
         if not source:
             return
 

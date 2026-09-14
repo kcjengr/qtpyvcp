@@ -57,8 +57,6 @@ from PySide6.QtWidgets import QApplication, QFileDialog
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.logger import initBaseLogger
 
-from linuxcnc import version as lcnc_version
-
 LOG = initBaseLogger('EditVCP',
                      log_file=DEFAULT_EDITVCP_LOG_FILE,
                      log_level='DEBUG')
@@ -66,31 +64,6 @@ LOG = initBaseLogger('EditVCP',
 DESIGNER_LOG = initBaseLogger('Designer',
                               log_file=DEFAULT_EDITVCP_LOG_FILE,
                               log_level='DEBUG')
-
-
-LCNC_VERSION_ERROR_MSG = """
-\033[31mERROR:\033[0m Unsupported LinuxCNC version
-
-QtPyVCP only supports LinuxCNC 2.8, current version is {}.
-If you have LinuxCNC installed as a RIP make sure you have
-activated the run-in-place environment by running:\n"
-
-    $ . <linuxcnc-rip-dir>/scripts/rip-environment
-
-Otherwise you will need to install LinuxCNC 2.8, info on how
-to do that can be found here: https://gnipsel.com/linuxcnc/uspace/
-""".strip()
-
-INSTALLED_ERROR_MSG = """
-\033[31mERROR:\033[0m Can not edit an installed VCP
-
-The specified VCP appears to be installed in the `python2.7/site-packages`
-directory. Please set up a development install to edit the VCP.
-""".strip()
-
-if lcnc_version.startswith('2.7'):
-    LOG.info(LCNC_VERSION_ERROR_MSG.format(lcnc_version))
-    sys.exit(1)
 
 
 import re
@@ -168,10 +141,6 @@ def launch_designer(opts=DotDict()) -> None:
             inferred_ini_for_render = _maybe_set_default_ini_file(vcp_name, fname)
         except KeyError:
             pass
-
-        if 'lib/python2.7/site-packages' in fname:
-            LOG.error(INSTALLED_ERROR_MSG)
-            sys.exit(1)
 
     cmd = ["pyside6-designer"]
 

@@ -37,17 +37,22 @@ the first button will set the view to Isometric Projection.
 .. image:: images/backplot-05.png
    :align: center
 
-Controlling the display of the boundries and axes information can be done in the
-configuration ini file located in `username/linuxcnc/configs/configuration_name`.
-Descriptions of the options for the ini file are in 
-:doc:`../configuration/ini_options`.
+The backplot can show or hide the machine boundary, its ticks and labels, the
+program boundary and the grid. Each one is a setting, so the choice is
+remembered between sessions.
 
-Turning off everything except `machine boundry` in the ini file.
+To add a button for one, drag a `VCPSettingsPushButton` into the second frame
+and set its `settingName` property to one of:
 
-.. image:: images/backplot-06.png
-   :align: center
+* `backplot.show-machine-bounds`
+* `backplot.show-machine-ticks`
+* `backplot.show-machine-labels`
+* `backplot.show-program-bounds`
+* `backplot.show-grid`
 
-And the result.
+The button is checkable. Checked shows that item, unchecked hides it.
+
+Here everything is turned off except the machine boundary.
 
 .. image:: images/backplot-07.png
    :align: center

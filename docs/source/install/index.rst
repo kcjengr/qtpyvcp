@@ -7,37 +7,47 @@ Installation
    :titlesonly:
 
    apt_install
-   prerequisites
-   pypi_install
    dev_install
-   bullseye
-   bookworm
-   build_debs
-   python2
 
-There are multiple ways to install QtPyVCP, either a development install, or a standard
-install from PyPi. Which one you choose depends on how you intend to use QtPyVCP.
-
-.. Warning::
-
-    QtPyVCP main branch is currently python3 only, there is no stable release for python3 yet
+There are two ways to install QtPyVCP. Use one or the other on a machine,
+not both.
 
 
-.. Note::
+Requirements
+------------
 
-    Regardless of which installation method you use you will need to make sure the
-    prerequisites listed on the :doc:`Prerequisites <prerequisites>` page have been met.
+==================  ==============  ==================  ================
+Debian release      Python          Qt binding          QtPyVCP branch
+==================  ==============  ==================  ================
+13 Trixie           3.13            Qt 6 / PySide6      ``pyside6``
+12 Bookworm         3.11            Qt 5 / PyQt5        ``main``
+==================  ==============  ==================  ================
+
+The Python and Qt versions are whatever the Debian release ships. You do
+not install them separately, and you should not mix versions between
+releases.
+
+Also needed:
+
+* LinuxCNC 2.9
+* A 64 bit machine, ``amd64`` or ``arm64``. These are the only
+  architectures packages are built for.
+* A graphics card with working OpenGL, for the VTK backplot.
 
 
-Standard Install
+Install from apt
 ----------------
 
-If you are not interested in contributing to QtPyVCP, then it is best to install
-from PyPi per the :doc:`Standard Install <pypi_install>` guide.
+Recommended for most users. Installs QtPyVCP and the VCPs built on it, and
+updates them along with the rest of your system.
+
+See :doc:`Install from apt repository <apt_install>`.
 
 
-Development Install
--------------------
+Developer Install
+-----------------
 
-If you would like to contribute to QtPyVCP you will need to follow the
-:doc:`Development Install <dev_install>` guide.
+For working on the QtPyVCP source code. An installer script clones the
+source, sets up a Python virtual environment and builds everything for you.
+
+See :doc:`Developer Install <dev_install>`.

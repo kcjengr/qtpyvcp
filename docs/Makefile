@@ -12,6 +12,10 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 # Preview build avoids runtime-heavy autodoc sections that can crash in headless/dev envs.
+# LOCAL PREVIEW ONLY - never deploy this output. It drops the whole user
+# reference: actions, widgets, plugins, designer, components and tools. It was
+# deployed to gh-pages on 2026-07-17 and those sections were missing from
+# www.qtpyvcp.com until the next full build. Deploy "make html" only.
 PREVIEWSPHINXOPTS = -d $(BUILDDIR)/doctrees-preview $(PAPEROPT_$(PAPER)) \
 	-D extensions=sphinx.ext.todo,sphinx.ext.coverage,sphinx.ext.mathjax,sphinx.ext.githubpages,sphinx.ext.napoleon,sphinx_gitstamp,notfound.extension \
 	-D suppress_warnings=toc.excluded,ref.doc,autodoc.mocked_object \
@@ -24,7 +28,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
-	@echo "  html-preview to make preview HTML files (skips runtime-heavy sections)"
+	@echo "  html-preview to make preview HTML files (skips the reference sections - never deploy)"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
