@@ -122,3 +122,92 @@ jobs:
           done
           echo "::error::failed to push to kcjengr/apt after 5 attempts"
           exit 1
+
+  docs:
+    # Rebuilds www.qtpyvcp.com (the gh-pages branch) on every push, as the
+    # buildbot's pyside6 dev factory did. Full build only: that factory used
+    # the html-preview target, which leaves out the reference sections, and
+    # that is how they went missing from the site.
+    runs-on: ubuntu-24.04
+    container:
+      image: debian:trixie
+    permissions:
+      contents: write
+    concurrency:
+      group: docs-gh-pages
+      cancel-in-progress: false
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Install docs build prerequisites
+        run: |
+          apt-get update
+          # The Python modules the docs build imports, traced from a real
+          # build. Sphinx and its extensions come from pip.
+          apt-get install -y --no-install-recommends \
+            git ca-certificates make python3-pip \
+            python3-pyside6.qtcore python3-pyside6.qtgui \
+            python3-pyside6.qtwidgets python3-pyside6.qtdbus \
+            python3-pyside6.qtuitools python3-pyqtgraph python3-dbus \
+            python3-distro python3-docopt python3-psutil python3-pyudev \
+            python3-serial python3-simpleeval python3-yaml python3-jinja2 \
+            python3-setuptools
+          pip install --break-system-packages \
+            sphinx sphinx-rtd-theme sphinx-notfound-page sphinx-gitstamp
+
+      - name: Checkout source
+        uses: actions/checkout@v7
+        with:
+          path: source
+          fetch-depth: 0
+
+      - name: Build docs
+        working-directory: source/docs
+        run: |
+          # sphinx-gitstamp reads each page's git history.
+          git config --global --add safe.directory '*'
+          # -W fails the build on any Sphinx warning, such as a module
+          # autodoc cannot import, instead of publishing an empty page.
+          make html SPHINXOPTS="-W --keep-going"
+
+      - name: Checkout gh-pages
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: site
+
+      - name: Publish to gh-pages
+        run: |
+          set -euo pipefail
+          OUT="$GITHUB_WORKSPACE/source/docs/build/html"
+          # Refuse to publish a site that is missing the reference sections,
+          # or has them but empty.
+          for page in actions/index.html widgets/index.html plugins/index.html \
+                      designer/widgets/index.html designer/plugins/index.html \
+                      components/index.html tools/index.html; do
+            if [ ! -f "$OUT/$page" ]; then
+              echo "::error::docs build has no $page, not publishing"
+              exit 1
+            fi
+          done
+          if ! grep -q 'id="qtpyvcp.actions.machine_actions.' "$OUT/actions/machine_actions.html"; then
+            echo "::error::docs build has an empty machine actions page, not publishing"
+            exit 1
+          fi
+          if ! grep -qx 'www.qtpyvcp.com' "$OUT/CNAME" || [ ! -f "$OUT/.nojekyll" ]; then
+            echo "::error::docs build is missing CNAME or .nojekyll, not publishing"
+            exit 1
+          fi
+          cd site
+          git rm -rq .
+          cp -a "$OUT/." .
+          git add -A
+          if git diff --cached --quiet; then
+            echo "docs unchanged, nothing to publish"
+            exit 0
+          fi
+          git config user.name "kcjengr-bot"
+          git config user.email "actions@github.com"
+          git commit -m "Deploy docs from pyside6 ${GITHUB_SHA::8}"
+          git push origin gh-pages
