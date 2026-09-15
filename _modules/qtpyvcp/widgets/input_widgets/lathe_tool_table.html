@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.input_widgets.lathe_tool_table &mdash; QtPyVCP 0.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=32bbf270"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.input_widgets.lathe_tool_table</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.input_widgets.lathe_tool_table</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="sd">&quot;&quot;&quot;LatheToolModel/LatheToolTable -- lathe flavor of the unified tool table</span>
+<span class="sd">editor (see tool_table_editor.ToolTableEditorModel/ToolTableEditor for the</span>
+<span class="sd">mechanism this configures).</span>
+
+<span class="sd">Pairs with the ``lathe`` extras flavor ``qtpyvcp.plugins.db_tool_table``</span>
+<span class="sd">already ships (``EXTRAS_TABLES[&#39;lathe&#39;] -&gt; ToolLathe``, the DB schema&#39;s</span>
+<span class="sd">own first-class lathe columns) -- this is that schema&#39;s reference UI</span>
+<span class="sd">presentation: labels, which columns are strict enums vs. open-vocabulary</span>
+<span class="sd">vs. free text, and sensible default visibility, plus the insert-shape/</span>
+<span class="sd">holder-style option lookups an open-vocabulary combo editor needs (see</span>
+<span class="sd">ToolTableEditorModel.openVocabOptionsFor).</span>
+
+<span class="sd">These are ratified defaults (built to cover real gaps the stock LinuxCNC</span>
+<span class="sd">tool table has no data for -- insert geometry, holder identification,</span>
+<span class="sd">threading parameters -- not arbitrary choices), not a hardcoded ceiling: a</span>
+<span class="sd">VCP can hide any of these via the header&#39;s column-visibility menu, or add</span>
+<span class="sd">its own columns entirely via the DB backend&#39;s custom-field support. Treat</span>
+<span class="sd">this as a working starting point most lathe VCPs will want, override by</span>
+<span class="sd">subclassing where it doesn&#39;t fit.</span>
+
+<span class="sd">Core columns are the same letter-keyed data (T P X Z D I J Q R ...) served</span>
+<span class="sd">by ``qtpyvcp.plugins.db_tool_table.DBToolTable``; extras are ``tool_lathe``</span>
+<span class="sd">attribute names; custom fields are keyed ``custom:&lt;name&gt;``. All three groups</span>
+<span class="sd">are staged in one in-memory dict per tool and committed together by</span>
+<span class="sd">:meth:`saveToolTable` -- one widget, one Save action, single-store rule.</span>
+<span class="sd">Every column (core, extras, custom) locks while a program is running -- not</span>
+<span class="sd">just the ones LinuxCNC itself reads live: a custom/extras value could still</span>
+<span class="sd">be referenced by a subroutine or some other mid-program logic, so editing</span>
+<span class="sd">any of it while the machine is running is unsafe practice regardless of</span>
+<span class="sd">whether LinuxCNC&#39;s own interpreter happens to consume that particular</span>
+<span class="sd">column.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.tool_table_editor</span> <span class="kn">import</span> <span class="n">ToolTableEditorModel</span><span class="p">,</span> <span class="n">ToolTableEditor</span>
+
+<span class="c1"># tool_lathe columns, in display order -- labels for the header and the</span>
+<span class="c1"># column-visibility menu.</span>
+<span class="n">EXTRAS_LABELS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Type&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;insert_shape&#39;</span><span class="p">:</span> <span class="s1">&#39;Insert Shape&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;insert_size_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;Size Mode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;insert_size&#39;</span><span class="p">:</span> <span class="s1">&#39;Insert Size&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;insert_thickness&#39;</span><span class="p">:</span> <span class="s1">&#39;Insert Thk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;holder_style&#39;</span><span class="p">:</span> <span class="s1">&#39;Holder&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;holder_hand&#39;</span><span class="p">:</span> <span class="s1">&#39;Hand&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;holder_shank_width&#39;</span><span class="p">:</span> <span class="s1">&#39;Shank W&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;holder_cut_width&#39;</span><span class="p">:</span> <span class="s1">&#39;Cut W&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;holder_head_length&#39;</span><span class="p">:</span> <span class="s1">&#39;Head Length&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;holder_oal&#39;</span><span class="p">:</span> <span class="s1">&#39;Holder OAL&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;groove_width&#39;</span><span class="p">:</span> <span class="s1">&#39;Groove W&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;max_depth_of_cut&#39;</span><span class="p">:</span> <span class="s1">&#39;Max DOC&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;drill_point_angle&#39;</span><span class="p">:</span> <span class="s1">&#39;Point Angle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;flute_length&#39;</span><span class="p">:</span> <span class="s1">&#39;Flute Len&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;length_below_holder&#39;</span><span class="p">:</span> <span class="s1">&#39;Len Below Holder&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;overall_length&#39;</span><span class="p">:</span> <span class="s1">&#39;Overall Len&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;shaft_diameter&#39;</span><span class="p">:</span> <span class="s1">&#39;Shaft Dia&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;chamfer_threads&#39;</span><span class="p">:</span> <span class="s1">&#39;Chamfer Thds&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;thread_pitch&#39;</span><span class="p">:</span> <span class="s1">&#39;Thread Pitch&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;thread_pitch_min&#39;</span><span class="p">:</span> <span class="s1">&#39;Min Pitch&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;thread_pitch_max&#39;</span><span class="p">:</span> <span class="s1">&#39;Max Pitch&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;thread_angle&#39;</span><span class="p">:</span> <span class="s1">&#39;Thread Angle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;thread_tip_type&#39;</span><span class="p">:</span> <span class="s1">&#39;Tip Type&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;spindle_direction&#39;</span><span class="p">:</span> <span class="s1">&#39;Spindle Dir&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;surface_speed&#39;</span><span class="p">:</span> <span class="s1">&#39;Surface Speed&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;feed_per_rev&#39;</span><span class="p">:</span> <span class="s1">&#39;Feed/Rev&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;depth_of_cut&#39;</span><span class="p">:</span> <span class="s1">&#39;DOC&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;notes&#39;</span><span class="p">:</span> <span class="s1">&#39;Notes&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">EXTRAS_ORDER</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">EXTRAS_LABELS</span><span class="p">)</span>  <span class="c1"># dict preserves insertion order (py3.7+)</span>
+
+<span class="n">TEXT_EXTRAS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;insert_shape&#39;</span><span class="p">,</span> <span class="s1">&#39;insert_size_mode&#39;</span><span class="p">,</span> <span class="s1">&#39;holder_style&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;holder_hand&#39;</span><span class="p">,</span> <span class="s1">&#39;thread_tip_type&#39;</span><span class="p">,</span> <span class="s1">&#39;spindle_direction&#39;</span><span class="p">,</span> <span class="s1">&#39;notes&#39;</span><span class="p">}</span>
+
+<span class="c1"># Extras columns that feed real machine-facing behavior somewhere -- the</span>
+<span class="c1"># VTK insert display and/or conversational-style turning operations (core</span>
+<span class="c1"># columns cover LinuxCNC itself and are always default-visible) -- are all</span>
+<span class="c1"># shown by default: a user setting up a tool should see every parameter</span>
+<span class="c1"># something actually consumes without having to know to unhide it first.</span>
+<span class="c1"># The others excluded here are reference-only (nothing reads them back --</span>
+<span class="c1"># same-named values elsewhere are per-operation user inputs, not tool-table</span>
+<span class="c1"># reads).</span>
+<span class="c1">#</span>
+<span class="c1"># holder_oal is reference-only: it is the holder&#39;s full physical length,</span>
+<span class="c1"># most of which is clamped in the tool block. Reach and slenderness are</span>
+<span class="c1"># calculated from Head Length instead, so OAL feeds nothing and showing it</span>
+<span class="c1"># by default invited it being read as the stickout -- which is exactly the</span>
+<span class="c1"># mistake it caused before.</span>
+<span class="c1">#</span>
+<span class="c1"># overall_length is the same trap one field along. It is the drill or tap&#39;s</span>
+<span class="c1"># full length, and nothing calculates from it: reach for a round tool comes</span>
+<span class="c1"># from Len Below Holder. Its only reader draws the tool body in the</span>
+<span class="c1"># simulation, where a missing value falls back to a default. Shown beside</span>
+<span class="c1"># Len Below Holder and Flute Len it reads like a third reach figure, so it</span>
+<span class="c1"># is off by default and available for anyone who wants the drawn tool to</span>
+<span class="c1"># match their real one.</span>
+<span class="c1"># holder_hand is NOT reference-only: which way a tool is ground decides</span>
+<span class="c1"># which way the work has to turn for it to cut, so it is load-bearing</span>
+<span class="c1"># rather than a note about the tool.</span>
+<span class="n">REFERENCE_ONLY_EXTRAS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;chamfer_threads&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;surface_speed&#39;</span><span class="p">,</span> <span class="s1">&#39;feed_per_rev&#39;</span><span class="p">,</span> <span class="s1">&#39;depth_of_cut&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;notes&#39;</span><span class="p">,</span> <span class="s1">&#39;holder_oal&#39;</span><span class="p">,</span> <span class="s1">&#39;overall_length&#39;</span><span class="p">,</span> <span class="s1">&#39;groove_width&#39;</span><span class="p">)</span>
+
+<span class="c1"># thread_tip_type is NOT reference-only: it decides whether the crest is a</span>
+<span class="c1"># point, a flat or an arc, and D is read differently for each. Hidden by</span>
+<span class="c1"># default it was unreachable for the one tool type that needs it.</span>
+
+<span class="n">DEFAULT_VISIBLE_EXTRAS</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">EXTRAS_ORDER</span>
+                          <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">REFERENCE_ONLY_EXTRAS</span><span class="p">]</span>
+
+<span class="c1"># Strict, DB-enforced enums (CHECK constraints in migrations/001_initial.sql)</span>
+<span class="c1"># -- these become non-editable combo pick-lists; the user literally cannot</span>
+<span class="c1"># enter a value the database would reject.</span>
+<span class="n">TYPE_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;turning&#39;</span><span class="p">,</span> <span class="s1">&#39;boring&#39;</span><span class="p">,</span> <span class="s1">&#39;grooving&#39;</span><span class="p">,</span> <span class="s1">&#39;parting&#39;</span><span class="p">,</span> <span class="s1">&#39;threading&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;drill&#39;</span><span class="p">,</span> <span class="s1">&#39;tap&#39;</span><span class="p">,</span> <span class="s1">&#39;custom&#39;</span><span class="p">]</span>
+<span class="n">INSERT_SIZE_MODE_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;IC&#39;</span><span class="p">,</span> <span class="s1">&#39;edge_length&#39;</span><span class="p">]</span>
+<span class="c1"># N is a real answer, not a missing one: a neutral insert is symmetric and</span>
+<span class="c1"># cuts either way, so its direction comes from the orientation instead.</span>
+<span class="n">HOLDER_HAND_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">]</span>
+<span class="c1"># Not DB-enforced, but a documented closed convention:</span>
+<span class="c1"># &quot;D=0 remains for thread_tip_type=&#39;point&#39; inserts and is valid data&quot;.</span>
+<span class="c1"># Fusion&#39;s own three, spelled Fusion&#39;s way: an import writes &#39;round&#39;, so</span>
+<span class="c1"># offering only &#39;radius&#39; meant picking from the drop-down disagreed with every</span>
+<span class="c1"># imported row. &#39;radius&#39; stays accepted as a synonym by the geometry builder.</span>
+<span class="n">THREAD_TIP_TYPE_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;flat&#39;</span><span class="p">,</span> <span class="s1">&#39;round&#39;</span><span class="p">]</span>
+
+<span class="c1"># Which way the work turns for this tool to cut. Named the way the operation</span>
+<span class="c1"># pages name it, so the tool table and the cutting column use one word and the</span>
+<span class="c1"># check between them compares like with like.</span>
+<span class="n">SPINDLE_DIRECTION_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FWD&#39;</span><span class="p">,</span> <span class="s1">&#39;REV&#39;</span><span class="p">]</span>
+
+<span class="n">STRICT_ENUM_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">TYPE_OPTIONS</span><span class="p">,</span>
+    <span class="s1">&#39;insert_size_mode&#39;</span><span class="p">:</span> <span class="n">INSERT_SIZE_MODE_OPTIONS</span><span class="p">,</span>
+    <span class="s1">&#39;holder_hand&#39;</span><span class="p">:</span> <span class="n">HOLDER_HAND_OPTIONS</span><span class="p">,</span>
+    <span class="s1">&#39;thread_tip_type&#39;</span><span class="p">:</span> <span class="n">THREAD_TIP_TYPE_OPTIONS</span><span class="p">,</span>
+    <span class="s1">&#39;spindle_direction&#39;</span><span class="p">:</span> <span class="n">SPINDLE_DIRECTION_OPTIONS</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># insert_shape and holder_style are open vocabularies in practice -- real</span>
+<span class="c1"># data mixes plain ISO letters (turning: C/D/V/W) with descriptive codes for</span>
+<span class="c1"># other tool families (grooving: &quot;GROOVE SQUARE&quot;; threading: &quot;THREAD ISO</span>
+<span class="c1"># TRIPLE&quot;; holder_style: &quot;GROOVE EXTERNAL&quot;, full ISO holder codes like</span>
+<span class="c1"># &quot;SCLCR&quot;, ...). These get an *editable* combo -- not a strict pick-list --</span>
+<span class="c1"># but which choices are actually offered is discriminated by the row&#39;s own</span>
+<span class="c1"># `type` (and, for holder_style, by the row&#39;s already-chosen `insert_shape`)</span>
+<span class="c1"># rather than dumping every value ever used for any tool into one list --</span>
+<span class="c1"># see LatheToolModel.insertShapeOptionsForType/holderStyleOptionsForRow.</span>
+<span class="n">OPEN_VOCAB_SEED_OPTIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;insert_shape&#39;</span><span class="p">,</span> <span class="s1">&#39;holder_style&#39;</span><span class="p">}</span>
+
+<span class="n">NO_INSERT_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;drill&#39;</span><span class="p">,</span> <span class="s1">&#39;tap&#39;</span><span class="p">}</span>
+<span class="n">GROOVING_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;grooving&#39;</span><span class="p">,</span> <span class="s1">&#39;parting&#39;</span><span class="p">}</span>
+<span class="n">THREADING_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;threading&#39;</span><span class="p">}</span>
+
+<span class="c1"># turning/boring/custom insert shapes share one ISO-letter vocabulary.</span>
+<span class="n">GENERAL_INSERT_SHAPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">]</span>
+<span class="n">GROOVING_INSERT_SHAPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GROOVE SQUARE&#39;</span><span class="p">,</span> <span class="s1">&#39;GROOVE ROUND&#39;</span><span class="p">]</span>
+<span class="n">THREADING_INSERT_SHAPES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;THREAD ISO TRIPLE&#39;</span><span class="p">,</span> <span class="s1">&#39;THREAD ISO DOUBLE&#39;</span><span class="p">]</span>
+
+<span class="c1"># ISO shapes whose catalogue size is the cutting EDGE rather than the</span>
+<span class="c1"># inscribed circle. A parallelogram has no single inscribed circle to quote,</span>
+<span class="c1"># and a THREAD ISO DOUBLE is a bar quoted by its long edge. Everything else</span>
+<span class="c1"># -- round, square, triangle, trigon, the diamonds, the regular polygons --</span>
+<span class="c1"># is quoted by its inscribed circle.</span>
+<span class="n">EDGE_LENGTH_INSERT_SHAPES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;K&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;THREAD ISO DOUBLE&#39;</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">size_mode_for_insert_shape</span><span class="p">(</span><span class="n">insert_shape</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&#39;IC&#39; or &#39;edge_length&#39; for an insert shape. See EDGE_LENGTH_INSERT_SHAPES.&quot;&quot;&quot;</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">insert_shape</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s1">&#39;edge_length&#39;</span> <span class="k">if</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">EDGE_LENGTH_INSERT_SHAPES</span> <span class="k">else</span> <span class="s1">&#39;IC&#39;</span>
+
+
+<span class="n">GROOVING_HOLDER_STYLES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GROOVE EXTERNAL&#39;</span><span class="p">,</span> <span class="s1">&#39;GROOVE INTERNAL&#39;</span><span class="p">,</span> <span class="s1">&#39;GROOVE FACE&#39;</span><span class="p">]</span>
+<span class="n">THREADING_HOLDER_STYLES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;THREAD EXTERNAL&#39;</span><span class="p">,</span> <span class="s1">&#39;THREAD INTERNAL&#39;</span><span class="p">,</span> <span class="s1">&#39;THREAD FACE&#39;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">LatheToolModel</span><span class="p">(</span><span class="n">ToolTableEditorModel</span><span class="p">):</span>
+
+    <span class="n">EXTRAS_LABELS</span> <span class="o">=</span> <span class="n">EXTRAS_LABELS</span>            <span class="c1"># column key -&gt; header label, in display order</span>
+    <span class="n">TEXT_EXTRAS</span> <span class="o">=</span> <span class="n">TEXT_EXTRAS</span>                <span class="c1"># extras rendered/edited as free text</span>
+    <span class="n">BOOL_EXTRAS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">()</span>                <span class="c1"># extras rendered/edited as True/False</span>
+    <span class="n">EXTRAS_DEFAULTS</span> <span class="o">=</span> <span class="p">{}</span>                     <span class="c1"># value shown when a tool has no extras row</span>
+    <span class="n">DEFAULT_VISIBLE_EXTRAS</span> <span class="o">=</span> <span class="n">DEFAULT_VISIBLE_EXTRAS</span>
+    <span class="n">STRICT_ENUM_OPTIONS</span> <span class="o">=</span> <span class="n">STRICT_ENUM_OPTIONS</span>
+    <span class="n">OPEN_VOCAB_SEED_OPTIONS</span> <span class="o">=</span> <span class="n">OPEN_VOCAB_SEED_OPTIONS</span>
+    <span class="n">EXTRAS_GROUP_LABEL</span> <span class="o">=</span> <span class="s1">&#39;Lathe Extras&#39;</span>      <span class="c1"># header-menu section title</span>
+    <span class="c1"># Core columns forced to render AFTER extras/custom instead of in their</span>
+    <span class="c1"># normal core position -- empty by default (the lathe keeps Remark in</span>
+    <span class="c1"># its ratified core position); the mill sets (&#39;R&#39;,) so ATC lands just</span>
+    <span class="c1"># before Remark. Membership only -- these stay &#39;core&#39; for grouping;</span>
+    <span class="c1"># only their column position moves.</span>
+    <span class="n">TRAILING_CORE_COLUMNS</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">DESIGNER_STUB_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Shading rules -- REQUIRED_BY_TYPE / USED_BY_TYPE / REQUIRED_ALWAYS</span>
+    <span class="c1"># and the internal-vs-external rule-key split -- are deliberately NOT</span>
+    <span class="c1"># defined here. They encode which fields a *consumer* of the tool data</span>
+    <span class="c1"># reads: a conversational addon&#39;s G-code builders and its collision</span>
+    <span class="c1"># checks. This module cannot verify any of that, and a second copy of</span>
+    <span class="c1"># rules that live somewhere else is a copy that drifts -- it did, twice,</span>
+    <span class="c1"># in a single afternoon.</span>
+    <span class="c1">#</span>
+    <span class="c1"># The owner registers them instead:</span>
+    <span class="c1">#</span>
+    <span class="c1">#     LatheToolModel.registerRules(required_by_type=..., used_by_type=...,</span>
+    <span class="c1">#                                  required_always=..., rule_key=...)</span>
+    <span class="c1">#</span>
+    <span class="c1"># Nothing registered means no shading, which is the correct behaviour for</span>
+    <span class="c1"># a VCP with no such consumer -- see ToolTableEditorModel.registerRules().</span>
+    <span class="c1">#</span>
+    <span class="c1"># REQUIREMENT_KEY stays here: which column selects a rule set is a fact</span>
+    <span class="c1"># about this schema, not about any consumer of it.</span>
+    <span class="n">REQUIREMENT_KEY</span> <span class="o">=</span> <span class="s1">&#39;type&#39;</span>
+
+    <span class="k">def</span> <span class="nf">storageKeyFor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_data</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Insert Size shows the groove width on a blade.</span>
+
+<span class="sd">        A grooving or parting blade has no inscribed circle and no edge length</span>
+<span class="sd">        to quote -- the one size that describes it is the width it cuts. Rather</span>
+<span class="sd">        than carry a second size column that is blank on every other tool type,</span>
+<span class="sd">        the Insert Size cell reads and writes `groove_width` for those rows.</span>
+
+<span class="sd">        Storage does not move: `groove_width` remains the single home for the</span>
+<span class="sd">        value, so everything that already reads it -- the G-code builders, the</span>
+<span class="sd">        simulation, the Fusion import -- is untouched.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;insert_size&#39;</span><span class="p">:</span>
+            <span class="n">tool_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">tool_type</span> <span class="ow">in</span> <span class="n">GROOVING_TYPES</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;groove_width&#39;</span>
+        <span class="k">return</span> <span class="n">key</span>
+
+    <span class="k">def</span> <span class="nf">isDerivedCell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_data</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Size Mode is worked out from Type and Insert Shape, never typed.</span>
+
+<span class="sd">        It was editable when it was a question. It is not one any more: the</span>
+<span class="sd">        shape decides which measurement the size is, so a pick-list here would</span>
+<span class="sd">        offer choices that the next Insert Shape edit overwrites -- and on a</span>
+<span class="sd">        blade, one the schema cannot store at all.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s1">&#39;insert_size_mode&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">tool_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tool_type</span> <span class="ow">in</span> <span class="n">NO_INSERT_TYPES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>              <span class="c1"># blank and inert -- leave it alone</span>
+        <span class="k">if</span> <span class="n">tool_type</span> <span class="ow">in</span> <span class="n">GROOVING_TYPES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>               <span class="c1"># shows &quot;Groove Width&quot;, nothing to pick</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;insert_shape&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">displayValueFor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_data</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Size Mode reads &quot;Groove Width&quot; on a blade.</span>
+
+<span class="sd">        Not stored: the schema&#39;s CHECK allows only IC and edge_length, and a</span>
+<span class="sd">        blade needs neither -- nothing reads Size Mode for one. Rebuilding the</span>
+<span class="sd">        table to store a value nothing consumes would be a migration in service</span>
+<span class="sd">        of a label. So the label is all this is.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;insert_size_mode&#39;</span><span class="p">:</span>
+            <span class="n">tool_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">tool_type</span> <span class="ow">in</span> <span class="n">GROOVING_TYPES</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;Groove Width&#39;</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">requirementCarriedElsewhere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_data</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Groove W does not shade on a blade -- Insert Size shows it instead.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;groove_width&#39;</span><span class="p">:</span>
+            <span class="n">tool_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">tool_type</span> <span class="ow">in</span> <span class="n">GROOVING_TYPES</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">deriveValuesForRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Size Mode, worked out from Type and Insert Shape.</span>
+
+<span class="sd">        Insert Size is one number that can mean two different measurements,</span>
+<span class="sd">        and which one it is has never been the operator&#39;s choice -- it is a</span>
+<span class="sd">        property of the insert they already named. Left to be typed it is a</span>
+<span class="sd">        blank cell with no clue what to put in it; derived, it reads back as</span>
+<span class="sd">        an instruction: measure the inscribed circle, or measure the edge.</span>
+
+<span class="sd">            parallelogram (A B K N X)  edge length -- a parallelogram has no</span>
+<span class="sd">                                       single inscribed circle to quote</span>
+<span class="sd">            THREAD ISO DOUBLE          edge length -- a bar is quoted by its</span>
+<span class="sd">                                       long edge</span>
+<span class="sd">            every other insert shape   inscribed circle</span>
+
+<span class="sd">        Grooving and parting blades are left alone: nothing reads Size Mode</span>
+<span class="sd">        for them, so writing one in would be inventing data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tool_type</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tool_type</span> <span class="ow">in</span> <span class="n">NO_INSERT_TYPES</span> <span class="ow">or</span> <span class="n">tool_type</span> <span class="ow">in</span> <span class="n">GROOVING_TYPES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+
+        <span class="n">shape</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;insert_shape&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">shape</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>          <span class="c1"># nothing to derive from yet</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;insert_size_mode&#39;</span><span class="p">:</span> <span class="n">size_mode_for_insert_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">)}</span>
+
+
+    <span class="c1"># Dead for every tool type -- the same list the default column layout</span>
+    <span class="c1"># leaves hidden. Tinted whenever they hold a value. A property of the</span>
+    <span class="c1"># lathe extras schema rather than of any one consumer, so it keeps its</span>
+    <span class="c1"># default here; registerRules() can still override it.</span>
+    <span class="n">UNUSED_COLUMNS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">REFERENCE_ONLY_EXTRAS</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">openVocabOptionsFor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">row_data</span><span class="p">):</span>
+        <span class="n">tool_type</span> <span class="o">=</span> <span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;insert_shape&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">insertShapeOptionsForType</span><span class="p">(</span><span class="n">tool_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;holder_style&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">holderStyleOptionsForRow</span><span class="p">(</span><span class="n">tool_type</span><span class="p">,</span> <span class="n">row_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;insert_shape&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">insertShapeOptionsForType</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_type</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;insert_shape choices valid for a given tool `type`.&quot;&quot;&quot;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">tool_type</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">NO_INSERT_TYPES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># no insert-shape concept for drills/taps</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">GROOVING_TYPES</span><span class="p">:</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">GROOVING_INSERT_SHAPES</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">THREADING_TYPES</span><span class="p">:</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">THREADING_INSERT_SHAPES</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">GENERAL_INSERT_SHAPES</span><span class="p">)</span>  <span class="c1"># turning/boring/custom</span>
+
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distinctColumnValuesForType</span><span class="p">(</span><span class="s1">&#39;insert_shape&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seed</span><span class="p">:</span>
+                <span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">seed</span>
+
+    <span class="k">def</span> <span class="nf">holderStyleOptionsForRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_type</span><span class="p">,</span> <span class="n">insert_shape</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;holder_style choices valid for a given tool `type`, further</span>
+<span class="sd">        narrowed by the row&#39;s already-chosen `insert_shape` for turning/</span>
+<span class="sd">        boring/custom tools. Full ISO holder codes (e.g. &quot;SCLCR&quot;) encode</span>
+<span class="sd">        their compatible insert shape as the 2nd character of the code --</span>
+<span class="sd">        insert_shape &#39;C&#39; pairs only with holder codes like SCLCR/SCLCL/</span>
+<span class="sd">        SCMCN, never SDJCR -- so an insert shape discriminates which holder</span>
+<span class="sd">        codes make physical sense.&quot;&quot;&quot;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">tool_type</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">NO_INSERT_TYPES</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># no holder concept for drills/taps</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">GROOVING_TYPES</span><span class="p">:</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">GROOVING_HOLDER_STYLES</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distinctColumnValuesForType</span><span class="p">(</span><span class="s1">&#39;holder_style&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seed</span><span class="p">:</span>
+                    <span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">seed</span>
+
+        <span class="k">if</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">THREADING_TYPES</span><span class="p">:</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">THREADING_HOLDER_STYLES</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distinctColumnValuesForType</span><span class="p">(</span><span class="s1">&#39;holder_style&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seed</span><span class="p">:</span>
+                    <span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">seed</span>
+
+        <span class="c1"># turning / boring / custom -- one shared pool of full ISO holder</span>
+        <span class="c1"># codes; narrow to ones compatible with the chosen insert shape.</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">insert_shape</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="n">all_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distinctColumnValues</span><span class="p">(</span><span class="s1">&#39;holder_style&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">matching</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">all_values</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="n">shape</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">matching</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">matching</span>
+        <span class="k">return</span> <span class="n">all_values</span>
+
+
+<div class="viewcode-block" id="LatheToolTable">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.lathe_tool_table.LatheToolTable">[docs]</a>
+<span class="k">class</span> <span class="nc">LatheToolTable</span><span class="p">(</span><span class="n">ToolTableEditor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lathe Tool Table</span>
+
+<span class="sd">    The tool table editor, ``ToolTableEditor``, with the lathe columns of the</span>
+<span class="sd">    tool database: tool type, insert shape and size, holder, hand, threading</span>
+<span class="sd">    values, spindle direction and more.</span>
+
+<span class="sd">    It needs the ``DBToolTable`` plugin serving the lathe columns, which is</span>
+<span class="sd">    its default. In the VCP&#39;s YAML config::</span>
+
+<span class="sd">        data_plugins:</span>
+<span class="sd">          tooltable:</span>
+<span class="sd">            provider: qtpyvcp.plugins.db_tool_table:DBToolTable</span>
+<span class="sd">            kwargs:</span>
+<span class="sd">              extras: lathe</span>
+
+<span class="sd">    If the plugin serves another machine&#39;s columns instead, the lathe columns</span>
+<span class="sd">    are hidden and an error is logged. The standard and custom columns still</span>
+<span class="sd">    work.</span>
+
+<span class="sd">    * Type, Hand, Tip Type and Spindle Dir are pick-lists of the values the</span>
+<span class="sd">      database accepts.</span>
+<span class="sd">    * Insert Shape and Holder offer the choices that fit the tool&#39;s type, and</span>
+<span class="sd">      accept other values too.</span>
+<span class="sd">    * Size Mode is filled in from Type and Insert Shape.</span>
+<span class="sd">    * On grooving and parting tools, Insert Size shows the groove width.</span>
+<span class="sd">    * Columns nothing reads back, such as Notes and Holder OAL, are hidden by</span>
+<span class="sd">      default. Show them from the column header menu.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Machine variants subclass and point this at their model (see</span>
+    <span class="c1"># mill_tool_table.MillToolTable).</span>
+    <span class="n">MODEL_CLASS</span> <span class="o">=</span> <span class="n">LatheToolModel</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

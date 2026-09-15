@@ -410,6 +410,135 @@ regardless of current visibility – the toggle menu’s universe.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.tool_table_editor.ToolTableEditor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.tool_table_editor.</span></span><span class="sig-name descname"><span class="pre">ToolTableEditor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table_editor.html#ToolTableEditor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table_editor.ToolTableEditor" title="Link to this definition"></a></dt>
+<dd><p>Tool Table Editor</p>
+<p>Edits the tool table: the standard LinuxCNC columns, plus your own custom
+columns when the tool database is used. For a lathe or a mill use
+<code class="docutils literal notranslate"><span class="pre">LatheToolTable</span></code> or <code class="docutils literal notranslate"><span class="pre">MillToolTable</span></code>, which add that machine’s columns.</p>
+<p>Works with either <code class="docutils literal notranslate"><span class="pre">tooltable</span></code> data plugin:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">qtpyvcp.plugins.tool_table:ToolTable</span></code> – the classic <code class="docutils literal notranslate"><span class="pre">.tbl</span></code> file,
+standard columns only.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qtpyvcp.plugins.db_tool_table:DBToolTable</span></code> – the tool database,
+which adds the machine columns and custom columns.</p></li>
+</ul>
+<p>Connect buttons to these slots in Qt Designer. The first seven are the
+same slots as the <code class="docutils literal notranslate"><span class="pre">ToolTable</span></code> widget, so either widget can be used with
+the same connections.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Slot</p></th>
+<th class="head"><p>What it does</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">addTool()</span></code></p></td>
+<td><p>Adds a tool numbered after the highest one</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">deleteSelectedTool()</span></code></p></td>
+<td><p>Deletes the selected tool</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">saveToolTable()</span></code></p></td>
+<td><p>Saves all changes and loads the table into LinuxCNC</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">loadToolTable()</span></code></p></td>
+<td><p>Reloads the table, discarding unsaved changes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">clearToolTable()</span></code></p></td>
+<td><p>Deletes every tool</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">loadSelectedTool()</span></code></p></td>
+<td><p>Loads the selected tool with <code class="docutils literal notranslate"><span class="pre">T&lt;n&gt;</span> <span class="pre">M6</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">selectPrevious()</span></code></p></td>
+<td><p>Selects the tool above</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">selectNext()</span></code></p></td>
+<td><p>Selects the tool below</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">renumberSelectedTool()</span></code></p></td>
+<td><p>Changes the selected tool’s number</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">duplicateSelectedTool()</span></code></p></td>
+<td><p>Copies the selected tool to the first free number</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">showAddColumnDialog()</span></code></p></td>
+<td><p>Adds a custom column, tool database only</p></td>
+</tr>
+</tbody>
+</table>
+<p>Set <code class="docutils literal notranslate"><span class="pre">confirmActions</span></code> to ask before saving, reloading, deleting and
+clearing. The signal <code class="docutils literal notranslate"><span class="pre">toolSelected(int)</span></code> gives the tool number when a
+row is clicked, and <code class="docutils literal notranslate"><span class="pre">dirtyChanged(bool)</span></code> reports whether there are
+unsaved changes.</p>
+<p>In the table:</p>
+<ul class="simple">
+<li><p>Right-click a column header to show or hide columns, show them all, or
+go back to the default set. With the tool database the choice is
+remembered, and custom columns can be added and removed there too.</p></li>
+<li><p>Right-click a cell to duplicate the tool, or to copy the names that
+read that value from G-code or a widget rule.</p></li>
+<li><p>Double-click a tool number, in the T column or the row header, to
+renumber the tool.</p></li>
+<li><p>The tool in the spindle is marked with <code class="docutils literal notranslate"><span class="pre">currentToolColor</span></code> and
+<code class="docutils literal notranslate"><span class="pre">currentToolBackground</span></code>.</p></li>
+<li><p>Every column is locked while a program is running.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.lathe_tool_table.LatheToolTable">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.lathe_tool_table.</span></span><span class="sig-name descname"><span class="pre">LatheToolTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/lathe_tool_table.html#LatheToolTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.lathe_tool_table.LatheToolTable" title="Link to this definition"></a></dt>
+<dd><p>Lathe Tool Table</p>
+<p>The tool table editor, <code class="docutils literal notranslate"><span class="pre">ToolTableEditor</span></code>, with the lathe columns of the
+tool database: tool type, insert shape and size, holder, hand, threading
+values, spindle direction and more.</p>
+<p>It needs the <code class="docutils literal notranslate"><span class="pre">DBToolTable</span></code> plugin serving the lathe columns, which is
+its default. In the VCP’s YAML config:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_plugins</span><span class="p">:</span>
+  <span class="n">tooltable</span><span class="p">:</span>
+    <span class="n">provider</span><span class="p">:</span> <span class="n">qtpyvcp</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">db_tool_table</span><span class="p">:</span><span class="n">DBToolTable</span>
+    <span class="n">kwargs</span><span class="p">:</span>
+      <span class="n">extras</span><span class="p">:</span> <span class="n">lathe</span>
+</pre></div>
+</div>
+<p>If the plugin serves another machine’s columns instead, the lathe columns
+are hidden and an error is logged. The standard and custom columns still
+work.</p>
+<ul class="simple">
+<li><p>Type, Hand, Tip Type and Spindle Dir are pick-lists of the values the
+database accepts.</p></li>
+<li><p>Insert Shape and Holder offer the choices that fit the tool’s type, and
+accept other values too.</p></li>
+<li><p>Size Mode is filled in from Type and Insert Shape.</p></li>
+<li><p>On grooving and parting tools, Insert Size shows the groove width.</p></li>
+<li><p>Columns nothing reads back, such as Notes and Holder OAL, are hidden by
+default. Show them from the column header menu.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.mill_tool_table.MillToolTable">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.mill_tool_table.</span></span><span class="sig-name descname"><span class="pre">MillToolTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mill_tool_table.html#MillToolTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mill_tool_table.MillToolTable" title="Link to this definition"></a></dt>
+<dd><p>Mill Tool Table</p>
+<p>The tool table editor, <code class="docutils literal notranslate"><span class="pre">ToolTableEditor</span></code>, with the mill column of the
+tool database, ATC: whether the tool fits in the automatic tool changer.
+Every tool starts ticked. Untick oversize tools, so a tool change macro
+can use it to ask for a manual change instead.</p>
+<p>It needs the <code class="docutils literal notranslate"><span class="pre">DBToolTable</span></code> plugin serving the mill columns. In the
+VCP’s YAML config:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_plugins</span><span class="p">:</span>
+  <span class="n">tooltable</span><span class="p">:</span>
+    <span class="n">provider</span><span class="p">:</span> <span class="n">qtpyvcp</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">db_tool_table</span><span class="p">:</span><span class="n">DBToolTable</span>
+    <span class="n">kwargs</span><span class="p">:</span>
+      <span class="n">extras</span><span class="p">:</span> <span class="n">mill</span>
+</pre></div>
+</div>
+<p>The Remark column is shown last, after ATC.</p>
+</dd></dl>
+
 <section id="gcodetextedit">
 <span id="module-qtpyvcp.widgets.input_widgets.gcode_text_edit"></span><h2>GcodeTextEdit<a class="headerlink" href="#gcodetextedit" title="Link to this heading"></a></h2>
 <p>QTextEdit based G-code editor with syntax highlighting.</p>
@@ -773,6 +902,171 @@ Mark last command as done.</p>
 <dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.terminate">
 <span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/line_edit.html#VCPLineEdit.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.terminate" title="Link to this definition"></a></dt>
 <dd><p>This method is called right before the main application ends.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-qtpyvcp.widgets.input_widgets.var_line_edit">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.input_widgets.var_line_edit.</span></span><span class="sig-name descname"><span class="pre">VCPVarLineEdit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit" title="Link to this definition"></a></dt>
+<dd><p>Var Parameter Line Edit</p>
+<p>A number entry that reads and writes a LinuxCNC numbered parameter, such
+as <code class="docutils literal notranslate"><span class="pre">#3014</span></code>, so the value is stored in the var file.</p>
+<p>A value typed in is written when editing finishes, on Enter, Tab or
+leaving the field, as the MDI command <code class="docutils literal notranslate"><span class="pre">#&lt;varParameterNumber&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></code>
+to 6 decimal places, the precision the var file stores. Text set any
+other way, for example by a widget rule, is written <code class="docutils literal notranslate"><span class="pre">writeDelay</span></code> ms
+later.</p>
+<p>At startup, and whenever the var file changes, the field shows the
+parameter’s value. It is not overwritten while the field has focus, or
+when a widget rule sets its <code class="docutils literal notranslate"><span class="pre">Text</span></code>.</p>
+<p>Setup:</p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">varParameterNumber</span></code> in Qt Designer. Nothing is read or written
+while it is 0.</p></li>
+<li><p>The var file is found automatically from <code class="docutils literal notranslate"><span class="pre">[RS274NGC]</span> <span class="pre">PARAMETER_FILE</span></code>
+in the INI.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">displayDecimals</span></code> sets how many decimals are shown, 4 by default and
+6 at most. The value is always stored to 6.</p></li>
+</ul>
+<p>Safety:</p>
+<ul class="simple">
+<li><p>With <code class="docutils literal notranslate"><span class="pre">requireHomed</span></code> on, the default, the field is disabled unless the
+machine is on, homed and idle. This is checked at startup and whenever
+homing changes, and a write is refused unless the machine is in that
+state.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.getParameterFilePath">
+<span class="sig-name descname"><span class="pre">getParameterFilePath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.getParameterFilePath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.getParameterFilePath" title="Link to this definition"></a></dt>
+<dd><p>Get the automatically detected parameter file path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.getConfigurationInfo">
+<span class="sig-name descname"><span class="pre">getConfigurationInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.getConfigurationInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.getConfigurationInfo" title="Link to this definition"></a></dt>
+<dd><p>Get debugging information about the current configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Configuration information including paths and settings</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.varParameterNumber">
+<span class="sig-name descname"><span class="pre">varParameterNumber</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.varParameterNumber" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.autoWriteEnabled">
+<span class="sig-name descname"><span class="pre">autoWriteEnabled</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.autoWriteEnabled" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.writeDelay">
+<span class="sig-name descname"><span class="pre">writeDelay</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.writeDelay" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.displayDecimals">
+<span class="sig-name descname"><span class="pre">displayDecimals</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.displayDecimals" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.requireHomed">
+<span class="sig-name descname"><span class="pre">requireHomed</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.requireHomed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.setEnabled">
+<span class="sig-name descname"><span class="pre">setEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enabled</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.setEnabled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.setEnabled" title="Link to this definition"></a></dt>
+<dd><p>Override setEnabled to track original state and respect safety requirements</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.formatValue">
+<span class="sig-name descname"><span class="pre">formatValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.formatValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.formatValue" title="Link to this definition"></a></dt>
+<dd><p>Format value for display using displayDecimals setting</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.setValue">
+<span class="sig-name descname"><span class="pre">setValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.setValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.setValue" title="Link to this definition"></a></dt>
+<dd><p>Set the value with 6-decimal internal storage and formatted display</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.value" title="Link to this definition"></a></dt>
+<dd><p>Return the stored 6-decimal precision value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.setDisplayValue">
+<span class="sig-name descname"><span class="pre">setDisplayValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.setDisplayValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.setDisplayValue" title="Link to this definition"></a></dt>
+<dd><p>Set display value with consistent formatting using displayDecimals</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.onEditingFinished">
+<span class="sig-name descname"><span class="pre">onEditingFinished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.onEditingFinished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.onEditingFinished" title="Link to this definition"></a></dt>
+<dd><p>Handle user editing with 6-decimal precision storage and display formatting</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.writeToLinuxCNC">
+<span class="sig-name descname"><span class="pre">writeToLinuxCNC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.writeToLinuxCNC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.writeToLinuxCNC" title="Link to this definition"></a></dt>
+<dd><p>Public method to manually trigger writing to LinuxCNC parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>force</strong> (<em>bool</em>) – If True, write immediately without delay</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.readParameterFromVarFile">
+<span class="sig-name descname"><span class="pre">readParameterFromVarFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.readParameterFromVarFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.readParameterFromVarFile" title="Link to this definition"></a></dt>
+<dd><p>Read a parameter value directly from the var file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameter_number</strong> (<em>int</em>) – Parameter number to read. If None, uses self._var_parameter_number</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The parameter value with 6-decimal precision, or None if not found</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.loadParameterValue">
+<span class="sig-name descname"><span class="pre">loadParameterValue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.loadParameterValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.loadParameterValue" title="Link to this definition"></a></dt>
+<dd><p>Load the parameter value from the var file into the widget</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.onReturnPressed">
+<span class="sig-name descname"><span class="pre">onReturnPressed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.onReturnPressed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.onReturnPressed" title="Link to this definition"></a></dt>
+<dd><p>Override return-press behavior and let editingFinished perform commit</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.initialize" title="Link to this definition"></a></dt>
+<dd><p>Initialize the widget - called by VCP system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/var_line_edit.html#VCPVarLineEdit.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.var_line_edit.VCPVarLineEdit.terminate" title="Link to this definition"></a></dt>
+<dd><p>Cleanup when widget is destroyed</p>
 </dd></dl>
 
 </dd></dl>

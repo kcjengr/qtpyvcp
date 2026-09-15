@@ -285,6 +285,135 @@ edit, a spin box or a double spin box.</p></li>
 
 </dd></dl>
 
+<dl class="py class" id="module-qtpyvcp.widgets.button_widgets.vcpvar_button">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">qtpyvcp.widgets.button_widgets.vcpvar_button.</span></span><span class="sig-name descname"><span class="pre">VCPVarPushButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton" title="Link to this definition"></a></dt>
+<dd><p>Var Parameter Push Button</p>
+<p>A checkable button that keeps its state in a LinuxCNC numbered
+parameter, such as <code class="docutils literal notranslate"><span class="pre">#3014</span></code>, so the setting is stored in the var file.</p>
+<p>Toggling the button writes <code class="docutils literal notranslate"><span class="pre">#&lt;varParameterNumber&gt;</span> <span class="pre">=</span> <span class="pre">1</span></code> when checked or
+<code class="docutils literal notranslate"><span class="pre">=</span> <span class="pre">0</span></code> when unchecked, as an MDI command, <code class="docutils literal notranslate"><span class="pre">writeDelay</span></code> ms later. At
+startup, and whenever the var file changes, the button is set from the
+parameter: any non-zero value checks it.</p>
+<p>Setup:</p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">varParameterNumber</span></code> in Qt Designer. Nothing is read or written
+while it is 0.</p></li>
+<li><p>The var file is found automatically from <code class="docutils literal notranslate"><span class="pre">[RS274NGC]</span> <span class="pre">PARAMETER_FILE</span></code>
+in the INI, through the <code class="docutils literal notranslate"><span class="pre">var_file_manager</span></code> plugin, which is loaded by
+default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outputAsInt</span></code> makes <code class="docutils literal notranslate"><span class="pre">value()</span></code> return 0 or 1 instead of False or
+True. The parameter is written as 0 or 1 either way.</p></li>
+</ul>
+<p>Safety:</p>
+<ul class="simple">
+<li><p>With <code class="docutils literal notranslate"><span class="pre">requireHomed</span></code> on, the default, the button is disabled unless
+the machine is on, homed and idle. This is checked at startup and
+whenever homing changes, and a write is refused unless the machine is
+in that state.</p></li>
+</ul>
+<p>Widget rules can set <code class="docutils literal notranslate"><span class="pre">Text</span></code>, <code class="docutils literal notranslate"><span class="pre">Checked</span></code> and <code class="docutils literal notranslate"><span class="pre">Value</span></code> as well as the
+standard properties.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.getParameterFilePath">
+<span class="sig-name descname"><span class="pre">getParameterFilePath</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.getParameterFilePath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.getParameterFilePath" title="Link to this definition"></a></dt>
+<dd><p>Get the automatically detected parameter file path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.getConfigurationInfo">
+<span class="sig-name descname"><span class="pre">getConfigurationInfo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.getConfigurationInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.getConfigurationInfo" title="Link to this definition"></a></dt>
+<dd><p>Get debugging information about the current configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Configuration information including paths and settings</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.varParameterNumber">
+<span class="sig-name descname"><span class="pre">varParameterNumber</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.varParameterNumber" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.autoWriteEnabled">
+<span class="sig-name descname"><span class="pre">autoWriteEnabled</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.autoWriteEnabled" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.writeDelay">
+<span class="sig-name descname"><span class="pre">writeDelay</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.writeDelay" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.outputAsInt">
+<span class="sig-name descname"><span class="pre">outputAsInt</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.outputAsInt" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.requireHomed">
+<span class="sig-name descname"><span class="pre">requireHomed</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;PySide6.QtCore.Property</span> <span class="pre">object&gt;</span></span><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.requireHomed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setEnabled">
+<span class="sig-name descname"><span class="pre">setEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enabled</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.setEnabled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setEnabled" title="Link to this definition"></a></dt>
+<dd><p>Override setEnabled to track original state and respect safety requirements</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.value">
+<span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.value" title="Link to this definition"></a></dt>
+<dd><p>Return the current checked state as boolean or integer based on outputAsInt property</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setValue">
+<span class="sig-name descname"><span class="pre">setValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.setValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setValue" title="Link to this definition"></a></dt>
+<dd><p>Set the checked state from a boolean, integer, or compatible value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.text">
+<span class="sig-name descname"><span class="pre">text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.text" title="Link to this definition"></a></dt>
+<dd><p>Override text() to return empty string so parameter collection uses value() instead</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setDisplayChecked">
+<span class="sig-name descname"><span class="pre">setDisplayChecked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checked</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.setDisplayChecked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setDisplayChecked" title="Link to this definition"></a></dt>
+<dd><p>Set checked state without triggering signals (for loading from var file)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.writeToLinuxCNC">
+<span class="sig-name descname"><span class="pre">writeToLinuxCNC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.writeToLinuxCNC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.writeToLinuxCNC" title="Link to this definition"></a></dt>
+<dd><p>Public method to manually trigger writing to LinuxCNC parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>force</strong> (<em>bool</em>) – If True, write immediately without delay</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.initialize">
+<span class="sig-name descname"><span class="pre">initialize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.initialize" title="Link to this definition"></a></dt>
+<dd><p>Initialize the widget - called by VCP system</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.terminate">
+<span class="sig-name descname"><span class="pre">terminate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/vcpvar_button.html#VCPVarPushButton.terminate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.terminate" title="Link to this definition"></a></dt>
+<dd><p>Cleanup when widget is destroyed</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.button_widgets.vcpvar_button &mdash; QtPyVCP 0.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=32bbf270"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.button_widgets.vcpvar_button</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.button_widgets.vcpvar_button</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">PySide6.QtCore</span> <span class="kn">import</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PySide6.QtWidgets</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.widgets</span> <span class="kn">import</span> <span class="n">VCPWidget</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.widgets.base_widgets.var_widget_mixin</span> <span class="kn">import</span> <span class="n">VarWidgetMixin</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.utilities</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.utilities.qt_safety</span> <span class="kn">import</span> <span class="n">safe_qt_callback</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.plugins</span> <span class="kn">import</span> <span class="n">getPlugin</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.actions.machine_actions</span> <span class="kn">import</span> <span class="n">issue_mdi</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">IN_DESIGNER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span>
+
+<span class="k">def</span> <span class="nf">_safe_import_linuxcnc</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Import linuxcnc with intelligent error handling&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+        <span class="c1"># Expected in designer mode - don&#39;t log</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">linuxcnc</span>
+        <span class="k">return</span> <span class="n">linuxcnc</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Unexpected in runtime mode - log the error</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to import linuxcnc in runtime mode: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="VCPVarPushButton">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton">[docs]</a>
+<span class="k">class</span> <span class="nc">VCPVarPushButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">VCPWidget</span><span class="p">,</span> <span class="n">VarWidgetMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Var Parameter Push Button</span>
+
+<span class="sd">    A checkable button that keeps its state in a LinuxCNC numbered</span>
+<span class="sd">    parameter, such as ``#3014``, so the setting is stored in the var file.</span>
+
+<span class="sd">    Toggling the button writes ``#&lt;varParameterNumber&gt; = 1`` when checked or</span>
+<span class="sd">    ``= 0`` when unchecked, as an MDI command, ``writeDelay`` ms later. At</span>
+<span class="sd">    startup, and whenever the var file changes, the button is set from the</span>
+<span class="sd">    parameter: any non-zero value checks it.</span>
+
+<span class="sd">    Setup:</span>
+
+<span class="sd">    * Set ``varParameterNumber`` in Qt Designer. Nothing is read or written</span>
+<span class="sd">      while it is 0.</span>
+<span class="sd">    * The var file is found automatically from ``[RS274NGC] PARAMETER_FILE``</span>
+<span class="sd">      in the INI, through the ``var_file_manager`` plugin, which is loaded by</span>
+<span class="sd">      default.</span>
+<span class="sd">    * ``outputAsInt`` makes ``value()`` return 0 or 1 instead of False or</span>
+<span class="sd">      True. The parameter is written as 0 or 1 either way.</span>
+
+<span class="sd">    Safety:</span>
+
+<span class="sd">    * With ``requireHomed`` on, the default, the button is disabled unless</span>
+<span class="sd">      the machine is on, homed and idle. This is checked at startup and</span>
+<span class="sd">      whenever homing changes, and a write is refused unless the machine is</span>
+<span class="sd">      in that state.</span>
+
+<span class="sd">    Widget rules can set ``Text``, ``Checked`` and ``Value`` as well as the</span>
+<span class="sd">    standard properties.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT_RULE_PROPERTY</span> <span class="o">=</span> <span class="s1">&#39;Enable&#39;</span>
+    <span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="n">VCPWidget</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s1">&#39;Text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setText&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="s1">&#39;Checked&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setChecked&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
+        <span class="s1">&#39;Value&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setValue&#39;</span><span class="p">,</span> <span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+    <span class="p">})</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VCPVarPushButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        
+        <span class="c1"># Initialize VarWidgetMixin</span>
+        <span class="n">VarWidgetMixin</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+        <span class="c1"># Make button checkable by default for toggle behavior</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">FocusPolicy</span><span class="o">.</span><span class="n">NoFocus</span><span class="p">)</span>
+        
+        <span class="c1"># Widget properties for var parameter functionality</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_delay</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># ms delay before writing to prevent excessive writes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_as_int</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Default to boolean output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require_homed</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Safety feature: require machine to be homed</span>
+        
+        <span class="c1"># Status monitoring for safety</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_homed_callback</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_enabled_state</span> <span class="o">=</span> <span class="kc">True</span>
+        
+        <span class="c1"># Internal state tracking</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_just_toggled</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># Timer for delayed writing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_timer</span><span class="o">.</span><span class="n">setSingleShot</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_writeToLinuxCNC</span><span class="p">)</span>
+        
+        <span class="c1"># Connect to toggle changes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_onToggled</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VCPVarPushButton.getParameterFilePath">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.getParameterFilePath">[docs]</a>
+    <span class="k">def</span> <span class="nf">getParameterFilePath</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the automatically detected parameter file path&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_var_manager</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_var_manager</span><span class="p">,</span> <span class="s1">&#39;_parameter_file_path&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VCPVarPushButton.getConfigurationInfo">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.getConfigurationInfo">[docs]</a>
+    <span class="k">def</span> <span class="nf">getConfigurationInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get debugging information about the current configuration.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Configuration information including paths and settings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">var_file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getParameterFilePath</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;var_file_path&#39;</span><span class="p">:</span> <span class="n">var_file_path</span><span class="p">,</span>
+            <span class="s1">&#39;var_parameter_number&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span><span class="p">,</span>
+            <span class="s1">&#39;auto_write_enabled&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span><span class="p">,</span>
+            <span class="s1">&#39;write_delay&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_delay</span><span class="p">,</span>
+            <span class="s1">&#39;output_as_int&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_as_int</span><span class="p">,</span>
+            <span class="s1">&#39;require_homed&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_homed</span><span class="p">,</span>
+            <span class="s1">&#39;var_monitoring_enabled&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_monitoring_enabled</span><span class="p">,</span>
+            <span class="s1">&#39;parameter_file_exists&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">var_file_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">var_file_path</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="p">}</span></div>
+
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">varParameterNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;LinuxCNC parameter number to write to (e.g., 3014 for #3014)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span>
+
+    <span class="nd">@varParameterNumber</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">varParameterNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_num</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">param_num</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">autoWriteEnabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether to automatically write changes to LinuxCNC parameters&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span>
+
+    <span class="nd">@autoWriteEnabled</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">autoWriteEnabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enabled</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">enabled</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">writeDelay</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delay in milliseconds before writing to LinuxCNC after button toggle&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_delay</span>
+
+    <span class="nd">@writeDelay</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">writeDelay</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_delay</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">outputAsInt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If True, value() returns 0/1 integers. If False (default), returns True/False booleans.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_as_int</span>
+
+    <span class="nd">@outputAsInt</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">outputAsInt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_as_int</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">use_int</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">requireHomed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether to require machine to be homed before enabling the widget&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_homed</span>
+
+    <span class="nd">@requireHomed</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">requireHomed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">require</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require_homed</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">require</span><span class="p">)</span>
+        <span class="c1"># Re-evaluate enabled state when this property changes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updateEnabledState</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_connectStatusPlugin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Connect to the status plugin for monitoring machine state&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;VCPVarPushButton: Status plugin not available&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+            
+        <span class="c1"># Connect to all homed status signal using a tracked safe callback so</span>
+        <span class="c1"># terminate() can disconnect the exact callable that was connected.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status_homed_callback</span> <span class="o">=</span> <span class="n">safe_qt_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_updateEnabledState</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_status_homed_callback</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;VCPVarPushButton: Connected to status plugin for homing monitoring&quot;</span><span class="p">)</span>
+        <span class="c1"># Update initial state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updateEnabledState</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_updateEnabledState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update widget enabled state based on machine state&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_homed</span><span class="p">:</span>
+            <span class="c1"># If homing not required, use original enabled state</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original_enabled_state</span><span class="p">)</span>
+            <span class="k">return</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If no status plugin, default to disabled for safety</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Status plugin not available - widget disabled for safety&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Check if machine is in safe state for parameter editing</span>
+        <span class="n">linuxcnc</span> <span class="o">=</span> <span class="n">_safe_import_linuxcnc</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">linuxcnc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Disable widget when linuxcnc unavailable</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;LinuxCNC not available - widget disabled&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">stat</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
+        <span class="n">stat</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+
+        <span class="c1"># Check machine state: ON, HOMED, and IDLE (same as MDI button safety)</span>
+        <span class="n">is_machine_on</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span>
+        <span class="n">is_all_homed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span><span class="o">.</span><span class="n">allHomed</span><span class="p">()</span>
+        <span class="n">is_idle</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span>
+        
+        <span class="n">is_safe</span> <span class="o">=</span> <span class="n">is_machine_on</span> <span class="ow">and</span> <span class="n">is_all_homed</span> <span class="ow">and</span> <span class="n">is_idle</span>
+        
+        <span class="k">if</span> <span class="n">is_safe</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original_enabled_state</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># Clear any safety tooltip</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_machine_on</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Widget disabled: Machine must be ON&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">is_all_homed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Widget disabled: Machine must be HOMED&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">is_idle</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s2">&quot;Widget disabled: Machine must be IDLE&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VCPVarPushButton.setEnabled">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setEnabled">[docs]</a>
+    <span class="k">def</span> <span class="nf">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enabled</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override setEnabled to track original state and respect safety requirements&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_enabled_state</span> <span class="o">=</span> <span class="n">enabled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updateEnabledState</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="VCPVarPushButton.value">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.value">[docs]</a>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the current checked state as boolean or integer based on outputAsInt property&quot;&quot;&quot;</span>
+        <span class="n">checked_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_as_int</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">checked_state</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">checked_state</span></div>
+
+
+<div class="viewcode-block" id="VCPVarPushButton.setValue">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setValue">[docs]</a>
+    <span class="k">def</span> <span class="nf">setValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the checked state from a boolean, integer, or compatible value&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># Handle string representations of boolean values</span>
+            <span class="n">value_lower</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">value_lower</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;yes&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">value_lower</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;false&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;off&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># For numeric strings, convert to float then to bool</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="VCPVarPushButton.text">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.text">[docs]</a>
+    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override text() to return empty string so parameter collection uses value() instead&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Return empty string so get_val() falls through to value() method</span></div>
+
+
+<div class="viewcode-block" id="VCPVarPushButton.setDisplayChecked">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.setDisplayChecked">[docs]</a>
+    <span class="k">def</span> <span class="nf">setDisplayChecked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set checked state without triggering signals (for loading from var file)&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockSignals</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_onToggled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle button toggle and schedule LinuxCNC parameter update if auto-write is enabled&quot;&quot;&quot;</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VCPVarPushButton: Button toggled to </span><span class="si">{</span><span class="n">checked</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># Update internal value when user toggles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span> <span class="o">=</span> <span class="n">checked</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_just_toggled</span> <span class="o">=</span> <span class="kc">True</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Reset the timer to delay the write</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_delay</span><span class="p">)</span>
+        
+        <span class="c1"># Reset the flag after a short delay</span>
+        <span class="n">QTimer</span><span class="o">.</span><span class="n">singleShot</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_user_just_toggled&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+<div class="viewcode-block" id="VCPVarPushButton.writeToLinuxCNC">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.writeToLinuxCNC">[docs]</a>
+    <span class="k">def</span> <span class="nf">writeToLinuxCNC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Public method to manually trigger writing to LinuxCNC parameters.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            force (bool): If True, write immediately without delay</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writeToLinuxCNC</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_onToggled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">isChecked</span><span class="p">())</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_writeToLinuxCNC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the current button state to LinuxCNC via MDI command&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;VCPVarPushButton: skipping write in Designer mode&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;VCPVarPushButton: parameter number not set&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Safety check: ensure machine is in safe state if required</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_homed</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span><span class="p">:</span>
+            <span class="n">linuxcnc</span> <span class="o">=</span> <span class="n">_safe_import_linuxcnc</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">linuxcnc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>  <span class="c1"># Skip writing when linuxcnc unavailable</span>
+
+            <span class="n">stat</span> <span class="o">=</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
+            <span class="n">stat</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+
+            <span class="c1"># Check machine state: ON, HOMED, and IDLE</span>
+            <span class="n">is_machine_on</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">task_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">STATE_ON</span>
+            <span class="n">is_all_homed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span><span class="o">.</span><span class="n">allHomed</span><span class="p">()</span>
+            <span class="n">is_idle</span> <span class="o">=</span> <span class="n">stat</span><span class="o">.</span><span class="n">interp_state</span> <span class="o">==</span> <span class="n">linuxcnc</span><span class="o">.</span><span class="n">INTERP_IDLE</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">is_machine_on</span> <span class="ow">and</span> <span class="n">is_all_homed</span> <span class="ow">and</span> <span class="n">is_idle</span><span class="p">):</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;VCPVarPushButton: Cannot write parameter - machine not in safe state&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="c1"># Get the button state as 0 or 1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VCPVarPushButton: Using internal value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VCPVarPushButton: Using button checked state: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Use LinuxCNC MDI command to set parameter</span>
+        <span class="n">mdi_command</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+        
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VCPVarPushButton: Issuing MDI command: </span><span class="si">{</span><span class="n">mdi_command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">issue_mdi</span><span class="p">(</span><span class="n">mdi_command</span><span class="p">)</span>
+        
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VCPVarPushButton: Set parameter #</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> via MDI&quot;</span><span class="p">)</span>
+
+    <span class="c1"># VarWidgetMixin abstract method implementations</span>
+    <span class="k">def</span> <span class="nf">_load_parameter_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load parameter value from var file manager into the widget&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Temporarily disable auto-write to prevent feedback loop</span>
+            <span class="n">old_auto_write</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># Convert numeric value to boolean (non-zero = True)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setDisplayChecked</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span> <span class="o">=</span> <span class="n">old_auto_write</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VCPVarPushButton: Loaded parameter #</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VCPVarPushButton: Could not load parameter #</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_widget_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the current widget value for comparison&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+<div class="viewcode-block" id="VCPVarPushButton.initialize">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.initialize">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the widget - called by VCP system&quot;&quot;&quot;</span>
+        <span class="c1"># Initialize VarWidgetMixin (sets up var file monitoring)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_var_monitoring</span><span class="p">()</span>
+        
+        <span class="c1"># Connect to status plugin for safety monitoring</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connectStatusPlugin</span><span class="p">()</span>
+        
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VCPVarPushButton initialized: param #</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">var_parameter_number</span><span class="si">}</span><span class="s2">, auto_write=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_write_enabled</span><span class="si">}</span><span class="s2">, require_homed=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_require_homed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="VCPVarPushButton.terminate">
+<a class="viewcode-back" href="../../../../widgets/buttons/index.html#qtpyvcp.widgets.button_widgets.vcpvar_button.VCPVarPushButton.terminate">[docs]</a>
+    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cleanup when widget is destroyed&quot;&quot;&quot;</span>
+        <span class="c1"># Cleanup VarWidgetMixin (disconnects from var file monitoring)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cleanup_var_monitoring</span><span class="p">()</span>
+        
+        <span class="c1"># Disconnect from status plugin</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status_homed_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_status</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">signal</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_status_homed_callback</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+                <span class="c1"># Signal may already be disconnected during shutdown ordering.</span>
+                <span class="k">pass</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_status_homed_callback</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># Restore original enabled state</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_original_enabled_state&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_original_enabled_state</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_write_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;VCPVarPushButton terminated&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
