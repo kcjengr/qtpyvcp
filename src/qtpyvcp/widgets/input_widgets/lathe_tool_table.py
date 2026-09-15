@@ -369,6 +369,34 @@ class LatheToolModel(ToolTableEditorModel):
 
 
 class LatheToolTable(ToolTableEditor):
+    """Lathe Tool Table
+
+    The tool table editor, ``ToolTableEditor``, with the lathe columns of the
+    tool database: tool type, insert shape and size, holder, hand, threading
+    values, spindle direction and more.
+
+    It needs the ``DBToolTable`` plugin serving the lathe columns, which is
+    its default. In the VCP's YAML config::
+
+        data_plugins:
+          tooltable:
+            provider: qtpyvcp.plugins.db_tool_table:DBToolTable
+            kwargs:
+              extras: lathe
+
+    If the plugin serves another machine's columns instead, the lathe columns
+    are hidden and an error is logged. The standard and custom columns still
+    work.
+
+    * Type, Hand, Tip Type and Spindle Dir are pick-lists of the values the
+      database accepts.
+    * Insert Shape and Holder offer the choices that fit the tool's type, and
+      accept other values too.
+    * Size Mode is filled in from Type and Insert Shape.
+    * On grooving and parting tools, Insert Size shows the groove width.
+    * Columns nothing reads back, such as Notes and Holder OAL, are hidden by
+      default. Show them from the column header menu.
+    """
 
     # Machine variants subclass and point this at their model (see
     # mill_tool_table.MillToolTable).

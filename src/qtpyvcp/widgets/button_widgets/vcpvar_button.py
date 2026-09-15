@@ -27,26 +27,35 @@ def _safe_import_linuxcnc():
         return None
 
 class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
-    """
-    LinuxCNC Parameter Push Button Widget with automatic var file integration.
-    
-    This widget extends QPushButton to provide direct LinuxCNC parameter access
-    with automatic configuration detection and boolean/integer output support.
-    
-    Key Features:
-    - Automatic LinuxCNC var file configuration detection
-    - Configurable output type (boolean or 0/1 integer)
-    - Button state persistence to LinuxCNC var parameters
-    - Automatic parameter loading at startup
-    - Configurable write delays for timing control
-    - VCP rules functionality inherited from VCPWidget
-    - Safety monitoring with machine state validation
-    
-    Usage:
-    - Set varParameterNumber property in Qt Designer
-    - Configure outputAsInt for desired output format
-    - Widget automatically handles var file read/write operations
-    - Widget automatically disables when machine is not in safe state
+    """Var Parameter Push Button
+
+    A checkable button that keeps its state in a LinuxCNC numbered
+    parameter, such as ``#3014``, so the setting is stored in the var file.
+
+    Toggling the button writes ``#<varParameterNumber> = 1`` when checked or
+    ``= 0`` when unchecked, as an MDI command, ``writeDelay`` ms later. At
+    startup, and whenever the var file changes, the button is set from the
+    parameter: any non-zero value checks it.
+
+    Setup:
+
+    * Set ``varParameterNumber`` in Qt Designer. Nothing is read or written
+      while it is 0.
+    * The var file is found automatically from ``[RS274NGC] PARAMETER_FILE``
+      in the INI, through the ``var_file_manager`` plugin, which is loaded by
+      default.
+    * ``outputAsInt`` makes ``value()`` return 0 or 1 instead of False or
+      True. The parameter is written as 0 or 1 either way.
+
+    Safety:
+
+    * With ``requireHomed`` on, the default, the button is disabled unless
+      the machine is on, homed and idle. This is checked at startup and
+      whenever homing changes, and a write is refused unless the machine is
+      in that state.
+
+    Widget rules can set ``Text``, ``Checked`` and ``Value`` as well as the
+    standard properties.
     """
 
     DEFAULT_RULE_PROPERTY = 'Enable'

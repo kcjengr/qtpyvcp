@@ -1491,6 +1491,58 @@ class ToolTableEditorDelegate(QStyledItemDelegate):
 
 
 class ToolTableEditor(QTableView):
+    """Tool Table Editor
+
+    Edits the tool table: the standard LinuxCNC columns, plus your own custom
+    columns when the tool database is used. For a lathe or a mill use
+    ``LatheToolTable`` or ``MillToolTable``, which add that machine's columns.
+
+    Works with either ``tooltable`` data plugin:
+
+    * ``qtpyvcp.plugins.tool_table:ToolTable`` -- the classic ``.tbl`` file,
+      standard columns only.
+    * ``qtpyvcp.plugins.db_tool_table:DBToolTable`` -- the tool database,
+      which adds the machine columns and custom columns.
+
+    Connect buttons to these slots in Qt Designer. The first seven are the
+    same slots as the ``ToolTable`` widget, so either widget can be used with
+    the same connections.
+
+    ============================  ==============================================
+    Slot                          What it does
+    ============================  ==============================================
+    ``addTool()``                 Adds a tool numbered after the highest one
+    ``deleteSelectedTool()``      Deletes the selected tool
+    ``saveToolTable()``           Saves all changes and loads the table into LinuxCNC
+    ``loadToolTable()``           Reloads the table, discarding unsaved changes
+    ``clearToolTable()``          Deletes every tool
+    ``loadSelectedTool()``        Loads the selected tool with ``T<n> M6``
+    ``selectPrevious()``          Selects the tool above
+    ``selectNext()``              Selects the tool below
+    ``renumberSelectedTool()``    Changes the selected tool's number
+    ``duplicateSelectedTool()``   Copies the selected tool to the first free number
+    ``showAddColumnDialog()``     Adds a custom column, tool database only
+    ============================  ==============================================
+
+    Set ``confirmActions`` to ask before saving, reloading, deleting and
+    clearing. The signal ``toolSelected(int)`` gives the tool number when a
+    row is clicked, and ``dirtyChanged(bool)`` reports whether there are
+    unsaved changes.
+
+    In the table:
+
+    * Right-click a column header to show or hide columns, show them all, or
+      go back to the default set. With the tool database the choice is
+      remembered, and custom columns can be added and removed there too.
+    * Right-click a cell to duplicate the tool, or to copy the names that
+      read that value from G-code or a widget rule.
+    * Double-click a tool number, in the T column or the row header, to
+      renumber the tool.
+    * The tool in the spindle is marked with ``currentToolColor`` and
+      ``currentToolBackground``.
+    * Every column is locked while a program is running.
+    """
+
     toolSelected = Signal(int)
     dirtyChanged = Signal(bool)
 

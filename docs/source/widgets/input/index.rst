@@ -28,6 +28,12 @@ Input Widgets
 .. automodule:: qtpyvcp.widgets.input_widgets.tool_table
     :members:
 
+.. autoclass:: qtpyvcp.widgets.input_widgets.tool_table_editor.ToolTableEditor
+
+.. autoclass:: qtpyvcp.widgets.input_widgets.lathe_tool_table.LatheToolTable
+
+.. autoclass:: qtpyvcp.widgets.input_widgets.mill_tool_table.MillToolTable
+
 .. automodule:: qtpyvcp.widgets.input_widgets.gcode_text_edit
     :members:
 
@@ -38,6 +44,9 @@ Input Widgets
     :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.line_edit
+    :members:
+
+.. automodule:: qtpyvcp.widgets.input_widgets.var_line_edit
     :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.action_combobox

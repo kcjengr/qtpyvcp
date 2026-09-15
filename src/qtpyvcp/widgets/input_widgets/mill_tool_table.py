@@ -44,5 +44,23 @@ class MillToolModel(ToolTableEditorModel):
 
 
 class MillToolTable(ToolTableEditor):
+    """Mill Tool Table
+
+    The tool table editor, ``ToolTableEditor``, with the mill column of the
+    tool database, ATC: whether the tool fits in the automatic tool changer.
+    Every tool starts ticked. Untick oversize tools, so a tool change macro
+    can use it to ask for a manual change instead.
+
+    It needs the ``DBToolTable`` plugin serving the mill columns. In the
+    VCP's YAML config::
+
+        data_plugins:
+          tooltable:
+            provider: qtpyvcp.plugins.db_tool_table:DBToolTable
+            kwargs:
+              extras: mill
+
+    The Remark column is shown last, after ATC.
+    """
 
     MODEL_CLASS = MillToolModel

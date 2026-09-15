@@ -80,29 +80,36 @@ def _get_cached_ini_configuration():
 
 
 class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
-    """
-    LinuxCNC Parameter Line Edit Widget with automatic var file integration.
-    
-    This widget extends VCPLineEdit to provide direct LinuxCNC parameter access
-    with automatic configuration detection. It reads/writes LinuxCNC var parameters
-    directly via MDI commands and var file reading.
-    
-    Key Features:
-    - Fully automatic configuration from LinuxCNC ini file
-    - 6-decimal precision parameter storage (LinuxCNC var parameter limit)
-    - Universal compatibility across different machine configurations
-    - Configurable display formatting with displayDecimals property
-    - Configurable auto-write functionality with delays
-    - Direct parameter file reading for initialization
-    - VCP rules functionality from VCPLineEdit base class
-    - Safety monitoring with machine state validation
-    
-    Usage:
-    - Simply set the varParameterNumber property in Qt Designer
-    - Widget automatically detects and uses the correct parameter file
-    - Set displayDecimals property to control display formatting
-    - No manual path configuration required
-    - Widget automatically disables when machine is not in safe state
+    """Var Parameter Line Edit
+
+    A number entry that reads and writes a LinuxCNC numbered parameter, such
+    as ``#3014``, so the value is stored in the var file.
+
+    A value typed in is written when editing finishes, on Enter, Tab or
+    leaving the field, as the MDI command ``#<varParameterNumber> = <value>``
+    to 6 decimal places, the precision the var file stores. Text set any
+    other way, for example by a widget rule, is written ``writeDelay`` ms
+    later.
+
+    At startup, and whenever the var file changes, the field shows the
+    parameter's value. It is not overwritten while the field has focus, or
+    when a widget rule sets its ``Text``.
+
+    Setup:
+
+    * Set ``varParameterNumber`` in Qt Designer. Nothing is read or written
+      while it is 0.
+    * The var file is found automatically from ``[RS274NGC] PARAMETER_FILE``
+      in the INI.
+    * ``displayDecimals`` sets how many decimals are shown, 4 by default and
+      6 at most. The value is always stored to 6.
+
+    Safety:
+
+    * With ``requireHomed`` on, the default, the field is disabled unless the
+      machine is on, homed and idle. This is checked at startup and whenever
+      homing changes, and a write is refused unless the machine is in that
+      state.
     """
     
     def __init__(self, parent=None):
