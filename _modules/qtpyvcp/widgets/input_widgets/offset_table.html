@@ -1,0 +1,673 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.input_widgets.offset_table &mdash; QtPyVCP 0.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=32bbf270"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.input_widgets.offset_table</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.input_widgets.offset_table</h1><div class="highlight"><pre>
+<span></span><span class="c1">#   Copyright (c) 2018 Kurt Jacobson</span>
+<span class="c1">#      &lt;kurtcjacobson@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#   This file is part of QtPyVCP.</span>
+<span class="c1">#</span>
+<span class="c1">#   QtPyVCP is free software: you can redistribute it and/or modify</span>
+<span class="c1">#   it under the terms of the GNU General Public License as published by</span>
+<span class="c1">#   the Free Software Foundation, either version 2 of the License, or</span>
+<span class="c1">#   (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1">#   QtPyVCP is distributed in the hope that it will be useful,</span>
+<span class="c1">#   but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">#   GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#   You should have received a copy of the GNU General Public License</span>
+<span class="c1">#   along with QtPyVCP.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">PySide6.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">Property</span><span class="p">,</span> <span class="n">QModelIndex</span><span class="p">,</span> <span class="n">QSortFilterProxyModel</span>
+<span class="kn">from</span> <span class="nn">PySide6.QtGui</span> <span class="kn">import</span> <span class="n">QStandardItemModel</span><span class="p">,</span> <span class="n">QColor</span><span class="p">,</span> <span class="n">QBrush</span>
+<span class="kn">from</span> <span class="nn">PySide6.QtWidgets</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QTableView</span><span class="p">,</span> <span class="n">QHeaderView</span><span class="p">,</span> <span class="n">QStyledItemDelegate</span><span class="p">,</span>
+                               <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="p">,</span> <span class="n">QMenu</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">qtpyvcp.utilities.logger</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.plugins</span> <span class="kn">import</span> <span class="n">getPlugin</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.utilities.settings</span> <span class="kn">import</span> <span class="n">connectSetting</span><span class="p">,</span> <span class="n">getSetting</span>
+
+<span class="n">IN_DESIGNER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+    <span class="n">STATUS</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">IN_DESIGNER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ItemDelegate">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate">[docs]</a>
+<span class="k">class</span> <span class="nc">ItemDelegate</span><span class="p">(</span><span class="n">QStyledItemDelegate</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ItemDelegate</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="n">columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_padding</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">setColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="n">columns</span>
+
+    <span class="k">def</span> <span class="nf">displayText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">locale</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_padding</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">createEditor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">option</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="c1"># ToDo: set dec placed for IN and MM machines</span>
+        <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">[</span><span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">()]</span>
+
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="s1">&#39;XYZABCUVWR&#39;</span><span class="p">:</span>
+            <span class="n">editor</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+            <span class="n">editor</span><span class="o">.</span><span class="n">setFrame</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">editor</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+            <span class="n">editor</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="c1"># editor.setStepType(QSpinBox.AdaptiveDecimalStepType)</span>
+            <span class="n">editor</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s1">&#39;stepType&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># stepType was added in 5.12</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">min_range</span> <span class="o">=</span> <span class="n">getSetting</span><span class="p">(</span><span class="s1">&#39;offset_table.min_range&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">max_range</span> <span class="o">=</span> <span class="n">getSetting</span><span class="p">(</span><span class="s1">&#39;offset_table.max_range&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+
+                <span class="k">if</span> <span class="n">min_range</span> <span class="ow">and</span> <span class="n">max_range</span><span class="p">:</span>
+                    <span class="n">editor</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="n">min_range</span><span class="p">,</span> <span class="n">max_range</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">editor</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="c1"># In designer mode or when settings aren&#39;t available</span>
+                <span class="n">editor</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">editor</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="OffsetModel">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel">[docs]</a>
+<span class="k">class</span> <span class="nc">OffsetModel</span><span class="p">(</span><span class="n">QStandardItemModel</span><span class="p">):</span>
+    <span class="c1"># persistent_data_manager key for the visible-columns set -- one entry,</span>
+    <span class="c1"># scoped by the plugin&#39;s own per-config-folder persistence file, so no</span>
+    <span class="c1"># per-machine namespacing needed here.</span>
+    <span class="n">VISIBLE_COLUMNS_KEY</span> <span class="o">=</span> <span class="s1">&#39;offset_table_visible_columns&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OffsetModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ot</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;offsettable&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_row_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">darkGreen</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_row_bg</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Add this line</span>
+
+        <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="c1"># In designer mode, set up dummy data to show the table structure</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s1">&#39;XYZABC&#39;</span><span class="p">]</span>  <span class="c1"># Default columns for designer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_visible_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>  <span class="c1"># 10 rows for designer preview</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">))</span>
+            <span class="c1"># Set headers</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setHeaderData</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setHeaderData</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Vertical</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;G5</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">rows</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">COLUMN_LABELS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">ROW_LABELS</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">getOffsetTable</span><span class="p">()</span>
+
+        <span class="c1"># Column *visibility* is a pure display-layer concern, independent</span>
+        <span class="c1"># of self._columns above (the full set the ini&#39;s OFFSET_COLUMNS</span>
+        <span class="c1"># configures, and the positional index space the underlying</span>
+        <span class="c1"># offset_table array/save-to-LinuxCNC path is keyed on -- see</span>
+        <span class="c1"># data()/setData()/saveOffsetTable() below, none of which are</span>
+        <span class="c1"># affected by which columns are currently visible). Persisted</span>
+        <span class="c1"># per config folder (same mechanism .vcp_persistent_data.pickle</span>
+        <span class="c1"># already uses), not per axis-letter default -- a fresh/never-</span>
+        <span class="c1"># toggled config shows every configured column, same as before</span>
+        <span class="c1"># this feature existed.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_manager</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;persistent_data_manager&#39;</span><span class="p">)</span>
+        <span class="n">persisted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filterToKnownColumns</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data_manager</span><span class="o">.</span><span class="n">getData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">VISIBLE_COLUMNS_KEY</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_visible_columns</span> <span class="o">=</span> <span class="n">persisted</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">))</span>  <span class="c1"># (self.rowCount())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">offset_table_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateModel</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">refreshModel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># refresh model so current row gets highlighted</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beginResetModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endResetModel</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">updateModel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset_table</span><span class="p">):</span>
+        <span class="c1"># update model with new data</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">offset_table</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Offset Table update is zero length - skip it&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">beginResetModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span> <span class="o">=</span> <span class="n">offset_table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endResetModel</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">setColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="n">columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
+
+    <span class="c1"># ------------------------------------------------------ visibility</span>
+
+<div class="viewcode-block" id="OffsetModel.allColumns">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.allColumns">[docs]</a>
+    <span class="k">def</span> <span class="nf">allColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Every column this machine is configured for (OFFSET_COLUMNS),</span>
+<span class="sd">        regardless of current visibility -- the toggle menu&#39;s universe.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">visibleColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_visible_columns</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_filterToKnownColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Drop any letter not in self._columns (e.g. a persisted set from</span>
+<span class="sd">        before OFFSET_COLUMNS changed) -- never surface a column the</span>
+<span class="sd">        underlying offset_table array has no slot for. Also normalizes to</span>
+<span class="sd">        self._columns&#39; own canonical order regardless of what order</span>
+<span class="sd">        `columns` arrives in, so a column that gets hidden and re-shown</span>
+<span class="sd">        always lands back in its original position instead of at the end</span>
+<span class="sd">        of whatever order it was toggled in (setVisibleColumns() callers</span>
+<span class="sd">        naturally build the list in toggle order, not display order).</span>
+<span class="sd">        Returns None (not an empty list) if nothing valid remains, so</span>
+<span class="sd">        callers can fall back to a sane default instead of rendering zero</span>
+<span class="sd">        columns.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">columns</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">wanted</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">ordered</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">wanted</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">ordered</span> <span class="ow">or</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">setVisibleColumns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="n">visible</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filterToKnownColumns</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beginResetModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_visible_columns</span> <span class="o">=</span> <span class="n">visible</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endResetModel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data_manager</span><span class="o">.</span><span class="n">setData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">VISIBLE_COLUMNS_KEY</span><span class="p">,</span> <span class="n">visible</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_realColumnIndex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visible_col</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Map a QTableView column position (an index into</span>
+<span class="sd">        self._visible_columns) to its real position in self._columns --</span>
+<span class="sd">        the fixed index space self._offset_table rows and the plugin&#39;s</span>
+<span class="sd">        column.index(letter) lookups (loadOffsetTable/saveOffsetTable) are</span>
+<span class="sd">        keyed on. Hiding a column never changes that mapping, only which</span>
+<span class="sd">        positions the view exposes -- see data()/setData() below.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_visible_columns</span><span class="p">[</span><span class="n">visible_col</span><span class="p">])</span>
+
+    <span class="c1"># ---------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">headerData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">DisplayRole</span> <span class="ow">and</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visible_columns</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">DisplayRole</span> <span class="ow">and</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">Vertical</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row_labels</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">QStandardItemModel</span><span class="o">.</span><span class="n">headerData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">columnCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_visible_columns</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">rowCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">flags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemFlag</span><span class="o">.</span><span class="n">ItemIsEnabled</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemFlag</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemFlag</span><span class="o">.</span><span class="n">ItemIsEditable</span>
+
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">DisplayRole</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">DisplayRole</span> <span class="ow">or</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">EditRole</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">columns_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_realColumnIndex</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">())</span>
+            <span class="n">rows_index</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span>
+
+            <span class="c1"># column_index = self._columns[index.column()]</span>
+            <span class="c1"># index_column = self._column_labels.index(column_index)</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span><span class="p">[</span><span class="n">rows_index</span><span class="p">][</span><span class="n">columns_index</span><span class="p">]</span>
+
+        <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">TextAlignmentRole</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignVCenter</span> <span class="o">|</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignRight</span>
+
+        <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">ForegroundRole</span><span class="p">:</span>
+
+            <span class="n">offset</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">current_index</span> <span class="o">==</span> <span class="n">offset</span><span class="p">:</span>
+
+                <span class="k">return</span> <span class="n">QBrush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_row_color</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="k">return</span> <span class="n">QStandardItemModel</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ItemDataRole</span><span class="o">.</span><span class="n">BackgroundRole</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_row_bg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Add this block</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">current_index</span> <span class="o">==</span> <span class="n">offset</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">QBrush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_row_bg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">QStandardItemModel</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">QStandardItemModel</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="n">columns_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_realColumnIndex</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">column</span><span class="p">())</span>
+        <span class="n">rows_index</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">row</span><span class="p">()</span>
+
+        <span class="c1"># column_index = self._columns[index.column()]</span>
+        <span class="c1"># index_column = self._column_labels.index(column_index)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span><span class="p">[</span><span class="n">rows_index</span><span class="p">][</span><span class="n">columns_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">clearRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)):</span>
+            <span class="c1"># index_column = self._column_labels.index(self._columns[col])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refreshModel</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">clearRows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)):</span>
+                <span class="c1"># index_column = self._column_labels.index(self._columns[col])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">refreshModel</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">offsetDataFromRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="n">o_num</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span><span class="p">)[</span><span class="n">row</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span><span class="p">[</span><span class="n">o_num</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">saveOffsetTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">saveOffsetTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset_table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">loadOffsetTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># the tooltable plugin will emit the tool_table_changed signal</span>
+        <span class="c1"># so we don&#39;t need to do any more here</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">loadOffsetTable</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="OffsetTable">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable">[docs]</a>
+<span class="k">class</span> <span class="nc">OffsetTable</span><span class="p">(</span><span class="n">QTableView</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OffsetTable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span> <span class="o">=</span> <span class="n">OffsetModel</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s1">&#39;XYZABCUVWR&#39;</span><span class="p">]</span>  <span class="c1"># Default columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_row_color</span> <span class="o">=</span> <span class="n">QColor</span><span class="p">(</span><span class="s1">&#39;sage&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_row_bg</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Add this line</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_actions</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Initialize confirm_actions property</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxy_model</span> <span class="o">=</span> <span class="n">QSortFilterProxyModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxy_model</span><span class="o">.</span><span class="n">setFilterKeyColumn</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proxy_model</span><span class="o">.</span><span class="n">setSourceModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_delegate</span> <span class="o">=</span> <span class="n">ItemDelegate</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setItemDelegate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">item_delegate</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proxy_model</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="c1"># keep highlight/selection in sync with active work offset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">active_offset_changed</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_onActiveOffsetChanged</span><span class="p">)</span>
+            <span class="c1"># initial selection</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_onActiveOffsetChanged</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">ot</span><span class="o">.</span><span class="n">current_index</span><span class="p">)</span>
+
+        <span class="c1"># Appearance/Behaviour settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSortingEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setAlternatingRowColors</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSelectionBehavior</span><span class="p">(</span><span class="n">QTableView</span><span class="o">.</span><span class="n">SelectRows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setSelectionMode</span><span class="p">(</span><span class="n">QTableView</span><span class="o">.</span><span class="n">SingleSelection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setStretchLastSection</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setSortIndicator</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AscendingOrder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span><span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeMode</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="c1"># per-column visibility menu, same UX as the tool table&#39;s</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span>
+            <span class="n">header</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+            <span class="n">header</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_onHeaderContextMenu</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">STATUS</span><span class="o">.</span><span class="n">all_axes_homed</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_home_signal</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">handle_home_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">all_axes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">all_axes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------- column menu</span>
+
+    <span class="k">def</span> <span class="nf">_onHeaderContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span>
+        <span class="n">menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">show_all</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="s1">&#39;Show All Columns&#39;</span><span class="p">)</span>
+        <span class="n">menu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+        <span class="n">visible</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">visibleColumns</span><span class="p">())</span>
+        <span class="n">toggles</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">allColumns</span><span class="p">():</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">action</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">key</span> <span class="ow">in</span> <span class="n">visible</span><span class="p">)</span>
+            <span class="n">toggles</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">menu</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">position</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">selected</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="n">selected</span> <span class="o">==</span> <span class="n">show_all</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">setVisibleColumns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">allColumns</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">selected</span> <span class="ow">in</span> <span class="n">toggles</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">toggles</span><span class="p">[</span><span class="n">selected</span><span class="p">]</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">visibleColumns</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">selected</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+                    <span class="n">cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="n">key</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cols</span><span class="p">:</span>
+                    <span class="n">QMessageBox</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;Offset Table&#39;</span><span class="p">,</span>
+                                        <span class="s1">&#39;At least one column must remain visible.&#39;</span><span class="p">)</span>
+                    <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">setVisibleColumns</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_onActiveOffsetChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset_num</span><span class="p">):</span>
+        <span class="c1"># offset_num is 1-based (G54-&gt;1). Update row highlight and selection.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">refreshModel</span><span class="p">()</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">offset_num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectRow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">saveOffsetTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isEnabled</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirmAction</span><span class="p">(</span><span class="s2">&quot;Do you want to save changes and</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                      <span class="s2">&quot;load offset table into LinuxCNC?&quot;</span><span class="p">):</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">saveOffsetTable</span><span class="p">()</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">loadOffsetTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirmAction</span><span class="p">(</span><span class="s2">&quot;Do you want to re-load the offset table?</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                  <span class="s2">&quot;All unsaved changes will be lost.&quot;</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">loadOffsetTable</span><span class="p">()</span>
+
+<div class="viewcode-block" id="OffsetTable.deleteSelectedOffset">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.deleteSelectedOffset">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">deleteSelectedOffset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete the currently selected item&quot;&quot;&quot;</span>
+        <span class="n">current_row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedRow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">current_row</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># no row selected</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirmAction</span><span class="p">(</span><span class="s2">&quot;Are you sure you want to delete offset </span><span class="si">{}</span><span class="s2">?&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">current_row</span><span class="p">)):</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">clearRow</span><span class="p">(</span><span class="n">current_row</span><span class="p">)</span></div>
+
+
+    <span class="c1"># @Slot()</span>
+    <span class="c1"># def selectPrevious(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;Select the previous item in the view.&quot;&quot;&quot;</span>
+    <span class="c1">#     self.selectRow(self.selectedRow() - 1)</span>
+    <span class="c1">#     return True</span>
+
+    <span class="c1"># @Slot()</span>
+    <span class="c1"># def selectNext(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;Select the next item in the view.&quot;&quot;&quot;</span>
+    <span class="c1">#     self.selectRow(self.selectedRow() + 1)</span>
+    <span class="c1">#     return True</span>
+
+<div class="viewcode-block" id="OffsetTable.clearOffsetTable">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.clearOffsetTable">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">clearOffsetTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">confirm</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all items from the model&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">confirm</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirmAction</span><span class="p">(</span><span class="s2">&quot;Do you want to delete the whole offsets table?&quot;</span><span class="p">):</span>
+                <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">clearRows</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="OffsetTable.selectedRow">
+<a class="viewcode-back" href="../../../../widgets/input/index.html#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.selectedRow">[docs]</a>
+    <span class="k">def</span> <span class="nf">selectedRow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the row number of the currently selected row, or 0&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectionModel</span><span class="p">()</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span><span class="o">.</span><span class="n">row</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span> <span class="nf">confirmAction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_actions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">box</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                   <span class="s1">&#39;Confirm Action&#39;</span><span class="p">,</span>
+                                   <span class="n">message</span><span class="p">,</span>
+                                   <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Yes</span><span class="p">,</span>
+                                   <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">box</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">StandardButton</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">currentRow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedRow</span><span class="p">()</span>
+
+    <span class="nd">@currentRow</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">currentRow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectRow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">confirmActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_actions</span>
+
+    <span class="nd">@confirmActions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">confirmActions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">confirm</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_confirm_actions</span> <span class="o">=</span> <span class="n">confirm</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">currentRowColor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">current_row_color</span>
+
+    <span class="nd">@currentRowColor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">currentRowColor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">current_row_color</span> <span class="o">=</span> <span class="n">color</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="n">QColor</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">currentRowBackground</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">current_row_bg</span> <span class="ow">or</span> <span class="n">QColor</span><span class="p">()</span>
+
+    <span class="nd">@currentRowBackground</span><span class="o">.</span><span class="n">setter</span> 
+    <span class="k">def</span> <span class="nf">currentRowBackground</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset_model</span><span class="o">.</span><span class="n">current_row_bg</span> <span class="o">=</span> <span class="n">color</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

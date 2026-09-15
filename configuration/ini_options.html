@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INI Options &mdash; QtPyVCP 6.0.3</title>
+  <title>INI Options &mdash; QtPyVCP 0.0.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=c8077636"></script>
+      <script src="../_static/documentation_options.js?v=32bbf270"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
@@ -55,10 +55,19 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
@@ -70,6 +79,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
 <ul>
@@ -164,49 +174,103 @@ case and use the underscore. Example: <code class="docutils literal notranslate"
 <span class="c1"># Specifies a machine specific YML config file</span>
 <span class="na">CONFIG_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
 
-<span class="c1"># Specifies the preference file</span>
-<span class="na">PREF_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
-
 <span class="c1"># Monitor and log system performance</span>
 <span class="na">PERFMON</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
 
-<span class="c1"># Qt Python binding to use, pyqt5 or pyside2</span>
+<span class="c1"># Qt Python binding to use, pyside6</span>
 <span class="na">QT_API</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">api</span>
 
 <span class="c1"># Additional args passed to the QtApplication.</span>
 <span class="na">COMMAND_LINE_ARGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;args&gt;</span>
 
-<span class="c1"># Maximum, Minimum and Default angular/linear jog velcoity in units per second.</span>
+<span class="c1"># Default and maximum angular/linear jog velocity in units per second.</span>
 <span class="na">DEFAULT_LINEAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
 <span class="na">MAX_LINEAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
-<span class="na">MIN_LINEAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
 <span class="na">DEFAULT_ANGULAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
 <span class="na">MAX_ANGULAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
-<span class="na">MIN_ANGULAR_VELOCITY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
-
 
 <span class="c1"># Provide user defined G code Syntax file</span>
 <span class="na">GCODE_SYNTAX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
 
-<span class="c1"># VTK_BackPlot Options</span>
+<span class="c1"># Development mode. Reloads the QSS stylesheet live when it changes.</span>
+<span class="na">DEVELOP</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Log a system diagnostics report at startup, plus backplot graphics</span>
+<span class="c1"># diagnostics. Default off.</span>
+<span class="na">ADVANCED_LOGGING</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Jog with the arrow keys and Page Up/Down while holding Ctrl. On a lathe</span>
+<span class="c1"># Up/Down jog X and Left/Right jog Z. Hold Shift to jog at rapid speed.</span>
+<span class="c1"># Default off.</span>
+<span class="na">KEYBOARD_JOG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Keyboard jog without holding Ctrl. Default off.</span>
+<span class="na">KEYBOARD_JOG_SAFETY_OFF</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+
+<span class="c1"># Backplot frame rate. Overrides FPS in [VTK].</span>
+<span class="na">FPS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;int&gt;</span>
+
+<span class="c1"># Draw the machine limits in the backplot as lines instead of a box.</span>
+<span class="c1"># The grid is not available with lines.</span>
+<span class="na">BOUNDARIES</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">line</span>
+
+<span class="c1"># 8x antialiasing in the backplot. Any value turns it on, even false,</span>
+<span class="c1"># so leave the line out to keep it off.</span>
+<span class="na">ANTIALIAS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
+
+<span class="c1"># Plasma, laser or waterjet machine: the backplot hides the Z axis and</span>
+<span class="c1"># the tool. Any value turns it on, even false, so leave the line out</span>
+<span class="c1"># otherwise.</span>
+<span class="na">JET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">true</span>
+
+<span class="c1"># VTK backplot options</span>
 <span class="k">[VTK]</span>
-<span class="c1"># Boolean False to hide the machine boundry</span>
-<span class="na">MACHINE_BOUNDRY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+<span class="c1"># Use the fast C++ backplot. Default on. Always off when a rotary</span>
+<span class="c1"># axis is on the table (see X to C below).</span>
+<span class="na">CPP_BACKPLOT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
 
-<span class="c1"># Boolean False to hide the machine boundry ticks</span>
-<span class="na">MACHINE_TICKS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+<span class="c1"># Backplot frame rate. Default 30. FPS in [DISPLAY] takes priority.</span>
+<span class="na">FPS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;int&gt;</span>
 
-<span class="c1"># Boolean False to hide the machine labels</span>
-<span class="na">MACHINE_LABELS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+<span class="c1"># Line segments used to draw each arc, 8 to 1024. Default 64.</span>
+<span class="na">ARC_DIVISION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;int&gt;</span>
 
-<span class="c1"># Boolean False to hide the program boundry</span>
-<span class="na">PROGRAM_BOUNDRY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+<span class="c1"># Whether each axis moves the head or the table. Default head.</span>
+<span class="c1"># If you set any of these, set one for every axis in [TRAJ] COORDINATES.</span>
+<span class="na">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">head | table</span>
+<span class="na">Y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">head | table</span>
+<span class="na">Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">head | table</span>
+<span class="na">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">head | table</span>
+<span class="na">B</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">head | table</span>
+<span class="na">C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">head | table</span>
 
-<span class="c1"># Boolean False to hide the program boundry ticks</span>
-<span class="na">PROGRAM_TICKS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+<span class="c1"># Where the live tool trail is drawn:</span>
+<span class="c1">#   world  fixed in machine space (&quot;machine&quot; also works)</span>
+<span class="c1">#   tool   moves with the program path, for table-moving machines</span>
+<span class="c1">#   auto   tool if any axis is on the table, otherwise world (default)</span>
+<span class="na">BREADCRUMB_FRAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">auto</span>
 
-<span class="c1"># Boolean False to hide the program labels</span>
-<span class="na">PROGRAM_LABELS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
+<span class="c1"># File paths below are relative to the config folder, or absolute.</span>
+
+<span class="c1"># YAML file describing the machine model to draw, including rotary</span>
+<span class="c1"># axis origins. See sim.qtpyvcp.machine_parts/machine.yml for an example.</span>
+<span class="c1"># A_PIVOT, A_ORIGIN and similar pivot keys are no longer read.</span>
+<span class="na">MACHINE_PARTS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file.yml</span>
+
+<span class="c1"># STL model of the machine table</span>
+<span class="na">TABLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file.stl</span>
+
+<span class="c1"># STL model drawn at the spindle</span>
+<span class="na">SPINDLE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file.stl</span>
+
+<span class="c1"># Direction the isometric view looks from, as X, Y and Z multipliers.</span>
+<span class="c1"># Defaults 1, -1 and 1. 0 keeps the default.</span>
+<span class="na">VIEW_X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+<span class="na">VIEW_Y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+<span class="na">VIEW_Z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;float&gt;</span>
+
+<span class="c1"># Log extra detail about axis transforms, for troubleshooting. Default off.</span>
+<span class="na">TRANSFORM_DEBUG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">bool</span>
 </pre></div>
 </div>
 <p>Boolean values can be one of <code class="docutils literal notranslate"><span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">on</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code> for <strong>True</strong>,

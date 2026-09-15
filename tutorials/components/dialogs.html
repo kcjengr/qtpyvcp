@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dialogs &mdash; QtPyVCP 6.0.3</title>
+  <title>Dialogs &mdash; QtPyVCP 0.0.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=c8077636"></script>
+      <script src="../../_static/documentation_options.js?v=32bbf270"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -65,10 +65,19 @@
 <li class="toctree-l2"><a class="reference internal" href="../misc.html">Tips &amp; Tricks</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
@@ -80,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
 <ul>
@@ -171,7 +181,7 @@ to use one of the dialog templates when creating the new form.</p>
 </div>
 <p><strong>Dialogs from Python:</strong></p>
 <p>If your dialog is complicated enough to require python code, you can
-inherit the <span class="xref std std-doc">BaseDialog</span> and create
+inherit the <a class="reference internal" href="../../widgets/dialogs/index.html"><span class="doc">BaseDialog</span></a> and create
 your own dialog provider class.</p>
 <p>Create a new file named <cite>my_dialog.py</cite> with the content:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qtpyvcp.widgets.dialogs.base_dialog</span> <span class="kn">import</span> <span class="n">BaseDialog</span>
@@ -189,7 +199,7 @@ your own dialog provider class.</p>
 </pre></div>
 </div>
 <p>This custom provider will accept all the same kwarg options as the
-<span class="xref std std-doc">BaseDialog</span>, but will allow you
+<a class="reference internal" href="../../widgets/dialogs/index.html"><span class="doc">BaseDialog</span></a>, but will allow you
 to use python code to add more advanced functionality than you could
 with .ui file dialog.</p>
 </section>

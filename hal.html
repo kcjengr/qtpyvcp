@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HAL Interface &mdash; QtPyVCP 6.0.3</title>
+  <title>HAL Interface &mdash; QtPyVCP 0.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=c8077636"></script>
+      <script src="_static/documentation_options.js?v=32bbf270"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -51,10 +51,19 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="components/index.html">Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="designer/plugins/index.html">Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="application.html">Application</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">HAL Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
@@ -66,6 +75,7 @@
 <li class="toctree-l1"><a class="reference internal" href="development/dev_environment.html">Development Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools/index.html">Command-line Tools</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
 <ul>
@@ -134,13 +144,13 @@ This includes pins and parameters of the various HAL types.</p>
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="qtpyvcp.hal.component">
-<span class="sig-prename descclassname"><span class="pre">qtpyvcp.hal.</span></span><span class="sig-name descname"><span class="pre">component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtpyvcp.hal.component" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.hal.</span></span><span class="sig-name descname"><span class="pre">component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qtpyvcp/hal.html#component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.hal.component" title="Link to this definition"></a></dt>
 <dd><p>Initializes a new HAL component and registers it.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="qtpyvcp.hal.getComponent">
-<span class="sig-prename descclassname"><span class="pre">qtpyvcp.hal.</span></span><span class="sig-name descname"><span class="pre">getComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'qtpyvcp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qtpyvcp.hal.getComponent" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">qtpyvcp.hal.</span></span><span class="sig-name descname"><span class="pre">getComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'qtpyvcp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/qtpyvcp/hal.html#getComponent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#qtpyvcp.hal.getComponent" title="Link to this definition"></a></dt>
 <dd><p>Get HAL component.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

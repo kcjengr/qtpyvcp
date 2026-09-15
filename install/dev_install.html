@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Development Install for Python 3 (virtual environment) &mdash; QtPyVCP 6.0.3</title>
+  <title>Developer Install &mdash; QtPyVCP 0.0.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=c8077636"></script>
+      <script src="../_static/documentation_options.js?v=32bbf270"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Debian 11 (Bullseye) install for Python 3" href="bullseye.html" />
-    <link rel="prev" title="Standard Install" href="pypi_install.html" /> 
+    <link rel="next" title="Basic Usage" href="basic_usage.html" />
+    <link rel="prev" title="Install from apt repository" href="apt_install.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,13 +46,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Installation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="apt_install.html">Install from apt repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="prerequisites.html">Prerequisites for python3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pypi_install.html">Standard Install</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Development Install for Python 3 (virtual environment)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bullseye.html">Debian 11 (Bullseye) install for Python 3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bookworm.html">Debian 12 (Bookworm) install for Python 3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="build_debs.html">Build debian packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="python2.html">Python 2.7 Legacy Notice</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Developer Install</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
@@ -61,10 +55,19 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
@@ -76,6 +79,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
 <ul>
@@ -108,7 +112,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Installation</a></li>
-      <li class="breadcrumb-item active">Development Install for Python 3 (virtual environment)</li>
+      <li class="breadcrumb-item active">Developer Install</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/install/dev_install.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -118,143 +122,172 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="development-install-for-python-3-virtual-environment">
-<h1>Development Install for Python 3 (virtual environment)<a class="headerlink" href="#development-install-for-python-3-virtual-environment" title="Link to this heading"></a></h1>
-<p>This installation method should be used if you are interested in
-contributing to <cite>QtPyVCP</cite>, or want to have access to the source
-code so you can study it and see how everything works using python3</p>
-<p>This type of installation is editable, meaning you can make changes to
-the source files and the changes will take effect when <cite>QtPyVCP</cite> is next
-run, without the need to manually update or reinstall anything.</p>
+  <section id="developer-install">
+<h1>Developer Install<a class="headerlink" href="#developer-install" title="Link to this heading"></a></h1>
+<p>The developer install puts the QtPyVCP source code in <code class="docutils literal notranslate"><span class="pre">~/dev/qtpyvcp</span></code> and
+runs it from a Python virtual environment in <code class="docutils literal notranslate"><span class="pre">~/dev/venv</span></code>. Changes you make
+to the source take effect the next time QtPyVCP starts.</p>
+<p>An installer script does the work. Use the one for your Debian release:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Debian release</p></th>
+<th class="head"><p>Installer</p></th>
+<th class="head"><p>QtPyVCP branch</p></th>
+<th class="head"><p>Python</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>13 Trixie</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">qtpyvcp-trixie-installer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pyside6</span></code> (Qt 6)</p></td>
+<td><p>3.13</p></td>
+</tr>
+<tr class="row-odd"><td><p>12 Bookworm</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">qtpyvcp-bookworm-installer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">main</span></code> (Qt 5)</p></td>
+<td><p>3.11</p></td>
+</tr>
+</tbody>
+</table>
+<p>The virtual environment is built from the Python the Debian release
+ships, so there is nothing to choose.</p>
+<p>Both installers ask whether to install <strong>QtPyVCP</strong> only, or <strong>both</strong> QtPyVCP
+and Probe Basic.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you are <strong>not</strong> interested in development then it is simpler to
-install from PyPi per the <a class="reference internal" href="pypi_install.html"><span class="doc">Standard Install</span></a> guide.</p>
+<p>If you only want to run QtPyVCP or Probe Basic, the
+<a class="reference internal" href="apt_install.html"><span class="doc">apt install</span></a> is simpler and updates with your system.</p>
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Before proceeding make sure you have satisfied the prerequisites listed on
-the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites for python3</span></a> page!</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>If the system has a python2 interpreter is recommended to remove it
-<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">remove</span> <span class="pre">python2</span></code>
-also remove
-<code class="docutils literal notranslate"><span class="pre">~/.local/lib/python2.7</span></code></p>
-</div>
-<section id="getting-the-qtpyvcp-source-code">
-<h2>Getting the QtPyVCP Source Code<a class="headerlink" href="#getting-the-qtpyvcp-source-code" title="Link to this heading"></a></h2>
-<p>If you intend to contribute to QtPyVCP you should clone the main branch from the
-<a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP repository</a> with git:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">kcjengr</span><span class="o">/</span><span class="n">qtpyvcp</span>
+<section id="debian-13-trixie">
+<h2>Debian 13 Trixie<a class="headerlink" href="#debian-13-trixie" title="Link to this heading"></a></h2>
+<section id="install-linuxcnc">
+<h3>1. Install LinuxCNC<a class="headerlink" href="#install-linuxcnc" title="Link to this heading"></a></h3>
+<p>On a new machine the easiest start is the LinuxCNC 2.9.10 ISO. It installs
+Debian 13 Trixie with LinuxCNC and the realtime kernel:</p>
+<p><a class="reference external" href="https://www.linuxcnc.org/iso/linuxcnc_2.9.10-amd64.hybrid.iso">https://www.linuxcnc.org/iso/linuxcnc_2.9.10-amd64.hybrid.iso</a></p>
+<p>If Debian 13 is already installed without LinuxCNC, the installer offers to
+install it for you.</p>
+</section>
+<section id="get-the-installer">
+<h3>2. Get the installer<a class="headerlink" href="#get-the-installer" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git
+mkdir<span class="w"> </span>-p<span class="w"> </span>~/dev
+<span class="nb">cd</span><span class="w"> </span>~/dev
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Lcvette/qtpyvcp-trixie-installer.git
 </pre></div>
 </div>
 </section>
-<section id="install-dev-dependencies">
-<h2>Install Dev Dependencies<a class="headerlink" href="#install-dev-dependencies" title="Link to this heading"></a></h2>
-<p>Development dependencies (in addition to those listed on the <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites for python3</span></a>) page:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">qttools5</span><span class="o">-</span><span class="n">dev</span> <span class="n">qttools5</span><span class="o">-</span><span class="n">dev</span><span class="o">-</span><span class="n">tools</span> <span class="n">python3</span><span class="o">-</span><span class="n">wheel</span> <span class="n">python3</span><span class="o">-</span><span class="n">venv</span>
+<section id="run-the-installer">
+<h3>3. Run the installer<a class="headerlink" href="#run-the-installer" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/dev/qtpyvcp-trixie-installer
+./install_for_qtpyvcp.sh
+</pre></div>
+</div>
+<p>It asks for your password, then:</p>
+<ul class="simple">
+<li><p>If QtPyVCP or Probe Basic is installed from apt, it offers to remove them.
+Choose <strong>REMOVE AND CONTINUE</strong> – the two installs conflict.</p></li>
+<li><p>If LinuxCNC is missing, it offers to install it.</p></li>
+<li><p>Choose <strong>QTPYVCP</strong> for QtPyVCP only, or <strong>BOTH</strong> to add Probe Basic.</p></li>
+<li><p>At the end it asks to reboot. Reboot before using QtPyVCP.</p></li>
+</ul>
+</section>
+</section>
+<section id="debian-12-bookworm">
+<h2>Debian 12 Bookworm<a class="headerlink" href="#debian-12-bookworm" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>1. Install LinuxCNC<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Download the LinuxCNC package for your machine:</p>
+<ul class="simple">
+<li><p>PC (amd64):
+<a class="reference external" href="https://www.linuxcnc.org/dists/bookworm/2.9-uspace/binary-amd64/linuxcnc-uspace_2.9.10_amd64.deb">https://www.linuxcnc.org/dists/bookworm/2.9-uspace/binary-amd64/linuxcnc-uspace_2.9.10_amd64.deb</a></p></li>
+<li><p>Raspberry Pi 4/5 (arm64):
+<a class="reference external" href="https://www.linuxcnc.org/dists/bookworm/2.9-uspace/binary-arm64/linuxcnc-uspace_2.9.10_arm64.deb">https://www.linuxcnc.org/dists/bookworm/2.9-uspace/binary-arm64/linuxcnc-uspace_2.9.10_arm64.deb</a></p></li>
+</ul>
+<p>Install it, then restart your computer. On a Pi use the <code class="docutils literal notranslate"><span class="pre">arm64</span></code> file name:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/Downloads
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>./linuxcnc-uspace_2.9.10_amd64.deb
 </pre></div>
 </div>
 </section>
-<section id="virtual-enviroment-creation">
-<h2>Virtual enviroment creation<a class="headerlink" href="#virtual-enviroment-creation" title="Link to this heading"></a></h2>
-<p>Create a python3 virtual environment with the venv module:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="n">venv</span> <span class="o">--</span><span class="n">system</span><span class="o">-</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span>
+<section id="remove-any-apt-install-of-qtpyvcp">
+<h3>2. Remove any apt install of QtPyVCP<a class="headerlink" href="#remove-any-apt-install-of-qtpyvcp" title="Link to this heading"></a></h3>
+<p>Skip this if you have never used the QtPyVCP apt repository.</p>
+<p>The apt install and the developer install conflict, so remove the apt one
+first. This also removes Probe Basic, TurboNC and MonoKrom if they came from
+apt:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://repository.qtpyvcp.com/uninstall.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>sh
 </pre></div>
 </div>
-<p>Activate the virtual enviroment for the active shell, run only for once each shell session:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
-</pre></div>
-</div>
-<p>Install hiyapyco:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">hiyapyco</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you don’t want to type source command each session, you can add this lines to the end of ~/.bashrc file
-<cite>source venv/bin/activate</cite></p>
-</div>
-<p>For building documentation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx</span> <span class="n">sphinx_rtd_theme</span> <span class="n">mock</span> <span class="n">sphinx</span><span class="o">-</span><span class="n">notfound</span><span class="o">-</span><span class="n">page</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">KurtJacobson</span><span class="o">/</span><span class="n">sphinx</span><span class="o">-</span><span class="n">gitstamp</span><span class="nd">@MoreInfo</span>
-</pre></div>
-</div>
-<p>(From the docs dir run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code> to build the HTML documentation.)</p>
-<p><strong>Note:</strong> <em>We try to keep this up to date, but if you find additional
-dependencies are needed please notify one of the developers so it
-can be added.</em></p>
 </section>
-<section id="install-with-pip3">
-<h2>Install with pip3<a class="headerlink" href="#install-with-pip3" title="Link to this heading"></a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>If you previously installed QtPyVCP using the standard install method
-you should first uninstall with <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">uninstall</span> <span class="pre">qtpyvcp</span></code>  <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">uninstall</span> <span class="pre">qtpyvcp</span></code> before proceeding
-to avoid the possibility of multiple installations conflicting.</p>
-</div>
-<p>From the qtpyvcp source directory install QtPyVCP by running:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">editable</span> <span class="o">.</span>
+<section id="id2">
+<h3>3. Get the installer<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>zenity
+mkdir<span class="w"> </span>-p<span class="w"> </span>~/dev
+<span class="nb">cd</span><span class="w"> </span>~/dev
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Lcvette/qtpyvcp-bookworm-installer.git
 </pre></div>
 </div>
-<p>This will create a setup.py development install and will add command line scripts to
-<code class="docutils literal notranslate"><span class="pre">~/.local/bin/</span></code> for launching QtPyVCP, the example VCPs and the command line tools.</p>
-<div class="admonition hint">
-<p class="admonition-title">Hint</p>
-<p>If the pip install fails, try uninstalling before trying to install again.
-<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">uninstall</span> <span class="pre">qtpyvcp</span></code></p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>On Debian 9 and 10 (Stretch and Buster) <code class="docutils literal notranslate"><span class="pre">~/.local/bin/</span></code> is not on the PATH in bash.
-This prevents being able to launch qtpyvcp from the command line or being able to use it
-as the <code class="docutils literal notranslate"><span class="pre">[DISPLAY]DISPLAY</span></code> directive in the LinuxCNC INI file. For a single shell session
-you can get around this by running <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=$PATH:~/.local/bin/</span></code> before launching
-linuxcnc or any qtpyvcp commands.</p>
-<p>A more permanent solution is to copy the <cite>.xsessionrc</cite> file from the
-<cite>qtpyvcp/scripts</cite> directory into your home direcotry, then log out and log
-back in. This will add <code class="docutils literal notranslate"><span class="pre">~/.local/bin/</span></code> to your PATH each time xwindows
-starts. In the file manager select View &gt; Show Hidden Files in order to see
-files that start with a dot like <cite>.xsessionrc</cite>.</p>
-</div>
-<section id="testing-the-install">
-<h3>Testing the Install<a class="headerlink" href="#testing-the-install" title="Link to this heading"></a></h3>
-<p>Confirm that QtPyVCP installed correctly and is available by running:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qtpyvcp</span> <span class="o">-</span><span class="n">h</span>
+</section>
+<section id="id3">
+<h3>4. Run the installer<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/dev/qtpyvcp-bookworm-installer
+./install_for_qtpyvcp.sh
 </pre></div>
 </div>
-<p>This will print a list of command line options if the installation was
-successful.</p>
-</section>
-<section id="qtdesigner-plugins">
-<h3>QtDesigner Plugins<a class="headerlink" href="#qtdesigner-plugins" title="Link to this heading"></a></h3>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The required <cite>libpyqt5.so</cite> comes with linuxcnc from debian 12 apt repositorie but
-if you build linuxcnc from sources you may need to install the library</p>
-</div>
-<p>If you want to edit a VCP or create one from a template you need to have the
-QtDesigner plugins installed. To load, you must have the correct version of
-<cite>libpyqt5.so</cite> in <cite>/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/</cite>. Precompiled
-libraries suitable for 64Bit Debian Stretch (or other system with Qt v5.11.3 and
-Py v3.9) are included in the <cite>QtDesigner</cite> directory. The easiest way to install
-the libs to the correct location is to use the <cite>install.sh</cite> script located in
-the <cite>qtpyvcp/pyqt5designer/Qt5.11.3-64bit</cite> directory with this command.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">./</span><span class="n">install</span><span class="o">.</span><span class="n">sh</span>
+<ul class="simple">
+<li><p>Choose <strong>QTPYVCP</strong> for QtPyVCP only, or <strong>BOTH</strong> to add Probe Basic.</p></li>
+<li><p>At the end it asks to reboot. Reboot before using QtPyVCP.</p></li>
+</ul>
+<p>If you chose <strong>QTPYVCP</strong>, run this once so new terminals use the virtual
+environment. <strong>BOTH</strong> does it for you:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source ~/dev/venv/bin/activate&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
 </pre></div>
 </div>
-<p>If you are using a different architecture or Qt version you may need to compile PyQt5 from
-source to get the proper <cite>libpyqt5.so</cite> file. The steps should be similar those listed
-<a class="reference external" href="https://gist.github.com/KurtJacobson/34a2e45ea2227ba58702fc1cb0372c40">here</a>.</p>
 </section>
-<section id="trouble-shooting">
-<h3>Trouble shooting<a class="headerlink" href="#trouble-shooting" title="Link to this heading"></a></h3>
-<p>If you get an error about <cite>Make sure that you have the correct version of the
-libpyqt5.so</cite> you probably installed the stock version of Qt Designer over the
-QtPyVCP version. To fix that just install libpyqt5 with the install script.</p>
 </section>
+<section id="check-the-install">
+<h2>Check the Install<a class="headerlink" href="#check-the-install" title="Link to this heading"></a></h2>
+<p>Open a new terminal and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>qtpyvcp<span class="w"> </span>-h
+</pre></div>
+</div>
+<p>It prints the command line options. If it says <code class="docutils literal notranslate"><span class="pre">command</span> <span class="pre">not</span> <span class="pre">found</span></code>, the
+virtual environment is not active in that terminal. Run
+<code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">~/dev/venv/bin/activate</span></code> and try again.</p>
+</section>
+<section id="using-the-developer-install">
+<h2>Using the Developer Install<a class="headerlink" href="#using-the-developer-install" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Start LinuxCNC from a terminal.</strong> The terminal has the virtual environment
+active. The desktop menu does not, so LinuxCNC started from the menu cannot
+find your development copy of QtPyVCP.</p></li>
+<li><p><strong>Sim configs</strong> to try it with: see <a class="reference internal" href="basic_usage.html"><span class="doc">Basic Usage</span></a>.</p></li>
+<li><p><strong>Edit a VCP</strong> in Qt Designer with <code class="docutils literal notranslate"><span class="pre">editvcp</span></code>: see <a class="reference internal" href="../tools/editvcp.html"><span class="doc">Edit VCP</span></a>.</p></li>
+</ul>
+</section>
+<section id="updating">
+<h2>Updating<a class="headerlink" href="#updating" title="Link to this heading"></a></h2>
+<p>From the installer folder:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/dev/qtpyvcp-trixie-installer
+./updater.sh
+</pre></div>
+</div>
+<p>On Bookworm use <code class="docutils literal notranslate"><span class="pre">qtpyvcp-bookworm-installer</span></code>. This pulls the latest source
+and rebuilds it.</p>
+</section>
+<section id="uninstall">
+<h2>Uninstall<a class="headerlink" href="#uninstall" title="Link to this heading"></a></h2>
+<p>Delete the folders the installer created, and remove its line from
+<code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm<span class="w"> </span>-rf<span class="w"> </span>~/dev/venv<span class="w"> </span>~/dev/qtpyvcp<span class="w"> </span>~/dev/qtpyvcp-trixie-installer
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;/[Dd]ev\/venv\/bin\/activate/d&#39;</span><span class="w"> </span>~/.bashrc
+</pre></div>
+</div>
+<p>On Bookworm use <code class="docutils literal notranslate"><span class="pre">qtpyvcp-bookworm-installer</span></code> in the first line. If you also
+installed Probe Basic, add <code class="docutils literal notranslate"><span class="pre">~/dev/probe_basic</span></code> to it.</p>
+<p>Anything else in <code class="docutils literal notranslate"><span class="pre">~/dev</span></code>, LinuxCNC itself, and your configs in
+<code class="docutils literal notranslate"><span class="pre">~/linuxcnc</span></code> are not touched.</p>
 </section>
 </section>
 
@@ -265,10 +298,10 @@ QtPyVCP version. To fix that just install libpyqt5 with the install script.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="bullseye.html" class="btn btn-neutral float-right" title="Debian 11 (Bullseye) install for Python 3" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="basic_usage.html" class="btn btn-neutral float-right" title="Basic Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pypi_install.html" class="btn btn-neutral float-left" title="Standard Install" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="apt_install.html" class="btn btn-neutral float-left" title="Install from apt repository" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

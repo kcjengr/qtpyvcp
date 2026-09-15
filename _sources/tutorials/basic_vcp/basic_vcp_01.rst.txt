@@ -2,9 +2,6 @@
 Clone and Prepare
 =================
 
-.. Note::
-    The following tutorial was done using Debian 9 (Stretch).
-
 Before cloning you should have installed QtPyVCP as shown on the
 :doc:`/install/index` page.
 

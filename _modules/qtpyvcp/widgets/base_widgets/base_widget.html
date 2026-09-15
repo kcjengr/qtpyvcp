@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qtpyvcp.widgets.base_widgets.base_widget &mdash; QtPyVCP 0.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=32bbf270"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            QtPyVCP
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html">HAL Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.component"><code class="docutils literal notranslate"><span class="pre">component()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../hal.html#qtpyvcp.hal.getComponent"><code class="docutils literal notranslate"><span class="pre">getComponent()</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/native_widgets_consolidation_plan.html">Native Widgets Consolidation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../architecture.html">Project Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Update Release Notes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_stable.html">Stable Update Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../update_notes_develop.html">Develop Update Release Notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">QtPyVCP</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">qtpyvcp.widgets.base_widgets.base_widget</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for qtpyvcp.widgets.base_widgets.base_widget</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Base Widgets</span>
+<span class="sd">------------</span>
+
+<span class="sd">This file contains the definitions of the fundamental widgets upon which</span>
+<span class="sd">all other QtPyVCP widgets are based.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">PySide6.QtCore</span> <span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span><span class="n">Property</span><span class="p">,</span> <span class="n">Slot</span><span class="p">,</span> <span class="n">QTimer</span><span class="p">,</span> <span class="n">QEnum</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">PySide6.QtWidgets</span> <span class="kn">import</span> <span class="n">QPushButton</span>
+
+<span class="kn">from</span> <span class="nn">qtpyvcp</span> <span class="kn">import</span> <span class="n">hal</span> <span class="k">as</span> <span class="n">qhal</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.plugins</span> <span class="kn">import</span> <span class="n">getPlugin</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.utilities.logger</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">qtpyvcp.utilities.machine_parameters</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">read_parameter_values</span><span class="p">,</span>
+    <span class="n">get_parameter_value</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">IN_DESIGNER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ChanList">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.ChanList">[docs]</a>
+<span class="k">class</span> <span class="nc">ChanList</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Channel value list.</span>
+
+<span class="sd">    This list is intended to hold lambda functions for retrieving the current</span>
+<span class="sd">    data channel values. When the list is indexed the function is called and</span>
+<span class="sd">    the resulting value is returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">ChanList</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)()</span></div>
+
+
+
+<div class="viewcode-block" id="VCPPrimitiveWidget">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget">[docs]</a>
+<span class="k">class</span> <span class="nc">VCPPrimitiveWidget</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;VCPPrimitiveWidget.</span>
+
+<span class="sd">    Class on which all QtPyVCP widgets should be based.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VCPPrimitiveWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VCPPrimitiveWidget.initialize">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget.initialize">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is called right before the main application starts.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="VCPPrimitiveWidget.terminate">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPPrimitiveWidget.terminate">[docs]</a>
+    <span class="k">def</span> <span class="nf">terminate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method is called right before the main application ends.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<span class="c1"># Style classes in use across probe_basic and qtpyvcp. Declared as a QEnum so</span>
+<span class="c1"># QtDesigner offers a drop-down rather than a free-text field. `none` disables</span>
+<span class="c1"># flashing; the setter also accepts a plain string, so a class name outside</span>
+<span class="c1"># this list can still be set from Python or a hand-edited .ui.</span>
+<div class="viewcode-block" id="FlashStyleClass">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.FlashStyleClass">[docs]</a>
+<span class="nd">@QEnum</span>
+<span class="k">class</span> <span class="nc">FlashStyleClass</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">none</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">inactive</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">unhomed</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">homing</span> <span class="o">=</span> <span class="mi">4</span></div>
+
+
+
+<span class="n">FLASH_STYLE_NAMES</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;inactive&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;unhomed&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;homing&#39;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="VCPBaseWidget">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget">[docs]</a>
+<span class="k">class</span> <span class="nc">VCPBaseWidget</span><span class="p">(</span><span class="n">VCPPrimitiveWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;QtPyVCP Base Widget.</span>
+
+<span class="sd">    This class handles the rules and other things that</span>
+<span class="sd">    apply to QtPyVCP widgets regardless of use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">IN_DESIGNER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;DESIGNER&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="kc">None</span>
+
+    <span class="n">DEFAULT_RULE_PROPERTY</span> <span class="o">=</span> <span class="s1">&#39;None&#39;</span>
+    <span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;None&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="s1">&#39;Enable&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setEnabled&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
+        <span class="s1">&#39;Visible&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setVisible&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
+        <span class="s1">&#39;Style Class&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setStyleClass&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="s1">&#39;Style Sheet&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setStyleSheet&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="s1">&#39;Flashing&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setFlashing&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VCPBaseWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span> <span class="o">=</span> <span class="s1">&#39;[]&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_channels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_security_level</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Flashing. The timer is created on first use, not here -- every</span>
+        <span class="c1"># widget in a VCP inherits this class, and a QTimer each for the</span>
+        <span class="c1"># ones that never flash is pure overhead.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_rate</span> <span class="o">=</span> <span class="mi">500</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_state</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_on_style</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="c1"># self._hal_param_enable = False</span>
+        <span class="c1"># self._hal_param_name = None</span>
+        <span class="c1"># self._hal_param_type = &quot;s32&quot;</span>
+        <span class="c1"># self._hal_param_access = &quot;rw&quot;</span>
+        
+        
+    <span class="c1"># def postInitialize(self):</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if self.enableHalParams:</span>
+    <span class="c1">#         comp = qhal.getComponent(&quot;qtpyvcp&quot;)</span>
+    <span class="c1">#         comp.addParam(self.halParamName, self.halParamType, self.halParamAccess)</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Security implementation</span>
+    <span class="c1">#</span>
+    
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">security</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Security level</span>
+<span class="sd">        </span>
+<span class="sd">        An integer representing the security level for a widget.</span>
+<span class="sd">        The higher the integer value the higher the operator access level</span>
+<span class="sd">        needs to be to be able to interact with the widget.</span>
+<span class="sd">        </span>
+<span class="sd">        Example:</span>
+<span class="sd">        </span>
+<span class="sd">            security = 0 requires an operator to have an assigned security value</span>
+<span class="sd">            of 0 or more.  This is essentially the lowest security rating.</span>
+<span class="sd">            Negative numbers having no effect.</span>
+<span class="sd">            </span>
+<span class="sd">            security = 5 requires an operator to have an assigned security level</span>
+<span class="sd">            of 5 or more to interact with the widget.  So an operator with a</span>
+<span class="sd">            rating of 2 will not be able to interact with the widget. The widget</span>
+<span class="sd">            will be represented as &quot;disabled&quot; to them.</span>
+<span class="sd">        </span>
+<span class="sd">        returns:</span>
+<span class="sd">            int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_security_level</span>
+
+    <span class="nd">@security</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">security</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">security</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_security_level</span> <span class="o">=</span> <span class="n">security</span>
+
+    <span class="c1">#</span>
+    <span class="c1"># Pparameter implementation ( Disabled for now )</span>
+    <span class="c1">#</span>
+
+    <span class="c1"># @Property(bool)</span>
+    <span class="c1"># def enableHalParams(self):</span>
+    <span class="c1">#     return self._hal_param_enable</span>
+    <span class="c1">#</span>
+    <span class="c1"># @enableHalParams.setter</span>
+    <span class="c1"># def enableHalParams(self, enabled):</span>
+    <span class="c1">#     self._hal_param_enable = enabled</span>
+    <span class="c1">#</span>
+    <span class="c1"># ###</span>
+    <span class="c1">#</span>
+    <span class="c1"># @Property(str)</span>
+    <span class="c1"># def halParamName(self):</span>
+    <span class="c1">#     if self._hal_param_name is None:</span>
+    <span class="c1">#         return str(self.objectName()).replace(&#39;-&#39;, &#39;_&#39;)</span>
+    <span class="c1">#     return self._hal_param_name</span>
+    <span class="c1">#</span>
+    <span class="c1"># @halParamName.setter</span>
+    <span class="c1"># def halParamName(self, name):</span>
+    <span class="c1">#     self._hal_param_name = name</span>
+    <span class="c1">#</span>
+    <span class="c1"># ###</span>
+    <span class="c1">#</span>
+    <span class="c1"># @Property(str)</span>
+    <span class="c1"># def halParamType(self):</span>
+    <span class="c1">#     return self._hal_param_type</span>
+    <span class="c1">#</span>
+    <span class="c1"># @halParamType.setter</span>
+    <span class="c1"># def halParamType(self, param_type):</span>
+    <span class="c1">#     self._hal_param_type = param_type</span>
+    <span class="c1">#</span>
+    <span class="c1"># ###</span>
+    <span class="c1">#</span>
+    <span class="c1"># @Property(str)</span>
+    <span class="c1"># def halParamAccess(self):</span>
+    <span class="c1">#     return self._hal_param_access</span>
+    <span class="c1">#</span>
+    <span class="c1"># @halParamAccess.setter</span>
+    <span class="c1"># def halParamAccess(self, param_access):</span>
+    <span class="c1">#     self._hal_param_access = param_access</span>
+    
+    <span class="k">def</span> <span class="nf">action_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">action_event</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    
+    <span class="c1">#</span>
+    <span class="c1"># Style Rules implementation</span>
+    <span class="c1">#</span>
+
+    <span class="c1"># ---------------------------------------------------------- flashing</span>
+
+    <span class="k">def</span> <span class="nf">_setFlashState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alternate the `flashState` dynamic property and repolish.</span>
+
+<span class="sd">        The widget&#39;s own state is never touched -- toggling `checked` or</span>
+<span class="sd">        `enabled` would fight whatever else drives them -- so the stylesheet</span>
+<span class="sd">        selects on this instead::</span>
+
+<span class="sd">            QPushButton[style=&quot;active&quot;][flashState=&quot;false&quot;] { ... }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_state</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">on</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s1">&#39;flashState&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">on</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span><span class="p">)</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">style</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">style</span><span class="o">.</span><span class="n">unpolish</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">style</span><span class="o">.</span><span class="n">polish</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_toggleFlashState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setFlashState</span><span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_state</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VCPBaseWidget.setFlashing">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget.setFlashing">[docs]</a>
+    <span class="nd">@Slot</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">setFlashing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flashing</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start or stop flashing.</span>
+
+<span class="sd">        Exposed as the `Flashing` rule property, so any channel expression</span>
+<span class="sd">        can drive it. Re-asserting a flash that is already running is a</span>
+<span class="sd">        no-op: rules re-evaluate on every channel update, and restarting the</span>
+<span class="sd">        timer each time would leave the flash stuttering.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">flashing</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span> <span class="o">=</span> <span class="n">QTimer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span><span class="o">.</span><span class="n">timeout</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_toggleFlashState</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_setFlashState</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_flash_rate</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="c1"># Always settle on the lit half, so a stopped flash never leaves</span>
+            <span class="c1"># the widget stuck in its dim state.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_state</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_setFlashState</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">isFlashing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_updateStyleFlash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start or stop flashing to match flashOnStyleClass.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_on_style</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setFlashing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_on_style</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">flashOnStyleClass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Flash whenever the widget&#39;s style class equals this value.</span>
+
+<span class="sd">        Lets a widget flash on a condition something else already reports.</span>
+<span class="sd">        The cycle start button, for example, is driven to style class</span>
+<span class="sd">        `active` by a rule when the program is paused, so setting this to</span>
+<span class="sd">        `active` makes it flash while paused with no second rule.</span>
+
+<span class="sd">        Leave empty to disable. The flash itself is still available directly</span>
+<span class="sd">        via the `Flashing` rule property.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_on_style</span>
+
+    <span class="nd">@flashOnStyleClass</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">flashOnStyleClass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style_class</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">style_class</span><span class="p">,</span> <span class="n">FlashStyleClass</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">FLASH_STYLE_NAMES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">style_class</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">style_class</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">FLASH_STYLE_NAMES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">style_class</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">style_class</span> <span class="ow">or</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_on_style</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_on_style</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updateStyleFlash</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setFlashing</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">flashRate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Flash half-period in milliseconds. Default 500.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_rate</span>
+
+    <span class="nd">@flashRate</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">flashRate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_flash_rate</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">rate</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span><span class="o">.</span><span class="n">isActive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_flash_timer</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_flash_rate</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VCPBaseWidget.setStyleClass">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPBaseWidget.setStyleClass">[docs]</a>
+    <span class="k">def</span> <span class="nf">setStyleClass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style_class</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the QSS style class for the widget.</span>
+
+<span class="sd">        Sets the Qt dynamic property &#39;style&#39; which can be used as a QSS</span>
+<span class="sd">        selector:  WidgetClass[style=&quot;error&quot;] { color: red; }</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_style</span> <span class="o">=</span> <span class="n">style_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s1">&#39;style&#39;</span><span class="p">,</span> <span class="n">style_class</span><span class="p">)</span>
+        <span class="c1"># Re-polish so QSS engine sees the property change</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">unpolish</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">polish</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_updateStyleFlash</span><span class="p">()</span></div>
+
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">styleClass</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;QSS style class selector property.</span>
+
+<span class="sd">        This property can be changed dynamically to update the QSS style</span>
+<span class="sd">        applied to the widget.  The underlying Qt dynamic property is named</span>
+<span class="sd">        &#39;style&#39; so that QSS selectors like ``WidgetClass[style=&quot;error&quot;]``</span>
+<span class="sd">        continue to work unchanged.</span>
+
+<span class="sd">        NOTE: This property is intentionally NOT named &#39;style&#39; at the Python/</span>
+<span class="sd">        Qt-meta level because that name shadows QWidget::style() (which returns</span>
+<span class="sd">        the QStyle object), causing a segfault when Qt internally calls it.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            /* Applied when styleClass / dynamic property &#39;style&#39; == &quot;error&quot; */</span>
+<span class="sd">            WidgetClass[style=&quot;error&quot;] {</span>
+<span class="sd">                color: red;</span>
+<span class="sd">            }</span>
+
+<span class="sd">            /* Applied when &#39;style&#39; is not set */</span>
+<span class="sd">            WidgetClass {</span>
+<span class="sd">                color: black;</span>
+<span class="sd">            }</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span>
+
+    <span class="nd">@styleClass</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">styleClass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleClass</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">designable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stored</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;JSON formatted list of dictionaries, defining the widget rules.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span>
+
+    <span class="nd">@rules</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rules</span> <span class="o">=</span> <span class="n">rules</span> <span class="ow">or</span> <span class="s1">&#39;[]&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">registerRules</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">registerRules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">rules</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rules</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">read_parameter_values</span><span class="p">()</span>
+        <span class="c1"># Read fresh parameter values each evaluation so rule expressions react</span>
+        <span class="c1"># to runtime .var changes (ATC pocket updates, etc.).</span>
+        <span class="n">param</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">number</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">:</span> <span class="n">get_parameter_value</span><span class="p">(</span><span class="n">read_parameter_values</span><span class="p">(),</span> <span class="n">number</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
+            <span class="c1"># print(rule)</span>
+            <span class="n">ch</span> <span class="o">=</span> <span class="n">ChanList</span><span class="p">()</span>
+            <span class="n">triggers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">IN_DESIGNER</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">for</span> <span class="n">chan</span> <span class="ow">in</span> <span class="n">rule</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]:</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">url</span> <span class="o">=</span> <span class="n">chan</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">protocol</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">item</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                    <span class="n">chan_obj</span><span class="p">,</span> <span class="n">chan_exp</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="n">protocol</span><span class="p">)</span><span class="o">.</span><span class="n">getChannel</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+                    <span class="n">ch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chan_exp</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">chan</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;trigger&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                        <span class="n">triggers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chan_obj</span><span class="o">.</span><span class="n">notify</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Error evaluating rule: </span><span class="si">{}</span><span class="s2">&quot;</span>
+                                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">chan</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)))</span>
+                    <span class="k">return</span>
+
+            <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="p">[</span><span class="n">rule</span><span class="p">[</span><span class="s1">&#39;property&#39;</span><span class="p">]]</span>
+
+            <span class="k">if</span> <span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># donothing</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_data_channels</span> <span class="o">=</span> <span class="n">ch</span>
+                <span class="k">continue</span>
+
+            <span class="n">eval_env</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;ch&#39;</span><span class="p">:</span> <span class="n">ch</span><span class="p">,</span>
+                <span class="s1">&#39;widget&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span>
+                <span class="s1">&#39;params&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+                <span class="s1">&#39;param&#39;</span><span class="p">:</span> <span class="n">param</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">eval_exp</span> <span class="o">=</span> <span class="s1">&#39;lambda: widget.</span><span class="si">{}</span><span class="s1">(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">prop</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rule</span><span class="p">[</span><span class="s1">&#39;expression&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="n">exp</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">eval_exp</span><span class="p">,</span> <span class="n">eval_env</span><span class="p">)</span>
+
+            <span class="n">widget_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectName</span><span class="p">()</span>
+            <span class="n">rule_name</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;unnamed rule&gt;&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Rules are compiled as zero-arg lambdas, but channel notifications</span>
+            <span class="c1"># may pass payload args. Accept and ignore payload args so callbacks</span>
+            <span class="c1"># stay stable across signal signatures.</span>
+            <span class="c1"># NOTE: Keep per-rule callback binding here to avoid loop-scope</span>
+            <span class="c1"># expression bleed regressions (see report around b1b5419f298e).</span>
+            <span class="k">def</span> <span class="nf">_make_rule_callback</span><span class="p">(</span><span class="n">exp_cb</span><span class="p">,</span> <span class="n">cb_rule_name</span><span class="p">,</span> <span class="n">cb_widget_name</span><span class="p">):</span>
+                <span class="k">def</span> <span class="nf">_rule_callback</span><span class="p">(</span><span class="o">*</span><span class="n">_args</span><span class="p">,</span> <span class="o">**</span><span class="n">_kwargs</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">exp_cb</span><span class="p">()</span>
+                    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                        <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
+                            <span class="s2">&quot;Error calling rules expression &#39;</span><span class="si">%s</span><span class="s2">&#39; from </span><span class="si">%s</span><span class="s2">:&quot;</span><span class="p">,</span>
+                            <span class="n">cb_rule_name</span><span class="p">,</span>
+                            <span class="n">cb_widget_name</span><span class="p">,</span>
+                        <span class="p">)</span>
+                <span class="k">return</span> <span class="n">_rule_callback</span>
+
+            <span class="n">_rule_callback</span> <span class="o">=</span> <span class="n">_make_rule_callback</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">rule_name</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">)</span>
+
+            <span class="c1"># initial call to update</span>
+            <span class="n">_rule_callback</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">trigger</span> <span class="ow">in</span> <span class="n">triggers</span><span class="p">:</span>
+                <span class="n">trigger</span><span class="p">(</span><span class="n">_rule_callback</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="VCPWidget">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPWidget">[docs]</a>
+<span class="k">class</span> <span class="nc">VCPWidget</span><span class="p">(</span><span class="n">VCPBaseWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;VCP Widget</span>
+
+<span class="sd">    This is a general purpose widget for displaying data</span>
+<span class="sd">    and other uses that do not involve user interaction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VCPWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+        <span class="c1"># Logically no focus policy here should be correct.</span>
+        <span class="c1"># Risk is that VCPWidget maybe used as the base for</span>
+        <span class="c1"># widgets that DO expect user interaction. So below would be a</span>
+        <span class="c1"># breaking change until some cleaning is done. Test it?</span>
+        <span class="c1"># Causes issue under pyside6 with runtime error</span>
+        <span class="c1">#self.setFocusPolicy(Qt.NoFocus)</span>
+
+
+<div class="viewcode-block" id="CMDWidget">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.CMDWidget">[docs]</a>
+<span class="k">class</span> <span class="nc">CMDWidget</span><span class="p">(</span><span class="n">VCPBaseWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Command Widget</span>
+
+<span class="sd">    This widget should be used as the base class for all widgets</span>
+<span class="sd">    that control the machine. Eventually additional functionality</span>
+<span class="sd">    will be added to this class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CMDWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="HALWidget">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.HALWidget">[docs]</a>
+<span class="k">class</span> <span class="nc">HALWidget</span><span class="p">(</span><span class="n">VCPBaseWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HAL Widget</span>
+
+<span class="sd">    This widget should be used as the base class for HAL widgets.</span>
+<span class="sd">    ToDo: Implement HAL functionality.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HALWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hal_object_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@Property</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">pinBaseName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The base name to use for the generated HAL pins.</span>
+
+<span class="sd">        If not specified the widgets objectName will be used.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hal_object_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objectName</span><span class="p">())</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hal_object_name</span>
+
+    <span class="nd">@pinBaseName</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">pinBaseName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># ToDO: Validate HAL pin name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hal_object_name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="nd">@Slot</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">getPinBaseName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pinBaseName</span></div>
+
+
+<div class="viewcode-block" id="VCPButton">
+<a class="viewcode-back" href="../../../../widgets/base_widget.html#qtpyvcp.widgets.base_widgets.base_widget.VCPButton">[docs]</a>
+<span class="k">class</span> <span class="nc">VCPButton</span><span class="p">(</span><span class="n">QPushButton</span><span class="p">,</span> <span class="n">CMDWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;VCP Button Widget</span>
+
+<span class="sd">    This is a general purpose button widget for displaying data</span>
+<span class="sd">    and other uses that do not involve user interaction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DEFAULT_RULE_PROPERTY</span> <span class="o">=</span> <span class="s1">&#39;Enable&#39;</span>
+    <span class="n">RULE_PROPERTIES</span> <span class="o">=</span> <span class="n">CMDWidget</span><span class="o">.</span><span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">RULE_PROPERTIES</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s1">&#39;Text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setText&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="s1">&#39;Checked&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;setChecked&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span>
+    <span class="p">})</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VCPButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">getPlugin</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+        <span class="c1"># stop focus that will interfere with keyboard jog</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFocusPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">FocusPolicy</span><span class="o">.</span><span class="n">NoFocus</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mousePressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># Test for UI LOCK and consume event but do nothing if LOCK in place</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">isLocked</span><span class="p">():</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Accept mouse Press Event&#39;</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="k">return</span> 
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">mousePressEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mouseReleaseEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">isLocked</span><span class="p">():</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Accept mouse Release Event&#39;</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+            <span class="k">return</span> 
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">mouseReleaseEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2023, Kurt Jacobson.
+    <br>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

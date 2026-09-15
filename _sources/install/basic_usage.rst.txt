@@ -6,24 +6,31 @@ At this point you should have the dependencies satisfied and QtPyVCP installed.
 
 Launching a sim config
 ^^^^^^^^^^^^^^^^^^^^^^
-Several sim configurations are included with QtPyVCP, they should have been
-copied to your `~/linuxcnc` directory when you installed QtPyVCP. If not
-run `$ cp -r linuxcnc $HOME` from the qtpyvcp directory to install them.
+The sim configurations come with the :doc:`developer install <dev_install>`,
+in ``~/dev/qtpyvcp/linuxcnc``. The apt package does not include them.
+
+If ``~/linuxcnc/configs/sim.qtpyvcp`` does not exist yet, copy them into
+place once::
+
+  cp -r ~/dev/qtpyvcp/linuxcnc ~/
 
 
 **Included sim configs**::
 
   sim.qtpyvcp
   ├── hal-widgets.ini
+  ├── mini.ini
   ├── xyz.ini
   ├── xyz3s.ini
   ├── xyz-metric.ini
   ├── xyzab.ini
+  ├── xyzab-metric.ini
   ├── xyzb.ini
   ├── xyzcw.ini
-  └── xyzy-gantry.ini
+  ├── xyzy-gantry.ini
+  └── xz-lathe-inch.ini
 
-To launch the basic XYZ sim machine run::
+To launch the basic XYZ sim machine, run this from a terminal::
 
   linuxcnc ~/linuxcnc/configs/sim.qtpyvcp/xyz.ini
 
@@ -34,8 +41,8 @@ available VCPs.
 
     VCP Chooser dialog window
 
-**Note:** If there are no VCPs listed, most likely you did not run
-`setup.py` per the installation instructions.
+**Note:** If there are no VCPs listed, the installer did not finish. Run it
+again.
 
 To skip the VCP chooser and launch a VCP directly you can specify the name of
 the desired VCP on the command line. For example to launch the Mini VCP:
