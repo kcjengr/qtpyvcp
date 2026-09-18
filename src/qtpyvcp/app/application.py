@@ -4,7 +4,7 @@ Contains the VCPApplication class with core function and VCP loading logic.
 """
 import os
 import sys
-import importlib as imp
+import importlib.util
 import inspect
 from pkg_resources import iter_entry_points
 
@@ -154,8 +154,14 @@ class VCPApplication(QApplication):
         module_dir = os.path.dirname(os.path.abspath(pyfile))
         sys.path.append(module_dir)
 
-        # Load the module. It's attributes can be accessed via `python_vcp.attr`
-        module = imp.load_source('python_vcp', pyfile)
+        # Load the module. Its attributes can be accessed via `python_vcp.attr`
+        module_name = 'python_vcp'
+        spec = importlib.util.spec_from_file_location(module_name, pyfile)
+        if spec is None or spec.loader is None:
+            raise ImportError("Could not load Python VCP file: {}".format(pyfile))
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = module
+        spec.loader.exec_module(module)
 
         classes = [obj for name, obj in inspect.getmembers(module)
                    if inspect.isclass(obj)
