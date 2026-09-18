@@ -17,8 +17,8 @@
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
 from qtpy.QtCore import Qt, QSortFilterProxyModel, QRegExp
-from qtpy.QtGui import QStandardItemModel, QStandardItem, QIcon
-from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
+from qtpy.QtGui import QStandardItemModel, QStandardItem
+from qtpy.QtWidgets import QVBoxLayout, QLabel, QListView, QHBoxLayout, QWidget, QPushButton, QStyle
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin
@@ -111,7 +111,7 @@ class NotificationWidget(QWidget, VCPWidget):
         msg = 'INFO:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
-        notification_item.setIcon(QIcon.fromTheme('dialog-information'))
+        notification_item.setIcon(self.style().standardIcon(QStyle.SP_MessageBoxInformation))
         notification_item.setEditable(False)
         self.all_notification_model.appendRow(notification_item)
 
@@ -124,7 +124,7 @@ class NotificationWidget(QWidget, VCPWidget):
         msg = 'WARNING:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
-        notification_item.setIcon(QIcon.fromTheme('dialog-warning'))
+        notification_item.setIcon(self.style().standardIcon(QStyle.SP_MessageBoxWarning))
         notification_item.setEditable(False)
         self.all_notification_model.appendRow(notification_item)
 
@@ -137,7 +137,7 @@ class NotificationWidget(QWidget, VCPWidget):
         msg = 'ERROR:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
-        notification_item.setIcon(QIcon.fromTheme('dialog-error'))
+        notification_item.setIcon(self.style().standardIcon(QStyle.SP_MessageBoxCritical))
         notification_item.setEditable(False)
         self.all_notification_model.appendRow(notification_item)
 
@@ -150,7 +150,7 @@ class NotificationWidget(QWidget, VCPWidget):
         msg = 'DEBUG\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
-        notification_item.setIcon(QIcon.fromTheme('dialog-question'))
+        notification_item.setIcon(self.style().standardIcon(QStyle.SP_MessageBoxQuestion))
         notification_item.setEditable(False)
         self.all_notification_model.appendRow(notification_item)
 
