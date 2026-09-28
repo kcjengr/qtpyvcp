@@ -17,16 +17,16 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 class HalCheckBox(QCheckBox, HALWidget, VCPWidget):
     """HAL CheckBox
 
-    CheckBox for displaying and setting `bit` HAL pin values.
+    CheckBox for displaying and setting `bool` HAL pin values.
 
     .. table:: Generated HAL Pins
 
         ========================= ===== =========
         HAL Pin Name              Type  Direction
         ========================= ===== =========
-        qtpyvcp.checkbox.enable   bit   in
-        qtpyvcp.checkbox.check    bit   in
-        qtpyvcp.checkbox.checked  bit   out
+        qtpyvcp.checkbox.enable   bool  in
+        qtpyvcp.checkbox.check    bool  in
+        qtpyvcp.checkbox.checked  bool  out
         ========================= ===== =========
     """
     def __init__(self, parent=None):
@@ -87,15 +87,15 @@ class HalCheckBox(QCheckBox, HALWidget, VCPWidget):
         obj_name = self.getPinBaseName()
 
         # add checkbox.enable HAL pin
-        self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")
+        self._enable_pin = comp.addPin(obj_name + ".enable", "bool", "in")
         self._enable_pin.value = self.isEnabled()
         self._enable_pin.valueChanged.connect(self.setEnabled)
 
         # add checkbox.check HAL pin
-        self._check_pin = comp.addPin(obj_name + ".check", "bit", "in")
+        self._check_pin = comp.addPin(obj_name + ".check", "bool", "in")
         self._check_pin.value = self.isChecked()
         self._check_pin.valueChanged.connect(self.setChecked)
 
         # add checkbox.checked HAL pin
-        self._checked_pin = comp.addPin(obj_name + ".checked", "bit", "out")
+        self._checked_pin = comp.addPin(obj_name + ".checked", "bool", "out")
         self._checked_pin.value = self.isChecked()

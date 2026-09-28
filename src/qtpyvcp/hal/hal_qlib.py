@@ -23,7 +23,7 @@ class QPin(QObject):
     Args:
         comp (_hal.component) : The HAL comp the pins should belong to.
         name (str) : The name of the HAL pin to create.
-        typ (str) : The type of the HAL pin, one of `BOOL`, `FLOAT`, `U32` or `S32`.
+        typ (str) : The type of the HAL pin, one of `BOOL`, `REAL`, `UINT` or `SINT`.
         dir (str) : the direction of the HAL pin, one of `IN` or `OUT`.
 
     Properties:
@@ -67,7 +67,7 @@ class QParam(QObject):
     Args:
         comp (_hal.component) : The HAL comp the pins should belong to.
         name (str) : The name of the HAL pin to create.
-        typ (str) : The type of the HAL pin, one of `BOOL`, `FLOAT`, `U32` or `S32`.
+        typ (str) : The type of the HAL pin, one of `BOOL`, `REAL`, `UINT` or `SINT`.
         dir (str) : the direction of the HAL pin, one of `IN` or `OUT`.
 
     Properties:
@@ -77,7 +77,7 @@ class QParam(QObject):
 
     valueChanged = Signal(object)
 
-    def __init__(self, comp, name, pin_type=hal.HAL_BIT, access_mode=hal.HAL_RW, cycle_time=100):
+    def __init__(self, comp, name, pin_type=hal.HAL_BOOL, access_mode=hal.HAL_RW, cycle_time=100):
         super(QParam, self).__init__(MAIN_WINDOW)
         self._param = _hal.component.newparam(comp, name, pin_type, access_mode)
         self._name = name
@@ -117,10 +117,10 @@ class QComponent(QObject):
         signal.signal(signal.SIGINT, self.signal_handler)
 
         self.type_map = {
-            'float': hal.HAL_FLOAT,
-            's32': hal.HAL_S32,
-            'u32': hal.HAL_U32,
-            'bit': hal.HAL_BIT
+            'real': hal.HAL_REAL,
+            'sint': hal.HAL_SINT,
+            'uint': hal.HAL_UINT,
+            'bool': hal.HAL_BOOL
         }
 
         self.dir_map = {
@@ -224,8 +224,8 @@ def main():
         print(("Value Changed", new_val))
 
     c = QComponent('test')
-    c.addPin('input', "s32", "in")
-    c.addPin('float_in', "s32", "in")
+    c.addPin('input', "sint", "in")
+    c.addPin('float_in', "sint", "in")
     c.getPin('input').valueChanged.connect(printChange)
     c.ready()
 

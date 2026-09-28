@@ -11,16 +11,16 @@ log = getLogger(__name__)
 class HalLedIndicator(LEDWidget, HALWidget, VCPWidget):
     """HAL LED
 
-    LED for indicated the state of `bit` HAL pins.
+    LED for indicated the state of `bool` HAL pins.
 
     .. table:: Generated HAL Pins
 
         ========================= ========= =========
         HAL Pin Name              Type      Direction
         ========================= ========= =========
-        qtpyvcp.led.on            bit       in
-        qtpyvcp.led.flash         bit       in
-        qtpyvcp.led.flash-rate    u32       out
+        qtpyvcp.led.on            bool      in
+        qtpyvcp.led.flash         bool      in
+        qtpyvcp.led.flash-rate    uint      out
         ========================= ========= =========
     """
     def __init__(self, parent=None):
@@ -34,14 +34,14 @@ class HalLedIndicator(LEDWidget, HALWidget, VCPWidget):
         obj_name = self.getPinBaseName()
 
         # add led.on HAL pin
-        self._on_pin = comp.addPin(obj_name + ".on", "bit", "in")
+        self._on_pin = comp.addPin(obj_name + ".on", "bool", "in")
         # self._on_pin.value = self.isO()
         self._on_pin.valueChanged.connect(lambda state: self.setState(state))
 
         # add led.flash HAL pin
-        self._flash_pin = comp.addPin(obj_name + ".flash", "bit", "in")
+        self._flash_pin = comp.addPin(obj_name + ".flash", "bool", "in")
         self._flash_pin.valueChanged.connect(lambda flash: self.setFlashing(flash))
 
         # add led.flash-rate HAL pin
-        self._flash_rate_pin = comp.addPin(obj_name + ".flash-rate", "u32", "in")
+        self._flash_rate_pin = comp.addPin(obj_name + ".flash-rate", "uint", "in")
         self._flash_rate_pin.valueChanged.connect(lambda rate: self.setFlashRate(rate))

@@ -27,13 +27,13 @@ class ExportedHal(Plugin):
     def initialiseFrameworkExposedHalPins(self):
         comp = hal.COMPONENTS['qtpyvcp']
         obj_name = 'feed-override'
-        self._feed_override_reset = comp.addPin(obj_name + ".reset", "bit", "in")
+        self._feed_override_reset = comp.addPin(obj_name + ".reset", "bool", "in")
         self._feed_override_reset.valueChanged.connect(feed_override.reset)
         obj_name = 'rapid-override'
-        self._rapid_override_reset = comp.addPin(obj_name + ".reset", "bit", "in")
+        self._rapid_override_reset = comp.addPin(obj_name + ".reset", "bool", "in")
         self._rapid_override_reset.valueChanged.connect(rapid_override.reset)
         obj_name = 'spindle-override'
-        self._spindle_override_reset = comp.addPin(obj_name + ".reset", "bit", "in")
+        self._spindle_override_reset = comp.addPin(obj_name + ".reset", "bool", "in")
         self._spindle_override_reset.valueChanged.connect(spindle_override.reset)
 
     def initialise(self):

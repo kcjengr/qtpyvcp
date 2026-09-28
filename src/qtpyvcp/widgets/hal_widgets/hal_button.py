@@ -16,18 +16,17 @@ STATUS = getPlugin('status')
 class HalButton(QPushButton, HALWidget, VCPWidget):
     """HAL Button
 
-    Button for setting `bit` HAL pin values.
+    Button for setting `bool` HAL pin values.
 
     .. table:: Generated HAL Pins
 
         ========================= ===== =========
         HAL Pin Name              Type  Direction
         ========================= ===== =========
-        qtpyvcp.button.enable     bit   in
-        qtpyvcp.button.out        bit   out
-        qtpyvcp.button.check      bit   in
-        qtpyvcp.button.checked    bit   out
-        qtpyvcp.button.io         bit   io
+        qtpyvcp.button.enable     bool  in
+        qtpyvcp.button.out        bool  out
+        qtpyvcp.button.checked    bool  out
+        qtpyvcp.button.io         bool  io
         ========================= ===== =========
 
     .. note::
@@ -171,15 +170,15 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
         obj_name = self.getPinBaseName()
 
         # add button.enable HAL pin
-        self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")
+        self._enable_pin = comp.addPin(obj_name + ".enable", "bool", "in")
         self._enable_pin.value = self.isEnabled()
         self._enable_pin.valueChanged.connect(self.setEnabled)
 
         # add button.out HAL pin
-        self._pressed_pin = comp.addPin(obj_name + ".out", "bit", "out")
+        self._pressed_pin = comp.addPin(obj_name + ".out", "bool", "out")
         
         # add button.activated HAL pin
-        self._activated_pin = comp.addPin(obj_name + ".io", "bit", "io")
+        self._activated_pin = comp.addPin(obj_name + ".io", "bool", "io")
         self._activated_pin.value = self.isDown()
         self._activated_pin.valueChanged.connect(self.setDown)
 
@@ -188,12 +187,12 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
             # matching HalCheckBox and HalGroupBox. .checked is an output and
             # cannot be written to, so without this nothing in HAL can set the
             # button's appearance.
-            self._check_pin = comp.addPin(obj_name + ".check", "bit", "in")
+            self._check_pin = comp.addPin(obj_name + ".check", "bool", "in")
             self._check_pin.value = self.isChecked()
             self._check_pin.valueChanged.connect(self.setChecked)
 
             # add button.checked HAL pin
-            self._checked_pin = comp.addPin(obj_name + ".checked", "bit", "out")
+            self._checked_pin = comp.addPin(obj_name + ".checked", "bool", "out")
             self._checked_pin.value = self.isChecked()
 
         if self._pulse:

@@ -19,16 +19,16 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 class HalDoubleSpinBox(QDoubleSpinBox, HALWidget):
     """HAL DoubleSpinBox
 
-    DoubleSpinBox for displaying and setting `float` HAL pin values.
+    DoubleSpinBox for displaying and setting `real` HAL pin values.
 
     .. table:: Generated HAL Pins
 
         ========================= ========= =========
         HAL Pin Name              Type      Direction
         ========================= ========= =========
-        qtpyvcp.spinbox.enable    bit       in
-        qtpyvcp.spinbox.in        float     in
-        qtpyvcp.spinbox.out       float     out
+        qtpyvcp.spinbox.enable    bool      in
+        qtpyvcp.spinbox.in        real      in
+        qtpyvcp.spinbox.out       real      out
         ========================= ========= =========
     """
     def __init__(self, parent=None):

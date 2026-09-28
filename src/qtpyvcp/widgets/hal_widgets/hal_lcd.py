@@ -8,15 +8,15 @@ from qtpyvcp.widgets import HALWidget, VCPWidget
 class HalLCDNumber(QLCDNumber, HALWidget, VCPWidget):
     """HAL LCD Number
 
-    LCD Number for displaying `float` or `s32` HAL pin values.
+    LCD Number for displaying `real` or `sint` HAL pin values.
 
     .. table:: Generated HAL Pins
 
         ===================== ========= =========
         HAL Pin Name          Type      Direction
         ===================== ========= =========
-        qtpyvcp.lcd.in-i      s32       in
-        qtpyvcp.lcd.in-f      float     in
+        qtpyvcp.lcd.in-i      sint      in
+        qtpyvcp.lcd.in-f      real      in
         ===================== ========= =========
     """
 
@@ -54,11 +54,11 @@ class HalLCDNumber(QLCDNumber, HALWidget, VCPWidget):
         obj_name = self.getPinBaseName()
 
         # add lcd-dro.in HAL pin
-        self._in_pin = comp.addPin(obj_name + ".in-f", "float", "in")
+        self._in_pin = comp.addPin(obj_name + ".in-f", "real", "in")
         self.setValue(self._in_pin.value)
         self._in_pin.valueChanged.connect(self.setValue)
 
         # add lcd-dro.in HAL pin
-        self._in_pin = comp.addPin(obj_name + ".in-i", "s32", "in")
+        self._in_pin = comp.addPin(obj_name + ".in-i", "sint", "in")
         self.setValue(self._in_pin.value)
         self._in_pin.valueChanged.connect(self.setValue)

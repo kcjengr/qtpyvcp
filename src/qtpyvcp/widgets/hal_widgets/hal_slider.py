@@ -16,16 +16,16 @@ STATUS = getPlugin('status')
 class HalSlider(QSlider, HALWidget, VCPWidget):
     """HAL Slider
 
-    Slider for setting `u32` or `float` HAL pin values.
+    Slider for setting `uint` or `real` HAL pin values.
 
     .. table:: Generated HAL Pins
 
         ========================= ===== =========
         HAL Pin Name              Type  Direction
         ========================= ===== =========
-        qtpyvcp.slider.enable     bit   in
-        qtpyvcp.slider.out-i      u32   out
-        qtpyvcp.slider.out-f      float out
+        qtpyvcp.slider.enable     bool  in
+        qtpyvcp.slider.out-i      uint  out
+        qtpyvcp.slider.out-f      real  out
         ========================= ===== =========
     """
     def __init__(self, parent=None):
@@ -87,15 +87,15 @@ class HalSlider(QSlider, HALWidget, VCPWidget):
         obj_name = self.getPinBaseName()
 
         # add slider.enable HAL pin
-        self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")
+        self._enable_pin = comp.addPin(obj_name + ".enable", "bool", "in")
         self._enable_pin.value = self.isEnabled()
         self._enable_pin.valueChanged.connect(self.setEnabled)
 
         # add slider.percent HAL pin
-        self._s32_value_pin = comp.addPin(obj_name + ".out-i", "u32", "out")
+        self._s32_value_pin = comp.addPin(obj_name + ".out-i", "uint", "out")
         self._s32_value_pin.value = self.value()
 
         # add slider.scale HAL pin
-        self._float_value_pin = comp.addPin(obj_name + ".out-f", "float", "out")
+        self._float_value_pin = comp.addPin(obj_name + ".out-f", "real", "out")
         self._float_value_pin.value = self.value() / 100.0
 

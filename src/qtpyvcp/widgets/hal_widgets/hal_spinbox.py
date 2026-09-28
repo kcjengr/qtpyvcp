@@ -14,16 +14,16 @@ STATUS = getPlugin('status')
 class HalQSpinBox(QSpinBox, HALWidget):
     """HAL SpinBox
 
-    SpinBox for displaying and setting `u32` and `s32` HAL pin values.
+    SpinBox for displaying and setting `uint` and `sint` HAL pin values.
 
     .. table:: Generated HAL Pins
 
         ========================= ========= =========
         HAL Pin Name              Type      Direction
         ========================= ========= =========
-        qtpyvcp.spinbox.enable    s32 | u32 in
-        qtpyvcp.spinbox.in        s32 | u32 in
-        qtpyvcp.spinbox.out       s32 | u32 out
+        qtpyvcp.spinbox.enable    sint|uint in
+        qtpyvcp.spinbox.in        sint|uint in
+        qtpyvcp.spinbox.out       sint|uint out
         ========================= ========= =========
 
     Note:
@@ -89,12 +89,12 @@ class HalQSpinBox(QSpinBox, HALWidget):
         obj_name = self.getPinBaseName()
 
         if self.minimum() < 0:
-            pin_typ = 's32'
+            pin_typ = 'sint'
         else:
-            pin_typ = 'u32'
+            pin_typ = 'uint'
 
         # add spinbox.enable HAL pin
-        self._enabled_pin = comp.addPin(obj_name + ".enable", "bit", "in")
+        self._enabled_pin = comp.addPin(obj_name + ".enable", "bool", "in")
         self._enabled_pin.value = self.isEnabled()
         self._enabled_pin.valueChanged.connect(self.setEnabled)
 

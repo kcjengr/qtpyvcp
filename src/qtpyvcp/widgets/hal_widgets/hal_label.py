@@ -16,7 +16,7 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
     Label for displaying HAL pin values.
 
     Input pin type is selectable via the :class:`.pinType` property in designer,
-    and can be any valid HAL type (bit, u32, s32, float).
+    and can be any valid HAL type (bool, uint, sint, real).
 
     The text format can be specified via the :class:`.valueFormat` property in
     designer and can be any valid python style format string.
@@ -26,11 +26,11 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
         ========================= =========== =========
         HAL Pin Name              Type        Direction
         ========================= =========== =========
-        qtpyvcp.label.enable      bit         in
+        qtpyvcp.label.enable      bool        in
         qtpyvcp.label.in          selecatable in
         ========================= =========== =========
     """
-    TYPE_MAP = ('bit', 'u32', 's32', 'float')
+    TYPE_MAP = ('bool', 'uint', 'sint', 'real')
 
     def __init__(self, parent=None):
         super(HalLabel, self).__init__(parent)
@@ -38,7 +38,7 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
         self._in_pin = None
         self._enable_pin = None
 
-        self._typ = "float"
+        self._typ = "real"
         self._fmt = ".2f"
         
         self._value = 0
@@ -81,10 +81,10 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
             except Exception:
                 typ = ''
 
-        self._typ = typ if typ in self.TYPE_MAP else 'float'
+        self._typ = typ if typ in self.TYPE_MAP else 'real'
 
         try:
-            val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ]
+            val = {'bool': False, 'uint': 0, 'sint': 0, 'real': 0.0}[self._typ]
             self.setValue(val)
         except Exception as ex:
             LOG.debug(ex)
@@ -94,7 +94,7 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
         obj_name = self.getPinBaseName()
 
         # add label.enable HAL pin
-        self._enable_pin = comp.addPin(f"{obj_name}.enable", "bit", "in")
+        self._enable_pin = comp.addPin(f"{obj_name}.enable", "bool", "in")
         self._enable_pin.value = self.isEnabled()
         self._enable_pin.valueChanged.connect(self.setEnabled)
 

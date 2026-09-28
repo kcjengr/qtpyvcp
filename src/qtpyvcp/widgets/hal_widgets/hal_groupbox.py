@@ -15,10 +15,10 @@ class HalGroupBox(QGroupBox, HALWidget):
         ========================= ===== =========
         HAL Pin Name              Type  Direction
         ========================= ===== =========
-        qtpyvcp.group-box.enable   bit   in
-        qtpyvcp.group-box.visible  bit   in
-        qtpyvcp.group-box.check    bit   in
-        qtpyvcp.group-box.checked  bit   out
+        qtpyvcp.group-box.enable   bool in
+        qtpyvcp.group-box.visible  bool in
+        qtpyvcp.group-box.check    bool in
+        qtpyvcp.group-box.checked  bool out
         ========================= ===== =========
     """
 
@@ -41,21 +41,21 @@ class HalGroupBox(QGroupBox, HALWidget):
         obj_name = self.getPinBaseName()
 
         # add group-box.enable HAL pin
-        self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")
+        self._enable_pin = comp.addPin(obj_name + ".enable", "bool", "in")
         self._enable_pin.value = self.isEnabled()
         self._enable_pin.valueChanged.connect(self.setEnabled)
 
         # add group-box.visible HAL pin
-        self._visible_pin = comp.addPin(obj_name + ".visible", "bit", "in")
+        self._visible_pin = comp.addPin(obj_name + ".visible", "bool", "in")
         self._visible_pin.value = self.isVisible()
         self._visible_pin.valueChanged.connect(self.setVisible)
 
         if self.isCheckable():
             # add group-box.check HAL pin
-            self._check_pin = comp.addPin(obj_name + ".check", "bit", "in")
+            self._check_pin = comp.addPin(obj_name + ".check", "bool", "in")
             self._check_pin.value = self.isChecked()
             self._check_pin.valueChanged.connect(self.setChecked)
 
             # add group-box.checked HAL pin
-            self._checked_pin = comp.addPin(obj_name + ".checked", "bit", "out")
+            self._checked_pin = comp.addPin(obj_name + ".checked", "bool", "out")
             self._checked_pin.value = self.isChecked()

@@ -11,17 +11,17 @@ class HalBarIndicator(BarIndicatorBase, HALWidget):
     """
     HAL Bar Indicator
 
-    Bar for indicating the value of `float` HAL pins.
+    Bar for indicating the value of `real` HAL pins.
 
     .. table:: Generated HAL Pins
 
         ============================= ===== =========
         HAL Pin Name                  Type  Direction
         ============================= ===== =========
-        qtpyvcp.bar-indicator.in-i    u32   in
-        qtpyvcp.bar-indicator.in-f    float in
-        qtpyvcp.bar-indicator.min-val float in
-        qtpyvcp.bar-indicator.max-val float in
+        qtpyvcp.bar-indicator.in-i    sint  in
+        qtpyvcp.bar-indicator.in-f    real  in
+        qtpyvcp.bar-indicator.min-val real  in
+        qtpyvcp.bar-indicator.max-val real  in
         ============================= ===== =========
     """
     def __init__(self, parent=None):
@@ -38,12 +38,12 @@ class HalBarIndicator(BarIndicatorBase, HALWidget):
         obj_name = self.getPinBaseName()
 
         if self.minimum < 0:
-            int_pin_typ = 's32'
+            int_pin_typ = 'sint'
         else:
-            int_pin_typ = 'u32'
+            int_pin_typ = 'uint'
 
         # add bar-indicator.in-f HAL pin
-        self._int_in_pin = comp.addPin(obj_name + ".in-f", "float", "in")
+        self._int_in_pin = comp.addPin(obj_name + ".in-f", "real", "in")
         self.setValue(self._int_in_pin.value)
         self._int_in_pin.valueChanged.connect(self.setValue)
 
@@ -53,12 +53,12 @@ class HalBarIndicator(BarIndicatorBase, HALWidget):
         self._float_in_pin.valueChanged.connect(self.setValue)
 
         # add bar-indicator.min-val HAL pin
-        self._min_val_pin = comp.addPin(obj_name + ".min-val", "float", "in")
+        self._min_val_pin = comp.addPin(obj_name + ".min-val", "real", "in")
         self._min_val_pin.value = self.minimum
         self._min_val_pin.valueChanged.connect(lambda v: self.setProperty('minimum', v))
 
         # add bar-indicator.max-val HAL pin
-        self._max_val_pin = comp.addPin(obj_name + ".max-val", "float", "in")
+        self._max_val_pin = comp.addPin(obj_name + ".max-val", "real", "in")
         self._max_val_pin.value = self.maximum
         self._max_val_pin.valueChanged.connect(lambda v: self.setProperty('maximum', v))
 

@@ -81,10 +81,10 @@ class ToolChangeDialog(BaseDialog):
 
 
         comp = hal.getComponent("qtpyvcp_manualtoolchange")
-        comp.addPin('number', 's32', 'in')
-        self.change_pin = comp.addPin('change', 'bit', 'in')
-        self.changed_pin = comp.addPin('changed', 'bit', 'out')
-        comp.addPin('change_button', 'bit', 'in')
+        comp.addPin('number', 'sint', 'in')
+        self.change_pin = comp.addPin('change', 'bool', 'in')
+        self.changed_pin = comp.addPin('changed', 'bool', 'out')
+        comp.addPin('change_button', 'bool', 'in')
 
         comp.addListener('number', self.prepare_tool)
         comp.addListener('change', self.on_change)
