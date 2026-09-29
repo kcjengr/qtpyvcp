@@ -89,14 +89,14 @@ class HalDoubleSpinBox(QDoubleSpinBox, HALWidget):
         obj_name = self.getPinBaseName()
 
         # add spinbox.enabled HAL pin
-        self._enabled_pin = comp.addPin(obj_name + ".enable", "bit", "in")
+        self._enabled_pin = comp.addPin(obj_name + ".enable", "bool", "in")
         self._enabled_pin.value = self.isEnabled()
         self._enabled_pin.valueChanged.connect(self.setEnabled)
 
         # add spinbox.checked HAL pin
-        self._value_pin = comp.addPin(obj_name + ".out", "float", "out")
+        self._value_pin = comp.addPin(obj_name + ".out", "real", "out")
         self._value_pin.value = self.value()
 
         # add spinbox.checked HAL pin
-        self._set_value_pin = comp.addPin(obj_name + ".in", "float", "in")
+        self._set_value_pin = comp.addPin(obj_name + ".in", "real", "in")
         self._set_value_pin.valueChanged.connect(self.setValue)
