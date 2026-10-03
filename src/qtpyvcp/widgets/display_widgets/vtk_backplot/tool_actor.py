@@ -355,6 +355,17 @@ class ToolBitActor(vtk.vtkActor):
         back_tool_val = (self._datasource._inifile.find("DISPLAY", "BACK_TOOL_LATHE") or "0").strip()
         self._back_tool_lathe = back_tool_val not in ["0", "false", "no", "n", ""]
 
+        # Robot arm: draw the tool as a cylinder from the flange along the
+        # commanded tool axis (LinuxCNC RPY R = Rz(C) Ry(B) Rx(A)), length =
+        # tool-table Z offset.  Off by default so mill/lathe/foam configs are
+        # untouched; enable with  [VTK] TOOL_CYLINDER = robot.
+        cyl_val = (self._datasource._inifile.find("VTK", "TOOL_CYLINDER") or "").strip().lower()
+        self._robot_tool = cyl_val in ("robot", "1", "yes", "true", "on")
+        # Distance from the flange to the tool gauge line (spindle nose), mm.
+        # The cylinder is drawn from here to the tool table Z offset (tip).
+        self._tool_gauge = _parse_number(
+            self._datasource._inifile.find("VTK", "TOOL_GAUGE"), 0.0) or 0.0
+
         self.tool_position = []
         self.foam_z = 0.0
         self.foam_w = 0.0
@@ -366,10 +377,23 @@ class ToolBitActor(vtk.vtkActor):
         if motion_alpha is None:
             motion_alpha = 0.35
         self._cnc_motion_alpha = max(0.0, min(1.0, float(motion_alpha)))
+        if self._robot_tool:
+            # No rotational lag: the tool must track the DH-animated spindle.
+            self._cnc_motion_alpha = 1.0
 
         self.tool = _resolve_active_tool(self._tool_table, self._datasource)
         if self.tool is None:
             self.tool = self._tool_table[0]
+
+        if self._robot_tool:
+            # With nothing loaded, show the table's 'in_use' tool (the one the
+            # user marked as mounted) rather than the first table row.
+            _stat = getattr(getattr(self._datasource, '_status', None), 'stat', None)
+            if _coerce_int(getattr(_stat, 'tool_in_spindle', 0), 0) <= 0:
+                for _entry in self._tool_table:
+                    if _coerce_int(getattr(_entry, 'in_use', 0), 0):
+                        self.tool = _entry
+                        break
 
         if self._datasource.isMachineMetric():
             self.unit_scale = 25.4
@@ -635,18 +659,25 @@ class ToolBitActor(vtk.vtkActor):
 
         else:
 
+            zoff = float(self.tool.zoffset)
             self.source = vtkCylinderSource()
             transform = vtk.vtkTransform()
 
-
-            self.source.SetHeight(self.tool.zoffset)
-            self.source.SetCenter(self.tool.xoffset, self.tool.yoffset, -self.tool.zoffset/2)
+            self.source.SetHeight(zoff)
             self.source.SetRadius(self.tool.diameter / 2)
             self.source.SetResolution(64)
 
-            transform.RotateWXYZ(90, 1, 0, 0)
-            
-            transform.Translate(self.tool.xoffset, -self.tool.zoffset/2, self.tool.zoffset/2)
+            if self._robot_tool:
+                # cylinder spans [gauge, zoff] along +Z (spindle nose -> tip)
+                g = max(0.0, min(float(self._tool_gauge), zoff - 0.5))
+                self.source.SetHeight(zoff - g)
+                self.source.SetCenter(0.0, 0.0, 0.0)
+                transform.Translate(0.0, 0.0, g + (zoff - g) / 2)
+                transform.RotateWXYZ(90, 1, 0, 0)   # Y axis -> Z
+            else:
+                self.source.SetCenter(self.tool.xoffset, self.tool.yoffset, -zoff / 2)
+                transform.RotateWXYZ(90, 1, 0, 0)
+                transform.Translate(self.tool.xoffset, -zoff / 2, zoff / 2)
 
             transform.RotateX(self.tool.aoffset)
             transform.RotateY(self.tool.boffset)
@@ -1382,6 +1413,18 @@ class ToolBitActor(vtk.vtkActor):
             )
 
         smoothed_rot = self._smoothed_cnc_rotation
+
+        if self._robot_tool:
+            # Place the cylinder at the flange, oriented by the commanded RPY
+            # (R = Rz(C) Ry(B) Rx(A)); it already spans flange -> tip along +Z.
+            t = vtk.vtkTransform()
+            t.Translate(target_position[0], target_position[1], target_position[2])
+            t.RotateZ(smoothed_rot[2])
+            t.RotateY(smoothed_rot[1])
+            t.RotateX(smoothed_rot[0])
+            self.SetUserTransform(t)
+            self.SetPosition(0.0, 0.0, 0.0)
+            return
 
         transform = vtk.vtkTransform()
 

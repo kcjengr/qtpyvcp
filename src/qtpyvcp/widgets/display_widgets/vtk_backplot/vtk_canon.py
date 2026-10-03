@@ -109,36 +109,31 @@ class VTKCanon(StatCanon):
         super().next_line(st)
 
         # Capture switchkins transitions seen by the preview interpreter so
-        # load-time shaping follows M428/M429 state the same way runtime does.
+        # load-time shaping follows M428/M429/M430 state the same way runtime
+        # does. The mapping matches the ecosystem convention: type 0 is the
+        # kinematics module (genserkins/scarakins...), type 1 is identity/joint
+        # and type 2 is the user-provided kinematics.
         seq = self._coerce_int(getattr(st, 'sequence_number', None))
+        _kins_by_mcode = {428: 0, 429: 1, 430: 2}
         for mcode in getattr(st, 'mcodes', ()):
             code = self._coerce_int(mcode)
             if code is None:
                 continue
-            if code == 428:
-                LOG.warning(
-                    "VTK preview switchkins command: M428 encountered (seq=%s)",
-                    seq,
-                )
-                if self._preview_switchkins_type != 1:
-                    LOG.info(
-                        "VTK preview switchkins: M428 detected -> switchkins_type=1 (seq=%s)",
-                        seq,
-                    )
-                self._preview_switchkins_type = 1
-            elif code in (429, 430):
+            if code in _kins_by_mcode:
+                kins_type = _kins_by_mcode[code]
                 LOG.warning(
                     "VTK preview switchkins command: M%s encountered (seq=%s)",
                     code,
                     seq,
                 )
-                if self._preview_switchkins_type != 0:
+                if self._preview_switchkins_type != kins_type:
                     LOG.info(
-                        "VTK preview switchkins: M%s detected -> switchkins_type=0 (seq=%s)",
+                        "VTK preview switchkins: M%s detected -> switchkins_type=%s (seq=%s)",
                         code,
+                        kins_type,
                         seq,
                     )
-                self._preview_switchkins_type = 0
+                self._preview_switchkins_type = kins_type
 
         # Track the interpreter units mode for load-time scaling.
         # LinuxCNC canonical units: 1=in, 2=mm, 3=cm.

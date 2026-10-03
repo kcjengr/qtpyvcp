@@ -246,6 +246,8 @@ class MachinePart(vtk.vtkAssembly):
         self.part_type = None
         self.part_pos = None
         self.part_origin = None
+        self.part_joint = None
+        self.part_mount = None
 
     def SetPartPosition(self, attr):
         self.part_pos = attr
@@ -259,6 +261,12 @@ class MachinePart(vtk.vtkAssembly):
     def SetPartOrigin(self, attr):
         self.part_origin = attr
 
+    def SetPartJoint(self, attr):
+        self.part_joint = attr
+
+    def SetPartMount(self, attr):
+        self.part_mount = attr
+
     def GetPartPosition(self):
         return self.part_pos
     
@@ -270,6 +278,12 @@ class MachinePart(vtk.vtkAssembly):
 
     def GetPartOrigin(self):
         return self.part_origin
+
+    def GetPartJoint(self):
+        return self.part_joint
+
+    def GetPartMount(self):
+        return self.part_mount
 
 
 class MachinePartsASM(vtk.vtkAssembly):
@@ -312,12 +326,39 @@ class MachinePartsASM(vtk.vtkAssembly):
         self.part_color = data.get("color")
         self.part_power = data.get("power")
         
-        part_source = vtk.vtkSTLReader()
-        part_source.SetFileName(self.part_model)
-        part_source.Update()
-        
+        # Part meshes may be STL or glTF (.glb/.gltf).  VTK has no COLLADA
+        # reader, so Thor's original COLLADA meshes are converted to per-material
+        # glTF; the glTF reader returns a multi-block output, flattened here to a
+        # single polydata.  Everything downstream (normals, mapper, actor) is
+        # reader-agnostic.
+        model_name = str(self.part_model or "")
+        if model_name.lower().endswith((".glb", ".gltf")):
+            part_source = vtk.vtkGLTFReader()
+            part_source.SetFileName(model_name)
+            part_source.Update()
+            geometry = vtk.vtkCompositeDataGeometryFilter()
+            geometry.SetInputConnection(part_source.GetOutputPort())
+        else:
+            part_source = vtk.vtkSTLReader()
+            part_source.SetFileName(model_name)
+            part_source.Update()
+            geometry = part_source
+
+        # Smooth shading: STL carries only facet normals, so feeding the reader
+        # straight into the mapper flat-shades every triangle (the "low poly"
+        # look).  Compute point normals, smooth within each surface and keep
+        # sharp edges above the feature angle, then Phong-interpolate.
+        part_normals = vtk.vtkPolyDataNormals()
+        part_normals.SetInputConnection(geometry.GetOutputPort())
+        part_normals.ComputePointNormalsOn()
+        part_normals.ComputeCellNormalsOff()
+        part_normals.SplittingOn()
+        part_normals.SetFeatureAngle(40.0)
+        part_normals.ConsistencyOn()
+        part_normals.Update()
+
         part_mapper = vtk.vtkPolyDataMapper()
-        part_mapper.SetInputConnection(part_source.GetOutputPort())
+        part_mapper.SetInputConnection(part_normals.GetOutputPort())
         
         if not self.part_color:
             self.part_color = (0.9, 0.9, 0.9)
@@ -335,6 +376,10 @@ class MachinePartsASM(vtk.vtkAssembly):
         part_actor.GetProperty().SetSpecular(.5)
         part_actor.GetProperty().SetSpecularColor(1.0, 1.0, 1.0)
         part_actor.GetProperty().SetSpecularPower(self.part_power)
+        try:
+            part_actor.GetProperty().SetInterpolationToPhong()
+        except Exception:
+            pass
         
         # part_actor.SetPosition(part_position[0], part_position[1], part_position[2])
         # part_actor.SetOrigin(part_origin[0], part_origin[1], part_origin[2])
@@ -354,6 +399,8 @@ class MachinePartsASM(vtk.vtkAssembly):
         tmp_assembly.SetPartType(self.part_type)
         tmp_assembly.SetPartPosition(self.part_position)
         tmp_assembly.SetPartOrigin(self.part_origin)
+        tmp_assembly.SetPartJoint(self.part_joint)
+        tmp_assembly.SetPartMount(data.get("mount"))
         
         tmp_assembly.AddPart(part_actor)
         

@@ -183,7 +183,18 @@ class LinuxCncDataSource(QObject):
         self._configure_vtk_machine_axes()
         
         self._status.file.notify(self.__handleProgramLoaded)
-        self._status.position.notify(self.__handlePositionChanged)
+        # Match the tool to the machine-parts animation: the STL arm is driven
+        # from joint feedback, so drive the tool from the feedback Cartesian
+        # pose (`actual_position`) when the display reports actual positions
+        # (DISPLAY/POSITION_FEEDBACK = ACTUAL, the default).  Using the
+        # commanded `position` here left the tool ahead of the arm by the
+        # servo following error.
+        use_actual_pos = self._info.getPositionFeedback()
+        position_channel = (self._status.actual_position if use_actual_pos
+                            else self._status.position)
+        LOG.info("VTK backplot tool position source: %s",
+                 "actual_position" if use_actual_pos else "position")
+        position_channel.notify(self.__handlePositionChanged)
         self._status.motion_type.notify(self.__handleMotionTypeChanged)
         self._status.g5x_offset.notify(self.__handleG5xOffsetChange)
         self._status.g92_offset.notify(self.__handleG92OffsetChange)
@@ -343,14 +354,20 @@ class LinuxCncDataSource(QObject):
         if not self._switchkins_probe_enabled:
             return self._last_switchkins_type
 
-        # Authoritative runtime source: motion.switchkins-type.
-        # Fallback to kinstype.is-* bits when the motion pin is unavailable.
-        raw = self._hal_get_float('motion.switchkins-type')
+        # Authoritative runtime source: motion.kins-type (the OUT pin that
+        # G12.1/G13.1 update). Fall back to the deprecated motion.switchkins-type
+        # input pin, then to the kinstype.is-* bits.
+        raw = self._hal_get_float('motion.kins-type')
+        pin_used = 'motion.kins-type'
+        if raw is None:
+            raw = self._hal_get_float('motion.switchkins-type')
+            pin_used = 'motion.switchkins-type'
         if raw is not None:
             parsed_switchkins = self._coerce_int(raw)
             if raw != self._last_logged_motion_switchkins_raw or parsed_switchkins != self._last_logged_motion_switchkins_parsed:
                 LOG.info(
-                    "VTK switchkins pin: motion.switchkins-type raw=%s parsed=%s",
+                    "VTK switchkins pin: %s raw=%s parsed=%s",
+                    pin_used,
                     raw,
                     parsed_switchkins,
                 )

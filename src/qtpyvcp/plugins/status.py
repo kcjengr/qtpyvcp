@@ -768,20 +768,24 @@ class Status(DataPlugin):
             self.timer.stop()
             return
 
+        # Joint and spindle channels must be published BEFORE the generic
+        # status channels.  Setting e.g. `position`/`actual_position` fires the
+        # backplot's positionChanged synchronously, and the robot machine-parts
+        # STLs are driven from joint feedback inside that same callback.  Doing
+        # joints afterwards left the STLs one poll tick (cycle_time) stale, so
+        # the arm visibly lagged the toolbit during motion.
+        for joint in self.joint:
+            joint._update()
+
+        for spindle in self.spindle:
+            spindle._update()
+
         # status updates
         for item, old_val in self.old.items():
             new_val = getattr(STAT, item)
             if new_val != old_val:
                 self.old[item] = new_val
                 self.channels[item].setValue(new_val)
-
-        # joint status updates
-        for joint in self.joint:
-            joint._update()
-
-        # spindle status updates
-        for spindle in self.spindle:
-            spindle._update()
 
         # print(time.time() - s)
 
