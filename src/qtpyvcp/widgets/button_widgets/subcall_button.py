@@ -12,6 +12,7 @@ from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities import logger
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 LOG = logger.getLogger(__name__)
 
 # input: #<param_name> = #1 (=0.125 comment)
@@ -124,7 +125,7 @@ class SubCallButton(VCPButton):
         LOG.debug('Calling sub file: yellow<%s> with args blue<%s>', subfile, arg_str)
         issue_mdi(cmd_str)
 
-    @Property(str)
+    @Property(str, freset=reset_to('filename', ''))
     def filename(self):
         """Gets or sets the filename of the subroutine the button should call (str).
 

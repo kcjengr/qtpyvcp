@@ -65,6 +65,7 @@ from .spindle_actor import SpindleActor
 from .table_actor import TableActor
 from .tool_actor import ToolActor, ToolBitActor
 from .vtk_canon import COLOR_MAP, VTKCanon
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 LOG = logger.getLogger(__name__)
 
@@ -4674,7 +4675,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._request_render()
 
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('backgroundColor', lambda self: QColor(0, 0, 0)))
     def backgroundColor(self):
         return self._background_color
 
@@ -4693,7 +4694,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     #     self._request_render()
 
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('backgroundColor2', lambda self: QColor(0, 0, 0)))
     def backgroundColor2(self):
         return self._background_color2
 
@@ -4712,7 +4713,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     #     self.renderer.GradientBackgroundOff()
     #     self._request_render()
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('enableProgramTicks', True))
     def enableProgramTicks(self):
         return self._enableProgramTicks
 
@@ -4722,7 +4723,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     # Traverse color property
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('traverseColor', lambda self: self._default_traverse_color))
     def traverseColor(self):
         return self._traverse_color
 
@@ -4739,7 +4740,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     # Arcfeed color property
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('arcfeedColor', lambda self: self._default_arcfeed_color))
     def arcfeedColor(self):
         return self._arcfeed_color
 
@@ -4756,7 +4757,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     # Feed color property
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('feedColor', lambda self: self._default_feed_color))
     def feedColor(self):
         return self._feed_color
 
@@ -4773,7 +4774,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     # Dwell color property
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('dwellColor', lambda self: self._default_dwell_color))
     def dwellColor(self):
         return self._dwel_color
 
@@ -4790,7 +4791,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     # User color property
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('userColor', lambda self: self._default_user_color))
     def userColor(self):
         return self._user_color
 
@@ -4819,7 +4820,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         def _set(self, value):
             self._nav_helper_props[key] = value
 
-        return Property(qt_type, _get, _set)
+        def _reset(self):
+            # Back to "not set", the fresh state, which the gizmo config
+            # fills with its own default. See reset_to() in base_widget for
+            # why every Property needs a reset function.
+            self._nav_helper_props.pop(key, None)
+
+        return Property(qt_type, _get, _set, freset=_reset)
 
     navHelperEnabled = _nav_prop(bool, "enabled")
     navHelperAnimate = _nav_prop(bool, "animate")

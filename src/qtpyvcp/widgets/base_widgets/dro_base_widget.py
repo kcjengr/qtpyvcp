@@ -16,6 +16,7 @@ from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 LOG = logger.getLogger(__name__)
@@ -369,7 +370,7 @@ class DROBaseWidget(VCPWidget):
 
 
 
-    @Property(int)
+    @Property(int, freset=reset_to('referenceType', RefType.Relative))
     def referenceType(self):
         return self._ref_typ
 
@@ -380,7 +381,7 @@ class DROBaseWidget(VCPWidget):
         self._connectPositionChannel()
         self.updateValue()
 
-    @Property(int)
+    @Property(int, freset=reset_to('axisNumber', Axis.X))
     def axisNumber(self):
         return self._anum
 
@@ -392,7 +393,7 @@ class DROBaseWidget(VCPWidget):
             self._fmt = self._deg_fmt
         self.updateValue()
 
-    @Property(str)
+    @Property(str, freset=reset_to('inchFormat', '%9.4f'))
     def inchFormat(self):
         return self._in_fmt
 
@@ -416,7 +417,7 @@ class DROBaseWidget(VCPWidget):
     def setInchFormat(self, fmt):
         self.inchFormat = fmt
 
-    @Property(str)
+    @Property(str, freset=reset_to('millimeterFormat', '%10.3f'))
     def millimeterFormat(self):
         return self._mm_fmt
 
@@ -442,7 +443,7 @@ class DROBaseWidget(VCPWidget):
 
     # ToDO: Add support for DMS angle notation
     # https://stackoverflow.com/questions/2579535
-    @Property(str)
+    @Property(str, freset=reset_to('degreeFormat', '%10.2f'))
     def degreeFormat(self):
         return self._deg_fmt
 
@@ -467,7 +468,7 @@ class DROBaseWidget(VCPWidget):
     def setDegreeFormat(self, fmt):
         self.degreeFormat = fmt
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('useGlobalDroFormatSettings', True))
     def useGlobalDroFormatSettings(self):
         return self._use_global_fmt_settings
 
@@ -475,7 +476,7 @@ class DROBaseWidget(VCPWidget):
     def useGlobalDroFormatSettings(self, use_fmt_settings):
         self._use_global_fmt_settings = use_fmt_settings
 
-    @Property(int)
+    @Property(int, freset=reset_to('latheMode', LatheMode.Auto))
     def latheMode(self):
         return self._lathe_mode
 
@@ -484,7 +485,7 @@ class DROBaseWidget(VCPWidget):
         self._lathe_mode = LatheMode(mode)
         self.updateValue()
 
-    @Property(str)
+    @Property(str, freset=reset_to('inputType', 'number:float'))
     def inputType(self):
         return self._input_type
 

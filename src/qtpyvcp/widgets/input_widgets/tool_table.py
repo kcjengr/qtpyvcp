@@ -10,6 +10,7 @@ from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import connectSetting, getSetting
 from qtpyvcp.actions import IN_DESIGNER
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 LOG = getLogger(__name__)
 
@@ -429,7 +430,7 @@ class ToolTable(QTableView):
         else:
             return False
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('confirmActions', False))
     def confirmActions(self):
         return self._confirm_actions
 
@@ -437,7 +438,7 @@ class ToolTable(QTableView):
     def confirmActions(self, confirm):
         self._confirm_actions = confirm
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('currentToolColor', lambda self: QColor(Qt.darkGreen)))
     def currentToolColor(self):
         return self.tool_model.current_tool_color
 
@@ -445,7 +446,7 @@ class ToolTable(QTableView):
     def currentToolColor(self, color):
         self.tool_model.current_tool_color = color
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('currentToolBackground', None))
     def currentToolBackground(self):
         return self.tool_model.current_tool_bg or QColor()
 
@@ -453,7 +454,7 @@ class ToolTable(QTableView):
     def currentToolBackground(self, color):
         self.tool_model.current_tool_bg = color
 
-    @Property(int)
+    @Property(int, freset=reset_to('currentRow', -1))
     def currentRow(self):
         return self.selectedRow()
 

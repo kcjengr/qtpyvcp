@@ -103,7 +103,7 @@ def parse_tbl(tbl_path):
     return tools
 
 
-def import_tbl_to_db(tbl_path, db_path, units='inch', overwrite=False):
+def import_tbl_to_db(tbl_path, db_path, units, overwrite=False):
     """Create a fresh schema-v1 tool database at db_path from a legacy .tbl
     file. Returns the sorted list of imported tool numbers.
 
@@ -140,8 +140,9 @@ def main(argv=None):
                      "insert/holder data.")
     parser.add_argument('tbl_file', help="Path to the legacy .tbl file")
     parser.add_argument('db_file', help="Path to write the new .db file")
-    parser.add_argument('--units', choices=('inch', 'mm'), default='inch',
-                         help="Unit system for the new database (default: inch)")
+    parser.add_argument('--units', choices=('inch', 'mm'), required=True,
+                         help="Unit system of the tool data and the new database -- "
+                              "required, never assumed")
     parser.add_argument('--overwrite', action='store_true',
                          help="Replace db_file if it already exists")
     args = parser.parse_args(argv)

@@ -6,6 +6,7 @@ from qtpyvcp.widgets import VCPWidget
 
 # Set up logging
 from qtpyvcp.utilities import logger
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 LOG = logger.getLogger(__name__)
 
 class StatusLabel(QLabel, VCPWidget):
@@ -30,7 +31,7 @@ class StatusLabel(QLabel, VCPWidget):
 
         self.setText('Not Set')
 
-    @Property(str)
+    @Property(str, freset=reset_to('format', '{}'))
     def format(self):
         """The str format specification to use for displaying the value.
 
@@ -43,7 +44,7 @@ class StatusLabel(QLabel, VCPWidget):
     def format(self, format):
         self._format = format
 
-    @Property(str)
+    @Property(str, freset=reset_to('expression', 'val'))
     def expression(self):
         """A Python expression to process the data .
 

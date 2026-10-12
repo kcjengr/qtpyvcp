@@ -343,7 +343,8 @@ class DBToolTable(DataPlugin):
         db_path = self.db_file or _default_db_path()
         LOG.info("Tool database: %s", db_path)
         configure_database(db_path)
-        run_migrations(get_engine())
+        # A database created here is in the machine's units (the INI's)
+        run_migrations(get_engine(), new_units='mm' if INFO.getIsMachineMetric() else 'inch')
         # ToolTable/ToolModel (mill per-tool STL reference) aren't part of the
         # versioned lathe schema; create them here if absent (no-op once they
         # exist -- create_all checks first).

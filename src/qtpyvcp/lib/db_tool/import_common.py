@@ -22,7 +22,6 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from .migrate import run_migrations
-from .tool_table import Meta
 
 
 def _make_standalone_engine(db_path):
@@ -76,11 +75,9 @@ def new_tool_db_session(db_path, units):
     Meta.units already set. Commits on a clean exit; always closes the
     session and disposes the engine whether or not the block raised."""
     engine = _make_standalone_engine(db_path)
-    run_migrations(engine)
+    run_migrations(engine, new_units=units)
     session = sessionmaker(bind=engine)()
     try:
-        meta = session.query(Meta).first()
-        meta.units = units
         yield session
         session.commit()
     finally:

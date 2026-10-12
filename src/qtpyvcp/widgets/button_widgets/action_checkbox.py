@@ -3,6 +3,7 @@ from PySide6.QtCore import Qt, Property
 
 from qtpyvcp.widgets import CMDWidget
 from qtpyvcp.actions import bindWidget
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 class ActionCheckBox(QCheckBox, CMDWidget):
     """General purpose checkbox for triggering QtPyVCP actions.
@@ -19,7 +20,7 @@ class ActionCheckBox(QCheckBox, CMDWidget):
         if action is not None:
             self.actionName = action
 
-    @Property(str)
+    @Property(str, freset=reset_to('actionName', ''))
     def actionName(self):
         """Property for the name of the action the checkbox triggers (str).
 

@@ -3,6 +3,7 @@ from PySide6.QtCore import Property
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 class HalLCDNumber(QLCDNumber, HALWidget, VCPWidget):
@@ -35,7 +36,7 @@ class HalLCDNumber(QLCDNumber, HALWidget, VCPWidget):
     def setValue(self, val):
         self.display(self._format % val)
 
-    @Property(str)
+    @Property(str, freset=reset_to('numberFormat', '%5.3f'))
     def numberFormat(self):
         """Number Format Property
 

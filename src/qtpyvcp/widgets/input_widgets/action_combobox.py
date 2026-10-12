@@ -6,6 +6,7 @@ from PySide6.QtCore import Property
 from qtpyvcp.actions import bindWidget
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 LOG = getLogger(__name__)
@@ -31,7 +32,7 @@ class ActionComboBox(QComboBox):
 
         self._action_name = ''
 
-    @Property(str)
+    @Property(str, freset=reset_to('actionName', ''))
     def actionName(self):
         """The `actionName` property for setting the action the combobox
             should trigger from within QtDesigner.

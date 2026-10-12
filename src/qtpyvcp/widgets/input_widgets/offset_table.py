@@ -26,6 +26,7 @@ from PySide6.QtWidgets import (QTableView, QHeaderView, QStyledItemDelegate,
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import connectSetting, getSetting
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -467,7 +468,7 @@ class OffsetTable(QTableView):
         else:
             return False
 
-    @Property(int)
+    @Property(int, freset=reset_to('currentRow', -1))
     def currentRow(self):
         return self.selectedRow()
 
@@ -475,7 +476,7 @@ class OffsetTable(QTableView):
     def currentRow(self, row):
         self.selectRow(row)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('confirmActions', False))
     def confirmActions(self):
         return self._confirm_actions
 
@@ -483,7 +484,7 @@ class OffsetTable(QTableView):
     def confirmActions(self, confirm):
         self._confirm_actions = confirm
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('currentRowColor', lambda self: QColor(Qt.darkGreen)))
     def currentRowColor(self):
         return self.offset_model.current_row_color
 
@@ -491,7 +492,7 @@ class OffsetTable(QTableView):
     def currentRowColor(self, color):
         self.offset_model.current_row_color = color
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('currentRowBackground', None))
     def currentRowBackground(self):
         return self.offset_model.current_row_bg or QColor()
 

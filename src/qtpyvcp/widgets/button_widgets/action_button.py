@@ -2,6 +2,7 @@ from PySide6.QtCore import Property
 
 from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions import bindWidget, InvalidAction
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 class ActionButton(VCPButton):
     """General purpose button for triggering QtPyVCP actions.
@@ -18,7 +19,7 @@ class ActionButton(VCPButton):
         if action is not None:
             self._action_name = action
 
-    @Property(str)
+    @Property(str, freset=reset_to('actionName', ''))
     def actionName(self):
         """Property for the name of the action the button triggers (str).
 

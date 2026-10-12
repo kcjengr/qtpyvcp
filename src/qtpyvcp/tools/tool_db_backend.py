@@ -240,7 +240,10 @@ def main():
     db_path = resolve_db_path(sys.argv)
     log('database: %s' % db_path)
     configure_database(db_path)
-    run_migrations(get_engine())
+    # A database created here is in the machine's units (the INI's -- LinuxCNC
+    # starts this backend with INI_FILE_NAME set), as the GUI plugin does
+    from qtpyvcp.utilities.info import Info
+    run_migrations(get_engine(), new_units='mm' if Info().getIsMachineMetric() else 'inch')
     # ToolTable/ToolModel (mill per-tool STL reference) aren't part of the
     # versioned lathe schema; create them here if absent, same as the GUI
     # plugin, so either process can be first to touch a fresh DB file.

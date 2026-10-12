@@ -1,15 +1,19 @@
 import os
 import re
-from PySide6.QtCore import Property, QLocale, Slot
+from PySide6.QtCore import Property, QRegularExpression, Qt, Slot
 from PySide6.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
-from PySide6.QtGui import QIntValidator, QDoubleValidator
+from PySide6.QtGui import QRegularExpressionValidator
 
 from qtpyvcp import SETTINGS
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
-from qtpyvcp.utilities.misc import cnc_float
+from qtpyvcp.utilities.misc import cnc_float, cnc_eval, CNC_UNITS_IN_METRES
+from qtpyvcp.widgets.input_widgets.entry_units import (
+    SHOWN_FIGURES, STORED_FIGURES, entry_base_unit, entry_pattern, round_figures, round_whole,
+    set_entry_state, to_unit_system)
 
 from qtpyvcp.utilities import logger
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 LOG = logger.getLogger(__name__)
@@ -20,13 +24,17 @@ class VCPAbstractSettingsWidget(VCPWidget):
         self._setting = None
         self._setting_name = ''
 
-    @Property(str)
+    @Property(str, freset=reset_to('settingName', ''))
     def settingName(self):
         return self._setting_name
 
     @settingName.setter
     def settingName(self, name):
         self._setting_name = name
+
+
+class _EntryCheckRefused(ValueError):
+    """A typed number the field's entry check refused (setEntryCheck)."""
 
 
 class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
@@ -47,8 +55,307 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         self._high_precision_storage = False
         self._internal_value = None
         self._display_decimals = 4
+        self._units_in_mm = False
+        self._units_ft_m = False
+        # The text this field last showed for its stored value. Finishing an
+        # edit with the text unchanged means nothing was typed.
+        self._shown_text = None
+        # An extra rule a typed number must pass, set from code (setEntryCheck),
+        # and the tooltip the field had before it showed why one was refused
+        self._entry_check = None
+        self._tooltip_before_refusal = None
+        # Which unit system the field is SHOWN in, when that differs from the
+        # INI units it is stored in (see setDisplayUnitsSource); None: the INI
+        self._display_units_source = None
 
         self.returnPressed.connect(self.onReturnPressed)
+        self.textEdited.connect(self._onEntryEdited)
+
+    @Property(bool, freset=reset_to('unitsInMm', False))
+    def unitsInMm(self):
+        """Tick to hold the value in mm on a metric machine, in on an inch
+        one. The field then also accepts a number typed with a unit and
+        converts it: 1.5in shows as 38.1 on a metric machine. Exclusive with
+        unitsFtM: ticking one clears the other. Leave both clear for a
+        number that is not a length, such as an RPM or an angle."""
+        return self._units_in_mm
+
+    @unitsInMm.setter
+    def unitsInMm(self, on):
+        self._units_in_mm = bool(on)
+        if self._units_in_mm:
+            self._units_ft_m = False
+        self._refresh_entry_validator()
+
+    @Property(bool, freset=reset_to('unitsFtM', False))
+    def unitsFtM(self):
+        """Tick to hold the value in m on a metric machine, ft on an inch
+        one. The field then also accepts a number typed with a unit and
+        converts it: 3000mm shows as 3 on a metric machine. Exclusive with
+        unitsInMm: ticking one clears the other."""
+        return self._units_ft_m
+
+    @unitsFtM.setter
+    def unitsFtM(self, on):
+        self._units_ft_m = bool(on)
+        if self._units_ft_m:
+            self._units_in_mm = False
+        self._refresh_entry_validator()
+
+    def _unit_scale(self):
+        if self._units_in_mm:
+            return 'in_mm'
+        if self._units_ft_m:
+            return 'ft_m'
+        return None
+
+    def _has_units(self):
+        """Any number setting can take a unit once a units box is ticked. A
+        whole-number one rounds the converted value -- see _whole_number."""
+        return self._setting is not None and self._effective_value_type() in (int, float)
+
+    def _whole_number(self, numeric):
+        """The value a whole-number setting stores for numeric, or None to
+        refuse it.
+
+        With a units box ticked (a surface speed) it rounds: 600ft is 182.88
+        m/min, stored as 183. With none (a tool number, a pass count) a
+        fraction is refused, so 7/2 can never quietly become tool 3 or 4.
+        """
+        if numeric == int(numeric):
+            return int(numeric)
+        if self._unit_scale() is not None:
+            return round_whole(numeric)
+        return None
+
+    def _is_number_entry(self):
+        return self._setting is not None and self._effective_value_type() in (int, float)
+
+    def _current_value(self):
+        """The stored value an entry like +5 or /2 works on: the full value,
+        never the rounded display, so repeated edits don't creep."""
+        if self._high_precision_storage and self._internal_value is not None:
+            return self._internal_value
+        try:
+            return float(self._setting.getValue())
+        except (TypeError, ValueError):
+            return None
+
+    def _entry_value(self, text):
+        """The value a typed number entry stores (in stored units), or
+        ValueError if it can't be accepted. The entry is read in the units
+        the field is shown in, and works on the current value shown in them."""
+        factor = self._display_factor()
+        current = self._current_value()
+        if current is not None:
+            current *= factor
+        # Converted afterwards: rounded once, in the stored units, so the
+        # rounding does not stack (50 mm / 2 shown in inches is still 25)
+        numeric = cnc_eval(text, self._entry_base_unit(), current, rounded=(factor == 1.0))
+        if factor != 1.0:
+            numeric = round_figures(numeric / factor, STORED_FIGURES)
+        if self._effective_value_type() is int:
+            whole = self._whole_number(numeric)
+            if whole is None:
+                raise ValueError(f"'{text}' is not a whole number")
+            numeric = whole
+        # Outside the setting's min_value / max_value: refused like any other
+        # entry that can't be accepted, never clamped -- a clamp would store
+        # a number nobody typed
+        low = getattr(self._setting, 'min_value', None)
+        high = getattr(self._setting, 'max_value', None)
+        if low is not None and numeric < low:
+            raise ValueError(f"'{text}' is below the minimum {low}")
+        if high is not None and numeric > high:
+            raise ValueError(f"'{text}' is above the maximum {high}")
+        if self._entry_check is not None:
+            problem = self._entry_check(numeric)
+            if problem:
+                raise _EntryCheckRefused(problem)
+        return numeric
+
+    def setEntryCheck(self, check):
+        """An extra rule a typed number must pass, set from code -- one that
+        depends on something else, such as another setting. check(value) gets
+        the value as it would be stored and returns None when it may be, or
+        what is wrong in words. A refused entry is treated like any other that
+        can't be accepted: marked while typing, Enter refused, dropped on
+        click-away -- and the words are the field's tooltip while it is marked.
+        None removes the rule. The stored value is checked too, here and
+        whenever it is written (see refreshEntryCheck)."""
+        self._entry_check = check
+        self.refreshEntryCheck()
+
+    def refreshEntryCheck(self):
+        """Check the STORED value against the entry check and show the result:
+        a value written from code -- a loaded operation, a preset, startup --
+        that the rule refuses is marked like a refused entry (red, the words as
+        tooltip); one it accepts is unmarked. Call it when something the rule
+        depends on changes. Left alone while the field is being typed in."""
+        if self._entry_check is None or self._setting is None or self.hasFocus():
+            return
+        value = self._setting.getValue()
+        problem = self._entry_check(value) if value is not None else None
+        set_entry_state(self, 'error' if problem else '')
+        self._show_refusal(problem)
+
+    def _show_refusal(self, problem):
+        """The entry check's words as the tooltip while refused; the field's
+        own tooltip back otherwise."""
+        if problem:
+            if self._tooltip_before_refusal is None:
+                self._tooltip_before_refusal = self.toolTip()
+            self.setToolTip(problem)
+        elif self._tooltip_before_refusal is not None:
+            self.setToolTip(self._tooltip_before_refusal)
+            self._tooltip_before_refusal = None
+
+    def _entry_check_problem(self, text):
+        """The entry check's words when it refuses the typed text, else None."""
+        if self._entry_check is None or not text.strip():
+            return None
+        try:
+            self._entry_value(text)
+        except _EntryCheckRefused as exc:
+            return str(exc)
+        except (TypeError, ValueError):
+            return None
+        return None
+
+    def _entry_acceptable(self, text):
+        if not text.strip():
+            # Cleared: finishing shows the stored value again
+            return True
+        try:
+            self._entry_value(text)
+        except (TypeError, ValueError):
+            return False
+        return True
+
+    def _onEntryEdited(self, text):
+        """Show while typing whether Enter would accept the entry."""
+        if self._is_number_entry():
+            set_entry_state(self, 'editing' if self._entry_acceptable(text) else 'error')
+            self._show_refusal(self._entry_check_problem(text))
+
+    def keyPressEvent(self, event):
+        if self._is_number_entry():
+            if (event.key() in (Qt.Key_Return, Qt.Key_Enter)
+                    and not self._entry_acceptable(self.text())):
+                # Refused: the entry stays, selected and marked, until it is
+                # fixed, cleared or dropped with Esc
+                set_entry_state(self, 'error')
+                self.selectAll()
+                event.accept()
+                return
+            if event.key() == Qt.Key_Escape:
+                # Drop the entry and show the stored value again
+                self.setDisplayValue(self._setting.getValue())
+                set_entry_state(self, '')
+                self._show_refusal(None)
+                event.accept()
+                self.clearFocus()
+                return
+        super(VCPSettingsLineEdit, self).keyPressEvent(event)
+
+    def setDisplayUnitsSource(self, source):
+        """Show this field in another unit system than the INI units its value
+        is stored in.
+
+        source is a callable returning True for metric, False for inch, or
+        None if it can't tell (the field then shows the stored units and
+        refuses a typed unit rather than guess). A lathe page, for one, shows
+        its fields in the page's own INCH/MM: 2 in stored shows as 50.8000 on
+        a MM page. Only the display, typing and value() follow it -- the
+        stored value is the same physical size whatever it returns, and
+        setValue (rules, code) always takes stored units. After what it
+        returns changes, call refreshDisplay(). None: show the INI units.
+        """
+        self._display_units_source = source
+
+    def _display_units_metric(self):
+        """What the display source says: True metric, False inch, None if it
+        can't tell or fails."""
+        try:
+            metric = self._display_units_source()
+        except Exception:
+            LOG.exception("Display units source for '%s' failed", self._setting_name)
+            return None
+        return None if metric is None else bool(metric)
+
+    def _stored_base_unit(self):
+        """The unit the value is stored in: the INI units."""
+        if not self._has_units():
+            return None
+        return entry_base_unit(self._unit_scale())
+
+    def _entry_base_unit(self):
+        """The unit the field is shown and typed in."""
+        if not self._has_units():
+            return None
+        if self._display_units_source is None:
+            return self._stored_base_unit()
+        metric = self._display_units_metric()
+        if metric is None:
+            # Can't tell which system the field is shown in: plain numbers only
+            return None
+        return entry_base_unit(self._unit_scale(), metric)
+
+    def _display_factor(self):
+        """Stored value x this = shown value. 1.0 when they are the same unit."""
+        stored, shown = self._stored_base_unit(), self._entry_base_unit()
+        if not stored or not shown or stored == shown:
+            return 1.0
+        return CNC_UNITS_IN_METRES[stored] / CNC_UNITS_IN_METRES[shown]
+
+    def _to_display_number(self, stored):
+        """A stored number in the units the field is shown in."""
+        factor = self._display_factor()
+        if factor == 1.0:
+            return stored
+        shown = round_figures(float(stored) * factor, SHOWN_FIGURES)
+        if self._effective_value_type() is int:
+            return round_whole(shown)
+        return shown
+
+    def storedValue(self):
+        """The value as stored, in the INI units, at full precision."""
+        if self._setting is None:
+            return None
+        if self._high_precision_storage and self._internal_value is not None:
+            return self._internal_value
+        return self._setting.getValue()
+
+    def toStoredUnits(self, value, metric):
+        """value, given in metric (True) or inch (False) units of this field's
+        kind, in the units the field stores -- for code that writes values
+        that arrive in some other system, such as a loaded operation."""
+        if not self._has_units():
+            return value
+        converted = to_unit_system(value, self._unit_scale(), bool(metric))
+        if converted is value:
+            return value
+        if self._effective_value_type() is int:
+            return round_whole(converted)
+        return converted
+
+    def refreshDisplay(self):
+        """Show the stored value again, in the current display units. Call
+        after what the display source returns has changed. An unfinished
+        entry is dropped: it was typed in the old units."""
+        if self._setting is None:
+            return
+        set_entry_state(self, '')
+        self.setDisplayValue(self.storedValue())
+
+    def _refresh_entry_validator(self):
+        """Number fields accept arithmetic, and unit letters if a units box
+        is ticked. Only once bound: before that the setting type is unknown."""
+        if self._setting is None or self._effective_value_type() not in (int, float):
+            return
+        scale = self._unit_scale() if self._has_units() else None
+        self.setValidator(QRegularExpressionValidator(
+            QRegularExpression(entry_pattern(scale)), self))
 
     def _normalize_setting_type_mode(self, mode):
         mode = (mode or 'auto').strip().lower()
@@ -92,7 +399,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         # In auto mode without a bound setting, treat 0 decimals as integer mode.
         return int if self._display_decimals == 0 else float
 
-    @Property(str)
+    @Property(str, freset=reset_to('settingTypeMode', 'auto'))
     def settingTypeMode(self):
         """Type hint for Designer/runtime behavior: auto, float, int, or text."""
         return self._setting_type_mode
@@ -107,7 +414,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         """Format numeric values from displayDecimals only (single source of truth)."""
         return f"{numeric:.{self._display_decimals}f}"
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('highPrecisionStorage', False))
     def highPrecisionStorage(self):
         """Keep full float precision internally while formatting display text."""
         return self._high_precision_storage
@@ -116,7 +423,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
     def highPrecisionStorage(self, enabled):
         self._high_precision_storage = bool(enabled)
 
-    @Property(int)
+    @Property(int, freset=reset_to('displayDecimals', 4))
     def displayDecimals(self):
         """Number of decimals shown for float settings."""
         return self._display_decimals
@@ -128,16 +435,19 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             self.setDisplayValue(self._setting.getValue())
 
     def value(self):
-        """Return the current value normalized to the setting type."""
+        """Return the current value normalized to the setting type, in the
+        units the field is shown in -- the INI units unless a display units
+        source says otherwise (see setDisplayUnitsSource)."""
         if self._setting is not None:
             if self._setting.value_type in (int, float):
                 if self._high_precision_storage and self._internal_value is not None:
-                    return self._internal_value
-
-                try:
-                    return self._setting.normalizeValue(cnc_float(self.text()))
-                except (TypeError, ValueError):
-                    return self._setting.getValue()
+                    stored = self._internal_value
+                else:
+                    try:
+                        stored = self._setting.normalizeValue(self._entry_value(self.text()))
+                    except (TypeError, ValueError):
+                        stored = self._setting.getValue()
+                return self._to_display_number(stored)
 
             return self.text()
 
@@ -211,13 +521,17 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             self.setValue("")
 
     def setDisplayValue(self, value):
+        """Show a STORED value, in the units the field is shown in."""
         self.blockSignals(True)
         try:
+            if self._has_units() and value is not None and value != '':
+                value = self._to_display_number(cnc_float(value))
             self.setText(self.formatValue(value))
         except Exception as e:
             # Keep widget usable if a user enters an invalid format string.
             LOG.warning("VCPSettingsLineEdit setDisplayValue fallback due to format error: %s", e)
             self.setText(str(value) if value is not None else "")
+        self._shown_text = self.text()
         self.blockSignals(False)
 
     def onSettingChanged(self, value):
@@ -237,6 +551,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             except (TypeError, ValueError):
                 pass
         self.setDisplayValue(value)
+        self.refreshEntryCheck()
 
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
@@ -245,16 +560,13 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
             val = self._setting.getValue()
             value_type = self._effective_value_type()
 
-            validator = None
-            if value_type is int:
-                validator = QIntValidator()
-            elif value_type is float:
-                validator = QDoubleValidator()
-                # CNC parsing should always use decimal point regardless of OS locale.
-                validator.setLocale(QLocale.c())
-                validator.setDecimals(6)
-
-            self.setValidator(validator)
+            # Number fields also take arithmetic -- 1.4*25.4, 3/4, (50-12)/2 --
+            # and, with a units box ticked, a unit (38mm, 600ft),
+            # all worked out when editing finishes and the answer shown in
+            # its place (see onEditingFinished). The validator only limits
+            # which keys can be typed; cnc_eval decides what is a valid entry.
+            self.setValidator(None)
+            self._refresh_entry_validator()
 
             if self._tmp_value:
                 self.setValue(self._tmp_value)
@@ -272,8 +584,27 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         value_type = self._effective_value_type()
 
         if value_type in (int, float):
+            set_entry_state(self, '')
+            self._show_refusal(None)
+
+            # Nothing typed: the text is still what the field was showing.
+            # Storing it would replace the stored value with its rounded
+            # display -- 1/3 would become 0.3333 just by clicking in and out.
+            if self.text() == self._shown_text:
+                return
+
+            # Clearing a number field changes nothing: the stored value is
+            # shown again. Qt used to refuse to finish editing on an empty
+            # field, so nothing was written; this keeps that, rather than
+            # letting an empty field be read as 0.
+            if not self.text().strip():
+                self.setDisplayValue(self._setting.getValue())
+                return
+
+            # An entry that can't be accepted is dropped when the field loses
+            # focus (Enter never gets here with one -- see keyPressEvent)
             try:
-                numeric = cnc_float(self.text())
+                numeric = self._entry_value(self.text())
             except (TypeError, ValueError):
                 self.setDisplayValue(self._setting.getValue())
                 return
@@ -444,7 +775,7 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
         # Property to control output type
         self._output_as_int = False
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('outputAsInt', False))
     def outputAsInt(self):
         """If True, value() returns 0/1 integers. If False (default), returns True/False booleans."""
         return self._output_as_int
@@ -556,7 +887,7 @@ class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
         # Backward-compatible default: persist index unless explicitly disabled.
         self._store_index = True
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('storeIndex', True))
     def storeIndex(self):
         return self._store_index
 

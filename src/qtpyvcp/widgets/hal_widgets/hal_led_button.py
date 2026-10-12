@@ -1,9 +1,14 @@
+import os
+
 from PySide6.QtWidgets import QPushButton
 from PySide6.QtCore import Qt, Slot, Property, Signal, QSize
 from PySide6.QtGui import QColor
 
 from qtpyvcp.utilities.obj_status import HALStatus
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
+
+IN_DESIGNER = os.getenv('DESIGNER') != None
 
 hal_status = HALStatus()
 
@@ -94,11 +99,11 @@ class HALLEDButton(QPushButton):
         self._alignment = Qt.Alignment(value)
         self.update()
 
-    diameter = Property(int, getLedDiameter, setLedDiameter)
-    color = Property(QColor, getLedColor, setLedColor)
-    alignment = Property(Qt.Alignment, getAlignment, setAlignment)
+    diameter = Property(int, getLedDiameter, setLedDiameter, freset=reset_to('diameter', 14))
+    color = Property(QColor, getLedColor, setLedColor, freset=reset_to('color', lambda self: QColor('red')))
+    alignment = Property(Qt.Alignment, getAlignment, setAlignment, freset=reset_to('alignment', Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop))
 
-    @Property(str)
+    @Property(str, freset=reset_to('flashPinName', ''))
     def flashPinName(self):
         """The `actionName` property for setting the action the button
             should trigger from within QtDesigner.
@@ -117,6 +122,8 @@ class HALLEDButton(QPushButton):
             action_name (str) : A fully qualified action name.
         """
         self._flash_pin_name = flash_pin_name
+        if IN_DESIGNER:  # no HAL to look the pin up in
+            return
         try:
             hal_pin = hal_status.getHALPin(flash_pin_name)
         except ValueError:
@@ -124,7 +131,7 @@ class HALLEDButton(QPushButton):
         hal_pin.connect(self.updateState)
 
 
-    @Property(str)
+    @Property(str, freset=reset_to('pinName', ''))
     def pinName(self):
         """The `actionName` property for setting the action the button
             should trigger from within QtDesigner.
@@ -143,6 +150,8 @@ class HALLEDButton(QPushButton):
             action_name (str) : A fully qualified action name.
         """
         self._pin_name = pin_name
+        if IN_DESIGNER:  # no HAL to look the pin up in
+            return
         try:
             hal_pin = hal_status.getHALPin(pin_name)
         except ValueError:

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QLineEdit, QListWidgetItem, QCompleter
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import issue_mdi
-from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
+from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget, reset_to
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -49,7 +49,7 @@ class MDIEntry(QLineEdit, CMDWidget):
 
         self.returnPressed.connect(self.submit)
 
-    @Property(int)
+    @Property(int, freset=reset_to('mdi_history_size', 100))
     def mdi_history_size(self):
         return self._mdi_history_size
 
@@ -57,7 +57,7 @@ class MDIEntry(QLineEdit, CMDWidget):
     def mdi_history_size(self, size):
         self._mdi_history_size = size
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('completerEnabled', True))
     def completerEnabled(self):
         return self._completer_enabled
     
@@ -65,7 +65,7 @@ class MDIEntry(QLineEdit, CMDWidget):
     def completerEnabled(self, flag):
         self._completer_enabled = flag
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('showCompleterOnFocus', False))
     def showCompleterOnFocus(self):
         return self._show_completer_on_focus
 

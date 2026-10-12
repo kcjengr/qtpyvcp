@@ -1,10 +1,14 @@
 import os
 import json
-from PySide6.QtCore import Property, QTimer
+from PySide6.QtCore import Property, QRegularExpression, Qt, QTimer
+from PySide6.QtGui import QRegularExpressionValidator
 from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
 from qtpyvcp.widgets.base_widgets import VarWidgetMixin
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 from qtpyvcp.utilities import logger
-from qtpyvcp.utilities.misc import cnc_float
+from qtpyvcp.utilities.misc import cnc_float, cnc_eval
+from qtpyvcp.widgets.input_widgets.entry_units import (
+    entry_base_unit, entry_pattern, set_entry_state)
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions.machine_actions import issue_mdi
@@ -143,8 +147,24 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         self._write_timer.setSingleShot(True)
         self._write_timer.timeout.connect(self._writeToLinuxCNC)
         
+        # Unit scale, see the unitsInMm/unitsFtM checkboxes
+        self._units_in_mm = False
+        self._units_ft_m = False
+
+        # The text this field last showed, and the full value behind it.
+        # Finishing an edit with the text unchanged means nothing was typed.
+        self._shown_text = None
+        self._shown_value = None
+
+        # Arithmetic can be typed -- 1.4*25.4, 3/4, (50-12)/2 -- and, with
+        # a units box ticked, a unit (38mm, 1.5in); it is worked out when editing
+        # finishes, other keys are refused. The validator only limits typing,
+        # cnc_eval decides what is valid.
+        self._refresh_entry_validator()
+
         # Connect to value changes
         self.textChanged.connect(self._onTextChanged)
+        self.textEdited.connect(self._onEntryEdited)
         self.editingFinished.connect(self.onEditingFinished)
 
     def _loadIniConfiguration(self):
@@ -181,7 +201,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
             'parameter_file_exists': os.path.exists(self.getParameterFilePath()) if self.getParameterFilePath() else False
         }
 
-    @Property(int)
+    @Property(int, freset=reset_to('varParameterNumber', 0))
     def varParameterNumber(self):
         """LinuxCNC parameter number to write to (e.g., 3014 for #3014)"""
         return self.var_parameter_number
@@ -194,7 +214,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
             # Use a timer to defer loading until after widget is fully initialized
             QTimer.singleShot(100, self.loadParameterValue)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('autoWriteEnabled', True))
     def autoWriteEnabled(self):
         """Whether to automatically write changes to LinuxCNC parameters"""
         return self._auto_write_enabled
@@ -203,7 +223,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
     def autoWriteEnabled(self, enabled):
         self._auto_write_enabled = bool(enabled)
 
-    @Property(int)
+    @Property(int, freset=reset_to('writeDelay', 500))
     def writeDelay(self):
         """Delay in milliseconds before writing to LinuxCNC after text changes"""
         return self._write_delay
@@ -212,7 +232,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
     def writeDelay(self, delay):
         self._write_delay = int(delay)
 
-    @Property(int)
+    @Property(int, freset=reset_to('displayDecimals', 4))
     def displayDecimals(self):
         """Number of decimal places to display in the widget"""
         return self._display_decimals
@@ -224,7 +244,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         if self._internal_value is not None:
             self.setDisplayValue(self._internal_value)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('requireHomed', True))
     def requireHomed(self):
         """Whether to require machine to be homed before enabling the widget"""
         return self._require_homed
@@ -234,6 +254,97 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         self._require_homed = bool(require)
         # Re-evaluate enabled state when this property changes
         self._updateEnabledState()
+
+    @Property(bool, freset=reset_to('unitsInMm', False))
+    def unitsInMm(self):
+        """Tick to hold the value in mm on a metric machine, in on an inch
+        one. The field then also accepts a number typed with a unit and
+        converts it: 1.5in shows as 38.1 on a metric machine. Exclusive with
+        unitsFtM: ticking one clears the other. Leave both clear for a
+        number that is not a length, such as an RPM or an angle."""
+        return self._units_in_mm
+
+    @unitsInMm.setter
+    def unitsInMm(self, on):
+        self._units_in_mm = bool(on)
+        if self._units_in_mm:
+            self._units_ft_m = False
+        self._refresh_entry_validator()
+
+    @Property(bool, freset=reset_to('unitsFtM', False))
+    def unitsFtM(self):
+        """Tick to hold the value in m on a metric machine, ft on an inch
+        one. The field then also accepts a number typed with a unit and
+        converts it: 3000mm shows as 3 on a metric machine. Exclusive with
+        unitsInMm: ticking one clears the other."""
+        return self._units_ft_m
+
+    @unitsFtM.setter
+    def unitsFtM(self, on):
+        self._units_ft_m = bool(on)
+        if self._units_ft_m:
+            self._units_in_mm = False
+        self._refresh_entry_validator()
+
+    def _unit_scale(self):
+        if self._units_in_mm:
+            return 'in_mm'
+        if self._units_ft_m:
+            return 'ft_m'
+        return None
+
+    def _entry_base_unit(self):
+        return entry_base_unit(self._unit_scale())
+
+    def _refresh_entry_validator(self):
+        self.setValidator(QRegularExpressionValidator(
+            QRegularExpression(entry_pattern(self._unit_scale())), self))
+
+    def _entry_acceptable(self, text):
+        if not text.strip():
+            # Cleared: finishing writes 0
+            return True
+        try:
+            self._entry_value(text)
+        except ValueError:
+            return False
+        return True
+
+    def _entry_value(self, text):
+        """What a typed entry works out to. An entry like +5 or /2 works on
+        the parameter's full value -- the one last loaded or written -- never
+        the rounded display."""
+        return cnc_eval(text, self._entry_base_unit(), self._shown_value)
+
+    def _onEntryEdited(self, text):
+        """Show while typing whether Enter would accept the entry."""
+        if IN_DESIGNER:
+            # Designer would save the property into the .ui
+            return
+        set_entry_state(self, 'editing' if self._entry_acceptable(text) else 'error')
+
+    def keyPressEvent(self, event):
+        if (event.key() in (Qt.Key_Return, Qt.Key_Enter)
+                and not self._entry_acceptable(self.text())):
+            # Refused: the entry stays, selected and marked, until it is
+            # fixed, cleared or dropped with Esc. Nothing is written -- the
+            # write timer waits while the field has focus.
+            set_entry_state(self, 'error')
+            self.selectAll()
+            event.accept()
+            return
+        if event.key() == Qt.Key_Escape:
+            # Drop the entry and show the stored value again
+            self._write_timer.stop()
+            self._pending_user_commit = False
+            if self._shown_value is not None:
+                self._internal_value = self._shown_value
+                self.setDisplayValue(self._shown_value)
+            set_entry_state(self, '')
+            event.accept()
+            self.clearFocus()
+            return
+        super(VCPVarLineEdit, self).keyPressEvent(event)
 
     def _connectStatusPlugin(self):
         """Connect to the status plugin for monitoring machine state"""
@@ -323,7 +434,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         if self._internal_value is not None:
             return self._internal_value
         else:
-            return round(cnc_float(self.text()), 6) if self.text() else 0.0
+            return round(self._entry_value(self.text()), 6) if self.text() else 0.0
 
     def setDisplayValue(self, value):
         """Set display value with consistent formatting using displayDecimals"""
@@ -337,20 +448,44 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         float_value = cnc_float(value)
         display_text = self.formatValue(float_value)
         self.setText(display_text)
+        self._shown_text = display_text
+        self._shown_value = float_value
         
         self.blockSignals(False)
 
     def onEditingFinished(self):
         """Handle user editing with 6-decimal precision storage and display formatting"""
+        set_entry_state(self, '')
         user_text = self.text()
-        if not user_text.strip():
+
+        # Nothing typed: the text is still what the field was showing. Writing
+        # it would round the parameter to the display -- 0.039370 shown as
+        # 0.0394 would be written back as 0.039400 just by clicking in and
+        # out. Put back the full value in case keystrokes replaced it.
+        if user_text == self._shown_text:
+            self._write_timer.stop()
             self._pending_user_commit = False
+            if self._shown_value is not None:
+                self._internal_value = self._shown_value
             return
 
+        if not user_text.strip():
+            # A parameter always holds a number, so clearing the field is the
+            # same as setting it to 0. It goes through the normal path below,
+            # which stops the keystroke timer before writing -- otherwise that
+            # timer would still fire and write the last half-typed number.
+            user_text = '0'
+
         try:
-            user_value = cnc_float(user_text)
+            user_value = self._entry_value(user_text)
         except ValueError:
             LOG.warning("VCPVarLineEdit: invalid numeric input '%s'", user_text)
+            # Put the stored parameter back rather than leave the bad text
+            # showing. Re-read from the var file, not _internal_value: that
+            # follows every keystroke, so it may hold a half-typed number.
+            self._write_timer.stop()
+            self._pending_user_commit = False
+            self.loadParameterValue()
             return
         
         # Set flag to prevent settings notification from overriding
@@ -366,6 +501,8 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         self.setText(formatted_text)
         self.setModified(False)
         self.blockSignals(False)
+        self._shown_text = formatted_text
+        self._shown_value = self._internal_value
         
         self._user_just_edited = False
 
@@ -382,7 +519,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
         # Update internal value when user types
         if self.text():
             try:
-                self._internal_value = round(cnc_float(self.text()), 6)
+                self._internal_value = round(self._entry_value(self.text()), 6)
             except ValueError:
                 # Invalid input - don't update internal value yet
                 pass
@@ -444,7 +581,7 @@ class VCPVarLineEdit(VCPLineEdit, VarWidgetMixin):
             value = self._internal_value
             LOG.debug(f"VCPVarLineEdit: Using internal 6-decimal value: {value}")
         else:
-            value = round(cnc_float(self.text()), 6)
+            value = round(self._entry_value(self.text()), 6)
             LOG.debug(f"VCPVarLineEdit: Using text value rounded to 6 decimals: {value}")
 
         # Use LinuxCNC MDI command to set parameter with 6-decimal precision

@@ -377,7 +377,7 @@ class HALPoller(QObject):
     def getHALPin(self, pin_name):
         si = self.status_items.get(pin_name)
         if si is None:
-            raw = subprocess.check_output(['halcmd', '-s', 'show', 'pin', pin_name]).strip()
+            raw = subprocess.check_output(['halcmd', '-s', 'show', 'pin', pin_name]).decode('utf-8').strip()
             if len(raw.split('\n')) > 1: # more than one pin name matches
                 raise ValueError("HAL pin red<{}> does not exist".format(pin_name))
             pin_data = raw.split()

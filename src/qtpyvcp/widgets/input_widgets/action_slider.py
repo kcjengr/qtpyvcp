@@ -7,6 +7,7 @@ from PySide6.QtCore import Slot, Property
 from qtpyvcp.actions import bindWidget
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 LOG = getLogger(__name__)
@@ -23,7 +24,7 @@ class ActionSlider(QSlider):
 
         self._action_name = ''
 
-    @Property(str)
+    @Property(str, freset=reset_to('actionName', ''))
     def actionName(self):
         """The fully qualified name of the action the slider should trigger.
 

@@ -97,8 +97,10 @@ TEXT_EXTRAS = {'type', 'insert_shape', 'insert_size_mode', 'holder_style',
 # holder_hand is NOT reference-only: which way a tool is ground decides
 # which way the work has to turn for it to cut, so it is load-bearing
 # rather than a note about the tool.
-REFERENCE_ONLY_EXTRAS = ('chamfer_threads',
-                         'surface_speed', 'feed_per_rev', 'depth_of_cut',
+# chamfer_threads is NOT reference-only either: a tap is drawn from it (the
+# crest ramps to full height over that many threads), in the 3D display and
+# in the lathe conversational's simulation, which requires it on a tap.
+REFERENCE_ONLY_EXTRAS = ('surface_speed', 'feed_per_rev', 'depth_of_cut',
                          'notes', 'holder_oal', 'overall_length', 'groove_width')
 
 # thread_tip_type is NOT reference-only: it decides whether the crest is a
@@ -156,6 +158,20 @@ THREADING_TYPES = {'threading'}
 GENERAL_INSERT_SHAPES = ['C', 'D', 'V', 'W', 'T', 'S', 'R']
 GROOVING_INSERT_SHAPES = ['GROOVE SQUARE', 'GROOVE ROUND']
 THREADING_INSERT_SHAPES = ['THREAD ISO TRIPLE', 'THREAD ISO DOUBLE']
+
+# A tap has no insert, so its Insert Shape cell names the shape of its cutting
+# end -- its style -- and picking one fills in Chamfer Thds: the middle of that
+# style's range in Machinery's Handbook 28th ed., Table 18 (ASME B94.9-1999),
+# in pitches. Only the drawn tap reads the number, and it stays editable for a
+# tap whose exact count is known -- see LatheToolModel.setData.
+TAP_STYLE_CHAMFER_THREADS = {
+    'TAP BOTTOMING': 1.5,        # 1 - 2 pitches
+    'TAP SEMI-BOTTOMING': 2.5,   # 2 - 3
+    'TAP PLUG': 4.0,             # 3 - 5
+    'TAP TAPER': 8.5,            # 7 - 10
+    'TAP PIPE': 2.75,            # 2 - 3 1/2, taper and straight pipe taps
+}
+TAP_INSERT_SHAPES = list(TAP_STYLE_CHAMFER_THREADS)
 
 # ISO shapes whose catalogue size is the cutting EDGE rather than the
 # inscribed circle. A parallelogram has no single inscribed circle to quote,
@@ -316,10 +332,11 @@ class LatheToolModel(ToolTableEditorModel):
     def insertShapeOptionsForType(self, tool_type):
         """insert_shape choices valid for a given tool `type`."""
         t = (tool_type or '').strip().lower()
-        if t in NO_INSERT_TYPES:
-            return []  # no insert-shape concept for drills/taps
-
-        if t in GROOVING_TYPES:
+        if t == 'tap':
+            seed = list(TAP_INSERT_SHAPES)  # its style, which fills its chamfer threads
+        elif t in NO_INSERT_TYPES:
+            return []  # no insert-shape concept for drills
+        elif t in GROOVING_TYPES:
             seed = list(GROOVING_INSERT_SHAPES)
         elif t in THREADING_TYPES:
             seed = list(THREADING_INSERT_SHAPES)
@@ -330,6 +347,27 @@ class LatheToolModel(ToolTableEditorModel):
             if value not in seed:
                 seed.append(value)
         return seed
+
+    def setData(self, index, value, role):
+        """A tap's style, picked in its Insert Shape cell, fills its Chamfer Thds.
+
+        Only when the style itself is the edit: deriveValuesForRow runs after
+        every edit in the row, which would put the style's number back over a
+        count typed in by hand the next time any other cell of that tap
+        changed. Here a hand-typed count stays until the style is picked again.
+        """
+        done = super().setData(index, value, role)
+        key = self._visible_columns[index.column()]
+        tnum = self._tool_no_for_row(index.row())
+        row_data = self._tool_table[tnum]
+        if key == 'insert_shape' and str(row_data.get('type') or '').strip().lower() == 'tap':
+            chamfer = TAP_STYLE_CHAMFER_THREADS.get(str(value or '').strip().upper())
+            if chamfer is not None and row_data.get('chamfer_threads') != chamfer:
+                row_data['chamfer_threads'] = chamfer
+                if 'chamfer_threads' in self._visible_columns:
+                    cell = self.index(index.row(), self._visible_columns.index('chamfer_threads'))
+                    self.dataChanged.emit(cell, cell)
+        return done
 
     def holderStyleOptionsForRow(self, tool_type, insert_shape):
         """holder_style choices valid for a given tool `type`, further
@@ -393,6 +431,9 @@ class LatheToolTable(ToolTableEditor):
     * Insert Shape and Holder offer the choices that fit the tool's type, and
       accept other values too.
     * Size Mode is filled in from Type and Insert Shape.
+    * On a tap, Insert Shape offers the tap's style (bottoming,
+      semi-bottoming, plug, taper, pipe); picking one fills in Chamfer Thds,
+      which stays editable.
     * On grooving and parting tools, Insert Size shows the groove width.
     * Columns nothing reads back, such as Notes and Holder OAL, are hidden by
       default. Show them from the column header menu.

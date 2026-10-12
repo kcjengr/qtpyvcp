@@ -44,6 +44,7 @@ IN_DESIGNER = os.getenv('DESIGNER') != None
 
 
 from qtpyvcp.lib.decorators import deprecated
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 class Axis(object):
     ALL = -1
@@ -111,7 +112,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
     # Designer property Getters/Setters
     # ==========================================================================
 
-    @Property(RefType)
+    @Property(RefType, freset=reset_to('referenceType', RefType.Absolute))
     def referenceType(self):
         return self._ref_typ
 
@@ -121,7 +122,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         self._ref_typ = ref_typ
         self.update(getattr(POSITION, new_ref_typ).getValue())
 
-    @Property(Axis)
+    @Property(Axis, freset=reset_to('axis', Axis.X))
     def axis(self):
         return self._axis_number
 
@@ -138,7 +139,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         self._diameter_mode = diameter_mode
         self.updateUnits(STATUS.stat.program_units)
 
-    @Property(str)
+    @Property(str, freset=reset_to('metricTemplate', '%10.3f'))
     def metricTemplate(self):
         return self._metric_format
 
@@ -153,7 +154,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         self._format = self._metric_format
         self.update(getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
 
-    @Property(str)
+    @Property(str, freset=reset_to('imperialTemplate', '%9.4f'))
     def imperialTemplate(self):
         return self._imperial_format
 

@@ -5,6 +5,7 @@ from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPen
 from PySide6.QtWidgets import QWidget
 
 from qtpyvcp.utilities import logger
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 LOG = logger.getLogger(__name__)
 
 
@@ -182,7 +183,7 @@ class BarIndicatorBase(QWidget):
     def setMaximum(self, max):
         self.maximum = max
 
-    @Property(float)
+    @Property(float, freset=reset_to('value', 100))
     def value(self):
         return self._value
 
@@ -192,7 +193,7 @@ class BarIndicatorBase(QWidget):
             self._value = value
             self.update()
 
-    @Property(float)
+    @Property(float, freset=reset_to('minimum', 0.0))
     def minimum(self):
         return self._minimum
 
@@ -201,7 +202,7 @@ class BarIndicatorBase(QWidget):
         self._minimum = min_val
         self.update()
 
-    @Property(float)
+    @Property(float, freset=reset_to('maximum', 100.0))
     def maximum(self):
         return self._maximum
 
@@ -210,7 +211,7 @@ class BarIndicatorBase(QWidget):
         self._maximum = max_val
         self.update()
 
-    @Property(str)
+    @Property(str, freset=reset_to('prefix', ''))
     def prefix(self):
         return self._prefix
 
@@ -219,7 +220,7 @@ class BarIndicatorBase(QWidget):
         self._prefix = prefix
         self.update()
         
-    @Property(str)
+    @Property(str, freset=reset_to('sufix', ''))
     def sufix(self):
         return self._sufix
 
@@ -228,7 +229,7 @@ class BarIndicatorBase(QWidget):
         self._sufix = sufix
         self.update()
 
-    @Property(str)
+    @Property(str, freset=reset_to('format', '.2f'))
     def format(self):
         return self._format
 
@@ -237,7 +238,7 @@ class BarIndicatorBase(QWidget):
         self._format = fmt
         self.update()
 
-    @Property(Qt.Orientation)
+    @Property(Qt.Orientation, freset=reset_to('orientation', Qt.Orientation.Horizontal))
     def orientation(self):
         return self._orientation
 
@@ -250,7 +251,7 @@ class BarIndicatorBase(QWidget):
         self.adjustTransformation()
         self.update()
 
-    @Property(float)
+    @Property(float, freset=reset_to('valueAt100Percent', 100.0))
     def valueAt100Percent(self):
         return self._value_at_100_percent
 
@@ -268,7 +269,7 @@ class BarIndicatorBase(QWidget):
              return "FORMAT ERROR"
 
     # ToDo: Make this a QLinearGradient
-    @Property('QStringList')
+    @Property('QStringList', freset=reset_to('barGradient', lambda self: ['0.0, 0, 255, 0', '0.8, 255, 255, 0', '1.0, 255, 0, 0']))
     def barGradient(self):
         return self._gradient_def
 
@@ -290,7 +291,7 @@ class BarIndicatorBase(QWidget):
         self.update()
 
     # text color
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('textColor', lambda self: QColor(0, 0, 0)))
     def textColor(self):
         return self._text_color
 
@@ -300,7 +301,7 @@ class BarIndicatorBase(QWidget):
         self.update()
 
     # border color
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('borderColor', Qt.gray))
     def borderColor(self):
         return self._border_color
 
@@ -310,7 +311,7 @@ class BarIndicatorBase(QWidget):
         self.update()
 
     # border radius
-    @Property(int)
+    @Property(int, freset=reset_to('borderRadius', 2))
     def borderRadius(self):
         return self._border_radius
 
@@ -320,7 +321,7 @@ class BarIndicatorBase(QWidget):
         self.update()
 
     # border width
-    @Property(int)
+    @Property(int, freset=reset_to('borderWidth', 1))
     def borderWidth(self):
         return self._border_width
 

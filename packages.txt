@@ -12,7 +12,6 @@ python3-markupsafe
 python3-opengl
 python3-vtk9
 python3-pyqtgraph
-python3-simpleeval
 python3-jinja2
 python3-deepdiff
 python3-sqlalchemy

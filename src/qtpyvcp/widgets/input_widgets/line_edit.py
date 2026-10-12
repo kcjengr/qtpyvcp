@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QLineEdit
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.misc import cnc_float
-from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
+from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget, reset_to
 
 LOG = getLogger(__name__)
 
@@ -36,7 +36,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         self.returnPressed.connect(self.onReturnPressed)
         self.textChanged.connect(self._on_text_changed)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('highPrecisionStorage', False))
     def highPrecisionStorage(self):
         """Enable high precision internal storage while displaying formatted values"""
         return self._high_precision_storage
@@ -47,7 +47,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         if enabled and self._internal_value is None:
             self._internal_value = 0.0
 
-    @Property(int)
+    @Property(int, freset=reset_to('displayDecimals', 4))
     def displayDecimals(self):
         """Number of decimal places to display when high precision storage is enabled"""
         return self._display_decimals
@@ -112,7 +112,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         self.clearFocus()
         LOG.debug("Action entry activated with text: %s", self.text())
 
-    @Property(str)
+    @Property(str, freset=reset_to('actionName', ''))
     def actionName(self):
         """The name of the action the entry should trigger.
 

@@ -25,6 +25,24 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 
 LOG = getLogger(__name__)
 
+
+def reset_to(name, default):
+    """Build the ``freset`` for a Designer ``Property``.
+
+    PySide6 6.8 reports every Property as resettable whether or not it was
+    given a reset function, and resetting one that has none raises inside
+    the C++ metacall. In Qt Designer that is the reset arrow on the property
+    panel, and it takes Designer down. The reset goes through the property's
+    own setter, so it has the same side effects as an edit.
+
+    ``default`` may be a callable taking the widget, for a value that has to
+    be built fresh each time (a QColor) or read off the instance.
+    """
+    def reset(self):
+        setattr(self, name, default(self) if callable(default) else default)
+    return reset
+
+
 class ChanList(list):
     """Channel value list.
 
@@ -116,7 +134,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     # Security implementation
     #
     
-    @Property(int)
+    @Property(int, freset=reset_to('security', 0))
     def security(self):
         """ Security level
         
@@ -250,7 +268,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         if self._flash_on_style:
             self.setFlashing(self._style == self._flash_on_style)
 
-    @Property(str)
+    @Property(str, freset=reset_to('flashOnStyleClass', ''))
     def flashOnStyleClass(self):
         """Flash whenever the widget's style class equals this value.
 
@@ -281,7 +299,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         else:
             self.setFlashing(False)
 
-    @Property(int)
+    @Property(int, freset=reset_to('flashRate', 500))
     def flashRate(self):
         """Flash half-period in milliseconds. Default 500.
 
@@ -309,7 +327,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self.style().polish(self)
         self._updateStyleFlash()
 
-    @Property(str, designable=False)
+    @Property(str, designable=False, freset=reset_to('styleClass', ''))
     def styleClass(self):
         """QSS style class selector property.
 
@@ -343,7 +361,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     def styleClass(self, style):
         self.setStyleClass(style)
 
-    @Property(str, designable=True, stored=True)
+    @Property(str, designable=True, stored=True, freset=reset_to('rules', '[]'))
     def rules(self):
         """JSON formatted list of dictionaries, defining the widget rules.
 
@@ -469,7 +487,7 @@ class HALWidget(VCPBaseWidget):
 
         self._hal_object_name = None
 
-    @Property(str)
+    @Property(str, freset=reset_to('pinBaseName', None))
     def pinBaseName(self):
         """The base name to use for the generated HAL pins.
 

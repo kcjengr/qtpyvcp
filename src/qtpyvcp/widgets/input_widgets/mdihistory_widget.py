@@ -28,7 +28,7 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities import logger
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.actions.program_actions import load as loadProgram
-from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
+from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget, reset_to
 
 import linuxcnc
 
@@ -77,7 +77,7 @@ class MDIHistory(QListWidget, CMDWidget):
 
         #self.returnPressed.connect(self.submit)
 
-    @Property(str)
+    @Property(str, freset=reset_to('mdiEntrylineName', None))
     def mdiEntrylineName(self):
         """Return name of entry object to Designer"""
         return self.mdi_entryline_name
@@ -87,7 +87,7 @@ class MDIHistory(QListWidget, CMDWidget):
         """Set the name for Designer"""
         self.mdi_entryline_name = object_name
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('mdiListOrderNatural', False))
     def mdiListOrderNatural(self):
         """Return if list order is Natural - True/False"""
         return self.mdi_listorder_natural
