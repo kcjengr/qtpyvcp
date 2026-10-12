@@ -28,6 +28,7 @@ from qtpyvcp.actions.machine_actions import parseJogIncrement
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting, setSetting
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 if not IN_DESIGNER:
@@ -156,11 +157,11 @@ class JogIncrementWidget(QWidget):
     def setLayoutSpacing(self, value):
         self._container.setSpacing(value)
 
-    diameter = Property(int, getLedDiameter, setLedDiameter)
-    color = Property(QColor, getLedColor, setLedColor)
-    alignment = Property(Qt.Alignment, getAlignment, setAlignment)
-    orientation = Property(Qt.Orientation, getOrientation, setOrientation)
-    layoutSpacing = Property(int, getLayoutSpacing, setLayoutSpacing)
+    diameter = Property(int, getLedDiameter, setLedDiameter, freset=reset_to('diameter', 15))
+    color = Property(QColor, getLedColor, setLedColor, freset=reset_to('color', lambda self: QColor('green')))
+    alignment = Property(Qt.Alignment, getAlignment, setAlignment, freset=reset_to('alignment', Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignRight))
+    orientation = Property(Qt.Orientation, getOrientation, setOrientation, freset=reset_to('orientation', Qt.Orientation.Horizontal))
+    layoutSpacing = Property(int, getLayoutSpacing, setLayoutSpacing, freset=reset_to('layoutSpacing', -1))
 
 
 if __name__ == "__main__":

@@ -19,6 +19,7 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.encode_utils import allEncodings
 from qtpyvcp.lib.decorators import deprecated
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 LOG = getLogger(__name__)
@@ -487,19 +488,21 @@ class FileSystemTable(QTableView, TableType):
     def getCurrentDirectory(self):
         return self.model.rootPath()
 
-    @Property(TableType)
+    @Property(TableType, freset=reset_to('tableType', TableType.Local))
     def tableType(self):
         return self._table_type
 
     @tableType.setter
     def tableType(self, table_type):
         self._table_type = table_type
+        if IN_DESIGNER:  # nc_file_dir comes from the info plugin, not available here
+            return
         if table_type == TableType.Local:
             self.setRootPath(self.nc_file_dir)
         else:
             self.setRootPath('/media/')
 
-    @Property(str)
+    @Property(str, freset=reset_to('hiddenColumns', ''))
     def hiddenColumns(self):
         """String of comma separated column numbers to hide."""
         return self._hidden_columns
@@ -521,7 +524,7 @@ class FileSystemTable(QTableView, TableType):
                 header.showSection(col)
 
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('fixedNameColumn', False))
     def fixedNameColumn(self):
         """Allows to set a fixed width defined in the nameColumnsWidth property"""
         return self._fixed_name_column
@@ -534,7 +537,7 @@ class FileSystemTable(QTableView, TableType):
             self.setColumnWidth(0, self._fixed_name_column)
             
 
-    @Property(int)
+    @Property(int, freset=reset_to('nameColumnsWidth', 0))
     def nameColumnsWidth(self):
         """If the fixedNameColumn is enabled sets its width."""
         return self._name_columns_width

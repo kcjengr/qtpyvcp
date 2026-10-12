@@ -8,6 +8,7 @@ from collections import deque
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget, VCPWidget
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -137,6 +138,8 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self.updatetimer.start(self._refreshRate)
 
     def setSeries(self):
+        if IN_DESIGNER:  # no plot in designer mode, see __init__
+            return
         # first remove the legend as it does not update correnctly
         try:
             self.legend.scene().removeItem(self.legend)
@@ -171,6 +174,8 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
             self.p4.setPen(QColor(self._s4colour), width=self._s4width, style=self._s4style)
 
     def setData(self):
+        if IN_DESIGNER:  # no numpy or plot in designer mode, see __init__
+            return
         # Data stuff
         self._period = 1.0/self._frequency
         self._refreshRate = int(self._period * 1000)  # sample period in milliseconds
@@ -219,14 +224,18 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
             self.p4.setData(self.x, self.s4)
 
     def setyAxis(self):
+        if IN_DESIGNER:
+            return
         self.yAxis.setLabel(self._yAxisLabel, units=self._yAxisUnits)
 
     def setYRange(self):
+        if IN_DESIGNER:
+            return
         self.plot.setYRange(self._minY, self._maxY, padding = 0.0)
 
 
 
-    @Property(int)
+    @Property(int, freset=reset_to('frequency', 1))
     def frequency(self):
         return self._frequency
 
@@ -235,7 +244,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._frequency = frequency
         return self.setData()
 
-    @Property(int)
+    @Property(int, freset=reset_to('timeWindow', 600))
     def timeWindow(self):
         return self._timeWindow
 
@@ -244,7 +253,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._timeWindow = timeWindow
         return self.setData()
 
-    @Property(str)
+    @Property(str, freset=reset_to('yAxisLabel', 'y label'))
     def yAxisLabel(self):
         return self._yAxisLabel
 
@@ -253,7 +262,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._yAxisLabel = yAxisLabel
         return self.setyAxis()
 
-    @Property(str)
+    @Property(str, freset=reset_to('yAxisUnits', 'y units'))
     def yAxisUnits(self):
         return self._yAxisUnits
 
@@ -262,7 +271,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._yAxisUnits = yAxisUnits
         return self.setyAxis()
 
-    @Property(float)
+    @Property(float, freset=reset_to('minYRange', 0))
     def minYRange(self):
         return self._minY
 
@@ -271,7 +280,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._minY = minY
         return self.setYRange()
 
-    @Property(float)
+    @Property(float, freset=reset_to('maxYRange', 1))
     def maxYRange(self):
         return self._maxY
 
@@ -282,7 +291,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
 
 
     # Legend propterties
-    @Property(bool)
+    @Property(bool, freset=reset_to('legendenable', False))
     def legendenable(self):
         return self._legend
 
@@ -293,7 +302,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
 
 
     # Series 1 properties
-    @Property(bool)
+    @Property(bool, freset=reset_to('series1enable', True))
     def series1enable(self):
         return self._s1enable
 
@@ -302,7 +311,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s1enable = series1enable
         self.setSeries()
 
-    @Property(str)
+    @Property(str, freset=reset_to('series1name', 'Series 1'))
     def series1name(self):
         return self._s1name
 
@@ -311,7 +320,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s1name = series1name
         self.setSeries()
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('series1colour', lambda self: QColor('red')))
     def series1colour(self):
         return self._s1colour
 
@@ -320,7 +329,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s1colour = series1colour
         self.setSeries()
 
-    @Property(int)
+    @Property(int, freset=reset_to('series1width', 1))
     def series1width(self):
         return self._s1width
 
@@ -329,7 +338,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s1width = series1width
         self.setSeries()
 
-    @Property(Qt.PenStyle)
+    @Property(Qt.PenStyle, freset=reset_to('series1style', Qt.PenStyle.SolidLine))
     def series1style(self):
         return self._s1style
 
@@ -340,7 +349,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
 
 
     # Series 2 properties
-    @Property(bool)
+    @Property(bool, freset=reset_to('series2enable', False))
     def series2enable(self):
         return self._s2enable
 
@@ -349,7 +358,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s2enable = series2enable
         self.setSeries()
 
-    @Property(str)
+    @Property(str, freset=reset_to('series2name', 'Series 2'))
     def series2name(self):
         return self._s2name
 
@@ -358,7 +367,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s2name = series2name
         self.setSeries()
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('series2colour', lambda self: QColor('blue')))
     def series2colour(self):
         return self._s2colour
 
@@ -367,7 +376,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s2colour = series2colour
         self.setSeries()
 
-    @Property(int)
+    @Property(int, freset=reset_to('series2width', 1))
     def series2width(self):
         return self._s2width
 
@@ -376,7 +385,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s2width = series2width
         self.setSeries()
 
-    @Property(Qt.PenStyle)
+    @Property(Qt.PenStyle, freset=reset_to('series2style', Qt.PenStyle.SolidLine))
     def series2style(self):
         return self._s2style
 
@@ -387,7 +396,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
 
 
     # Series 3 properties
-    @Property(bool)
+    @Property(bool, freset=reset_to('series3enable', False))
     def series3enable(self):
         return self._s3enable
 
@@ -396,7 +405,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s3enable = series3enable
         self.setSeries()
 
-    @Property(str)
+    @Property(str, freset=reset_to('series3name', 'Series 3'))
     def series3name(self):
         return self._s3name
 
@@ -405,7 +414,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s3name = series3name
         self.setSeries()
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('series3colour', lambda self: QColor('green')))
     def series3colour(self):
         return self._s3colour
 
@@ -414,7 +423,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s3colour = series3colour
         self.setSeries()
 
-    @Property(int)
+    @Property(int, freset=reset_to('series3width', 1))
     def series3width(self):
         return self._s3width
 
@@ -423,7 +432,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s3width = series3width
         self.setSeries()
 
-    @Property(Qt.PenStyle)
+    @Property(Qt.PenStyle, freset=reset_to('series3style', Qt.PenStyle.SolidLine))
     def series3style(self):
         return self._s3style
 
@@ -434,7 +443,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
 
 
     # Series 4 properties
-    @Property(bool)
+    @Property(bool, freset=reset_to('series4enable', False))
     def series4enable(self):
         return self._s4enable
 
@@ -443,7 +452,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s4enable = series4enable
         self.setSeries()
 
-    @Property(str)
+    @Property(str, freset=reset_to('series4name', 'Series 4'))
     def series4name(self):
         return self._s4name
 
@@ -452,7 +461,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s4name = series4name
         self.setSeries()
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('series4colour', lambda self: QColor('yellow')))
     def series4colour(self):
         return self._s4colour
 
@@ -461,7 +470,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s4colour = series4colour
         self.setSeries()
 
-    @Property(int)
+    @Property(int, freset=reset_to('series4width', 1))
     def series4width(self):
         return self._s4width
 
@@ -470,7 +479,7 @@ class HalPlot(QWidget, HALWidget, VCPWidget):
         self._s4width = series4width
         self.setSeries()
 
-    @Property(Qt.PenStyle)
+    @Property(Qt.PenStyle, freset=reset_to('series4style', Qt.PenStyle.SolidLine))
     def series4style(self):
         return self._s4style
 

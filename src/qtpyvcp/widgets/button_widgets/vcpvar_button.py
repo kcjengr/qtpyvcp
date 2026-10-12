@@ -7,6 +7,7 @@ from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions.machine_actions import issue_mdi
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 LOG = logger.getLogger(__name__)
 
@@ -124,7 +125,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
             'parameter_file_exists': os.path.exists(var_file_path) if var_file_path else False
         }
 
-    @Property(int)
+    @Property(int, freset=reset_to('varParameterNumber', 0))
     def varParameterNumber(self):
         """LinuxCNC parameter number to write to (e.g., 3014 for #3014)"""
         return self.var_parameter_number
@@ -133,7 +134,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
     def varParameterNumber(self, param_num):
         self.var_parameter_number = int(param_num)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('autoWriteEnabled', True))
     def autoWriteEnabled(self):
         """Whether to automatically write changes to LinuxCNC parameters"""
         return self._auto_write_enabled
@@ -142,7 +143,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
     def autoWriteEnabled(self, enabled):
         self._auto_write_enabled = bool(enabled)
 
-    @Property(int)
+    @Property(int, freset=reset_to('writeDelay', 500))
     def writeDelay(self):
         """Delay in milliseconds before writing to LinuxCNC after button toggle"""
         return self._write_delay
@@ -151,7 +152,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
     def writeDelay(self, delay):
         self._write_delay = int(delay)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('outputAsInt', False))
     def outputAsInt(self):
         """If True, value() returns 0/1 integers. If False (default), returns True/False booleans."""
         return self._output_as_int
@@ -160,7 +161,7 @@ class VCPVarPushButton(QPushButton, VCPWidget, VarWidgetMixin):
     def outputAsInt(self, use_int):
         self._output_as_int = bool(use_int)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('requireHomed', True))
     def requireHomed(self):
         """Whether to require machine to be homed before enabling the widget"""
         return self._require_homed

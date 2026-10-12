@@ -8,7 +8,6 @@ psutil
 pyudev
 distro
 python-dateutil
-simpleeval
 deepdiff
 panda
 poetry-core

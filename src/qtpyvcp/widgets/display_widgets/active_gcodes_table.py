@@ -4,6 +4,7 @@ from PySide6.QtGui import QStandardItemModel, QColor, QBrush
 from PySide6.QtWidgets import QTableView
 
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -140,7 +141,7 @@ class ActiveGcodesTable(QTableView):
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('activeCodeColor', lambda self: QColor(Qt.darkGreen)))
     def activeCodeColor(self):
         return self.model().active_code_color
 
@@ -149,7 +150,7 @@ class ActiveGcodesTable(QTableView):
         self.model().active_code_color = color
         self.model().refreshModel()
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('activeCodeBackground', None))
     def activeCodeBackground(self):
         return self.model().active_code_bg or QColor()
 

@@ -3,6 +3,7 @@ from PySide6.QtCore import Property
 
 from qtpyvcp.widgets import CMDWidget
 from qtpyvcp.actions import bindWidget
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 class ActionSpinBox(QSpinBox, CMDWidget):
     """Action spinbox for triggering QtPyVCP actions that take a numeric argument.
@@ -21,7 +22,7 @@ class ActionSpinBox(QSpinBox, CMDWidget):
         if action is not None:
             self.actionName = action
 
-    @Property(str)
+    @Property(str, freset=reset_to('actionName', ''))
     def actionName(self):
         """Property for the name of the action the spindbox triggers (str).
 

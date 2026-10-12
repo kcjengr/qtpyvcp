@@ -7,6 +7,7 @@ from qtpyvcp.widgets import HALWidget, VCPWidget
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 LOG = getLogger(__name__)
@@ -125,7 +126,7 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
             checked = self.isChecked()
         self.setFlashing(bool(checked) and self._flash_on_checked)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('flashOnChecked', False))
     def flashOnChecked(self):
         """Flash the button while it is checked.
 
@@ -145,7 +146,7 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
         self._flash_on_checked = bool(flash)
         self._updateFlashing()
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('pulseOnPress', False))
     def pulseOnPress(self):
         """If active, when the button is pressed the ``out`` pin will be `True`
         for :class:`.pulseDuration` ms, otherwise the ``out`` pin will
@@ -157,7 +158,7 @@ class HalButton(QPushButton, HALWidget, VCPWidget):
     def pulseOnPress(self, pulse):
         self._pulse = pulse
 
-    @Property(int)
+    @Property(int, freset=reset_to('pulseDuration', 100))
     def pulseDuration(self):
         """Pulse duration in ms used when :class:`.pulseOnPress` is active."""
         return self._pulse_duration

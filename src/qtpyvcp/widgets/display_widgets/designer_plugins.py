@@ -247,7 +247,13 @@ class VTKBackPlotPlaceholder(QWidget):
         def _set(self, value):
             self._nav_helper_props[key] = value
 
-        return Property(qt_type, _get, _set)
+        def _reset(self):
+            # Back to "not set", the fresh state, which the gizmo config
+            # fills with its own default. See reset_to() in base_widget for
+            # why every Property needs a reset function.
+            self._nav_helper_props.pop(key, None)
+
+        return Property(qt_type, _get, _set, freset=_reset)
 
     navHelperEnabled = _nav_prop(bool, "enabled")
     navHelperAnimate = _nav_prop(bool, "animate")

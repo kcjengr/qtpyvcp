@@ -91,6 +91,7 @@ BOOL_EDITOR_PROP = '_tool_table_bool_editor'
 # before that line.
 from .add_column_dialog import AddColumnDialog
 from .parameter_names_dialog import parameter_entries, ParameterNamesDialog
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 class ToolTableEditorModel(QStandardItemModel):
@@ -1323,7 +1324,7 @@ class ToolTableEditorDelegate(QStyledItemDelegate):
             current_value = row_data.get(key)
 
             if not options:
-                # e.g. a lathe's drill/tap rows have no insert-shape/holder
+                # e.g. a lathe's drill rows have no insert-shape/holder
                 # concept at all -- a combo with nothing valid to offer is
                 # worse than plain free text.
                 editor = QLineEdit(parent)
@@ -2019,7 +2020,7 @@ class ToolTableEditor(QTableView):
     # it's just never been exercised because no .ui sets those properties
     # on it today.)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('confirmActions', False))
     def confirmActions(self):
         return self._confirm_actions
 
@@ -2030,7 +2031,7 @@ class ToolTableEditor(QTableView):
     def setConfirmActions(self, confirm):
         self._confirm_actions = confirm
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('currentToolColor', lambda self: QColor(Qt.darkGreen)))
     def currentToolColor(self):
         return self.tool_model.current_tool_color
 
@@ -2041,7 +2042,7 @@ class ToolTableEditor(QTableView):
     def setCurrentToolColor(self, color):
         self.tool_model.current_tool_color = color
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('currentToolBackground', None))
     def currentToolBackground(self):
         return self.tool_model.current_tool_bg or QColor()
 
@@ -2052,7 +2053,7 @@ class ToolTableEditor(QTableView):
     def setCurrentToolBackground(self, color):
         self.tool_model.current_tool_bg = color
 
-    @Property(int)
+    @Property(int, freset=reset_to('currentRow', -1))
     def currentRow(self):
         return self.selectedRow()
 

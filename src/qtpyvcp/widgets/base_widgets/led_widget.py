@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt, Slot, Property, QTimer, QSize
 from PySide6.QtGui import QColor, QPainter, QRadialGradient, QBrush
 from PySide6.QtWidgets import QWidget, QApplication
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 class LEDWidget(QWidget):
@@ -144,12 +145,12 @@ class LEDWidget(QWidget):
     def stopFlashing(self):
         self.setFlashing(False)
 
-    diameter = Property(int, getDiameter, setDiameter)
-    color = Property(QColor, getColor, setColor)
-    alignment = Property(Qt.Alignment, getAlignment, setAlignment)
-    state = Property(bool, getState, setState)
-    flashing = Property(bool, isFlashing, setFlashing)
-    flashRate = Property(int, getFlashRate, setFlashRate)
+    diameter = Property(int, getDiameter, setDiameter, freset=reset_to('diameter', 30))
+    color = Property(QColor, getColor, setColor, freset=reset_to('color', lambda self: QColor('red')))
+    alignment = Property(Qt.Alignment, getAlignment, setAlignment, freset=reset_to('alignment', Qt.AlignmentFlag.AlignCenter))
+    state = Property(bool, getState, setState, freset=reset_to('state', True))
+    flashing = Property(bool, isFlashing, setFlashing, freset=reset_to('flashing', False))
+    flashRate = Property(int, getFlashRate, setFlashRate, freset=reset_to('flashRate', 200))
 
 if __name__ == "__main__":
 

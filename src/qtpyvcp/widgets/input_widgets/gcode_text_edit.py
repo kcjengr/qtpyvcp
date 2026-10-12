@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QStyledItemDelegate, QTreeView, QListView, QSplitter)
 
 from dateutil.parser import parse as parse_date
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -1343,7 +1344,7 @@ class GcodeTextEdit(QTextEdit):
         self.margin.updateWidth()
         self.margin.update()
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('syntaxHighlighting', False))
     def syntaxHighlighting(self):
         return self.syntax_highlighting
 
@@ -1397,7 +1398,7 @@ class GcodeTextEdit(QTextEdit):
 
         self.readonly != state
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('readOnly', False))
     def readOnly(self):
         return self.readonly
 
@@ -1411,7 +1412,7 @@ class GcodeTextEdit(QTextEdit):
 
         self.readonly = state
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('currentLineBackground', lambda self: QColor(self.palette().alternateBase().color())))
     def currentLineBackground(self):
         return self.current_line_background
 
@@ -1422,7 +1423,7 @@ class GcodeTextEdit(QTextEdit):
         self.setCurrentLine(2)
         self.setCurrentLine(1)
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('currentLineColor', lambda self: QColor(self.palette().text().color())))
     def currentLineColor(self):
         return self.current_line_color
 
@@ -1432,7 +1433,7 @@ class GcodeTextEdit(QTextEdit):
         self.setCurrentLine(2)
         self.setCurrentLine(1)
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('marginBackground', lambda self: QColor('#e8e8e8')))
     def marginBackground(self):
         return self.margin.background
 
@@ -1441,7 +1442,7 @@ class GcodeTextEdit(QTextEdit):
         self.margin.background = color
         self.margin.update()
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('marginCurrentLineBackground', lambda self: QColor('#e8e8e8')))
     def marginCurrentLineBackground(self):
         return self.margin.highlight_background
 
@@ -1450,7 +1451,7 @@ class GcodeTextEdit(QTextEdit):
         self.margin.highlight_background = color
         self.margin.update()
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('marginColor', lambda self: QColor('#717171')))
     def marginColor(self):
         return self.margin.color
 
@@ -1459,7 +1460,7 @@ class GcodeTextEdit(QTextEdit):
         self.margin.color = color
         self.margin.update()
 
-    @Property(QColor)
+    @Property(QColor, freset=reset_to('marginCurrentLineColor', lambda self: QColor('#000000')))
     def marginCurrentLineColor(self):
         return self.margin.highlight_color
 
@@ -1468,7 +1469,7 @@ class GcodeTextEdit(QTextEdit):
         self.margin.highlight_color = color
         self.margin.update()
 
-    @Property(int)
+    @Property(int, freset=reset_to('lineHeightPercent', 100))
     def lineHeightPercent(self):
         return self.line_height_percent
 
@@ -1477,7 +1478,7 @@ class GcodeTextEdit(QTextEdit):
         self.line_height_percent = max(1, int(value))
         self._applyLineHeight()
 
-    @Property(str)
+    @Property(str, freset=reset_to('editorFontFamily', ''))
     def editorFontFamily(self):
         return self.editor_font_family
 
@@ -1486,7 +1487,7 @@ class GcodeTextEdit(QTextEdit):
         self.editor_font_family = value.strip()
         self._applyEditorFont()
 
-    @Property(int)
+    @Property(int, freset=reset_to('editorFontPointSize', 0))
     def editorFontPointSize(self):
         return self.editor_font_point_size
 
@@ -1495,7 +1496,7 @@ class GcodeTextEdit(QTextEdit):
         self.editor_font_point_size = max(0, int(value))
         self._applyEditorFont()
 
-    @Property(int)
+    @Property(int, freset=reset_to('editorFontWeight', -1))
     def editorFontWeight(self):
         return self.editor_font_weight
 
@@ -1504,7 +1505,7 @@ class GcodeTextEdit(QTextEdit):
         self.editor_font_weight = self._normalizeFontWeight(int(value))
         self._applyEditorFont()
 
-    @Property(str)
+    @Property(str, freset=reset_to('marginFontFamily', ''))
     def marginFontFamily(self):
         return self.margin_font_family
 
@@ -1513,7 +1514,7 @@ class GcodeTextEdit(QTextEdit):
         self.margin_font_family = value.strip()
         self._applyMarginFont()
 
-    @Property(int)
+    @Property(int, freset=reset_to('marginFontPointSize', 0))
     def marginFontPointSize(self):
         return self.margin_font_point_size
 
@@ -1522,7 +1523,7 @@ class GcodeTextEdit(QTextEdit):
         self.margin_font_point_size = max(0, int(value))
         self._applyMarginFont()
 
-    @Property(int)
+    @Property(int, freset=reset_to('marginFontWeight', -1))
     def marginFontWeight(self):
         return self.margin_font_weight
 

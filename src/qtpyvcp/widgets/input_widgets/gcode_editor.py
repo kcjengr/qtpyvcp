@@ -35,6 +35,7 @@ from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.qt_safety import safe_qt_callback
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 LOG = logger.getLogger(__name__)
@@ -609,7 +610,7 @@ class GcodeEditor(EditorBase, QObject):
         if find_text != "" and replace_text != "":
             self.text_replace_all(find_text, find_text, from_start)
 
-    @Property(bool)
+    @Property(bool, freset=reset_to('is_editor', False))
     def is_editor(self):
         return self._is_editor
 
@@ -624,7 +625,7 @@ class GcodeEditor(EditorBase, QObject):
             # if self.idle_line_reset:
             #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
-    @Property(str)
+    @Property(str, freset=reset_to('backgroundcolor', ''))
     def backgroundcolor(self):
         """Property to set the background color of the GCodeEditor (str).
 
@@ -637,7 +638,7 @@ class GcodeEditor(EditorBase, QObject):
         self._backgroundcolor = color
         self.set_background_color(color)
 
-    @Property(str)
+    @Property(str, freset=reset_to('marginbackgroundcolor', ''))
     def marginbackgroundcolor(self):
         """Property to set the background color of the GCodeEditor margin (str).
 

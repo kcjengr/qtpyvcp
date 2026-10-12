@@ -45,7 +45,7 @@ def fusion_mill_diameter(geo, num):
     return num.first_positive(geo.get('DC'), geo.get('SFDM')) or 0.0
 
 
-def import_fusion_to_db_mill(src_path, db_path, units='inch', overwrite=False):
+def import_fusion_to_db_mill(src_path, db_path, units, overwrite=False):
     """Create a fresh tool database at db_path from a Fusion 360 tool
     library export (.tools or .json), mill flavor (core columns only).
 
@@ -90,8 +90,9 @@ def main(argv=None):
                      "the tool table editor.")
     parser.add_argument('fusion_file', help="Path to the .tools or .json export")
     parser.add_argument('db_file', help="Path to write the new .db file")
-    parser.add_argument('--units', choices=('inch', 'mm'), default='inch',
-                         help="Unit system for the new database (default: inch)")
+    parser.add_argument('--units', choices=('inch', 'mm'), required=True,
+                         help="Unit system of the tool data and the new database -- "
+                              "required, never assumed")
     parser.add_argument('--overwrite', action='store_true',
                          help="Replace db_file if it already exists")
     args = parser.parse_args(argv)

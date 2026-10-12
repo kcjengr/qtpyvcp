@@ -39,7 +39,7 @@ from .import_merged import _fusion_tools_by_number
 from .tool_table import Tool
 
 
-def import_merged_to_db_mill(tbl_path, fusion_path, db_path, units='inch',
+def import_merged_to_db_mill(tbl_path, fusion_path, db_path, units,
                              overwrite=False):
     """Create a tool database at db_path by merging a legacy .tbl and a
     Fusion 360 library export (.tools or .json), mill flavor (core columns
@@ -117,8 +117,9 @@ def main(argv=None):
     parser.add_argument('tbl_file', help="Path to the legacy .tbl file")
     parser.add_argument('fusion_file', help="Path to the .tools or .json export")
     parser.add_argument('db_file', help="Path to write the new .db file")
-    parser.add_argument('--units', choices=('inch', 'mm'), default='inch',
-                         help="Unit system for the new database (default: inch)")
+    parser.add_argument('--units', choices=('inch', 'mm'), required=True,
+                         help="Unit system of the tool data and the new database -- "
+                              "required, never assumed")
     parser.add_argument('--overwrite', action='store_true',
                          help="Replace db_file if it already exists")
     args = parser.parse_args(argv)

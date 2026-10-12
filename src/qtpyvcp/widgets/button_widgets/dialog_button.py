@@ -2,6 +2,7 @@ from PySide6.QtCore import Property, Slot
 
 from qtpyvcp.widgets import VCPButton
 from qtpyvcp.widgets.dialogs import showDialog
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 class DialogButton(VCPButton):
@@ -25,7 +26,7 @@ class DialogButton(VCPButton):
     def showDialog(self):
         showDialog(self._dialog_name)
 
-    @Property(str)
+    @Property(str, freset=reset_to('dialogName', ''))
     def dialogName(self):
         """Property for the name of the dialog the button triggers (str).
 

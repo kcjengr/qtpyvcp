@@ -3,6 +3,7 @@ from PySide6.QtCore import Qt, Slot, Property, QSize
 
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
 from qtpyvcp.widgets.button_widgets.action_button import ActionButton
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 class LEDButton(ActionButton):
@@ -90,6 +91,6 @@ class LEDButton(ActionButton):
         self._alignment = Qt.Alignment(value)
         self.update()
 
-    diameter = Property(int, getLedDiameter, setLedDiameter)
-    color = Property(QColor, getLedColor, setLedColor)
-    alignment = Property(Qt.Alignment, getAlignment, setAlignment)
+    diameter = Property(int, getLedDiameter, setLedDiameter, freset=reset_to('diameter', 14))
+    color = Property(QColor, getLedColor, setLedColor, freset=reset_to('color', lambda self: QColor('red')))
+    alignment = Property(Qt.Alignment, getAlignment, setAlignment, freset=reset_to('alignment', Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop))

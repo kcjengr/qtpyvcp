@@ -8,6 +8,7 @@ from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities import logger
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 LOG = logger.getLogger(__name__)
 
 # input format: T#<object_name> M6 G43
@@ -80,7 +81,7 @@ class MDIButton(VCPButton):
 
         issue_mdi(cmd)
 
-    @Property(str)
+    @Property(str, freset=reset_to('MDICommand', ''))
     def MDICommand(self):
         """Sets the MDI command property (str).
 

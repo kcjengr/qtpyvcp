@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QStackedWidget
 
 from qtpyvcp import SETTINGS
 from qtpyvcp.widgets.base_widgets import VCPWidget
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 
 
 class VCPAbstractStackedWidget(VCPWidget):
@@ -12,7 +13,7 @@ class VCPAbstractStackedWidget(VCPWidget):
         self._setting = None
         self._setting_name = ''
 
-    @Property(str)
+    @Property(str, freset=reset_to('settingName', ''))
     def settingName(self):
         return self._setting_name
 

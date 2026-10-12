@@ -91,12 +91,18 @@ def _current_version(cursor):
     return row[0] if row else 0
 
 
-def run_migrations(engine):
+def run_migrations(engine, new_units=None):
     """Bring the database at `engine` up to the latest known schema version.
 
     Applies every migrations/NNN_*.sql script newer than the DB's current
     ``meta.schema_version``, in order. Safe to call on every startup: a
     fully up-to-date DB is a no-op.
+
+    A database with no schema yet is a NEW one, and it is created in
+    ``new_units`` -- 'inch' or 'mm': the machine's (the INI's), or the units
+    chosen at import. Without them it is refused: a tool table's units are
+    never assumed (migration 001 writes 'inch' as a placeholder). An
+    existing database keeps its own units; ``new_units`` is ignored for it.
     """
     scripts = _scripts()
     if not scripts:
@@ -107,6 +113,10 @@ def run_migrations(engine):
     try:
         cursor = raw.cursor()
         current = _current_version(cursor)
+        if current == 0 and new_units not in ('inch', 'mm'):
+            raise MigrationError(
+                "a new tool database needs its units, 'inch' or 'mm' (the "
+                "machine's, or chosen at import) -- got %r" % (new_units,))
 
         if current > latest_known:
             # A newer database is not automatically a problem. It means some
@@ -144,6 +154,9 @@ def run_migrations(engine):
                     "the pre-Phase-2 schema; delete/re-seed the database "
                     "instead). Original file backed up to %s before "
                     "refusing: %s" % (os.path.basename(path), backup_path, exc)) from exc
+        if current == 0:
+            # Created just now: in its own units, not 001's placeholder
+            cursor.execute("UPDATE meta SET units = ?", (new_units,))
         raw.commit()
     finally:
         raw.close()

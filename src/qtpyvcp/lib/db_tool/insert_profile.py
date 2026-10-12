@@ -260,7 +260,11 @@ def compute_insert_profile(record):
     if not isinstance(record, dict):
         return None
 
-    style_key = normalize_style_key(record['insert_shape'])
+    # A drill or tap has no ISO insert. A tap's Insert Shape holds its style
+    # ("TAP PLUG" ...), which would read as a T triangle and turn the drawn
+    # tap 30 degrees.
+    style_key = ('generic' if record['is_round_tool']
+                 else normalize_style_key(record['insert_shape']))
     style_spec = ISO_INSERT_STYLE_SPECS.get(style_key)
     iso_nose_angle = (style_spec.get('nose_angle_deg')
                       if isinstance(style_spec, dict) else None)

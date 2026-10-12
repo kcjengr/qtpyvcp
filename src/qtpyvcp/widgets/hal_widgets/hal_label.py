@@ -8,6 +8,7 @@ from qtpyvcp.widgets.hal_widgets import HalType
 
 # Setup logging
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.widgets.base_widgets.base_widget import reset_to
 LOG = getLogger(__name__)
 
 class HalLabel(QLabel, HALWidget, VCPWidget):
@@ -55,7 +56,7 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
             LOG.warning("Invalid format specified")
             
 
-    @Property(str)
+    @Property(str, freset=reset_to('valueFormat', '.2f'))
     def valueFormat(self):
         """Value format property for HAL input display."""
         return self._fmt
@@ -65,7 +66,7 @@ class HalLabel(QLabel, HALWidget, VCPWidget):
         self._fmt = fmt
         self.setValue(self._value)
 
-    @Property(str)
+    @Property(str, freset=reset_to('pinType', 'float'))
     def pinType(self):
         return self._typ
 
