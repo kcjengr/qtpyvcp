@@ -107,3 +107,5 @@ tests/*.db-wal
 tests/*.db-shm
 
 /.pytest_cache/
+*.project
+*.cproject

@@ -338,6 +338,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         
         self.machine_parts = None
         self.machine_parts_data = None
+        # Per-joint DH (alpha, a, d) collected from a robot-style
+        # MACHINE_PARTS yaml ({} for a plain world-axis machine).
+        self._machine_parts_dh_params = {}
         self.kinematics_overlay_shift = (0.0, 0.0, 0.0)
         self.kinematics_overlay_rotation = (0.0, 0.0, 0.0)
         self._runtime_switchkins_type = 0
@@ -514,6 +517,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.spindle_model = self._datasource._inifile.find("VTK", "SPINDLE") or False
 
+            cyl_val = (self._datasource._inifile.find("VTK", "TOOL_CYLINDER") or "").strip().lower()
+            self._tool_cylinder = cyl_val in ("robot", "1", "yes", "true", "on")
+
             if self.spindle_model:
                 self.spindle_actor = SpindleActor(self._datasource, self.spindle_model)
             
@@ -535,6 +541,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                         )
                         
                         self.machine_parts_actor = MachinePartsASM(self.machine_parts_data)
+                        self._machine_parts_dh_params = \
+                            self._machine_parts_dh_collect(self.machine_parts_data)
             
             self.tool_actor = ToolActor(self._datasource)
             self.tool_bit_actor = ToolBitActor(self._datasource)
@@ -683,13 +691,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(self.tool_bit_actor)
             tool_in_spindle = self._tool_in_spindle()
 
-            # If no tool is loaded, show cone placeholder and hide tool-bit geometry.
-            if tool_in_spindle <= 0:
-                self.tool_actor.SetVisibility(1)
-                self.tool_bit_actor.SetVisibility(0)
-            else:
-                self.tool_actor.SetVisibility(1)
-                self.tool_bit_actor.SetVisibility(1)
+            # Show the tool-database STL only when a tool is actually in the
+            # spindle. With nothing loaded the actor still parks a mesh at the
+            # machine TCP, which reads as a stray box on the table. The stock
+            # tool bit stays hidden (the machine-parts spindle is the real one).
+            self.tool_actor.SetVisibility(1 if (tool_in_spindle > 0 and not self._tool_cylinder) else 0)
+            self.tool_bit_actor.SetVisibility(1 if self._tool_cylinder else 0)
             self.renderer.AddActor(self.points_surface_actor)
             self.renderer.AddActor(self.machine_actor)
             self.renderer.AddActor(self.axes_actor)
@@ -2934,25 +2941,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         if self._plot_machine:
             if self.machine_parts:
-
-
-                # self.machine_parts_actor.InitPathTraversal()
-                # parts = self.machine_parts_actor.GetParts()
-                
-                self.machine_parts_actor.InitPathTraversal()
-                for part in self.get_asm_parts(self.machine_parts_actor):
-                    # part_prop = path.GetViewProp()
-                    # if isinstance(part, vtk.vtkActor):
-                    #    self.move_part(part)
-                    if isinstance(part, vtk.vtkAssembly):
-                        self.move_part(part)
-                    #
-
-                        # for p in part.GetParts():
-                        #     if isinstance(p, vtk.vtkActor):
-                        #         self.move_part(p)
-                        #     # if isinstance(p, vtk.vtkAssembly):
-                            #     self.move_part(p)
+                if self._machine_parts_dh_params:
+                    # Robot-arm style yaml: drive every part from joint feedback
+                    # through the DH frames (the STLs are authored on the DH
+                    # home frames, which move_part's world-axis model cannot do).
+                    self._apply_machine_parts_dh_frames()
+                else:
+                    self.machine_parts_actor.InitPathTraversal()
+                    for part in self.get_asm_parts(self.machine_parts_actor):
+                        if isinstance(part, vtk.vtkAssembly):
+                            self.move_part(part)
 
         self.tool_actor.SetUserTransform(tool_transform)
 
@@ -2994,6 +2992,148 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self._append_breadcrumb_point(current_tip)
         self._request_render()
         
+    def _machine_parts_dh_collect(self, data):
+        """Collect the DH (alpha_rad, a, d) of every angular MACHINE_PARTS part
+        that declares a ``joint``, keyed by joint index.
+
+        A robot-arm yaml authors each STL on its DH home frame and describes the
+        link pose relative to the parent with ``mount``:
+
+            [a, -sin(alpha)*d, cos(alpha)*d, alpha_deg, 0, 0]
+
+        so alpha/a/d can be recovered directly. A plain world-axis machine yaml
+        (no ``mount``) yields an empty dict and the generic ``move_part`` path is
+        used instead.
+        """
+        import math
+
+        out = {}
+
+        def walk(node):
+            if not isinstance(node, dict):
+                return
+            if node.get("type") == "angular" and node.get("joint") is not None:
+                mount = node.get("mount")
+                try:
+                    jnum = int(node["joint"])
+                except (TypeError, ValueError):
+                    jnum = None
+                if jnum is not None and isinstance(mount, (list, tuple)) and len(mount) >= 4:
+                    alpha = math.radians(float(mount[3]))
+                    a = float(mount[0])
+                    ca, sa = math.cos(alpha), math.sin(alpha)
+                    if abs(ca) > 1e-9:
+                        d = float(mount[2]) / ca
+                    elif abs(sa) > 1e-9:
+                        d = -float(mount[1]) / sa
+                    else:
+                        d = 0.0
+                    out[jnum] = (alpha, a, d)
+            for value in node.values():
+                if isinstance(value, dict):
+                    walk(value)
+
+        walk(data)
+        return out
+
+    @staticmethod
+    def _dh_link_matrix(alpha, a, d, theta):
+        """4x4 modified-DH link matrix, matching genserkins/`_dh_link` in the
+        robot workspace dialog (row-major nested lists)."""
+        import math
+
+        sth, cth = math.sin(theta), math.cos(theta)
+        sal, cal = math.sin(alpha), math.cos(alpha)
+        return [[cth, -sth, 0.0, a],
+                [sth * cal, cth * cal, -sal, -sal * d],
+                [sth * sal, cth * sal, cal, cal * d],
+                [0.0, 0.0, 0.0, 1.0]]
+
+    def _machine_parts_dh_frames(self, joint_reader, njoints=6):
+        """World 4x4 DH frames for the joint values returned by ``joint_reader``
+        (degrees), plus the tool frame."""
+        import math
+
+        import numpy as np
+
+        acc = np.eye(4)
+        frames = []
+        for j in range(njoints):
+            params = self._machine_parts_dh_params.get(j)
+            if params is None:
+                frames.append(acc.copy())
+                continue
+            alpha, a, d = params
+            theta = math.radians(float(joint_reader(j)))
+            acc = acc @ np.array(self._dh_link_matrix(alpha, a, d, theta)).reshape(4, 4)
+            frames.append(acc.copy())
+        frames.append(acc.copy())  # tool frame
+        return frames
+
+    def _apply_machine_parts_dh_frames(self):
+        """Place each robot-arm part on its DH frame, driven by joint feedback.
+
+        The STLs are authored in their home-pose world coordinates, so moving a
+        joint is the relative rigid transform ``current @ inv(home)``. Each
+        part's parent-relative transform is derived from the DH world frames so
+        the nested assembly renders the arm exactly as the kinematics do. This
+        mirrors RobotWorkspaceDialog._apply_dh_frames.
+        """
+        import numpy as np
+
+        if not self._machine_parts_dh_params or self.machine_parts_actor is None:
+            return
+
+        if not getattr(self, '_dh_parts_logged', False):
+            self._dh_parts_logged = True
+            LOG.info("VTK machine parts: DH animation active for %d joints (%s)",
+                     len(self._machine_parts_dh_params),
+                     sorted(self._machine_parts_dh_params))
+
+        def reader(jnum):
+            try:
+                return float(self.joints[int(jnum)].input.value)
+            except Exception:  # noqa: BLE001 - joint not available yet
+                return 0.0
+
+        current = self._machine_parts_dh_frames(reader)
+        home = self._machine_parts_dh_frames(lambda _j: 0.0)
+        world = {id(self.machine_parts_actor): np.eye(4)}
+
+        def walk(asm):
+            parent_world = world.get(id(asm), np.eye(4))
+            for child in asm.GetParts():
+                if not isinstance(child, vtk.vtkAssembly):
+                    continue
+                target = parent_world
+                try:
+                    jnum = child.GetPartJoint() if hasattr(child, 'GetPartJoint') else None
+                    ptype = child.GetPartType() if hasattr(child, 'GetPartType') else None
+                    if ptype == "angular" and jnum is not None:
+                        jn = int(jnum)
+                        target = (current[jn] @ np.linalg.inv(home[jn])).copy()
+                        pos = child.GetPartPosition() or [0.0, 0.0, 0.0]
+                        # Cancel the actor's own Translate(position); with
+                        # position=[0,0,0] (the robot yaml) this is a no-op.
+                        pos3 = np.array(list(pos)[:3], dtype=float)
+                        target[:3, 3] = target[:3, 3] - target[:3, :3] @ pos3
+                        local = np.linalg.inv(parent_world) @ target
+                        matrix = vtk.vtkMatrix4x4()
+                        matrix.DeepCopy([float(local[r][c])
+                                         for r in range(4) for c in range(4)])
+                        transform = vtk.vtkTransform()
+                        transform.SetMatrix(matrix)
+                        child.SetUserTransform(transform)
+                except Exception as exc:  # noqa: BLE001 - never break rendering
+                    if not getattr(self, '_dh_parts_walk_error_logged', False):
+                        self._dh_parts_walk_error_logged = True
+                        LOG.warning("VTK machine parts DH: skipping a part: %s", exc)
+                    target = parent_world
+                world[id(child)] = target
+                walk(child)
+
+        walk(self.machine_parts_actor)
+
     def move_part(self, part):
                 
         position = part.GetPartPosition()
@@ -3375,10 +3515,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
-        tool_rotation = self._visual_tool_rotation(self.spindle_rotation)
-        tool_transform.RotateX(-tool_rotation[0])
-        tool_transform.RotateY(-tool_rotation[1])
-        tool_transform.RotateZ(-tool_rotation[2])
+        # NOTE: no rotation here, to match the per-frame path above (which has
+        # these Rotate calls commented out). Applying them only on a tool change
+        # made the STL tool jump to a different orientation the moment the
+        # tool-change dialog was accepted. Rotation is a no-op for a 3-axis
+        # mill; for a robot the modelled spindle follows the DH joints, so the
+        # DB tool mesh must be orientated the same way in BOTH paths.
+        # tool_rotation = self._visual_tool_rotation(self.spindle_rotation)
+        # tool_transform.RotateX(-tool_rotation[0])
+        # tool_transform.RotateY(-tool_rotation[1])
+        # tool_transform.RotateZ(-tool_rotation[2])
 
         self.tool_actor.SetUserTransform(tool_transform)
 
@@ -3386,17 +3532,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.RemoveActor(self.tool_bit_actor)
             self.tool_bit_actor = ToolBitActor(self._datasource)
             self.tool_bit_actor.SetUserTransform(tool_transform)
+        elif self._tool_cylinder:
+            # Robot tool cylinder: place it now (gauge + tool axis), otherwise
+            # it would sit on the generic translate-only transform at the
+            # flange until the next motion update.
+            rot = self._visual_tool_rotation(self.spindle_rotation)
+            vp = (self.spindle_position[0], self.spindle_position[1],
+                  self.spindle_position[2], rot[0], rot[1], rot[2])
+            self.tool_bit_actor.set_position_cnc(vp)
         else:
             self.tool_bit_actor.SetUserTransform(tool_transform)
 
         tool_in_spindle = self._tool_in_spindle()
 
-        if tool_in_spindle <= 0:
-            self.tool_actor.SetVisibility(1)
-            self.tool_bit_actor.SetVisibility(0)
-        else:
-            self.tool_actor.SetVisibility(1)
-            self.tool_bit_actor.SetVisibility(1)
+        # The built-in tool bit is a stock mill/lathe placeholder and draws
+        # inverted for this arm, so keep it hidden. The tool-database STL is
+        # shown only while something is actually in the spindle.
+        self.tool_actor.SetVisibility(1 if (tool_in_spindle > 0 and not self._tool_cylinder) else 0)
+        self.tool_bit_actor.SetVisibility(1 if self._tool_cylinder else 0)
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.tool_bit_actor)
