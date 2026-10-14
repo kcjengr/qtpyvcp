@@ -338,7 +338,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.panning = 0
         self.zooming = 0
         self._render_scheduled = False
-        
+
+        # Optional frame-rate overlay (off by default). The actor/timer are
+        # created in _setup_fps_overlay() once the render window exists; the
+        # flag is tracked here so a setting pushed during init is honored.
+        self._show_fps = False
+        self._fps_actor = None
+        self._fps_timer = None
+        self._fps_observer_tag = None
+        self._fps_render_count = 0
+        self._fps_ignore_next = False
+        self._fps_last_sample_time = time.perf_counter()
+        self._fps_value = 0.0
+
         self.machine_parts = None
         self.machine_parts_data = None
         # Per-joint DH (alpha, a, d) collected from a robot-style
@@ -576,6 +588,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             connectSetting('backplot.view', self.setView)
             connectSetting('backplot.multitool-colors', self.showMultiColorPath)
             connectSetting('backplot.show-machine-model', self.showMachine)
+            connectSetting('backplot.show-fps', self.showFPS)
 
 
             self.path_colors = {'traverse': self._traverse_color,
@@ -722,6 +735,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # copied from the .ui placeholder are honored as well.
             self._ensure_nav_helper()
             QTimer.singleShot(0, self._ensure_nav_helper)
+
+            self._setup_fps_overlay()
 
             self._diag_startup()
             self._diag_machine_state("initial state")
@@ -3997,6 +4012,209 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer_window.Render()
             return
         self._request_render()
+
+    # ------------------------------------------------------------------
+    # Frame-rate overlay
+    # ------------------------------------------------------------------
+    def _setup_fps_overlay(self):
+        """Create the optional corner FPS readout and its sampling timer."""
+        if self._fps_actor is not None:
+            return
+
+        fps_actor = vtk.vtkTextActor()
+        text_prop = fps_actor.GetTextProperty()
+        text_prop.SetFontFamilyToCourier()
+        text_prop.SetFontSize(16)
+        text_prop.SetColor(0.85, 0.9, 0.2)
+        text_prop.SetShadow(True)
+        text_prop.SetBackgroundColor(0.0, 0.0, 0.0)
+        text_prop.SetBackgroundOpacity(0.45)
+        text_prop.SetJustificationToRight()
+        text_prop.SetVerticalJustificationToTop()
+        text_prop.SetLineSpacing(1.1)
+        fps_actor.SetInput("FPS:   --")
+        fps_actor.SetVisibility(0)
+        self.renderer.AddActor(fps_actor)
+        self._fps_actor = fps_actor
+
+        self._fps_timer = QTimer(self)
+        self._fps_timer.setInterval(500)
+        self._fps_timer.timeout.connect(self._update_fps_display)
+
+        # Apply the flag that a setting may already have pushed during init.
+        self._apply_fps_overlay_state()
+
+    def _on_render_end(self, _obj=None, _event=None):
+        # Every real render fires this. Skip the one render the overlay issues
+        # purely to refresh itself when the scene is otherwise idle so the
+        # reported rate stays honest.
+        if self._fps_ignore_next:
+            self._fps_ignore_next = False
+            return
+        self._fps_render_count += 1
+
+    @staticmethod
+    def _fmt_count(value):
+        """Compact human-readable integer (1.2M, 45.3k, 512)."""
+        try:
+            value = int(value)
+        except (TypeError, ValueError):
+            return "0"
+        if value >= 1_000_000:
+            return "%.1fM" % (value / 1_000_000.0)
+        if value >= 1_000:
+            return "%.1fk" % (value / 1_000.0)
+        return str(value)
+
+    def _count_prop_cells(self, prop, seen):
+        """Total primitive count of a prop's polydata, recursing into assemblies."""
+        if prop is None or id(prop) in seen:
+            return 0
+        seen.add(id(prop))
+        try:
+            if isinstance(prop, vtk.vtkAssembly):
+                total = 0
+                parts = prop.GetParts()
+                parts.InitTraversal()
+                for _ in range(parts.GetNumberOfItems()):
+                    total += self._count_prop_cells(parts.GetNextProp3D(), seen)
+                return total
+            get_mapper = getattr(prop, "GetMapper", None)
+            if not callable(get_mapper):
+                return 0
+            mapper = get_mapper()
+            if mapper is None:
+                return 0
+            data = mapper.GetInput()
+            if data is None:
+                # Pipeline-backed mappers may not expose the dataset directly
+                # until asked through their input algorithm.
+                get_algo = getattr(mapper, "GetInputAlgorithm", None)
+                if callable(get_algo):
+                    algo = get_algo()
+                    if algo is not None:
+                        data = algo.GetOutputDataObject(0)
+            if data is None:
+                return 0
+            return int(data.GetNumberOfCells())
+        except Exception:
+            return 0
+
+    def _collect_render_geometry_stats(self):
+        """(program_segments, program_points, trail_points, other_polygons).
+
+        The program counts come straight off each path actor's polydata (O(1)
+        getters); the polygon count walks the remaining visible props so it
+        covers machine tables and tool/STL models without double-counting the
+        program lines.
+        """
+        segments = 0
+        points = 0
+        for actor in self.path_actors.values():
+            poly_data = getattr(actor, 'poly_data', None)
+            if poly_data is None:
+                continue
+            segments += int(poly_data.GetNumberOfCells())
+            points += int(poly_data.GetNumberOfPoints())
+
+        trail = 0
+        if self.path_cache_actor is not None:
+            trail = int(self.path_cache_actor.points.GetNumberOfPoints())
+
+        excluded = {id(actor) for actor in self.path_actors.values()}
+        excluded.add(id(self._fps_actor))
+        polygons = 0
+        seen = set()
+        try:
+            view_props = self.renderer.GetViewProps()
+            view_props.InitTraversal()
+            for _ in range(view_props.GetNumberOfItems()):
+                prop = view_props.GetNextProp()
+                if prop is None or id(prop) in excluded:
+                    continue
+                if not prop.GetVisibility():
+                    continue
+                polygons += self._count_prop_cells(prop, seen)
+        except Exception:
+            pass
+
+        return segments, points, trail, polygons
+
+    def _update_fps_display(self):
+        now = time.perf_counter()
+        elapsed = now - self._fps_last_sample_time
+        if elapsed <= 0.0:
+            return
+
+        frames = self._fps_render_count
+        self._fps_render_count = 0
+        self._fps_last_sample_time = now
+        self._fps_value = frames / elapsed
+
+        if self._fps_actor is None or not self._show_fps:
+            return
+
+        frame_ms = (1000.0 / self._fps_value) if self._fps_value > 0.0 else 0.0
+        try:
+            draw_ms = float(self.renderer.GetLastRenderTimeInSeconds()) * 1000.0
+        except Exception:
+            draw_ms = 0.0
+        if draw_ms < 0.0:
+            draw_ms = 0.0
+        try:
+            props = int(self.renderer.GetNumberOfPropsRendered())
+        except Exception:
+            props = 0
+
+        segments, points, trail, polygons = self._collect_render_geometry_stats()
+        fmt = self._fmt_count
+        self._fps_actor.SetInput("\n".join((
+            "FPS %5.1f   %5.1f ms" % (self._fps_value, frame_ms),
+            "draw %5.1f ms   props %d" % (draw_ms, props),
+            "segs %s   pts %s" % (fmt(segments), fmt(points)),
+            "polys %s   dots %s" % (fmt(polygons), fmt(trail)),
+        )))
+
+        window_width, window_height = self.renderer_window.GetSize()
+        self._fps_actor.SetDisplayPosition(
+            max(0, window_width - 12),
+            max(0, window_height - 12),
+        )
+
+        # When nothing else is rendering there would be no frame to show the
+        # updated text on; refresh once and exempt that render from the count.
+        if frames == 0:
+            self._fps_ignore_next = True
+            self._request_render()
+
+    def _apply_fps_overlay_state(self):
+        if self._fps_actor is not None:
+            self._fps_actor.SetVisibility(1 if self._show_fps else 0)
+
+        if self._fps_timer is not None:
+            if self._show_fps:
+                self._fps_render_count = 0
+                self._fps_ignore_next = False
+                self._fps_last_sample_time = time.perf_counter()
+                self._fps_timer.start()
+            else:
+                self._fps_timer.stop()
+
+        if self._fps_observer_tag is not None:
+            self.renderer_window.RemoveObserver(self._fps_observer_tag)
+            self._fps_observer_tag = None
+        if self._show_fps:
+            self._fps_observer_tag = self.renderer_window.AddObserver(
+                "EndEvent", self._on_render_end
+            )
+
+    @Slot(bool)
+    @Slot(object)
+    def showFPS(self, enable):
+        self._show_fps = bool(enable)
+        self._apply_fps_overlay_state()
+        if self._fps_actor is not None:
+            self._request_render()
 
     def _sync_program_bounds_actor(self, wcs_index, path_actor):
         program_bounds_actor = self.program_bounds_actors.get(wcs_index)

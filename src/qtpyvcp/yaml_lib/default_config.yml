@@ -204,6 +204,9 @@ settings:
   backplot.multitool-colors:
     default_value: false
 
+  backplot.show-fps:
+    default_value: false
+
   # Core GCode editor syntax control settings.
   gcode-syntax.on-off:
     description: Enable GCode syntax highlighting in the native editor.

@@ -127,6 +127,9 @@ default_menubar:
       - title: Use Colors for Motion type
         action: settings.backplot.multitool-colors
 
+      - title: Show FPS
+        action: settings.backplot.show-fps
+
       - separator
 
       - title: Perspective View
