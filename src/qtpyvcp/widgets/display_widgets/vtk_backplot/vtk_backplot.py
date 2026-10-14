@@ -23,12 +23,14 @@ import time
 import logging
 import shutil
 from operator import add
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict
 
 import gcode
 import linuxcnc
+import numpy as np
 import vtk
 import yaml
+from vtk.util import numpy_support
 from PySide6.QtCore import QObject, Property, QEvent, Qt, QTimer, Slot, QSize
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QWidget
@@ -1174,7 +1176,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._datasource._status.addLock()
         PROGRAM_LOAD_PERF_SUMMARY.mark_phase(fname, phase='vtk-load-program-enter', percent=48)
         perf_start = time.perf_counter()
-        self._index_runtime_switchkins_commands(fname)
+        # Only machines whose KINS declares switchkins care about M428/M429/M430;
+        # skip the full-file regex scan on every other machine.
+        if self._datasource.usesSwitchkins():
+            self._index_runtime_switchkins_commands(fname)
+        else:
+            self._runtime_switchkins_cmd_lines = {}
+            self._runtime_switchkins_logged_lines.clear()
         self._line_cells_by_wcs = {}
         self._line_by_cell_by_wcs = {}
         self._clear_gcode_line_highlight_actors()
@@ -1558,7 +1566,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if wcs_index is None:
             return []
 
-        line_no = self._line_by_cell_by_wcs.get(wcs_index, {}).get(picked_cell_id, None)
+        cell_index = self._line_by_cell_by_wcs.get(wcs_index, None)
+        line_no = None
+        if cell_index is not None:
+            if isinstance(cell_index, np.ndarray):
+                if 0 <= picked_cell_id < cell_index.shape[0]:
+                    line_no = int(cell_index[picked_cell_id])
+            else:
+                line_no = cell_index.get(picked_cell_id)
         line_no = self._coerce_int(line_no, None)
         if line_no is None or line_no <= 0:
             return []
@@ -1621,20 +1636,50 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             cell_count = int(poly_data.GetNumberOfCells())
             tuple_count = int(line_array.GetNumberOfTuples())
             limit = min(cell_count, tuple_count)
+            if limit <= 0:
+                continue
 
-            per_line = defaultdict(list)
-            per_cell = {}
-            for cell_id in range(limit):
-                line_no = self._coerce_int(line_array.GetTuple1(cell_id), None)
-                if line_no is None or line_no <= 0:
-                    continue
-                per_line[int(line_no)].append(cell_id)
-                per_cell[int(cell_id)] = int(line_no)
+            try:
+                seq = numpy_support.vtk_to_numpy(line_array)
+            except Exception:
+                LOG.exception("Failed to read gcode_seq array as numpy for wcs=%s", wcs_index)
+                seq = None
+
+            if seq is None:
+                # Defensive fallback: the old per-cell VTK accessor path.
+                seq = np.empty(limit, dtype=np.int64)
+                for cell_id in range(limit):
+                    value = self._coerce_int(line_array.GetTuple1(cell_id), None)
+                    seq[cell_id] = -1 if value is None else int(value)
+            else:
+                seq = seq[:limit].astype(np.int64, copy=True)
+
+            valid = seq > 0
+            if not valid.any():
+                continue
+
+            # Cell -> line lookup used by click picking; a numpy array is both
+            # far cheaper to build and to index than a per-cell Python dict.
+            indexed_by_cell[wcs_index] = seq
+
+            # Line -> cells lookup used for highlighting. Group with a single
+            # stable argsort instead of a Python loop over every cell.
+            cells = np.nonzero(valid)[0]
+            lines = seq[cells]
+            order = np.argsort(lines, kind='stable')
+            lines_sorted = lines[order]
+            cells_sorted = cells[order]
+
+            boundaries = np.nonzero(np.diff(lines_sorted))[0] + 1
+            starts = np.concatenate(([0], boundaries))
+            ends = np.concatenate((boundaries, [len(lines_sorted)]))
+
+            per_line = {}
+            for start, end in zip(starts, ends):
+                per_line[int(lines_sorted[start])] = cells_sorted[start:end].tolist()
 
             if per_line:
-                indexed[wcs_index] = dict(per_line)
-            if per_cell:
-                indexed_by_cell[wcs_index] = per_cell
+                indexed[wcs_index] = per_line
 
         self._line_cells_by_wcs = indexed
         self._line_by_cell_by_wcs = indexed_by_cell
@@ -2784,7 +2829,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         return self._coerce_float(input_channel.value, None)
 
-    def _table_aware_linear_position(self, position):
+    def _table_aware_linear_position(self, position, switchkins_type=None):
         x = float(position[0])
         y = float(position[1])
         z = float(position[2])
@@ -2792,7 +2837,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # In TCP switchkins mode, status position is already in the controlled
         # world/tool-point frame. Rebuilding XYZ from raw joints introduces a
         # small but visible offset against the loaded path.
-        if self._is_tcp_switchkins_active():
+        if self._is_tcp_switchkins_active(switchkins_type):
             return (x, y, z)
 
         table_linear_active = any(
@@ -2862,19 +2907,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         else:
             # Keep breadcrumb sampling at motion callback rate so trails hug
             # the true toolpath, even when scene rendering is FPS-throttled.
+            # When breadcrumbs are disabled there is nothing to sample, so
+            # return immediately and keep the servo-rate callback cheap.
+            if not (self.breadcrumbs_plotted and self._should_plot_breadcrumb_for_motion()):
+                return
+
             active_wcs_offset = self._safe_get_offsets(self.active_wcs_index, self.offsetTableColumnsIndex)
             if self._is_machine_jet:
                 list_pos = list(position)
                 list_pos[2] = active_wcs_offset[2]
                 position = tuple(list_pos)
 
-            machine_position = self._table_aware_linear_position(position)
+            current_switchkins_type = self._current_switchkins_type()
+            machine_position = self._table_aware_linear_position(position, current_switchkins_type)
             self.machine_motion_position = machine_position
             self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
             runtime_tlo = self._read_tool_offset()
             self._runtime_tool_offset = runtime_tlo
 
-            current_switchkins_type = self._current_switchkins_type()
             breadcrumb_world = self._current_tool_tip_world(
                 runtime_tlo,
                 machine_position,
@@ -2885,9 +2935,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             else:
                 self.tooltip_position = self._active_path_local_point(breadcrumb_world)
 
-            if self.breadcrumbs_plotted and self._should_plot_breadcrumb_for_motion():
-                current_tip = tuple(self.tooltip_position[:3])
-                self._append_breadcrumb_point(current_tip)
+            current_tip = tuple(self.tooltip_position[:3])
+            self._append_breadcrumb_point(current_tip)
 
             return
 
@@ -2903,14 +2952,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             list_pos[2] = active_wcs_offset[2]
             position = tuple(list_pos)
             
-        machine_position = self._table_aware_linear_position(position)
+        current_switchkins_type = self._current_switchkins_type()
+        machine_position = self._table_aware_linear_position(position, current_switchkins_type)
         self.machine_motion_position = machine_position
         self.spindle_position = self._visual_spindle_position(machine_position, active_wcs_offset)
         runtime_tlo = self._read_tool_offset()
         self._runtime_tool_offset = runtime_tlo
         self.spindle_rotation = position[3:6]
         prev_switchkins_type = int(self._runtime_switchkins_type)
-        current_switchkins_type = self._current_switchkins_type()
         if int(current_switchkins_type) != prev_switchkins_type:
             LOG.info(
                 "VTK runtime switchkins-type changed: %s -> %s",

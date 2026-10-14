@@ -1,15 +1,17 @@
+from array import array
 from collections import OrderedDict
 
 import math
 import re
 
+import numpy as np
 import vtk
 import vtk.qt
+from vtk.util import numpy_support
 from .linuxcnc_datasource import LinuxCncDataSource
 from .path_actor import PathActor
 
 from PySide6.QtGui import QColor
-from PySide6.QtWidgets import QApplication
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
@@ -577,10 +579,16 @@ class VTKCanon(StatCanon):
             path_actor = self.path_actors.get(wcs_index)
 
             if path_actor is not None:
-                last_point = None
                 point_count = 0
                 has_motion_segment = False
                 current_segment_index = None
+                # Accumulate geometry in flat Python/numpy buffers and hand the
+                # whole batch to VTK at once. Per-point InsertNextPoint() and
+                # per-segment vtkLine allocations are the dominant cost when
+                # loading large programs through the Python canon path.
+                # 'f' matches vtkPoints' default float32 precision.
+                points_flat = array('f')
+                segment_colors = []
                 segment_line_numbers = []
 
                 for row in data:
@@ -645,44 +653,33 @@ class VTKCanon(StatCanon):
 
                     if self._datasource.isMachineFoam():
 
-                        path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
-                                                          start_point[1] * multiplication_factor,
-                                                          (start_point[8]+(self.foam_z/25.4)) * multiplication_factor)
+                        foam_z = float(self.foam_z) / 25.4
+                        foam_w = float(self.foam_w) / 25.4
+                        rgba = self.path_colors.get(line_type).getRgb()[:4]
 
-                        path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
-                                                          end_point[1] * multiplication_factor,
-                                                          (start_point[8]+(self.foam_z/25.4)) * multiplication_factor)
-
-
-                        path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
-
-                        line = vtk.vtkLine()
-                        line.GetPointIds().SetId(0, point_count)
-                        line.GetPointIds().SetId(1, point_count + 1)
-
-                        path_actor.lines.InsertNextCell(line)
+                        points_flat.extend((
+                            start_point[0] * multiplication_factor,
+                            start_point[1] * multiplication_factor,
+                            (start_point[8] + foam_z) * multiplication_factor,
+                            end_point[0] * multiplication_factor,
+                            end_point[1] * multiplication_factor,
+                            (start_point[8] + foam_z) * multiplication_factor,
+                        ))
+                        segment_colors.append(rgba)
                         segment_line_numbers.append(int(line_number))
-
                         point_count += 2
                         added_segment_count += 1
 
-                        path_actor.points.InsertNextPoint(start_point[6] * multiplication_factor,
-                                                          start_point[7] * multiplication_factor,
-                                                          (start_point[8]+(self.foam_w/25.4)) * multiplication_factor)
-
-                        path_actor.points.InsertNextPoint(end_point[6] * multiplication_factor,
-                                                          end_point[7] * multiplication_factor,
-                                                          (start_point[8]+(self.foam_w/25.4)) * multiplication_factor)
-
-                        path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
-
-                        line2 = vtk.vtkLine()
-                        line2.GetPointIds().SetId(0, point_count)
-                        line2.GetPointIds().SetId(1, point_count + 1)
-
-                        path_actor.lines.InsertNextCell(line2)
+                        points_flat.extend((
+                            start_point[6] * multiplication_factor,
+                            start_point[7] * multiplication_factor,
+                            (start_point[8] + foam_w) * multiplication_factor,
+                            end_point[6] * multiplication_factor,
+                            end_point[7] * multiplication_factor,
+                            (start_point[8] + foam_w) * multiplication_factor,
+                        ))
+                        segment_colors.append(rgba)
                         segment_line_numbers.append(int(line_number))
-
                         point_count += 2
                         added_segment_count += 1
 
@@ -696,22 +693,16 @@ class VTKCanon(StatCanon):
 
                         def _insert_xyz_segment(seg_start_xyz, seg_end_xyz):
                             nonlocal point_count, added_segment_count, has_motion_segment
-                            path_actor.points.InsertNextPoint(seg_end_xyz[0] * multiplication_factor,
-                                                              seg_end_xyz[1] * multiplication_factor,
-                                                              seg_end_xyz[2] * multiplication_factor)
-
-                            path_actor.points.InsertNextPoint(seg_start_xyz[0] * multiplication_factor,
-                                                              seg_start_xyz[1] * multiplication_factor,
-                                                              seg_start_xyz[2] * multiplication_factor)
-
-                            path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb())
-
-                            vtk_line = vtk.vtkLine()
-                            vtk_line.GetPointIds().SetId(0, point_count)
-                            vtk_line.GetPointIds().SetId(1, point_count + 1)
-                            path_actor.lines.InsertNextCell(vtk_line)
+                            points_flat.extend((
+                                seg_end_xyz[0] * multiplication_factor,
+                                seg_end_xyz[1] * multiplication_factor,
+                                seg_end_xyz[2] * multiplication_factor,
+                                seg_start_xyz[0] * multiplication_factor,
+                                seg_start_xyz[1] * multiplication_factor,
+                                seg_start_xyz[2] * multiplication_factor,
+                            ))
+                            segment_colors.append(self.path_colors.get(line_type).getRgb())
                             segment_line_numbers.append(int(line_number))
-
                             point_count += 2
                             added_segment_count += 1
 
@@ -738,18 +729,54 @@ class VTKCanon(StatCanon):
                 # free up memory, lots of it for big files
 
                 self.path_points[wcs_index].clear()
-                QApplication.processEvents()
+
+                segment_count = len(segment_line_numbers)
+
+                points_array = np.frombuffer(points_flat, dtype=np.float32).reshape(-1, 3)
+                path_actor.points = vtk.vtkPoints()
+                path_actor.points.SetData(
+                    numpy_support.numpy_to_vtk(points_array, deep=True)
+                )
+
+                path_actor.lines = vtk.vtkCellArray()
+                if segment_count > 0:
+                    # Every segment is a 2-point cell over consecutive point
+                    # ids, so offsets are a simple even ramp.
+                    offsets = np.arange(0, segment_count * 2 + 1, 2, dtype=np.int64)
+                    connectivity = np.arange(0, segment_count * 2, dtype=np.int64)
+                    path_actor.lines.SetData(
+                        numpy_support.numpy_to_vtkIdTypeArray(offsets, deep=True),
+                        numpy_support.numpy_to_vtkIdTypeArray(connectivity, deep=True),
+                    )
+
+                if segment_count > 0:
+                    colors_array = np.asarray(segment_colors, dtype=np.uint8).reshape(-1, 4)
+                    path_actor.colors = numpy_support.numpy_to_vtk(
+                        num_array=colors_array,
+                        deep=True,
+                        array_type=vtk.VTK_UNSIGNED_CHAR,
+                    )
+                    path_actor.colors.SetNumberOfComponents(4)
+                else:
+                    path_actor.colors = vtk.vtkUnsignedCharArray()
+                    path_actor.colors.SetNumberOfComponents(4)
 
                 path_actor.poly_data.SetPoints(path_actor.points)
                 path_actor.poly_data.SetLines(path_actor.lines)
                 path_actor.poly_data.GetCellData().SetScalars(path_actor.colors)
 
-                line_numbers_array = vtk.vtkIntArray()
-                line_numbers_array.SetName("gcode_seq")
-                line_numbers_array.SetNumberOfComponents(1)
-                line_numbers_array.SetNumberOfTuples(len(segment_line_numbers))
-                for cell_id, line_no in enumerate(segment_line_numbers):
-                    line_numbers_array.SetValue(cell_id, int(line_no))
+                if segment_count > 0:
+                    numbers_array = np.asarray(segment_line_numbers, dtype=np.int32)
+                    line_numbers_array = numpy_support.numpy_to_vtk(
+                        num_array=numbers_array,
+                        deep=True,
+                        array_type=vtk.VTK_INT,
+                    )
+                    line_numbers_array.SetName("gcode_seq")
+                else:
+                    line_numbers_array = vtk.vtkIntArray()
+                    line_numbers_array.SetName("gcode_seq")
+                    line_numbers_array.SetNumberOfComponents(1)
                 path_actor.poly_data.GetCellData().AddArray(line_numbers_array)
 
                 path_actor.data_mapper.SetInputData(path_actor.poly_data)

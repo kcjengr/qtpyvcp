@@ -350,6 +350,10 @@ class LinuxCncDataSource(QObject):
 
         return None, (b0, b1, b2)
 
+    def usesSwitchkins(self):
+        """True when the active INI KINS line declares switchkins support."""
+        return bool(self._switchkins_probe_enabled)
+
     def getSwitchkinsType(self):
         if not self._switchkins_probe_enabled:
             return self._last_switchkins_type
