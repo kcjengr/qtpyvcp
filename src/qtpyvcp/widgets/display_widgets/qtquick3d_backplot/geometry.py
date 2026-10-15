@@ -7,7 +7,7 @@ agnostic.
 """
 
 import numpy as np
-from PySide6.QtCore import Property, QObject, Signal
+from PySide6.QtCore import Property, QObject, Signal, Slot
 from PySide6.QtGui import QVector3D
 from PySide6.QtQuick3D import QQuick3DGeometry
 
@@ -61,7 +61,7 @@ class Quick3DPlotData(QObject):
         self._geometries = {name: LineGeometry() for name in (
             "traverse", "arcfeed", "feed", "dwell", "user", "grid",
             "axesX", "axesY", "axesZ", "machineBounds", "programBounds",
-            "trail",
+            "trail", "highlight",
         )}
         for name, geometry in self._geometries.items():
             geometry.setObjectName("backplot_" + name)
@@ -78,6 +78,7 @@ class Quick3DPlotData(QObject):
             "axesZ": "#5078ff",
             "bounds": "#b8c2cc",
             "trail": "#f2d84b",
+            "highlight": "#ffe633",
         }
         self._grid_visible = False
         self._machine_bounds_visible = True
@@ -90,9 +91,27 @@ class Quick3DPlotData(QObject):
         self._tool_color = "#d2d2d7"
         self._tool_position = QVector3D()
         self._tool_scale = QVector3D(1.0, 1.0, 1.0)
+        self._machine_visible = True
 
     colorChanged = Signal()
     toolChanged = Signal()
+    picked = Signal(QVector3D)
+
+    @Slot(QVector3D)
+    def reportPick(self, point):
+        """Called from QML when a path Model is clicked; forwards the hit."""
+        self.picked.emit(point)
+
+    @Property(bool, notify=toolChanged)
+    def machineVisible(self):
+        return self._machine_visible
+
+    @machineVisible.setter
+    def machineVisible(self, value):
+        value = bool(value)
+        if value != self._machine_visible:
+            self._machine_visible = value
+            self.toolChanged.emit()
 
     def geometry(self, name):
         return self._geometries[name]
@@ -112,6 +131,7 @@ class Quick3DPlotData(QObject):
     machineBounds = _geometry_property("machineBounds")
     programBounds = _geometry_property("programBounds")
     trail = _geometry_property("trail")
+    highlight = _geometry_property("highlight")
 
     def _string_property(name, notify=colorChanged):
         return Property(str, lambda self: self._colors[name],
@@ -135,6 +155,7 @@ class Quick3DPlotData(QObject):
     axesZColor = _string_property("axesZ")
     boundsColor = _string_property("bounds")
     trailColor = _string_property("trail")
+    highlightColor = _string_property("highlight")
 
     backgroundChanged = Signal()
     visibilityChanged = Signal()

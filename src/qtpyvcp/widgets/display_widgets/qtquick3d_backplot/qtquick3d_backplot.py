@@ -31,7 +31,7 @@ from qtpyvcp.widgets.display_widgets.vtk_backplot.linuxcnc_datasource import (
     LinuxCncDataSource,
 )
 
-from . import tool
+from . import machine, tool
 from .geometry import (
     Quick3DPlotData,
     map_points_to_quick3d,
@@ -280,8 +280,15 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         self._trail = deque(maxlen=4000)
         self._show_fps = False
         self._show_spindle = True
+        self._show_machine = True
+        self._show_machine_ticks = False
+        self._show_machine_labels = False
+        self._show_surface = False
+        self._alpha_blend = False
         self._multitool_colors = False
         self._enable_program_ticks = True
+        self._running = False
+        self._joints = None
         self._background_color = QColor("#101820")
         self._background_color2 = QColor("#101820")
         self._nav_helper_x_axis_color = QColor(255, 60, 60)
@@ -318,7 +325,10 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         self.quick_widget.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.plot_data = Quick3DPlotData(self)
         self._apply_plot_colors()
+        self.machine_parts = machine.MachinePartsModel(self)
         self.quick_widget.rootContext().setContextProperty("plotData", self.plot_data)
+        self.quick_widget.rootContext().setContextProperty("machineParts", self.machine_parts)
+        self.plot_data.picked.connect(self._on_picked)
         qml_path = os.path.join(os.path.dirname(__file__), "scene.qml")
         self.quick_widget.setSource(QUrl.fromLocalFile(qml_path))
         self._layout.addWidget(self.quick_widget)
@@ -334,6 +344,7 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         self.datasource = LinuxCncDataSource()
         self._stat = linuxcnc.stat()
         self._is_lathe = self.datasource.isMachineLathe()
+        self._pick = {}
         self._initialize_geometry()
         self._wire_signals()
         self._connect_settings()
@@ -372,6 +383,78 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         self._rebuild_axes()
         self._rebuild_grid()
         self._rebuild_tool()
+        self._build_machine_parts()
+
+    # -- machine parts (MACHINE_PARTS) --------------------------------------
+
+    def _build_machine_parts(self):
+        ini = getattr(self.datasource, "_inifile", None)
+        if ini is None:
+            return
+        parts_file = ini.find("VTK", "MACHINE_PARTS")
+        if not parts_file:
+            return
+        config_dir = getattr(self.datasource, "config_dir", None)
+        path = parts_file
+        if not os.path.isabs(path) and config_dir:
+            path = os.path.normpath(os.path.join(config_dir, path))
+        if not os.path.isfile(path):
+            LOG.warning("Quick 3D MACHINE_PARTS not found: %s", path)
+            return
+        try:
+            import yaml
+            with open(path, "r", encoding="utf-8") as handle:
+                data = yaml.safe_load(handle)
+        except Exception:
+            LOG.exception("failed to load MACHINE_PARTS for Qt Quick 3D: %s", path)
+            return
+        self.machine_parts.load(
+            data, config_dir=config_dir or os.path.dirname(path))
+
+    def _apply_joint_feedback(self):
+        if self.machine_parts.rowCount() == 0:
+            return
+        status = getattr(self.datasource, "_status", None)
+        stat = getattr(status, "stat", None)
+        joints = getattr(stat, "joint_actual_position", None)
+        if joints:
+            self.machine_parts.apply_joint_values(joints)
+
+    # -- picking / highlighting --------------------------------------------
+
+    @staticmethod
+    def _dist_point_segments(point, starts, ends):
+        ab = ends - starts
+        denom = np.maximum(np.einsum("ij,ij->i", ab, ab), 1e-12)
+        t = np.clip(np.einsum("ij,ij->i", point - starts, ab) / denom, 0.0, 1.0)
+        projected = starts + t[:, None] * ab
+        return np.linalg.norm(projected - point, axis=1)
+
+    def _clear_highlight(self):
+        self.plot_data.highlight.replace(np.zeros((0, 3), np.float32))
+
+    def _on_picked(self, point):
+        if self._geometry is None or not self._pick:
+            return
+        p = np.asarray((point.x(), point.y(), point.z()), dtype=np.float32)
+        best = None
+        for starts, ends, meta in self._pick.values():
+            if starts.shape[0] == 0:
+                continue
+            distances = self._dist_point_segments(p, starts, ends)
+            index = int(np.argmin(distances))
+            if best is None or distances[index] < best[0]:
+                best = (float(distances[index]), starts[index],
+                        ends[index], meta[index])
+        if best is None:
+            return
+        _, start, end, meta = best
+        self.plot_data.highlight.replace(
+            np.asarray([start, end], dtype=np.float32))
+        line_number = int(meta[2])
+        if line_number >= 0:
+            self.programLineSelected.emit(line_number)
+            self.programLinesSelected.emit([line_number])
 
     # -- active tool body ---------------------------------------------------
 
@@ -454,6 +537,9 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
 
     def _rebuild_program_geometry(self):
         groups = {role: [] for role in ROLE_NAMES}
+        # Per-role scene-space segment endpoints plus (wcs, segment, line)
+        # metadata, used to turn a 3D pick into a program line selection.
+        pick = {role: ([], [], []) for role in ROLE_NAMES}
         transformed = []
         if self._geometry is not None:
             palette = np.asarray([self._role_colors[role].getRgb() for role in ROLE_NAMES],
@@ -475,14 +561,42 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
                     colors = np.tile(palette[2], (points.shape[0] // 2, 1))
                 role_indices = segment_role_indices(colors, palette)
                 segment_points = points.reshape(-1, 2, 3)
+                line_numbers = np.asarray(path.line_numbers, dtype=np.int64)
+                segment_count = segment_points.shape[0]
                 for role_index, role in enumerate(ROLE_NAMES):
-                    selected = segment_points[role_indices == role_index]
-                    if selected.size:
-                        groups[role].append(selected.reshape(-1, 3))
+                    mask = role_indices == role_index
+                    if not mask.any():
+                        continue
+                    selected = segment_points[mask]
+                    groups[role].append(selected.reshape(-1, 3))
+                    scene = map_points_to_quick3d(
+                        selected.reshape(-1, 3)).reshape(-1, 2, 3)
+                    pick[role][0].append(scene[:, 0, :])
+                    pick[role][1].append(scene[:, 1, :])
+                    indices = np.nonzero(mask)[0]
+                    if line_numbers.shape[0] == segment_count:
+                        lines = line_numbers[indices]
+                    else:
+                        lines = np.full(indices.shape[0], -1, dtype=np.int64)
+                    meta = np.stack((
+                        np.full(indices.shape[0], wcs_index, dtype=np.int64),
+                        indices, lines), axis=1)
+                    pick[role][2].append(meta)
+
+        self._pick = {}
+        for role in ROLE_NAMES:
+            starts, ends, metas = pick[role]
+            if starts:
+                self._pick[role] = (
+                    np.concatenate(starts, axis=0),
+                    np.concatenate(ends, axis=0),
+                    np.concatenate(metas, axis=0),
+                )
 
         for role, chunks in groups.items():
             data = np.concatenate(chunks, axis=0) if chunks else np.zeros((0, 3), np.float32)
             self.plot_data.geometry(role).replace(map_points_to_quick3d(data))
+        self._clear_highlight()
         if transformed:
             points = np.concatenate(transformed, axis=0)
             self._program_bounds = (
@@ -739,6 +853,7 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
             z, y = y, z
         self._position = (x, y, z)
         self._update_tool_transform()
+        self._apply_joint_feedback()
         self._trail.append(self._position)
         points = np.asarray(self._trail, dtype=np.float32).reshape(-1, 3)
         if len(points) >= 2:
@@ -866,12 +981,48 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showMachineBounds(self, show):
-        self.plot_data.machineBoundsVisible = bool(show)
+        show = bool(show)
+        self.plot_data.machineBoundsVisible = show
+        setting = getSetting("backplot.show-machine-bounds")
+        if setting is not None and setting.value != show:
+            setting.setValue(show)
+
+    @Slot()
+    def toggleMachineBounds(self):
+        self.showMachineBounds(not bool(self.plot_data.machineBoundsVisible))
 
     @Slot(bool)
     @Slot(object)
     def showProgramBounds(self, show):
-        self.plot_data.programBoundsVisible = bool(show)
+        show = bool(show)
+        self.plot_data.programBoundsVisible = show
+        setting = getSetting("backplot.show-program-bounds")
+        if setting is not None and setting.value != show:
+            setting.setValue(show)
+
+    @Slot()
+    def toggleProgramBounds(self):
+        self.showProgramBounds(not bool(self.plot_data.programBoundsVisible))
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachineTicks(self, show):
+        # Machine ticks are a VTK machine-actor feature; retained as state for
+        # panels that still drive the setting.
+        self._show_machine_ticks = bool(show)
+
+    @Slot()
+    def toggleMachineTicks(self):
+        self.showMachineTicks(not self._show_machine_ticks)
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachineLabels(self, show):
+        self._show_machine_labels = bool(show)
+
+    @Slot()
+    def toggleMachineLabels(self):
+        self.showMachineLabels(not self._show_machine_labels)
 
     @Slot(bool)
     @Slot(object)
@@ -889,30 +1040,33 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
                 self._show_spindle and self._tool_shape.visible)
 
     @Slot(bool)
-    def showMachine(self, _show):
-        # Machine-part model loading is a follow-on parity item; keep this slot
-        # so existing panels do not raise when they still expose the setting.
-        pass
+    def showMachine(self, show):
+        self._show_machine = bool(show)
+        if hasattr(self, "plot_data"):
+            self.plot_data.machineVisible = self._show_machine
+        if hasattr(self, "machine_parts"):
+            self.machine_parts.set_enabled(self._show_machine)
 
     @Slot(bool)
     def showMultiColorPath(self, show):
         self._multitool_colors = bool(show)
+
+    @Slot()
+    def toggleMultiColorPath(self):
+        self.showMultiColorPath(not self._multitool_colors)
 
     @Slot(bool)
     def showFPS(self, show):
         self._show_fps = bool(show)
 
     @Slot(bool)
-    def showSurface(self, _show):
-        pass
+    def showSurface(self, show):
+        # Height-field surface is not rendered by the Qt Quick 3D stage yet.
+        self._show_surface = bool(show)
 
     @Slot(bool)
-    def showMachineTicks(self, _show):
-        pass
-
-    @Slot(bool)
-    def showMachineLabels(self, _show):
-        pass
+    def alphaBlend(self, alpha):
+        self._alpha_blend = bool(alpha)
 
     @Slot(bool)
     def enableMultiTouch(self, _enabled):
@@ -924,6 +1078,71 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
 
     @Slot(bool)
     def setProgramViewWhenLoadingProgram(self, _enabled, view="p"):
+        pass
+
+    # -- VTK-parity methods (not all are meaningful to the Quick 3D scene) --
+
+    @Slot()
+    def reapplyNavHelperConfig(self):
+        """Nav-helper camera gizmo is not rendered by this stage.
+
+        The ``navHelper*`` properties are retained for panel compatibility, so
+        this is a no-op kept for API parity with ``VTKBackPlot``.
+        """
+        return
+
+    @Slot()
+    def printView(self):
+        """Save a PNG snapshot of the current plot view.
+
+        VTK's ``printView`` is a no-op; this writes a real image next to the
+        loaded program (or the temp dir) so the button has an effect.
+        """
+        if self._designer or not hasattr(self, "quick_widget"):
+            return
+        if not isValid(self.quick_widget):
+            return
+        try:
+            image = self.quick_widget.grabFramebuffer()
+        except (AttributeError, RuntimeError):
+            LOG.debug("printView: framebuffer grab unavailable", exc_info=True)
+            return
+        directory = os.path.dirname(self._last_filename) if self._last_filename else ""
+        if not directory or not os.path.isdir(directory):
+            import tempfile
+            directory = tempfile.gettempdir()
+        path = os.path.join(directory, "backplot_view.png")
+        try:
+            image.save(path)
+            LOG.info("printView: saved %s", path)
+        except Exception:
+            LOG.exception("printView: failed to save %s", path)
+
+    @Slot(bool)
+    def on_run_state_changed(self, running=False):
+        self._running = bool(running)
+
+    @Slot(object)
+    def update_joints(self, joint_values):
+        self._joints = joint_values
+        if joint_values and hasattr(self, "machine_parts"):
+            self.machine_parts.apply_joint_values(joint_values)
+
+    @Slot(int)
+    def update_active_wcs(self, wcs_index):
+        self.update_g5x_index(wcs_index)
+
+    @Slot(object)
+    def update_tool(self, *_args):
+        self._rebuild_tool()
+
+    def tlo(self, _tlo):
+        # Tool length offset is read live from status; kept for API parity.
+        pass
+
+    @Slot(int)
+    @Slot(object)
+    def motion_type(self, _value):
         pass
 
     def _role_property(role):

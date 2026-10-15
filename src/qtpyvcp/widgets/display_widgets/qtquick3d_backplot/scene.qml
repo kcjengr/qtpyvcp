@@ -89,6 +89,29 @@ Item {
             geometry: plotData.trail
             materials: [ PrincipledMaterial { baseColor: plotData.trailColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
+        Model {
+            geometry: plotData.highlight
+            materials: [ PrincipledMaterial { baseColor: plotData.highlightColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
+        }
+
+        // Machine assembly (MACHINE_PARTS). Parts are flat Models fed by the
+        // machineParts list model; world transforms are composed in Python.
+        Node {
+            visible: plotData.machineVisible
+            Repeater3D {
+                model: (typeof machineParts !== "undefined") ? machineParts : null
+                delegate: Model {
+                    objectName: "machinePart"
+                    geometry: model.geometry
+                    source: model.sourceUrl
+                    position: model.pos
+                    rotation: model.rot
+                    visible: model.vis
+                    pickable: false
+                    materials: [ PrincipledMaterial { baseColor: model.col; lighting: PrincipledMaterial.NoLighting } ]
+                }
+            }
+        }
 
         // Active tool body, sized from the QtPyVCP tool table. The built-in
         // primitives are 100 units tall/diameter, so toolScale maps radius and
@@ -107,6 +130,18 @@ Item {
             scale: plotData.toolScale
             eulerRotation: Qt.vector3d(180, 0, 0)
             materials: [ PrincipledMaterial { baseColor: plotData.toolColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
+        }
+    }
+
+    // Click-to-select. MouseArea's drag threshold means an orbit/pan drag does
+    // not register as a click, matching the VTK backplot.
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton
+        onClicked: (mouse) => {
+            var result = view3d.pick(mouse.x, mouse.y)
+            if (result && result.objectHit)
+                plotData.reportPick(result.scenePosition)
         }
     }
 }
