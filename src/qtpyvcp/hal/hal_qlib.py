@@ -27,7 +27,8 @@ class QPin(QObject):
         dir (str) : the direction of the HAL pin, one of `IN` or `OUT`.
 
     Properties:
-        value (float | int | bool) : The the current value of the HAL pin.
+        value (float | int | bool) : The current pin value. For HAL_PORT this is
+            the buffered byte count; use the port methods to transfer payloads.
         valueChanged (QSignal) : Signal that is emited when the value changes.
     """
 
@@ -37,6 +38,7 @@ class QPin(QObject):
         super(QPin, self).__init__(MAIN_WINDOW)
 
         self._pin = _hal.component.newpin(comp, name, typ, dir)
+        self._is_port = (hasattr(hal, 'HAL_PORT') and typ == hal.HAL_PORT)
         self._val = self._pin.get()
 
         self.startTimer(cycle_time)
@@ -53,9 +55,55 @@ class QPin(QObject):
 
     @value.setter
     def value(self, val):
+        if self._is_port:
+            raise TypeError("HAL_PORT is a byte queue; use write() instead of setting value")
         self._val = val
         self._pin.set(val)
         self.valueChanged.emit(val)
+
+    def write(self, data):
+        """Write bytes/string data to a HAL_PORT pin."""
+        if not self._is_port:
+            raise TypeError("write() is only available for HAL_PORT pins")
+        return self._pin.write(data)
+
+    def read(self, count):
+        """Read up to *count* bytes from a HAL_PORT pin."""
+        if not self._is_port:
+            raise TypeError("read() is only available for HAL_PORT pins")
+        return self._pin.read(count)
+
+    def peek(self, count):
+        """Read without consuming bytes from a HAL_PORT pin."""
+        if not self._is_port:
+            raise TypeError("peek() is only available for HAL_PORT pins")
+        return self._pin.peek(count)
+
+    def peek_commit(self, count):
+        """Consume bytes previously inspected with ``peek``."""
+        if not self._is_port:
+            raise TypeError("peek_commit() is only available for HAL_PORT pins")
+        return self._pin.peek_commit(count)
+
+    def readable(self):
+        if not self._is_port:
+            raise TypeError("readable() is only available for HAL_PORT pins")
+        return self._pin.readable()
+
+    def writable(self):
+        if not self._is_port:
+            raise TypeError("writable() is only available for HAL_PORT pins")
+        return self._pin.writable()
+
+    def clear(self):
+        if not self._is_port:
+            raise TypeError("clear() is only available for HAL_PORT pins")
+        return self._pin.clear()
+
+    def size(self):
+        if not self._is_port:
+            raise TypeError("size() is only available for HAL_PORT pins")
+        return self._pin.size()
 
 
 class QParam(QObject):
@@ -117,11 +165,22 @@ class QComponent(QObject):
         signal.signal(signal.SIGINT, self.signal_handler)
 
         self.type_map = {
+            'bool': hal.HAL_BOOL,
+            'bit': hal.HAL_BOOL,
             'real': hal.HAL_REAL,
+            'float': hal.HAL_REAL,
             'sint': hal.HAL_SINT,
+            's32': hal.HAL_SINT,
+            's64': hal.HAL_SINT,
+            'signed': hal.HAL_SINT,
             'uint': hal.HAL_UINT,
-            'bool': hal.HAL_BOOL
+            'u32': hal.HAL_UINT,
+            'u64': hal.HAL_UINT,
+            'unsigned': hal.HAL_UINT,
         }
+        # HAL_PORT was added in LinuxCNC master and is pin-only.
+        if hasattr(hal, 'HAL_PORT'):
+            self.type_map['port'] = hal.HAL_PORT
 
         self.dir_map = {
             'in': hal.HAL_IN,
@@ -140,8 +199,11 @@ class QComponent(QObject):
         self._params = {}
 
     def addPin(self, name, pin_type, direction):
-
-        pin_type = self.type_map.get(pin_type.lower())
+        type_name = str(pin_type).strip().lower()
+        try:
+            pin_type = self.type_map[type_name]
+        except KeyError as exc:
+            raise ValueError(f"Unsupported HAL pin type: {pin_type!r}") from exc
         pin_dir = self.dir_map.get(direction.lower())
 
         LOG.debug("Adding HAL pin: %s.%s (%s %s)", self.name, name, type, direction)
@@ -151,8 +213,13 @@ class QComponent(QObject):
         return pin
 
     def addParam(self, name, pin_type, access_mode):
-
-        pin_type = self.type_map.get(pin_type.lower())
+        type_name = str(pin_type).strip().lower()
+        if type_name == 'port':
+            raise ValueError("HAL_PORT is supported for pins, not parameters")
+        try:
+            pin_type = self.type_map[type_name]
+        except KeyError as exc:
+            raise ValueError(f"Unsupported HAL parameter type: {pin_type!r}") from exc
         access_mode = self.mode_map.get(access_mode.lower())
         LOG.debug("Adding PARAM params: %s %s", self.name, name)
 
@@ -234,4 +301,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

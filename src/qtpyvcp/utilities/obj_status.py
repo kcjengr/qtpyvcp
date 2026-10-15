@@ -21,6 +21,24 @@
 import linuxcnc, time, threading, subprocess, os, json
 from PySide6.QtCore import QObject, QTimer, Signal
 
+# LinuxCNC master uses bool/real/sint/uint/port. Keep accepting the legacy and
+# width-explicit spellings as well, since HAL command output varies by version.
+HAL_PIN_VALUE_TYPES = {
+    "bool": bool,
+    "bit": bool,
+    "real": float,
+    "float": float,
+    "sint": int,
+    "s32": int,
+    "s64": int,
+    "signed": int,
+    "uint": int,
+    "u32": int,
+    "u64": int,
+    "unsigned": int,
+    "port": int,
+}
+
 # Setup logging
 try:
     from qtpyvcp.utilities import logger
@@ -200,11 +218,14 @@ class HALPin(QObject):
         pin_name (str):         the name of the HAL pin self represents
         settable (bool):        weather the HAL pin is writable
         type (type):            the python type of the HAL pins value
-        value (varies):         the value of the HAL pin as of last check
+        value (varies):         the value of the HAL pin as of last check;
+                                HAL_PORT reports the current buffered byte count
         valueChanged (QtSignal): signal emitted when the HAL pin value changes
     """
 
-    valueChanged = Signal([bool], [float], [int])
+    # LinuxCNC sint/uint values are 64-bit. An object signal preserves their
+    # complete Python integer range instead of narrowing them to Qt's int.
+    valueChanged = Signal(object)
 
     def __init__(self, pin_name, pin_type, pin_direction, pin_value):
         super(HALPin, self).__init__()
@@ -212,16 +233,20 @@ class HALPin(QObject):
 
         Args:
             pin_name (str):      the HAL pin name
-            pin_type (str):      the HAL type for the pin, float, u32, s32 or bit
+            pin_type (str):      the HAL type (bool, real, sint, uint, or port)
             pin_direction (str): the pin direction, IN, OUT, or I/O
             pin_value (str):     the initial value of the HAL pin
         """
 
         self.pin_name = pin_name
-        type_map = {'float': float, 's32': int, 'u32': int, 'bit': bool}
-        self.type = type_map.get(pin_type)
+        type_name = str(pin_type).strip().lower()
+        self.hal_type = type_name
+        try:
+            self.type = HAL_PIN_VALUE_TYPES[type_name]
+        except KeyError as exc:
+            raise ValueError(f"Unsupported HAL pin type: {pin_type!r}") from exc
         self.settable = pin_direction in ['IN', 'I/O']
-        self.value = self.type(pin_value)
+        self.value = self.convertType(pin_value)
 
         self.log_change = False
 
@@ -239,28 +264,30 @@ class HALPin(QObject):
         self.value = self.convertType(value)
         if self.log_change:
             log.debug("HAL value changed: {} => {}".format(self.pin_name, self.value))
-        self.valueChanged[self.type].emit(self.value)
+        self.valueChanged.emit(self.value)
 
     def connect(self, slot, log_change=False):
         log.debug("Connecting '{}' valueChanged signal to {}".format(self.pin_name, slot))
-        self.valueChanged[self.type].connect(slot)
+        self.valueChanged.connect(slot)
         self.log_change = log_change
 
     def disconnect(self, slot=''):
         if slot is not None:
             try:
-                self.valueChanged[self.type].disconnect(slot)
+                self.valueChanged.disconnect(slot)
             except Exception as e:
                 log.warning("Failed to disconnect slot: {}".format(slot), exc_info=e)
         elif slot == '':
             # remove all slots from signal it not slot given
-            self.valueChanged[self.type].disconnect()
+            self.valueChanged.disconnect()
 
     def getValue(self):
         data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
         return self.convertType(data[3])
 
     def setValue(self, value):
+        if self.hal_type == 'port':
+            raise TypeError("HAL_PORT is a byte queue; use QPin port methods to transfer data")
         if self.settable:
             return subprocess.call(['halcmd', 'setp', self.pin_name, str(value)])
         raise TypeError("setValue failed, HAL pin '{}' is read only".format(self.pin_name))
@@ -270,7 +297,7 @@ class HALPin(QObject):
 
     def forceUpdate(self):
         self.value = self.getValue()
-        self.valueChanged[self.type].emit(self.value)
+        self.valueChanged.emit(self.value)
 
     def setLogChange(self, log_change):
         self.log_change = log_change
@@ -280,7 +307,9 @@ class HALPin(QObject):
 
     def convertType(self, value):
         if self.type == bool:
-            return value.lower() in ['true', '1']
+            if isinstance(value, bool):
+                return value
+            return str(value).strip().lower() in ['true', '1']
         return self.type(value)
 
 
