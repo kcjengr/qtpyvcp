@@ -22,6 +22,9 @@ packages = [
     { include = "qtpyvcp", from = "src" },
     { include = "video_tests", from = "src" },
 ]
+include = [
+    { path = "src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/scene.qml", format = ["sdist", "wheel"] },
+]
 
 
 [tool.poetry.dependencies]
@@ -88,4 +91,3 @@ format-jinja = """
         {{ base }}+{{ distance }}.g{{ commit }}
     {%- endif -%}
 """
-

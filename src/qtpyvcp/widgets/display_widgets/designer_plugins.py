@@ -417,16 +417,18 @@ class Qt3D0Plugin(_DesignerPlugin):
         if IN_DESIGNER:
             return Qt3D0
         try:
-            from .qt3d_backplot.qt3d_backplot import Qt3D0 as RuntimeQt3D0
+            # Preserve the historical .ui class name while using the actively
+            # maintained Qt Quick 3D renderer at runtime.
+            from .qtquick3d_backplot.qtquick3d_backplot import Qt3D0 as RuntimeQt3D0
             return RuntimeQt3D0
         except Exception:
             return Qt3D0
 
     def toolTip(self):
-        return "Qt3D 3D backplot widget (runtime only)"
+        return "Qt Quick 3D backplot widget (Qt3D0)"
 
     def whatsThis(self):
-        return "3D visualization of tool paths using Qt3D. Only functional at runtime."
+        return "3D visualization of tool paths using Qt Quick 3D. Only functional at runtime."
 
     def isContainer(self):
         return True
@@ -436,7 +438,7 @@ if IN_DESIGNER:
     _Qt3D0 = Qt3D0
 else:
     try:
-        from .qt3d_backplot.qt3d_backplot import Qt3D0 as _Qt3D0
+        from .qtquick3d_backplot.qtquick3d_backplot import Qt3D0 as _Qt3D0
     except Exception:
         _Qt3D0 = Qt3D0
 

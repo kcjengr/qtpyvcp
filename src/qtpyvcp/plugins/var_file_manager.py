@@ -58,7 +58,10 @@ class VarFileManager(DataPlugin):
     
     # Signals for widget communication
     parameter_changed = Signal(int, object)  # (param_number, new_value)
-    parameters_changed = Signal(dict)        # {param_number: new_value, ...}
+    # Must be Signal(object), not Signal(dict): the payload is keyed by integer
+    # parameter number, and PySide maps Signal(dict) to QVariantMap (string keys
+    # only), which logs "_pythonToCppCopy: Cannot copy-convert (dict) to C++".
+    parameters_changed = Signal(object)      # {param_number: new_value, ...}
     file_reloaded = Signal()                 # Emitted after file reload completes
     file_error = Signal(str)                 # Emitted on file access errors
     

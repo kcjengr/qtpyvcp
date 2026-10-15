@@ -545,12 +545,12 @@ class VCPMainWindow(QMainWindow):
 
         def _replace_qt3d_placeholders_runtime(root_widget):
             def _realize():
-                from qtpyvcp.widgets.display_widgets.qt3d_backplot.qt3d_backplot import (
+                from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.qtquick3d_backplot import (
                     Qt3D0 as RealQt3D0)
                 return RealQt3D0
 
             _replace_backplot_placeholders_runtime(
-                root_widget, "Qt3D0Placeholder", "qt3d0", _realize, "Qt3D")
+                root_widget, "Qt3D0Placeholder", "qt3d0", _realize, "Qt Quick 3D")
 
         def _ui_uses_gcode_editor(path):
             try:
@@ -639,7 +639,7 @@ class VCPMainWindow(QMainWindow):
             pass
 
         try:
-            from qtpyvcp.widgets.display_widgets.qt3d_backplot.qt3d_backplot import Qt3D0
+            from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.qtquick3d_backplot import Qt3D0
             loader.registerCustomWidget(Qt3D0)
         except ImportError:
             pass
@@ -1179,4 +1179,3 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = App()
     sys.exit(app.exec())
-
