@@ -361,8 +361,8 @@ class GCodePropertiesPlugin(_DesignerPlugin):
 # the real widget is swapped in at runtime (see VCPMainWindow).
 # ---------------------------------------------------------------------------
 
-class Qt3DBackPlotPlaceholder(VTKBackPlotPlaceholder):
-    """Placeholder for Qt3DBackPlot in designer mode."""
+class Qt3D0Placeholder(VTKBackPlotPlaceholder):
+    """Placeholder for Qt3D0 in designer mode."""
 
     @staticmethod
     def _color_property(name, default):
@@ -402,25 +402,25 @@ class Qt3DBackPlotPlaceholder(VTKBackPlotPlaceholder):
             label.setText("Qt3D Backplot\n(3D visualization)")
 
 
-class Qt3DBackPlot(Qt3DBackPlotPlaceholder):
+class Qt3D0(Qt3D0Placeholder):
     pass
 
 
-class Qt3DBackPlotPlugin(_DesignerPlugin):
+class Qt3D0Plugin(_DesignerPlugin):
     def objectName(self):
-        return "qt3dbackplot"
+        return "qt3d0"
 
     def name(self):
-        return "Qt3DBackPlot"
+        return "Qt3D0"
 
     def pluginClass(self):
         if IN_DESIGNER:
-            return Qt3DBackPlot
+            return Qt3D0
         try:
-            from .qt3d_backplot.qt3d_backplot import Qt3DBackPlot as RuntimeQt3DBackPlot
-            return RuntimeQt3DBackPlot
+            from .qt3d_backplot.qt3d_backplot import Qt3D0 as RuntimeQt3D0
+            return RuntimeQt3D0
         except Exception:
-            return Qt3DBackPlot
+            return Qt3D0
 
     def toolTip(self):
         return "Qt3D 3D backplot widget (runtime only)"
@@ -433,11 +433,11 @@ class Qt3DBackPlotPlugin(_DesignerPlugin):
 
 
 if IN_DESIGNER:
-    _Qt3DBackPlot = Qt3DBackPlot
+    _Qt3D0 = Qt3D0
 else:
     try:
-        from .qt3d_backplot.qt3d_backplot import Qt3DBackPlot as _Qt3DBackPlot
+        from .qt3d_backplot.qt3d_backplot import Qt3D0 as _Qt3D0
     except Exception:
-        _Qt3DBackPlot = Qt3DBackPlot
+        _Qt3D0 = Qt3D0
 
-Qt3DBackPlot = _Qt3DBackPlot
+Qt3D0 = _Qt3D0

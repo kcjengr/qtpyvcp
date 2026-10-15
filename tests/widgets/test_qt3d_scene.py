@@ -82,8 +82,8 @@ def test_triangle_geometry_keeps_position_normal_and_index_attributes(qt_app):
 
 
 def test_qt3d_backplot_exposes_vtk_color_properties(qt_app):
-    from qtpyvcp.widgets.display_widgets.qt3d_backplot.qt3d_backplot import Qt3DBackPlot
-    from qtpyvcp.widgets.display_widgets.designer_plugins import Qt3DBackPlotPlaceholder
+    from qtpyvcp.widgets.display_widgets.designer_plugins import Qt3D0Placeholder
+    from qtpyvcp.widgets.display_widgets.qt3d_backplot.qt3d_backplot import Qt3D0
 
     names = (
         "backgroundColor", "backgroundColor2", "traverseColor", "arcfeedColor",
@@ -91,10 +91,10 @@ def test_qt3d_backplot_exposes_vtk_color_properties(qt_app):
         "navHelperXAxisColor", "navHelperYAxisColor", "navHelperZAxisColor",
     )
     for name in names:
-        assert Qt3DBackPlot.staticMetaObject.indexOfProperty(name) >= 0
-        assert Qt3DBackPlotPlaceholder.staticMetaObject.indexOfProperty(name) >= 0
+        assert Qt3D0.staticMetaObject.indexOfProperty(name) >= 0
+        assert Qt3D0Placeholder.staticMetaObject.indexOfProperty(name) >= 0
 
-    placeholder = Qt3DBackPlotPlaceholder()
+    placeholder = Qt3D0Placeholder()
     placeholder.traverseColor = QColor(1, 2, 3)
     assert placeholder.traverseColor == QColor(1, 2, 3)
     prop = placeholder.metaObject().property(

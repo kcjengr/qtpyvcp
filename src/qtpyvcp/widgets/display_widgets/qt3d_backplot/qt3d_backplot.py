@@ -10,6 +10,7 @@ import math
 import os
 from collections import OrderedDict, deque
 
+import numpy as np
 from PySide6.Qt3DCore import Qt3DCore
 from PySide6.Qt3DExtras import Qt3DExtras
 from PySide6.Qt3DRender import Qt3DRender
@@ -32,7 +33,7 @@ from qtpyvcp.widgets.display_widgets.vtk_backplot.linuxcnc_datasource import (
     LinuxCncDataSource,
 )
 
-from . import scene
+from . import scene, tool
 from .camera import CameraRig
 from .machine import MachineAssembly
 from .navigation import BackplotNavigation
@@ -45,7 +46,7 @@ NUMBER_OF_WCS = 9
 EXTENTS_PADDING = 1.1
 
 
-class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
+class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
     """Qt3D-based 3D backplot widget."""
 
     # Emitted when the operator picks a program line in the 3D view.
@@ -169,8 +170,10 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
         self._machine_entity = None
         self._program_entity = None
         self._axes_entity = None
-        self._marker_entity = None
-        self._trail_entity = None
+        self._trail_line = None
+        self._tool_entity = None
+        self._tool_shape = tool.ToolShape()
+        self._tool_number = 0
         self._machine_assembly = None
 
         self.grid_entity = scene.build_line_entity(
@@ -182,7 +185,8 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
         self._build_axes()
         self._build_machine_bounds()
         self._build_machine_parts()
-        self._build_marker()
+        self._build_tool()
+        self._build_trail()
         self.setViewMachine()
 
     def _render_surface_alive(self):
@@ -380,19 +384,71 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
         self._machine_entity = scene.build_line_entity(
             self._overlay_root, points, width=1.0, name="machine_bounds")
 
-    def _build_marker(self):
-        mesh = Qt3DExtras.QSphereMesh()
-        metric = self.datasource.isMachineMetric()
-        mesh.setRadius(4.0 if metric else 0.16)
-        material = Qt3DExtras.QPhongMaterial()
-        material.setDiffuse(QColor(240, 230, 90))
+    def _build_trail(self):
+        # Two vertices per trail segment, plus one for the leading point.
+        capacity = max((self._trail.maxlen or 0) * 2, 2)
+        self._trail_line = scene.DynamicLine(
+            self._trail_root, capacity, color=(0.95, 0.85, 0.2, 1.0), width=2.0)
 
-        self._marker_entity = Qt3DCore.QEntity(self._overlay_root)
-        self._marker_entity.setObjectName("tool_marker")
-        self._marker_entity.addComponent(mesh)
-        self._marker_entity.addComponent(material)
-        self._marker_transform = Qt3DCore.QTransform()
-        self._marker_entity.addComponent(self._marker_transform)
+    # ------------------------------------------------------------------
+    # Tool geometry (from the LinuxCNC tool table)
+    # ------------------------------------------------------------------
+
+    def _current_tool_number(self):
+        stat = getattr(getattr(self.datasource, "_status", None), "stat", None)
+        try:
+            return int(getattr(stat, "tool_in_spindle", 0) or 0)
+        except (TypeError, ValueError):
+            return 0
+
+    def _build_tool(self):
+        self._tool_number = self._current_tool_number()
+        self._tool_entity = None
+        self._rebuild_tool()
+
+    def _rebuild_tool(self):
+        if not self._render_surface_alive():
+            return
+
+        old = getattr(self, "_tool_entity", None)
+        if old is not None and isValid(old):
+            old.setEnabled(False)
+            old.setParent(None)
+            old.deleteLater()
+        self._tool_entity = None
+
+        try:
+            tool_table = self.datasource.getToolTable()
+        except Exception:
+            LOG.debug("tool table unavailable for Qt3D tool geometry", exc_info=True)
+            tool_table = []
+
+        shape = tool.tool_shape(
+            tool_table,
+            getattr(self, "_tool_number", 0),
+            metric=self.datasource.isMachineMetric(),
+            lathe=self.datasource.isMachineLathe(),
+            robot=False,
+            foam=self.datasource.isMachineFoam(),
+            jet=self.datasource.isMachineJet(),
+        )
+        self._tool_shape = shape
+
+        entity = tool.build_tool_entity(self._overlay_root, shape, name="tool")
+        self._tool_entity = entity
+        if entity is not None:
+            entity.setEnabled(self._show_spindle)
+            self._update_tool_transform()
+
+    def _update_tool_transform(self):
+        entity = getattr(self, "_tool_entity", None)
+        if entity is None or not isValid(entity):
+            return
+        x, y, z = self._position
+        offset = tool.tool_body_offset(self._tool_shape)
+        transform = entity._tool_transform
+        transform.setTranslation(QVector3D(x + offset[0], y + offset[1],
+                                           z + offset[2]))
 
     # ------------------------------------------------------------------
     # Signal wiring
@@ -406,6 +462,10 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
         ds.g92OffsetChanged.connect(self.update_g92_offset)
         ds.g5xIndexChanged.connect(self.update_g5x_index)
         ds.rotationXYChanged.connect(self.update_rotation_xy)
+        ds.toolInSpindleChanged.connect(self.update_tool_number)
+        ds.toolTableChanged.connect(self.update_tool_table)
+        ds.toolOffsetChanged.connect(self.update_tool_table)
+        ds.offsetTableChanged.connect(self.on_offset_table_changed)
 
         try:
             self._stat.poll()
@@ -556,7 +616,6 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
         if segment is None:
             return
         start, end = segment
-        import numpy as np
         points = np.asarray([start, end], dtype=np.float32)
         colors = np.asarray([[255, 230, 51, 255], [255, 230, 51, 255]], dtype=np.uint8)
         self._highlight_entity = scene.build_line_entity(
@@ -602,7 +661,21 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
     # Coordinate transforms
     # ------------------------------------------------------------------
 
+    def _offset_columns(self):
+        """Column-name -> index map for the offset table (cached)."""
+        columns = getattr(self, "_offset_columns_cache", None)
+        if columns is not None:
+            return columns
+        try:
+            columns = dict(self.datasource.getOffsetColumns() or {})
+        except Exception:
+            LOG.debug("offset columns unavailable", exc_info=True)
+            columns = {}
+        self._offset_columns_cache = columns
+        return columns
+
     def _wcs_offsets(self, wcs_index):
+        """Return ``(x, y, z, rotation)`` for *wcs_index* in machine units."""
         try:
             table = self.datasource.getWcsOffsets()
         except Exception:
@@ -610,12 +683,30 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
         entry = table.get(wcs_index) if isinstance(table, dict) else None
         if entry is None:
             return (0.0, 0.0, 0.0, 0.0)
+
         values = list(entry)
+        columns = self._offset_columns()
+
+        def _get(name, default=0.0):
+            index = columns.get(name)
+            if index is None or index >= len(values):
+                return default
+            try:
+                return float(values[index])
+            except (TypeError, ValueError):
+                return default
+
+        # Use the column map when available; fall back to the conventional
+        # X, Y, Z, R order.
+        if columns:
+            return _get('X'), _get('Y'), _get('Z'), _get('R')
         while len(values) < 4:
             values.append(0.0)
         return values[0], values[1], values[2], values[3]
 
     def _update_wcs_transforms(self):
+        if not self._render_surface_alive():
+            return
         for wcs_index, transform in self._path_transforms.items():
             x, y, z, rotation = self._wcs_offsets(wcs_index)
             transform.setTranslation(QVector3D(x, y, z))
@@ -648,49 +739,50 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
             z, y = y, z
         self._position = (x, y, z)
 
-        self._marker_transform.setTranslation(QVector3D(x, y, z))
+        self._update_tool_transform()
 
         if self._trail.maxlen:
             self._trail.append((x, y, z))
             self._update_trail()
 
     def _update_trail(self):
-        if not self._render_surface_alive():
-            return
-        if self._trail_entity is not None:
-            self._trail_entity.setEnabled(False)
-            self._trail_entity.setParent(None)
-
-        if len(self._trail) < 2:
-            self._trail_entity = None
+        if not self._render_surface_alive() or self._trail_line is None:
             return
 
-        pts = []
         trail = list(self._trail)
-        for a, b in zip(trail, trail[1:]):
-            pts.extend((a, b))
+        if len(trail) < 2:
+            self._trail_line.clear()
+            return
 
-        import numpy as np
-        self._trail_entity = scene.build_line_entity(
-            self._trail_root, np.asarray(pts, dtype=np.float32),
-            width=2.0, name="trail")
-        self._trail_entity.setEnabled(True)
+        points = np.asarray(trail, dtype=np.float32)
+        segments = np.empty(((points.shape[0] - 1) * 2, 3), dtype=np.float32)
+        segments[0::2] = points[:-1]
+        segments[1::2] = points[1:]
+        self._trail_line.set_points(segments)
 
     @Slot()
     def clearLivePlot(self):
         self._trail.clear()
         if not self._render_surface_alive():
             return
-        if self._trail_entity is not None:
-            self._trail_entity.setEnabled(False)
-            self._trail_entity.setParent(None)
-            self._trail_entity = None
+        if self._trail_line is not None:
+            self._trail_line.clear()
 
     # ------------------------------------------------------------------
     # Offset / motion slots
     # ------------------------------------------------------------------
 
     def update_g5x_offset(self, _offset):
+        self._update_wcs_transforms()
+
+    @Slot(object)
+    def on_offset_table_changed(self, _offset_table=None):
+        """Re-place the loaded paths when the WCS offset table is edited.
+
+        Editing a G54..G59 offset in the offset-table widget does not change
+        the ``g5x_offset`` status channel immediately, so without this the
+        plot stays put until the interpreter re-applies the offset.
+        """
         self._update_wcs_transforms()
 
     def update_g92_offset(self, _offset):
@@ -856,6 +948,21 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
             self._machine_assembly.set_enabled(self._show_machine)
 
     @Slot(object)
+    @Slot(int)
+    def update_tool_number(self, tool_number):
+        """Rebuild the tool body when the spindle tool changes."""
+        try:
+            self._tool_number = int(tool_number)
+        except (TypeError, ValueError):
+            self._tool_number = 0
+        self._rebuild_tool()
+
+    @Slot(object)
+    def update_tool_table(self, *_args):
+        """Rebuild the tool body when the tool table / TLO changes."""
+        self._rebuild_tool()
+
+    @Slot(object)
     def update_joints(self, joint_values):
         """Animate rotary machine parts from live joint feedback."""
         if (self._render_surface_alive() and self._machine_assembly is not None
@@ -866,6 +973,9 @@ class Qt3DBackPlot(QWidget, VCPWidget, BaseBackPlot):
     @Slot(object)
     def showSpindle(self, show):
         self._show_spindle = bool(show)
+        entity = getattr(self, "_tool_entity", None)
+        if self._render_surface_alive() and entity is not None and isValid(entity):
+            entity.setEnabled(self._show_spindle)
 
     @Slot(bool)
     @Slot(object)

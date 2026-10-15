@@ -45,6 +45,71 @@ def _add_attribute(geom, name, base_type, size, count, buffer, stride, offset=0)
     return attr
 
 
+class DynamicLine:
+    """A line entity whose vertex buffer is rewritten in place.
+
+    Rebuilding a Qt3D entity on every position update (as the live trail used
+    to) churns Qt3D nodes at 30+ Hz and can crash the render thread. A single
+    preallocated buffer that is re-uploaded and re-counted is both safe and
+    far cheaper.
+    """
+
+    def __init__(self, parent, capacity, color=(0.9, 0.95, 0.3, 1.0), width=2.0,
+                 name="dynamic_line"):
+        self.capacity = max(int(capacity), 2)
+        self.entity = Qt3DCore.QEntity(parent)
+        self.entity.setObjectName(name)
+        self.entity.setEnabled(False)
+
+        self._positions = np.zeros((self.capacity, 3), dtype=np.float32)
+        self._colors = np.tile(np.asarray(color, dtype=np.float32),
+                               (self.capacity, 1))
+
+        geometry = Qt3DCore.QGeometry()
+        position_buffer = make_buffer(self._positions)
+        position_attribute = _add_attribute(
+            geometry, PositionAttribute, Qt3DCore.QAttribute.Float, 3, 0,
+            position_buffer, 3 * 4)
+        color_buffer = make_buffer(self._colors)
+        color_attribute = _add_attribute(
+            geometry, ColorAttribute, Qt3DCore.QAttribute.Float, 4, 0,
+            color_buffer, 4 * 4)
+
+        renderer = Qt3DRender.QGeometryRenderer(self.entity)
+        renderer.setPrimitiveType(Qt3DRender.QGeometryRenderer.Lines)
+        renderer.setGeometry(geometry)
+
+        material = per_vertex_material(self.entity)
+        if width and width > 1.0:
+            _attach_line_width(material, width)
+
+        self.entity.addComponent(renderer)
+        self.entity.addComponent(material)
+
+        self.geometry = geometry
+        self.position_buffer = position_buffer
+        self.position_attribute = position_attribute
+        self.color_buffer = color_buffer
+        self.color_attribute = color_attribute
+        self.entity._qt3d_refs = (geometry, position_buffer, position_attribute,
+                                  color_buffer, color_attribute, renderer, material)
+
+    def set_points(self, points):
+        array = np.asarray(points, dtype=np.float32).reshape(-1, 3)
+        count = min(array.shape[0], self.capacity)
+        if count:
+            self._positions[:count] = array[:count]
+        self.position_buffer.setData(QByteArray(self._positions.tobytes()))
+        self.position_attribute.setCount(count)
+        self.color_attribute.setCount(count)
+        self.entity.setEnabled(count >= 2)
+
+    def clear(self):
+        self.position_attribute.setCount(0)
+        self.color_attribute.setCount(0)
+        self.entity.setEnabled(False)
+
+
 def build_line_geometry(points, colors=None):
     """Build a ``Lines`` geometry from an ``(N, 3)`` point array.
 
