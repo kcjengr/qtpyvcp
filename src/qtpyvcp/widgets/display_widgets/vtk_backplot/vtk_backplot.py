@@ -23,7 +23,7 @@ import time
 import logging
 import shutil
 from operator import add
-from collections import OrderedDict
+from collections import OrderedDict, deque
 
 import gcode
 import linuxcnc
@@ -350,6 +350,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._fps_ignore_next = False
         self._fps_last_sample_time = time.perf_counter()
         self._fps_value = 0.0
+        # Rolling FPS history for the overlay graph (~60 s at the 500 ms tick).
+        self._fps_history = deque(maxlen=120)
+        self._fps_overlay_props = []
+        self._fps_graph_points = None
+        self._fps_graph_lines = None
+        self._fps_ref_points = None
+        self._fps_ref_lines = None
 
         self.machine_parts = None
         self.machine_parts_data = None
@@ -4016,11 +4023,33 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     # ------------------------------------------------------------------
     # Frame-rate overlay
     # ------------------------------------------------------------------
+    # Display-pixel geometry for the FPS-history graph, anchored bottom-left.
+    _FPS_GRAPH_MARGIN = 12.0
+    _FPS_GRAPH_WIDTH = 220.0
+    _FPS_GRAPH_HEIGHT = 54.0
+    _FPS_GRAPH_PAD = 4.0
+
+    def _make_fps_overlay_actor(self, poly, color, line_width=1.0, opacity=1.0):
+        """Wrap a vtkPolyData in a 2D display-space actor on the renderer."""
+        mapper = vtk.vtkPolyDataMapper2D()
+        mapper.SetInputData(poly)
+        actor = vtk.vtkActor2D()
+        actor.SetMapper(mapper)
+        prop = actor.GetProperty()
+        prop.SetColor(*color)
+        prop.SetLineWidth(line_width)
+        prop.SetOpacity(opacity)
+        actor.SetVisibility(1 if self._show_fps else 0)
+        self.renderer.AddViewProp(actor)
+        self._fps_overlay_props.append(actor)
+        return actor
+
     def _setup_fps_overlay(self):
-        """Create the optional corner FPS readout and its sampling timer."""
+        """Create the optional stats readout, FPS-history graph and timer."""
         if self._fps_actor is not None:
             return
 
+        # --- text block (top-right) ---
         fps_actor = vtk.vtkTextActor()
         text_prop = fps_actor.GetTextProperty()
         text_prop.SetFontFamilyToCourier()
@@ -4034,8 +4063,59 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         text_prop.SetLineSpacing(1.1)
         fps_actor.SetInput("FPS:   --")
         fps_actor.SetVisibility(0)
-        self.renderer.AddActor(fps_actor)
+        self.renderer.AddViewProp(fps_actor)
         self._fps_actor = fps_actor
+        self._fps_overlay_props.append(fps_actor)
+
+        # --- graph panel (bottom-left) ---
+        x0 = self._FPS_GRAPH_MARGIN
+        y0 = self._FPS_GRAPH_MARGIN
+        x1 = x0 + self._FPS_GRAPH_WIDTH
+        y1 = y0 + self._FPS_GRAPH_HEIGHT
+
+        panel_poly = vtk.vtkPolyData()
+        panel_points = vtk.vtkPoints()
+        for px, py in ((x0, y0), (x1, y0), (x1, y1), (x0, y1)):
+            panel_points.InsertNextPoint(px, py, 0.0)
+        panel_poly.SetPoints(panel_points)
+        panel_tris = vtk.vtkCellArray()
+        panel_tris.InsertNextCell(3)
+        panel_tris.InsertCellPoint(0)
+        panel_tris.InsertCellPoint(1)
+        panel_tris.InsertCellPoint(2)
+        panel_tris.InsertNextCell(3)
+        panel_tris.InsertCellPoint(0)
+        panel_tris.InsertCellPoint(2)
+        panel_tris.InsertCellPoint(3)
+        panel_poly.SetPolys(panel_tris)
+        # Drawn first so the border, reference and trace sit on top of it.
+        self._make_fps_overlay_actor(panel_poly, (0.0, 0.0, 0.0), opacity=0.45)
+
+        border_poly = vtk.vtkPolyData()
+        border_points = vtk.vtkPoints()
+        for px, py in ((x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)):
+            border_points.InsertNextPoint(px, py, 0.0)
+        border_poly.SetPoints(border_points)
+        border_lines = vtk.vtkCellArray()
+        border_lines.InsertNextCell(5)
+        for i in range(5):
+            border_lines.InsertCellPoint(i)
+        border_poly.SetLines(border_lines)
+        self._make_fps_overlay_actor(border_poly, (0.45, 0.5, 0.55), opacity=0.7)
+
+        self._fps_ref_points = vtk.vtkPoints()
+        self._fps_ref_lines = vtk.vtkCellArray()
+        ref_poly = vtk.vtkPolyData()
+        ref_poly.SetPoints(self._fps_ref_points)
+        ref_poly.SetLines(self._fps_ref_lines)
+        self._make_fps_overlay_actor(ref_poly, (0.35, 0.7, 0.4), opacity=0.7)
+
+        self._fps_graph_points = vtk.vtkPoints()
+        self._fps_graph_lines = vtk.vtkCellArray()
+        graph_poly = vtk.vtkPolyData()
+        graph_poly.SetPoints(self._fps_graph_points)
+        graph_poly.SetLines(self._fps_graph_lines)
+        self._make_fps_overlay_actor(graph_poly, (0.85, 0.9, 0.2), line_width=1.5)
 
         self._fps_timer = QTimer(self)
         self._fps_timer.setInterval(500)
@@ -4122,7 +4202,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             trail = int(self.path_cache_actor.points.GetNumberOfPoints())
 
         excluded = {id(actor) for actor in self.path_actors.values()}
-        excluded.add(id(self._fps_actor))
+        excluded.update(id(prop) for prop in self._fps_overlay_props)
         polygons = 0
         seen = set()
         try:
@@ -4154,6 +4234,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self._fps_actor is None or not self._show_fps:
             return
 
+        history = self._fps_history
+        history.append(self._fps_value)
+
         frame_ms = (1000.0 / self._fps_value) if self._fps_value > 0.0 else 0.0
         try:
             draw_ms = float(self.renderer.GetLastRenderTimeInSeconds()) * 1000.0
@@ -4166,6 +4249,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         except Exception:
             props = 0
 
+        lo = min(history)
+        hi = max(history)
+        avg = sum(history) / float(len(history))
+
         segments, points, trail, polygons = self._collect_render_geometry_stats()
         fmt = self._fmt_count
         self._fps_actor.SetInput("\n".join((
@@ -4173,6 +4260,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             "draw %5.1f ms   props %d" % (draw_ms, props),
             "segs %s   pts %s" % (fmt(segments), fmt(points)),
             "polys %s   dots %s" % (fmt(polygons), fmt(trail)),
+            "lo %5.1f  hi %5.1f  av %5.1f" % (lo, hi, avg),
         )))
 
         window_width, window_height = self.renderer_window.GetSize()
@@ -4181,18 +4269,64 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             max(0, window_height - 12),
         )
 
+        self._update_fps_graph(history)
+
         # When nothing else is rendering there would be no frame to show the
         # updated text on; refresh once and exempt that render from the count.
         if frames == 0:
             self._fps_ignore_next = True
             self._request_render()
 
+    def _update_fps_graph(self, history):
+        """Redraw the FPS-history polyline and the target-rate reference line."""
+        if self._fps_graph_points is None:
+            return
+
+        x0 = self._FPS_GRAPH_MARGIN
+        y0 = self._FPS_GRAPH_MARGIN
+        width = self._FPS_GRAPH_WIDTH
+        height = self._FPS_GRAPH_HEIGHT
+        pad = self._FPS_GRAPH_PAD
+
+        target = (1000.0 / self.plot_interval) if getattr(self, 'plot_interval', 0) else 0.0
+        y_max = max(max(history), target, 1.0) * 1.2
+        usable_w = width - 2.0 * pad
+        usable_h = height - 2.0 * pad
+        step = usable_w / max(1, (history.maxlen - 1))
+
+        self._fps_graph_points.Reset()
+        for index, value in enumerate(history):
+            gx = x0 + pad + index * step
+            gy = y0 + pad + (min(value, y_max) / y_max) * usable_h
+            self._fps_graph_points.InsertNextPoint(gx, gy, 0.0)
+        self._fps_graph_points.Modified()
+
+        self._fps_graph_lines.Reset()
+        if len(history) >= 2:
+            self._fps_graph_lines.InsertNextCell(len(history))
+            for index in range(len(history)):
+                self._fps_graph_lines.InsertCellPoint(index)
+        self._fps_graph_lines.Modified()
+
+        self._fps_ref_points.Reset()
+        self._fps_ref_lines.Reset()
+        if target > 0.0:
+            ref_y = y0 + pad + (min(target, y_max) / y_max) * usable_h
+            self._fps_ref_points.InsertNextPoint(x0 + pad, ref_y, 0.0)
+            self._fps_ref_points.InsertNextPoint(x0 + width - pad, ref_y, 0.0)
+            self._fps_ref_lines.InsertNextCell(2)
+            self._fps_ref_lines.InsertCellPoint(0)
+            self._fps_ref_lines.InsertCellPoint(1)
+        self._fps_ref_points.Modified()
+        self._fps_ref_lines.Modified()
+
     def _apply_fps_overlay_state(self):
-        if self._fps_actor is not None:
-            self._fps_actor.SetVisibility(1 if self._show_fps else 0)
+        for prop in self._fps_overlay_props:
+            prop.SetVisibility(1 if self._show_fps else 0)
 
         if self._fps_timer is not None:
             if self._show_fps:
+                self._fps_history.clear()
                 self._fps_render_count = 0
                 self._fps_ignore_next = False
                 self._fps_last_sample_time = time.perf_counter()

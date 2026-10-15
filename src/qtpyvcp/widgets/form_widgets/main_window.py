@@ -456,35 +456,26 @@ class VCPMainWindow(QMainWindow):
                 except Exception:
                     LOG.debug("Skipping custom widget registration for %s from %s", class_name, module_path)
 
-        def _replace_vtk_placeholders_runtime(root_widget):
-            """Replace any designer placeholder VTK widgets with the real runtime widget."""
-            placeholders = root_widget.findChildren(QWidget, "vtkbackplotplaceholder")
-            # Also detect class-based placeholders regardless of object name.
-            placeholders_by_class = [
+        def _replace_backplot_placeholders_runtime(root_widget, class_name,
+                                                   default_name, realize, label):
+            """Swap designer placeholder backplots for the real runtime widget."""
+            placeholders = [
                 w for w in root_widget.findChildren(QWidget)
-                if w.metaObject().className() == "VTKBackPlotPlaceholder"
+                if w.metaObject().className() == class_name
             ]
-
-            # Merge preserving object identity order.
-            seen = set()
-            all_placeholders = []
-            for w in placeholders + placeholders_by_class:
-                wid = id(w)
-                if wid in seen:
-                    continue
-                seen.add(wid)
-                all_placeholders.append(w)
-
-            if not all_placeholders:
+            if not placeholders:
                 return
 
             try:
-                from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import VTKBackPlot as RealVTKBackPlot
+                real_widget_class = realize()
             except Exception:
-                LOG.exception("Failed importing runtime VTKBackPlot for placeholder replacement")
+                LOG.exception("Failed importing runtime %s for placeholder replacement", label)
                 return
 
-            for placeholder in all_placeholders:
+            if real_widget_class is None:
+                return
+
+            for placeholder in placeholders:
                 placeholder_name = placeholder.objectName()
                 placeholder_parent = placeholder.parentWidget()
                 layout = placeholder_parent.layout() if placeholder_parent is not None else None
@@ -493,29 +484,22 @@ class VCPMainWindow(QMainWindow):
                     continue
 
                 try:
-                    real_vtk = RealVTKBackPlot(placeholder_parent)
-                    # Keep wiring stable: normalize placeholder names to runtime names.
-                    normalized_name = placeholder_name or "vtk"
+                    real_widget = real_widget_class(placeholder_parent)
+                    normalized_name = placeholder_name or default_name
                     if normalized_name.endswith("placeholder"):
                         normalized_name = normalized_name[: -len("placeholder")]
                     if not normalized_name:
-                        normalized_name = "vtk"
-                    real_vtk.setObjectName(normalized_name)
+                        normalized_name = default_name
+                    real_widget.setObjectName(normalized_name)
 
-                    # Carry over dynamic properties set on the placeholder in
-                    # the .ui file (e.g. the navHelper* camera-gizmo settings).
-                    # The backplot picks them up on its deferred startup pass.
                     for prop_name in placeholder.dynamicPropertyNames():
-                        prop_name_str = prop_name.data().decode("utf-8",
-                                                                "replace")
-                        real_vtk.setProperty(prop_name_str,
-                                             placeholder.property(prop_name_str))
+                        prop_name_str = prop_name.data().decode("utf-8", "replace")
+                        real_widget.setProperty(prop_name_str,
+                                                placeholder.property(prop_name_str))
 
-                    # Prefer Qt's built-in replacement API, which can resolve
-                    # nested layout ownership better than indexOf() alone.
                     replaced_item = None
                     try:
-                        replaced_item = layout.replaceWidget(placeholder, real_vtk)
+                        replaced_item = layout.replaceWidget(placeholder, real_widget)
                     except Exception:
                         replaced_item = None
 
@@ -529,27 +513,45 @@ class VCPMainWindow(QMainWindow):
                         if index >= 0:
                             row, col, row_span, col_span = layout.getItemPosition(index)
                             layout.removeWidget(placeholder)
-                            layout.addWidget(real_vtk, row, col, row_span, col_span)
+                            layout.addWidget(real_widget, row, col, row_span, col_span)
                         else:
-                            # Fallback if placeholder is not a direct item in this layout.
-                            layout.addWidget(real_vtk)
-                            real_vtk.setGeometry(placeholder.geometry())
+                            layout.addWidget(real_widget)
+                            real_widget.setGeometry(placeholder.geometry())
                     elif isinstance(layout, QBoxLayout):
                         index = layout.indexOf(placeholder)
                         if index >= 0:
                             layout.removeWidget(placeholder)
-                            layout.insertWidget(index, real_vtk)
+                            layout.insertWidget(index, real_widget)
                         else:
-                            # Fallback if placeholder is nested or wrapped in another item.
-                            layout.addWidget(real_vtk)
-                            real_vtk.setGeometry(placeholder.geometry())
+                            layout.addWidget(real_widget)
+                            real_widget.setGeometry(placeholder.geometry())
                     else:
                         layout.removeWidget(placeholder)
-                        layout.addWidget(real_vtk)
+                        layout.addWidget(real_widget)
 
                     placeholder.deleteLater()
                 except Exception:
-                    LOG.exception("Failed replacing VTK placeholder: name=%s", placeholder_name)
+                    LOG.exception("Failed replacing %s placeholder: name=%s",
+                                  label, placeholder_name)
+
+        def _replace_vtk_placeholders_runtime(root_widget):
+            def _realize():
+                from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import (
+                    VTKBackPlot as RealVTKBackPlot)
+                return RealVTKBackPlot
+
+            _replace_backplot_placeholders_runtime(
+                root_widget, "VTKBackPlotPlaceholder", "vtk", _realize, "VTK")
+
+        def _replace_qt3d_placeholders_runtime(root_widget):
+            def _realize():
+                from qtpyvcp.widgets.display_widgets.qt3d_backplot.qt3d_backplot import (
+                    Qt3DBackPlot as RealQt3DBackPlot)
+                return RealQt3DBackPlot
+
+            _replace_backplot_placeholders_runtime(
+                root_widget, "Qt3DBackPlotPlaceholder", "qt3dbackplot",
+                _realize, "Qt3D")
 
         def _ui_uses_gcode_editor(path):
             try:
@@ -637,11 +639,19 @@ class VCPMainWindow(QMainWindow):
         except ImportError:
             pass
 
+        try:
+            from qtpyvcp.widgets.display_widgets.qt3d_backplot.qt3d_backplot import Qt3DBackPlot
+            loader.registerCustomWidget(Qt3DBackPlot)
+        except ImportError:
+            pass
+
         # Backward compatibility for .ui files saved with the designer-only
         # placeholder class name.
         try:
-            from qtpyvcp.widgets.display_widgets.designer_plugins import VTKBackPlotPlaceholder
+            from qtpyvcp.widgets.display_widgets.designer_plugins import (
+                VTKBackPlotPlaceholder, Qt3DBackPlotPlaceholder)
             loader.registerCustomWidget(VTKBackPlotPlaceholder)
+            loader.registerCustomWidget(Qt3DBackPlotPlaceholder)
         except ImportError:
             pass
 
@@ -690,6 +700,7 @@ class VCPMainWindow(QMainWindow):
             self.ui = loaded_ui
 
         _replace_vtk_placeholders_runtime(self)
+        _replace_qt3d_placeholders_runtime(self)
         
         _apply_widget_attributes()
         _wire_button_group_slots()

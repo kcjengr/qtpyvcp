@@ -1,10 +1,6 @@
 from dataclasses import dataclass
-import glob
-import importlib
-import importlib.util
 import os
 import shutil
-import sysconfig
 from time import perf_counter
 from typing import Any, Optional
 
@@ -14,66 +10,13 @@ import vtk
 from vtk.util import numpy_support
 
 from qtpyvcp.utilities import logger
+from qtpyvcp.native.backplot_cpp.native_module import import_native_module
 
 
 LOG = logger.getLogger(__name__)
 
 
-def _import_native_module():
-    module_dir = os.path.dirname(__file__)
-    ext_suffix = sysconfig.get_config_var("EXT_SUFFIX") or ".so"
-    candidates = [
-        os.path.join(module_dir, f"_backplot_cpp{ext_suffix}"),
-        os.path.join(module_dir, "build", f"_backplot_cpp{ext_suffix}"),
-    ]
-
-    # Accept extension variations (e.g. abi-tagged .so names) from both locations.
-    candidates.extend(sorted(glob.glob(os.path.join(module_dir, "_backplot_cpp*.so")), reverse=True))
-    candidates.extend(sorted(glob.glob(os.path.join(module_dir, "build", "_backplot_cpp*.so")), reverse=True))
-
-    # Prefer newest build output so development rebuilds are picked up
-    # without needing a manual copy into package root.
-    existing_candidates = [p for p in candidates if os.path.exists(p)]
-    existing_candidates.sort(key=lambda p: os.path.getmtime(p), reverse=True)
-
-    seen = set()
-    import_errors = []
-    for module_path in existing_candidates:
-        if module_path in seen:
-            continue
-        seen.add(module_path)
-
-        try:
-            spec = importlib.util.spec_from_file_location("qtpyvcp.native.backplot_cpp._backplot_cpp", module_path)
-            if spec is None or spec.loader is None:
-                import_errors.append(f"failed to create import spec for {module_path}")
-                continue
-
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
-            LOG.debug("[backplot-cpp] loaded native module: %s", module_path)
-            return module
-        except Exception as ex:
-            import_errors.append(f"{module_path}: {ex}")
-
-    # Fall back to standard import as a last resort.
-    try:
-        module = importlib.import_module("qtpyvcp.native.backplot_cpp._backplot_cpp")
-        LOG.debug("[backplot-cpp] loaded native module via importlib: %s", getattr(module, "__file__", "<unknown>"))
-        return module
-    except Exception as ex:
-        import_errors.append(f"importlib: {ex}")
-
-    searched = [
-        os.path.join(module_dir, "_backplot_cpp*.so"),
-        os.path.join(module_dir, "build", "_backplot_cpp*.so"),
-    ]
-    hint = "Run `qnative --backplot` (or package install hooks) to build the native module."
-    details = f"; import attempts: {' | '.join(import_errors)}" if import_errors else ""
-    raise ImportError(f"missing C++ backplot module; searched: {searched}. {hint}{details}")
-
-
-_backplot_cpp = _import_native_module()
+_backplot_cpp = import_native_module()
 
 
 @dataclass

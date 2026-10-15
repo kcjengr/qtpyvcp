@@ -353,3 +353,91 @@ from .gcode_properties import GCodeProperties
 class GCodePropertiesPlugin(_DesignerPlugin):
     def pluginClass(self):
         return GCodeProperties
+
+
+# ---------------------------------------------------------------------------
+# Qt3D backplot.  Like the VTK backplot it cannot be instantiated in Designer
+# (it needs a live Qt3D window + LinuxCNC), so Designer gets a placeholder and
+# the real widget is swapped in at runtime (see VCPMainWindow).
+# ---------------------------------------------------------------------------
+
+class Qt3DBackPlotPlaceholder(VTKBackPlotPlaceholder):
+    """Placeholder for Qt3DBackPlot in designer mode."""
+
+    @staticmethod
+    def _color_property(name, default):
+        def get(self):
+            value = self._qt3d_property_values.get(name)
+            return QColor(value) if value is not None else QColor(*default)
+
+        def set_(self, value):
+            self._qt3d_property_values[name] = QColor(value)
+
+        def reset(self):
+            self._qt3d_property_values.pop(name, None)
+
+        return Property(QColor, get, set_, freset=reset)
+
+    backgroundColor = _color_property.__func__("backgroundColor", (0, 0, 0, 255))
+    backgroundColor2 = _color_property.__func__("backgroundColor2", (0, 0, 0, 255))
+    traverseColor = _color_property.__func__("traverseColor", (200, 35, 35, 255))
+    arcfeedColor = _color_property.__func__("arcfeedColor", (110, 110, 255, 255))
+    feedColor = _color_property.__func__("feedColor", (210, 210, 255, 255))
+    dwellColor = _color_property.__func__("dwellColor", (0, 0, 255, 255))
+    userColor = _color_property.__func__("userColor", (0, 100, 255, 255))
+
+    @Property(bool, freset=lambda self: setattr(self, "enableProgramTicks", True))
+    def enableProgramTicks(self):
+        return getattr(self, "_enable_program_ticks", True)
+
+    @enableProgramTicks.setter
+    def enableProgramTicks(self, value):
+        self._enable_program_ticks = bool(value)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._qt3d_property_values = {}
+        label = self.findChild(QLabel)
+        if label is not None:
+            label.setText("Qt3D Backplot\n(3D visualization)")
+
+
+class Qt3DBackPlot(Qt3DBackPlotPlaceholder):
+    pass
+
+
+class Qt3DBackPlotPlugin(_DesignerPlugin):
+    def objectName(self):
+        return "qt3dbackplot"
+
+    def name(self):
+        return "Qt3DBackPlot"
+
+    def pluginClass(self):
+        if IN_DESIGNER:
+            return Qt3DBackPlot
+        try:
+            from .qt3d_backplot.qt3d_backplot import Qt3DBackPlot as RuntimeQt3DBackPlot
+            return RuntimeQt3DBackPlot
+        except Exception:
+            return Qt3DBackPlot
+
+    def toolTip(self):
+        return "Qt3D 3D backplot widget (runtime only)"
+
+    def whatsThis(self):
+        return "3D visualization of tool paths using Qt3D. Only functional at runtime."
+
+    def isContainer(self):
+        return True
+
+
+if IN_DESIGNER:
+    _Qt3DBackPlot = Qt3DBackPlot
+else:
+    try:
+        from .qt3d_backplot.qt3d_backplot import Qt3DBackPlot as _Qt3DBackPlot
+    except Exception:
+        _Qt3DBackPlot = Qt3DBackPlot
+
+Qt3DBackPlot = _Qt3DBackPlot

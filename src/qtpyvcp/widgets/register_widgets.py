@@ -25,6 +25,7 @@ from qtpyvcp.widgets.display_widgets.status_led import (StatusLED)  # noqa: F401
 import os as _os
 if not _os.getenv('DESIGNER'):
     from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import (VTKBackPlot)  # noqa: F401
+    from qtpyvcp.widgets.display_widgets.qt3d_backplot.qt3d_backplot import (Qt3DBackPlot)  # noqa: F401
 
 # Form Widgets
 from qtpyvcp.widgets.form_widgets.main_window import (VCPMainWindow)  # noqa: F401
@@ -94,6 +95,7 @@ def main():
                                                                   BarIndicatorPlugin,
                                                                   StatusLEDPlugin,
                                                                   VTKWidgetPlugin,
+                                                                  Qt3DBackPlotPlugin,
                                                                   NotificationPlugin,
                                                                   GcodeReferenceTablePlugin,
                                                                   GCodePropertiesPlugin)
@@ -162,6 +164,13 @@ def main():
     except Exception as e:
         print(f"Warning: Could not load VTK widget plugin: {e}")
         print("VTK widget will not be available in designer")
+
+    # Qt3D Widget - same caveat as VTK; skip on error rather than aborting.
+    try:
+        QPyDesignerCustomWidgetCollection.addCustomWidget(Qt3DBackPlotPlugin())
+    except Exception as e:
+        print(f"Warning: Could not load Qt3D widget plugin: {e}")
+        print("Qt3D widget will not be available in designer")
     
     QPyDesignerCustomWidgetCollection.addCustomWidget(NotificationPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(GcodeReferenceTablePlugin())
