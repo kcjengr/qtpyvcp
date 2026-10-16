@@ -45,9 +45,9 @@ IN_DESIGNER = os.getenv("DESIGNER", "").lower() not in ("", "0", "false", "no")
 ROLE_NAMES = ("traverse", "arcfeed", "feed", "dwell", "user")
 
 # Extra radius around the machine/program bounds, as a fraction of the bounds
-# half-diagonal, so the camera fit and clip planes cover a little space beyond
-# the machine envelope. Scale-independent, so it works for inch and metric.
-BOUNDS_MARGIN = 0.1
+# half-diagonal, so the camera fit and clip planes cover space beyond the
+# machine envelope. Scale-independent, so it works for inch and metric.
+BOUNDS_MARGIN = 0.6
 VIEW_DIRECTIONS = {
     "P": ((1.0, -1.0, 1.0), (0.0, 0.0, 1.0)),
     "X": ((0.0, -1.0, 0.0), (0.0, 0.0, 1.0)),
@@ -132,12 +132,14 @@ class QuickCameraRig:
     def _clip_planes(self):
         eye = max(self._offset.length(), 1e-6)
         radius = self._scene_radius if self._scene_radius else max(eye * 0.5, 1.0)
-        near = eye - radius
-        # Keep the near plane in front of the camera but away from the eye, so
-        # it never clips the whole scene when the camera is inside the bounds.
+        # Generous window: the near plane is pulled well in front of the scene
+        # and the far plane well behind it, so orbiting/zooming never clips the
+        # front or back of the arm.
+        near = eye - radius * 2.5
         if near <= 0.0 or near > eye * 0.5:
             near = max(radius * 1e-3, eye * 1e-3, 1e-4)
-        far = max(eye + radius * 4.0, near + radius * 4.0, near * 10.0)
+        far = max(eye + radius * 10.0, near + radius * 10.0,
+                  eye * 8.0, near * 100.0)
         return near, far
 
     def _apply(self):
@@ -387,6 +389,15 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
 
     # -- machine parts (MACHINE_PARTS) --------------------------------------
 
+    def _config_dir(self):
+        """Config directory used to resolve MACHINE_PARTS and its model paths."""
+        for source in (self, self.datasource):
+            value = getattr(source, "config_dir", None)
+            if value:
+                return value
+        ini_path = os.getenv("INI_FILE_NAME")
+        return os.path.dirname(ini_path) if ini_path else None
+
     def _build_machine_parts(self):
         ini = getattr(self.datasource, "_inifile", None)
         if ini is None:
@@ -394,7 +405,10 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         parts_file = ini.find("VTK", "MACHINE_PARTS")
         if not parts_file:
             return
-        config_dir = getattr(self.datasource, "config_dir", None)
+        # Part model paths in the YAML are relative to the config directory
+        # (MACHINE_PARTS lives under <config>/models), matching the VTK actor
+        # which relies on the config dir being the working directory.
+        config_dir = self._config_dir()
         path = parts_file
         if not os.path.isabs(path) and config_dir:
             path = os.path.normpath(os.path.join(config_dir, path))
@@ -408,8 +422,39 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         except Exception:
             LOG.exception("failed to load MACHINE_PARTS for Qt Quick 3D: %s", path)
             return
-        self.machine_parts.load(
-            data, config_dir=config_dir or os.path.dirname(path))
+
+        # The spindle comes from [VTK] SPINDLE, not the machine-parts YAML.
+        spindle_file = ini.find("VTK", "SPINDLE")
+        skip_ids = ("spindle",) if spindle_file else ()
+        self.machine_parts.load(data, config_dir=config_dir, skip_ids=skip_ids)
+
+        if spindle_file:
+            resolved = spindle_file
+            if not os.path.isabs(resolved) and config_dir:
+                resolved = os.path.normpath(os.path.join(config_dir, resolved))
+            geometry = self._load_model_geometry(resolved)
+            if geometry is not None:
+                self.machine_parts.set_spindle(geometry)
+                self.machine_parts.set_spindle_visible(self._show_spindle)
+            else:
+                LOG.warning("Quick 3D [VTK] SPINDLE unavailable: %s", resolved)
+        self._update_clip_reference()
+
+    @staticmethod
+    def _load_model_geometry(path):
+        """Load an STL/glTF model file into a Quick 3D geometry, or None."""
+        if not path or not os.path.isfile(path):
+            return None
+        lower = str(path).lower()
+        try:
+            if lower.endswith(".stl"):
+                return machine._stl_geometry(path)
+            if lower.endswith((".glb", ".gltf")):
+                return machine._gltf_geometry(path)
+        except (OSError, ValueError, KeyError, IndexError):
+            LOG.exception("failed to load model geometry: %s", path)
+        LOG.warning("Unsupported model format for Qt Quick 3D: %s", path)
+        return None
 
     def _apply_joint_feedback(self):
         if self.machine_parts.rowCount() == 0:
@@ -419,6 +464,7 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         joints = getattr(stat, "joint_actual_position", None)
         if joints:
             self.machine_parts.apply_joint_values(joints)
+            self._update_clip_reference()
 
     # -- picking / highlighting --------------------------------------------
 
@@ -623,11 +669,20 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         bounds, so inch (small) and metric (large) machines both get a
         proportional near/far range.
         """
-        bounds = self._program_bounds or self._machine_bounds
-        if not bounds:
+        boxes = [b for b in (self._program_bounds, self._machine_bounds) if b]
+        # The arm/tool can reach outside the Cartesian limits, so include the
+        # machine-parts extent or the clip planes eat it front and back.
+        if getattr(self, "machine_parts", None) is not None:
+            world_bounds = self.machine_parts.world_bounds()
+            if world_bounds is not None:
+                low, high = world_bounds
+                boxes.append((low[0], high[0], low[1], high[1], low[2], high[2]))
+        if not boxes:
             return
+        minimum = [min(box[i] for box in boxes) for i in (0, 2, 4)]
+        maximum = [max(box[i] for box in boxes) for i in (1, 3, 5)]
         diagonal = math.sqrt(sum(
-            (bounds[i + 1] - bounds[i]) ** 2 for i in (0, 2, 4)))
+            (maximum[i] - minimum[i]) ** 2 for i in range(3)))
         half = diagonal * 0.5
         self.rig.set_scene_radius(max(half * (1.0 + BOUNDS_MARGIN), 0.5))
 
@@ -1038,6 +1093,8 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         if hasattr(self, "plot_data"):
             self.plot_data.toolVisible = bool(
                 self._show_spindle and self._tool_shape.visible)
+        if hasattr(self, "machine_parts"):
+            self.machine_parts.set_spindle_visible(self._show_spindle)
 
     @Slot(bool)
     def showMachine(self, show):

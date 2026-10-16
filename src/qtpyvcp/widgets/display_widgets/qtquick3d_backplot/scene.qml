@@ -18,6 +18,19 @@ Item {
             backgroundMode: SceneEnvironment.Color
         }
 
+        // Solid meshes (tool, machine parts) are lit; path lines stay unlit.
+        // A key light plus a soft fill avoid the flat, over-bright look.
+        DirectionalLight {
+            eulerRotation: Qt.vector3d(-50, -40, 0)
+            brightness: 0.9
+            castsShadow: false
+        }
+        DirectionalLight {
+            eulerRotation: Qt.vector3d(20, 150, 0)
+            brightness: 0.35
+            castsShadow: false
+        }
+
         PerspectiveCamera {
             id: perspectiveCamera
             objectName: "perspectiveCamera"
@@ -102,13 +115,13 @@ Item {
                 model: (typeof machineParts !== "undefined") ? machineParts : null
                 delegate: Model {
                     objectName: "machinePart"
-                    geometry: model.geometry
+                    geometry: model.geometry ? model.geometry : null
                     source: model.sourceUrl
                     position: model.pos
                     rotation: model.rot
                     visible: model.vis
                     pickable: false
-                    materials: [ PrincipledMaterial { baseColor: model.col; lighting: PrincipledMaterial.NoLighting } ]
+                    materials: [ PrincipledMaterial { baseColor: model.col; roughness: 0.7; metalness: 0.0 } ]
                 }
             }
         }
@@ -121,7 +134,7 @@ Item {
             visible: plotData.toolVisible && plotData.toolKind === "cylinder"
             position: plotData.toolPosition
             scale: plotData.toolScale
-            materials: [ PrincipledMaterial { baseColor: plotData.toolColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
+            materials: [ PrincipledMaterial { baseColor: plotData.toolColor; roughness: 0.5; metalness: 0.1 } ]
         }
         Model {
             source: "#Cone"
@@ -129,7 +142,7 @@ Item {
             position: plotData.toolPosition
             scale: plotData.toolScale
             eulerRotation: Qt.vector3d(180, 0, 0)
-            materials: [ PrincipledMaterial { baseColor: plotData.toolColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
+            materials: [ PrincipledMaterial { baseColor: plotData.toolColor; roughness: 0.5; metalness: 0.1 } ]
         }
     }
 
