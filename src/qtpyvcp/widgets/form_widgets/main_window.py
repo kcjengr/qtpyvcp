@@ -641,8 +641,11 @@ class VCPMainWindow(QMainWindow):
         try:
             from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.qtquick3d_backplot import Qt3D0
             loader.registerCustomWidget(Qt3D0)
-        except ImportError:
-            pass
+        except ImportError as exc:
+            LOG.warning(
+                "Qt3D0 (Qt Quick 3D) backplot unavailable and will fall back "
+                "to the Designer placeholder: %s. Install PySide6 "
+                "QtQuickWidgets/QtQuick3D and the Qt Quick 3D QML module.", exc)
 
         # Backward compatibility for .ui files saved with the designer-only
         # placeholder class name.

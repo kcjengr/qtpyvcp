@@ -1,23 +1,31 @@
-"""Tests for the VTK-compatible Qt3D backplot navigation.
+"""Tests for the Qt Quick 3D backplot camera rig and navigation filter.
 
-Covers the camera math (orbit/pan/dolly) and the mouse state machine
-(left-rotate, middle-pan, right-zoom, pan-mode swap, wheel zoom).
+The Qt Quick 3D rig has no ``QCamera`` object: it drives the QML cameras
+through a provider and keeps the authoritative state in Python, which makes the
+math directly testable without a render window.
 """
 
 import os
 
+import numpy as np
 import pytest
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-QtWidgets = pytest.importorskip("PySide6.QtWidgets")
-Qt3DRender = pytest.importorskip("PySide6.Qt3DRender").Qt3DRender
 QtCore = pytest.importorskip("PySide6.QtCore")
-QVector3D = pytest.importorskip("PySide6.QtGui").QVector3D
+pytest.importorskip("PySide6.QtGui")
+pytest.importorskip("PySide6.QtQuick3D")
 
-from qtpyvcp.widgets.display_widgets.qt3d_backplot.camera import CameraRig
-from qtpyvcp.widgets.display_widgets.qt3d_backplot.navigation import (
+from PySide6.QtGui import QVector3D
+
+from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.geometry import (
+    Quick3DPlotData,
+)
+from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.navigation import (
     BackplotNavigation,
+)
+from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.qtquick3d_backplot import (
+    QuickCameraRig,
 )
 
 QEvent = QtCore.QEvent
@@ -26,84 +34,111 @@ QPointF = QtCore.QPointF
 QPoint = QtCore.QPoint
 
 
-@pytest.fixture(scope="module")
-def qt_app():
-    return QtWidgets.QApplication.instance() or QtWidgets.QApplication([])
-
-
-def make_rig():
-    camera = Qt3DRender.QCamera()
-    rig = CameraRig(camera)
-    rig.look_at((0.0, 0.0, 0.0), (1.0, -1.0, 1.0), (0.0, 0.0, 1.0), distance=100.0)
+def make_rig(viewport=(800, 600)):
+    data = Quick3DPlotData()
+    rig = QuickCameraRig(data, lambda: (), lambda: viewport)
+    rig.set_view("P", (0.0, 0.0, 0.0), distance=100.0)
     return rig
 
 
 # -- camera math -----------------------------------------------------------
 
-def test_orbit_preserves_distance_and_keeps_up_unit(qt_app):
+def test_orbit_preserves_distance_and_keeps_up_unit():
     rig = make_rig()
-    before = (rig.camera.position() - rig.camera.viewCenter()).length()
+    before = rig._offset.length()
+    up_before = QVector3D(rig._up)
 
     rig.orbit(30.0, 15.0)
 
-    after = (rig.camera.position() - rig.camera.viewCenter()).length()
-    assert after == pytest.approx(before, rel=1e-4)
-    assert rig.camera.upVector().length() == pytest.approx(1.0, rel=1e-4)
-    assert rig.camera.position() != QVector3D(100.0, -100.0, 100.0)
+    assert rig._offset.length() == pytest.approx(before, rel=1e-6)
+    assert rig._up.length() == pytest.approx(1.0, rel=1e-6)
+    assert rig._up != up_before
 
 
-def test_orbit_keeps_up_perpendicular_to_view(qt_app):
+def test_orbit_keeps_up_perpendicular_to_view():
     rig = make_rig()
     for _ in range(40):
         rig.orbit(17.0, -9.0)
-        forward = (rig.camera.viewCenter() - rig.camera.position()).normalized()
-        up = rig.camera.upVector()
-        assert QVector3D.dotProduct(up, forward) == pytest.approx(0.0, abs=1e-4)
-        assert up.length() == pytest.approx(1.0, rel=1e-4)
+        forward = (-rig._offset).normalized()
+        assert QVector3D.dotProduct(rig._up, forward) == pytest.approx(
+            0.0, abs=1e-6)
+        assert rig._up.length() == pytest.approx(1.0, rel=1e-5)
 
 
-def test_many_orbits_do_not_destabilize_camera(qt_app):
+def test_many_orbits_do_not_destabilize_camera():
     rig = make_rig()
     for _ in range(200):
         rig.orbit(23.0, 31.0)
-    position = rig.camera.position()
-    assert all(value == value for value in (position.x(), position.y(), position.z()))
-    distance = (position - rig.camera.viewCenter()).length()
-    assert distance > 0.0
+    assert np.isfinite([rig._offset.x(), rig._offset.y(), rig._offset.z()]).all()
+    assert rig._offset.length() > 0.0
 
 
-def test_pan_translates_position_and_center_together(qt_app):
-    rig = make_rig()
-    center_before = rig.camera.viewCenter()
-    position_before = rig.camera.position()
-
-    rig.pan(40.0, -25.0, 800, 600)
-
-    center_delta = rig.camera.viewCenter() - center_before
-    position_delta = rig.camera.position() - position_before
-    assert (center_delta - position_delta).length() == pytest.approx(0.0, abs=1e-5)
-    assert center_delta.length() > 0.0
-
-
-def test_dolly_factor_above_one_zooms_in(qt_app):
-    rig = make_rig()
-    before = (rig.camera.position() - rig.camera.viewCenter()).length()
-
-    rig.dolly(2.0)
-
-    after = (rig.camera.position() - rig.camera.viewCenter()).length()
-    assert after == pytest.approx(before / 2.0, rel=1e-4)
-
-
-def test_orthographic_dolly_scales_projection(qt_app):
+def test_pan_moves_center_at_one_pixel_per_magnification():
     rig = make_rig()
     rig.set_orthographic()
-    rig.camera.setTop(10.0)
-    rig.camera.setBottom(-10.0)
+    rig.data.orthoMagnification = 2.0       # 2 pixels per world unit
+    before = QVector3D(rig._center)
+
+    rig.pan(40.0, 0.0, 800, 600)
+
+    moved = (rig._center - before).length()
+    assert moved == pytest.approx(40.0 / 2.0, rel=1e-6)
+
+
+def test_pan_uses_the_viewport_height_for_orthographic_scale():
+    rig = make_rig()
+    rig.set_orthographic()
+    rig.data.orthoMagnification = 1.0
+    before = QVector3D(rig._center)
+
+    rig.pan(10.0, 0.0, 1600, 800)          # 800 px tall -> 1 px per unit
+
+    assert (rig._center - before).length() == pytest.approx(10.0, rel=1e-6)
+
+
+def test_orthographic_dolly_and_zoom_scale_magnification():
+    rig = make_rig()
+    rig.set_orthographic()
+    rig.data.orthoMagnification = 1.0
+
+    rig.dolly(2.0)                          # dolly > 1 zooms in
+    assert rig.data.orthoMagnification == pytest.approx(2.0)
+
+    rig.zoom(0.5)                           # zoom < 1 zooms in
+    assert rig.data.orthoMagnification == pytest.approx(4.0)
+
+
+def test_perspective_dolly_and_zoom_change_eye_distance():
+    rig = make_rig()
+    rig.set_perspective()
+    rig.look_at((0.0, 0.0, 0.0), (1.0, -1.0, 1.0), distance=100.0)
 
     rig.dolly(2.0)
+    assert rig._offset.length() == pytest.approx(50.0)
 
-    assert rig.camera.top() == pytest.approx(5.0)
+    rig.zoom(2.0)
+    assert rig._offset.length() == pytest.approx(100.0)
+
+
+def test_fit_bounds_uses_pixels_per_world_unit():
+    rig = make_rig(viewport=(800, 600))
+    bounds = (0.0, 100.0, 0.0, 100.0, 0.0, 100.0)
+
+    rig.fit_bounds(bounds, padding=1.1)
+
+    span = 100.0 * 1.1
+    assert rig.data.orthoMagnification == pytest.approx(600.0 / span)
+    assert rig._scene_radius == pytest.approx(
+        100.0 * (3 ** 0.5) * 0.5 * (1.0 + 0.6))
+
+
+def test_fit_bounds_without_bounds_still_sets_a_view():
+    rig = make_rig()
+    rig.data.orthoMagnification = 0.0
+
+    rig.fit_bounds(None)
+
+    assert rig.data.orthoMagnification > 0.0
 
 
 # -- mouse state machine ---------------------------------------------------
@@ -140,8 +175,25 @@ class FakeWheelEvent:
         return QPoint(0, self._delta)
 
 
+class RecordingRig:
+    def __init__(self):
+        self.calls = []
+
+    def orbit(self, azimuth, elevation):
+        self.calls.append(("orbit", azimuth, elevation))
+
+    def pan(self, dx, dy, width, height):
+        self.calls.append(("pan", dx, dy, width, height))
+
+    def dolly(self, factor):
+        self.calls.append(("dolly", factor))
+
+    def zoom(self, factor):
+        self.calls.append(("zoom", factor))
+
+
 def make_navigation(pan_mode=False):
-    rig = make_rig()
+    rig = RecordingRig()
     navigation = BackplotNavigation(rig, None, lambda: (800, 600))
     navigation.pan_mode = pan_mode
     return rig, navigation
@@ -164,75 +216,77 @@ def release(nav, button):
                                          buttons=Qt.MouseButton.NoButton))
 
 
-def test_left_drag_orbits_and_release_ends(qt_app):
+def test_left_drag_orbits_and_release_ends():
     rig, nav = make_navigation()
-    before = rig.camera.position()
 
     press(nav, Qt.MouseButton.LeftButton)
     move(nav, Qt.MouseButton.LeftButton, (160, 130))
     assert nav.dragged
-    assert rig.camera.position() != before
+    assert rig.calls and rig.calls[0][0] == "orbit"
 
     release(nav, Qt.MouseButton.LeftButton)
     assert not nav._active()
 
 
-def test_middle_drag_pans_by_default(qt_app):
+def test_middle_drag_pans_by_default():
     rig, nav = make_navigation()
-    center_before = rig.camera.viewCenter()
 
     press(nav, Qt.MouseButton.MiddleButton)
     move(nav, Qt.MouseButton.MiddleButton, (150, 140))
     release(nav, Qt.MouseButton.MiddleButton)
 
-    assert rig.camera.viewCenter() != center_before
+    assert [call[0] for call in rig.calls] == ["pan"]
 
 
-def test_pan_mode_swaps_left_and_middle(qt_app):
+def test_pan_mode_swaps_left_and_middle():
     rig, nav = make_navigation(pan_mode=True)
-    center_before = rig.camera.viewCenter()
-
     press(nav, Qt.MouseButton.LeftButton)
     move(nav, Qt.MouseButton.LeftButton, (150, 140))
-    assert rig.camera.viewCenter() != center_before
     release(nav, Qt.MouseButton.LeftButton)
+    assert [call[0] for call in rig.calls] == ["pan"]
 
     rig2, nav2 = make_navigation(pan_mode=True)
-    position_before = rig2.camera.position()
     press(nav2, Qt.MouseButton.MiddleButton)
     move(nav2, Qt.MouseButton.MiddleButton, (150, 140))
-    # Middle in pan-mode orbits, which moves the camera position too.
-    assert (rig2.camera.position() - position_before).length() > 0.0
+    release(nav2, Qt.MouseButton.MiddleButton)
+    assert [call[0] for call in rig2.calls] == ["orbit"]
 
 
-def test_right_drag_dollies(qt_app):
+def test_right_drag_dollies():
     rig, nav = make_navigation()
-    before = (rig.camera.position() - rig.camera.viewCenter()).length()
 
     press(nav, Qt.MouseButton.RightButton)
-    move(nav, Qt.MouseButton.RightButton, (100, 160))  # drag down -> zoom in
+    move(nav, Qt.MouseButton.RightButton, (100, 160))
     release(nav, Qt.MouseButton.RightButton)
 
-    after = (rig.camera.position() - rig.camera.viewCenter()).length()
-    assert after < before
+    kind, factor = rig.calls[0]
+    assert kind == "dolly"
+    assert factor > 1.0                     # dragging down zooms in
 
 
-def test_wheel_zooms_in_and_out(qt_app):
+def test_wheel_zooms_in_and_out():
     rig, nav = make_navigation()
-    start = (rig.camera.position() - rig.camera.viewCenter()).length()
 
     nav.eventFilter(None, FakeWheelEvent(120))
-    zoomed_in = (rig.camera.position() - rig.camera.viewCenter()).length()
-    assert zoomed_in < start
-
     nav.eventFilter(None, FakeWheelEvent(-120))
-    zoomed_out = (rig.camera.position() - rig.camera.viewCenter()).length()
-    assert zoomed_out > zoomed_in
+
+    assert [call[0] for call in rig.calls] == ["zoom", "zoom"]
+    assert rig.calls[0][1] < 1.0
+    assert rig.calls[1][1] > 1.0
 
 
-def test_click_without_drag_is_not_flagged_as_drag(qt_app):
+def test_click_without_drag_is_not_flagged_as_drag():
     _, nav = make_navigation()
     press(nav, Qt.MouseButton.LeftButton)
     move(nav, Qt.MouseButton.LeftButton, (101, 100))
     assert not nav.dragged
     release(nav, Qt.MouseButton.LeftButton)
+
+
+def test_missing_release_ends_navigation_on_move_without_buttons():
+    _, nav = make_navigation()
+    press(nav, Qt.MouseButton.LeftButton)
+    nav.eventFilter(None, FakeMouseEvent(QEvent.Type.MouseMove,
+                                         buttons=Qt.MouseButton.NoButton,
+                                         pos=(120, 120)))
+    assert not nav._active()

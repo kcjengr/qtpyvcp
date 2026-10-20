@@ -356,9 +356,10 @@ class GCodePropertiesPlugin(_DesignerPlugin):
 
 
 # ---------------------------------------------------------------------------
-# Qt3D backplot.  Like the VTK backplot it cannot be instantiated in Designer
-# (it needs a live Qt3D window + LinuxCNC), so Designer gets a placeholder and
-# the real widget is swapped in at runtime (see VCPMainWindow).
+# Qt3D0 backplot.  Like the VTK backplot it cannot be instantiated in Designer
+# (it needs a live Qt Quick 3D surface + LinuxCNC), so Designer gets a
+# placeholder and the real widget is swapped in at runtime (see VCPMainWindow).
+# The widget name is historical; the runtime renderer is Qt Quick 3D.
 # ---------------------------------------------------------------------------
 
 class Qt3D0Placeholder(VTKBackPlotPlaceholder):
@@ -378,6 +379,19 @@ class Qt3D0Placeholder(VTKBackPlotPlaceholder):
 
         return Property(QColor, get, set_, freset=reset)
 
+    @staticmethod
+    def _bool_property(name, default):
+        def get(self):
+            return bool(self._qt3d_property_values.get(name, default))
+
+        def set_(self, value):
+            self._qt3d_property_values[name] = bool(value)
+
+        def reset(self):
+            self._qt3d_property_values.pop(name, None)
+
+        return Property(bool, get, set_, freset=reset)
+
     backgroundColor = _color_property.__func__("backgroundColor", (0, 0, 0, 255))
     backgroundColor2 = _color_property.__func__("backgroundColor2", (0, 0, 0, 255))
     traverseColor = _color_property.__func__("traverseColor", (200, 35, 35, 255))
@@ -385,6 +399,9 @@ class Qt3D0Placeholder(VTKBackPlotPlaceholder):
     feedColor = _color_property.__func__("feedColor", (210, 210, 255, 255))
     dwellColor = _color_property.__func__("dwellColor", (0, 0, 255, 255))
     userColor = _color_property.__func__("userColor", (0, 100, 255, 255))
+    gridVisible = _bool_property.__func__("gridVisible", False)
+    machineBoundsVisible = _bool_property.__func__("machineBoundsVisible", True)
+    programBoundsVisible = _bool_property.__func__("programBoundsVisible", False)
 
     @Property(bool, freset=lambda self: setattr(self, "enableProgramTicks", True))
     def enableProgramTicks(self):
@@ -399,7 +416,7 @@ class Qt3D0Placeholder(VTKBackPlotPlaceholder):
         self._qt3d_property_values = {}
         label = self.findChild(QLabel)
         if label is not None:
-            label.setText("Qt3D Backplot\n(3D visualization)")
+            label.setText("Qt3D0 Backplot\n(Qt Quick 3D visualization)")
 
 
 class Qt3D0(Qt3D0Placeholder):

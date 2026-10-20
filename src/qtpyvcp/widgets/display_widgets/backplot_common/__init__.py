@@ -2,7 +2,7 @@
 
 This package turns a G-code program plus LinuxCNC machine state into plain
 geometry (NumPy arrays and small dataclasses) with no rendering dependency.
-Both the VTK backplot and the Qt3D backplot consume this layer, so coordinate
+Both the VTK and Qt Quick 3D backplots consume this layer, so coordinate
 handling, work-offset math, and rotary/kinematics shaping live in exactly one
 place.
 """

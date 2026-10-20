@@ -7,6 +7,17 @@ Item {
     width: 640
     height: 480
 
+    // Two-colour background, restored from the VTK backplot. The View3D renders
+    // with a transparent clear so this gradient shows through; setting both
+    // colours equal gives the old solid background.
+    Rectangle {
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: plotData.backgroundColor2 }
+            GradientStop { position: 1.0; color: plotData.backgroundColor }
+        }
+    }
+
     View3D {
         id: view3d
         objectName: "backplotView3D"
@@ -14,8 +25,10 @@ Item {
         camera: plotData.perspective ? perspectiveCamera : orthographicCamera
 
         environment: SceneEnvironment {
-            clearColor: plotData.backgroundColor
-            backgroundMode: SceneEnvironment.Color
+            clearColor: "transparent"
+            backgroundMode: SceneEnvironment.Transparent
+            antialiasingMode: SceneEnvironment.MSAA
+            antialiasingQuality: SceneEnvironment.High
         }
 
         // Solid meshes (tool, machine parts) are lit; path lines stay unlit.
@@ -48,62 +61,69 @@ Item {
             verticalMagnification: plotData.orthoMagnification
         }
 
+        // Program paths: one Model per (WCS, motion role). Geometry stays in
+        // WCS-local coordinates; the row's pos/rot carries the work offset, so
+        // editing an offset never re-uploads vertex data.
+        Repeater3D {
+            model: (typeof pathGroups !== "undefined") ? pathGroups : null
+            delegate: Model {
+                objectName: "pathGroup"
+                geometry: model.geometry
+                position: model.pos
+                rotation: model.rot
+                pickable: false
+                materials: [ PrincipledMaterial { baseColor: model.col; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
+            }
+        }
+
         // Line geometry has no normals, so every material is unlit
         // (PrincipledMaterial.NoLighting) to keep its base color exact.
         Model {
-            geometry: plotData.traverse
-            materials: [ PrincipledMaterial { baseColor: plotData.traverseColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
-        }
-        Model {
-            geometry: plotData.arcfeed
-            materials: [ PrincipledMaterial { baseColor: plotData.arcfeedColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
-        }
-        Model {
-            geometry: plotData.feed
-            materials: [ PrincipledMaterial { baseColor: plotData.feedColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
-        }
-        Model {
-            geometry: plotData.dwell
-            materials: [ PrincipledMaterial { baseColor: plotData.dwellColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
-        }
-        Model {
-            geometry: plotData.user
-            materials: [ PrincipledMaterial { baseColor: plotData.userColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
-        }
-
-        Model {
             geometry: plotData.grid
             visible: plotData.gridVisible
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.gridColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
         Model {
             geometry: plotData.axesX
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.axesXColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
         Model {
             geometry: plotData.axesY
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.axesYColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
         Model {
             geometry: plotData.axesZ
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.axesZColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
         Model {
             geometry: plotData.machineBounds
             visible: plotData.machineBoundsVisible
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.boundsColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
         Model {
             geometry: plotData.programBounds
             visible: plotData.programBoundsVisible
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.boundsColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
         Model {
+            geometry: plotData.transitions
+            pickable: false
+            materials: [ PrincipledMaterial { baseColor: plotData.transitionColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
+        }
+        Model {
             geometry: plotData.trail
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.trailColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
         Model {
             geometry: plotData.highlight
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.highlightColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
 
@@ -134,6 +154,7 @@ Item {
             visible: plotData.toolVisible && plotData.toolKind === "cylinder"
             position: plotData.toolPosition
             scale: plotData.toolScale
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.toolColor; roughness: 0.5; metalness: 0.1 } ]
         }
         Model {
@@ -142,19 +163,22 @@ Item {
             position: plotData.toolPosition
             scale: plotData.toolScale
             eulerRotation: Qt.vector3d(180, 0, 0)
+            pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.toolColor; roughness: 0.5; metalness: 0.1 } ]
         }
     }
 
-    // Click-to-select. MouseArea's drag threshold means an orbit/pan drag does
-    // not register as a click, matching the VTK backplot.
+    // Click-to-select. The click ray is unprojected by View3D and handed to
+    // Python, which finds the nearest path segment within a tolerance. Doing
+    // the pick ourselves keeps it independent of mesh picking support for line
+    // primitives, and a drag never registers as a click.
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton
         onClicked: (mouse) => {
-            var result = view3d.pick(mouse.x, mouse.y)
-            if (result && result.objectHit)
-                plotData.reportPick(result.scenePosition)
+            var near = view3d.mapTo3DScene(Qt.vector3d(mouse.x, mouse.y, 0))
+            var far = view3d.mapTo3DScene(Qt.vector3d(mouse.x, mouse.y, 1))
+            plotData.reportPick(near, far)
         }
     }
 }

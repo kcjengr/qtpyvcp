@@ -27,8 +27,15 @@ if not _os.getenv('DESIGNER'):
     from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import (VTKBackPlot)  # noqa: F401
     try:
         from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.qtquick3d_backplot import (Qt3D0)  # noqa: F401
-    except ImportError:
+    except ImportError as _qt3d0_error:
+        # Do not fail the whole widget import for optional renderers, but make
+        # the failure visible: a silently missing Qt3D0 leaves .ui files
+        # showing the Designer placeholder.
         Qt3D0 = None
+        print("Warning: Qt3D0 (Qt Quick 3D) backplot unavailable: "
+              f"{_qt3d0_error}")
+        print("Install PySide6 QtQuickWidgets, QtQuick3D and the Qt Quick 3D "
+              "QML module to enable it.")
 
 # Form Widgets
 from qtpyvcp.widgets.form_widgets.main_window import (VCPMainWindow)  # noqa: F401
@@ -172,7 +179,7 @@ def main():
     try:
         QPyDesignerCustomWidgetCollection.addCustomWidget(Qt3D0Plugin())
     except Exception as e:
-        print(f"Warning: Could not load Qt3D widget plugin: {e}")
+        print(f"Warning: Could not load Qt3D0 widget plugin: {e}")
         print("Qt3D0 widget will not be available in designer")
     
     QPyDesignerCustomWidgetCollection.addCustomWidget(NotificationPlugin())

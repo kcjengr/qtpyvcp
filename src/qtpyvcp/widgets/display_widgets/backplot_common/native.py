@@ -2,7 +2,7 @@
 
 The compiled ``_backplot_cpp`` extension already emits renderer-independent
 arrays; the VTK bridge then wraps them in ``vtkPoints``/``vtkCellArray``.
-This module keeps the raw arrays in :class:`BackplotGeometry` form so the Qt3D
+This module keeps the raw arrays in :class:`BackplotGeometry` form so the Qt Quick 3D
 backplot can consume them without importing VTK.
 """
 

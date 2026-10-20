@@ -40,6 +40,63 @@ Files
    - src/qtpyvcp/path/to/file.py
 
 
+2026-10-20
+----------
+
+Area
+   Qt3D0 backplot (Qt Quick 3D renderer)
+
+Summary
+   Removed the legacy Qt 3D renderer and finished the Qt Quick 3D parity work:
+   backplot settings/signals are wired, work-offset edits no longer re-upload
+   geometry, G91-only programs are anchored to the machine, program lines can be
+   highlighted from the editor, and offset transitions are drawn.
+
+Changes
+   - Deleted `display_widgets/qt3d_backplot` (Qt 3D entity/buffer renderer);
+     `Qt3D0` is now always the Qt Quick 3D implementation.
+   - Path geometry is split into per-(WCS, role) rows in
+     `qtquick3d_backplot/paths.py`; WCS offsets and the floating anchor are
+     scene transforms, so offset edits only emit `dataChanged`.
+   - Colour changes update row materials instead of re-parsing the program.
+   - Added floating-WCS anchoring (tracking while idle, latched while running)
+     and WCS offset-transition lines.
+   - Picking now unprojects the click with `View3D.mapTo3DScene` and tests the
+     ray against local segment arrays (no dependency on mesh picking for lines).
+   - Added `selected_program_line(s)` highlighting and wired
+     `runStateChanged`/`activeOffsetChanged`/tool-table plugin signals.
+   - Fixed orthographic magnification math (pixels per world unit), the camera
+     up-vector invariant, and `MachinePartsModel.set_spindle` row signalling.
+   - Restored the two-colour background (gradient behind a transparent View3D)
+     and enabled MSAA.
+   - Added the missing Qt Quick 3D/QtQuickWidgets Debian dependencies and raised
+     the PySide6 minimum; missing Qt3D0 now logs a warning instead of silently
+     falling back to the Designer placeholder.
+   - Removed the unused `BackplotBuilder` C++ stub and the `BaseBackPlot` mixin
+     from `Qt3D0`.
+   - Retargeted the legacy renderer tests to the Qt Quick 3D rig/tool and added
+     load, WCS, floating-anchor, picking and highlight tests.
+
+Validation
+   - `pytest tests` with the LinuxCNC Python modules on PYTHONPATH: 106 passed.
+   - Offscreen render check (Xvfb + OpenGL): gradient background samples red at
+     the bottom and blue at the top, the program path renders, and a synthetic
+     click on a known segment selects the expected G-code line.
+   - Synthetic 200k-segment path: initial build ~75 ms; a work-offset edit now
+     costs ~0.1 ms (transform-only) instead of a full geometry rebuild.
+
+Files
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/
+   - src/qtpyvcp/widgets/display_widgets/designer_plugins.py
+   - src/qtpyvcp/widgets/register_widgets.py
+   - src/qtpyvcp/widgets/form_widgets/main_window.py
+   - src/qtpyvcp/native/backplot_cpp/
+   - debian/control
+   - pyproject.toml
+   - tests/widgets/
+   - docs/source/components/qtquick3d_backplot.rst
+
+
 2026-03-09
 ----------
 

@@ -1,4 +1,4 @@
-"""Plain-data geometry containers shared by the VTK and Qt3D backplots.
+"""Plain-data geometry containers shared by the VTK and Qt Quick 3D backplots.
 
 Segment endpoints are stored the same way the native C++ builder and the
 ``VTKCanon`` already emit them: a flat ``(N, 3)`` float32 point array where

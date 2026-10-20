@@ -15,7 +15,7 @@ import struct
 from urllib.parse import unquote
 
 import numpy as np
-from PySide6.QtCore import QAbstractListModel, QByteArray, Qt
+from PySide6.QtCore import QAbstractListModel, QByteArray, QModelIndex, Qt
 from PySide6.QtGui import QColor, QQuaternion, QVector3D
 from PySide6.QtQuick3D import QQuick3DGeometry
 
@@ -591,7 +591,10 @@ class MachinePartsModel(QAbstractListModel):
     def apply_joint_values(self, joint_values):
         if not joint_values:
             return
-        self._joint_values = joint_values
+        values = tuple(float(value) for value in joint_values)
+        if values == self._joint_values:
+            return
+        self._joint_values = values
         if not self._parts:
             return
         self._recompute()
@@ -614,7 +617,8 @@ class MachinePartsModel(QAbstractListModel):
         part.color = color
         part.type = "spindle"
         self._spindle = part
-        self.beginInsertRows(self.index(0, 0), 0, 0)
+        row = len(self._parts)
+        self.beginInsertRows(QModelIndex(), row, row)
         self._parts.append(part)
         self.endInsertRows()
         self._recompute()

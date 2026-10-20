@@ -26,7 +26,6 @@ from qtpyvcp.widgets.display_widgets.backplot_common import (
     DEFAULT_ROLE_COLORS,
     load_geometry,
 )
-from qtpyvcp.widgets.display_widgets.vtk_backplot.base_backplot import BaseBackPlot
 from qtpyvcp.widgets.display_widgets.vtk_backplot.linuxcnc_datasource import (
     LinuxCncDataSource,
 )
@@ -34,20 +33,32 @@ from qtpyvcp.widgets.display_widgets.vtk_backplot.linuxcnc_datasource import (
 from . import machine, tool
 from .geometry import (
     Quick3DPlotData,
+    map_point_from_quick3d,
     map_points_to_quick3d,
     map_vector_to_quick3d,
 )
 from .navigation import BackplotNavigation
+from .paths import (
+    ROLE_NAMES,
+    PathGroupModel,
+    ray_segment_distances,
+    transform_point,
+)
 
 LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv("DESIGNER", "").lower() not in ("", "0", "false", "no")
-
-ROLE_NAMES = ("traverse", "arcfeed", "feed", "dwell", "user")
 
 # Extra radius around the machine/program bounds, as a fraction of the bounds
 # half-diagonal, so the camera fit and clip planes cover space beyond the
 # machine envelope. Scale-independent, so it works for inch and metric.
 BOUNDS_MARGIN = 0.6
+# Used to fit the view before any machine or program bounds are available.
+DEFAULT_BOUNDS = (-10.0, 10.0, -10.0, 10.0, -10.0, 10.0)
+# Click tolerance as a fraction of the scene half-diagonal.
+PICK_TOLERANCE_FRACTION = 0.005
+# Cap for line highlighting, so selecting a line used many times cannot upload
+# an unbounded buffer.
+MAX_HIGHLIGHT_SEGMENTS = 20000
 VIEW_DIRECTIONS = {
     "P": ((1.0, -1.0, 1.0), (0.0, 0.0, 1.0)),
     "X": ((0.0, -1.0, 0.0), (0.0, 0.0, 1.0)),
@@ -79,29 +90,6 @@ def _box_lines(bounds):
                       dtype=np.float32)
 
 
-def segment_role_indices(colors, palette):
-    """Map each segment RGBA colour to a role index in *palette*.
-
-    Exact palette matches are preferred so a distinct feed/arcfeed colour is
-    never confused with a neighbour. Unmatched colours fall back to the nearest
-    palette entry using 64-bit math, because ``255 ** 2`` overflows ``int16``
-    and silently selects the wrong role.
-    """
-    colors = np.asarray(colors, dtype=np.int64).reshape(-1, 4)
-    palette = np.asarray(palette, dtype=np.int64).reshape(-1, 4)
-    if colors.shape[0] == 0 or palette.shape[0] == 0:
-        return np.zeros(colors.shape[0], dtype=np.int64)
-
-    exact = (colors[:, None, :] == palette[None, :, :]).all(axis=2)
-    indices = exact.argmax(axis=1)
-    unmatched = ~exact.any(axis=1)
-    if unmatched.any():
-        distances = np.square(
-            colors[unmatched, None, :] - palette[None, :, :]).sum(axis=2)
-        indices[unmatched] = distances.argmin(axis=1)
-    return indices
-
-
 class QuickCameraRig:
     """Small camera controller compatible with the existing navigation filter."""
 
@@ -118,6 +106,8 @@ class QuickCameraRig:
         # machine/program bounds so inch and metric machines both get a sane
         # near/far range instead of a fixed 0.01 / 1e6 span.
         self._scene_radius = None
+        self._up = self._orthogonalize(
+            self._up, (-self._offset).normalized())
         self._apply()
 
     def set_scene_radius(self, radius):
@@ -125,9 +115,15 @@ class QuickCameraRig:
             radius = float(radius)
         except (TypeError, ValueError):
             return
-        if radius > 0.0:
-            self._scene_radius = radius
-            self._apply()
+        if radius <= 0.0 or radius == self._scene_radius:
+            return
+        self._scene_radius = radius
+        self._apply()
+
+    @property
+    def scene_radius(self):
+        """Half-diagonal of the scene, or ``None`` before a fit."""
+        return self._scene_radius
 
     def _clip_planes(self):
         eye = max(self._offset.length(), 1e-6)
@@ -184,10 +180,26 @@ class QuickCameraRig:
         mapped_direction = _unit(mapped_direction)
         if up is not None:
             up = np.asarray(up, dtype=np.float64)
-            self._up = map_vector_to_quick3d(up).normalized()
+            mapped_up = map_vector_to_quick3d(up).normalized()
+            # Keep the Python-side up vector perpendicular to the view; the
+            # camera quaternion orthogonalizes internally, but orbit/pan reuse
+            # this vector and a tilted one would slowly roll the view.
+            self._up = self._orthogonalize(
+                mapped_up, -QVector3D(*map(float, mapped_direction)))
         self._offset = QVector3D(*map(float, mapped_direction)) * float(
             distance if distance is not None else max(self._offset.length(), 1.0))
         self._apply()
+
+    @staticmethod
+    def _orthogonalize(up, forward):
+        """Project *up* perpendicular to *forward*, keeping a stable fallback."""
+        projected = up - forward * QVector3D.dotProduct(up, forward)
+        if projected.lengthSquared() < 1e-10:
+            fallback = QVector3D(0.0, 0.0, 1.0)
+            projected = fallback - forward * QVector3D.dotProduct(fallback, forward)
+        if projected.lengthSquared() < 1e-10:
+            return up
+        return projected.normalized()
 
     def set_view(self, name, center, distance=None):
         direction, up = VIEW_DIRECTIONS.get(str(name or "P").upper(), VIEW_DIRECTIONS["P"])
@@ -195,7 +207,7 @@ class QuickCameraRig:
 
     def fit_bounds(self, bounds, aspect=1.0, padding=1.1, distance=None):
         if bounds is None:
-            return
+            bounds = DEFAULT_BOUNDS
         xmin, xmax, ymin, ymax, zmin, zmax = bounds
         center = ((xmin + xmax) * 0.5, (ymin + ymax) * 0.5,
                   (zmin + zmax) * 0.5)
@@ -206,8 +218,17 @@ class QuickCameraRig:
         direction = self._offset
         direction = np.asarray((direction.x(), -direction.z(), direction.y()))
         if self._orthographic:
-            span = max(float(np.max(extent)), 1.0) * max(float(padding), 1.0)
-            self.data.orthoMagnification = 2.0 / span
+            try:
+                viewport_width, viewport_height = self._viewport_size()
+            except (TypeError, ValueError, RuntimeError, AttributeError):
+                viewport_width, viewport_height = 1, 1
+            span = max(float(np.max(extent)), 1e-6) * max(float(padding), 1.0)
+            # Qt Quick 3D magnification is pixels per world unit: the visible
+            # world width is viewport_width / magnification. Pick the largest
+            # magnification that still fits `span` on the shorter viewport axis.
+            magnification = min(max(viewport_width, 1),
+                                max(viewport_height, 1)) / span
+            self.data.orthoMagnification = magnification
             distance = distance or diagonal * 2.0
         else:
             distance = distance or diagonal * 0.5 / math.sin(math.radians(self._fov / 2.0)) * padding
@@ -244,6 +265,7 @@ class QuickCameraRig:
             pitch = QQuaternion.fromAxisAndAngle(right, float(elevation_deg))
             self._offset = pitch.rotatedVector(self._offset)
             self._up = pitch.rotatedVector(self._up)
+        self._up = self._orthogonalize(self._up, (-self._offset).normalized())
         self._apply()
 
     def pan(self, dx_pixels, dy_pixels, viewport_width, viewport_height):
@@ -253,16 +275,19 @@ class QuickCameraRig:
         if right.lengthSquared() < 1e-12:
             return
         true_up = QVector3D.crossProduct(right, forward).normalized()
-        world_height = (1.0 / max(self.data.orthoMagnification, 1e-6)
-                        if self._orthographic else
-                        2.0 * self._offset.length() * math.tan(math.radians(self._fov / 2.0)))
+        if self._orthographic:
+            # Magnification is pixels per world unit, so the visible height is
+            # viewport_height / magnification.
+            world_height = height / max(self.data.orthoMagnification, 1e-9)
+        else:
+            world_height = 2.0 * self._offset.length() * math.tan(math.radians(self._fov / 2.0))
         delta = right * (-float(dx_pixels) * world_height / height)
         delta += true_up * (float(dy_pixels) * world_height / height)
         self._center += delta
         self._apply()
 
 
-class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
+class Qt3D0(QWidget, VCPWidget):
     """Qt Quick 3D backplot using the historical ``Qt3D0`` widget name."""
 
     programLineSelected = Signal(int)
@@ -302,6 +327,15 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         self._active_wcs_index = None
         self._active_wcs_offset = None
         self._active_rotation = 0.0
+        self._g92_offset = (0.0, 0.0, 0.0)
+        # Floating (G91-only) programs have no meaningful WCS origin; their
+        # shape is anchored to the machine instead (mirrors VTKBackPlot).
+        self._floating_wcs = set()
+        self._anchor_offset = None
+        self._anchor_latched = False
+        self._program_running = False
+        self._highlighted_lines = []
+        self._pending_initial_fit = True
         self._tool_shape = tool.ToolShape()
         self._tool_number = 0
         self._default_role_colors = {
@@ -319,17 +353,21 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
             self.setMinimumSize(400, 300)
             return
 
-        # Create the QQuickWidget first so it is destroyed before plot_data.
-        # QObject deletes children in creation order; if plot_data died first,
-        # every QML binding would re-evaluate against a null object at teardown.
+        # Create the QQuickWidget first so it is destroyed before plot_data /
+        # path_groups / machine_parts. QObject deletes children in creation
+        # order; if those died first, every QML binding would re-evaluate
+        # against a null object at teardown.
         self.quick_widget = QQuickWidget(self)
         self.quick_widget.setResizeMode(QQuickWidget.ResizeMode.SizeRootObjectToView)
         self.quick_widget.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.plot_data = Quick3DPlotData(self)
+        self.path_groups = PathGroupModel(self)
         self._apply_plot_colors()
         self.machine_parts = machine.MachinePartsModel(self)
-        self.quick_widget.rootContext().setContextProperty("plotData", self.plot_data)
-        self.quick_widget.rootContext().setContextProperty("machineParts", self.machine_parts)
+        context = self.quick_widget.rootContext()
+        context.setContextProperty("plotData", self.plot_data)
+        context.setContextProperty("pathGroups", self.path_groups)
+        context.setContextProperty("machineParts", self.machine_parts)
         self.plot_data.picked.connect(self._on_picked)
         qml_path = os.path.join(os.path.dirname(__file__), "scene.qml")
         self.quick_widget.setSource(QUrl.fromLocalFile(qml_path))
@@ -344,9 +382,10 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         self.quick_widget.installEventFilter(self.navigation)
 
         self.datasource = LinuxCncDataSource()
+        self.config_dir = self._resolve_config_dir()
         self._stat = linuxcnc.stat()
         self._is_lathe = self.datasource.isMachineLathe()
-        self._pick = {}
+        self._seed_g92_state()
         self._initialize_geometry()
         self._wire_signals()
         self._connect_settings()
@@ -354,6 +393,30 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         QTimer.singleShot(0, self._load_current_program)
         QTimer.singleShot(500, self._load_current_program)
         LOG.info("Qt Quick 3D backplot initialized")
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        # Qt Quick 3D orthographic magnification is pixels per world unit, so a
+        # fit computed while the widget still had its default size is wrong.
+        # Refit once, on the first real resize, before the user can interact.
+        if self._pending_initial_fit and not self._designer:
+            self._pending_initial_fit = False
+            QTimer.singleShot(0, self._fit_initial_view)
+
+    def _fit_initial_view(self):
+        if not isValid(self) or not hasattr(self, "rig"):
+            return
+        if self._program_bounds is not None:
+            self.setViewProgram("p")
+        else:
+            self.setViewMachine()
+
+    def _resolve_config_dir(self):
+        """Config directory used to resolve MACHINE_PARTS and model paths."""
+        ini_path = os.getenv("INI_FILE_NAME")
+        if ini_path:
+            return os.path.dirname(ini_path)
+        return getattr(self.datasource, "config_dir", None)
 
     # -- scene and geometry -------------------------------------------------
 
@@ -389,15 +452,6 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
 
     # -- machine parts (MACHINE_PARTS) --------------------------------------
 
-    def _config_dir(self):
-        """Config directory used to resolve MACHINE_PARTS and its model paths."""
-        for source in (self, self.datasource):
-            value = getattr(source, "config_dir", None)
-            if value:
-                return value
-        ini_path = os.getenv("INI_FILE_NAME")
-        return os.path.dirname(ini_path) if ini_path else None
-
     def _build_machine_parts(self):
         ini = getattr(self.datasource, "_inifile", None)
         if ini is None:
@@ -408,7 +462,7 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         # Part model paths in the YAML are relative to the config directory
         # (MACHINE_PARTS lives under <config>/models), matching the VTK actor
         # which relies on the config dir being the working directory.
-        config_dir = self._config_dir()
+        config_dir = self.config_dir
         path = parts_file
         if not os.path.isabs(path) and config_dir:
             path = os.path.normpath(os.path.join(config_dir, path))
@@ -462,45 +516,98 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         status = getattr(self.datasource, "_status", None)
         stat = getattr(status, "stat", None)
         joints = getattr(stat, "joint_actual_position", None)
-        if joints:
-            self.machine_parts.apply_joint_values(joints)
-            self._update_clip_reference()
+        if not joints:
+            return
+        snapshot = tuple(float(value) for value in joints)
+        if snapshot == self._joints:
+            return
+        self._joints = snapshot
+        self.machine_parts.apply_joint_values(snapshot)
+        self._update_clip_reference()
 
     # -- picking / highlighting --------------------------------------------
-
-    @staticmethod
-    def _dist_point_segments(point, starts, ends):
-        ab = ends - starts
-        denom = np.maximum(np.einsum("ij,ij->i", ab, ab), 1e-12)
-        t = np.clip(np.einsum("ij,ij->i", point - starts, ab) / denom, 0.0, 1.0)
-        projected = starts + t[:, None] * ab
-        return np.linalg.norm(projected - point, axis=1)
 
     def _clear_highlight(self):
         self.plot_data.highlight.replace(np.zeros((0, 3), np.float32))
 
-    def _on_picked(self, point):
-        if self._geometry is None or not self._pick:
+    def _pick_tolerance(self):
+        """World-space distance within which a click counts as a hit."""
+        radius = getattr(self.rig, "scene_radius", None)
+        if not radius:
+            return 1e-3
+        return max(float(radius) * PICK_TOLERANCE_FRACTION, 1e-6)
+
+    def _set_highlight_segments(self, starts, ends):
+        starts = np.asarray(starts, dtype=np.float32).reshape(-1, 3)
+        ends = np.asarray(ends, dtype=np.float32).reshape(-1, 3)
+        count = min(starts.shape[0], ends.shape[0], MAX_HIGHLIGHT_SEGMENTS)
+        if count == 0:
+            self._clear_highlight()
             return
-        p = np.asarray((point.x(), point.y(), point.z()), dtype=np.float32)
+        points = np.empty((count * 2, 3), dtype=np.float32)
+        points[0::2] = starts[:count]
+        points[1::2] = ends[:count]
+        self.plot_data.highlight.replace(map_points_to_quick3d(points))
+
+    def _update_highlight_for_lines(self, lines):
+        """Highlight every segment belonging to the given program lines."""
+        self._highlighted_lines = [int(value) for value in lines if int(value) >= 0]
+        starts, ends = self.path_groups.segments_for_lines(self._highlighted_lines)
+        self._set_highlight_segments(starts, ends)
+
+    def _on_picked(self, near, far):
+        """Select the path segment nearest the click ray.
+
+        QML unprojects the click into a scene-space ray, so this does not
+        depend on Qt Quick 3D supporting picking for line primitives.
+        Candidates within a small world-space tolerance are ranked by distance
+        along the ray, so the segment in front wins when several lines overlap
+        on screen.
+        """
+        if self._geometry is None or not self.path_groups.rows():
+            return
+        origin = map_point_from_quick3d((near.x(), near.y(), near.z()))
+        target = map_point_from_quick3d((far.x(), far.y(), far.z()))
+        direction = target - origin
+        length = float(np.linalg.norm(direction))
+        if length < 1e-9:
+            return
+        direction /= length
+
+        tolerance = self._pick_tolerance()
         best = None
-        for starts, ends, meta in self._pick.values():
-            if starts.shape[0] == 0:
+        for row in self.path_groups.rows():
+            local_origin = np.asarray(row.local_point(origin), dtype=np.float64)
+            local_far = np.asarray(row.local_point(target), dtype=np.float64)
+            local_direction = local_far - local_origin
+            local_length = float(np.linalg.norm(local_direction))
+            if local_length < 1e-9:
                 continue
-            distances = self._dist_point_segments(p, starts, ends)
+            local_direction /= local_length
+            distances, ray_t = ray_segment_distances(
+                local_origin, local_direction, row.starts, row.ends)
+            if distances.size == 0:
+                continue
             index = int(np.argmin(distances))
-            if best is None or distances[index] < best[0]:
-                best = (float(distances[index]), starts[index],
-                        ends[index], meta[index])
+            if distances[index] > tolerance:
+                continue
+            candidate = (float(ray_t[index]), float(distances[index]), row, index)
+            if best is None or candidate[0] < best[0]:
+                best = candidate
+
         if best is None:
             return
-        _, start, end, meta = best
-        self.plot_data.highlight.replace(
-            np.asarray([start, end], dtype=np.float32))
-        line_number = int(meta[2])
+        _, _, row, index = best
+        line_number = int(row.line_numbers[index]) if index < row.line_numbers.size else -1
         if line_number >= 0:
+            self._update_highlight_for_lines([line_number])
             self.programLineSelected.emit(line_number)
             self.programLinesSelected.emit([line_number])
+        else:
+            self._highlighted_lines = []
+            self._set_highlight_segments(
+                [row.world_point(row.starts[index])],
+                [row.world_point(row.ends[index])])
 
     # -- active tool body ---------------------------------------------------
 
@@ -578,82 +685,113 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         if not hasattr(self, "plot_data"):
             return
         self.plot_data.backgroundColor = self._background_color.name()
+        self.plot_data.backgroundColor2 = self._background_color2.name()
         for role in ROLE_NAMES:
             setattr(self.plot_data, role + "Color", self._role_colors[role].name())
+        if hasattr(self, "path_groups"):
+            self.path_groups.set_colors(self._role_color_map())
+
+    def _role_color_map(self):
+        return {role: self._role_colors[role].name() for role in ROLE_NAMES}
+
+    def _wcs_transform(self, wcs_index):
+        """WCS placement for a path row: ``(x, y, z, rotation_degrees)``.
+
+        Floating (G91-only) paths have no meaningful work offset; they are
+        anchored to the machine position instead, matching VTKBackPlot.
+        """
+        if wcs_index in self._floating_wcs:
+            anchor = self._anchor_offset or (0.0, 0.0, 0.0)
+            return float(anchor[0]), float(anchor[1]), float(anchor[2]), 0.0
+        return self._wcs_offsets(wcs_index)
 
     def _rebuild_program_geometry(self):
-        groups = {role: [] for role in ROLE_NAMES}
-        # Per-role scene-space segment endpoints plus (wcs, segment, line)
-        # metadata, used to turn a 3D pick into a program line selection.
-        pick = {role: ([], [], []) for role in ROLE_NAMES}
-        transformed = []
-        if self._geometry is not None:
-            palette = np.asarray([self._role_colors[role].getRgb() for role in ROLE_NAMES],
-                                 dtype=np.int64)
-            for wcs_index, path in self._geometry.paths.items():
-                if path.is_empty:
-                    continue
-                x, y, z, rotation = self._wcs_offsets(wcs_index)
-                radians = math.radians(rotation)
-                cosine, sine = math.cos(radians), math.sin(radians)
-                points = np.asarray(path.points, dtype=np.float32).copy()
-                px, py = points[:, 0].copy(), points[:, 1].copy()
-                points[:, 0] = cosine * px - sine * py + x
-                points[:, 1] = sine * px + cosine * py + y
-                points[:, 2] += z
-                transformed.append(points)
-                colors = np.asarray(path.colors, dtype=np.int64).reshape(-1, 4)
-                if colors.shape[0] != points.shape[0] // 2:
-                    colors = np.tile(palette[2], (points.shape[0] // 2, 1))
-                role_indices = segment_role_indices(colors, palette)
-                segment_points = points.reshape(-1, 2, 3)
-                line_numbers = np.asarray(path.line_numbers, dtype=np.int64)
-                segment_count = segment_points.shape[0]
-                for role_index, role in enumerate(ROLE_NAMES):
-                    mask = role_indices == role_index
-                    if not mask.any():
-                        continue
-                    selected = segment_points[mask]
-                    groups[role].append(selected.reshape(-1, 3))
-                    scene = map_points_to_quick3d(
-                        selected.reshape(-1, 3)).reshape(-1, 2, 3)
-                    pick[role][0].append(scene[:, 0, :])
-                    pick[role][1].append(scene[:, 1, :])
-                    indices = np.nonzero(mask)[0]
-                    if line_numbers.shape[0] == segment_count:
-                        lines = line_numbers[indices]
-                    else:
-                        lines = np.full(indices.shape[0], -1, dtype=np.int64)
-                    meta = np.stack((
-                        np.full(indices.shape[0], wcs_index, dtype=np.int64),
-                        indices, lines), axis=1)
-                    pick[role][2].append(meta)
-
-        self._pick = {}
-        for role in ROLE_NAMES:
-            starts, ends, metas = pick[role]
-            if starts:
-                self._pick[role] = (
-                    np.concatenate(starts, axis=0),
-                    np.concatenate(ends, axis=0),
-                    np.concatenate(metas, axis=0),
-                )
-
-        for role, chunks in groups.items():
-            data = np.concatenate(chunks, axis=0) if chunks else np.zeros((0, 3), np.float32)
-            self.plot_data.geometry(role).replace(map_points_to_quick3d(data))
-        self._clear_highlight()
-        if transformed:
-            points = np.concatenate(transformed, axis=0)
-            self._program_bounds = (
-                float(points[:, 0].min()), float(points[:, 0].max()),
-                float(points[:, 1].min()), float(points[:, 1].max()),
-                float(points[:, 2].min()), float(points[:, 2].max()),
-            )
-        else:
-            self._program_bounds = None
+        self._highlighted_lines = []
+        self.path_groups.build(self._geometry, self._role_color_map(),
+                               self._wcs_transform)
+        self._program_bounds = self.path_groups.world_bounds()
         self._rebuild_program_bounds()
+        self._rebuild_offset_transitions()
+        self._clear_highlight()
         self._update_clip_reference()
+
+    def _rebuild_offset_transitions(self):
+        """Draw the link between the end of one WCS path and the next."""
+        points = []
+        if self._geometry is not None:
+            for transition in self._geometry.offset_transitions:
+                from_transform = self._wcs_transform(transition.from_wcs)
+                to_transform = self._wcs_transform(transition.to_wcs)
+                start = transform_point(transition.from_end, *from_transform)
+                end = transform_point(transition.to_start, *to_transform)
+                # Mirror VTK's elbow (from -> same Z as the start -> to).
+                elbow = (end[0], end[1], start[2])
+                points.extend((start, elbow, elbow, end))
+        self.plot_data.transitions.replace(
+            map_points_to_quick3d(points) if points
+            else np.zeros((0, 3), dtype=np.float32))
+
+    def _refresh_path_transforms(self):
+        """Apply new WCS/anchor values without re-uploading vertex data."""
+        if self.path_groups.update_transforms(self._wcs_transform):
+            self._program_bounds = self.path_groups.world_bounds()
+            self._rebuild_program_bounds()
+            self._rebuild_offset_transitions()
+            self._update_clip_reference()
+        if self._highlighted_lines:
+            self._update_highlight_for_lines(self._highlighted_lines)
+
+    def _seed_g92_state(self):
+        try:
+            self._g92_offset = tuple(
+                float(value) for value in self.datasource.getG92_offset()[:3])
+        except (AttributeError, RuntimeError, TypeError, ValueError):
+            self._g92_offset = (0.0, 0.0, 0.0)
+
+    def _compute_anchor_offset(self):
+        """Machine position with any baked-in G92 removed, in machine units."""
+        try:
+            machine_position = self.datasource.getMachinePosition()
+        except (AttributeError, RuntimeError, TypeError, ValueError):
+            return None
+        if machine_position is None:
+            return None
+        values = list(machine_position[:3])
+        while len(values) < 3:
+            values.append(0.0)
+        return tuple(
+            float(values[index]) - float(self._g92_offset[index])
+            for index in range(3)
+        )
+
+    def _is_program_running(self):
+        checker = getattr(self.datasource, "isProgramRunning", None)
+        if not callable(checker):
+            return False
+        try:
+            return bool(checker())
+        except (AttributeError, RuntimeError, TypeError, ValueError):
+            return False
+
+    def _update_floating_anchor(self):
+        """Track or latch the anchor for floating (G91-only) programs."""
+        if not self._floating_wcs:
+            return
+        anchor = self._compute_anchor_offset()
+        if anchor is None:
+            return
+
+        running = self._is_program_running()
+        if running != self._program_running:
+            self._program_running = running
+            self._anchor_latched = running
+
+        if self._anchor_latched:
+            return
+        if anchor == self._anchor_offset:
+            return
+        self._anchor_offset = anchor
+        self._refresh_path_transforms()
 
     def _rebuild_machine_bounds(self):
         self._machine_bounds = self._machine_box_bounds()
@@ -733,11 +871,70 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         ds.toolInSpindleChanged.connect(self.update_tool_number)
         ds.toolTableChanged.connect(self.update_tool_table)
         ds.toolOffsetChanged.connect(self.update_tool_table)
+
+        # Optional signals: keep the widget usable with older/minimal
+        # datasources (and with the fakes used by the tests).
+        for name, slot in (
+            ("runStateChanged", self.on_run_state_changed),
+            ("activeOffsetChanged", self.update_active_wcs),
+            ("motionTypeChanged", self.motion_type),
+        ):
+            signal = getattr(ds, name, None)
+            if signal is not None and hasattr(signal, "connect"):
+                signal.connect(slot)
+
+        # Tool-table plugin edits (remark/comment-only changes may not produce a
+        # LinuxCNC status event).
+        tooltable = getattr(ds, "_tooltable", None)
+        plugin_signal = getattr(tooltable, "tool_table_changed", None)
+        if plugin_signal is not None and hasattr(plugin_signal, "connect"):
+            plugin_signal.connect(self.update_tool_table)
+
+        self._bind_line_highlight_channels()
+
         try:
             self._stat.poll()
         except Exception:
             LOG.debug("LinuxCNC status not ready during Qt Quick 3D startup", exc_info=True)
         self._seed_wcs_state()
+
+    def _bind_line_highlight_channels(self):
+        """Follow the G-code editor's selected line(s), like VTKBackPlot."""
+        status = getattr(self.datasource, "_status", None)
+        for name, handler in (
+            ("selected_program_line", self._on_selected_program_line),
+            ("selected_program_lines", self._on_selected_program_lines),
+        ):
+            channel = getattr(status, name, None)
+            notify = getattr(channel, "notify", None)
+            if not callable(notify):
+                continue
+            try:
+                notify(handler)
+            except Exception:
+                LOG.debug("Unable to watch status channel %s", name, exc_info=True)
+
+    @staticmethod
+    def _normalize_lines(value):
+        if isinstance(value, (list, tuple, set)):
+            values = list(value)
+        elif value is None:
+            values = []
+        else:
+            values = [value]
+        normalized = []
+        for item in values:
+            try:
+                normalized.append(int(item))
+            except (TypeError, ValueError):
+                continue
+        return normalized
+
+    def _on_selected_program_line(self, line):
+        self._update_highlight_for_lines(self._normalize_lines(line))
+
+    def _on_selected_program_lines(self, lines):
+        self._update_highlight_for_lines(self._normalize_lines(lines))
 
     def _seed_wcs_state(self):
         """Capture the live active-WCS offsets/rotation for path placement."""
@@ -759,6 +956,13 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         connectSetting("backplot.show-grid", self.showGrid)
         connectSetting("backplot.show-program-bounds", self.showProgramBounds)
         connectSetting("backplot.show-machine-bounds", self.showMachineBounds)
+        connectSetting("backplot.show-machine-ticks", self.showMachineTicks)
+        connectSetting("backplot.show-machine-labels", self.showMachineLabels)
+        connectSetting("backplot.show-machine", self.showMachine)
+        connectSetting("backplot.show-spindle", self.showSpindle)
+        connectSetting("backplot.multitool-colors", self.showMultiColorPath)
+        connectSetting("backplot.show-points-surface", self.showSurface)
+        connectSetting("backplot.show-fps", self.showFPS)
         connectSetting("backplot.view", self.setView)
         connectSetting("backplot.perspective-view", self.viewPerspective)
 
@@ -796,6 +1000,11 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
             LOG.warning("Qt Quick 3D backplot produced no geometry for %s", filename)
             return
         self._geometry = geometry
+        self._floating_wcs = set(geometry.floating_wcs)
+        self._program_running = self._is_program_running()
+        self._anchor_latched = self._program_running
+        self._anchor_offset = (self._compute_anchor_offset()
+                               if self._floating_wcs else None)
         self._rebuild_program_geometry()
         self.setViewProgram("p")
         LOG.info("Qt Quick 3D backplot loaded %s: %d WCS paths, %d segments",
@@ -862,28 +1071,34 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
     def update_g5x_offset(self, offset):
         if offset is not None:
             self._active_wcs_offset = tuple(offset)
-        self._rebuild_program_geometry()
+        self._refresh_path_transforms()
 
     @Slot(object)
     def on_offset_table_changed(self, _offset_table=None):
-        self._rebuild_program_geometry()
+        self._refresh_path_transforms()
 
-    def update_g92_offset(self, _offset):
-        pass
+    def update_g92_offset(self, offset):
+        if offset is not None:
+            values = list(offset)[:3]
+            while len(values) < 3:
+                values.append(0.0)
+            self._g92_offset = tuple(float(value) for value in values)
+        if self._floating_wcs:
+            self._update_floating_anchor()
 
     def update_g5x_index(self, index):
         try:
             self._active_wcs_index = int(index)
         except (TypeError, ValueError):
             pass
-        self._rebuild_program_geometry()
+        self._refresh_path_transforms()
 
     def update_rotation_xy(self, rotation):
         try:
             self._active_rotation = float(rotation)
         except (TypeError, ValueError):
             self._active_rotation = 0.0
-        self._rebuild_program_geometry()
+        self._refresh_path_transforms()
 
     @Slot(object)
     @Slot(int)
@@ -908,6 +1123,7 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
             z, y = y, z
         self._position = (x, y, z)
         self._update_tool_transform()
+        self._update_floating_anchor()
         self._apply_joint_feedback()
         self._trail.append(self._position)
         points = np.asarray(self._trail, dtype=np.float32).reshape(-1, 3)
@@ -1088,6 +1304,7 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
             self.plot_data.panning = bool(enabled)
 
     @Slot(bool)
+    @Slot(object)
     def showSpindle(self, _show):
         self._show_spindle = bool(_show)
         if hasattr(self, "plot_data"):
@@ -1097,6 +1314,7 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
             self.machine_parts.set_spindle_visible(self._show_spindle)
 
     @Slot(bool)
+    @Slot(object)
     def showMachine(self, show):
         self._show_machine = bool(show)
         if hasattr(self, "plot_data"):
@@ -1105,6 +1323,7 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
             self.machine_parts.set_enabled(self._show_machine)
 
     @Slot(bool)
+    @Slot(object)
     def showMultiColorPath(self, show):
         self._multitool_colors = bool(show)
 
@@ -1113,10 +1332,12 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
         self.showMultiColorPath(not self._multitool_colors)
 
     @Slot(bool)
+    @Slot(object)
     def showFPS(self, show):
         self._show_fps = bool(show)
 
     @Slot(bool)
+    @Slot(object)
     def showSurface(self, show):
         # Height-field surface is not rendered by the Qt Quick 3D stage yet.
         self._show_surface = bool(show)
@@ -1178,12 +1399,18 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
     @Slot(bool)
     def on_run_state_changed(self, running=False):
         self._running = bool(running)
+        self._program_running = self._running
+        self._anchor_latched = self._running
+        if self._floating_wcs:
+            self._update_floating_anchor()
 
     @Slot(object)
     def update_joints(self, joint_values):
-        self._joints = joint_values
-        if joint_values and hasattr(self, "machine_parts"):
-            self.machine_parts.apply_joint_values(joint_values)
+        if not joint_values:
+            return
+        self._joints = tuple(float(value) for value in joint_values)
+        if hasattr(self, "machine_parts"):
+            self.machine_parts.apply_joint_values(self._joints)
 
     @Slot(int)
     def update_active_wcs(self, wcs_index):
@@ -1209,8 +1436,10 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
             self._role_colors[role] = QColor(color)
             if hasattr(self, "plot_data"):
                 setattr(self.plot_data, role + "Color", QColor(color).name())
-                if self._last_filename:
-                    QTimer.singleShot(0, lambda: self.load_program(self._last_filename, force=True))
+            # Path geometry is grouped by role at load time, so a colour change
+            # only needs the material colours refreshed -- no re-parse.
+            if hasattr(self, "path_groups"):
+                self.path_groups.set_colors(self._role_color_map())
         return Property(QColor, getter, setter,
                         freset=reset_to(role + "Color", lambda self: QColor(self._default_role_colors[role])))
 
@@ -1237,6 +1466,8 @@ class Qt3D0(QWidget, VCPWidget, BaseBackPlot):
     @backgroundColor2.setter
     def backgroundColor2(self, color):
         self._background_color2 = QColor(color)
+        if hasattr(self, "plot_data"):
+            self.plot_data.backgroundColor2 = self._background_color2.name()
 
     @Property(bool, freset=reset_to("enableProgramTicks", True))
     def enableProgramTicks(self):

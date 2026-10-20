@@ -1,9 +1,8 @@
 """Qt Quick 3D geometry adapters for the shared backplot data model.
 
-Qt Quick 3D custom geometry is a packed vertex buffer, rather than the
-attribute/buffer entity graph used by Qt3D.  Keeping this conversion in one
-small adapter makes the LinuxCNC parser and ``BackplotGeometry`` renderer
-agnostic.
+Qt Quick 3D custom geometry is a packed vertex buffer.  Keeping this
+conversion in one small adapter makes the LinuxCNC parser and
+``BackplotGeometry`` renderer agnostic.
 """
 
 import numpy as np
@@ -25,6 +24,12 @@ def map_points_to_quick3d(points):
         return vertices
     return np.ascontiguousarray(
         vertices[:, (0, 2, 1)] * np.asarray((1.0, 1.0, -1.0), dtype=np.float32))
+
+
+def map_point_from_quick3d(point):
+    """Convert a Quick 3D scene point back to CNC (Z-up) coordinates."""
+    x, y, z = (float(value) for value in point)
+    return np.asarray((x, -z, y), dtype=np.float64)
 
 
 class LineGeometry(QQuick3DGeometry):
@@ -54,18 +59,25 @@ class LineGeometry(QQuick3DGeometry):
 
 
 class Quick3DPlotData(QObject):
-    """QML-facing geometry and style properties for the Qt Quick 3D view."""
+    """QML-facing style properties and shared overlay geometries.
+
+    Motion paths are *not* held here: they live in
+    :class:`~.paths.PathGroupModel`, one row per WCS/motion role, so work-offset
+    changes never rewrite vertex buffers.  This object keeps the overlay
+    geometries (grid, axes, bounds, trail, highlight), the projection state and
+    the motion-role colours.
+    """
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._geometries = {name: LineGeometry() for name in (
-            "traverse", "arcfeed", "feed", "dwell", "user", "grid",
-            "axesX", "axesY", "axesZ", "machineBounds", "programBounds",
-            "trail", "highlight",
+            "grid", "axesX", "axesY", "axesZ", "machineBounds",
+            "programBounds", "trail", "highlight", "transitions",
         )}
         for name, geometry in self._geometries.items():
             geometry.setObjectName("backplot_" + name)
         self._background = "#101820"
+        self._background2 = "#101820"
         self._colors = {
             "traverse": "#c82323",
             "arcfeed": "#6e6eff",
@@ -79,13 +91,16 @@ class Quick3DPlotData(QObject):
             "bounds": "#b8c2cc",
             "trail": "#f2d84b",
             "highlight": "#ffe633",
+            "transition": "#6e6eff",
         }
         self._grid_visible = False
         self._machine_bounds_visible = True
         self._program_bounds_visible = False
         self._perspective = False
         self._panning = False
-        self._ortho_magnification = 0.01
+        # Qt Quick 3D orthographic magnification is pixels per world unit, so
+        # 1.0 shows one unit per pixel. A real fit replaces this at startup.
+        self._ortho_magnification = 1.0
         self._tool_kind = "none"
         self._tool_visible = False
         self._tool_color = "#d2d2d7"
@@ -95,12 +110,12 @@ class Quick3DPlotData(QObject):
 
     colorChanged = Signal()
     toolChanged = Signal()
-    picked = Signal(QVector3D)
+    picked = Signal(QVector3D, QVector3D)
 
-    @Slot(QVector3D)
-    def reportPick(self, point):
-        """Called from QML when a path Model is clicked; forwards the hit."""
-        self.picked.emit(point)
+    @Slot(QVector3D, QVector3D)
+    def reportPick(self, near, far):
+        """Called from QML with the click ray; forwards it to Python."""
+        self.picked.emit(near, far)
 
     @Property(bool, notify=toolChanged)
     def machineVisible(self):
@@ -119,11 +134,6 @@ class Quick3DPlotData(QObject):
     def _geometry_property(name):
         return Property(QObject, lambda self: self.geometry(name), constant=True)
 
-    traverse = _geometry_property("traverse")
-    arcfeed = _geometry_property("arcfeed")
-    feed = _geometry_property("feed")
-    dwell = _geometry_property("dwell")
-    user = _geometry_property("user")
     grid = _geometry_property("grid")
     axesX = _geometry_property("axesX")
     axesY = _geometry_property("axesY")
@@ -132,6 +142,7 @@ class Quick3DPlotData(QObject):
     programBounds = _geometry_property("programBounds")
     trail = _geometry_property("trail")
     highlight = _geometry_property("highlight")
+    transitions = _geometry_property("transitions")
 
     def _string_property(name, notify=colorChanged):
         return Property(str, lambda self: self._colors[name],
@@ -156,6 +167,7 @@ class Quick3DPlotData(QObject):
     boundsColor = _string_property("bounds")
     trailColor = _string_property("trail")
     highlightColor = _string_property("highlight")
+    transitionColor = _string_property("transition")
 
     backgroundChanged = Signal()
     visibilityChanged = Signal()
@@ -171,6 +183,17 @@ class Quick3DPlotData(QObject):
         value = str(value)
         if value != self._background:
             self._background = value
+            self.backgroundChanged.emit()
+
+    @Property(str, notify=backgroundChanged)
+    def backgroundColor2(self):
+        return self._background2
+
+    @backgroundColor2.setter
+    def backgroundColor2(self, value):
+        value = str(value)
+        if value != self._background2:
+            self._background2 = value
             self.backgroundChanged.emit()
 
     @Property(bool, notify=visibilityChanged)

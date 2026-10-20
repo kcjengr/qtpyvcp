@@ -26,7 +26,6 @@ endif()
 
 pybind11_add_module(_backplot_cpp
     backplot_bridge_pybind.cpp
-    backplot_builder.cpp
 )
 
 target_include_directories(_backplot_cpp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

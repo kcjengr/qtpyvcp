@@ -1,6 +1,7 @@
 """Renderer-independent G-code canon.
 
-This is the Qt3D/VTK-shared port of ``vtk_backplot.vtk_canon.VTKCanon``.  The
+This is the Qt Quick 3D/VTK-shared port of
+``vtk_backplot.vtk_canon.VTKCanon``.  The
 logic (unit normalisation, WCS handling, rotary-table sampling, float
 anchoring) is identical; the only difference is that instead of allocating
 ``vtkPoints``/``vtkCellArray`` it accumulates plain NumPy buffers exposed via
@@ -160,8 +161,11 @@ class BackplotCanon(StatCanon):
         text = str(value or '').strip()
         if not text:
             return None
-        digits = text[1:] if text[0] in ('+', '-') else text
-        return int(text) if digits.isdigit() else None
+        try:
+            numeric = float(text)
+        except (TypeError, ValueError):
+            return None
+        return int(numeric) if numeric.is_integer() else None
 
     @staticmethod
     def _coerce_float_or_default(value, default=1.0):
