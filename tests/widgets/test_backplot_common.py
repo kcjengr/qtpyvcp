@@ -1,7 +1,6 @@
 """Regression tests for the renderer-independent backplot layer.
 
-These pin the coordinate math that both the VTK and Qt Quick 3D backplots
-depend on: unit normalisation, work-offset handling, rotary helper math, and the
+These pin the coordinate math that the backplot renderer depends on: unit normalisation, work-offset handling, rotary helper math, and the
 segment/colour bookkeeping.  They use a fake datasource so they run without a
 live LinuxCNC session.
 """

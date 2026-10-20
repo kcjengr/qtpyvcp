@@ -32,7 +32,7 @@ Also needed:
 * LinuxCNC 2.9
 * A 64 bit machine, ``amd64`` or ``arm64``. These are the only
   architectures packages are built for.
-* A graphics card with working OpenGL, for the VTK backplot.
+* A graphics card with working OpenGL, for the Qt Quick 3D backplot.
 
 
 Install from apt

@@ -6,7 +6,7 @@ thread families) the body extending toward -Z.
 
 This qtpyvcp copy contains the SHAPE MATH ONLY -- the database-native
 entry point that feeds it lives in
-:mod:`qtpyvcp.lib.db_tool.insert_profile` (probe_basic's VTK tool
+:mod:`qtpyvcp.lib.db_tool.insert_profile` (the lathe tool
 rendering reads insert geometry exclusively from the unified tool
 database; there is no tool-library-file reader in qtpyvcp). The
 conversational add-on maintains its own copy of this shape math for its

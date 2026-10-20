@@ -6,13 +6,10 @@ remain available without loading renderer-specific Qt modules.
 
 import os as _os
 
-__all__ = ["VTKBackPlot", "Qt3D0"]
+__all__ = ["Qt3D0"]
 
 
 def __getattr__(name):
-    if name == "VTKBackPlot" and not _os.getenv('DESIGNER'):
-        from .vtk_backplot.vtk_backplot import VTKBackPlot
-        return VTKBackPlot
     if name == "Qt3D0":
         if _os.getenv('DESIGNER'):
             from .designer_plugins import Qt3D0

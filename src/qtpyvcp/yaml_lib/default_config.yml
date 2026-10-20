@@ -174,7 +174,7 @@ settings:
   offset_table.max_range:
     default_value: 1000
 
-  # VTK backplot view settings
+  # 3D backplot view settings
 
   backplot.show-grid:
     default_value: false

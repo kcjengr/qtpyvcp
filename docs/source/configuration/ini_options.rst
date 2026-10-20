@@ -107,7 +107,8 @@ Options available in the INI file are:
     # otherwise.
     JET = true
 
-    # VTK backplot options
+    # 3D backplot options. The section is named [VTK] for
+    # backward compatibility with existing machine configs.
     [VTK]
     # Use the fast C++ backplot. Default on. Always off when a rotary
     # axis is on the table (see X to C below).

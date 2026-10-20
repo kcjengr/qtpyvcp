@@ -212,8 +212,8 @@ public:
 
     void set_xy_rotation(double rotation) {
         // Rotation is intentionally neutralized, matching the Python canon
-        // (VTKCanon.set_xy_rotation also forces 0). The WCS R offset is
-        // applied exactly once by the VTK UserTransform (RotateZ) on the
+        // (the Python canon also forces 0). The WCS R offset is applied exactly
+        // once by the renderer transform (RotateZ) on the
         // path actor; baking it here as well would rotate the geometry
         // twice and make the path disagree with the per-WCS axes.
         (void)rotation;
@@ -426,7 +426,7 @@ public:
 
     // WCS indices whose loaded path never established an absolute position.
     // The widget anchors these at the machine instead of drawing them at WCS
-    // zero. Mirrors VTKCanon.get_floating_wcs().
+    // zero. Mirrors the Python canon.
     py::set get_floating_wcs() const {
         py::set floating;
         for (int wcs : wcs_with_points) {
@@ -1195,7 +1195,7 @@ static py::dict build_from_canon(py::object canon, py::object datasource) {
 
 PYBIND11_MODULE(_backplot_cpp, m) {
     m.doc() = "QtPyVCP C++ backplot builder bridge";
-    m.def("build_from_canon", &build_from_canon, "Build VTK backplot data from canon stream");
+    m.def("build_from_canon", &build_from_canon, "Build backplot data from a canon stream");
     py::class_<NativeCanon>(m, "NativeCanon")
         .def(py::init<py::object>(), py::arg("path_colors"))
         .def("next_line", &NativeCanon::next_line)

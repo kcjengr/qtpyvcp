@@ -1,7 +1,7 @@
 """Locate and import the compiled ``_backplot_cpp`` extension.
 
-Kept free of any VTK import so renderer-independent callers (e.g. the Qt Quick 3D
-backplot) can use the native geometry builder without pulling in VTK.
+Kept free of any renderer import so callers can use the native geometry
+builder without pulling in a rendering dependency.
 """
 
 import glob

@@ -2,7 +2,7 @@
 
 Renderer-independent: turns the active LinuxCNC/QtPyVCP tool table entry into a
 :class:`ToolShape` (a cylinder sized by the tool diameter and Z offset, or a
-cone marker when no tool is loaded). Mirrors the VTK ``ToolActor`` sizing.
+cone marker when no tool is loaded).
 """
 
 from dataclasses import dataclass
@@ -11,7 +11,7 @@ from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
-# VTK's default tool height: 2 inches, or 50.8 mm on a metric machine.
+# Default tool height: 2 inches, or 50.8 mm on a metric machine.
 DEFAULT_HEIGHT_INCH = 2.0
 
 
@@ -106,7 +106,7 @@ def tool_shape(tool_table, tool_number, *, metric, lathe=False,
                          x_offset=x_offset, tool_number=tool_id)
 
     if tool_id <= 0 or diameter < 0.05:
-        # No tool loaded: a pointed cone, sized like the VTK default.
+        # No tool loaded: a pointed cone marker.
         return ToolShape(kind="cone", radius=default_height / 4.0,
                          length=default_height / 2.0, tool_number=tool_id)
 

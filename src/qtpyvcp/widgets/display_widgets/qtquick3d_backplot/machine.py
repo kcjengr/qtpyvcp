@@ -1,7 +1,6 @@
 """Machine-part assembly for the Qt Quick 3D backplot.
 
-Builds a flat list of parts from the same ``MACHINE_PARTS`` YAML the VTK
-backplot consumes.  Part geometry is exposed to QML through a list model (one
+Builds a flat list of parts from the ``MACHINE_PARTS`` YAML.  Part geometry is exposed to QML through a list model (one
 ``Model`` per row via ``Repeater3D``); because QML has no parent/child for the
 repeater rows, the nested YAML hierarchy is composed into a world transform per
 part in Python.  Rotary joints are re-composed from live joint feedback.
@@ -407,7 +406,7 @@ class MachinePartsModel(QAbstractListModel):
 
     @staticmethod
     def _dh_link_matrix(alpha, a, d, theta):
-        """4x4 modified-DH link matrix (matches genserkins/VTK)."""
+        """4x4 modified-DH link matrix (matches genserkins)."""
         sin_t, cos_t = math.sin(theta), math.cos(theta)
         sin_a, cos_a = math.sin(alpha), math.cos(alpha)
         return np.array([
@@ -675,7 +674,7 @@ class MachinePartsModel(QAbstractListModel):
             self._spindle.world = np.eye(4)
 
     def _recompute_dh(self):
-        """Place robot-arm parts on their DH frames (VTK's algorithm).
+        """Place robot-arm parts on their DH frames.
 
         Each angular part's world transform is ``current @ inv(home)`` for its
         joint (home = theta 0), so the STLs authored in the DH home pose move

@@ -14,9 +14,9 @@ LOG = logger.getLogger('qtpyvcp.' + __name__)
 INFO = Info()
 IN_DESIGNER = os.getenv('DESIGNER', False)
 """
-This class acts as a datasource for the VTK components.
+This class acts as the datasource for the backplot widgets.
 It abstracts all the linuxcnc specific logic and exposes simple methods that could be eventually
-mocked for testing the VTK outside of a linuxcnc context.
+mocked for testing the backplot outside of a LinuxCNC context.
 """
 
 
@@ -137,7 +137,7 @@ class LinuxCncDataSource(QObject):
             else:
                 LOG.warning("Invalid [VTK] ARC_DIVISION=%r, using default=64", raw_arc_division)
 
-        self._vtk_axis_motion_owner = {
+        self._axis_motion_owner = {
             'X': 'head',
             'Y': 'head',
             'Z': 'head',
@@ -145,21 +145,21 @@ class LinuxCncDataSource(QObject):
             'B': 'head',
             'C': 'head',
         }
-        self._vtk_rotary_axis_origin = {
+        self._rotary_axis_origin = {
             'A': None,
             'B': None,
             'C': None,
         }
-        self._vtk_rotary_axis_wrapped = {
+        self._rotary_axis_wrapped = {
             'A': False,
             'B': False,
             'C': False,
         }
-        self._vtk_machine_parts_file = None
-        self._vtk_machine_parts_loaded = False
-        self._vtk_machine_parts_axes = {}
-        self._vtk_active_machine_axes = self._get_active_machine_axes()
-        self._vtk_axis_config_report = {
+        self._machine_parts_file = None
+        self._machine_parts_loaded = False
+        self._machine_parts_axes = {}
+        self._active_machine_axes = self._get_active_machine_axes()
+        self._axis_config_report = {
             'strict_mode': False,
             'warnings': [],
             'missing_axes': [],
@@ -176,11 +176,11 @@ class LinuxCncDataSource(QObject):
 
         if not self._switchkins_probe_enabled:
             LOG.debug(
-                "VTK switchkins probe disabled for kinematics: %s",
+                "Backplot switchkins probe disabled for kinematics: %s",
                 self._kins_decl or "<unset>",
             )
 
-        self._configure_vtk_machine_axes()
+        self._configure_machine_axes()
         
         self._status.file.notify(self.__handleProgramLoaded)
         # Match the tool to the machine-parts animation: the STL arm is driven
@@ -192,7 +192,7 @@ class LinuxCncDataSource(QObject):
         use_actual_pos = self._info.getPositionFeedback()
         position_channel = (self._status.actual_position if use_actual_pos
                             else self._status.position)
-        LOG.info("VTK backplot tool position source: %s",
+        LOG.info("Backplot tool position source: %s",
                  "actual_position" if use_actual_pos else "position")
         position_channel.notify(self.__handlePositionChanged)
         self._status.motion_type.notify(self.__handleMotionTypeChanged)
@@ -321,7 +321,7 @@ class LinuxCncDataSource(QObject):
         except Exception as exc:
             if pin_name not in self._hal_pin_read_error_logged:
                 LOG.warning(
-                    "VTK switchkins pin read failed for %s: %s",
+                    "Backplot switchkins pin read failed for %s: %s",
                     pin_name,
                     exc,
                 )
@@ -370,7 +370,7 @@ class LinuxCncDataSource(QObject):
             parsed_switchkins = self._coerce_int(raw)
             if raw != self._last_logged_motion_switchkins_raw or parsed_switchkins != self._last_logged_motion_switchkins_parsed:
                 LOG.info(
-                    "VTK switchkins pin: %s raw=%s parsed=%s",
+                    "Backplot switchkins pin: %s raw=%s parsed=%s",
                     pin_used,
                     raw,
                     parsed_switchkins,
@@ -384,7 +384,7 @@ class LinuxCncDataSource(QObject):
         bits_value, bits_raw = self._switchkins_type_from_status_bits()
         if bits_raw != self._last_logged_kinstype_bits_raw:
             LOG.info(
-                "VTK switchkins pins: kinstype.is-0=%s kinstype.is-1=%s kinstype.is-2=%s resolved=%s",
+                "Backplot switchkins pins: kinstype.is-0=%s kinstype.is-1=%s kinstype.is-2=%s resolved=%s",
                 bits_raw[0],
                 bits_raw[1],
                 bits_raw[2],
@@ -449,7 +449,7 @@ class LinuxCncDataSource(QObject):
         The backplot preview runs its own gcode.parse() whose interpreter
         always starts at 0. Programs that never command an absolute position
         (G91 throughout) therefore render at WCS zero instead of wherever the
-        machine actually is. VTKCanon uses this to anchor such paths.
+        machine actually is. The canon uses this to anchor such paths.
         """
         try:
             return tuple(self._status.stat.position)
@@ -494,25 +494,25 @@ class LinuxCncDataSource(QObject):
         return self._offsettable.column_labels
 
     def getAxisMotionOwners(self):
-        return dict(self._vtk_axis_motion_owner)
+        return dict(self._axis_motion_owner)
 
     def getAxisConfigurationDataset(self):
         return {
-            'active_machine_axes': list(self._vtk_active_machine_axes),
-            'axis_motion_owner': dict(self._vtk_axis_motion_owner),
-            'rotary_axis_origin': dict(self._vtk_rotary_axis_origin),
-            'rotary_axis_wrapped': dict(self._vtk_rotary_axis_wrapped),
-            'machine_parts_file': self._vtk_machine_parts_file,
-            'machine_parts_loaded': bool(self._vtk_machine_parts_loaded),
-            'machine_parts_axes': dict(self._vtk_machine_parts_axes),
+            'active_machine_axes': list(self._active_machine_axes),
+            'axis_motion_owner': dict(self._axis_motion_owner),
+            'rotary_axis_origin': dict(self._rotary_axis_origin),
+            'rotary_axis_wrapped': dict(self._rotary_axis_wrapped),
+            'machine_parts_file': self._machine_parts_file,
+            'machine_parts_loaded': bool(self._machine_parts_loaded),
+            'machine_parts_axes': dict(self._machine_parts_axes),
             'validation': {
-                'strict_mode': bool(self._vtk_axis_config_report.get('strict_mode')),
-                'warnings': list(self._vtk_axis_config_report.get('warnings', [])),
-                'missing_axes': list(self._vtk_axis_config_report.get('missing_axes', [])),
-                'extra_axes': list(self._vtk_axis_config_report.get('extra_axes', [])),
-                'invalid_axes': dict(self._vtk_axis_config_report.get('invalid_axes', {})),
-                'missing_machine_parts_axes': list(self._vtk_axis_config_report.get('missing_machine_parts_axes', [])),
-                'missing_rotary_origins': list(self._vtk_axis_config_report.get('missing_rotary_origins', [])),
+                'strict_mode': bool(self._axis_config_report.get('strict_mode')),
+                'warnings': list(self._axis_config_report.get('warnings', [])),
+                'missing_axes': list(self._axis_config_report.get('missing_axes', [])),
+                'extra_axes': list(self._axis_config_report.get('extra_axes', [])),
+                'invalid_axes': dict(self._axis_config_report.get('invalid_axes', {})),
+                'missing_machine_parts_axes': list(self._axis_config_report.get('missing_machine_parts_axes', [])),
+                'missing_rotary_origins': list(self._axis_config_report.get('missing_rotary_origins', [])),
             },
         }
 
@@ -608,17 +608,17 @@ class LinuxCncDataSource(QObject):
         walk(machine_parts_data)
         return axes
 
-    def _warn_vtk(self, message):
-        self._vtk_axis_config_report['warnings'].append(message)
-        LOG.warning("VTK configuration: %s", message)
+    def _warn_backplot_config(self, message):
+        self._axis_config_report['warnings'].append(message)
+        LOG.warning("[VTK] configuration: %s", message)
 
-    def _configure_vtk_machine_axes(self):
+    def _configure_machine_axes(self):
         for axis in ('A', 'B', 'C'):
             raw_wrapped = self._inifile.find(f"AXIS_{axis}", "WRAPPED_ROTARY")
-            self._vtk_rotary_axis_wrapped[axis] = self._coerce_bool(raw_wrapped, False)
+            self._rotary_axis_wrapped[axis] = self._coerce_bool(raw_wrapped, False)
 
         allowed_axes = ('X', 'Y', 'Z', 'A', 'B', 'C')
-        active_axes = [axis for axis in self._vtk_active_machine_axes if axis in allowed_axes]
+        active_axes = [axis for axis in self._active_machine_axes if axis in allowed_axes]
 
         configured_axes = []
         invalid_axes = {}
@@ -630,12 +630,12 @@ class LinuxCncDataSource(QObject):
             configured_axes.append(axis)
             owner = self._normalize_axis_owner(raw_owner, default=None)
             if owner in ('head', 'table'):
-                self._vtk_axis_motion_owner[axis] = owner
+                self._axis_motion_owner[axis] = owner
             else:
                 invalid_axes[axis] = str(raw_owner)
 
         strict_mode = bool(configured_axes)
-        self._vtk_axis_config_report['strict_mode'] = strict_mode
+        self._axis_config_report['strict_mode'] = strict_mode
 
         if not strict_mode:
             return
@@ -643,14 +643,14 @@ class LinuxCncDataSource(QObject):
         missing_axes = [axis for axis in active_axes if axis not in configured_axes]
         extra_axes = [axis for axis in configured_axes if axis not in active_axes]
 
-        self._vtk_axis_config_report['missing_axes'] = list(missing_axes)
-        self._vtk_axis_config_report['extra_axes'] = list(extra_axes)
-        self._vtk_axis_config_report['invalid_axes'] = dict(invalid_axes)
+        self._axis_config_report['missing_axes'] = list(missing_axes)
+        self._axis_config_report['extra_axes'] = list(extra_axes)
+        self._axis_config_report['invalid_axes'] = dict(invalid_axes)
 
         if missing_axes or invalid_axes or extra_axes:
             details = [
                 f"machine axes={active_axes}",
-                f"vtk axes={configured_axes}",
+                f"backplot axes={configured_axes}",
             ]
             if missing_axes:
                 details.append(f"missing={missing_axes}")
@@ -658,19 +658,19 @@ class LinuxCncDataSource(QObject):
                 details.append(f"extra={extra_axes}")
             if invalid_axes:
                 details.append(f"invalid={invalid_axes}")
-            self._warn_vtk("axis ownership map does not match machine axes; " + "; ".join(details))
+            self._warn_backplot_config("axis ownership map does not match machine axes; " + "; ".join(details))
 
         machine_parts_path = self._resolve_machine_parts_path()
-        self._vtk_machine_parts_file = machine_parts_path
+        self._machine_parts_file = machine_parts_path
 
         if machine_parts_path is None:
-            self._warn_vtk(
+            self._warn_backplot_config(
                 "MACHINE_PARTS is not set in [VTK]; add MACHINE_PARTS=<yaml> to complete machine-axis simulation metadata"
             )
             return
 
         if not os.path.isfile(machine_parts_path):
-            self._warn_vtk(
+            self._warn_backplot_config(
                 f"MACHINE_PARTS file not found: {machine_parts_path}"
             )
             return
@@ -679,59 +679,59 @@ class LinuxCncDataSource(QObject):
             with open(machine_parts_path, 'r', encoding='utf-8') as stream:
                 machine_parts_data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            self._warn_vtk(
+            self._warn_backplot_config(
                 f"MACHINE_PARTS YAML parse failed for {machine_parts_path}: {exc}"
             )
             return
         except OSError as exc:
-            self._warn_vtk(
+            self._warn_backplot_config(
                 f"MACHINE_PARTS file read failed for {machine_parts_path}: {exc}"
             )
             return
 
         if not isinstance(machine_parts_data, dict):
-            self._warn_vtk(
+            self._warn_backplot_config(
                 f"MACHINE_PARTS did not parse to a mapping: {machine_parts_path}"
             )
             return
 
-        self._vtk_machine_parts_loaded = True
-        self._vtk_machine_parts_axes = self._extract_machine_parts_axes(machine_parts_data)
+        self._machine_parts_loaded = True
+        self._machine_parts_axes = self._extract_machine_parts_axes(machine_parts_data)
 
-        yaml_axes = set(self._vtk_machine_parts_axes.keys())
+        yaml_axes = set(self._machine_parts_axes.keys())
         missing_from_yaml = [axis for axis in active_axes if axis not in yaml_axes]
         if missing_from_yaml:
-            self._vtk_axis_config_report['missing_machine_parts_axes'] = list(missing_from_yaml)
-            self._warn_vtk(
+            self._axis_config_report['missing_machine_parts_axes'] = list(missing_from_yaml)
+            self._warn_backplot_config(
                 f"MACHINE_PARTS is missing active machine axes: {missing_from_yaml}"
             )
 
         for axis in ('A', 'B', 'C'):
-            meta = self._vtk_machine_parts_axes.get(axis)
+            meta = self._machine_parts_axes.get(axis)
             if meta is not None:
-                self._vtk_rotary_axis_origin[axis] = meta.get('origin')
+                self._rotary_axis_origin[axis] = meta.get('origin')
 
         missing_rotary_origins = []
         for axis in ('A', 'B', 'C'):
             if axis not in active_axes:
                 continue
-            if self._vtk_axis_motion_owner.get(axis, 'head') != 'table':
+            if self._axis_motion_owner.get(axis, 'head') != 'table':
                 continue
 
-            meta = self._vtk_machine_parts_axes.get(axis)
+            meta = self._machine_parts_axes.get(axis)
             if meta is None:
                 continue
             axis_type = str(meta.get('type') or '').lower()
             if axis_type != 'angular':
-                self._warn_vtk(
+                self._warn_backplot_config(
                     f"MACHINE_PARTS axis {axis} should be type=angular for table rotary ownership (got type={axis_type or 'unset'})"
                 )
             if meta.get('origin') is None:
                 missing_rotary_origins.append(axis)
 
-        self._vtk_axis_config_report['missing_rotary_origins'] = list(missing_rotary_origins)
+        self._axis_config_report['missing_rotary_origins'] = list(missing_rotary_origins)
         if missing_rotary_origins:
-            self._warn_vtk(
+            self._warn_backplot_config(
                 f"table rotary axes missing MACHINE_PARTS origin definitions: {missing_rotary_origins}"
             )
 
@@ -743,13 +743,13 @@ class LinuxCncDataSource(QObject):
                     legacy_pivot_keys.append(key)
 
         if legacy_pivot_keys:
-            self._warn_vtk(
-                f"legacy VTK pivot keys are ignored; use MACHINE_PARTS origins instead (keys={legacy_pivot_keys})"
+            self._warn_backplot_config(
+                f"legacy pivot keys are ignored; use MACHINE_PARTS origins instead (keys={legacy_pivot_keys})"
             )
 
     def getRotaryAxisOrigins(self):
-        return dict(self._vtk_rotary_axis_origin)
+        return dict(self._rotary_axis_origin)
 
     def getRotaryAxisWrapped(self):
-        return dict(self._vtk_rotary_axis_wrapped)
+        return dict(self._rotary_axis_wrapped)
 

@@ -853,7 +853,7 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
 
             if str(self._setting_name).startswith('backplot.'):
                 LOG.debug(
-                    "[vtk-diag] button %r bound to %s, initial value %r",
+                    "[backplot-diag] button %r bound to %s, initial value %r",
                     self.objectName(), self._setting_name, value,
                 )
 
@@ -871,7 +871,7 @@ class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
             # Proves the click reached the setting layer. Remove when resolved.
             if str(self._setting_name).startswith('backplot.'):
                 LOG.debug(
-                    "[vtk-diag] button %r toggled -> %s = %r (checked=%r)",
+                    "[backplot-diag] button %r toggled -> %s = %r (checked=%r)",
                     self.objectName(), self._setting_name, value_to_store, checked,
                 )
             self._setting.setValue(value_to_store)

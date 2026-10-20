@@ -7,7 +7,7 @@ Item {
     width: 640
     height: 480
 
-    // Two-colour background, restored from the VTK backplot. The View3D renders
+    // Two-colour background. The View3D renders
     // with a transparent clear so this gradient shows through; setting both
     // colours equal gives the old solid background.
     Rectangle {

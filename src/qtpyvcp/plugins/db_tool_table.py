@@ -628,7 +628,7 @@ class DBToolTable(DataPlugin):
 
     # ------------------------------------------------------------ extras
     # (tool_lathe/tool_mill per the 'extras' kwarg: consumed by the UI/
-    # VTK/conversational/machine macros; never sent to LinuxCNC, so no
+    # 3D/conversational/machine macros; never sent to LinuxCNC, so no
     # machine-reload/interp-idle guard applies here.)
 
     def getToolExtras(self, tool_no):

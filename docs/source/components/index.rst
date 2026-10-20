@@ -9,7 +9,6 @@ QtPyVCP components available in Qt Designer
 
    action_buttons
    action_sliders
-   backplot
    qtquick3d_backplot
    containers
    stacked_widget

@@ -124,7 +124,7 @@ class _OffsetDatasource(_FakeDatasource):
                 "U": 6, "V": 7, "W": 8, "R": 9}
 
 
-def test_qt3d0_exposes_vtk_and_qt3d_properties():
+def test_qt3d0_exposes_backplot_properties():
     names = (
         "backgroundColor", "backgroundColor2", "enableProgramTicks",
         "traverseColor", "arcfeedColor", "feedColor", "dwellColor", "userColor",
@@ -170,9 +170,9 @@ def test_view_slots_are_safe_before_a_program_is_loaded(monkeypatch):
         app.processEvents()
 
 
-def test_qt3d0_matches_vtk_backplot_slots_and_properties():
-    """Every VTKBackPlot slot/property must exist on Qt3D0 for parity."""
-    vtk_slots = (
+def test_qt3d0_exposes_the_expected_slots():
+    """Slots kept for .ui/programmatic compatibility must exist on Qt3D0."""
+    backplot_slots = (
         "alphaBlend", "clearLivePlot", "enableBreadcrumbs", "enableMultiTouch",
         "enable_panning", "on_run_state_changed", "printView",
         "reapplyNavHelperConfig", "reload_program",
@@ -186,7 +186,7 @@ def test_qt3d0_matches_vtk_backplot_slots_and_properties():
         "toggleMultiColorPath", "toggleProgramBounds", "viewPerspective",
         "zoomIn", "zoomOut",
     )
-    vtk_properties = (
+    backplot_properties = (
         "backgroundColor", "backgroundColor2", "enableProgramTicks",
         "traverseColor", "arcfeedColor", "feedColor", "dwellColor", "userColor",
     )
@@ -196,8 +196,8 @@ def test_qt3d0_matches_vtk_backplot_slots_and_properties():
         bytes(meta.method(i).name()).decode()
         for i in range(meta.methodCount())
     }
-    missing_slots = [n for n in vtk_slots if n not in method_names]
-    missing_props = [n for n in vtk_properties if meta.indexOfProperty(n) < 0]
+    missing_slots = [n for n in backplot_slots if n not in method_names]
+    missing_props = [n for n in backplot_properties if meta.indexOfProperty(n) < 0]
     assert not missing_slots, f"Missing slots on Qt3D0: {missing_slots}"
     assert not missing_props, f"Missing properties on Qt3D0: {missing_props}"
 

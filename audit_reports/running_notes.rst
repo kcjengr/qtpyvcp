@@ -44,6 +44,57 @@ Files
 ----------
 
 Area
+   VTK backplot removal / renderer dependency
+
+Summary
+   Removed the VTK backplot and the VTK/PyVTK dependency from QtPyVCP. The Qt
+   Quick 3D `Qt3D0` is now the only 3D backplot renderer.
+
+Changes
+   - Deleted `widgets/display_widgets/vtk_backplot/` (renderer, actors, VTK
+     canon, bundled STL models) and `native/backplot_cpp/bridge.py` (PyVTK
+     actor wrapper).
+   - Moved the renderer-independent `base_canon.py` and
+     `linuxcnc_datasource.py` into `backplot_common/`; updated the widget and
+     the gcode-properties plugin imports.
+   - Removed the VTK widget, plugin and placeholder wiring from
+     `register_widgets`, `main_window`, `display_widgets` and
+     `designer_plugins`; `Qt3D0` is the sole registered backplot widget.
+   - Migrated the repository `.ui` files (`actions`, `brender`,
+     `widgets_test`) and their generated `_ui.py` copies from `VTKBackPlot` to
+     `Qt3D0`. Historical object names such as `vtkbackplot` and `[VTK]` INI
+     sections are kept for configuration compatibility.
+   - Removed the `vtk_test` VCP and its entry points; updated the video-test
+     messages to reference only `opengl_test`.
+   - Removed VTK from `requirements.txt`, `packages.txt` and
+     `debian/control`; documented that `[VTK]` INI sections are consumed by
+     `Qt3D0` for backward compatibility.
+   - Removed remaining VTK-named private helpers/labels from the backplot
+     datasource and load-perf summary.
+
+Validation
+   - `pytest tests` with the LinuxCNC Python modules on PYTHONPATH: 106 passed.
+   - Imported the native package, `backplot_common`, `qtquick3d_backplot` and
+     the gcode-properties plugin with `vtk` absent from `sys.modules`.
+   - `grep` finds no `vtk` imports or `VTKBackPlot` references in the source
+     tree; only `[VTK]` INI keys, the compatibility object name
+     `vtkbackplot`, and historical notes remain.
+
+Files
+   - src/qtpyvcp/widgets/display_widgets/backplot_common/
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/
+   - src/qtpyvcp/native/backplot_cpp/
+   - src/qtpyvcp/widgets/{register_widgets.py,form_widgets/main_window.py}
+   - src/examples/, src/video_tests/, src/qtpyvcp_examples/,
+     src/qtpyvcp_video_tests/
+   - requirements.txt, packages.txt, debian/control, pyproject.toml
+   - docs/source/components/
+
+
+2026-10-20
+----------
+
+Area
    Qt3D0 backplot (Qt Quick 3D renderer)
 
 Summary

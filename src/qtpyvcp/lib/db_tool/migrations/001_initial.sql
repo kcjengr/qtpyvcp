@@ -43,7 +43,7 @@ CREATE TABLE tool (
   in_use INTEGER NOT NULL DEFAULT 0                     -- maintained by l/u pushes
 );
 
--- lathe extras: consumed by the UI, VTK insert display, and the
+-- lathe extras: consumed by the UI, 3D insert display, and the
 -- conversational; never sent to LinuxCNC.
 CREATE TABLE tool_lathe (
   tool_id INTEGER PRIMARY KEY REFERENCES tool(id) ON DELETE CASCADE,
@@ -51,7 +51,7 @@ CREATE TABLE tool_lathe (
   type TEXT CHECK (type IN ('turning','boring','grooving','parting',
                             'threading','drill','tap','custom')),
 
-  -- insert identity (ISO turning inserts; VTK profile inputs)
+  -- insert identity (ISO turning inserts; 3D profile inputs)
   insert_shape TEXT,          -- ISO shape letter: C,D,V,W,T,R,S,...
   insert_size_mode TEXT CHECK (insert_size_mode IN ('IC','edge_length') OR insert_size_mode IS NULL),
   insert_size REAL,           -- IC diameter or edge length per size_mode

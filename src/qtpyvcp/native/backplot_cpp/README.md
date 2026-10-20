@@ -1,14 +1,9 @@
-# QtPyVCP C++ Backplot Bridge (Scaffold)
+# QtPyVCP C++ backplot builder
 
-This directory contains the initial scaffold for a native C++ backplot builder.
-
-## Current state
-
-- Python bridge exists in `bridge.py`.
-- Native entrypoint is `_backplot_cpp.build_from_canon(...)`.
-- Current C++ implementation builds non-foam geometry payload (points/colors/segments + transitions) directly from canon/path data and returns timing.
-- Runtime integration in `vtk_backplot.py` safely falls back to the Python draw path when native is unavailable or raises.
-- Foam mode currently falls back to Python path.
+`_backplot_cpp` parses a program through the native canon and returns plain
+NumPy arrays (per-WCS points, colours, line numbers, offset transitions and
+timing). It has no renderer dependency: both the Python fallback and the Qt
+Quick 3D backplot consume the same payload.
 
 ## Build (manual, branch testing)
 
@@ -18,15 +13,11 @@ cmake -S . -B build
 cmake --build build -j
 ```
 
-The resulting extension module `_backplot_cpp` should be placed on the Python import path within this package for runtime use.
+The resulting extension module `_backplot_cpp` is located automatically by
+`qtpyvcp.native.backplot_cpp.native_module`, preferring the newest build.
 
-## Next implementation target
+## Fallbacks
 
-Complete parity and deeper offload:
-
-- `path_actors`: per-WCS path actor objects compatible with existing pipeline.
-- `offset_transitions`: transition structures consumed by current transition rendering.
-- `added_segments`: integer count for perf summary.
-- `draw_ms`: C++ draw/build elapsed time in ms.
-- Add foam path support.
-- Move VTK object construction to pure C++ extension output for additional overhead reduction.
+`backplot_common.loader` uses the Python canon when the native module is
+unavailable, for foam/jet machines, or when the caller vetoes the native path
+(e.g. table-rotary machines that need load-time rotary shaping).

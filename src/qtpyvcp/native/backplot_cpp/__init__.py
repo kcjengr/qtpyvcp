@@ -1,5 +1,6 @@
-"""C++ backplot bridge package."""
+"""C++ backplot geometry builder package.
 
-from .bridge import build_backplot_from_file
-
-__all__ = ["build_backplot_from_file"]
+The compiled extension is located and imported lazily by
+:mod:`qtpyvcp.native.backplot_cpp.native_module`; it only returns plain NumPy
+arrays and has no renderer dependency.
+"""

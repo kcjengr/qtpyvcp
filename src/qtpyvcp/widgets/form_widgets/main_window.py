@@ -534,15 +534,6 @@ class VCPMainWindow(QMainWindow):
                     LOG.exception("Failed replacing %s placeholder: name=%s",
                                   label, placeholder_name)
 
-        def _replace_vtk_placeholders_runtime(root_widget):
-            def _realize():
-                from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import (
-                    VTKBackPlot as RealVTKBackPlot)
-                return RealVTKBackPlot
-
-            _replace_backplot_placeholders_runtime(
-                root_widget, "VTKBackPlotPlaceholder", "vtk", _realize, "VTK")
-
         def _replace_qt3d_placeholders_runtime(root_widget):
             def _realize():
                 from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.qtquick3d_backplot import (
@@ -633,12 +624,6 @@ class VCPMainWindow(QMainWindow):
         except ImportError:
             pass
         try:
-            from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import VTKBackPlot
-            loader.registerCustomWidget(VTKBackPlot)
-        except ImportError:
-            pass
-
-        try:
             from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.qtquick3d_backplot import Qt3D0
             loader.registerCustomWidget(Qt3D0)
         except ImportError as exc:
@@ -651,8 +636,7 @@ class VCPMainWindow(QMainWindow):
         # placeholder class name.
         try:
             from qtpyvcp.widgets.display_widgets.designer_plugins import (
-                VTKBackPlotPlaceholder, Qt3D0Placeholder)
-            loader.registerCustomWidget(VTKBackPlotPlaceholder)
+                Qt3D0Placeholder)
             loader.registerCustomWidget(Qt3D0Placeholder)
         except ImportError:
             pass
@@ -701,7 +685,6 @@ class VCPMainWindow(QMainWindow):
         else:
             self.ui = loaded_ui
 
-        _replace_vtk_placeholders_runtime(self)
         _replace_qt3d_placeholders_runtime(self)
         
         _apply_widget_attributes()

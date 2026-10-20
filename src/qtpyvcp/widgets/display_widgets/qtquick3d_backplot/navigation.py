@@ -4,7 +4,7 @@ from PySide6.QtCore import QEvent, QObject, Qt
 
 
 class BackplotNavigation(QObject):
-    """VTK-style orbit, pan, and zoom controller installed on a Quick widget."""
+    """Classic orbit, pan, and zoom controller installed on a Quick widget."""
 
     DRAG_THRESHOLD_SQ = 4
     DEFAULT_ORBIT_SENSITIVITY = 0.6

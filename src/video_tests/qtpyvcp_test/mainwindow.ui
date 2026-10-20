@@ -33,7 +33,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is a test, if this loads but vtk_test or opengl_test do not load then you have a video card issue.&lt;/p&gt;&lt;p&gt;Try running the vtk_test or opengl_test from a terminal.&lt;/p&gt;&lt;p&gt;Type linuxcnc in a terminal and pick a QtPyVCP simulation like XYZ then pick either vtk_test or opengl_test. The error should be somewhere in the terminal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is a test, if this loads but opengl_test does not load then you have a video card issue.&lt;/p&gt;&lt;p&gt;Try running the opengl_test from a terminal.&lt;/p&gt;&lt;p&gt;Type linuxcnc in a terminal and pick a QtPyVCP simulation like XYZ then pick opengl_test. The error should be somewhere in the terminal.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

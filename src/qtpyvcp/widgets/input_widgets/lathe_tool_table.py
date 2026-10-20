@@ -73,7 +73,7 @@ TEXT_EXTRAS = {'type', 'insert_shape', 'insert_size_mode', 'holder_style',
               'holder_hand', 'thread_tip_type', 'spindle_direction', 'notes'}
 
 # Extras columns that feed real machine-facing behavior somewhere -- the
-# VTK insert display and/or conversational-style turning operations (core
+# 3D insert display and/or conversational-style turning operations (core
 # columns cover LinuxCNC itself and are always default-visible) -- are all
 # shown by default: a user setting up a tool should see every parameter
 # something actually consumes without having to know to unhide it first.

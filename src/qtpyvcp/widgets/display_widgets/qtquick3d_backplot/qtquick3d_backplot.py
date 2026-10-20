@@ -26,7 +26,7 @@ from qtpyvcp.widgets.display_widgets.backplot_common import (
     DEFAULT_ROLE_COLORS,
     load_geometry,
 )
-from qtpyvcp.widgets.display_widgets.vtk_backplot.linuxcnc_datasource import (
+from qtpyvcp.widgets.display_widgets.backplot_common.linuxcnc_datasource import (
     LinuxCncDataSource,
 )
 
@@ -329,7 +329,7 @@ class Qt3D0(QWidget, VCPWidget):
         self._active_rotation = 0.0
         self._g92_offset = (0.0, 0.0, 0.0)
         # Floating (G91-only) programs have no meaningful WCS origin; their
-        # shape is anchored to the machine instead (mirrors VTKBackPlot).
+        # shape is anchored to the machine instead.
         self._floating_wcs = set()
         self._anchor_offset = None
         self._anchor_latched = False
@@ -460,8 +460,8 @@ class Qt3D0(QWidget, VCPWidget):
         if not parts_file:
             return
         # Part model paths in the YAML are relative to the config directory
-        # (MACHINE_PARTS lives under <config>/models), matching the VTK actor
-        # which relies on the config dir being the working directory.
+        # (MACHINE_PARTS lives under <config>/models), matching the config
+        # convention where the config dir is the working directory.
         config_dir = self.config_dir
         path = parts_file
         if not os.path.isabs(path) and config_dir:
@@ -698,7 +698,7 @@ class Qt3D0(QWidget, VCPWidget):
         """WCS placement for a path row: ``(x, y, z, rotation_degrees)``.
 
         Floating (G91-only) paths have no meaningful work offset; they are
-        anchored to the machine position instead, matching VTKBackPlot.
+        anchored to the machine position instead.
         """
         if wcs_index in self._floating_wcs:
             anchor = self._anchor_offset or (0.0, 0.0, 0.0)
@@ -724,7 +724,7 @@ class Qt3D0(QWidget, VCPWidget):
                 to_transform = self._wcs_transform(transition.to_wcs)
                 start = transform_point(transition.from_end, *from_transform)
                 end = transform_point(transition.to_start, *to_transform)
-                # Mirror VTK's elbow (from -> same Z as the start -> to).
+                # Elbow: from -> same Z as the start -> to.
                 elbow = (end[0], end[1], start[2])
                 points.extend((start, elbow, elbow, end))
         self.plot_data.transitions.replace(
@@ -899,7 +899,7 @@ class Qt3D0(QWidget, VCPWidget):
         self._seed_wcs_state()
 
     def _bind_line_highlight_channels(self):
-        """Follow the G-code editor's selected line(s), like VTKBackPlot."""
+        """Follow the G-code editor's selected line(s)."""
         status = getattr(self.datasource, "_status", None)
         for name, handler in (
             ("selected_program_line", self._on_selected_program_line),
@@ -1278,7 +1278,7 @@ class Qt3D0(QWidget, VCPWidget):
     @Slot(bool)
     @Slot(object)
     def showMachineTicks(self, show):
-        # Machine ticks are a VTK machine-actor feature; retained as state for
+        # Machine ticks are not rendered; retained as state for
         # panels that still drive the setting.
         self._show_machine_ticks = bool(show)
 
@@ -1358,14 +1358,14 @@ class Qt3D0(QWidget, VCPWidget):
     def setProgramViewWhenLoadingProgram(self, _enabled, view="p"):
         pass
 
-    # -- VTK-parity methods (not all are meaningful to the Quick 3D scene) --
+    # -- API-parity methods (not all are meaningful to the Quick 3D scene) --
 
     @Slot()
     def reapplyNavHelperConfig(self):
         """Nav-helper camera gizmo is not rendered by this stage.
 
         The ``navHelper*`` properties are retained for panel compatibility, so
-        this is a no-op kept for API parity with ``VTKBackPlot``.
+        this is a no-op kept for API parity.
         """
         return
 
@@ -1373,7 +1373,7 @@ class Qt3D0(QWidget, VCPWidget):
     def printView(self):
         """Save a PNG snapshot of the current plot view.
 
-        VTK's ``printView`` is a no-op; this writes a real image next to the
+        ``printView`` writes a real image next to the
         loaded program (or the temp dir) so the button has an effect.
         """
         if self._designer or not hasattr(self, "quick_widget"):
@@ -1544,7 +1544,7 @@ class Qt3D0(QWidget, VCPWidget):
 
         return Property(qt_type, getter, setter, freset=reset)
 
-    # Shared with VTKBackPlot's camera-orientation helper. Values are retained
+    # Retained for panels and helper widgets. Values are retained
     # for panels and helper widgets that configure these through Designer.
     navHelperEnabled = _nav_prop(bool, "enabled")
     navHelperAnimate = _nav_prop(bool, "animate")

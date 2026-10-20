@@ -48,7 +48,6 @@ fusion2db-mill = "qtpyvcp.lib.db_tool.import_fusion_mill:main"
 merge2db-mill = "qtpyvcp.lib.db_tool.import_merged_mill:main"
 mini = "examples.mini:main"
 brender = "examples.brender:main"
-vtk_test = "video_tests.vtk_test:main"
 qtpyvcp_test = "video_tests.qtpyvcp_test:main"
 widgets_test = "video_tests.widgets_test:main"
 
@@ -63,7 +62,6 @@ brender = "examples.brender"
 actions = "examples.actions"
 
 [tool.poetry.plugins."qtpyvcp.test_vcp"]
-vtk_test = "video_tests.vtk_test"
 qtpyvcp_test = "video_tests.qtpyvcp_test"
 widgets_test = "video_tests.widgets_test"
 

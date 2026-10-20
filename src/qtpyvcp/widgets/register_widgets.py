@@ -24,7 +24,6 @@ from qtpyvcp.widgets.display_widgets.status_label import (StatusLabel)  # noqa: 
 from qtpyvcp.widgets.display_widgets.status_led import (StatusLED)  # noqa: F401
 import os as _os
 if not _os.getenv('DESIGNER'):
-    from qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot import (VTKBackPlot)  # noqa: F401
     try:
         from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.qtquick3d_backplot import (Qt3D0)  # noqa: F401
     except ImportError as _qt3d0_error:
@@ -104,7 +103,6 @@ def main():
                                                                   DROLabel_Plugin,
                                                                   BarIndicatorPlugin,
                                                                   StatusLEDPlugin,
-                                                                  VTKWidgetPlugin,
                                                                   Qt3D0Plugin,
                                                                   NotificationPlugin,
                                                                   GcodeReferenceTablePlugin,
@@ -168,13 +166,6 @@ def main():
     QPyDesignerCustomWidgetCollection.addCustomWidget(BarIndicatorPlugin())
     QPyDesignerCustomWidgetCollection.addCustomWidget(StatusLEDPlugin())
     
-    # VTK Widget - may have metaclass conflicts in designer, so skip on error
-    try:
-        QPyDesignerCustomWidgetCollection.addCustomWidget(VTKWidgetPlugin())
-    except Exception as e:
-        print(f"Warning: Could not load VTK widget plugin: {e}")
-        print("VTK widget will not be available in designer")
-
     # Qt3D0 is the canonical widget name and uses the Qt Quick 3D renderer.
     try:
         QPyDesignerCustomWidgetCollection.addCustomWidget(Qt3D0Plugin())

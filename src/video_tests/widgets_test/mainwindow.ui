@@ -525,11 +525,11 @@
             </rect>
            </property>
            <property name="title">
-            <string>VTK</string>
+            <string>Backplot</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_11">
             <item row="0" column="0">
-             <widget class="VTKBackPlot" name="vtkbackplot"/>
+             <widget class="Qt3D0" name="vtkbackplot"/>
             </item>
            </layout>
           </widget>
@@ -829,10 +829,9 @@
    <header>qtpyvcp.widgets.display_widgets.status_led</header>
   </customwidget>
   <customwidget>
-   <class>VTKBackPlot</class>
+   <class>Qt3D0</class>
    <extends>QWidget</extends>
    <header>qtpyvcp.widgets.display_widgets.designer_plugins</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>NotificationWidget</class>

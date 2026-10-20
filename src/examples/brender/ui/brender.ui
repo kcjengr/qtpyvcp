@@ -126,7 +126,7 @@
            </widget>
           </item>
           <item>
-           <widget class="VTKBackPlot" name="vtkbackplot">
+           <widget class="Qt3D0" name="vtkbackplot">
             <property name="backgroundColor" stdset="0">
              <color>
               <red>154</red>
@@ -3108,10 +3108,9 @@
    <header>qtpyvcp.widgets.display_widgets.dro_label</header>
   </customwidget>
   <customwidget>
-   <class>VTKBackPlot</class>
+   <class>Qt3D0</class>
    <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
-   <container>1</container>
+   <header>qtpyvcp.widgets.display_widgets.designer_plugins</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>

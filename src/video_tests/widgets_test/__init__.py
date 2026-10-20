@@ -8,9 +8,9 @@ parsing command line args and starting the main application.
 
 Example:
     Assuming the dir this file is located in is on the PATH, you can
-    launch vtk_test by saying::
+    launch widgets_test by saying::
 
-        $ vtk_test --ini=/path/to/config.ini [options ...]
+        $ widgets_test --ini=/path/to/config.ini [options ...]
 
     Run with the --help option to print a full list of options.
 

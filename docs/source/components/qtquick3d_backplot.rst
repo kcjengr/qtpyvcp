@@ -30,7 +30,7 @@ renderer keeps it that way:
 * Incremental-only programs (G91 with no absolute move) are *floating*: the
   shared layer reports the affected WCS indices and the widget anchors them to
   the live machine position (latched while a program is running), matching the
-  VTK backplot instead of drawing them at WCS zero.
+  historical renderer instead of drawing them at WCS zero.
 
 The CNC's Z-up points are converted to Qt Quick 3D's Y-up scene coordinates at
 the renderer boundary. A work-offset rotation is mapped to a rotation about the
@@ -56,8 +56,8 @@ Features
 * Program and machine bounds, a machine-size XY grid, axis indicators, and the
   live position trail.
 * View presets, orthographic/perspective projection, zoom/orbit/pan with the
-  VTK mouse model (left orbit, middle pan, right dolly, wheel zoom, pan-mode
-  swap).
+  classic mouse model (left orbit, middle pan, right dolly, wheel zoom,
+  pan-mode swap).
 * Two-colour background (``backgroundColor`` at the bottom,
   ``backgroundColor2`` at the top; equal colours give a solid background) and
   MSAA.
@@ -82,9 +82,9 @@ Features
 Known limitations
 -----------------
 
-* Qt Quick 3D custom line geometry is always one pixel wide; the VTK
-  ``SetLineWidth`` equivalent is not available. MSAA is enabled to keep it
-  crisp, but a thicker-path option is still to be designed.
+* Qt Quick 3D custom line geometry is always one pixel wide; there is no
+  line-width control for it. MSAA is enabled to keep it crisp, but a thicker
+  path option is still to be designed.
 * Machine ticks/labels (``showMachineTicks`` / ``showMachineLabels``) store
   state only, and ``enableProgramTicks`` does not draw bounds ticks (they are
   not implemented for line geometry yet).
@@ -93,6 +93,15 @@ Known limitations
   compatibility.
 * ``enableMultiTouch``, ``enableBreadcrumbs`` and
   ``setProgramViewWhenLoadingProgram`` are API-compatibility no-ops.
+
+Migrating from VTKBackPlot
+--------------------------
+
+The existing ``Qt3D0`` widget can be dropped into a panel exactly like the old
+VTK widget. ``.ui`` files that still reference the removed ``VTKBackPlot``
+class must change the widget class to ``Qt3D0``; keeping the historical object
+name (for example ``vtkbackplot``) is fine and keeps existing signal/slot
+wiring and panel code working.
 
 Packaging
 ---------

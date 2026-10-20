@@ -1,10 +1,8 @@
 """Renderer-independent G-code canon.
 
-This is the Qt Quick 3D/VTK-shared port of
-``vtk_backplot.vtk_canon.VTKCanon``.  The
-logic (unit normalisation, WCS handling, rotary-table sampling, float
-anchoring) is identical; the only difference is that instead of allocating
-``vtkPoints``/``vtkCellArray`` it accumulates plain NumPy buffers exposed via
+This is the renderer-independent canon.  It performs unit normalisation, WCS
+handling, rotary-table sampling and float anchoring, and instead of allocating
+renderer objects it accumulates plain NumPy buffers exposed via
 :class:`~.geometry.BackplotGeometry`.
 """
 
@@ -16,13 +14,13 @@ from collections import OrderedDict
 import numpy as np
 
 from qtpyvcp.utilities import logger
-from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
 
+from .base_canon import StatCanon
 from .geometry import BackplotGeometry, OffsetTransition, PathGeometry
 
 LOG = logger.getLogger(__name__)
 
-# Role -> (r, g, b, a) fallback colours, matching VTKCanon.COLOR_MAP.
+# Role -> (r, g, b, a) default colours.
 DEFAULT_ROLE_COLORS = {
     'traverse': (200, 35, 35, 255),
     'arcfeed': (110, 110, 255, 255),
@@ -98,7 +96,7 @@ class BackplotCanon(StatCanon):
             self._rotary_axis_wrapped = dict(datasource.getRotaryAxisWrapped())
             g5x = datasource.getActiveWcsOffsets()
             # Canonical index has G53 at 0 while active index is zero-based
-            # from G54, matching VTKCanon.
+            # from G54.
             super().set_g5x_offset(
                 self._active_wcs_index + 1,
                 g5x[0], g5x[1], g5x[2], g5x[3], g5x[4],
@@ -148,7 +146,7 @@ class BackplotCanon(StatCanon):
         if units in (1, 2, 3):
             self._preview_program_units = units
 
-    # -- small coercers (mirrors of VTKCanon) -------------------------------
+    # -- small coercers -----------------------------------------------------
 
     @staticmethod
     def _coerce_int(value):
@@ -185,8 +183,7 @@ class BackplotCanon(StatCanon):
 
     def _program_to_machine_length_factor(self):
         # gcode.parse() hands the canon inches regardless of G20/G21, so the
-        # conversion depends only on machine units (see VTKCanon for the full
-        # rationale).
+        # conversion depends only on machine units (see the comment above).
         machine_is_metric = bool(self._datasource.isMachineMetric()) if self._datasource else False
         factor = 25.4 if machine_is_metric else 1.0
 
@@ -346,7 +343,7 @@ class BackplotCanon(StatCanon):
 
     def set_xy_rotation(self, rotation):
         # Rotation is applied once by the widget's WCS transform; baking it here
-        # too would rotate geometry twice (see VTKCanon.set_xy_rotation).
+        # too would rotate geometry twice.
         self.rotation_xy = 0.0
         self.rotation_cos = 1.0
         self.rotation_sin = 0.0
@@ -369,7 +366,7 @@ class BackplotCanon(StatCanon):
         if self.position_anchored:
             self._anchored_wcs.add(self._active_wcs_index)
 
-        # Loaded geometry ignores runtime TLO, matching VTKCanon.
+        # Loaded geometry ignores runtime TLO.
         tool_offsets_scaled = [0.0] * 9
         wcs_offsets_scaled = self._scale_linear_axes(
             self.initial_wcs_offsets[self._active_wcs_index], program_to_machine)

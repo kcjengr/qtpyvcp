@@ -1,6 +1,6 @@
 """Program -> :class:`BackplotGeometry` loading, shared by both backplots.
 
-Uses the native C++ canon when available (fast, does not require VTK) and
+Uses the native C++ canon when available (fast and renderer-independent) and
 falls back to the pure-Python :class:`BackplotCanon`.  Foam/jet machines and
 any table-rotary case the native builder cannot shape are routed to Python.
 """

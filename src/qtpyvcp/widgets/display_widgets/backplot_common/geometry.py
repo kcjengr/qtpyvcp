@@ -1,10 +1,9 @@
-"""Plain-data geometry containers shared by the VTK and Qt Quick 3D backplots.
+"""Plain-data geometry containers for the backplot renderers.
 
-Segment endpoints are stored the same way the native C++ builder and the
-``VTKCanon`` already emit them: a flat ``(N, 3)`` float32 point array where
+Segment endpoints are stored the same way the native C++ builder emits them: a flat ``(N, 3)`` float32 point array where
 each *segment* occupies two consecutive rows (start, end).  ``colors`` is
 ``(N / 2, 4)`` uint8 with one RGBA entry per *segment* (matching the native
-payload and VTK's per-cell scalars); renderers expand it per-vertex as needed.
+payload); renderers expand it per-vertex as needed.
 ``line_numbers`` carries one G-code sequence number per segment.
 """
 

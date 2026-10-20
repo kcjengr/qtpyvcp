@@ -3,7 +3,6 @@ from time import perf_counter
 
 from qtpyvcp.utilities import logger
 
-
 LOG = logger.getLogger(__name__)
 
 
@@ -21,8 +20,8 @@ class ProgramLoadPerfSummary:
     def _reset(self):
         self._file = None
         self._start = None
-        self._vtk_cpp_mode = False
-        self._vtk_added_segments = None
+        self._backplot_cpp_mode = False
+        self._backplot_added_segments = None
         self._linuxcnc_open_wait_ms = 0.0
         self._parse_interp_ms = 0.0
         self._pre_backplot_dispatch_ms = 0.0
@@ -31,9 +30,9 @@ class ProgramLoadPerfSummary:
         self._has_open_wait = False
         self._has_parse_interp = False
         self._has_pre_backplot_interp = False
-        self._vtk_ms = None
-        self._vtk_draw_ms = None
-        self._vtk_actor_build_ms = None
+        self._backplot_ms = None
+        self._backplot_draw_ms = None
+        self._backplot_actor_build_ms = None
         self._gcode_text_edit_ms = None
         self._gcode_editor_ms = None
         self._editor_ms_by_widget = {}
@@ -154,14 +153,14 @@ class ProgramLoadPerfSummary:
                 self._pre_backplot_dispatch_ms = max(0.0, elapsed_to_backplot_ms - self._linuxcnc_open_wait_ms)
             self._has_pre_backplot_interp = True
 
-        self._vtk_cpp_mode = bool(cpp_mode)
-        self._vtk_added_segments = int(added_segments)
+        self._backplot_cpp_mode = bool(cpp_mode)
+        self._backplot_added_segments = int(added_segments)
         self._parse_interp_ms += float(interp_ms)
         self._has_parse_interp = True
         self._emit_phase("backplot-parse-done", 70, parse_done_elapsed_ms)
-        self._vtk_draw_ms = float(draw_ms)
-        self._vtk_actor_build_ms = float(actor_build_ms)
-        self._vtk_ms = self._vtk_draw_ms + self._vtk_actor_build_ms
+        self._backplot_draw_ms = float(draw_ms)
+        self._backplot_actor_build_ms = float(actor_build_ms)
+        self._backplot_ms = self._backplot_draw_ms + self._backplot_actor_build_ms
         self._emit_phase("backplot-draw-done", 82, draw_done_elapsed_ms)
         self._emit_phase("backplot-actor-done", 84, actor_done_elapsed_ms)
         self._emit_phase("backplot-complete", 86, backplot_done_elapsed_ms)
@@ -197,10 +196,10 @@ class ProgramLoadPerfSummary:
         return all([
             self._file is not None,
             self._start is not None,
-            self._vtk_added_segments is not None,
+            self._backplot_added_segments is not None,
             self._has_open_wait,
             self._has_parse_interp,
-            self._vtk_ms is not None,
+            self._backplot_ms is not None,
             self._editor_update_count >= 2,
         ])
 
@@ -232,7 +231,7 @@ class ProgramLoadPerfSummary:
 
         total_ms = (perf_counter() - self._start) * 1000.0
         file_name = os.path.basename(self._file)
-        vtk_data = str(self._vtk_added_segments)
+        backplot_data = str(self._backplot_added_segments)
         file_size = "n/a"
         try:
             file_size = self._fmt_file_size(os.path.getsize(self._file))
@@ -241,8 +240,8 @@ class ProgramLoadPerfSummary:
 
         metadata_rows = [
             ("File Size", file_size),
-            ("VTK C++ Mode", "true" if self._vtk_cpp_mode else "false"),
-            ("VTK Backplot Data", vtk_data),
+            ("Backplot C++ Mode", "true" if self._backplot_cpp_mode else "false"),
+            ("Backplot Data", backplot_data),
         ]
 
         stage_rows = [
@@ -250,9 +249,9 @@ class ProgramLoadPerfSummary:
             ("LCNC File Event Marker", self._linuxcnc_file_event_ms, self._phase_elapsed_ms.get("linuxcnc-file-loaded-event")),
             ("LCNC Pre-Backplot Dispatch", self._pre_backplot_dispatch_ms, self._phase_elapsed_ms.get("backplot-start")),
             ("LCNC Backplot Parse", self._parse_interp_ms, self._phase_elapsed_ms.get("backplot-parse-done")),
-            ("VTK Backplot Draw", self._vtk_draw_ms, self._phase_elapsed_ms.get("backplot-draw-done")),
-            ("VTK Actor Build", self._vtk_actor_build_ms, self._phase_elapsed_ms.get("backplot-actor-done")),
-            ("VTK Backplot Time", self._vtk_ms, self._phase_elapsed_ms.get("backplot-complete")),
+            ("Backplot Draw", self._backplot_draw_ms, self._phase_elapsed_ms.get("backplot-draw-done")),
+            ("Backplot Buffer Build", self._backplot_actor_build_ms, self._phase_elapsed_ms.get("backplot-actor-done")),
+            ("Backplot Time", self._backplot_ms, self._phase_elapsed_ms.get("backplot-complete")),
         ]
 
         if self._gcode_text_edit_ms is not None:

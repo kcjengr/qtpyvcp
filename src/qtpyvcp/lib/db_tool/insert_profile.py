@@ -1,10 +1,10 @@
 # coding=utf-8
 """Lathe insert display data, straight from the tool database.
 
-The single insert-geometry source for probe_basic's VTK lathe tool
+The single insert-geometry source for the lathe tool
 rendering (plan §6 Phase 5, ratified 2026-07-08): users describe a tool
 in the probe_basic tool table (type, insert shape/size, holder
-dimensions, nose radius via D) and VTK renders exactly that -- no
+dimensions, nose radius via D) and the backplot renders exactly that -- no
 library files, no import step, one source of truth.
 
 Two-stage, all schema-native:

@@ -10,8 +10,7 @@ not create it. ``VisibleColumn`` is schema v2 (``migrations/
 to create/upgrade the actual tables.
 
 ``ToolTable``/``ToolModel`` are an unrelated, currently-unused stub for a
-per-tool custom STL model file (mill VTK display, see
-``widgets/display_widgets/vtk_backplot/tool_actor.py``); no code creates
+per-tool custom STL model file (mill 3D display); no code creates
 ``ToolModel`` rows today. Kept as-is, decoupled from ``Tool`` (which no
 longer carries a ``tool_table_id`` FK per schema v1).
 """
@@ -74,7 +73,7 @@ class Tool(Base):
 
 
 class ToolLathe(Base):
-    """Lathe extras: consumed by the UI, VTK insert display, and the
+    """Lathe extras: consumed by the UI, 3D insert display, and the
     conversational add-on; never sent to LinuxCNC."""
     __tablename__ = 'tool_lathe'
 
@@ -84,7 +83,7 @@ class ToolLathe(Base):
 
     type = Column(Text)  # turning|boring|grooving|parting|threading|drill|tap|custom
 
-    # insert identity (ISO turning inserts; VTK profile inputs)
+    # insert identity (ISO turning inserts; 3D profile inputs)
     insert_shape = Column(Text)        # ISO shape letter: C,D,V,W,T,R,S,...
     insert_size_mode = Column(Text)    # IC | edge_length
     insert_size = Column(Float)        # IC diameter or edge length per size_mode
@@ -194,7 +193,7 @@ class VisibleColumn(Base):
 
 
 class ToolModel(Base):
-    """Per-tool custom STL model reference (mill VTK display). Unrelated to
+    """Per-tool custom STL model reference (mill 3D display). Unrelated to
     lathe schema v1; not created/queried anywhere today (dead stub)."""
     __tablename__ = 'tool_model'
 

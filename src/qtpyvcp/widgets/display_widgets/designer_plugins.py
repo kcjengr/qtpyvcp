@@ -51,23 +51,23 @@ class StatusLEDPlugin(_DesignerPlugin):
     def pluginClass(self):
         return StatusLED
 
-# VTK Widget - Cannot be instantiated in designer due to VTK dependencies
-# Create a placeholder class for designer mode only
+# Backplot placeholders. The real widgets need a live render surface and
+# LinuxCNC, so Designer gets a placeholder that is swapped at runtime.
 from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout
 from PySide6.QtCore import Qt, Slot, Property, QSize
 from PySide6.QtGui import QColor
 
 
-class VTKBackPlotPlaceholder(QWidget):
-    """Placeholder for VTKBackPlot widget in designer mode."""
+class BackplotPlaceholder(QWidget):
+    """Base placeholder for backplot widgets in designer mode."""
     def __init__(self, parent=None):
         super().__init__(parent)
         # nav-helper camera-gizmo qproperties; copied to the real backplot at
-        # runtime by VCPMainWindow._replace_vtk_placeholders_runtime
+        # runtime by VCPMainWindow when a Designer placeholder is replaced.
         self._nav_helper_props = {}
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        label = QLabel("VTK Backplot\n(3D visualization)")
+        label = QLabel("Backplot\n(3D visualization)")
         label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(label)
         self.setLayout(layout)
@@ -237,8 +237,8 @@ class VTKBackPlotPlaceholder(QWidget):
     def enable_panning(self, _enabled):
         pass
 
-    # nav-helper camera-gizmo qproperties (mirror VTKBackPlot; copied to the
-    # real widget at runtime, see VCPMainWindow._replace_vtk_placeholders_runtime)
+    # nav-helper camera-gizmo qproperties (mirrored by the real widget when a
+    # Designer placeholder is replaced).
     @staticmethod
     def _nav_prop(qt_type, key):
         def _get(self):
@@ -288,57 +288,6 @@ class VTKBackPlotPlaceholder(QWidget):
     navHelperPriority = _nav_prop(float, "priority")
 
 
-# Give Designer a class whose runtime name matches the requested class
-# to prevent custom widget factory class-name mismatch warnings.
-class VTKBackPlot(VTKBackPlotPlaceholder):
-    pass
-
-class VTKWidgetPlugin(_DesignerPlugin):
-    def objectName(self):
-        # Keep Probe Basic compatibility: many .ui signal receivers target
-        # object name "vtk". If Designer inserts "vtkbackplot" by default,
-        # those connections silently break when users replace the widget.
-        return "vtk"
-
-    def name(self):
-        # Expose the runtime class name in Designer while still using a
-        # placeholder implementation when DESIGNER is set.
-        return "VTKBackPlot"
-
-    def pluginClass(self):
-        # Return the placeholder for designer mode, real widget for runtime
-        if IN_DESIGNER:
-            return VTKBackPlot
-        else:
-            # Import the real VTK widget at runtime
-            try:
-                from .vtk_backplot.vtk_backplot import VTKBackPlot as RuntimeVTKBackPlot
-                return RuntimeVTKBackPlot
-            except ImportError:
-                return VTKBackPlot
-    
-    def toolTip(self):
-        return "VTK 3D Backplot Widget (runtime only)"
-    
-    def whatsThis(self):
-        return "3D visualization of tool paths using VTK. Only functional at runtime."
-    
-    def isContainer(self):
-        return True
-
-# Export a VTKBackPlot symbol so compiled UIs that import from this module
-# succeed. In runtime mode, prefer the real widget and only fall back if import
-# actually fails.
-if IN_DESIGNER:
-    _VTKBackPlot = VTKBackPlot
-else:
-    try:
-        from .vtk_backplot.vtk_backplot import VTKBackPlot as _VTKBackPlot
-    except Exception:
-        _VTKBackPlot = VTKBackPlot
-
-VTKBackPlot = _VTKBackPlot
-
 from .notification_widget import NotificationWidget
 class NotificationPlugin(_DesignerPlugin):
     def pluginClass(self):
@@ -356,13 +305,13 @@ class GCodePropertiesPlugin(_DesignerPlugin):
 
 
 # ---------------------------------------------------------------------------
-# Qt3D0 backplot.  Like the VTK backplot it cannot be instantiated in Designer
+# Qt3D0 backplot.  Like every renderer it cannot be instantiated in Designer
 # (it needs a live Qt Quick 3D surface + LinuxCNC), so Designer gets a
 # placeholder and the real widget is swapped in at runtime (see VCPMainWindow).
 # The widget name is historical; the runtime renderer is Qt Quick 3D.
 # ---------------------------------------------------------------------------
 
-class Qt3D0Placeholder(VTKBackPlotPlaceholder):
+class Qt3D0Placeholder(BackplotPlaceholder):
     """Placeholder for Qt3D0 in designer mode."""
 
     @staticmethod
