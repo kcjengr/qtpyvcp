@@ -40,6 +40,123 @@ Files
    - src/qtpyvcp/path/to/file.py
 
 
+2026-10-21
+----------
+
+Area
+   Qt3D0 active tool body
+
+Summary
+   Fixed cases where the active tool was not drawn: machine-type flags that
+   explicitly disable LATHE/JET/FOAM were treated as enabled, classic LinuxCNC
+   tool tables were not matched by tool number, and the tool started at the
+   machine origin until the first position update.
+
+Changes
+   - Parse `[DISPLAY] LATHE`, `BACK_TOOL_LATHE`, `FOAM`, `JET` and `ANTIALIAS`
+     with a real boolean parser (`0`/`false`/`no`/`off` are false). A mill with
+     `JET = 0` or `FOAM = 0` no longer loses its tool body.
+   - Resolve tool-table entries by `toolno`/`tool`/`tool_no`/`number`/`id`, so
+     LinuxCNC `stat.tool_table` entries and DB tool-table dicts both work.
+     Tool lookup no longer falls back to a wrong pocket index.
+   - Read LinuxCNC's `offset` pose (`EmcPose.x/y/z`) for classic `.tbl`
+     entries, so the cutter bit gets its real stick-out length instead of the
+     generic 2-inch body.
+   - Seed the live tool position from status at startup instead of leaving it
+     at the machine origin.
+   - Separated the cutter bit from the spindle: `backplot.show-spindle` now
+     only shows/hides the `[VTK] SPINDLE` machine model. The bit stays visible,
+     and the spindle model follows the live machine position (non-DH) so the
+     bit protrudes below it.
+   - Added a debug log line for the resolved tool and info logs when the body
+     is hidden by the machine type or `backplot.show-spindle`; added the
+     `backplot.show-spindle` default (true).
+   - Fixed the tool edit dialog's `LATHE` detection the same way.
+
+Validation
+   - `pytest tests`: 124 passed.
+   - Xvfb render check with a LinuxCNC-style tool table: T1 resolves to a
+     cylinder and renders at the live position.
+
+Files
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/tool.py
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/qtquick3d_backplot.py
+   - src/qtpyvcp/widgets/display_widgets/backplot_common/linuxcnc_datasource.py
+   - src/qtpyvcp/widgets/dialogs/tool_edit_dialog.py
+   - src/qtpyvcp/yaml_lib/default_config.yml
+   - tests/widgets/test_qtquick3d_tool.py
+   - tests/widgets/test_backplot_common.py
+
+
+2026-10-21
+----------
+
+Area
+   Work-coordinate action (WCS dropdowns)
+
+Summary
+   Changing the work offset from an ActionComboBox no longer raises
+   `AttributeError: 'int' object has no attribute 'upper'`.
+
+Changes
+   - `set_work_coord` accepts a WCS index (0..8), a G54..G59.3 label, or combo
+     text with a trailing description, validates it, and only then issues MDI.
+   - QComboBox bindings can request the selected item text through an action
+     `use_text` flag; `machine.set_work_coord` uses it (`textActivated` instead
+     of the index-only `activated(int)`).
+   - Combo selection is synchronised by normalised label, so items with
+     descriptive text still select the right row.
+
+Validation
+   - `pytest tests`: 116 passed.
+   - Regression tests cover index, label, description, invalid values and the
+     combo text binding.
+
+Files
+   - src/qtpyvcp/actions/machine_actions.py
+   - src/qtpyvcp/actions/__init__.py
+   - tests/actions/test_work_coord.py
+
+
+2026-10-21
+----------
+
+Area
+   Qt3D0 backplot - work-offset origins
+
+Summary
+   Added small work-offset origin markers and G54..G59.3 labels to the 3D view
+   for the offsets that are actually relevant.
+
+Changes
+   - New `WcsOriginModel` overlay and `plot_data.origins` line geometry.
+   - A WCS is shown only when the loaded program has a path in it. An empty or
+     unloaded program draws no part origins, and configured-but-unused offsets
+     are ignored; floating (G91-only) paths are anchored to the machine and are
+     skipped.
+   - Marker is a small WCS-aligned square plus a vertical stem; the label is a
+     2D overlay projected with `View3D.mapFrom3DScene`, so it faces the operator
+     and keeps a fixed readable size. Camera moves bump `cameraRevision` so the
+     projection re-evaluates on orbit/pan/zoom.
+   - Added the `backplot.show-wcs-origins` setting (default on) and the
+     `wcsOriginsVisible` Designer property.
+
+Validation
+   - `pytest tests` with the LinuxCNC Python modules on PYTHONPATH: 117 passed.
+   - Xvfb render check with G54/G55/G56 paths: three amber markers and labels
+     rendered at the configured origins; click-to-line picking still works.
+
+Files
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/wcs_origins.py
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/qtquick3d_backplot.py
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/geometry.py
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/scene.qml
+   - src/qtpyvcp/widgets/display_widgets/designer_plugins.py
+   - src/qtpyvcp/yaml_lib/default_config.yml
+   - tests/widgets/test_qtquick3d_properties.py
+   - docs/source/components/qtquick3d_backplot.rst
+
+
 2026-10-20
 ----------
 

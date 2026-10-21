@@ -72,7 +72,7 @@ class Quick3DPlotData(QObject):
         super().__init__(parent)
         self._geometries = {name: LineGeometry() for name in (
             "grid", "axesX", "axesY", "axesZ", "machineBounds",
-            "programBounds", "trail", "highlight", "transitions",
+            "programBounds", "trail", "highlight", "transitions", "origins",
         )}
         for name, geometry in self._geometries.items():
             geometry.setObjectName("backplot_" + name)
@@ -92,6 +92,7 @@ class Quick3DPlotData(QObject):
             "trail": "#f2d84b",
             "highlight": "#ffe633",
             "transition": "#6e6eff",
+            "wcsOrigin": "#ffb347",
         }
         self._grid_visible = False
         self._machine_bounds_visible = True
@@ -107,9 +108,13 @@ class Quick3DPlotData(QObject):
         self._tool_position = QVector3D()
         self._tool_scale = QVector3D(1.0, 1.0, 1.0)
         self._machine_visible = True
+        self._wcs_origins_visible = True
+        self._camera_revision = 0
 
     colorChanged = Signal()
     toolChanged = Signal()
+    visibilityChanged = Signal()
+    cameraChanged = Signal()
     picked = Signal(QVector3D, QVector3D)
 
     @Slot(QVector3D, QVector3D)
@@ -143,6 +148,7 @@ class Quick3DPlotData(QObject):
     trail = _geometry_property("trail")
     highlight = _geometry_property("highlight")
     transitions = _geometry_property("transitions")
+    origins = _geometry_property("origins")
 
     def _string_property(name, notify=colorChanged):
         return Property(str, lambda self: self._colors[name],
@@ -168,11 +174,31 @@ class Quick3DPlotData(QObject):
     trailColor = _string_property("trail")
     highlightColor = _string_property("highlight")
     transitionColor = _string_property("transition")
+    wcsOriginColor = _string_property("wcsOrigin")
 
     backgroundChanged = Signal()
-    visibilityChanged = Signal()
     projectionChanged = Signal()
     interactionChanged = Signal()
+
+    @Property(bool, notify=visibilityChanged)
+    def wcsOriginsVisible(self):
+        return self._wcs_origins_visible
+
+    @wcsOriginsVisible.setter
+    def wcsOriginsVisible(self, value):
+        value = bool(value)
+        if value != self._wcs_origins_visible:
+            self._wcs_origins_visible = value
+            self.visibilityChanged.emit()
+
+    @Property(int, notify=cameraChanged)
+    def cameraRevision(self):
+        return self._camera_revision
+
+    def touch_camera(self):
+        """Notify QML overlays that the camera/viewport mapping changed."""
+        self._camera_revision += 1
+        self.cameraChanged.emit()
 
     @Property(str, notify=backgroundChanged)
     def backgroundColor(self):

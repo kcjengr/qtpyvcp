@@ -128,7 +128,7 @@ def test_qt3d0_exposes_backplot_properties():
     names = (
         "backgroundColor", "backgroundColor2", "enableProgramTicks",
         "traverseColor", "arcfeedColor", "feedColor", "dwellColor", "userColor",
-        "gridVisible",
+        "gridVisible", "wcsOriginsVisible",
         "navHelperEnabled", "navHelperAnimate", "navHelperShouldResetCamera",
         "navHelperKeyActivation", "navHelperAnchor", "navHelperPadding",
         "navHelperSize", "navHelperTotalLength", "navHelperHandleSize",
@@ -341,6 +341,26 @@ def test_machine_part_position_is_mapped_to_z_up_scene():
     index = model.index(0, 0)
     # CNC (0, 0, 400) -> scene Y-up (0, 400, 0): Z points up.
     assert model.data(index, model.PosRole) == QVector3D(0.0, 400.0, 0.0)
+
+
+def test_spindle_model_follows_machine_position():
+    from PySide6.QtGui import QVector3D
+
+    from qtpyvcp.widgets.display_widgets.qtquick3d_backplot import machine
+
+    model = machine.MachinePartsModel()
+    model.load({"base": {"position": [0.0, 0.0, 0.0]}})
+    geometry = machine._geometry_from_arrays(
+        np.asarray([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
+                   dtype=np.float32))
+    model.set_spindle(geometry)
+
+    model.set_spindle_position((10.0, 20.0, 30.0))
+
+    spindle_row = model._parts.index(model._spindle)
+    # CNC (10, 20, 30) -> scene (10, 30, -20).
+    assert model.data(model.index(spindle_row, 0), model.PosRole) == \
+        QVector3D(10.0, 30.0, -20.0)
 
 
 def test_machine_parts_world_bounds_include_arm_extent():
@@ -605,13 +625,15 @@ def _feed_geometry():
     })
 
 
-def _install_geometry(widget, floating=False):
+def _install_geometry(widget, floating=False, offsets=None, rotation=0.0):
+    if offsets is not None:
+        widget.datasource.getWcsOffsets = lambda: dict(offsets)
     widget._geometry = _feed_geometry()
     widget._floating_wcs = {0} if floating else set()
     widget._anchor_offset = (0.0, 0.0, 0.0) if floating else None
     widget._active_wcs_index = 0
     widget._active_wcs_offset = (0.0, 0.0, 0.0)
-    widget._active_rotation = 0.0
+    widget._active_rotation = rotation
     widget._rebuild_program_geometry()
 
 
@@ -798,7 +820,7 @@ def test_placeholder_exposes_the_runtime_visibility_properties():
 
     meta = Qt3D0Placeholder.staticMetaObject
     for name in ("gridVisible", "machineBoundsVisible", "programBoundsVisible",
-                 "backgroundColor2", "traverseColor"):
+                 "wcsOriginsVisible", "backgroundColor2", "traverseColor"):
         assert meta.indexOfProperty(name) >= 0
 
     placeholder = Qt3D0Placeholder()
@@ -931,6 +953,188 @@ def test_wcs_rotation_maps_to_a_scene_y_rotation(monkeypatch):
         assert world[0] == pytest.approx(0.0, abs=1e-9)
         assert world[1] == pytest.approx(1.0, abs=1e-9)
         assert world[2] == pytest.approx(0.0, abs=1e-9)
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+# -- work-offset origins ---------------------------------------------------
+
+def _offsets(**values):
+    table = {index: (0.0,) * 10 for index in range(9)}
+    for key, value in values.items():
+        index = int(key[1:]) if key.startswith("w") else int(key)
+        table[index] = tuple(value) + (0.0,) * (10 - len(value))
+    return table
+
+
+def test_wcs_origins_show_only_offsets_used_by_the_program(monkeypatch):
+    from PySide6.QtGui import QVector3D
+
+    app, widget = _make_widget(monkeypatch)
+    try:
+        _install_geometry(widget, offsets=_offsets(
+            w1=(50.0, 10.0, 20.0),
+            w3=(0.0, 0.0, 5.0),
+        ))
+        widget._geometry.paths[1] = widget._geometry.paths[0]
+
+        widget._rebuild_program_geometry()
+        rows = widget.wcs_origins.rows()
+
+        # G54/G55 have paths. G57 is configured but unused, so it is not
+        # part of the current job and gets no marker.
+        assert [row[0] for row in rows] == ["G54", "G55"]
+        assert rows[1][1] == QVector3D(50.0, 20.0, -10.0)
+        # A square (4 segments) plus a vertical stem, two vertices each.
+        assert len(bytes(widget.plot_data.origins.vertexData())) == len(rows) * 5 * 2 * 3 * 4
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_wcs_origins_absent_without_a_loaded_program(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        # Configured offsets alone must not draw part origins: there is no
+        # program using them.
+        widget.datasource.getWcsOffsets = lambda: _offsets(
+            w1=(50.0, 0.0, 0.0),
+            w2=(0.0, 50.0, 0.0),
+        )
+        widget._rebuild_wcs_origins()
+
+        assert widget.wcs_origins.rows() == ()
+        assert len(bytes(widget.plot_data.origins.vertexData())) == 0
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_wcs_origins_skip_floating_paths(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        _install_geometry(widget, floating=True, offsets=_offsets(
+            w1=(50.0, 0.0, 0.0),
+        ))
+        # The only path is floating (anchored to the machine), and the
+        # configured G55 offset is unused, so no part origins are shown.
+        assert widget.wcs_origins.rows() == ()
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_wcs_origins_follow_live_offset_edits(monkeypatch):
+    from PySide6.QtGui import QVector3D
+
+    app, widget = _make_widget(monkeypatch)
+    try:
+        _install_geometry(widget)
+        # Only the active zero-offset WCS is needed here.
+        assert [row[0] for row in widget.wcs_origins.rows()] == ["G54"]
+        assert widget.wcs_origins.rows()[0][0] == "G54"
+        before = bytes(widget.plot_data.origins.vertexData())
+
+        widget.datasource.g5xOffsetChanged.emit(
+            (10.0, 20.0, 30.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
+
+        assert widget.wcs_origins.rows()[0][1] == QVector3D(10.0, 30.0, -20.0)
+        assert bytes(widget.plot_data.origins.vertexData()) != before
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_wcs_origins_can_be_hidden(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        _install_geometry(widget)
+        assert widget.wcsOriginsVisible is True
+        widget.showWcsOrigins(False)
+        assert widget.plot_data.wcsOriginsVisible is False
+        widget.wcsOriginsVisible = True
+        assert widget.plot_data.wcsOriginsVisible is True
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_wcs_origin_labels_reach_the_qml_overlay(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        _install_geometry(widget, offsets=_offsets(
+            w1=(50.0, 0.0, 0.0),
+        ))
+        widget._geometry.paths[1] = widget._geometry.paths[0]
+        widget._rebuild_program_geometry()
+        app.processEvents()
+
+        root = widget.quick_widget.rootObject()
+
+        def labels(item):
+            found = []
+            for child in item.childItems():
+                if child.objectName() == "wcsOriginLabel":
+                    found.append(child)
+                found.extend(labels(child))
+            return found
+
+        overlay = labels(root)
+        assert sorted(label.property("text") for label in overlay) == ["G54", "G55"]
+        assert all(label.property("visible") for label in overlay)
+        assert widget.quick_widget.errors() == []
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_wcs_labels_cover_g54_through_g59_3():
+    from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.wcs_origins import (
+        WCS_LABELS,
+    )
+
+    assert WCS_LABELS == (
+        "G54", "G55", "G56", "G57", "G58",
+        "G59", "G59.1", "G59.2", "G59.3",
+    )
+
+
+def test_widget_draws_loaded_tool_from_linuxcnc_table(monkeypatch):
+    from types import SimpleNamespace
+
+    from PySide6.QtGui import QVector3D
+
+    app, widget = _make_widget(monkeypatch)
+    try:
+        widget.datasource.getToolTable = lambda: [
+            SimpleNamespace(toolno=0, pocketno=0, diameter=0.0, zoffset=0.0),
+            SimpleNamespace(toolno=1, pocketno=3, diameter=8.0, zoffset=40.0),
+        ]
+        monkeypatch.setattr(widget, "_current_tool_number", lambda: 1)
+        widget.update_position((10.0, 20.0, 30.0))
+        widget._rebuild_tool()
+
+        assert widget._tool_shape.kind == "cylinder"
+        assert widget.plot_data.toolKind == "cylinder"
+        assert widget.plot_data.toolVisible is True
+        assert widget.plot_data.toolScale.x() == pytest.approx(4.0 / 50.0)
+        assert widget.plot_data.toolScale.y() == pytest.approx(40.0 / 100.0)
+        # Tip at the machine position, body centre half the tool length up.
+        assert widget.plot_data.toolPosition == QVector3D(10.0, 50.0, -20.0)
+
+        # The cutter bit is independent of the spindle model setting.
+        widget.showSpindle(False)
+        assert widget.plot_data.toolVisible is True
+        widget.showSpindle(True)
+        assert widget.plot_data.toolVisible is True
     finally:
         widget.close()
         widget.deleteLater()

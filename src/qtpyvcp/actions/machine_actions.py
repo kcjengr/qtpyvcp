@@ -335,16 +335,71 @@ issue_mdi.bindOk = _issue_mdi_bindOk
 # WORK COORDINATES action
 # -------------------------------------------------------------------------
 
+# Work coordinate systems in LinuxCNC index order (G54 .. G59.3).
+WORK_COORDINATES = (
+    'G54', 'G55', 'G56', 'G57', 'G58',
+    'G59', 'G59.1', 'G59.2', 'G59.3',
+)
+
+
+def _normalize_work_coord(coord):
+    """Return a G54..G59.3 command from an index, label, or combo text.
+
+    A QComboBox bound to this action historically delivered its item *index*
+    through ``activated(int)``, which then reached ``issue_mdi`` as an int and
+    failed.  Both forms are accepted here, as well as labels with trailing
+    descriptions such as ``"G54: Part 1"``.
+    """
+    if isinstance(coord, bool):
+        return ''
+    if isinstance(coord, int):
+        if 0 <= coord < len(WORK_COORDINATES):
+            return WORK_COORDINATES[coord]
+        return ''
+
+    text = str(coord or '').strip().upper()
+    if not text:
+        return ''
+
+    token = re.split(r'[\s:;,\-]', text, maxsplit=1)[0]
+    if token in WORK_COORDINATES:
+        return token
+    if not token.startswith('G'):
+        token = 'G' + token
+    return token if token in WORK_COORDINATES else ''
+
+
 def set_work_coord(coord):
-    issue_mdi(coord)
+    coordinate = _normalize_work_coord(coord)
+    if not coordinate:
+        LOG.warning("Ignoring invalid work coordinate selection: %r", coord)
+        return False
+    return issue_mdi(coordinate)
+
+def _select_work_coord_combo(widget, coord):
+    """Select the combo row for *coord*, tolerating descriptive item text."""
+    target = _normalize_work_coord(coord)
+    if not target:
+        return
+    index = widget.findText(target)
+    if index < 0:
+        for row in range(widget.count()):
+            if _normalize_work_coord(widget.itemText(row)) == target:
+                index = row
+                break
+    if index >= 0 and index != widget.currentIndex():
+        widget.setCurrentIndex(index)
+
 
 def _set_work_coord_bindOk(coord='', widget=None):
-    coord = coord.upper()
+    coord = _normalize_work_coord(coord)
     _issue_mdi_bindOk(coord, widget=widget)
     if isinstance(widget, QComboBox):
-        widget.setCurrentText(coord)
-        widget.setCurrentText(STATUS.g5x_index.getString())
-        STATUS.g5x_index.notify(safe_qt_callback(widget, lambda g5x: widget.setCurrentText(g5x)), 'string')
+        _select_work_coord_combo(widget, STATUS.g5x_index.getString())
+        STATUS.g5x_index.notify(
+            safe_qt_callback(
+                widget, lambda g5x: _select_work_coord_combo(widget, g5x)),
+            'string')
     else:
         widget.setCheckable(True)
         widget.setChecked(STATUS.g5x_index.getString() == coord)
@@ -352,6 +407,9 @@ def _set_work_coord_bindOk(coord='', widget=None):
 
 set_work_coord.ok = _issue_mdi_ok
 set_work_coord.bindOk = _set_work_coord_bindOk
+# A QComboBox bound without an explicit argument should pass the selected item
+# text (e.g. "G54"), not its row index.
+set_work_coord.use_text = True
 
 # -------------------------------------------------------------------------
 # FEED HOLD action

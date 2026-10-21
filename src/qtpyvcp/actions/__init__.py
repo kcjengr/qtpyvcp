@@ -105,7 +105,12 @@ def bindWidget(widget, action):
         widget.valueChanged.connect(method)
 
     elif isinstance(widget, QComboBox):
-        widget.activated[int].connect(method)
+        if getattr(method, 'use_text', False):
+            # Qt 6 removed the deprecated activated(QString) overload; use
+            # textActivated so actions can receive the selected item text.
+            widget.textActivated.connect(method)
+        else:
+            widget.activated[int].connect(method)
 
     else:
         raise InvalidAction('Can\'t bind action "{}" to unsupported widget type "{}"'

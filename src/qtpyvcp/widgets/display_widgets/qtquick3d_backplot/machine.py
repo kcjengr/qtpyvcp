@@ -373,6 +373,7 @@ class MachinePartsModel(QAbstractListModel):
         self._dh_params = {}
         self._skip_ids = ()
         self._spindle = None
+        self._spindle_position = None
 
     @staticmethod
     def _collect_dh(parts):
@@ -630,6 +631,35 @@ class MachinePartsModel(QAbstractListModel):
         index = self.index(row, 0)
         self.dataChanged.emit(index, index)
 
+    def set_spindle_position(self, position):
+        """Place the spindle model at the live machine position.
+
+        The spindle is the head, not the cutter; the tool bit is a separate
+        entity at the tool tip. Robot/DH assemblies position the spindle from
+        their tool frame instead, so this is a no-op for them.
+        """
+        if self._spindle is None or self._dh_params:
+            return
+        try:
+            position = tuple(float(value) for value in position[:3])
+        except (TypeError, ValueError, IndexError):
+            return
+        if position == self._spindle_position:
+            return
+        self._spindle_position = position
+        self._apply_spindle_position()
+        row = self._parts.index(self._spindle)
+        index = self.index(row, 0)
+        self.dataChanged.emit(index, index)
+
+    def _apply_spindle_position(self):
+        if self._spindle is None:
+            return
+        world = np.eye(4)
+        if self._spindle_position is not None and not self._dh_params:
+            world[:3, 3] = self._spindle_position
+        self._spindle.world = world
+
     def world_bounds(self):
         """Axis-aligned bounds of all part meshes in world space, or ``None``.
 
@@ -670,8 +700,7 @@ class MachinePartsModel(QAbstractListModel):
             local = self._local_matrix(part, angle)
             parent = part.parent.world if part.parent is not None else np.eye(4)
             part.world = parent @ local
-        if self._spindle is not None:
-            self._spindle.world = np.eye(4)
+        self._apply_spindle_position()
 
     def _recompute_dh(self):
         """Place robot-arm parts on their DH frames.

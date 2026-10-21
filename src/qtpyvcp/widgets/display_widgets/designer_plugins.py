@@ -350,6 +350,7 @@ class Qt3D0Placeholder(BackplotPlaceholder):
     userColor = _color_property.__func__("userColor", (0, 100, 255, 255))
     gridVisible = _bool_property.__func__("gridVisible", False)
     machineBoundsVisible = _bool_property.__func__("machineBoundsVisible", True)
+    wcsOriginsVisible = _bool_property.__func__("wcsOriginsVisible", True)
     programBoundsVisible = _bool_property.__func__("programBoundsVisible", False)
 
     @Property(bool, freset=lambda self: setattr(self, "enableProgramTicks", True))

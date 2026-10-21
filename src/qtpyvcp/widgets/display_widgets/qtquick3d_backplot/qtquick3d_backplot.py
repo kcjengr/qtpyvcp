@@ -44,6 +44,7 @@ from .paths import (
     ray_segment_distances,
     transform_point,
 )
+from .wcs_origins import WCS_LABELS, WcsOriginModel
 
 LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv("DESIGNER", "").lower() not in ("", "0", "false", "no")
@@ -59,6 +60,10 @@ PICK_TOLERANCE_FRACTION = 0.005
 # Cap for line highlighting, so selecting a line used many times cannot upload
 # an unbounded buffer.
 MAX_HIGHLIGHT_SEGMENTS = 20000
+# Number of work coordinate systems (G54 .. G59.3).
+NUMBER_OF_WCS = len(WCS_LABELS)
+# Work-offset origin marker size as a fraction of the scene half-diagonal.
+WCS_ORIGIN_FRACTION = 0.02
 VIEW_DIRECTIONS = {
     "P": ((1.0, -1.0, 1.0), (0.0, 0.0, 1.0)),
     "X": ((0.0, -1.0, 0.0), (0.0, 0.0, 1.0)),
@@ -146,6 +151,7 @@ class QuickCameraRig:
             cameras = self._camera_provider()
         except RuntimeError:
             cameras = ()
+        applied = False
         for camera in cameras:
             if camera is None or not isValid(camera):
                 continue
@@ -154,20 +160,29 @@ class QuickCameraRig:
                 camera.setProperty("rotation", orientation)
                 camera.setProperty("clipNear", clip_near)
                 camera.setProperty("clipFar", clip_far)
+                applied = True
             except RuntimeError:
                 # Qt Quick may replace its QML root while the editor reloads a
                 # scene; the next camera update will reacquire its new objects.
                 continue
+        if applied:
+            # 2D overlay labels project through View3D.mapFrom3DScene, so they
+            # need to know that the camera moved.
+            self.data.touch_camera()
 
     def set_perspective(self):
         self._orthographic = False
         self.data.perspective = True
         self._apply()
+        # QML switches the active camera on the next event-loop turn; nudge the
+        # overlay projection once more after that.
+        QTimer.singleShot(0, self.data.touch_camera)
 
     def set_orthographic(self):
         self._orthographic = True
         self.data.perspective = False
         self._apply()
+        QTimer.singleShot(0, self.data.touch_camera)
 
     @property
     def is_orthographic(self):
@@ -335,6 +350,7 @@ class Qt3D0(QWidget, VCPWidget):
         self._anchor_latched = False
         self._program_running = False
         self._highlighted_lines = []
+        self._last_wcs_origin_points = None
         self._pending_initial_fit = True
         self._tool_shape = tool.ToolShape()
         self._tool_number = 0
@@ -362,12 +378,14 @@ class Qt3D0(QWidget, VCPWidget):
         self.quick_widget.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.plot_data = Quick3DPlotData(self)
         self.path_groups = PathGroupModel(self)
+        self.wcs_origins = WcsOriginModel(self)
         self._apply_plot_colors()
         self.machine_parts = machine.MachinePartsModel(self)
         context = self.quick_widget.rootContext()
         context.setContextProperty("plotData", self.plot_data)
         context.setContextProperty("pathGroups", self.path_groups)
         context.setContextProperty("machineParts", self.machine_parts)
+        context.setContextProperty("wcsOrigins", self.wcs_origins)
         self.plot_data.picked.connect(self._on_picked)
         qml_path = os.path.join(os.path.dirname(__file__), "scene.qml")
         self.quick_widget.setSource(QUrl.fromLocalFile(qml_path))
@@ -386,6 +404,7 @@ class Qt3D0(QWidget, VCPWidget):
         self._stat = linuxcnc.stat()
         self._is_lathe = self.datasource.isMachineLathe()
         self._seed_g92_state()
+        self._seed_wcs_state()
         self._initialize_geometry()
         self._wire_signals()
         self._connect_settings()
@@ -449,6 +468,7 @@ class Qt3D0(QWidget, VCPWidget):
         self._rebuild_grid()
         self._rebuild_tool()
         self._build_machine_parts()
+        self._rebuild_wcs_origins()
 
     # -- machine parts (MACHINE_PARTS) --------------------------------------
 
@@ -648,11 +668,25 @@ class Qt3D0(QWidget, VCPWidget):
         self._tool_shape = shape
         self.plot_data.toolKind = shape.kind
         self.plot_data.toolColor = "#d2d2d7"
+        LOG.debug(
+            "Qt Quick 3D tool: number=%s entries=%s kind=%s visible=%s "
+            "spindle=%s radius=%.4f length=%.4f",
+            self._tool_number, len(tool_table), shape.kind, shape.visible,
+            self._show_spindle, shape.radius, shape.length)
+        if shape.kind == "none":
+            LOG.info(
+                "Qt Quick 3D tool body not drawn (foam=%s jet=%s); use a "
+                "machine-parts model for this machine type",
+                _flag("isMachineFoam"), _flag("isMachineJet"))
+        elif not self._show_spindle:
+            LOG.info("Qt Quick 3D tool body hidden: backplot.show-spindle is off")
         if shape.visible:
             # Built-in primitives are 100 units tall with a 100-unit diameter.
             self.plot_data.toolScale = QVector3D(
                 shape.radius / 50.0, shape.length / 100.0, shape.radius / 50.0)
-        self.plot_data.toolVisible = bool(self._show_spindle and shape.visible)
+        # The cutter bit is its own object; backplot.show-spindle only
+        # controls the [VTK] SPINDLE machine model.
+        self.plot_data.toolVisible = bool(shape.visible)
         self._update_tool_transform()
 
     def _current_tool_offset(self):
@@ -664,6 +698,12 @@ class Qt3D0(QWidget, VCPWidget):
             return (0.0,) * 9
 
     def _update_tool_transform(self):
+        # The spindle model is the head, not the cutter: keep it at the live
+        # machine position even when no tool bit is loaded. Robot/DH assemblies
+        # position the spindle from their tool frame instead.
+        if hasattr(self, "machine_parts"):
+            self.machine_parts.set_spindle_position(self._position)
+
         shape = self._tool_shape
         if not shape.visible:
             return
@@ -714,6 +754,7 @@ class Qt3D0(QWidget, VCPWidget):
         self._rebuild_offset_transitions()
         self._clear_highlight()
         self._update_clip_reference()
+        self._rebuild_wcs_origins()
 
     def _rebuild_offset_transitions(self):
         """Draw the link between the end of one WCS path and the next."""
@@ -731,6 +772,71 @@ class Qt3D0(QWidget, VCPWidget):
             map_points_to_quick3d(points) if points
             else np.zeros((0, 3), dtype=np.float32))
 
+    def _wcs_origin_indices(self):
+        """Work offsets that should show an origin marker.
+
+        Only offsets that the loaded program actually uses are shown, so an
+        empty file (or no file) draws no part origins. Configured but unused
+        offsets are intentionally ignored: they are not part of the current
+        job. Floating (G91-only) paths are anchored to the machine rather than
+        to a work offset, so they are skipped.
+        """
+        if self._geometry is None:
+            return []
+
+        needed = set()
+        for index, path in self._geometry.paths.items():
+            try:
+                index = int(index)
+            except (TypeError, ValueError):
+                continue
+            if (0 <= index < NUMBER_OF_WCS and not path.is_empty
+                    and index not in self._floating_wcs):
+                needed.add(index)
+        return sorted(needed)
+
+    def _rebuild_wcs_origins(self):
+        """Draw a small origin glyph and a G54..G59.3 label at each WCS origin."""
+        radius = getattr(self.rig, "scene_radius", None) or 10.0
+        length = max(float(radius) * WCS_ORIGIN_FRACTION, 1e-3)
+        half = length * 0.35
+        points = []
+        rows = []
+        for index in self._wcs_origin_indices():
+            try:
+                x, y, z, rotation = self._wcs_transform(index)
+            except (AttributeError, RuntimeError, TypeError, ValueError):
+                continue
+            radians = math.radians(rotation)
+            cosine, sine = math.cos(radians), math.sin(radians)
+
+            # A small square in the WCS XY plane (so the work-offset rotation
+            # is visible) plus a vertical stem.
+            corners = []
+            for local_x, local_y in ((-half, -half), (half, -half),
+                                     (half, half), (-half, half)):
+                corners.append((
+                    x + cosine * local_x - sine * local_y,
+                    y + sine * local_x + cosine * local_y,
+                    z,
+                ))
+            for corner, next_corner in zip(corners, corners[1:] + corners[:1]):
+                points.extend((corner, next_corner))
+            points.extend(((x, y, z), (x, y, z + length)))
+
+            rows.append((WCS_LABELS[index],
+                         map_vector_to_quick3d((x, y, z)), index))
+
+        scene_points = (map_points_to_quick3d(points) if points
+                        else np.zeros((0, 3), dtype=np.float32))
+        if (rows == self.wcs_origins.rows()
+                and self._last_wcs_origin_points is not None
+                and np.array_equal(scene_points, self._last_wcs_origin_points)):
+            return
+        self._last_wcs_origin_points = scene_points
+        self.plot_data.origins.replace(scene_points)
+        self.wcs_origins.set_rows(rows)
+
     def _refresh_path_transforms(self):
         """Apply new WCS/anchor values without re-uploading vertex data."""
         if self.path_groups.update_transforms(self._wcs_transform):
@@ -740,6 +846,7 @@ class Qt3D0(QWidget, VCPWidget):
             self._update_clip_reference()
         if self._highlighted_lines:
             self._update_highlight_for_lines(self._highlighted_lines)
+        self._rebuild_wcs_origins()
 
     def _seed_g92_state(self):
         try:
@@ -894,6 +1001,10 @@ class Qt3D0(QWidget, VCPWidget):
 
         try:
             self._stat.poll()
+            # Place the tool at the current machine position before the first
+            # motion update, otherwise it sits at the machine origin and can be
+            # outside the fitted program view.
+            self.update_position(tuple(self._stat.position))
         except Exception:
             LOG.debug("LinuxCNC status not ready during Qt Quick 3D startup", exc_info=True)
         self._seed_wcs_state()
@@ -959,6 +1070,7 @@ class Qt3D0(QWidget, VCPWidget):
         connectSetting("backplot.show-machine-ticks", self.showMachineTicks)
         connectSetting("backplot.show-machine-labels", self.showMachineLabels)
         connectSetting("backplot.show-machine", self.showMachine)
+        connectSetting("backplot.show-wcs-origins", self.showWcsOrigins)
         connectSetting("backplot.show-spindle", self.showSpindle)
         connectSetting("backplot.multitool-colors", self.showMultiColorPath)
         connectSetting("backplot.show-points-surface", self.showSurface)
@@ -1305,13 +1417,18 @@ class Qt3D0(QWidget, VCPWidget):
 
     @Slot(bool)
     @Slot(object)
-    def showSpindle(self, _show):
-        self._show_spindle = bool(_show)
-        if hasattr(self, "plot_data"):
-            self.plot_data.toolVisible = bool(
-                self._show_spindle and self._tool_shape.visible)
+    def showWcsOrigins(self, show):
+        self.plot_data.wcsOriginsVisible = bool(show)
+
+    @Slot(bool)
+    @Slot(object)
+    def showSpindle(self, show):
+        self._show_spindle = bool(show)
         if hasattr(self, "machine_parts"):
             self.machine_parts.set_spindle_visible(self._show_spindle)
+        # The cutter bit is not the spindle; leave it visible.
+        if hasattr(self, "plot_data"):
+            self.plot_data.toolVisible = bool(self._tool_shape.visible)
 
     @Slot(bool)
     @Slot(object)
@@ -1484,6 +1601,14 @@ class Qt3D0(QWidget, VCPWidget):
     @gridVisible.setter
     def gridVisible(self, value):
         self.showGrid(value)
+
+    @Property(bool, freset=reset_to("wcsOriginsVisible", True))
+    def wcsOriginsVisible(self):
+        return bool(getattr(self.plot_data, "wcsOriginsVisible", True))
+
+    @wcsOriginsVisible.setter
+    def wcsOriginsVisible(self, value):
+        self.showWcsOrigins(value)
 
     @Property(bool, freset=reset_to("machineBoundsVisible", True))
     def machineBoundsVisible(self):

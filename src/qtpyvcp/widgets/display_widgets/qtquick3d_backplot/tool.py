@@ -37,11 +37,49 @@ def _as_int(value, default=-1):
         return default
 
 
+def _entry_tool_number(entry):
+    """Return an entry's tool number from LinuxCNC or QtPyVCP field names."""
+    for name in ('tool', 'toolno', 'tool_no', 'number', 'id'):
+        number = _as_int(_get(entry, name, None), None)
+        if number is not None:
+            return number
+    return None
+
+
+def _entry_axis_offset(entry, axis):
+    """Read a tool offset from LinuxCNC or QtPyVCP field names.
+
+    QtPyVCP's DB rows use ``xoffset``/``zoffset``; LinuxCNC's
+    ``stat.tool_table`` stores them in the entry's ``offset`` (an
+    ``EmcPose`` with ``x``/``y``/``z`` attributes or a 9-tuple).
+    """
+    if entry is None:
+        return 0.0
+
+    explicit = _get(entry, axis + 'offset', None)
+    if explicit is not None:
+        return _as_float(explicit, 0.0)
+
+    offset = _get(entry, 'offset', None)
+    if offset is None:
+        return 0.0
+
+    value = _get(offset, axis, None)
+    if value is not None:
+        return _as_float(value, 0.0)
+
+    try:
+        return _as_float(offset['xyz'.index(axis)], 0.0)
+    except (TypeError, KeyError, IndexError, ValueError):
+        return 0.0
+
+
 def resolve_tool_entry(tool_table, tool_number):
     """Find the tool-table entry for *tool_number*.
 
-    Handles the pocket-indexed ``stat.tool_table`` list and the
-    tool-number-keyed dict returned by the DB tool table plugin.
+    Handles the pocket-indexed ``stat.tool_table`` list (LinuxCNC exposes the
+    tool number as ``toolno``) and the tool-number-keyed dict returned by the
+    DB tool table plugin.
     """
     if not tool_table:
         return None
@@ -49,18 +87,23 @@ def resolve_tool_entry(tool_table, tool_number):
     if isinstance(tool_table, dict):
         if tool_number in tool_table:
             return tool_table[tool_number]
+        if str(tool_number) in tool_table:
+            return tool_table[str(tool_number)]
         if 0 in tool_table:
             return tool_table[0]
         values = list(tool_table.values())
         return values[0] if values else None
 
     for entry in tool_table:
-        if _as_int(_get(entry, 'id', _get(entry, 'tool', None)), -1) == tool_number:
+        if _entry_tool_number(entry) == tool_number:
             return entry
 
+    # Legacy lists without a tool-number field are pocket indexed.
     if 0 <= tool_number < len(tool_table):
-        return tool_table[tool_number]
-    return tool_table[0] if tool_table else None
+        entry = tool_table[tool_number]
+        if _entry_tool_number(entry) is None:
+            return entry
+    return None
 
 
 @dataclass
@@ -94,10 +137,10 @@ def tool_shape(tool_table, tool_number, *, metric, lathe=False,
     unit_scale = 25.4 if metric else 1.0
 
     entry = resolve_tool_entry(tool_table, _as_int(tool_number, -1))
-    tool_id = _as_int(_get(entry, 'id', _get(entry, 'tool', None)), 0)
+    tool_id = _entry_tool_number(entry) or 0
     diameter = _as_float(_get(entry, 'diameter', 0.0), 0.0)
-    z_offset = abs(_as_float(_get(entry, 'zoffset', 0.0), 0.0))
-    x_offset = _as_float(_get(entry, 'xoffset', 0.0), 0.0)
+    z_offset = abs(_entry_axis_offset(entry, 'z'))
+    x_offset = _entry_axis_offset(entry, 'x')
 
     if lathe:
         radius = (diameter / 2.0) if diameter > 0.05 else (0.035 * unit_scale)

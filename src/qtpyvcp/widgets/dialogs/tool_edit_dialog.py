@@ -29,7 +29,25 @@ from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 from qtpyvcp.utilities.pyside_ui_loader import PySide6Ui
 
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
-LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
+
+
+def _ini_flag(raw, default=False):
+    """Parse an INI boolean; ``bool("0")`` would incorrectly be True."""
+    if raw is None:
+        return bool(default)
+    text = str(raw).strip().lower()
+    if text in ('', '0', 'false', 'no', 'off', 'none'):
+        return False
+    if text in ('1', 'true', 'yes', 'on'):
+        return True
+    try:
+        return float(text) != 0.0
+    except (TypeError, ValueError):
+        return True
+
+
+LATHE = (_ini_flag(INIFILE.find("DISPLAY", "LATHE")) or
+         _ini_flag(INIFILE.find("DISPLAY", "BACK_TOOL_LATHE")))
 LOG = logger.getLogger(__name__)
 
 

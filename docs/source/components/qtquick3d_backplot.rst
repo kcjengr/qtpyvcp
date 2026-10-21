@@ -61,9 +61,12 @@ Features
 * Two-colour background (``backgroundColor`` at the bottom,
   ``backgroundColor2`` at the top; equal colours give a solid background) and
   MSAA.
-* Active tool body sized from the QtPyVCP tool table (cylinder by diameter and
+* Active tool bit sized from the QtPyVCP tool table (cylinder by diameter and
   Z offset, or a cone marker when no tool is loaded), following the live
-  position with the runtime tool-length offset applied.
+  position with the runtime tool-length offset applied. The bit is drawn
+  independently of the spindle: ``backplot.show-spindle`` only controls the
+  ``[VTK] SPINDLE`` machine model, which follows the live machine position so
+  the bit protrudes below it.
 * ``MACHINE_PARTS`` YAML: STL and glTF/GLB parts are parsed in Python and loaded
   as custom ``QQuick3DGeometry`` (Qt Quick 3D resolves ``Model.source`` only to
   ``.mesh`` at runtime), with node world transforms baked in for glTF. Each part
@@ -76,8 +79,15 @@ Features
   attached to the deepest joint's DH frame.
 * Solid meshes are lit by a key and fill ``DirectionalLight`` (flat normals for
   STL, vertex-averaged for glTF). Path lines stay unlit so colours remain exact.
-* Settings: grid, program/machine bounds, machine, spindle, machine
-  ticks/labels, multi-colour path, points surface, FPS, view, and perspective.
+* Settings: grid, program/machine bounds, WCS origins, machine, spindle,
+  machine ticks/labels, multi-colour path, points surface, FPS, view, and
+  perspective.
+* Work-offset origins: a small amber square (aligned with the WCS rotation) and
+  a ``G54`` .. ``G59.3`` label at every work offset the loaded program actually
+  uses. An empty (or unloaded) program draws no part origins, and configured
+  offsets that the program does not use are ignored. Labels are 2D overlays
+  projected from the 3D scene, so they stay readable at any zoom. Toggle with
+  the ``backplot.show-wcs-origins`` setting.
 
 Known limitations
 -----------------

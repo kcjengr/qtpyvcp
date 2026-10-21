@@ -291,3 +291,14 @@ def test_coerce_int_accepts_integral_numeric_strings():
     assert BackplotCanon._coerce_int("+7") == 7
     assert BackplotCanon._coerce_int("5.5") is None
     assert BackplotCanon._coerce_int("M6") is None
+
+
+def test_ini_boolean_flags_accept_false_spellings():
+    from qtpyvcp.widgets.display_widgets.backplot_common.linuxcnc_datasource import (
+        LinuxCncDataSource,
+    )
+
+    for value in (None, "", "0", "false", "False", "no", "off", "none", 0):
+        assert LinuxCncDataSource._parse_ini_flag(value) is False
+    for value in ("1", "true", "TRUE", "yes", "on", 1, 2.5):
+        assert LinuxCncDataSource._parse_ini_flag(value) is True

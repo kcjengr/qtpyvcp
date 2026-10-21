@@ -105,6 +105,29 @@ class LinuxCncDataSource(QObject):
         text = str(kins_value or '').strip().lower()
         return 'switchkins' in text
 
+    @staticmethod
+    def _parse_ini_flag(raw, default=False):
+        """Parse an INI boolean.
+
+        ``bool("0")`` and ``bool("false")`` are True in Python, so configs that
+        explicitly disable a machine type (LATHE/FOAM/JET = 0/false) used to be
+        treated as enabled. Accept the usual truthy/falsey spellings.
+        """
+        if raw is None:
+            return bool(default)
+        text = str(raw).strip().lower()
+        if text in ('', '0', 'false', 'no', 'off', 'none'):
+            return False
+        if text in ('1', 'true', 'yes', 'on'):
+            return True
+        try:
+            return float(text) != 0.0
+        except (TypeError, ValueError):
+            return True
+
+    def _ini_flag(self, section, key, default=False):
+        return self._parse_ini_flag(self._inifile.find(section, key), default)
+
     def __init__(self):
         super(LinuxCncDataSource, self).__init__(None)
 
@@ -118,13 +141,13 @@ class LinuxCncDataSource(QObject):
         self._keyboard_jog = self._inifile.find("DISPLAY", "KEYBOARD_JOG") or "false"
         self._keyboard_jog_ctrl_off = self._inifile.find("DISPLAY", "KEYBOARD_JOG_SAFETY_OFF") or "false"
         self._is_lathe = (
-            bool(self._inifile.find("DISPLAY", "LATHE")) or
-            bool(self._inifile.find("DISPLAY", "BACK_TOOL_LATHE"))
+            self._ini_flag("DISPLAY", "LATHE") or
+            self._ini_flag("DISPLAY", "BACK_TOOL_LATHE")
         )
-        self._is_foam = bool(self._inifile.find("DISPLAY", "FOAM"))
-        self._is_jet = bool(self._inifile.find("DISPLAY", "JET"))
+        self._is_foam = self._ini_flag("DISPLAY", "FOAM")
+        self._is_jet = self._ini_flag("DISPLAY", "JET")
         self._machine_bounds = str(self._inifile.find("DISPLAY", "BOUNDARIES"))
-        self._antialias = bool(self._inifile.find("DISPLAY", "ANTIALIAS")) or False
+        self._antialias = self._ini_flag("DISPLAY", "ANTIALIAS")
         self._fps = int(self._inifile.find("DISPLAY", "FPS") or 0)
         if self._fps == 0:
             self._fps = int(self._inifile.find("VTK", "FPS") or 30)

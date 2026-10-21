@@ -117,6 +117,12 @@ Item {
             materials: [ PrincipledMaterial { baseColor: plotData.transitionColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
         }
         Model {
+            geometry: plotData.origins
+            visible: plotData.wcsOriginsVisible
+            pickable: false
+            materials: [ PrincipledMaterial { baseColor: plotData.wcsOriginColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
+        }
+        Model {
             geometry: plotData.trail
             pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.trailColor; roughness: 1.0; lighting: PrincipledMaterial.NoLighting } ]
@@ -165,6 +171,36 @@ Item {
             eulerRotation: Qt.vector3d(180, 0, 0)
             pickable: false
             materials: [ PrincipledMaterial { baseColor: plotData.toolColor; roughness: 0.5; metalness: 0.1 } ]
+        }
+    }
+
+    // Work-offset labels. These are 2D overlays projected through the View3D
+    // so they stay readable at any zoom and always face the operator. The
+    // cameraRevision dependency makes the projection re-evaluate on orbit,
+    // pan, zoom and projection changes.
+    Repeater {
+        model: (typeof wcsOrigins !== "undefined") ? wcsOrigins : null
+        delegate: Text {
+            objectName: "wcsOriginLabel"
+            property vector3d anchor: model.pos
+            property vector3d screenPos: {
+                plotData.cameraRevision
+                view3d.width
+                view3d.height
+                return view3d.mapFrom3DScene(anchor)
+            }
+            text: model.label
+            color: plotData.wcsOriginColor
+            font.pixelSize: 13
+            font.bold: true
+            style: Text.Outline
+            styleColor: "#000000"
+            visible: plotData.wcsOriginsVisible
+                     && screenPos.x > -80 && screenPos.x < root.width + 80
+                     && screenPos.y > -30 && screenPos.y < root.height + 30
+            x: screenPos.x - width / 2
+            y: screenPos.y - height - 8
+            z: 2
         }
     }
 

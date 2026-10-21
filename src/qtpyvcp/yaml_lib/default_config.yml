@@ -185,6 +185,12 @@ settings:
   backplot.show-machine-bounds:
     default_value: false
 
+  backplot.show-wcs-origins:
+    default_value: true
+
+  backplot.show-spindle:
+    default_value: false
+
   backplot.show-machine-labels:
     default_value: false
 
