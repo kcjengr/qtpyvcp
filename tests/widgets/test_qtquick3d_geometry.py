@@ -72,3 +72,15 @@ def test_qml_scene_loads_with_python_geometry_and_live_camera(qt_app):
     assert plot_data.feedColor == "#123456"
     assert camera.property("position") == QtGui.QVector3D(10, 20, 30)
     widget.close()
+
+
+def test_touch_surface_avoids_pinch_area():
+    """Qt 6.12 warns from the QML loader thread for QQuickPinchArea.
+
+    That warning reaches QtPyVCP's Python Qt message handler, which then
+    deadlocks on the GIL while QQuickWidget.setSource() is still running.
+    MultiPointTouchArea provides the same gestures without the warning.
+    """
+    text = QML_PATH.read_text(encoding="utf-8")
+    assert "PinchArea {" not in text
+    assert "MultiPointTouchArea {" in text

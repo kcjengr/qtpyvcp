@@ -40,6 +40,85 @@ Files
    - src/qtpyvcp/path/to/file.py
 
 
+2026-10-26
+----------
+
+Area
+   Qt3D0 (Qt Quick 3D backplot) - known limitations
+
+Summary
+   Closed most of the documented renderer gaps: lathe insert silhouettes and
+   per-tool models, machine/program ticks and labels, touch navigation, a
+   clickable orientation gizmo, breadcrumb and post-load-view controls, and
+   label decluttering.
+
+Changes
+   - Lathe tool bits now use the DB insert silhouette
+     (`insert_profile.compute_insert_profile()`), triangulated in Python and
+     drawn as a double-sided Quick 3D mesh in the XZ plane. Holder/ISO
+     orientation, handedness and anchor selection follow the tool-table
+     editor. Per-tool STL/glTF models are resolved from a `model`/`stl`/`mesh`
+     field on the tool row or DB extras.
+   - Added machine and program bounds tick geometry plus projected,
+     decluttered numeric labels; `showMachineTicks`, `showMachineLabels` and
+     `enableProgramTicks` now have visible effects.
+   - Implemented the camera-orientation "nav helper" as a clickable 2D overlay
+     driven by the live camera basis. `navHelperEnabled`, anchor/size/padding,
+     labels, pickability and X/Y/Z colours are honoured.
+   - `enableMultiTouch` now enables pinch zoom, two-finger pan and twist orbit
+     in QML. `enableBreadcrumbs` toggles the live trail, and
+     `setProgramViewWhenLoadingProgram` selects whether/which view is fitted
+     after a load. The gesture surface uses `MultiPointTouchArea`, not
+     `PinchArea`: Qt 6.12 emits a `qt.qml.propertyCache.append` warning for
+     `QQuickPinchArea` from the QML loader thread, and QtPyVCP's Python Qt
+     message handler deadlocks when that thread needs the GIL while
+     `QQuickWidget.setSource()` holds it. This was the LinuxCNC startup hang
+     after `simulated_home.hal`.
+   - Added greedy 2D label collision avoidance for WCS and tick labels.
+   - `showSurface` is retained for configuration compatibility but documented
+     as deprecated; the old VTK implementation was a hard-coded probe demo.
+   - No-tool cone: the model origin is moved up by the full cone length so the
+     cone tip, not its centre, sits at the tool position.
+   - Live trail ("breadcrumbs") now follows the cutter tip: it applies the
+     active `stat.tool_offset`, so G43/G43.1 is honoured and G49 returns the
+     trail to the raw machine position. The spindle model still uses the raw
+     machine position.
+   - Breadcrumbs snap to the currently executing G-code segment (with the
+     previous/adjacent line as a fallback), matching the old VTK path-cache
+     behaviour. Zero-length samples are dropped. This suppresses the
+     following-error/encoder wander that made the yellow trail look erratic at
+     high feed rates.
+   - Decoupled live position/trail sampling from the status plugin. The widget
+     polls its own `linuxcnc.stat` every 16 ms (60 Hz) and uses the same object
+     for `motion_line` and `tool_offset`; the status plugin's 75 ms
+     `positionChanged` signal is no longer connected. At high feed rates the
+     trail is no longer limited to one coarse segment per status poll.
+   - Added screen-space ambient occlusion (SSAO) and a low-intensity
+     camera-follow fill light. The two fixed key/fill lights left front-facing
+     machine/tool surfaces dark; the camera light keeps them readable without
+     flattening the scene.
+   - Nav-helper axis colours no longer repaint the world X/Y/Z axes.
+
+Validation
+   - `pytest tests`: 137 passed.
+   - `ruff check` clean on the touched packages/tests.
+   - Xvfb/OpenGL render check: nav-helper axes/labels draw; T1 lathe insert
+     builds a 37-point mesh and reaches the QML `toolMeshModel`.
+   - `linuxcnc xyz-metric.ini` (sim.qtpyvcp) starts the TNC window instead of
+     stalling at `Found file(REL): ./hallib/simulated_home.hal`.
+
+Files
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/geometry.py
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/qtquick3d_backplot.py
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/tool.py
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/wcs_origins.py
+   - src/qtpyvcp/widgets/display_widgets/qtquick3d_backplot/scene.qml
+   - tests/widgets/test_qtquick3d_tool.py
+   - tests/widgets/test_qtquick3d_properties.py
+   - docs/source/components/qtquick3d_backplot.rst
+   - audit_reports/QT3D0_WIDGET_REPORT_2026-10-26.md
+
+
 2026-10-21
 ----------
 

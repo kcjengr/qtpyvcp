@@ -1139,3 +1139,204 @@ def test_widget_draws_loaded_tool_from_linuxcnc_table(monkeypatch):
         widget.close()
         widget.deleteLater()
         app.processEvents()
+
+
+def test_program_view_when_loading_program_is_honoured(monkeypatch, tmp_path):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        program = tmp_path / "view.ngc"
+        program.write_text("G0 X0 Y0\n")
+        monkeypatch.setattr(module, "load_geometry",
+                            lambda *args, **kwargs: _feed_geometry())
+        calls = []
+        widget.setViewProgram = lambda view="p": calls.append(view)
+
+        widget.setProgramViewWhenLoadingProgram(True, "xz")
+        widget.load_program(str(program), force=True)
+        assert calls == ["xz"]
+
+        calls.clear()
+        widget.setProgramViewWhenLoadingProgram(False, "z")
+        widget.load_program(str(program), force=True)
+        assert calls == []
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_enable_multitouch_toggles_the_qml_pinch_surface(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        assert widget.plot_data.touchEnabled is False
+        widget.enableMultiTouch(True)
+        assert widget.plot_data.touchEnabled is True
+        widget.enableMultiTouch(False)
+        assert widget.plot_data.touchEnabled is False
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_nav_helper_axes_reflect_camera_and_config(monkeypatch):
+    from PySide6.QtCore import QSize
+    from PySide6.QtGui import QColor
+
+    app, widget = _make_widget(monkeypatch)
+    try:
+        widget.navHelperEnabled = True
+        widget.navHelperSize = QSize(120, 100)
+        widget.navHelperPadding = QSize(8, 9)
+        widget.navHelperAnchor = "lower-right"
+        widget.reapplyNavHelperConfig()
+
+        config = widget.plot_data.navHelperConfig
+        assert config["enabled"] is True
+        assert config["width"] == 120
+        assert config["height"] == 100
+        assert config["anchor"] == "lower-right"
+        assert config["padding_x"] == 8
+        assert config["padding_y"] == 9
+
+        axes = widget.plot_data.navHelperAxes
+        assert [axis["axis"] for axis in axes] == ["X", "Y", "Z"]
+        assert all(abs(axis["dx"] ** 2 + axis["dy"] ** 2
+                       + axis["depth"] ** 2 - 1.0) < 1e-6 for axis in axes)
+
+        before = widget.plot_data.axesXColor
+        widget.navHelperXAxisColor = QColor("#123456")
+        assert widget.plot_data.navHelperAxes[0]["color"] == "#123456"
+        # The nav-helper axis colour must not repaint the world X axis.
+        assert widget.plot_data.axesXColor == before
+
+        root = widget.quick_widget.rootObject()
+        helper = root.findChild(QtCore.QObject, "navHelper")
+        assert helper is not None
+        assert helper.property("visible") is True
+        assert widget.quick_widget.errors() == []
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_lathe_tool_uses_db_insert_silhouette(monkeypatch):
+    from types import SimpleNamespace
+
+    from PySide6.QtGui import QVector3D
+
+    app, widget = _make_widget(monkeypatch)
+    try:
+        widget.datasource.isMachineLathe = lambda: True
+        entry = SimpleNamespace(
+            toolno=1, diameter=6.35, zoffset=20.0, xoffset=0.0,
+            orientation=2, type='turning', insert_shape='C',
+            insert_size_mode='IC', insert_size=6.35,
+            insert_thickness=3.18, holder_style='SCLCR', holder_hand='R')
+        widget.datasource.getToolTable = lambda: [entry]
+        monkeypatch.setattr(widget, "_current_tool_number", lambda: 1)
+        widget.update_position((10.0, 20.0, 30.0))
+        widget._rebuild_tool()
+
+        assert widget.plot_data.toolKind == "insert"
+        assert widget.plot_data.toolVisible is True
+        assert widget.plot_data.toolMesh is not None
+        # Insert geometry is tip-relative: no cylinder body-centre offset.
+        assert widget.plot_data.toolPosition == QVector3D(10.0, 20.0, -30.0)
+        root = widget.quick_widget.rootObject()
+        delegate = root.findChild(QtCore.QObject, "toolMeshModel")
+        assert delegate is not None
+        assert delegate.property("geometry") is widget.plot_data.toolMesh
+        assert delegate.property("visible") is True
+        assert widget.quick_widget.errors() == []
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_enable_breadcrumbs_toggles_the_live_trail(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        widget.update_position((1.0, 2.0, 3.0))
+        widget.update_position((4.0, 5.0, 6.0))
+        assert widget.plot_data.trailVisible is True
+        assert len(bytes(widget.plot_data.trail.vertexData())) > 0
+
+        widget.enableBreadcrumbs(False)
+        assert widget.plot_data.trailVisible is False
+        assert len(bytes(widget.plot_data.trail.vertexData())) == 0
+
+        widget.enableBreadcrumbs(True)
+        assert widget.plot_data.trailVisible is True
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_trail_follows_the_g43_tool_tip(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        # G43/G43.1 active: stat.tool_offset carries the applied length offset.
+        monkeypatch.setattr(
+            widget, "_current_tool_offset",
+            lambda: (1.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
+        widget.update_position((10.0, 20.0, 30.0))
+        widget.update_position((11.0, 21.0, 31.0))
+        assert list(widget._trail) == [(9.0, 18.0, 27.0),
+                                       (10.0, 19.0, 28.0)]
+
+        # G49: the applied offset is zero again, so the trail returns to the
+        # raw machine position.
+        monkeypatch.setattr(widget, "_current_tool_offset",
+                            lambda: (0.0,) * 9)
+        widget.update_position((12.0, 22.0, 32.0))
+        assert list(widget._trail)[-1] == (12.0, 22.0, 32.0)
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_trail_snaps_to_the_active_program_segment(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        _install_geometry(widget)
+        # Line 3 is (0,0,0) -> (10,0,0); line 4 is (10,0,0) -> (10,10,0).
+        monkeypatch.setattr(widget, "_current_motion_line", lambda: 3)
+
+        # A live point 5 mm off the line is projected onto it.
+        widget.update_position((5.0, 5.0, 0.0))
+        assert list(widget._trail) == [(5.0, 0.0, 0.0)]
+
+        # A second sample that projects to the same point does not add a
+        # zero-length segment.
+        widget.update_position((5.0, 4.9, 0.0))
+        assert len(widget._trail) == 1
+
+        # Too far from the active line (10 mm > 5 mm tolerance): keep raw.
+        widget.update_position((5.0, 20.0, 0.0))
+        assert list(widget._trail)[-1] == (5.0, 20.0, 0.0)
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()
+
+
+def test_high_rate_position_poll_samples_the_status_object(monkeypatch):
+    app, widget = _make_widget(monkeypatch)
+    try:
+        widget._position_timer.stop()
+        widget._stat.actual_position = (12.0, 23.0, 34.0)
+        widget._stat.tool_offset = [0.0] * 9
+        widget._stat.motion_line = 9
+        widget._poll_live_position()
+
+        assert widget._position == (12.0, 23.0, 34.0)
+        assert widget._current_motion_line() == 9
+    finally:
+        widget.close()
+        widget.deleteLater()
+        app.processEvents()

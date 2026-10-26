@@ -44,7 +44,7 @@ from .paths import (
     ray_segment_distances,
     transform_point,
 )
-from .wcs_origins import WCS_LABELS, WcsOriginModel
+from .wcs_origins import WCS_LABELS, SceneLabelModel, WcsOriginModel
 
 LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv("DESIGNER", "").lower() not in ("", "0", "false", "no")
@@ -64,6 +64,11 @@ MAX_HIGHLIGHT_SEGMENTS = 20000
 NUMBER_OF_WCS = len(WCS_LABELS)
 # Work-offset origin marker size as a fraction of the scene half-diagonal.
 WCS_ORIGIN_FRACTION = 0.02
+# Cube-axis tick length as a fraction of the longest bounds span.
+TICK_FRACTION = 0.02
+# Live position sampling is independent of the (possibly slow) status plugin
+# cycle, so the trail is not limited to one segment per status poll.
+LIVE_POSITION_INTERVAL_MS = 16
 VIEW_DIRECTIONS = {
     "P": ((1.0, -1.0, 1.0), (0.0, 0.0, 1.0)),
     "X": ((0.0, -1.0, 0.0), (0.0, 0.0, 1.0)),
@@ -350,6 +355,10 @@ class Qt3D0(QWidget, VCPWidget):
         self._anchor_latched = False
         self._program_running = False
         self._highlighted_lines = []
+        self._breadcrumbs_enabled = True
+        self._last_breadcrumb_motion_line = None
+        self._program_view_on_load = True
+        self._program_view_name = "p"
         self._last_wcs_origin_points = None
         self._pending_initial_fit = True
         self._tool_shape = tool.ToolShape()
@@ -379,6 +388,8 @@ class Qt3D0(QWidget, VCPWidget):
         self.plot_data = Quick3DPlotData(self)
         self.path_groups = PathGroupModel(self)
         self.wcs_origins = WcsOriginModel(self)
+        self.machine_tick_labels = SceneLabelModel(self)
+        self.program_tick_labels = SceneLabelModel(self)
         self._apply_plot_colors()
         self.machine_parts = machine.MachinePartsModel(self)
         context = self.quick_widget.rootContext()
@@ -386,6 +397,8 @@ class Qt3D0(QWidget, VCPWidget):
         context.setContextProperty("pathGroups", self.path_groups)
         context.setContextProperty("machineParts", self.machine_parts)
         context.setContextProperty("wcsOrigins", self.wcs_origins)
+        context.setContextProperty("machineTickLabels", self.machine_tick_labels)
+        context.setContextProperty("programTickLabels", self.program_tick_labels)
         self.plot_data.picked.connect(self._on_picked)
         qml_path = os.path.join(os.path.dirname(__file__), "scene.qml")
         self.quick_widget.setSource(QUrl.fromLocalFile(qml_path))
@@ -398,10 +411,25 @@ class Qt3D0(QWidget, VCPWidget):
         self.navigation = BackplotNavigation(
             self.rig, self.quick_widget, self._viewport_size, parent=self)
         self.quick_widget.installEventFilter(self.navigation)
+        self.plot_data.pinchZoomed.connect(self._on_pinch_zoom)
+        self.plot_data.pinchPanned.connect(self._on_pinch_pan)
+        self.plot_data.pinchRotated.connect(self._on_pinch_rotate)
+        self.plot_data.viewRequested.connect(self._on_view_requested)
+        self.plot_data.cameraChanged.connect(self._sync_nav_helper)
 
         self.datasource = LinuxCncDataSource()
         self.config_dir = self._resolve_config_dir()
         self._stat = linuxcnc.stat()
+        self._use_actual_position = True
+        try:
+            self._use_actual_position = bool(
+                self.datasource._info.getPositionFeedback())
+        except (AttributeError, RuntimeError, TypeError, ValueError):
+            self._use_actual_position = True
+        self._position_timer = QTimer(self)
+        self._position_timer.setInterval(LIVE_POSITION_INTERVAL_MS)
+        self._position_timer.timeout.connect(self._poll_live_position)
+        self._position_timer.start()
         self._is_lathe = self.datasource.isMachineLathe()
         self._seed_g92_state()
         self._seed_wcs_state()
@@ -409,6 +437,7 @@ class Qt3D0(QWidget, VCPWidget):
         self._wire_signals()
         self._connect_settings()
         self.setViewMachine()
+        self._sync_nav_helper()
         QTimer.singleShot(0, self._load_current_program)
         QTimer.singleShot(500, self._load_current_program)
         LOG.info("Qt Quick 3D backplot initialized")
@@ -638,6 +667,53 @@ class Qt3D0(QWidget, VCPWidget):
         except (TypeError, ValueError):
             return 0
 
+    def _resolve_tool_mesh(self, tool_entry, lathe):
+        """Return ``(geometry, shape, kind)`` for an insert or per-tool model.
+
+        Lathe tools prefer the DB insert silhouette, matching the tool-table
+        editor. Mill tools can supply an STL/glTF path on their table row.
+        ``None`` keeps the generic cylinder/cone primitive.
+        """
+        if lathe:
+            record = tool.resolve_insert_record(
+                self.datasource, self._tool_number, tool_entry)
+            if record is not None:
+                polygon = tool.insert_polygon(record, tool_entry)
+                mesh = tool.insert_mesh(polygon) if polygon else None
+                if mesh is not None:
+                    vertices, normals = mesh
+                    geometry = machine._geometry_from_arrays(
+                        vertices, normals=normals)
+                    if geometry is not None:
+                        geometry.setObjectName("backplot_tool_insert")
+                        xs = [point[0] for point in polygon]
+                        zs = [point[1] for point in polygon]
+                        radius = max(max(abs(value) for value in xs), 1e-3)
+                        length = max(max(zs) - min(zs), 1e-3)
+                        shape = tool.ToolShape(
+                            kind="insert", radius=radius, length=length,
+                            tool_number=self._tool_number)
+                        LOG.debug(
+                            "Qt Quick 3D lathe insert: T%s family=%s "
+                            "points=%d radius=%.4f length=%.4f",
+                            self._tool_number, record.get('type'),
+                            len(polygon), radius, length)
+                        return geometry, shape, "insert"
+
+        path = tool.resolve_tool_model_path(
+            self.datasource, tool_entry, self._tool_number)
+        if path:
+            geometry = self._load_model_geometry(path)
+            if geometry is not None:
+                geometry.setObjectName("backplot_tool_model")
+                shape = tool.ToolShape(
+                    kind="mesh", radius=1.0, length=1.0,
+                    tool_number=self._tool_number)
+                LOG.debug("Qt Quick 3D per-tool model: T%s %s",
+                          self._tool_number, path)
+                return geometry, shape, "mesh"
+        return None
+
     def _rebuild_tool(self):
         self._tool_number = self._current_tool_number()
         try:
@@ -656,21 +732,32 @@ class Qt3D0(QWidget, VCPWidget):
             except (AttributeError, RuntimeError, TypeError, ValueError):
                 return False
 
+        lathe = _flag("isMachineLathe")
         shape = tool.tool_shape(
             tool_table,
             self._tool_number,
             metric=_flag("isMachineMetric"),
-            lathe=_flag("isMachineLathe"),
+            lathe=lathe,
             robot=False,
             foam=_flag("isMachineFoam"),
             jet=_flag("isMachineJet"),
         )
+        tool_entry = tool.resolve_tool_entry(tool_table, self._tool_number)
+        mesh = self._resolve_tool_mesh(tool_entry, lathe)
+        if mesh is not None:
+            geometry, shape, mesh_kind = mesh
+            self.plot_data.toolMesh = geometry
+            if mesh_kind == "insert":
+                shape.kind = "insert"
+        else:
+            self.plot_data.toolMesh = None
+
         self._tool_shape = shape
         self.plot_data.toolKind = shape.kind
         self.plot_data.toolColor = "#d2d2d7"
         LOG.debug(
             "Qt Quick 3D tool: number=%s entries=%s kind=%s visible=%s "
-            "spindle=%s radius=%.4f length=%.4f",
+            "spindle_model=%s radius=%.4f length=%.4f",
             self._tool_number, len(tool_table), shape.kind, shape.visible,
             self._show_spindle, shape.radius, shape.length)
         if shape.kind == "none":
@@ -678,8 +765,6 @@ class Qt3D0(QWidget, VCPWidget):
                 "Qt Quick 3D tool body not drawn (foam=%s jet=%s); use a "
                 "machine-parts model for this machine type",
                 _flag("isMachineFoam"), _flag("isMachineJet"))
-        elif not self._show_spindle:
-            LOG.info("Qt Quick 3D tool body hidden: backplot.show-spindle is off")
         if shape.visible:
             # Built-in primitives are 100 units tall with a 100-unit diameter.
             self.plot_data.toolScale = QVector3D(
@@ -690,12 +775,32 @@ class Qt3D0(QWidget, VCPWidget):
         self._update_tool_transform()
 
     def _current_tool_offset(self):
-        stat = getattr(getattr(self.datasource, "_status", None), "stat", None)
+        # Prefer the high-rate polled stat object so G43/G43.1 changes are
+        # picked up at the same rate as the trail/tool position.
+        stat = getattr(self, "_stat", None)
+        if stat is None or not hasattr(stat, "tool_offset"):
+            stat = getattr(getattr(self.datasource, "_status", None), "stat", None)
         try:
             values = getattr(stat, "tool_offset", None)
             return tuple(float(v) for v in values)
         except (TypeError, ValueError):
             return (0.0,) * 9
+
+    def _tool_tip_position(self):
+        """Live machine position adjusted by the active G43/G43.1 offset.
+
+        LinuxCNC keeps ``stat.tool_offset`` at the offset currently in effect:
+        G43/G43.1 set it, and G49 clears it.  The trail and the cutter bit must
+        use this tip position, while the spindle model stays at the raw machine
+        position (the tool top).
+        """
+        x, y, z = self._position
+        tlo = self._current_tool_offset()
+        return (
+            x - (tlo[0] if len(tlo) > 0 else 0.0),
+            y - (tlo[1] if len(tlo) > 1 else 0.0),
+            z - (tlo[2] if len(tlo) > 2 else 0.0),
+        )
 
     def _update_tool_transform(self):
         # The spindle model is the head, not the cutter: keep it at the live
@@ -707,16 +812,7 @@ class Qt3D0(QWidget, VCPWidget):
         shape = self._tool_shape
         if not shape.visible:
             return
-        x, y, z = self._position
-        # The loaded path is drawn without TLO, so apply the runtime tool offset
-        # to the tool here. QtPyVCP's DRO uses work = position - g5x - tool - g92
-        # (plugins/positions.py), so the tool tip is position - tool_offset.
-        tlo = self._current_tool_offset()
-        tip = (
-            x - (tlo[0] if len(tlo) > 0 else 0.0),
-            y - (tlo[1] if len(tlo) > 1 else 0.0),
-            z - (tlo[2] if len(tlo) > 2 else 0.0),
-        )
+        tip = self._tool_tip_position()
         offset = tool.tool_body_offset(shape)
         self.plot_data.toolPosition = map_vector_to_quick3d(
             (tip[0] + offset[0], tip[1] + offset[1], tip[2] + offset[2]))
@@ -900,6 +996,80 @@ class Qt3D0(QWidget, VCPWidget):
         self._anchor_offset = anchor
         self._refresh_path_transforms()
 
+    @staticmethod
+    def _nice_step(raw):
+        if raw <= 0:
+            return 1.0
+        exponent = math.floor(math.log10(raw))
+        base = raw / (10 ** exponent)
+        for nice in (1.0, 2.0, 5.0, 10.0):
+            if base <= nice:
+                return nice * (10 ** exponent)
+        return 10.0 * (10 ** exponent)
+
+    @classmethod
+    def _tick_values(cls, low, high, step):
+        if step <= 0:
+            return [low, high]
+        values = []
+        value = math.ceil(low / step) * step
+        while value <= high + 1e-9:
+            values.append(value)
+            value += step
+        return values or [low, high]
+
+    @classmethod
+    def _build_cube_ticks(cls, bounds):
+        """Return ``(tick_line_points, label_rows)`` for a bounds box."""
+        if bounds is None:
+            return [], []
+        xmin, xmax, ymin, ymax, zmin, zmax = bounds
+        span = max(xmax - xmin, ymax - ymin, zmax - zmin, 1e-6)
+        tick = max(span * TICK_FRACTION, 1e-6)
+        points = []
+
+        for value in cls._tick_values(
+                xmin, xmax, cls._nice_step(max(xmax - xmin, 1e-6) / 10.0)):
+            points.extend(((value, ymin, zmin), (value, ymin + tick, zmin)))
+        for value in cls._tick_values(
+                ymin, ymax, cls._nice_step(max(ymax - ymin, 1e-6) / 10.0)):
+            points.extend(((xmin, value, zmin), (xmin + tick, value, zmin)))
+        for value in cls._tick_values(
+                zmin, zmax, cls._nice_step(max(zmax - zmin, 1e-6) / 10.0)):
+            points.extend(((xmin, ymin, value), (xmin + tick, ymin, value)))
+
+        labels = []
+        for axis, values, anchor in (
+            ('x', tuple(dict.fromkeys((xmin, (xmin + xmax) / 2.0, xmax))),
+             (0.0, ymin, zmin)),
+            ('y', tuple(dict.fromkeys((ymin, (ymin + ymax) / 2.0, ymax))),
+             (xmin, 0.0, zmin)),
+            ('z', tuple(dict.fromkeys((zmin, (zmin + zmax) / 2.0, zmax))),
+             (xmin, ymin, 0.0)),
+        ):
+            axis_index = 'xyz'.index(axis)
+            for value in values:
+                position = list(anchor)
+                position[axis_index] = value
+                labels.append((f"{value:.3f}",
+                               map_vector_to_quick3d(position), -1))
+        return points, labels
+
+    def _rebuild_machine_ticks(self):
+        bounds = self._machine_box_bounds()
+        points, labels = self._build_cube_ticks(bounds)
+        self.plot_data.machineTicks.replace(
+            map_points_to_quick3d(points) if points
+            else np.zeros((0, 3), np.float32))
+        self.machine_tick_labels.set_rows(labels)
+
+    def _rebuild_program_ticks(self):
+        points, labels = self._build_cube_ticks(self._program_bounds)
+        self.plot_data.programTicks.replace(
+            map_points_to_quick3d(points) if points
+            else np.zeros((0, 3), np.float32))
+        self.program_tick_labels.set_rows(labels)
+
     def _rebuild_machine_bounds(self):
         self._machine_bounds = self._machine_box_bounds()
         bounds = self._machine_bounds
@@ -935,6 +1105,7 @@ class Qt3D0(QWidget, VCPWidget):
         bounds = self._program_bounds
         self.plot_data.programBounds.replace(
             map_points_to_quick3d(_box_lines(bounds)) if bounds else np.zeros((0, 3), np.float32))
+        self._rebuild_program_ticks()
 
     def _rebuild_axes(self):
         length = 25.4 if self.datasource.isMachineMetric() else 1.0
@@ -969,7 +1140,9 @@ class Qt3D0(QWidget, VCPWidget):
     def _wire_signals(self):
         ds = self.datasource
         ds.programLoaded.connect(self.load_program)
-        ds.positionChanged.connect(self.update_position)
+        # Live position is polled by _position_timer at a higher rate than the
+        # status plugin (75 ms in some configs). Connecting positionChanged
+        # here would insert stale 75 ms samples between the high-rate polls.
         ds.g5xOffsetChanged.connect(self.update_g5x_offset)
         ds.g92OffsetChanged.connect(self.update_g92_offset)
         ds.g5xIndexChanged.connect(self.update_g5x_index)
@@ -1004,7 +1177,12 @@ class Qt3D0(QWidget, VCPWidget):
             # Place the tool at the current machine position before the first
             # motion update, otherwise it sits at the machine origin and can be
             # outside the fitted program view.
-            self.update_position(tuple(self._stat.position))
+            attribute = ("actual_position" if self._use_actual_position
+                         else "position")
+            position = getattr(self._stat, attribute, None)
+            if position is None:
+                position = self._stat.position
+            self.update_position(tuple(position))
         except Exception:
             LOG.debug("LinuxCNC status not ready during Qt Quick 3D startup", exc_info=True)
         self._seed_wcs_state()
@@ -1118,7 +1296,8 @@ class Qt3D0(QWidget, VCPWidget):
         self._anchor_offset = (self._compute_anchor_offset()
                                if self._floating_wcs else None)
         self._rebuild_program_geometry()
-        self.setViewProgram("p")
+        if self._program_view_on_load:
+            self.setViewProgram(self._program_view_name)
         LOG.info("Qt Quick 3D backplot loaded %s: %d WCS paths, %d segments",
                  filename, len(geometry.paths), geometry.added_segments)
 
@@ -1227,6 +1406,156 @@ class Qt3D0(QWidget, VCPWidget):
         """Rebuild the tool body when the tool table or TLO changes."""
         self._rebuild_tool()
 
+    # -- live trail (breadcrumbs) -----------------------------------------
+
+    def _poll_live_position(self):
+        """Sample LinuxCNC at a fixed rate independent of the status plugin."""
+        stat = getattr(self, "_stat", None)
+        if stat is None:
+            return
+        try:
+            stat.poll()
+        except (AttributeError, OSError, RuntimeError, TypeError, ValueError):
+            return
+        attribute = "actual_position" if self._use_actual_position else "position"
+        position = getattr(stat, attribute, None)
+        if position is None:
+            position = (getattr(stat, "position", None)
+                        or getattr(stat, "actual_position", None))
+        if position is None:
+            return
+        try:
+            self.update_position(tuple(position))
+        except (TypeError, ValueError):
+            return
+
+    def _current_motion_line(self):
+        """G-code line currently being executed, or 0 when unknown."""
+        stat = getattr(self, "_stat", None)
+        try:
+            line = int(getattr(stat, "motion_line", 0) or 0)
+        except (TypeError, ValueError):
+            line = 0
+        if line > 0:
+            return line
+
+        status = getattr(self.datasource, "_status", None)
+        channel = getattr(status, "motion_line", None)
+        try:
+            line = int(getattr(channel, "value", 0) or 0)
+        except (TypeError, ValueError):
+            line = 0
+        if line > 0:
+            return line
+        stat = getattr(status, "stat", None)
+        try:
+            return max(0, int(getattr(stat, "motion_line", 0) or 0))
+        except (TypeError, ValueError):
+            return 0
+
+    def _segments_for_motion_lines(self, lines):
+        """World-space segments executed by the given G-code lines."""
+        wanted = sorted({int(line) for line in lines
+                         if line is not None and int(line) > 0})
+        if not wanted or not hasattr(self, "path_groups"):
+            return []
+        segments = []
+        for row in self.path_groups.rows():
+            if row.line_numbers.size == 0:
+                continue
+            mask = np.isin(row.line_numbers, wanted)
+            if not mask.any():
+                continue
+            starts = row.world_points(row.starts[mask])
+            ends = row.world_points(row.ends[mask])
+            segments.extend(zip(starts, ends))
+        return segments
+
+    @staticmethod
+    def _project_point_onto_segment(point, start, end):
+        point = np.asarray(point, dtype=np.float64)
+        start = np.asarray(start, dtype=np.float64)
+        end = np.asarray(end, dtype=np.float64)
+        direction = end - start
+        length_sq = float(np.dot(direction, direction))
+        if length_sq <= 1e-24:
+            return tuple(start), float(np.dot(point - start, point - start))
+        t = float(np.dot(point - start, direction) / length_sq)
+        t = max(0.0, min(1.0, t))
+        projected = start + direction * t
+        delta = point - projected
+        return tuple(projected), float(np.dot(delta, delta))
+
+    def _snapped_trail_point(self, point):
+        """Project the live tip onto the active program segment.
+
+        Actual-position feedback carries following error and encoder noise at
+        speed, which makes a raw breadcrumb wander around the programmed path.
+        The old VTK plotter snapped each sample to the current (and adjacent)
+        motion line; doing the same here keeps the yellow trail on the path.
+        Samples farther than 5 mm / 0.2 in from any candidate segment are kept
+        raw, so a jog or a bad line number cannot pull the trail onto the part.
+        """
+        line = self._current_motion_line()
+        previous = self._last_breadcrumb_motion_line
+        try:
+            metric = bool(self.datasource.isMachineMetric())
+        except (AttributeError, RuntimeError, TypeError, ValueError):
+            metric = True
+        tolerance = 5.0 if metric else 0.2
+        limit_sq = tolerance * tolerance
+        self._last_breadcrumb_motion_line = line or previous
+
+        def nearest(lines):
+            best_point = None
+            best_distance_sq = None
+            for start, end in self._segments_for_motion_lines(lines):
+                projected, distance_sq = self._project_point_onto_segment(
+                    point, start, end)
+                if best_distance_sq is None or distance_sq < best_distance_sq:
+                    best_distance_sq = distance_sq
+                    best_point = projected
+            return best_point, best_distance_sq
+
+        # Prefer the line the interpreter says is executing. Adjacent/previous
+        # lines are only a fallback for the sample that lands just after a
+        # motion-line transition; using them outright made a point near a
+        # corner snap onto the next line too early.
+        best_point, best_distance_sq = nearest([line])
+        if best_point is not None and best_distance_sq <= limit_sq:
+            return best_point
+
+        fallback = []
+        if previous and previous != line:
+            fallback.append(previous)
+        if line > 1:
+            fallback.append(line - 1)
+        if line > 0:
+            fallback.append(line + 1)
+        best_point, best_distance_sq = nearest(fallback)
+        if best_point is not None and best_distance_sq <= limit_sq:
+            return best_point
+        return point
+
+    def _append_trail_point(self, point):
+        """Append one breadcrumb and rebuild the yellow trail geometry."""
+        if self._trail:
+            last = self._trail[-1]
+            dx = float(point[0]) - float(last[0])
+            dy = float(point[1]) - float(last[1])
+            dz = float(point[2]) - float(last[2])
+            if dx * dx + dy * dy + dz * dz <= 1e-12:
+                return
+
+        self._trail.append(point)
+        points = np.asarray(self._trail, dtype=np.float32).reshape(-1, 3)
+        if len(points) >= 2:
+            segments = np.empty((2 * (len(points) - 1), 3), dtype=np.float32)
+            segments[0::2], segments[1::2] = points[:-1], points[1:]
+            self.plot_data.trail.replace(map_points_to_quick3d(segments))
+        else:
+            self.plot_data.trail.replace(np.zeros((0, 3), dtype=np.float32))
+
     def update_position(self, position):
         if self._designer or position is None:
             return
@@ -1237,18 +1566,19 @@ class Qt3D0(QWidget, VCPWidget):
         self._update_tool_transform()
         self._update_floating_anchor()
         self._apply_joint_feedback()
-        self._trail.append(self._position)
-        points = np.asarray(self._trail, dtype=np.float32).reshape(-1, 3)
-        if len(points) >= 2:
-            segments = np.empty((2 * (len(points) - 1), 3), dtype=np.float32)
-            segments[0::2], segments[1::2] = points[:-1], points[1:]
-            self.plot_data.trail.replace(map_points_to_quick3d(segments))
-        else:
-            self.plot_data.trail.replace(np.zeros((0, 3), dtype=np.float32))
+        if self._breadcrumbs_enabled:
+            # Breadcrumbs follow the cutter tip, not the spindle/tool top.
+            # _tool_tip_position() applies the live G43/G43.1 offset and is
+            # zero when G49 is active, so the trail stays correct either way.
+            # Snap to the active program segment to suppress following-error
+            # wander at speed.
+            self._append_trail_point(
+                self._snapped_trail_point(self._tool_tip_position()))
 
     @Slot()
     def clearLivePlot(self):
         self._trail.clear()
+        self._last_breadcrumb_motion_line = None
         if hasattr(self, "plot_data"):
             self.plot_data.trail.replace(np.zeros((0, 3), dtype=np.float32))
 
@@ -1313,7 +1643,11 @@ class Qt3D0(QWidget, VCPWidget):
     def setViewProgram(self, view="p"):
         self._active_view = "Program"
         self.rig.set_orthographic()
-        self.rig.fit_bounds(self._program_bounds or self._machine_bounds, padding=1.1)
+        self.rig.fit_bounds(self._program_bounds or self._machine_bounds,
+                            padding=1.1)
+        direction = str(view or "p").upper()
+        if direction in VIEW_DIRECTIONS:
+            self.rig.set_view(direction, self._active_center())
         self.clearLivePlot()
 
     @Slot()
@@ -1354,6 +1688,78 @@ class Qt3D0(QWidget, VCPWidget):
     def zoomOut(self):
         self.rig.zoom(1.1)
 
+    # -- touch and camera-orientation gizmo -------------------------------
+
+    def _on_pinch_zoom(self, factor):
+        if factor > 0.0 and math.isfinite(factor):
+            self.rig.zoom(factor)
+
+    def _on_pinch_pan(self, dx, dy):
+        width, height = self._viewport_size()
+        self.rig.pan(dx, dy, width, height)
+
+    def _on_pinch_rotate(self, degrees):
+        if degrees:
+            self.rig.orbit(degrees, 0.0)
+
+    def _on_view_requested(self, axis):
+        handler = {
+            "X": self.setViewX, "Y": self.setViewY, "Z": self.setViewZ,
+            "P": self.setViewP,
+        }.get(str(axis or "").upper())
+        if handler is not None:
+            handler()
+
+    def _sync_nav_helper(self):
+        """Push the current camera basis and ``navHelper*`` config to QML."""
+        if not hasattr(self, "plot_data") or not hasattr(self, "rig"):
+            return
+        props = self._nav_helper_props
+        enabled = bool(props.get("enabled") or False)
+        size = props.get("size") or QSize(96, 96)
+        padding = props.get("padding") or QSize(12, 12)
+        labels = props.get("labels") or ["X", "Y", "Z"]
+        labels = [str(label) for label in labels]
+        width = max(int(size.width()), 48)
+        height = max(int(size.height()), 48)
+        axis_color = props.get("axis_color")
+        config = {
+            "enabled": enabled,
+            "anchor": str(props.get("anchor") or "lower-left"),
+            "width": width,
+            "height": height,
+            "padding_x": max(int(padding.width()), 0),
+            "padding_y": max(int(padding.height()), 0),
+            "labels_visible": bool(props.get("labels_visible", True)),
+            "labels": labels,
+            "length": max(10.0, min(width, height) * 0.34),
+            "pickable": bool(props.get("pickable", True)),
+            "axis_color": (QColor(axis_color).name()
+                           if isinstance(axis_color, QColor) else "#b8c2cc"),
+        }
+        axes = []
+        if enabled:
+            forward = (-self.rig._offset).normalized()
+            up = self.rig._up
+            right = QVector3D.crossProduct(forward, up).normalized()
+            true_up = QVector3D.crossProduct(right, forward).normalized()
+            for name, vector, color in (
+                ("X", QVector3D(1.0, 0.0, 0.0),
+                 self._nav_helper_x_axis_color.name()),
+                ("Y", QVector3D(0.0, 0.0, -1.0),
+                 self._nav_helper_y_axis_color.name()),
+                ("Z", QVector3D(0.0, 1.0, 0.0),
+                 self._nav_helper_z_axis_color.name()),
+            ):
+                axes.append({
+                    "axis": name,
+                    "dx": QVector3D.dotProduct(vector, right),
+                    "dy": -QVector3D.dotProduct(vector, true_up),
+                    "depth": QVector3D.dotProduct(vector, forward),
+                    "color": color,
+                })
+        self.plot_data.set_nav_helper(axes, config)
+
     # -- visibility and host-widget properties ----------------------------
 
     @Slot(bool)
@@ -1390,9 +1796,8 @@ class Qt3D0(QWidget, VCPWidget):
     @Slot(bool)
     @Slot(object)
     def showMachineTicks(self, show):
-        # Machine ticks are not rendered; retained as state for
-        # panels that still drive the setting.
         self._show_machine_ticks = bool(show)
+        self.plot_data.machineTicksVisible = self._show_machine_ticks
 
     @Slot()
     def toggleMachineTicks(self):
@@ -1402,6 +1807,7 @@ class Qt3D0(QWidget, VCPWidget):
     @Slot(object)
     def showMachineLabels(self, show):
         self._show_machine_labels = bool(show)
+        self.plot_data.machineLabelsVisible = self._show_machine_labels
 
     @Slot()
     def toggleMachineLabels(self):
@@ -1456,35 +1862,42 @@ class Qt3D0(QWidget, VCPWidget):
     @Slot(bool)
     @Slot(object)
     def showSurface(self, show):
-        # Height-field surface is not rendered by the Qt Quick 3D stage yet.
+        # The legacy VTK "points surface" was a hard-coded probe demo, not a
+        # data-driven mode; keep the setting as state for config compatibility
+        # but do not draw it. Machine geometry belongs in MACHINE_PARTS.
         self._show_surface = bool(show)
+        LOG.debug("Qt Quick 3D showSurface is deprecated (legacy probe demo)")
 
     @Slot(bool)
     def alphaBlend(self, alpha):
         self._alpha_blend = bool(alpha)
 
     @Slot(bool)
-    def enableMultiTouch(self, _enabled):
-        pass
+    def enableMultiTouch(self, enabled):
+        if hasattr(self, "plot_data"):
+            self.plot_data.touchEnabled = bool(enabled)
+        # Touch and click-to-pick compete for the same surface; QML disables
+        # the single-click picker while pinch navigation is active.
 
     @Slot(bool)
-    def enableBreadcrumbs(self, _enabled):
-        pass
+    def enableBreadcrumbs(self, enabled):
+        self._breadcrumbs_enabled = bool(enabled)
+        if hasattr(self, "plot_data"):
+            self.plot_data.trailVisible = self._breadcrumbs_enabled
+        if not self._breadcrumbs_enabled:
+            self.clearLivePlot()
 
     @Slot(bool)
-    def setProgramViewWhenLoadingProgram(self, _enabled, view="p"):
-        pass
+    def setProgramViewWhenLoadingProgram(self, enabled, view="p"):
+        self._program_view_on_load = bool(enabled)
+        self._program_view_name = str(view or "p")
 
-    # -- API-parity methods (not all are meaningful to the Quick 3D scene) --
+    # -- API-parity methods ------------------------------------------------
 
     @Slot()
     def reapplyNavHelperConfig(self):
-        """Nav-helper camera gizmo is not rendered by this stage.
-
-        The ``navHelper*`` properties are retained for panel compatibility, so
-        this is a no-op kept for API parity.
-        """
-        return
+        """Re-read ``navHelper*`` properties into the 2D orientation gizmo."""
+        self._sync_nav_helper()
 
     @Slot()
     def printView(self):
@@ -1593,6 +2006,8 @@ class Qt3D0(QWidget, VCPWidget):
     @enableProgramTicks.setter
     def enableProgramTicks(self, value):
         self._enable_program_ticks = bool(value)
+        if hasattr(self, "plot_data"):
+            self.plot_data.programTicksVisible = self._enable_program_ticks
 
     @Property(bool, freset=reset_to("gridVisible", False))
     def gridVisible(self):
@@ -1633,8 +2048,7 @@ class Qt3D0(QWidget, VCPWidget):
     @navHelperXAxisColor.setter
     def navHelperXAxisColor(self, color):
         self._nav_helper_x_axis_color = QColor(color)
-        if hasattr(self, "plot_data"):
-            self.plot_data.axesXColor = self._nav_helper_x_axis_color.name()
+        self._sync_nav_helper()
 
     @Property(QColor, freset=reset_to("navHelperYAxisColor", lambda self: QColor(60, 220, 60)))
     def navHelperYAxisColor(self):
@@ -1643,8 +2057,7 @@ class Qt3D0(QWidget, VCPWidget):
     @navHelperYAxisColor.setter
     def navHelperYAxisColor(self, color):
         self._nav_helper_y_axis_color = QColor(color)
-        if hasattr(self, "plot_data"):
-            self.plot_data.axesYColor = self._nav_helper_y_axis_color.name()
+        self._sync_nav_helper()
 
     @Property(QColor, freset=reset_to("navHelperZAxisColor", lambda self: QColor(80, 120, 255)))
     def navHelperZAxisColor(self):
@@ -1653,8 +2066,7 @@ class Qt3D0(QWidget, VCPWidget):
     @navHelperZAxisColor.setter
     def navHelperZAxisColor(self, color):
         self._nav_helper_z_axis_color = QColor(color)
-        if hasattr(self, "plot_data"):
-            self.plot_data.axesZColor = self._nav_helper_z_axis_color.name()
+        self._sync_nav_helper()
 
     @staticmethod
     def _nav_prop(qt_type, key):
@@ -1663,9 +2075,11 @@ class Qt3D0(QWidget, VCPWidget):
 
         def setter(self, value):
             self._nav_helper_props[key] = value
+            self._sync_nav_helper()
 
         def reset(self):
             self._nav_helper_props.pop(key, None)
+            self._sync_nav_helper()
 
         return Property(qt_type, getter, setter, freset=reset)
 

@@ -124,3 +124,77 @@ def test_linuxcnc_offset_pose_sets_tool_length():
     assert shape.kind == "cylinder"
     assert shape.radius == pytest.approx(0.0625)
     assert shape.length == pytest.approx(0.6234)
+
+
+def test_insert_record_falls_back_to_tool_entry_fields():
+    from types import SimpleNamespace
+
+    from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.tool import (
+        resolve_insert_record,
+    )
+
+    entry = SimpleNamespace(
+        toolno=4, diameter=6.35, type="turning", insert_shape="C",
+        insert_size_mode="IC", insert_size=6.35, insert_thickness=3.18,
+        holder_style="SCLCR", holder_hand="R")
+    record = resolve_insert_record(object(), 4, entry)
+    assert record is not None
+    assert record["tool_no"] == 4
+    assert record["type"] == "turning"
+
+
+def test_lathe_insert_polygon_is_ccw_and_triangulates():
+    from qtpyvcp.lib.db_tool.insert_profile import insert_record
+    from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.tool import (
+        insert_mesh,
+        insert_polygon,
+        triangulate_polygon,
+    )
+
+    record = insert_record(
+        {"T": 2, "D": 6.35},
+        {"type": "turning", "insert_shape": "C", "insert_size_mode": "IC",
+         "insert_size": 6.35, "insert_thickness": 3.18,
+         "holder_style": "SCLCR", "holder_hand": "R"})
+    polygon = insert_polygon(record, {"orientation": 2})
+    assert polygon is not None
+    assert len(polygon) >= 4
+
+    area2 = 0.0
+    for index, (x1, z1) in enumerate(polygon):
+        x2, z2 = polygon[(index + 1) % len(polygon)]
+        area2 += x1 * z2 - x2 * z1
+    assert area2 >= 0.0
+
+    triangles = triangulate_polygon(polygon)
+    assert triangles
+    mesh = insert_mesh(polygon)
+    assert mesh is not None
+    vertices, normals = mesh
+    # Front and back faces, three vertices per triangle.
+    assert len(vertices) == len(triangles) * 6
+    assert len(normals) == len(vertices)
+    assert set(map(tuple, normals)) == {(0.0, 0.0, 1.0), (0.0, 0.0, -1.0)}
+
+
+def test_per_tool_model_path_is_resolved_relative_to_config_dir(tmp_path):
+    from qtpyvcp.widgets.display_widgets.qtquick3d_backplot.tool import (
+        resolve_tool_model_path,
+    )
+
+    model = tmp_path / "tool.stl"
+    model.write_text("solid x\nendsolid x\n")
+    datasource = type("DS", (), {"config_dir": str(tmp_path)})()
+    assert resolve_tool_model_path(
+        datasource, {"id": 1, "model": "tool.stl"}, 1) == str(model)
+    assert resolve_tool_model_path(
+        datasource, {"id": 1, "model": "missing.stl"}, 1) is None
+
+
+def test_cone_body_offset_puts_the_tip_at_the_tool_position():
+    # The built-in #Cone is authored with its origin at the base and is
+    # rotated 180 degrees in QML; the tip is therefore one full length below
+    # the model origin.
+    offset = tool_body_offset(
+        ToolShape(kind="cone", radius=12.7, length=25.4))
+    assert offset == (0.0, 0.0, 25.4)

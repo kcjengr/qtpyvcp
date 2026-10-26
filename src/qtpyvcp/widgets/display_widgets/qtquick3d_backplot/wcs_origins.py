@@ -1,10 +1,8 @@
-"""Work-offset origin labels for the Qt Quick 3D backplot.
+"""Scene label rows for the Qt Quick 3D backplot.
 
-One row per work coordinate system that the loaded program actually uses.
-Configured-but-unused offsets and the no-program state produce no rows, so an
-empty file draws no part origins. The row carries the label text
-(``G54`` .. ``G59.3``) and the scene position of the origin. The 2D QML overlay
-projects those positions to screen coordinates, so the labels stay readable at
+The same model backs work-offset origin labels, machine axis tick labels and
+program-bound tick labels. Each row carries text and a scene position; the QML
+overlay projects the position to screen coordinates so labels stay readable at
 any zoom and always face the operator.
 """
 
@@ -18,8 +16,8 @@ WCS_LABELS = (
 )
 
 
-class WcsOriginModel(QAbstractListModel):
-    """QML list model of visible work-offset origins."""
+class SceneLabelModel(QAbstractListModel):
+    """QML list model of scene-space text labels."""
 
     LabelRole = Qt.ItemDataRole.UserRole + 1
     PosRole = Qt.ItemDataRole.UserRole + 2
@@ -50,7 +48,7 @@ class WcsOriginModel(QAbstractListModel):
         return None
 
     def set_rows(self, rows):
-        """Replace the rows with ``(label, QVector3D scene_position, wcs)``."""
+        """Replace the rows with ``(label, QVector3D scene_position, tag)``."""
         rows = list(rows)
         if rows == self._rows:
             return
@@ -63,3 +61,7 @@ class WcsOriginModel(QAbstractListModel):
 
     def wcs_indices(self):
         return tuple(row[2] for row in self._rows)
+
+
+# Backwards-compatible name for callers that only use work-offset origins.
+WcsOriginModel = SceneLabelModel

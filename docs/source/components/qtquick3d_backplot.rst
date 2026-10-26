@@ -54,19 +54,23 @@ Features
 * Coloured rapid/feed/arc/dwell/user paths, per-WCS placement, offset
   transitions between WCS paths.
 * Program and machine bounds, a machine-size XY grid, axis indicators, and the
-  live position trail.
+  live cutter-tip trail (G43/G43.1 aware, snapped to the active G-code segment, sampled at 60 Hz independently of the status plugin).
 * View presets, orthographic/perspective projection, zoom/orbit/pan with the
   classic mouse model (left orbit, middle pan, right dolly, wheel zoom,
   pan-mode swap).
 * Two-colour background (``backgroundColor`` at the bottom,
-  ``backgroundColor2`` at the top; equal colours give a solid background) and
-  MSAA.
-* Active tool bit sized from the QtPyVCP tool table (cylinder by diameter and
-  Z offset, or a cone marker when no tool is loaded), following the live
-  position with the runtime tool-length offset applied. The bit is drawn
-  independently of the spindle: ``backplot.show-spindle`` only controls the
-  ``[VTK] SPINDLE`` machine model, which follows the live machine position so
-  the bit protrudes below it.
+  ``backgroundColor2`` at the top; equal colours give a solid background),
+  MSAA, screen-space ambient occlusion, and a low-intensity camera-follow fill
+  light so front-facing model surfaces are not left unlit.
+* Active tool bit sized from the QtPyVCP tool table, following the live
+  position with the runtime tool-length offset applied. Lathes draw the DB
+  insert silhouette (``insert_profile.compute_insert_profile()``); mills draw
+  a diameter/Z-offset cylinder, or a cone marker when no tool is loaded. A
+  tool-table row (or its DB extras) may also set ``model``/``stl``/``mesh`` to
+  an STL/glTF file for a per-tool model. The bit is drawn independently of the
+  spindle: ``backplot.show-spindle`` only controls the ``[VTK] SPINDLE``
+  machine model, which follows the live machine position so the bit protrudes
+  below it.
 * ``MACHINE_PARTS`` YAML: STL and glTF/GLB parts are parsed in Python and loaded
   as custom ``QQuick3DGeometry`` (Qt Quick 3D resolves ``Model.source`` only to
   ``.mesh`` at runtime), with node world transforms baked in for glTF. Each part
@@ -88,21 +92,37 @@ Features
   offsets that the program does not use are ignored. Labels are 2D overlays
   projected from the 3D scene, so they stay readable at any zoom. Toggle with
   the ``backplot.show-wcs-origins`` setting.
+* Machine and program bounds can show cube-edge tick marks and numeric labels
+  (``showMachineTicks`` / ``showMachineLabels``, ``enableProgramTicks``). Tick
+  labels are projected through the view and pushed down when they collide, so
+  dense ranges stay readable.
+* Camera navigation includes a 2D orientation gizmo ("nav helper"). Enable it
+  with ``navHelperEnabled``; ``navHelperAnchor``, ``navHelperSize``,
+  ``navHelperPadding``, ``navHelperLabels``, ``navHelperLabelsVisible``,
+  ``navHelperPickable`` and the X/Y/Z colours are honoured. Click an axis to
+  snap to that view.
+* ``enableMultiTouch`` enables pinch zoom, two-finger pan and two-finger twist
+  orbit on touch screens. ``enableBreadcrumbs`` toggles the live trail, and
+  ``setProgramViewWhenLoadingProgram(enabled, view)`` chooses whether (and
+  which) program view is fitted after a load.
 
 Known limitations
 -----------------
 
 * Qt Quick 3D custom line geometry is always one pixel wide; there is no
   line-width control for it. MSAA is enabled to keep it crisp, but a thicker
-  path option is still to be designed.
-* Machine ticks/labels (``showMachineTicks`` / ``showMachineLabels``) store
-  state only, and ``enableProgramTicks`` does not draw bounds ticks (they are
-  not implemented for line geometry yet).
-* The height-field surface (``showSurface``) and the camera nav-helper gizmo are
-  not rendered; the ``navHelper*`` properties are retained for API/Designer
-  compatibility.
-* ``enableMultiTouch``, ``enableBreadcrumbs`` and
-  ``setProgramViewWhenLoadingProgram`` are API-compatibility no-ops.
+  path option is still to be designed. This affects paths, grid, axes, bounds,
+  ticks, origins, trail and highlight equally.
+* ``showSurface`` is retained as a setting/slot for configuration
+  compatibility, but the legacy VTK implementation was a hard-coded probe demo
+  rather than a data-driven height field, so it is not drawn. Use a
+  ``MACHINE_PARTS`` model for a real surface.
+* The nav-helper gizmo is a 2D projection: it has no depth handles and cannot
+  be dragged/rolled like the VTK manipulator. ``navHelperAnimate``,
+  ``navHelperDragable``, ``navHelperHandle*`` and the container/animator knobs
+  are accepted but have no visual effect.
+* Multi-touch is gestures only (pinch/pan/twist); it does not implement a
+  separate touch cursor or long-press menu.
 
 Migrating from VTKBackPlot
 --------------------------

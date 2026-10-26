@@ -73,6 +73,7 @@ class Quick3DPlotData(QObject):
         self._geometries = {name: LineGeometry() for name in (
             "grid", "axesX", "axesY", "axesZ", "machineBounds",
             "programBounds", "trail", "highlight", "transitions", "origins",
+            "machineTicks", "programTicks",
         )}
         for name, geometry in self._geometries.items():
             geometry.setObjectName("backplot_" + name)
@@ -97,6 +98,9 @@ class Quick3DPlotData(QObject):
         self._grid_visible = False
         self._machine_bounds_visible = True
         self._program_bounds_visible = False
+        self._machine_ticks_visible = False
+        self._machine_labels_visible = False
+        self._program_ticks_visible = True
         self._perspective = False
         self._panning = False
         # Qt Quick 3D orthographic magnification is pixels per world unit, so
@@ -105,22 +109,50 @@ class Quick3DPlotData(QObject):
         self._tool_kind = "none"
         self._tool_visible = False
         self._tool_color = "#d2d2d7"
+        self._tool_mesh = None
         self._tool_position = QVector3D()
         self._tool_scale = QVector3D(1.0, 1.0, 1.0)
         self._machine_visible = True
         self._wcs_origins_visible = True
+        self._trail_visible = True
+        self._touch_enabled = False
+        self._nav_axes = []
+        self._nav_config = {}
+        self._nav_revision = 0
         self._camera_revision = 0
 
     colorChanged = Signal()
     toolChanged = Signal()
     visibilityChanged = Signal()
     cameraChanged = Signal()
+    navHelperChanged = Signal()
+    touchChanged = Signal()
     picked = Signal(QVector3D, QVector3D)
+    pinchZoomed = Signal(float)
+    pinchPanned = Signal(float, float)
+    pinchRotated = Signal(float)
+    viewRequested = Signal(str)
 
     @Slot(QVector3D, QVector3D)
     def reportPick(self, near, far):
         """Called from QML with the click ray; forwards it to Python."""
         self.picked.emit(near, far)
+
+    @Slot(float)
+    def pinchZoom(self, factor):
+        self.pinchZoomed.emit(float(factor))
+
+    @Slot(float, float)
+    def pinchPan(self, dx, dy):
+        self.pinchPanned.emit(float(dx), float(dy))
+
+    @Slot(float)
+    def pinchRotate(self, degrees):
+        self.pinchRotated.emit(float(degrees))
+
+    @Slot(str)
+    def requestView(self, axis):
+        self.viewRequested.emit(str(axis))
 
     @Property(bool, notify=toolChanged)
     def machineVisible(self):
@@ -149,6 +181,8 @@ class Quick3DPlotData(QObject):
     highlight = _geometry_property("highlight")
     transitions = _geometry_property("transitions")
     origins = _geometry_property("origins")
+    machineTicks = _geometry_property("machineTicks")
+    programTicks = _geometry_property("programTicks")
 
     def _string_property(name, notify=colorChanged):
         return Property(str, lambda self: self._colors[name],
@@ -191,6 +225,17 @@ class Quick3DPlotData(QObject):
             self._wcs_origins_visible = value
             self.visibilityChanged.emit()
 
+    @Property(bool, notify=visibilityChanged)
+    def trailVisible(self):
+        return self._trail_visible
+
+    @trailVisible.setter
+    def trailVisible(self, value):
+        value = bool(value)
+        if value != self._trail_visible:
+            self._trail_visible = value
+            self.visibilityChanged.emit()
+
     @Property(int, notify=cameraChanged)
     def cameraRevision(self):
         return self._camera_revision
@@ -230,6 +275,39 @@ class Quick3DPlotData(QObject):
     def gridVisible(self, value):
         self._grid_visible = bool(value)
         self.visibilityChanged.emit()
+
+    @Property(bool, notify=visibilityChanged)
+    def machineTicksVisible(self):
+        return self._machine_ticks_visible
+
+    @machineTicksVisible.setter
+    def machineTicksVisible(self, value):
+        value = bool(value)
+        if value != self._machine_ticks_visible:
+            self._machine_ticks_visible = value
+            self.visibilityChanged.emit()
+
+    @Property(bool, notify=visibilityChanged)
+    def machineLabelsVisible(self):
+        return self._machine_labels_visible
+
+    @machineLabelsVisible.setter
+    def machineLabelsVisible(self, value):
+        value = bool(value)
+        if value != self._machine_labels_visible:
+            self._machine_labels_visible = value
+            self.visibilityChanged.emit()
+
+    @Property(bool, notify=visibilityChanged)
+    def programTicksVisible(self):
+        return self._program_ticks_visible
+
+    @programTicksVisible.setter
+    def programTicksVisible(self, value):
+        value = bool(value)
+        if value != self._program_ticks_visible:
+            self._program_ticks_visible = value
+            self.visibilityChanged.emit()
 
     @Property(bool, notify=visibilityChanged)
     def machineBoundsVisible(self):
@@ -328,3 +406,53 @@ class Quick3DPlotData(QObject):
     def toolScale(self, value):
         self._tool_scale = QVector3D(value)
         self.toolChanged.emit()
+
+    @Property(QObject, notify=toolChanged)
+    def toolMesh(self):
+        """Custom mesh for the active cutter (lathe insert or per-tool STL)."""
+        return self._tool_mesh
+
+    @toolMesh.setter
+    def toolMesh(self, value):
+        if value is self._tool_mesh:
+            return
+        previous = self._tool_mesh
+        if value is not None and isinstance(value, QObject):
+            value.setParent(self)
+        self._tool_mesh = value
+        if previous is not None and previous is not value:
+            # Replacing a tool mesh must not leak one geometry per tool change.
+            previous.deleteLater()
+        self.toolChanged.emit()
+
+    # -- touch / camera-orientation gizmo ---------------------------------
+
+    @Property(bool, notify=touchChanged)
+    def touchEnabled(self):
+        return self._touch_enabled
+
+    @touchEnabled.setter
+    def touchEnabled(self, value):
+        value = bool(value)
+        if value != self._touch_enabled:
+            self._touch_enabled = value
+            self.touchChanged.emit()
+
+    @Property("QVariantList", notify=navHelperChanged)
+    def navHelperAxes(self):
+        return self._nav_axes
+
+    @Property("QVariantMap", notify=navHelperChanged)
+    def navHelperConfig(self):
+        return self._nav_config
+
+    @Property(int, notify=navHelperChanged)
+    def navHelperRevision(self):
+        return self._nav_revision
+
+    def set_nav_helper(self, axes, config):
+        """Update the 2D camera-orientation gizmo."""
+        self._nav_axes = list(axes)
+        self._nav_config = dict(config)
+        self._nav_revision += 1
+        self.navHelperChanged.emit()
