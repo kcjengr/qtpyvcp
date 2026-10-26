@@ -53,7 +53,7 @@ class Status(DataPlugin):
                 STAT.poll()
             except Exception as e:
                 LOG.error("Unable to poll status channel")
-                LOG.Debug(e)
+                LOG.debug(e)
 
         excluded_items = ['axis', 'joint', 'spindle', 'poll']
 

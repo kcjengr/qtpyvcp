@@ -93,6 +93,11 @@ class ColoredFormatter(Formatter):
     # version of the message with the tags removed for use by the file handler.
     def color_words(self, raw_msg):
         plain_msg = color_msg = raw_msg
+        # Messages are not always strings: LOG.error("..."), LOG.debug(exc)
+        # and friends can pass non-str objects (e.g. an exception), which used
+        # to raise TypeError from the `'<' in raw_msg` test.
+        if not isinstance(raw_msg, str):
+            return plain_msg, color_msg
         if '<' in raw_msg: # If no tag don't try to match
             iterater = RE.finditer(raw_msg)
             if iterater:

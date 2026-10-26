@@ -50,7 +50,7 @@ from qtpyvcp.widgets.hal_widgets.hal_label import (HalLabel)  # noqa: F401
 from qtpyvcp.widgets.hal_widgets.hal_lcd import (HalLCDNumber)  # noqa: F401
 from qtpyvcp.widgets.hal_widgets.hal_led import (HalLedIndicator)  # noqa: F401
 from qtpyvcp.widgets.hal_widgets.hal_led_button import (HALLEDButton)  # noqa: F401
-from qtpyvcp.widgets.hal_widgets.hal_plot import (HalPlot)  # noqa: F401
+# HalPlot is imported lazily; see get_hal_plot() below.
 from qtpyvcp.widgets.hal_widgets.hal_slider import (HalSlider)  # noqa: F401
 from qtpyvcp.widgets.hal_widgets.hal_spinbox import (HalQSpinBox)  # noqa: F401
 from qtpyvcp.widgets.hal_widgets.designer_plugins import (HalLoadMeterPlugin) # noqa: F401
@@ -80,6 +80,28 @@ from qtpyvcp.widgets.input_widgets.setting_slider import (VCPSettingsLineEdit,  
                                                           VCPSettingsCheckBox,  # noqa: F401
                                                           VCPSettingsPushButton,  # noqa: F401
                                                           VCPSettingsComboBox)  # noqa: F401
+
+
+def get_hal_plot():
+    """Import and return :class:`HalPlot` on demand.
+
+    ``hal_plot`` imports pyqtgraph at module level (~45 MB RSS with numpy),
+    and TurboNC's main window has no HalPlot, so importing it eagerly on every
+    startup was pure waste. It is still resolved by name from .ui files in
+    ``QUiLoader`` via the ``__getattr__`` hook below.
+    """
+    from qtpyvcp.widgets.hal_widgets.hal_plot import HalPlot
+
+    return HalPlot
+
+
+def __getattr__(name):
+    # PEP 562: keep `register_widgets.HalPlot` (and `from ... import HalPlot`)
+    # working without importing pyqtgraph until something actually asks.
+    if name == 'HalPlot':
+        return get_hal_plot()
+    raise AttributeError("module %r has no attribute %r"
+                         % (__name__, name))
 
 
 def main():

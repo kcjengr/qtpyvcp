@@ -455,6 +455,22 @@ class VCPMainWindow(QMainWindow):
                         loader.registerCustomWidget(widget_class)
                 except Exception:
                     LOG.debug("Skipping custom widget registration for %s from %s", class_name, module_path)
+                    continue
+
+                if widget_class is not None:
+                    continue
+
+                # The header exists but does not define the class directly:
+                # a few widgets are exported lazily from the registry module
+                # (e.g. HalPlot, whose module imports pyqtgraph). Resolve them
+                # by name so their heavy imports stay deferred until a .ui
+                # file actually uses them.
+                try:
+                    from qtpyvcp.widgets import register_widgets as _registry
+                    widget_class = getattr(_registry, class_name)
+                    loader.registerCustomWidget(widget_class)
+                except Exception:
+                    LOG.debug("Skipping lazy widget registration for %s from %s", class_name, module_path)
 
         def _replace_backplot_placeholders_runtime(root_widget, class_name,
                                                    default_name, realize, label):

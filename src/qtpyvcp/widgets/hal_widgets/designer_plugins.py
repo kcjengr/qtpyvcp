@@ -52,9 +52,13 @@ class HalGroupBoxPlugin(_DesignerPlugin):
     def isContainer(self):
         return True
 
-from qtpyvcp.widgets.hal_widgets.hal_plot import HalPlot
 class HalPlotPlugin(_DesignerPlugin):
     def pluginClass(self):
+        # Imported here rather than at module level: hal_plot pulls in
+        # pyqtgraph (~45 MB RSS), and this module is imported on every
+        # runtime start via register_widgets. pluginClass() is only called
+        # in Qt Designer.
+        from qtpyvcp.widgets.hal_widgets.hal_plot import HalPlot
         return HalPlot
 
 from qtpyvcp.widgets.hal_widgets.hal_bar_indicator import HalBarIndicator
